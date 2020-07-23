@@ -13,7 +13,7 @@ class TeacherProfile extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description'
+        'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description','academy_id','type','percentage'
     ];
 
     /**
@@ -21,5 +21,11 @@ class TeacherProfile extends Model
     */
     public function teacher(){
         return $this->belongsTo(User::class);
+    }
+
+    public function academies(){
+        return $this->belongsTo(academy::class);
+
+
     }
 }

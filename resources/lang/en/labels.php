@@ -15,6 +15,8 @@ return array (
         'trending' => 'Trending',
         'popular' => 'Popular',
         'teachers' => 'Teachers',
+        'academies' => 'Academies',
+
         'category' => 'Category',
         'title' => 'Title',
         'slug' => 'Slug',
@@ -35,10 +37,12 @@ return array (
         'status' => 'Status',
       ),
       'add_teachers' => 'Add Teachers',
+      'add_academies' => 'Add Academies',
+
       'add_categories' => 'Add Categories',
       'slug_placeholder' => 'Input slug or it will be generated automatically',
       'select_category' => 'Select Category',
-      'select_teachers' => 'Select Teachers',
+      'select_academies' => 'Select Academies',
       'test' => 'Test',
       'lesson' => 'Lesson',
       'create' => 'Create Course',
@@ -760,11 +764,29 @@ return array (
         'password' => 'Password',
         'image' => 'Image',
         'status' => 'Status',
+        'academy' => 'Academy',
+        'percentage' => 'percentage'
       ),
       'title' => 'Teachers',
       'create' => 'Create Teacher',
       'edit' => 'Edit Teacher',
       'view' => 'View Teachers',
+    ),
+    'academies' => 
+    array (
+      'fields' => 
+      array (
+        'first_name' => 'First Name',
+        'last_name' => 'Last Name',
+        'email' => 'Email Address',
+        'password' => 'Password',
+        'image' => 'Logo',
+        'status' => 'Status',
+      ),
+      'title' => 'Academies',
+      'create' => 'Create Academy',
+      'edit' => 'Edit Academy',
+      'view' => 'View Academies',
     ),
     'testimonials' => 
     array (
@@ -786,6 +808,8 @@ return array (
       'students' => 'Students',
       'trending' => 'Trending',
       'teachers' => 'Teachers',
+      'academies' => 'Academies',
+
       'completed' => 'Completed',
       'no_data' => 'No data available',
       'buy_course_now' => 'Buy course now',
@@ -956,6 +980,7 @@ return array (
         'free' => 'Free',
         'popular' => 'Popular',
         'teachers' => 'Teachers',
+        'academies' => 'Academies',
         'category' => 'Category',
         'title' => 'Title',
         'slug' => 'Slug',
@@ -978,11 +1003,13 @@ return array (
       ),
       'add_courses' => 'Add Courses',
       'add_teachers' => 'Add Teachers',
+      'add_academies' => 'Add Academies',
       'add_categories' => 'Add Categories',
       'slug_placeholder' => 'Input slug or it will be generated automatically',
       'select_category' => 'Select Category',
       'select_courses' => 'Select Courses',
       'select_teachers' => 'Select Teachers',
+      'select_academies' => 'Select Academies',
       'test' => 'Test',
       'lesson' => 'Lesson',
       'create' => 'Create Bundle',
@@ -1300,14 +1327,22 @@ return array (
       'title' => 'Home',
       'search_course_placeholder' => 'Type what do you want to learn today?',
       'popular_teachers' => '<span>Popular</span> Teachers',
+      'popular_academies' => '<span>Popular</span> Academies',
+
       'learn_new_skills' => 'Learn new skills',
       'search_course' => 'Search Course',
       'search_courses' => '<span>Search</span> Courses.',
       'students_enrolled' => 'Students Enrolled',
       'online_available_courses' => 'Online Available Courses',
       'teachers' => 'Teachers',
+      'academies' => 'Academies',
+      
+
       'our_professionals' => 'Our Professionals',
       'all_teachers' => 'All Teachers',
+      'all_academies' => 'All Academies',
+
+
       'what_they_say_about_us' => 'What they say about us',
       'no_data_available' => 'No data available',
     ),
@@ -1390,6 +1425,14 @@ return array (
       'courses_by_teacher' => 'Courses <span>By Teacher.</span>',
       'course_detail' => 'Course Detail',
     ),
+    'academy' => 
+    array (
+      'send_now' => 'Send Now',
+      'students' => 'Students',
+      'title' => 'Academies',
+      'courses_by_teacher' => 'Courses <span>By Teacher.</span>',
+      'course_detail' => 'Course Detail',
+    ),
     'user' => 
     array (
       'passwords' => 
@@ -1454,6 +1497,32 @@ return array (
   array (
     'teacher_register' => 'Register as Teacher? Click Here',
     'teacher_register_box_title' => 'Teacher Register',
+    'facebook_link' => 'Facebook Link',
+    'twitter_link' => 'Twitter Link',
+    'linkedin_link' => 'Linkedin Link',
+    'type' => 'Type' ,
+    'individual' => 'Individual',
+    'academy' => 'Academy',
+    'payment_details' => 'Payment Details',
+    'bank' => 'Bank',
+    'paypal' => 'Paypal',
+    'paypal_email' => 'Paypal Email',
+    'bank_details' => 
+    array (
+      'name' => 'Bank Name',
+      'bank_code' => 'Bank Code',
+      'account' => 'Account Number',
+      'holder_name' => 'Account Name',
+      'account_number' => 'Account Number',
+      'ifsc_code' => 'IFSC Code',
+    ),
+    'description' => 'Description',
+  ),
+  'academy' => 
+  array (
+    'academy_register' => 'Register as Academy? Click Here',
+    'teacher_register_box_title' => 'Academy Register',
+     'address' => 'address',
     'facebook_link' => 'Facebook Link',
     'twitter_link' => 'Twitter Link',
     'linkedin_link' => 'Linkedin Link',

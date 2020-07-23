@@ -24,7 +24,7 @@
                     </a>
                 </li>
             @endcan
-            @if ($logged_in_user->isAdmin())
+            @if ($logged_in_user->isAdmin() || $logged_in_user->hasRole('academy'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'teachers' ? 'active' : '' }}"
                        href="{{ route('admin.teachers.index') }}">
@@ -34,7 +34,7 @@
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'academies' ? 'active' : '' }}"
-                       href="{{ route('admin.teachers.index') }}">
+                       href="{{ route('admin.academies.index') }}">
                         <i class="nav-icon icon-directions"></i>
                         <span class="title">@lang('menus.backend.sidebar.academies.title')</span>
                     </a>

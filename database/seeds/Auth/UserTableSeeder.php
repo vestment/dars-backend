@@ -37,6 +37,7 @@ class UserTableSeeder extends Seeder
             'confirmation_code' => md5(uniqid(mt_rand(), true)),
             'confirmed'         => true,
         ]);
+      
 
         User::create([
             'first_name'        => 'Student',
@@ -51,6 +52,15 @@ class UserTableSeeder extends Seeder
             'first_name'        => 'Normal',
             'last_name'         => 'User',
             'email'             => 'user@lms.com',
+            'password'          => 'secret',
+            'confirmation_code' => md5(uniqid(mt_rand(), true)),
+            'confirmed'         => true,
+        ]);
+
+        User::create([
+            'first_name'        => '119',
+            'last_name'         => 'Academy',
+            'email'             => '119academy@lms.com',
             'password'          => 'secret',
             'confirmation_code' => md5(uniqid(mt_rand(), true)),
             'confirmed'         => true,

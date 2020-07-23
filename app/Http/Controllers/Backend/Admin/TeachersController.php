@@ -8,6 +8,8 @@ use App\Http\Requests\Admin\StoreTeachersRequest;
 use App\Http\Requests\Admin\UpdateTeachersRequest;
 use App\Models\Auth\User;
 use App\Models\TeacherProfile;
+use App\academy;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -35,6 +37,14 @@ class TeachersController extends Controller
         return view('backend.teachers.index', compact('users'));
     }
 
+    // public function allAcademies()
+    // {
+    //     $academies = User::role('academy')->get();
+    //     return view('backend.teachers.create', compact('academies'));
+
+        
+    // }
+
     /**
      * Display a listing of Courses via ajax DataTable.
      *
@@ -55,7 +65,7 @@ class TeachersController extends Controller
             $teachers = User::role('teacher')->orderBy('created_at', 'desc')->get();
         }
 
-        if (auth()->user()->isAdmin()) {
+        if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) {
             $has_view = true;
             $has_edit = true;
             $has_delete = true;
@@ -113,7 +123,12 @@ class TeachersController extends Controller
      */
     public function create()
     {
-        return view('backend.teachers.create');
+        $academies = \App\Models\Auth\User::whereHas('roles', function ($q) {
+            $q->where('role_id', 5);
+        })->get()->pluck('name', 'id');
+
+        return view('backend.teachers.create', compact('academies'));
+        // return view('backend.teachers.create');
     }
 
     /**
@@ -125,6 +140,7 @@ class TeachersController extends Controller
     public function store(StoreTeachersRequest $request)
     {
 //        $request = $this->saveFiles($request);
+// dd($request->all());
 
         $teacher = User::create($request->all());
         $teacher->confirmed = 1;
@@ -135,6 +151,12 @@ class TeachersController extends Controller
         $teacher->active = isset($request->active)?1:0;
         $teacher->save();
         $teacher->assignRole('teacher');
+  if(request()->type == "individual"){
+      $academy_id = 0 ;
+  }
+  else{
+    $academy_id = request()->academy_id;
+  }
 
         $payment_details = [
             'bank_name'         => request()->payment_method == 'bank'?request()->bank_name:'',
@@ -151,6 +173,10 @@ class TeachersController extends Controller
             'payment_method'    => request()->payment_method,
             'payment_details'   => json_encode($payment_details),
             'description'       => request()->description,
+            'type'       => request()->type,
+            'percentage'       => request()->percentage,
+            'academy_id' =>  $academy_id,
+
         ];
         TeacherProfile::create($data);
 

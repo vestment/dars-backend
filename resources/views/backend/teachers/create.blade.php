@@ -115,6 +115,39 @@
                                             ->placeholder(__('labels.teacher.linkedin_link')) }}
                         </div><!--col-->
                     </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.teacher.type'))->class('col-md-2 form-control-label')->for('type') }}
+                        <div class="col-md-10">
+                            <select class="form-control" name="type" id="type" required>
+                                <option value="academy" {{ old('type') == 'academy'?'selected':'' }}>{{ trans('labels.teacher.academy') }}</option>
+                                <option value="individual" {{ old('type') == 'individual'?'selected':'' }}>{{ trans('labels.teacher.individual') }}</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    
+                <!-- <div class = "academy">
+                    <div class="form-group row ">
+                    {!! Form::label('academy_id',trans('labels.backend.teachers.fields.academy'), ['class' => 'col-md-2 form-control-label']) !!}
+
+                        <div class="col-md-10">
+                            {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                        </div>
+                    
+                    </div>
+                   </div> -->
+                   <div class="row academy">
+                    <div class="col-10 form-group">
+                        {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                        {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false, 'required' => true]) !!}
+                    </div>
+                    <!-- <div class="col-2 d-flex form-group flex-column">
+                        OR <a target="_blank" class="btn btn-primary mt-auto"
+                              href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
+                    </div> -->
+                </div>
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.teacher.payment_details'))->class('col-md-2 form-control-label')->for('payment_details') }}
@@ -164,6 +197,17 @@
                             </div><!--col-->
                         </div>
                     </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.teachers.fields.percentage'))->class('col-md-2 form-control-label')->for('percentage') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('percentage')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.teachers.fields.percentage'))
+                                ->attribute('maxlength', 191)
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
 
                     <div class="paypal_details">
                         <div class="form-group row">
@@ -229,6 +273,21 @@
         }else{
             $('.paypal_details').show();
             $('.bank_details').hide();
+        }
+    });
+
+    @if(old('type') && old('type') == 'individual')
+    $('.academy').hide();
+    @elseif(old('type')&& old('type')  == 'academy')
+    $('.academy').show();
+    @endif
+    $(document).on('change', '#type', function(){
+        if($(this).val() === 'individual'){
+            $('.academy').hide();
+          
+        }else{
+            $('.academy').show();
+           
         }
     });
 </script>
