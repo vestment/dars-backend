@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use App\academy;
 
 class TeacherProfile extends Model
 {
@@ -23,9 +25,19 @@ class TeacherProfile extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function academies(){
+    public function academy(){
         return $this->belongsTo(academy::class);
 
 
     }
+    public function scopeofAcademy($query)
+    {
+        if (!Auth::user()->isAdmin()) {
+            return $query->whereHas('academy', function ($q) {
+                $q->where('academy_id', Auth::user()->id);
+            });
+        }
+        return $query;
+    }
+  
 }

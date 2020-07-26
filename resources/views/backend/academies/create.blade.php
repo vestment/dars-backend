@@ -71,14 +71,24 @@
                         </div><!--col-->
                     </div>
                     <div class="form-group row">
-                        {{ html()->label(__('labels.academy.address'))->class('col-md-2 form-control-label')->for('address') }}
+                        {{ html()->label(__('labels.academy.adress'))->class('col-md-2 form-control-label')->for('adress') }}
 
                         <div class="col-md-10">
-                            {{ html()->text('address')
+                            {{ html()->text('adress')
                                             ->class('form-control')
-                                            ->placeholder(__('labels.academy.address')) }}
+                                            ->placeholder(__('labels.academy.adress')) }}
                         </div><!--col-->
                     </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.academy.percentage'))->class('col-md-2 form-control-label')->for('percentage') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('percentage')
+                                            ->class('form-control')
+                                            ->placeholder(__('labels.academy.percentage')) }}
+                        </div><!--col-->
+                    </div>
+
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.academy.facebook_link'))->class('col-md-2 form-control-label')->for('facebook_link') }}

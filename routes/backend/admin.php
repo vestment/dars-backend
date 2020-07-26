@@ -19,16 +19,24 @@ Route::resource('teachers', 'Admin\TeachersController');
 Route::group(['middleware' => 'role:teacher|administrator'], function () {
     Route::resource('orders', 'Admin\OrderController');
 });
-
-Route::group(['middleware' => 'role:administrator'], function () {
-
-    //===== Teachers Routes =====//
+Route::group(['middleware' => 'role:academy|administrator'], function () {
     Route::resource('teachers', 'Admin\TeachersController');
     Route::get('get-teachers-data', ['uses' => 'Admin\TeachersController@getData', 'as' => 'teachers.get_data']);
     Route::post('teachers_mass_destroy', ['uses' => 'Admin\TeachersController@massDestroy', 'as' => 'teachers.mass_destroy']);
     Route::post('teachers_restore/{id}', ['uses' => 'Admin\TeachersController@restore', 'as' => 'teachers.restore']);
     Route::delete('teachers_perma_del/{id}', ['uses' => 'Admin\TeachersController@perma_del', 'as' => 'teachers.perma_del']);
     Route::post('teacher/status', ['uses' => 'Admin\TeachersController@updateStatus', 'as' => 'teachers.status']);
+});
+
+Route::group(['middleware' => 'role:administrator'], function () {
+
+    //===== Teachers Routes =====//
+    // Route::resource('teachers', 'Admin\TeachersController');
+    // Route::get('get-teachers-data', ['uses' => 'Admin\TeachersController@getData', 'as' => 'teachers.get_data']);
+    // Route::post('teachers_mass_destroy', ['uses' => 'Admin\TeachersController@massDestroy', 'as' => 'teachers.mass_destroy']);
+    // Route::post('teachers_restore/{id}', ['uses' => 'Admin\TeachersController@restore', 'as' => 'teachers.restore']);
+    // Route::delete('teachers_perma_del/{id}', ['uses' => 'Admin\TeachersController@perma_del', 'as' => 'teachers.perma_del']);
+    // Route::post('teacher/status', ['uses' => 'Admin\TeachersController@updateStatus', 'as' => 'teachers.status']);
 
 //===== Academies Routes =====//
 Route::resource('academies', 'Admin\AcademyController');

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Auth;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Bundle;
 use App\Models\Certificate;
@@ -26,6 +27,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Auth\Traits\Relationship\UserRelationship;
 use App\Models\Earning;
 use App\Models\TeacherProfile;
+use App\academy;
+
 use App\Models\Withdraw;
 use Gerardojbaez\Messenger\Contracts\MessageableInterface;
 use Gerardojbaez\Messenger\Traits\Messageable;
@@ -226,6 +229,10 @@ class User extends Authenticatable implements MessageableInterface
     public function teacherProfile(){
         return $this->hasOne(TeacherProfile::class);
     }
+    public function academy(){
+        return $this->hasOne(academy::class);
+    }
+
 
     /**
     * Get the earning owns the teacher.
@@ -239,6 +246,17 @@ class User extends Authenticatable implements MessageableInterface
     */
     public function withdraws(){
         return $this->hasMany(Withdraw::class, 'user_id', 'id');
+    }
+
+    public function scopeofAcademy($query)
+    {
+        if (!Auth::user()->isAdmin()) {
+            return $query->whereHas('TeacherProfile', function ($q) {
+            
+                $q->where('academy_id', Auth::user()->id);
+            });
+        }
+        return $query;
     }
 
 }

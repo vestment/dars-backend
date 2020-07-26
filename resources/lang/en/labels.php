@@ -1522,7 +1522,9 @@ return array (
   array (
     'academy_register' => 'Register as Academy? Click Here',
     'teacher_register_box_title' => 'Academy Register',
-     'address' => 'address',
+     'adress' => 'address',
+     'percentage' => 'Percentage',
+
     'facebook_link' => 'Facebook Link',
     'twitter_link' => 'Twitter Link',
     'linkedin_link' => 'Linkedin Link',

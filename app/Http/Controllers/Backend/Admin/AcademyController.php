@@ -69,24 +69,24 @@ class AcademyController extends Controller
 
                 if ($has_view) {
                     $view = view('backend.datatable.action-view')
-                        ->with(['route' => route('admin.academies.show', ['teacher' => $q->id])])->render();
+                        ->with(['route' => route('admin.academies.show', ['academy' => $q->id])])->render();
                 }
 
                 if ($has_edit) {
                     $edit = view('backend.datatable.action-edit')
-                        ->with(['route' => route('admin.academies.edit', ['teacher' => $q->id])])
+                        ->with(['route' => route('admin.academies.edit', ['academy' => $q->id])])
                         ->render();
                     $view .= $edit;
                 }
 
                 if ($has_delete) {
                     $delete = view('backend.datatable.action-delete')
-                        ->with(['route' => route('admin.academies.destroy', ['teacher' => $q->id])])
+                        ->with(['route' => route('admin.academies.destroy', ['academy' => $q->id])])
                         ->render();
                     $view .= $delete;
                 }
 
-                $view .= '<a class="btn btn-warning mb-1" href="' . route('admin.courses.index', ['teacher_id' => $q->id]) . '">' . trans('labels.backend.courses.title') . '</a>';
+                $view .= '<a class="btn btn-warning mb-1" href="' . route('admin.teachers.index', ['academy_id' => $q->id]) . '">' . trans('labels.backend.teachers.title') . '</a>';
 
                 return $view;
 
@@ -140,7 +140,9 @@ class AcademyController extends Controller
             'payment_method'    => request()->payment_method,
             'payment_details'   => json_encode($payment_details),
             'description'       => request()->description,
-            'logo'              => request()->image
+            'logo'              => request()->image,
+            'percentage'        => request()->percentage,
+            'adress'           => request()->adress,
         ];
         academy::create($data);
 

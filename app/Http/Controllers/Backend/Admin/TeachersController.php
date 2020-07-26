@@ -27,14 +27,15 @@ class TeachersController extends Controller
     public function index()
     {
 
-        if (request('show_deleted') == 1) {
 
-            $users = User::role('teacher')->onlyTrashed()->get();
+        if (request('show_deleted') == 1) {
+            
+            $teachers = TeacherProfile::onlyTrashed()->ofAcademy()->get();
         } else {
-            $users = User::role('teacher')->get();
+            $teachers = TeacherProfile::ofAcademy()->get();
         }
 
-        return view('backend.teachers.index', compact('users'));
+        return view('backend.teachers.index', compact('teachers'));
     }
 
     // public function allAcademies()
@@ -60,9 +61,9 @@ class TeachersController extends Controller
 
         if (request('show_deleted') == 1) {
 
-            $teachers = User::role('teacher')->onlyTrashed()->orderBy('created_at', 'desc')->get();
+            $teachers = User::ofAcademy()->role('teacher')->onlyTrashed()->orderBy('created_at', 'desc')->get();
         } else {
-            $teachers = User::role('teacher')->orderBy('created_at', 'desc')->get();
+            $teachers = User::ofAcademy()->role('teacher')->orderBy('created_at', 'desc')->get();
         }
 
         if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) {
@@ -173,9 +174,9 @@ class TeachersController extends Controller
             'payment_method'    => request()->payment_method,
             'payment_details'   => json_encode($payment_details),
             'description'       => request()->description,
-            'type'       => request()->type,
-            'percentage'       => request()->percentage,
-            'academy_id' =>  $academy_id,
+            'type'              => request()->type,
+            'percentage'        => request()->percentage,
+            'academy_id'        =>  $academy_id,
 
         ];
         TeacherProfile::create($data);

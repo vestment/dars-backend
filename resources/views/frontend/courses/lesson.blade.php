@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.appCourse')
 
 @push('after-styles')
     {{--<link rel="stylesheet" href="{{asset('plugins/YouTube-iFrame-API-Wrapper/css/main.css')}}">--}}
@@ -120,23 +120,41 @@
             display: none !important;
         }
 
+
         @media screen  and  (max-width: 768px) {
 
         }
+        .breadcrumb-sectionn{
+            background-color:#0C0C3F !important
+        }
+        .course-title-header{
+            color: white;
+    font-weight: bold;
+    font-size: 24px;
+    position: absolute;
+    left: 15%;
+    top: 30%;
+        }
+.progress{
+    color:#D2498B
+}
+.course_frame{
 
+}
     </style>
 @endpush
 
 @section('content')
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
+    <section id="breadcrumb" class="breadcrumb-sectionn relative-position ">
         <div class="blakish-overlay"></div>
         <div class="container">
             <div class="page-breadcrumb-content text-center">
                 <div class="page-breadcrumb-title">
                     <h2 class="breadcrumb-head black bold">
-                        <span>{{$lesson->course->title}}</span><br> {{$lesson->title}} </h2>
+                        <span class="course-title-header">{{$lesson->course->title}}</span><br> <br> </h2>
+                        
                 </div>
             </div>
         </div>
@@ -148,7 +166,7 @@
     <!-- Start of course details section
         ============================================= -->
     <section id="course-details" class="course-details-section">
-        <div class="container ">
+        <div class="container-fluid ">
             <div class="row main-content">
                 <div class="col-md-9">
                     @if(session()->has('success'))
@@ -160,12 +178,7 @@
                     @include('includes.partials.messages')
 
                     <div class="course-details-item border-bottom-0 mb-0">
-                        @if($lesson->lesson_image != "")
-                            <div class="course-single-pic mb30">
-                                <img src="{{asset('storage/uploads/'.$lesson->lesson_image)}}"
-                                     alt="">
-                            </div>
-                        @endif
+                       
 
 
                         @if ($test_exists)
@@ -260,19 +273,17 @@
                             <div class="course-single-text">
                                 <div class="course-title mt10 headline relative-position">
                                     <h3>
-                                        <b>{{$lesson->title}}</b>
                                     </h3>
                                 </div>
                                 <div class="course-details-content">
-                                    {!! $lesson->full_text !!}
                                 </div>
                             </div>
                         @endif
 
                         @if($lesson->mediaPDF)
-                            <div class="course-single-text mb-5">
-                                {{--<iframe src="{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}" width="100%"--}}
-                                {{--height="500px">--}}
+                            <div class="course-single-text mb-5 course_frame" style="width: 95%; height: 650px;">
+                                {{--<iframe style="width: 95%; height: 650px;" src="{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}"  width="100%"--}}
+                                {{--height="100%">--}}
                                 {{--</iframe>--}}
                                 <div id="myPDF"></div>
 
@@ -422,6 +433,7 @@
                                 </li>
                                 <li>@lang('labels.frontend.course.progress') <span> <b> {{ $lesson->course->progress()  }}
                                             % @lang('labels.frontend.course.completed')</b></span></li>
+                                           
                             </ul>
 
                         </div>
@@ -446,7 +458,18 @@
     <script src="{{asset('plugins/touchpdf-master/jquery.panzoom.js')}}"></script>
     <script src="{{asset('plugins/touchpdf-master/jquery.mousewheel.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
 
+
+$(document).ready(function() {
+
+    
+        $('.progress-bar').css('width', $lesson->course->progress() );
+})
+    
+       
+
+</script>
 
     <script>
         @if($lesson->mediaPDF)
