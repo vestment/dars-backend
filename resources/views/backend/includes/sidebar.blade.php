@@ -1,10 +1,11 @@
 @inject('request', 'Illuminate\Http\Request')
 
-<div class="sidebar">
+
+<div class="sidebar ">
     <nav class="sidebar-nav">
         <ul class="nav">
-            <li class="nav-title">
-                @lang('menus.backend.sidebar.general')
+            <li class="nav-title ">
+            <a href="{{ route('admin.dashboard') }}"> <img class="logo" src="{{url('img/backend/brand/logo.png')}}"></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ active_class(Active::checkUriPattern('admin/dashboard')) }}"

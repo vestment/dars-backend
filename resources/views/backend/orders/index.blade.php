@@ -5,12 +5,12 @@
 
 @section('content')
 
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline mb-0">@lang('labels.backend.orders.title')</h3>
+<div class="title my-3 mx-5">
+            <h1 class="page-title d-inline mb-5">@lang('labels.backend.orders.title')</h1>
 
         </div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+      
         <div class="card-body">
             <div class="d-block">
                 <ul class="list-inline">
@@ -26,8 +26,8 @@
                 </ul>
             </div>
             <div class="table-responsive">
-                <table id="myTable" class="table table-bordered table-striped">
-                    <thead>
+                <table id="myTable" class="table table-bordered ">
+                    <thead class="thead">
                     <tr>
                         <th style="text-align:center;">
                             <input type="checkbox" class="mass" id="select-all"/>

@@ -401,23 +401,44 @@ h6 {
 }
 
 .breadcrumb-section {
-  background-image: url(/images/brt-1.jpg?8fa08d9daef6d16cbadbbd1e5d1d6988);
-  padding-bottom: 355px;
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+  padding-bottom: 400px;
 }
 
-.breadcrumb-section .blakish-overlay {
+/* .breadcrumb-section .blakish-overlay {
   opacity: 1;
   visibility: visible;
+} */
+.paragraph1{
+  position: absolute;
+  top: 45%;
+  -webkit-transform: translateY(-40%);
+          transform: translateY(-40%);
+  left: 45px;
+  right: 0;
+  color:#00000075;
 }
 
-.breadcrumb-section .page-breadcrumb-content {
+@media screen and (max-width: 768px) {
+  .paragraph1 {
+    width: 100%;
+    left: -40px;
+    right: 0;
+  }
+  .paragraph1 h2{
+    font-size: 20px;
+
+  }
+}
+
+/* .breadcrumb-section .page-breadcrumb-content {
   position: absolute;
   top: 60%;
   -webkit-transform: translateY(-60%);
           transform: translateY(-60%);
   left: 0;
   right: 0;
-}
+} */
 
 .breadcrumb-section .breadcrumb-head {
   font-size: 38px;
@@ -462,10 +483,12 @@ h6 {
 .main-menu-container {
   position: fixed;
   width: 100%;
-  padding: 45px 0px;
+  padding: 25px 0px;
   -webkit-transition: .3s all ease-in-out;
   transition: .3s all ease-in-out;
   z-index: 9;
+  background-color: #0C0C3F;
+
 }
 
 .nav-menu {
@@ -584,7 +607,7 @@ h6 {
 }
 
 .main-menu-container.menu-bg-overlay {
-  background: #000000;
+  background-color: #0C0C3F;
   padding: 10px 0px;
 }
 
@@ -2659,7 +2682,7 @@ button.alt-menu-btn.float-left {
   visibility: hidden;
   -webkit-transition: .3s all ease-in-out;
   transition: .3s all ease-in-out;
-  background-color: rgba(0, 0, 0, 0.65);
+  background: transparent linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%) 0% 0% no-repeat padding-box;
 }
 
 .latest-news-area {
@@ -5355,11 +5378,8 @@ ul.product-tab li.active:after {
   color: #333333;
 }
 
-.course-page-section .course-type-list span {
-  background-color: #17d0cf;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 4px;
+.course-type-list span {
+  padding-top: 45px;
 }
 
 .course-page-section .course-meta .course-rate li {
@@ -6230,4 +6250,21 @@ ul.product-tab li.active:after {
     height: 100%;
   }
 
+}
+
+.priceLabel{
+  margin-top: 22px;
+  background-color:#D2498B;
+  color:white;
+  padding: 1px;
+}
+.te-remove{
+  color:#D2498B;
+}
+.bg-right-list{
+  background-color: #EEEEEE;
+}
+
+.mmm{
+  text-decoration: none;
 }
