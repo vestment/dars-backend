@@ -16,7 +16,7 @@ class CreateTeacherProfilesTable extends Migration
         Schema::create('teacher_profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            // $table->unsignedInteger('academy_id')->nullable();
+            $table->unsignedInteger('academy_id')->nullable();
             $table->text('facebook_link')->nullable();
             $table->text('twitter_link')->nullable();
             $table->text('linkedin_link')->nullable();
@@ -27,7 +27,7 @@ class CreateTeacherProfilesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users');
-            // $table->foreign('academy_id')->references('id')->on('academies');
+            $table->foreign('academy_id')->references('id')->on('academies');
 
         });
     }

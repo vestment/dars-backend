@@ -16,7 +16,7 @@
             <h3 class="page-title d-inline mb-0">@lang('labels.backend.teachers.title')</h3>
             <div class="float-right">
                 <a href="{{ route('admin.teachers.index') }}"
-                   class="btn btn-success">@lang('labels.backend.teachers.view')</a>
+                   class="btn btn-pink">@lang('labels.backend.teachers.view')</a>
             </div>
         </div>
         <div class="card-body">
