@@ -1,16 +1,16 @@
+
 <header class="app-header navbar">
     <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-        <img class="navbar-brand-full" src="{{asset('storage/logos/'.config('logo_b_image'))}}" style="width:110px; height:110px"  height="25" alt="Square Logo">
-        <img class="navbar-brand-minimized" src="{{asset('storage/logos/'.config('logo_popup'))}}" height="30" alt="Square Logo">
+       
     </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <ul class="nav navbar-nav d-md-down-none">
+    <ul class="nav navbar-nav d-md-down-none ">
         <li class="nav-item px-3">
             <a class="nav-link" href="{{ route('frontend.index') }}"><i class="icon-home"></i></a>
         </li>
@@ -19,7 +19,7 @@
             <a class="nav-link" href="{{ route('admin.dashboard') }}">@lang('navs.frontend.dashboard')</a>
         </li>
         {{--@if(config('locale.status') && count(config('locale.languages')) > 1)--}}
-            {{--<li class="nav-item px-3 dropdown">--}}
+            {{--<li class="nav-item px-3 dropdown accountmenu">--}}
                 {{--<a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">--}}
                     {{--<span class="d-md-down-none">@lang('menus.language-picker.language') ({{ strtoupper(app()->getLocale()) }})</span>--}}
                 {{--</a>--}}
@@ -31,7 +31,7 @@
 
             <li class="nav-item px-3 dropdown">
                 <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <span class="d-md-down-none">@lang('menus.language-picker.language') ({{ strtoupper(app()->getLocale()) }})</span>
+                    <span class="d-md-down-none ">@lang('menus.language-picker.language') ({{ strtoupper(app()->getLocale()) }})</span>
                 </a>
 
                 @include('includes.partials.lang')
@@ -40,15 +40,14 @@
     </ul>
 
     <ul class="nav navbar-nav ml-auto mr-4">
+        
         <li class="nav-item d-md-down-none">
             <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="icon-envelope"></i>
                 <span class="badge badge-pill d-none badge-success unreadMessageCounter"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-header text-center">
-                    <strong>@lang('navs.general.messages')</strong>
-                </div>
+               
                 <div class="unreadMessages">
                    <p class="mb-0 text-center py-2">@lang('navs.general.no_messages')</p>
                 </div>
@@ -63,11 +62,8 @@
               <span style="right: 0;left: inherit" class="badge d-md-none d-lg-none d-none mob-notification badge-success">!</span>
             <span class="d-md-down-none">{{ $logged_in_user->full_name }}</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-right">
-            <div class="dropdown-header text-center">
-              <strong>@lang('navs.general.account')</strong>
-            </div>
-
+          <div class="dropdown-menu dropdown-menu-right ">
+            
             <a class="dropdown-item" href="{{route('admin.messages')}}">
               <i class="fa fa-envelope"></i> @lang('navs.general.messages')
               <span class="badge unreadMessageCounter d-none badge-success">5</span>
@@ -85,10 +81,10 @@
         </li>
     </ul>
 
-    {{--<button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" data-toggle="aside-menu-lg-show">--}}
+    {{--<button class="navbar-toggler aside-menu-toggler d-md-down-none " type="button" data-toggle="aside-menu-lg-show">--}}
         {{--<span class="navbar-toggler-icon"></span>--}}
     {{--</button>--}}
-    {{--<button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">--}}
+    {{--<button class="navbar-toggler aside-menu-toggler d-lg-none " type="button" data-toggle="aside-menu-show">--}}
         {{--<span class="navbar-toggler-icon"></span>--}}
     {{--</button>--}}
 </header>

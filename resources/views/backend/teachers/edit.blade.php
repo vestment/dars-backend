@@ -9,7 +9,7 @@
             <h3 class="page-title d-inline">@lang('labels.backend.teachers.edit')</h3>
             <div class="float-right">
                 <a href="{{ route('admin.teachers.index') }}"
-                   class="btn btn-success">@lang('labels.backend.teachers.view')</a>
+                   class="btn btn-pink">@lang('labels.backend.teachers.view')</a>
             </div>
         </div>
         <div class="card-body">

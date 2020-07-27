@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <div class="card">
+    <div class="card ">
 
         <div class="card-header">
             <h3 class="page-title mb-0 float-left">@lang('labels.backend.orders.title')</h3>
@@ -28,7 +28,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped border rounded">
                         <tr>
                             <th>@lang('labels.backend.orders.fields.reference_no')</th>
                             <td>
