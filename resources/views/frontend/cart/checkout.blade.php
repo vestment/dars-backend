@@ -41,9 +41,14 @@
     <!-- Start of breadcrumb section
         ============================================= -->
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
-        <div class="blakish-overlay"></div>
+        <div class="blakish-overlay" ></div>
         <div class="container">
-            <div class="page-breadcrumb-content text-center">
+            <div class="page-breadcrumb-content p-5">
+                    <div class="page-breadcrumb-title">
+                        <p class="text-white p-1">
+                            explore/buissniss/chechout
+                        </p>                  
+                    </div>
                 <div class="page-breadcrumb-title">
                     <h2 class="breadcrumb-head black bold"><span>@lang('labels.frontend.cart.checkout')</span></h2>
                 </div>
@@ -58,10 +63,12 @@
         ============================================= -->
     <section id="checkout" class="checkout-section">
         <div class="container">
-            <div class="section-title mb45 headline text-center">
-                <span class="subtitle text-uppercase">@lang('labels.frontend.cart.your_shopping_cart')</span>
-                <h2>@lang('labels.frontend.cart.complete_your_purchases')</h2>
-            </div>
+            <div class="row">
+                <div class="col-9">
+            <div class="section-title mb45 headline ">
+<p>Your Shopping Cart</p>    
+<h2>Complete Your Purchases.</h2>
+</div>
             <div class="checkout-content">
                 @if(session()->has('danger'))
                     <div class="alert alert-dismissable alert-danger fade show">
@@ -81,9 +88,10 @@
 
                                     <thead>
                                     <tr class="list-head text-uppercase">
-                                        <th>@lang('labels.frontend.cart.product_name')</th>
-                                        <th>@lang('labels.frontend.cart.product_type')</th>
+                                        <th>@lang('labels.frontend.cart.course_name')</th>
+                                        <th>@lang('labels.frontend.cart.course_type')</th>
                                         <th>@lang('labels.frontend.cart.starts')</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -92,9 +100,8 @@
                                             <tr class="position-relative">
 
                                                 <td>
-                                                    <a style="right: 3%;" class="text-danger position-absolute"
-                                                       href="{{route('cart.remove',['course'=>$course])}}"><i
-                                                                class="fa fa-times"></i></a>
+                                                    <a style="right: 3%;" class="position-absolute te-remove"
+                                                       href="{{route('cart.remove',['course'=>$course])}}">remove</a>
                                                     <div class="course-list-img-text">
                                                         <div class="course-list-img"
                                                              @if($course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$course->course_image)}})" @endif >
@@ -109,9 +116,9 @@
                                                                             href="#">@if($course->free == 1)
                                                                             <span>{{trans('labels.backend.bundles.fields.free')}}</span>
                                                                         @else
-                                                                            <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
+                                                                            <span class="priceLabel"> {{$appCurrency['symbol'].' '.$course->price}}</span>
                                                                         @endif</a></span>
-                                                                <span class="bold-font">{{$course->category->name}}</span>
+                                                               
                                                                 <div class="course-rate ul-li">
                                                                     <ul>
                                                                         @for($i=1; $i<=(int)$course->rating; $i++)
@@ -337,68 +344,88 @@
                                 </div>
                             @endif
                         @endif
-                    </div>
 
-                    <div class="col-md-3">
-                        <div class="side-bar-widget first-widget">
-                            <h2 class="widget-title text-capitalize">@lang('labels.frontend.cart.order_detail')</h2>
-                            <div class="sub-total-item">
-                                @if(count($courses) > 0)
-                                    <div class="purchase-list py-3 ul-li-block">
-                                        @include('frontend.cart.partials.order-stats')
-                                    </div>
-                                @else
-                                    <div class="purchase-list mt15 ul-li-block">
-
-                                        <div class="in-total text-uppercase">@lang('labels.frontend.cart.total') <span>{{$appCurrency['symbol']}}
-                                                0.00</span></div>
-                                    </div>
-
-                                @endif
-                            </div>
-                        </div>
-                        @if($global_featured_course != "")
-                            <div class="side-bar-widget">
-                                <h2 class="widget-title text-capitalize">@lang('labels.frontend.blog.featured_course')</h2>
-                                <div class="featured-course">
-                                    <div class="best-course-pic-text relative-position pt-0">
-                                        <div class="best-course-pic relative-position "
-                                             style="background-image: url({{asset('storage/uploads/'.$global_featured_course->course_image)}})">
-
-                                            @if($global_featured_course->trending == 1)
-                                                <div class="trend-badge-2 text-center text-uppercase">
-                                                    <i class="fas fa-bolt"></i>
-                                                    <span>@lang('labels.frontend.badges.trending')</span>
-                                                </div>
-                                            @endif
-                                            @if($global_featured_course->free == 1)
-                                                <div class="trend-badge-3 text-center text-uppercase">
-                                                    <i class="fas fa-bolt"></i>
-                                                    <span>@lang('labels.backend.courses.fields.free')</span>
-                                                </div>
-                                            @endif
-
-                                        </div>
-                                        <div class="best-course-text" style="left: 0;right: 0;">
-                                            <div class="course-title mb20 headline relative-position">
-                                                <h3>
-                                                    <a href="{{ route('courses.show', [$global_featured_course->slug]) }}">{{$global_featured_course->title}}</a>
-                                                </h3>
+                        <div>
+                                <div class="side-bar-widget first-widget">
+                                    <div class="sub-total-item">
+                                        @if(count($courses) > 0)
+                                            <div class="purchase-list py-3 ul-li-block">
+                                                @include('frontend.cart.partials.order-stats')
                                             </div>
-                                            <div class="course-meta">
-                                                <span class="course-category"><a
-                                                            href="{{route('courses.category',['category'=>$global_featured_course->category->slug])}}">{{$global_featured_course->category->name}}</a></span>
-                                                <span class="course-author">{{ $global_featured_course->students()->count() }}</span>
-                                            </div>
-                                        </div>
+                                        @else
+                                            <div class="purchase-list mt15 ul-li-block">
+        
+                                                <span class="in-total text-uppercase">@lang('labels.frontend.cart.total') </span>
+                                                       
+                                                <span>(3-items)</span>
+                                                <span>{{$appCurrency['symbol']}}0.00</span>
+                                                
+                                            </div> 
+        
+                                        @endif
                                     </div>
                                 </div>
+                                @if($global_featured_course != "")
+                                    <div class="side-bar-widget">
+                                        <h2 class="widget-title text-capitalize">@lang('labels.frontend.blog.featured_course')</h2>
+                                        <div class="featured-course">
+                                            <div class="best-course-pic-text relative-position pt-0">
+                                                <div class="best-course-pic relative-position "
+                                                     style="background-image: url({{asset('storage/uploads/'.$global_featured_course->course_image)}})">
+        
+                                                    @if($global_featured_course->trending == 1)
+                                                        <div class="trend-badge-2 text-center text-uppercase">
+                                                            <i class="fas fa-bolt"></i>
+                                                            <span>@lang('labels.frontend.badges.trending')</span>
+                                                        </div>
+                                                    @endif
+                                                    @if($global_featured_course->free == 1)
+                                                        <div class="trend-badge-3 text-center text-uppercase">
+                                                            <i class="fas fa-bolt"></i>
+                                                            <span>@lang('labels.backend.courses.fields.free')</span>
+                                                        </div>
+                                                    @endif
+        
+                                                </div>
+                                                <div class="best-course-text" style="left: 0;right: 0;">
+                                                    <div class="course-title mb20 headline relative-position">
+                                                        <h3>
+                                                            <a href="{{ route('courses.show', [$global_featured_course->slug]) }}">{{$global_featured_course->title}}</a>
+                                                        </h3>
+                                                    </div>
+                                                    <div class="course-meta">
+                                                        <span class="course-category"><a
+                                                                    href="{{route('courses.category',['category'=>$global_featured_course->category->slug])}}">{{$global_featured_course->category->name}}</a></span>
+                                                        <span class="course-author">{{ $global_featured_course->students()->count() }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
-                        @endif
                     </div>
+
+                   
                 </div>
             </div>
         </div>
+        <div class="col-3 bg-right-list">
+               <ul class="mmm">
+                   <li >business</li>
+                   <li>business</li>
+                   <li>business</li>
+                   <li>business</li>
+                   <li>business</li>
+                   <li>business</li>
+                   <li>business</li>
+                   <li>business</li>
+               </ul>
+            </div>
+    </div>
+  
+    </div>
+
     </section>
     <!-- End  of Checkout content
         ============================================= -->

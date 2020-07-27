@@ -2467,7 +2467,11 @@ button.alt-menu-btn.float-left {
   visibility: hidden;
   -webkit-transition: .3s all ease-in-out;
   transition: .3s all ease-in-out;
+<<<<<<< HEAD
   background-color: rgba(0, 0, 0, 0.65);
+=======
+  background-color: transparent linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%) 0% 0% no-repeat padding-box;
+>>>>>>> 22ff0d4e4e1b2ddd667c523b022580c562b53396
 }
 
 .latest-news-area {

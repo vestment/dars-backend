@@ -562,7 +562,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .main-menu-container.menu-bg-overlay {
+<<<<<<< HEAD
   background-color: #0C0C3F;
+=======
+  background: #000000;
+>>>>>>> 22ff0d4e4e1b2ddd667c523b022580c562b53396
   padding: 10px 0px;
 }
 

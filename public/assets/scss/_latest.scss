@@ -31,8 +31,9 @@
 	position: absolute;
 	visibility: hidden;
 	transition: .3s all ease-in-out;
-	background-color: rgba(0, 0, 0, 0.65);
-}
+	background-color: transparent linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%) 0% 0% no-repeat padding-box;
+	}
+
 .latest-news-area {
 	display: inline-block;
 	margin-bottom: 30px;
