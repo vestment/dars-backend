@@ -2659,7 +2659,7 @@ button.alt-menu-btn.float-left {
   visibility: hidden;
   -webkit-transition: .3s all ease-in-out;
   transition: .3s all ease-in-out;
-  background-color: rgba(0, 0, 0, 0.65);
+  background: transparent linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%) 0% 0% no-repeat padding-box;
 }
 
 .latest-news-area {
@@ -5355,11 +5355,8 @@ ul.product-tab li.active:after {
   color: #333333;
 }
 
-.course-page-section .course-type-list span {
-  background-color: #17d0cf;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 4px;
+.course-type-list span {
+  padding-top: 45px;
 }
 
 .course-page-section .course-meta .course-rate li {
@@ -6230,4 +6227,21 @@ ul.product-tab li.active:after {
     height: 100%;
   }
 
+}
+
+.priceLabel{
+  margin-top: 22px;
+  background-color:#D2498B;
+  color:white;
+  padding: 1px;
+}
+.te-remove{
+  color:#D2498B;
+}
+.bg-right-list{
+  background-color: #EEEEEE;
+}
+
+.mmm{
+  text-decoration: none;
 }
