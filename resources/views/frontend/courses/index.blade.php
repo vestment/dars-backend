@@ -77,23 +77,126 @@
         ============================================= -->
     <section id="course-page" class="course-page-section">
         <div class="container">
-            <div class="row">
-                <h2> What you will learn</h2>
-                <div class="col-md-9"  style="background-color: blue">
-                      
-                 dfrgdfg
-
+            <div class="row col-lg-8 col-sm-12 coursesec d-block m-2">
+                    <h2 > What you will learn</h2>
+                <div class="row subtitle2">
+                    <div class="row col-lg-6 col-sm-12">
+                        <p> <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Over 350,000 students in 195 countries!</p>
+                        <p> <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Free $99 384 page book version of this course!</p>
+                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Get many customers by using the best networking tool!</p>
+                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Create financial models from scratch (the Professor makes it so easy to understand).</p>
+                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Over 350,000 students in 195 countries!</p>
+                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Understand how macro economics and micro economics works.</p>
+                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Over 350,000 students in 195 countries!</p>
+                    </div>
+                    <div class="row col-lg-6 col-sm-12">
+                        <p> <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Superb reviews!</p>
+                        <p>  <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Get any job the easy way.</p>
+                        <p>  <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Raise a lot of money quickly.</p>
+                        <p>  <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Analyze company financials with ease!</p>
+                        <p>  <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Over 350,000 students in 195 countries!</p>
+                        <p>  <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Over 350,000 students in 195 countries!</p>
+                        <p>  <i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                            Change careers easily.</p>
+                    </div>
                 </div>
-
-                <div class="col-md-3" style="background-color: red">
-                fdgfd
-
-                </div>
+            </div>
+            <div class="row  coursesec d-block m-3">
+                <h2 > Requirements</h2>
+            </div>
+            <div class="row  coursesec d-block m-3">
+                <p > <i class="fa fa-angle-down p-2" aria-hidden="true"></i>
+                    Nothing except a positive attitude!</p>
             </div>
         </div>
     </section>
     <!-- End of course section
         ============================================= -->
+
+
+ <!-- Start of course section
+        ============================================= -->
+<section id="course-page" class="course-page-section">
+    <div class="container">
+        <div class="row  coursecontent d-block m-3">
+            <h2> Course content </h2>
+        </div>
+        <div class="row smpara d-block m-3">
+            <p>16 sections • 83 lectures • 8h 0m total length</p>
+        </div>
+
+
+
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                    Chapter 1 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+
+                  </button>
+                </h2>
+              </div>
+          
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p> Adding Value to Customers- Episode 1 </p>
+                    <p> <i class="fa fa-play-circle-o" aria-hidden="true"></i> 10 Min </p>
+                    <p> Adding Value to Customers- Episode 1 </p>
+                    <p> <i class="fa fa-play-circle-o" aria-hidden="true"></i> 10 Min </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                  <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Chapter 2 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+
+                  </button>
+                </h2>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="bordered">
+                        <p> Adding Value to Customers- Episode 1 </p>
+                        <p> <i class="fa fa-play-circle-o" aria-hidden="true"></i> 10 Min </p>
+                    </div>
+                    <hr>
+                    <div class="bordered">
+                        <p> Adding Value to Customers- Episode 1 </p>
+                        <p> <i class="fa fa-play-circle-o" aria-hidden="true"></i> 10 Min </p>
+                    </div>
+                    <div class="bordered">
+                        <p> Adding Value to Customers- Episode 1 </p>
+                        <p> <i class="fa fa-play-circle-o" aria-hidden="true"></i> 10 Min </p>
+                    </div>
+                    <div class="bordered">
+                        <p> Adding Value to Customers- Episode 1 </p>
+                        <p> <i class="fa fa-play-circle-o" aria-hidden="true"></i> 10 Min </p>
+                    </div>
+                </div>
+              </div>
+            </div>
+          
+          </div>
+    </div>
+</section>
+
 
     <!-- Start of best course
    =============================================  -->

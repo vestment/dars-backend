@@ -409,27 +409,7 @@ h6 {
   opacity: 1;
   visibility: visible;
 } */
-.paragraph1{
-  position: absolute;
-  top: 45%;
-  -webkit-transform: translateY(-40%);
-          transform: translateY(-40%);
-  left: 45px;
-  right: 0;
-  color:#00000075;
-}
 
-@media screen and (max-width: 768px) {
-  .paragraph1 {
-    width: 100%;
-    left: -40px;
-    right: 0;
-  }
-  .paragraph1 h2{
-    font-size: 20px;
-
-  }
-}
 
 /* .breadcrumb-section .page-breadcrumb-content {
   position: absolute;
@@ -5300,7 +5280,7 @@ ul.product-tab li.active:after {
 /*----------------------------------------------------*/
 
 .course-page-section {
-  padding: 80px 0px 0px;
+  padding: 40px 0px 0px;
 }
 
 .course-page-section .short-filter-tab {
@@ -6267,4 +6247,46 @@ ul.product-tab li.active:after {
 
 .mmm{
   text-decoration: none;
+}
+
+
+/* me */
+
+
+.paragraph1{
+  position: absolute;
+  top: 45%;
+  -webkit-transform: translateY(-40%);
+          transform: translateY(-40%);
+  left: 120px;
+  right: 0;
+  color:#00000075;
+}
+
+@media screen and (max-width: 768px) {
+  .paragraph1 {
+    width: 100%;
+    left: -40px;
+    right: 0;
+  }
+  .paragraph1 h2{
+    font-size: 20px;
+
+  }
+}
+.coursesec h2{
+  font-size: 22px;
+  color: #000;
+}
+.subtitle2{
+  font-weight: light;
+  font-size: 14px;
+
+}
+.coursecontent{
+  font-size: 34px;
+  color: #000;
+}
+.collapse{
+  border-style: ridge;
 }
