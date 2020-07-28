@@ -26,7 +26,7 @@
                 </ul>
             </div>
             <div class="table-responsive">
-                <table id="myTable" class="table table-bordered ">
+                <table id="myTable" class="table ">
                     <thead class="thead">
                     <tr>
                         <th style="text-align:center;">

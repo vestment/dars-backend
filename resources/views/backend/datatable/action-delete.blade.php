@@ -2,7 +2,7 @@
 @if(isset($allow_delete) && ($allow_delete == false))
 
 
-<a href="#"  class="btn btn-xs btn-danger delete_warning text-white mb-1" style="cursor:pointer;">
+<a href="#"  class="btn btn-blue delete_warning text-white mb-1" style="cursor:pointer;">
     <i class="fa fa-trash"
        data-toggle="tooltip"
        data-placement="top" title=""
@@ -25,7 +25,7 @@
     @else
         <a data-method="delete" data-trans-button-cancel="{{__('buttons.general.cancel')}}"
            data-trans-button-confirm="{{__('buttons.general.crud.delete')}}" data-trans-title="{{__('strings.backend.general.are_you_sure')}}"
-           class="btn btn-xs btn-danger text-white mb-1" style="cursor:pointer;"
+           class="btn btn-blue text-white mb-1" style="cursor:pointer;"
            onclick="$(this).find('form').submit();">
             <i class="fa fa-trash"
                data-toggle="tooltip"

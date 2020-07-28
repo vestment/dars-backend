@@ -36,8 +36,8 @@
 
 
                         <table id="myTable"
-                               class="table table-bordered table-striped @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                            <thead>
+                               class="border-0 @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                            <thead class="thead">
                             <tr>
 
                                 @can('category_delete')

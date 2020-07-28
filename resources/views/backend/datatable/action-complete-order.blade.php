@@ -1,4 +1,4 @@
-<a class="btn btn-xs mb-1 mr-1 btn-success text-white" style="cursor:pointer;"
+<a class="btn  btn-blue mb-1 mr-1 btn-success text-white" style="cursor:pointer;"
    onclick="$(this).find('form').submit();">
     {{trans('labels.backend.orders.complete')}}
     <form action="{{$route}}"
