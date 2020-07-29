@@ -95,7 +95,9 @@
                             <div class="navbar-header float-left">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
                                     {{--<img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">--}}
-                                    <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
+                                    <!-- <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo"> -->
+                                    <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo" style="width: 35%;">
+
                                 </a>
                             </div><!-- /.navbar-header -->
 
@@ -161,7 +163,7 @@
                                             <li>
                                                 <div class="log-in mt-0">
                                                     <a id="openLoginModal" data-target="#myModal"
-                                                       href="#">@lang('navs.general.login')</a>
+                                                    href="{{ route('login.index') }}">@lang('navs.general.login')</a>
                                                     {{--@include('frontend.layouts.modals.loginModal')--}}
 
                                                 </div>

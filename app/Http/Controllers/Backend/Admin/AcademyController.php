@@ -86,7 +86,7 @@ class AcademyController extends Controller
                     $view .= $delete;
                 }
 
-                $view .= '<a class="btn btn-warning mb-1" href="' . route('admin.teachers.index', ['academy_id' => $q->id]) . '">' . trans('labels.backend.teachers.title') . '</a>';
+                $view .= '<a class="btn btn-blue mb-1" href="' . route('admin.teachers.index', ['academy_id' => $q->id]) . '">' . trans('labels.backend.teachers.title') . '</a>';
 
                 return $view;
 

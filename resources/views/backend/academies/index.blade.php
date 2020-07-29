@@ -5,13 +5,13 @@
 @endpush
 @section('content')
 
-    <div class="card">
-        <div class="card-header">
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
                 <h3 class="page-title d-inline">@lang('labels.backend.academies.title')</h3>
             @can('course_create')
                 <div class="float-right">
                     <a href="{{ route('admin.academies.create') }}"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
             @endcan
@@ -36,8 +36,8 @@
 
 
                         <table id="myTable"
-                               class="table table-bordered table-striped @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                            <thead>
+                               class="table  @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                            <thead class="thead">
                             <tr>
 
                                 @can('category_delete')

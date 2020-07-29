@@ -90,7 +90,13 @@ class ApiController extends Controller
             : response()->json(['status' => 'failure', 'message' => 'Unable to send reset link. No Email found.'], 401);
     }
 
+public function index(){
+    return view('frontend.layouts.modals.login');
+}
 
+public function registerIndex(){
+    return view('frontend.layouts.modals.register');
+}
     /**
      * Get the Signup Form
      *

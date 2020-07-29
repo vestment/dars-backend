@@ -102,7 +102,7 @@ class TeachersController extends Controller
                     $view .= $delete;
                 }
 
-                $view .= '<a class="btn btn-warning mb-1" href="' . route('admin.courses.index', ['teacher_id' => $q->id]) . '">' . trans('labels.backend.courses.title') . '</a>';
+                $view .= '<a class="btn btn-blue mb-1" href="' . route('admin.courses.index', ['teacher_id' => $q->id]) . '">' . trans('labels.backend.courses.title') . '</a>';
 
                 return $view;
 
