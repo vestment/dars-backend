@@ -4,12 +4,12 @@
     <link rel="stylesheet" href="{{asset('assets/css/colors/switch.css')}}">
 @endpush
 @section('content')
-
+<div class="title my-3 mx-5 ">   <h1 class="page-title d-inline">@lang('labels.backend.academies.title')</h1>
+            </div>
     <div class="shadow-lg p-3 mb-5 bg-white rounded">
         <div class="">
-                <h3 class="page-title d-inline">@lang('labels.backend.academies.title')</h3>
-            @can('course_create')
-                <div class="float-right">
+        @can('course_create')
+                <div class="float-right ">
                     <a href="{{ route('admin.academies.create') }}"
                        class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
@@ -36,7 +36,7 @@
 
 
                         <table id="myTable"
-                               class="table  @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                               class="border-0 @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
                             <thead class="thead">
                             <tr>
 

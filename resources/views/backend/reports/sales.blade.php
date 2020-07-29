@@ -6,12 +6,11 @@
 @endpush
 
 @section('content')
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.reports.sales_report')</h3>
-        </div>
-        <div class="card-body">
+<div class="title my-3 mx-5">            <h1 class="page-title d-inline mb-5">@lang('labels.backend.reports.sales_report')</h1>
+</div>
+    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+       
+        <div class="">
             <div class="row">
                 <div class="col-12 col-lg-5">
                     <div class="card text-white bg-primary text-center">
@@ -22,7 +21,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-5 ml-auto">
-                    <div class="card text-white bg-success text-center">
+                    <div class="card text-white bg-pink text-center">
                         <div class="card-body">
                             <h2 class="">{{$total_sales}}</h2>
                             <h5>@lang('labels.backend.reports.total_sales')</h5>
