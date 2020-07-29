@@ -256,7 +256,7 @@ class CoursesController extends Controller
 
                 if (\Illuminate\Support\Facades\Request::hasFile('video_file')) {
                     $file = \Illuminate\Support\Facades\Request::file('video_file');
-                    $filename = time() . '-' . $file->getClientOriginalName();
+                    $filename = $file->getClientOriginalName();
                     $size = $file->getSize() / 1024;
                     $path = public_path() . '/storage/uploads/';
                     $file->move($path, $filename);
@@ -396,6 +396,8 @@ class CoursesController extends Controller
             if ($request->media_type == 'upload') {
 
                 if ($request->video_file != null) {
+                    $file = \Illuminate\Support\Facades\Request::file('video_file');
+                    $filename = $file->getClientOriginalName();
 
                     $media = Media::where('type', '=', $request->media_type)
                         ->where('model_type', '=', 'App\Models\Course')
@@ -408,7 +410,7 @@ class CoursesController extends Controller
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = url('storage/uploads/'.$request->video_file);
+                    $media->url = url('storage/uploads/'.$filename);
                     $media->type = $request->media_type;
                     $media->file_name = $request->video_file;
                     $media->size = 0;
