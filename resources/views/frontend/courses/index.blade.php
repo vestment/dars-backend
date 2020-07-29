@@ -43,7 +43,7 @@
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
         <div class="blakish-overlay"></div>
         <div class="container">
-            <div class="col m-5 paragraph1">
+            <div class="col m-5 p-3 paragraph1">
                 <div class="m-3">    
                     <p >Explore / Business / <span style="color: white">An Entire MBA in 1 Course:Award Winning Business School Prof </span></p>
                 </div>
@@ -51,14 +51,25 @@
                     <h2 class="text-white"><b> Award Winning Business School Prof</b></h2>
                 </div>
                 <div class="p-3">            
-                    <img src="public/asstes/img/image course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="public/asstes/img/image course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="public/asstes/img/image course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="public/asstes/img/image course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="public/asstes/img/image course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
+                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
+                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
+                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
+                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
+                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (5).png">
                     <span class="text-white">4.5</span>
                 </div>
+                <div class="row col-6 flex">
+                    <div class="row col-lg-2  flex">
+                            <img src="img/frontend/course/bc-1.jpg" style=" height:100%; width:50%; border-radius:50%;">
+                    </div>                   
+                    <div class="row">
+                        <button type="button" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> Add To Cart</button>
+                        <button type="button" class="btn btn-outline-light m-1"> <i class="fa fa-bookmark" aria-hidden="true"></i> Wishlist</button>
+                        <button type="button" class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share</button>
+                    </div>
+                </div>
             </div>
+        </div>
    
             <!-- <div class="page-breadcrumb-content text-center">
                 <div class="page-breadcrumb-title">
@@ -121,6 +132,27 @@
                 <p > <i class="fa fa-angle-down p-2" aria-hidden="true"></i>
                     Nothing except a positive attitude!</p>
             </div>
+
+            
+            <div class="col-4 m-5 p-3 shadow-lg divfixed">
+            <div class="col divpoly">
+                    <h3>hello</h3>
+                </div>
+                <div class="col">
+                    <h3 class="font49">1000 EGP </h3>
+                    <h6 class="font20">This course includes: </h6>
+                    <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
+                    <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> 32 articles</p>
+                    <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>
+                    <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
+                    <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p>
+
+                    <button type="button" class="btn btncolor btn-sm btn-block text-white"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Add To Cart</button>
+
+                </div>
+            </div>
+
+
         </div>
     </section>
     <!-- End of course content section
