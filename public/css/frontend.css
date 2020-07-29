@@ -403,7 +403,7 @@ h6 {
 
 .breadcrumb-section {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
-  padding-bottom: 400px;
+  padding-bottom: 515px;
 }
 
 /* .breadcrumb-section .blakish-overlay {
@@ -6254,15 +6254,56 @@ ul.product-tab li.active:after {
 
 /* me */
 
+.divfixed{
+  position: absolute;
+  top: 40%;
+  -webkit-transform: translateY(-40%);
+          transform: translateY(-40%);
+  right: 80px;
+  color:black;
+  box-shadow: 5px 5px 5px #888888;
+
+  background-color: white;
+  z-index: 1;
+
+}
+@media(max-width :1024px){
+  .divfixed {
+    top: 80%;
+    right: 18px;
+  }
+}
+@media(max-width :768px){
+  .divfixed {
+    top: 52%;
+    right: 50px;
+  }
+}
+
+
+@media(max-width :768px){
+  .divfixed {
+    display: none;
+  }
+}
+
+
+
+
 
 .paragraph1{
   position: absolute;
-  top: 45%;
+  top: 48%;
   -webkit-transform: translateY(-40%);
           transform: translateY(-40%);
   left: 120px;
   right: 0;
   color:#00000075;
+}
+@media(max-width :425px){
+  .paragraph1 {
+    top: 38%;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -6273,8 +6314,12 @@ ul.product-tab li.active:after {
   }
   .paragraph1 h2{
     font-size: 20px;
-
   }
+}
+
+.divpoly{
+  clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% );
+  background-color: violet;
 }
 .coursesec{
   padding-top: 35px;
@@ -6357,4 +6402,15 @@ display: inline-block;
 }
 .l-h{
   line-height: 38px;
+}
+.font49{
+  font-size: 49px;
+}
+.font20{
+  font-size: 20px;
+
+}
+
+.btncolor{
+ background-color: #52ADE1;
 }
