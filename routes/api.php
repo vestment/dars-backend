@@ -25,8 +25,8 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         'prefix' => 'auth'
     ], function () {
 
-//    Route::post('login', 'ApiController@login');
-        Route::post('signup-form', 'ApiController@signupForm');
+   Route::get('login', 'ApiController@index')->name('login.index');
+        Route::get('signup', 'ApiController@registerIndex')->name('register.index');;
         Route::post('signup-save', 'ApiController@signup');
 
         Route::group([
