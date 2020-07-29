@@ -245,6 +245,15 @@ class CoursesController extends Controller
                 $size = 0;
 
             } elseif ($request->media_type == 'upload') {
+
+
+            //     $file = Request::file('file');
+            // $filename = $file->getClientOriginalName();
+            // $path = public_path().'/uploads/';
+            // return $file->move($path, $filename);
+
+
+
                 if (\Illuminate\Support\Facades\Request::hasFile('video_file')) {
                     $file = \Illuminate\Support\Facades\Request::file('video_file');
                     $filename = time() . '-' . $file->getClientOriginalName();

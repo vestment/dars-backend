@@ -3,11 +3,11 @@
 return array (
   404 => 
   array (
-    'description2' => ' It looks like nothing was found at this location.',
-    'title' => 'Page Not Found',
+    'description2' => 'page not found try again to find it ',
+    'title' => 'oh no',
     'title2' => '404',
     'back' => 'Back To HomePage',
-    'description' => 'THIS IS SOMEWHAT EMBARRASSING, ISN’T IT?',
+    'description' => ' page not found',
   ),
   503 => 
   array (

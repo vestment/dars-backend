@@ -11,7 +11,7 @@
             @can('course_create')
                 <div class="float-right">
                     <a href="{{ route('admin.teachers.create') }}"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
             @endcan
@@ -36,8 +36,8 @@
 
 
                         <table id="myTable"
-                               class="table table-bordered table-striped @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                            <thead>
+                               class="border-0 @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                            <thead class="thead">
                             <tr>
 
                                 @can('category_delete')
@@ -108,7 +108,7 @@
                         @if(request('show_deleted') != 1)
                     {
                         "data": function (data) {
-                            return '<input type="checkbox" class="single" name="id[]" value="' + data.id + '" />';
+                            return '<input  type="checkbox" class="single" name="id[]" value="' + data.id + '" />';
                         }, "orderable": false, "searchable": false, "name": "id"
                     },
                         @endif
@@ -139,7 +139,7 @@
                 }
             });
             @if(auth()->user()->isAdmin())
-            $('.actions').html('<a href="' + '{{ route('admin.teachers.mass_destroy') }}' + '" class="btn btn-xs btn-danger js-delete-selected" style="margin-top:0.755em;margin-left: 20px;">Delete selected</a>');
+            $('.actions').html('<a href="' + '{{ route('admin.teachers.mass_destroy') }}' + '" class="btn btn-blue js-delete-selected" style="margin-top:0.755em;margin-left: 20px;">Delete selected</a>');
             @endif
         });
         $(document).on('click', '.switch-input', function (e) {

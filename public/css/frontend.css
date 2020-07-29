@@ -74,6 +74,7 @@ body {
 .ul-li ul li {
   list-style: none;
   display: inline-block;
+  padding: 10px;
 }
 
 .animation,
@@ -401,23 +402,24 @@ h6 {
 }
 
 .breadcrumb-section {
-  background-image: url(/images/brt-1.jpg?8fa08d9daef6d16cbadbbd1e5d1d6988);
-  padding-bottom: 355px;
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+  padding-bottom: 515px;
 }
 
-.breadcrumb-section .blakish-overlay {
+/* .breadcrumb-section .blakish-overlay {
   opacity: 1;
   visibility: visible;
-}
+} */
 
-.breadcrumb-section .page-breadcrumb-content {
+
+/* .breadcrumb-section .page-breadcrumb-content {
   position: absolute;
   top: 60%;
   -webkit-transform: translateY(-60%);
           transform: translateY(-60%);
   left: 0;
   right: 0;
-}
+} */
 
 .breadcrumb-section .breadcrumb-head {
   font-size: 38px;
@@ -462,10 +464,12 @@ h6 {
 .main-menu-container {
   position: fixed;
   width: 100%;
-  padding: 45px 0px;
+  /* padding: 25px 0px; */
   -webkit-transition: .3s all ease-in-out;
   transition: .3s all ease-in-out;
   z-index: 9;
+  background-color: #0C0C3F;
+
 }
 
 .nav-menu {
@@ -584,7 +588,7 @@ h6 {
 }
 
 .main-menu-container.menu-bg-overlay {
-  background: #000000;
+  background-color: #0C0C3F;
   padding: 10px 0px;
 }
 
@@ -1696,6 +1700,7 @@ button.alt-menu-btn.float-left {
   position: absolute;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
 }
 
 .search-course .nws-button button,
@@ -2659,7 +2664,7 @@ button.alt-menu-btn.float-left {
   visibility: hidden;
   -webkit-transition: .3s all ease-in-out;
   transition: .3s all ease-in-out;
-  background-color: rgba(0, 0, 0, 0.65);
+  background: transparent linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%) 0% 0% no-repeat padding-box;
 }
 
 .latest-news-area {
@@ -5277,7 +5282,7 @@ ul.product-tab li.active:after {
 /*----------------------------------------------------*/
 
 .course-page-section {
-  padding: 80px 0px 0px;
+  padding: 40px 0px 0px;
 }
 
 .course-page-section .short-filter-tab {
@@ -5355,11 +5360,8 @@ ul.product-tab li.active:after {
   color: #333333;
 }
 
-.course-page-section .course-type-list span {
-  background-color: #17d0cf;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 4px;
+.course-type-list span {
+  padding-top: 45px;
 }
 
 .course-page-section .course-meta .course-rate li {
@@ -6230,4 +6232,185 @@ ul.product-tab li.active:after {
     height: 100%;
   }
 
+}
+
+.priceLabel{
+  margin-top: 22px;
+  background-color:#D2498B;
+  color:white;
+  padding: 1px;
+}
+.te-remove{
+  color:#D2498B;
+}
+.bg-right-list{
+  background-color: #EEEEEE;
+}
+
+.mmm{
+  text-decoration: none;
+}
+
+
+/* me */
+
+.divfixed{
+  position: absolute;
+  top: 40%;
+  -webkit-transform: translateY(-40%);
+          transform: translateY(-40%);
+  right: 80px;
+  color:black;
+  box-shadow: 5px 5px 5px #888888;
+
+  background-color: white;
+  z-index: 1;
+
+}
+@media(max-width :1024px){
+  .divfixed {
+    top: 80%;
+    right: 18px;
+  }
+}
+@media(max-width :768px){
+  .divfixed {
+    top: 52%;
+    right: 50px;
+  }
+}
+
+
+@media(max-width :768px){
+  .divfixed {
+    display: none;
+  }
+}
+
+
+
+
+
+.paragraph1{
+  position: absolute;
+  top: 48%;
+  -webkit-transform: translateY(-40%);
+          transform: translateY(-40%);
+  left: 120px;
+  right: 0;
+  color:#00000075;
+}
+@media(max-width :425px){
+  .paragraph1 {
+    top: 38%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .paragraph1 {
+    width: 100%;
+    left: -40px;
+    right: 0;
+  }
+  .paragraph1 h2{
+    font-size: 20px;
+  }
+}
+
+.divpoly{
+  clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% );
+  background-color: violet;
+}
+.coursesec{
+  padding-top: 35px;
+}
+.coursesec h2{
+  font-size: 24px;
+  color: #000;
+  padding-bottom:13px;
+}
+.subtitle2{
+  font-weight: light;
+  font-size: 14px;
+
+}
+.coursecontent{
+  font-size: 34px;
+  color: #000;
+}
+.smpara{
+  font-size: 12px;
+}
+.play10{
+  font-size: 10px;
+}
+.accordion{
+  width: 100%;
+}
+.card-body{
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  padding:11px;
+}
+.btn-link {
+  color: black;
+  font-size: 20px;
+}
+
+.btn-link:hover{
+  color: black;
+  text-decoration: none;
+}
+
+.backend-list{
+  color: white;
+}
+.backend-list ul {
+padding: 0;
+margin: 0;
+display: inline-block;
+}
+.backend-list ul li {
+  text-decoration: none;
+  list-style: none;
+  display: inline-block;
+}
+
+.footer-logo{
+  background-color: #0C0C3F;
+  width: 50%;
+}
+.footersec h2{
+  font-size: 24px;
+  color: #000;
+  padding-bottom:13px;
+}
+.size16{
+  color: #333333;
+  font-size: 16px;
+  padding-bottom: 15px;
+}
+
+.arrow{
+  color: #52ADE1;
+  font-size: 20px;
+  padding-right: 10px;
+}
+
+.copy-right-menu{
+  background-color: #0C0C3F;
+  padding: 15px;
+}
+.l-h{
+  line-height: 38px;
+}
+.font49{
+  font-size: 49px;
+}
+.font20{
+  font-size: 20px;
+
+}
+
+.btncolor{
+ background-color: #52ADE1;
 }

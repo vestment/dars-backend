@@ -1,5 +1,5 @@
 @if($breadcrumbs)
-    <ol class="breadcrumb">
+    <ol class="breadcrumb accountmenu">
         <li class="breadcrumb-item">Home</li>
 
         @foreach($breadcrumbs as $breadcrumb)

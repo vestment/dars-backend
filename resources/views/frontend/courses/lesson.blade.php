@@ -6,6 +6,10 @@
     <link href="{{asset('plugins/touchpdf-master/jquery.touchPDF.css')}}" rel="stylesheet">
 
     <style>
+    .main-menu-container.menu-bg-overlay{
+        display:none;
+        padding:34px
+    }
         .test-form {
             color: #333333;
         }
@@ -125,7 +129,8 @@
 
         }
         .breadcrumb-sectionn{
-            background-color:#0C0C3F !important
+            background-color:#0C0C3F !important;
+            
         }
         .course-title-header{
             color: white;
@@ -138,8 +143,23 @@
 .progress{
     color:#D2498B
 }
-.course_frame{
+.video-container iframe{
+    width: 95%;
+    height: 553px;
+    margin-top: -0.2%;
+    margin-left: 5%;
 
+}
+
+.plyr--video{
+    width: 93.2%;
+    margin-left: 6%;
+    margin-top: -1.3%;
+}
+.course-details-item {
+    width: 93.2%;
+    margin-left: 4%;
+    margin-top: -1%;
 }
     </style>
 @endpush
@@ -166,7 +186,7 @@
     <!-- Start of course details section
         ============================================= -->
     <section id="course-details" class="course-details-section">
-        <div class="container-fluid ">
+        <div class="container-fluid">
             <div class="row main-content">
                 <div class="col-md-9">
                     @if(session()->has('success'))
@@ -270,20 +290,13 @@
                             @endif
                             <hr/>
                         @else
-                            <div class="course-single-text">
-                                <div class="course-title mt10 headline relative-position">
-                                    <h3>
-                                    </h3>
-                                </div>
-                                <div class="course-details-content">
-                                </div>
-                            </div>
+                            
                         @endif
 
                         @if($lesson->mediaPDF)
                             <div class="course-single-text mb-5 course_frame" style="width: 95%; height: 650px;">
-                                {{--<iframe style="width: 95%; height: 650px;" src="{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}"  width="100%"--}}
-                                {{--height="100%">--}}
+                                {{--<iframe src="{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}"  width="100%"--}}
+                                {{--height="100%" class="iframe_style">--}}
                                 {{--</iframe>--}}
                                 <div id="myPDF"></div>
 
@@ -355,7 +368,7 @@
                     <!-- /review overview -->
                 </div>
 
-                <div class="col-md-3">
+                <div style="margin-left:-3.5%" class="col-md-3">
                     <div id="sidebar" class="sidebar">
                         <div class="course-details-category ul-li">
                             @if ($previous_lesson)
@@ -394,7 +407,6 @@
                             @endif
 
 
-                            <span class="float-none">@lang('labels.frontend.course.course_timeline')</span>
                             <ul class="course-timeline-list">
                                 @foreach($lesson->course->courseTimeline()->orderBy('sequence')->get() as $key=>$item)
                                     @if($item->model && $item->model->published == 1)
@@ -414,29 +426,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="couse-feature ul-li-block">
-                            <ul>
-                                <li>@lang('labels.frontend.course.chapters')
-                                    <span> {{$lesson->course->chapterCount()}} </span></li>
-                                <li>@lang('labels.frontend.course.category') <span><a
-                                                href="{{route('courses.category',['category'=>$lesson->course->category->slug])}}"
-                                                target="_blank">{{$lesson->course->category->name}}</a> </span></li>
-                                <li>@lang('labels.frontend.course.author') <span>
-
-                   @foreach($lesson->course->teachers as $key=>$teacher)
-                                            @php $key++ @endphp
-                                            <a href="{{route('teachers.show',['id'=>$teacher->id])}}" target="_blank">
-                           {{$teacher->full_name}}@if($key < count($lesson->course->teachers )), @endif
-                       </a>
-                                        @endforeach
-                                    </span>
-                                </li>
-                                <li>@lang('labels.frontend.course.progress') <span> <b> {{ $lesson->course->progress()  }}
-                                            % @lang('labels.frontend.course.completed')</b></span></li>
-                                           
-                            </ul>
-
-                        </div>
+                        
                     </div>
                 </div>
             </div>
