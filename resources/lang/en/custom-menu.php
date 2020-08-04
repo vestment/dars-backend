@@ -8,4 +8,9 @@
     'contact' => 'Contact',
     'about-us' => 'About Us',
   ),
+  'menu' => 
+  array (
+    'about-us' => 'About Us',
+    'privacy-policy' => 'Privacy Policy',
+  ),
 );

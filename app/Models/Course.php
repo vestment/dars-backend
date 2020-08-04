@@ -233,7 +233,19 @@ class Course extends Model
             ->whereIn('type', $types);
 
     }
+    public function chapters(){
 
+        return $this->hasmany('App\Models\chapters');
+    
+    }
+
+    public function test(){
+
+        return $this->belongsto('App\Models\chapters');
+    
+    }
+
+    
 
 
 }

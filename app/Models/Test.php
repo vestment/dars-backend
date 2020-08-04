@@ -93,6 +93,10 @@ class Test extends Model
         return false;
 
     }
+    public function chapter(){
 
+        return $this->belongsto('App\Models\Chapters');
+    
+    }
 
 }

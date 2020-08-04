@@ -37,6 +37,10 @@ return array (
       array (
         'title' => 'Lessons',
       ),
+      'chapters' => 
+      array (
+        'title' => 'Chapters',
+      ),
       'questions' => 
       array (
         'title' => 'Questions',
