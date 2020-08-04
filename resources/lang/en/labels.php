@@ -54,6 +54,11 @@ return array (
       'timeline_description' => 'Drag and change sequence of Lessons/Tests for course',
       'listing_note' => 'Only Published Lessons and Tests will be Displayed and Sorted.',
     ),
+    'chapters' =>
+    array(
+
+      'title'=>'Chapters'
+    ),
     'tests' => 
     array (
       'title' => 'Tests',
