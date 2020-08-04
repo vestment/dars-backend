@@ -3,11 +3,11 @@
 @section('title', __('menus.backend.sidebar.payments_requests.title').' | '.app_name())
 
 @section('content')
-
-<div class="card">
-    <div class="card-header">
-        <h3 class="page-title d-inline">@lang('menus.backend.sidebar.payments_requests.title')</h3>
+<div class="title my-3 mx-5">
+        <h2 class="page-title d-inline">@lang('menus.backend.sidebar.payments_requests.title')</h2>
     </div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+    
     <div class="card-body">
         <div class="d-block">
             <ul class="list-inline">
@@ -28,8 +28,8 @@
             </ul>
         </div>
         <div class="table-responsive">
-            <table id="earningTable" class="table table-bordered table-striped ">
-                <thead>
+            <table id="earningTable" class="border-0">
+            <thead class="thead">
                     <tr>
                         <th>@lang('labels.general.sr_no')</th>
                         <th>@lang('labels.backend.payments.fields.teacher_name')</th>

@@ -4,13 +4,14 @@
 @section('title', __('labels.backend.blogs.title').' | '.app_name())
 
 @section('content')
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.blogs.title')</h3>
+<div class="title my-3 mx-5">
+           <h3 class="page-title d-inline mb-5">@lang('labels.backend.blogs.title')</h3>
+</div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
             @can('blog_create')
                 <div class="float-right">
-                    <a href="{{ route('admin.blogs.create') }}" class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                    <a href="{{ route('admin.blogs.create') }}" class="btn btn-pibk">@lang('strings.backend.general.app_add_new')</a>
                 </div>
             @endcan
         </div>
@@ -19,8 +20,8 @@
             <div class="table-responsive">
 
                 <table id="myTable"
-                       class="table table-bordered table-striped">
-                    <thead>
+                       class="bordet-0">
+                    <thead class="thead">
                     <tr>
                         @can('lesson_delete')
                             @if ( request('show_deleted') != 1 )

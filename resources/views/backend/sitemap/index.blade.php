@@ -11,12 +11,13 @@
 
 @section('content')
     {{ html()->form('POST', route('admin.sitemap.config'))->id('general-settings-form')->class('form-horizontal')->acceptsFiles()->open() }}
-
-    <div class="card">
-        <div class="card-header">
+    <div class="title my-3 mx-5">
+      <h3 class="page-title d-inline mb-4">@lang('labels.backend.sitemap.title')</h3>
+</div>
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
             <div class="row">
                 <div class="col-12">
-                    <h3 class="page-title d-inline">@lang('labels.backend.sitemap.title')</h3>
                     <a class="btn btn-primary pull-right" href="{{route('admin.sitemap.generate')}}">@lang('labels.backend.sitemap.generate')</a>
 
                 </div>
@@ -52,7 +53,7 @@
             </div>
             <div class="form-group text-center row">
                 <div class="col text-center">
-                    <button type="submit" class="btn btn-success ">{{__('buttons.general.crud.update')}}</button>
+                    <button type="submit" class="btn btn-pink ">{{__('buttons.general.crud.update')}}</button>
                 </div><!--col-->
             </div><!--row-->
         </div>

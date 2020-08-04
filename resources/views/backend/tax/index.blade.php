@@ -29,12 +29,14 @@
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.tax.title')</h3>
+<div class="title my-3 mx-5">
+       <h2 class="page-title d-inline ">@lang('labels.backend.tax.title')</h2>
+</div>
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="mb-5">
             <div class="float-right">
                 <a href="{{ route('admin.tax.create') }}"
-                   class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                   class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
             </div>
         </div>
@@ -43,8 +45,8 @@
                 <div class="col-12">
                     <div class="table-responsive">
                         <table id="myTable"
-                               class="table table-bordered table-striped ">
-                            <thead>
+                               class="border-0">
+                               <thead class="thead">
                             <tr>
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.tax.fields.name')</th>
