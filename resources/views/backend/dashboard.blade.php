@@ -4,6 +4,24 @@
 
 @push('after-styles')
     <style>
+    :root{
+ 
+--pink:#D2498B;
+    }
+    .pink{
+        color:var(--pink);
+    }
+    .bg-pink{
+        background-color:var(--pink);
+
+    }
+    .round{
+        
+    }
+    .icon{
+        font-size:43px;
+    }
+
         .trend-badge-2 {
             top: -10px;
             left: -52px;
@@ -42,8 +60,8 @@
     <div class="row">
         <div class="col">
             <div >
-                <div class="">
-                    <strong>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->name }}!</strong>
+                <div class="my-4">
+                   <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->name }}!</h1> 
                 </div><!--card-header-->
                 <div class="">
                     <div class="row">
@@ -282,15 +300,16 @@
                                 <div class="col-md-3 col-12 border-right">
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="card text-dark bg-white text-center">
+                                            <div class="card text-dark bg-white ">
                                                 <div class="card-body">
+                                                <h5 class="">@lang('labels.backend.dashboard.your_courses_and_bundles')</h5>
                                                     <h2 class="">{{count(auth()->user()->courses) + count(auth()->user()->bundles)}}</h2>
-                                                    <h5>@lang('labels.backend.dashboard.your_courses_and_bundles')</h5>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="card text-dark bg-white text-center">
+                                            <div class="card text-dark bg-white ">
                                                 <div class="card-body">
                                                     <h2 class="">{{$students_count}}</h2>
                                                     <h5>@lang('labels.backend.dashboard.students_enrolled')</h5>
@@ -377,27 +396,51 @@
 
                     @elseif(auth()->user()->hasRole('administrator'))
                         <div class="col-md-4 col-12">
-                            <div class="card shadow-lg text-dark bg-white text-center py-3 mx-1">
-                                <div class="card-body">
+                            <div class="card shadow-lg text-dark bg-white  py-3 mx-1">
+                                <div class="card-body row">
+                                    <div class="col-9">
+                                <h4 class="text-primary">@lang('labels.backend.dashboard.course_and_bundles')</h4>
                                     <h1 class="">{{$courses_count}}</h1>
-                                    <h3>@lang('labels.backend.dashboard.course_and_bundles')</h3>
+                                    </div>
+                                    <div class="col-2 border rounded-circle text-white bg-primary text-center  py-2">
+                                        <span class="icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        </span>
+                                
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-4 col-12">
-                            <div class="card shadow-lg text-white bg-light text-dark text-center py-3 mx-1">
-                                <div class="card-body">
+                            <div class="card shadow-lg text-white bg-white text-dark  py-3 mx-1">
+                                <div class="card-body row">
+                                    <div class="col-9">
+                                <h4 class="pink">@lang('labels.backend.dashboard.students')</h4>
                                     <h1 class="">{{$students_count}}</h1>
-                                    <h3>@lang('labels.backend.dashboard.students')</h3>
+                                    </div>
+                                    <div class="col-2 border rounded-circle text-white bg-pink text-center py-2">
+                                        <span class="icon">
+                                        <i class="fas fa-user-friends"></i>                                        </span>
+                                
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-12">
-                            <div class="card shadow-lg text-dark bg-white text-center py-3">
-                                <div class="card-body">
-                                    <h1 class="">{{$teachers_count}}</h1>
-                                    <h3>@lang('labels.backend.dashboard.teachers')</h3>
+                            <div class="card shadow-lg text-dark bg-white  py-3">
+                                <div class="card-body row ">
+                                    <div class="col-9">
+                                        <h4  class="text-primary">@lang('labels.backend.dashboard.teachers')</h4>
+                                        <h1 class="">{{$teachers_count}}</h1>   
+                                    </div>
+                                    <div class="col-2 border rounded-circle text-white bg-primary text-center py-2">
+                                        <span class="icon">
+                                        <i class="fas fa-user-edit"></i>                                        </span>
+                                
+                                    </div>
                                 </div>
                             </div>
                         </div>

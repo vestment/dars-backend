@@ -28,7 +28,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <table class="table table-bordered table-striped border rounded">
+                    <table class="table  ">
                         <tr>
                             <th>@lang('labels.backend.orders.fields.reference_no')</th>
                             <td>
