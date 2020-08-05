@@ -6,36 +6,57 @@
 @endpush
 
 @section('content')
+<div class="title my-3 mx-5">        
+        <h1 class="page-title d-inline mb-5">@lang('labels.backend.reports.sales_report')</h1>
+</div>
+    <div class="">
+       
+        <div class="card shadow-lg p-4 mb-5 bg-white rounded">
+            <div class="row my-5 mx-3">
+                <div class="col-12 col-lg-6">
+                    <div class="card  bg-light  shadow-lg">
+                        <div class="card-body row p-4">
+                        <div class="col-9 ">
+                            <h4  class="text-primary">@lang('labels.backend.reports.total_earnings')</h4>
+                            <h1>{{$appCurrency['symbol'].' '.$total_earnings}}</h1>
 
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.reports.sales_report')</h3>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12 col-lg-5">
-                    <div class="card text-white bg-primary text-center">
-                        <div class="card-body">
-                            <h2 class="">{{$appCurrency['symbol'].' '.$total_earnings}}</h2>
-                            <h5>@lang('labels.backend.reports.total_earnings')</h5>
+                            </div>
+                            <div class="col-2    border rounded-circle text-white bg-primary text-center  py-2">
+                                        <span class="icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        </span>
+                                
+                                    </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-5 ml-auto">
-                    <div class="card text-white bg-success text-center">
-                        <div class="card-body">
-                            <h2 class="">{{$total_sales}}</h2>
-                            <h5>@lang('labels.backend.reports.total_sales')</h5>
+                <div class="col-12 col-lg-6 ">
+                    <div class="card  bg-light  shadow-lg">
+                        <div class="card-body row p-4">
+                            <div class="col-9 ">
+
+                               
+                                <h4 class="text-pink">@lang('labels.backend.reports.total_sales')</h4>
+                                <h1  >{{$total_sales}}</h1>
+                            </div>
+                            <div class="col-2    border rounded-circle text-white bg-pink    text-center  py-2">
+                                        <span class="icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        </span>
+                                
+                                    </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <h4>@lang('labels.backend.reports.courses')</h4>
+           <div>   
+                <h3 class=" mx-3 mb-5 text-primary">@lang('labels.backend.reports.courses')</h3>
+           </div>
+            <div class="row card  bg-light  shadow-lg p-4 mx-2  mb-5">
+                <div class="col-12 ">
                     <div class="table-responsive">
-                        <table id="myCourseTable" class="table table-bordered table-striped ">
-                            <thead>
+                        <table id="myCourseTable" class="border-0">
+                            <thead class="thead">
                             <tr>
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.reports.fields.name')</th>
@@ -51,12 +72,14 @@
                 </div>
             </div>
             <hr>
-            <div class="row">
+            <div>                   
+             <h3 class="mx-3 mb-2 text-primary">@lang('labels.backend.reports.bundles')</h3>
+            </div>
+            <div class="row my-5 card  bg-light  shadow-lg p-4 mx-2">
                 <div class="col-12">
-                    <h4>@lang('labels.backend.reports.bundles')</h4>
                     <div class="table-responsive">
-                        <table id="myBundleTable" class="table table-bordered table-striped ">
-                            <thead>
+                        <table id="myBundleTable" class="border-0">
+                            <thead class="thead">
                             <tr>
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.reports.fields.name')</th>

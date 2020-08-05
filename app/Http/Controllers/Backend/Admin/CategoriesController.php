@@ -13,6 +13,7 @@ use Yajra\DataTables\DataTables;
 
 class CategoriesController extends Controller
 {
+    
 
     use FileUploadTrait;
 
@@ -40,6 +41,7 @@ class CategoriesController extends Controller
         return view('backend.categories.index', compact('categories'));
         // return view(['backend.categories.index','backend.error.404'], compact('categories'));
     }
+    
 
     /**
      * Display a listing of Courses via ajax DataTable.

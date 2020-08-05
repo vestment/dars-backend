@@ -4,15 +4,16 @@
     <link rel="stylesheet" href="{{asset('assets/css/colors/switch.css')}}">
 @endpush
 @section('content')
-
-    <div class="card">
-        <div class="card-header">
-                <h3 class="page-title d-inline">@lang('labels.backend.teachers.title')</h3>
+<div class="title mb-4 mx-5">
+    <h1 class="page-title d-inline mb-5">@lang('labels.backend.teachers.title')</h1>
             @can('course_create')
-                <div class="float-right">
+        </div>
+    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
+                
+                <div class="float-right mx-5 mt-4">
                     <a href="{{ route('admin.teachers.create') }}"
                        class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
-
                 </div>
             @endcan
         </div>
@@ -36,8 +37,8 @@
 
 
                         <table id="myTable"
-                               class="table table-bordered table-striped @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                            <thead>
+                               class="border-0 @if(auth()->user()->isAdmin()) @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                            <thead class="thead">
                             <tr>
 
                                 @can('category_delete')

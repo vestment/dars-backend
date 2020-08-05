@@ -74,6 +74,7 @@ body {
 .ul-li ul li {
   list-style: none;
   display: inline-block;
+  padding: 10px;
 }
 
 .animation,
@@ -403,7 +404,11 @@ h6 {
 
 .breadcrumb-section {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+<<<<<<< HEAD
 
+=======
+  padding-bottom: 515px;
+>>>>>>> b51002ffab99ff5c22dc1d25228cb3500243225b
 }
 
 
@@ -466,7 +471,7 @@ h6 {
 .main-menu-container {
   position: fixed;
   width: 100%;
-  padding: 25px 0px;
+  /* padding: 25px 0px; */
   -webkit-transition: .3s all ease-in-out;
   transition: .3s all ease-in-out;
   z-index: 9;
@@ -1693,6 +1698,7 @@ button.alt-menu-btn.float-left {
   position: absolute;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
 }
 
 .search-course .nws-button button,
@@ -1743,7 +1749,14 @@ button.alt-menu-btn.float-left {
 
 .copy-right-menu-item li {
   color: #989898;
-  margin-left: 30px;
+  margin-left: 12px;
+  font-size: 13px;
+}
+
+@media(max-width :425px){
+  .copy-right-menu-item li  {
+    font-size: 10px;
+  }
 }
 
 .copy-right-menu {
@@ -6275,15 +6288,56 @@ ul.product-tab li.active:after {
 
 /* me */
 
+.divfixed{
+  position: absolute;
+  top: 40%;
+  -webkit-transform: translateY(-40%);
+          transform: translateY(-40%);
+  right: 80px;
+  color:black;
+  box-shadow: 5px 5px 5px #888888;
+
+  background-color: white;
+  z-index: 1;
+
+}
+@media(max-width :1024px){
+  .divfixed {
+    top: 80%;
+    right: 18px;
+  }
+}
+@media(max-width :768px){
+  .divfixed {
+    top: 52%;
+    right: 50px;
+  }
+}
+
+
+@media(max-width :768px){
+  .divfixed {
+    display: none;
+  }
+}
+
+
+
+
 
 .paragraph1{
   position: absolute;
-  top: 45%;
+  top: 48%;
   -webkit-transform: translateY(-40%);
           transform: translateY(-40%);
   left: 120px;
   right: 0;
   color:#00000075;
+}
+@media(max-width :425px){
+  .paragraph1 {
+    top: 38%;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -6294,12 +6348,20 @@ ul.product-tab li.active:after {
   }
   .paragraph1 h2{
     font-size: 20px;
-
   }
 }
+
+.divpoly{
+  clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% );
+  background-color: violet;
+}
+.coursesec{
+  padding-top: 35px;
+}
 .coursesec h2{
-  font-size: 22px;
+  font-size: 24px;
   color: #000;
+  padding-bottom:13px;
 }
 .subtitle2{
   font-weight: light;
@@ -6310,6 +6372,7 @@ ul.product-tab li.active:after {
   font-size: 34px;
   color: #000;
 }
+<<<<<<< HEAD
 .collapse{
   border-style: ridge;
 }
@@ -6324,4 +6387,96 @@ ul.product-tab li.active:after {
 
 .w-td{
   width:30%;
+=======
+.smpara{
+  font-size: 12px;
+}
+.play10{
+  font-size: 10px;
+}
+.accordion{
+  width: 100%;
+}
+.card-body{
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  padding:11px;
+}
+.btn-link {
+  color: black;
+  font-size: 20px;
+}
+
+.btn-link:hover{
+  color: black;
+  text-decoration: none;
+}
+
+.backend-list{
+  color: white;
+}
+.backend-list ul {
+padding: 0;
+margin: 0;
+display: inline-block;
+}
+.backend-list ul li {
+  text-decoration: none;
+  list-style: none;
+  display: inline-block;
+}
+
+.footer-logo{
+  background-color: #0C0C3F;
+  width: 50%;
+}
+.footersec h2{
+  font-size: 24px;
+  color: #000;
+  padding-bottom:13px;
+}
+.size16{
+  color: #333333;
+  font-size: 16px;
+  padding-bottom: 15px;
+}
+
+.arrow{
+  color: #52ADE1;
+  font-size: 20px;
+  padding-right: 10px;
+}
+
+.copy-right-menu{
+  background-color: #0C0C3F;
+  padding: 15px;
+}
+.l-h{
+  line-height: 38px;
+  font-size: 13px;
+}
+
+
+@media(max-width :425px){
+  .l-h {
+    font-size: 10px;
+  }
+}
+.font49{
+  font-size: 49px;
+}
+.font20{
+  font-size: 20px;
+
+}
+
+.btncolor{
+ background-color: #52ADE1;
+}
+
+
+@media(max-width :425px){
+  .footerHidden {
+    display: none;
+  }
+>>>>>>> b51002ffab99ff5c22dc1d25228cb3500243225b
 }

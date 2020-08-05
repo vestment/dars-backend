@@ -29,12 +29,14 @@
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.hero_slider.title')</h3>
+<div class="title my-3 mx-5">
+     <h2 class="page-title d-inline mb-5">@lang('labels.backend.hero_slider.title')</h2>
+</div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
             <div class="float-right">
                 <a href="{{ route('admin.sliders.create') }}"
-                   class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                   class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
             </div>
         </div>
@@ -43,8 +45,8 @@
                 <div class="col-12">
                     <div class="table-responsive">
                         <table id="myTable"
-                               class="table table-bordered table-striped ">
-                            <thead>
+                               class="border-0 ">
+                               <thead class="thead">
                             <tr>
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.hero_slider.fields.name')</th>
@@ -116,10 +118,10 @@
             </div>
         </div>
     </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h3>@lang('labels.backend.hero_slider.manage_sequence')</h3>
+<div class="title my-3 mx-5">            <h2 class="page-title d-inline mb-5">@lang('labels.backend.hero_slider.manage_sequence')</h2>
+</div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
         </div>
         <div class="card-body">
             @if(count($slides_list) > 0)

@@ -3,16 +3,17 @@
 @section('title', app_name() . ' | '. __('labels.backend.access.roles.management'))
 
 @section('content')
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-sm-5">
-                <h4 class="card-title mb-0">
+<div class="title my-3 mx-5">
+                <h3 class=" mb-0">
                     @lang('labels.backend.access.roles.management')
-                </h4>
+                </h3>
             </div><!--col-->
+            <div class="shadow-lg p-3 mb-5 bg-white rounded">
+    <div class="card-body p-5">
+        <div class="mb-5">
+          
 
-            <div class="col-sm-7 pull-right">
+            <div class="pull-right">
                 @include('backend.auth.role.includes.header-buttons')
             </div><!--col-->
         </div><!--row-->

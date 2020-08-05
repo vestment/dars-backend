@@ -4,7 +4,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use App\Models\Category;
-use App\Models\Course;
+
+
 /**
  * Class     ServiceProvider
  *
@@ -76,10 +77,8 @@ abstract class ServiceProvider extends IlluminateServiceProvider
     {
         $categories = Category::all();
         view()->share('categories',$categories);
-
-        // $courses = Course::all();
-        // view()->share('courses',$courses);
-    }
+        
+    }    
 
     /**
      * Register a binding with the container.

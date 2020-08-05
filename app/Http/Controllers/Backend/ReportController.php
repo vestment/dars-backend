@@ -58,7 +58,7 @@ class ReportController extends Controller
             ->whereIn('item_id',$courses)
             ->join('courses', 'order_items.item_id', '=', 'courses.id')
             ->join('orders', 'orders.id', '=', 'order_items.order_id')
-            ->select('item_id', DB::raw('count(*) as orders, sum(orders.amount) as earnings, courses.title as name, courses.slug'))
+            ->select('item_id', DB::raw('count(*) as orders, sum(orders.amount) as earnings'))
             ->groupBy('item_id')
             ->get();
 
@@ -84,7 +84,7 @@ class ReportController extends Controller
             ->whereIn('item_id',$bundles)
             ->join('bundles', 'order_items.item_id', '=', 'bundles.id')
             ->join('orders', 'orders.id', '=', 'order_items.order_id')
-            ->select('item_id', DB::raw('count(*) as orders, sum(orders.amount) as earnings, bundles.title as name, bundles.slug'))
+            ->select('item_id', DB::raw('count(*) as orders, sum(orders.amount) as earnings'))
             ->groupBy('item_id')
             ->get();
 

@@ -361,6 +361,7 @@ progress {
 
 [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
+  
 }
 
 ::-webkit-file-upload-button {
@@ -16696,7 +16697,9 @@ button.bg-purple:focus {
 }
 
 .bg-pink {
-  background-color: #e83e8c !important;
+  background-color: #e83e8dde !important;
+}.text-pink{
+  color: #e83e8dde !important;
 }
 
 a.bg-pink:hover,
@@ -22013,16 +22016,26 @@ textarea:focus {
   float: left;
   text-align: left;
   margin-left: 25%;
+ 
+
   
 }
 .dataTables_wrapper .dataTables_filter input{
 
-border-radius: 24px;
+border-radius: 15px;
 PADDING-top: 3%;
-box-shadow: lightsteelblue;
+box-shadow: 1px 3px #c5c3c3;
+border: solid whitesmoke;
+margin-bottom: 10%;
+margin-top: 2%;
+
+
+
 }
 .thead{
-  background-color:#CECECE;
+  background-color:#2C28281C;
+color:#00000099;
+font-size:16px
 }
 
 
@@ -22030,13 +22043,18 @@ div.dt-buttons {
   float: right;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1216px) {
   .dataTables_wrapper .dataTables_filter {
     margin: auto;
-    text-align: center;
-    display: inline-block;
-    width: 100%;
-  }
+    text-align: right; 
+     display: inline-block;
+    width: 100%; 
+  } 
+  .dataTables_wrapper .dataTables_length {
+   
+    text-align: right; 
+    
+  } 
 }
 
 .message-box img {
@@ -22433,5 +22451,11 @@ div.dt-buttons {
 .btn-blue{
   background-color: var(--navbarbg);
   color:#fff;
+}
+.icon{
+  font-size: 40px;
+}
+.bg-blue{
+  background-color: var(--navbarbg) !important;
 }
 

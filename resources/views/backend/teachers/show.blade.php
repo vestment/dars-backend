@@ -22,7 +22,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <table class="table table-bordered table-striped">
+                    <table class="table ">
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.avatar')</th>
                             <td><img src="{{ $teacher->picture }}" class="user-profile-image" /></td>

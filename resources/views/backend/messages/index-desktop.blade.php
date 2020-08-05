@@ -16,9 +16,11 @@
     </style>
 @endpush
 @section('content')
-    <div class="card message-box">
-        <div class="card-header">
-            <h3 class="page-title mb-0">@lang('labels.backend.messages.title')
+<div class="title my-3 mx-5">
+             <h2 class="page-title ">@lang('labels.backend.messages.title') </h2>
+</div>
+    <div class="message-box shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
 
                 <a href="{{route('admin.messages').'?threads'}}"
                    class="d-lg-none text-decoration-none threads d-md-none float-right">
@@ -26,7 +28,7 @@
                 </a>
             </h3>
         </div>
-        <div class="card-body">
+        <div class="card-body ">
             <div class="messaging">
                 <div class="inbox_msg">
                     <div class="inbox_people d-md-block d-lg-block ">
@@ -140,7 +142,7 @@
                         <form method="post" action="{{route('admin.messages.send')}}">
                             @csrf
 
-                            <div class="headind_srch bg-dark">
+                            <div class="headind_srch bg-blue">
                                 <div class="chat_people header row">
                                     <div class="col-12 col-lg-3">
                                         <p class="font-weight-bold text-white mb-0" style="line-height: 35px">{{trans('labels.backend.messages.select_recipients')}}:</p>

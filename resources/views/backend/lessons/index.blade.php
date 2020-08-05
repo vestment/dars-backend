@@ -3,14 +3,15 @@
 @section('title', __('labels.backend.lessons.title').' | '.app_name())
 
 @section('content')
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.lessons.title')</h3>
+<div class="title my-3 mx-5">   
+             <h1 class="page-title d-inline mb-5">@lang('labels.backend.lessons.title')</h1>
+</div>
+    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
             @can('lesson_create')
                 <div class="float-right">
                     <a href="{{ route('admin.lessons.create') }}@if(request('course_id')){{'?course_id='.request('course_id')}}@endif"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
             @endcan
@@ -40,7 +41,7 @@
                 <div class="table-responsive">
 
                     <table id="myTable"
-                           class="table table-bordered table-striped @can('lesson_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                           class="shadow-lg @can('lesson_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
                         <thead>
                         <tr>
                             @can('lesson_delete')
