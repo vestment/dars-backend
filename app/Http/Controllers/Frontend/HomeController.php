@@ -15,6 +15,8 @@ use App\Models\Lesson;
 use App\Models\Page;
 use App\Models\Reason;
 use App\Models\Sponsor;
+use App\Models\TeacherProfile;
+
 use App\Models\System\Session;
 use App\Models\Tag;
 use App\Models\Testimonial;
@@ -209,11 +211,13 @@ class HomeController extends Controller
     {
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $teacher = User::role('teacher')->where('id', '=', $request->id)->first();
+        $teacher_data = TeacherProfile::where('user_id', '=', $request->id)->first();
+
         $courses = $teacher->courses;
         if (count($teacher->courses) > 0) {
             $courses = $teacher->courses()->paginate(12);
         }
-        return view($this->path . '.teachers.show', compact('teacher', 'recent_news', 'courses'));
+        return view($this->path . '.teachers.show', compact('teacher', 'recent_news', 'courses','teacher_data'));
     }
 
     public function getDownload(Request $request)

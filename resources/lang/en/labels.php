@@ -1206,6 +1206,7 @@ return array (
       'course_name' => 'Course Name',
       'course_type' => 'Course Type',
       'starts' => 'Starts',
+      'action' => 'Action',
       'empty_cart' => 'Your cart is empty',
       'order_payment' => 'Order <span>Payment.</span>',
       'name_on_card' => 'Name on Card',

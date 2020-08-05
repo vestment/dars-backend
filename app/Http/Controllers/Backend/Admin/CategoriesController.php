@@ -39,6 +39,7 @@ class CategoriesController extends Controller
         }
 
         return view('backend.categories.index', compact('categories'));
+        // return view(['backend.categories.index','backend.error.404'], compact('categories'));
     }
     
 

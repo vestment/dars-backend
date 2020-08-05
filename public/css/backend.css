@@ -22459,3 +22459,7 @@ div.dt-buttons {
   background-color: var(--navbarbg) !important;
 }
 
+.btn-blue:hover{
+  background-color: grey ;
+  color:white;
+}

@@ -21,10 +21,9 @@
                             <h1>{{$appCurrency['symbol'].' '.$total_earnings}}</h1>
 
                             </div>
-                            <div class="col-2    border rounded-circle text-white bg-primary text-center  py-2">
+                            <div class="col-2   border rounded-circle text-white bg-primary text-center  py-2">
                                         <span class="icon">
-                                        <i class="fas fa-graduation-cap"></i>
-                                        </span>
+                                        <i class="fas fa-comment-dollar"></i>                                        </span>
                                 
                                     </div>
                         </div>
@@ -41,8 +40,7 @@
                             </div>
                             <div class="col-2    border rounded-circle text-white bg-pink    text-center  py-2">
                                         <span class="icon">
-                                        <i class="fas fa-graduation-cap"></i>
-                                        </span>
+                                        <i class="fas fa-chart-line"></i>                                        </span>
                                 
                                     </div>
                         </div>

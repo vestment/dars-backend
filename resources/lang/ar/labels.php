@@ -1206,6 +1206,7 @@ return array (
       'price' => 'السعر',
       'sub_total' => 'المجموع الفرعي',
       'total_payable' => 'مجموع المستحق',
+      'wishlist' => 'قائمه المفضلات',
     ),
     'contact' => 
     array (
