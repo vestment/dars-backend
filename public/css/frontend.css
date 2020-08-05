@@ -401,9 +401,9 @@ h6 {
   background-color: #17d0cf;
 }
 
-.breadcrumb-section {
+.bg-header {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
-  padding-bottom: 515px;
+  padding-top: 7%;
 }
 
 /* .breadcrumb-section .blakish-overlay {
@@ -421,7 +421,7 @@ h6 {
   right: 0;
 } */
 
-.breadcrumb-section .breadcrumb-head {
+/* .breadcrumb-section .breadcrumb-head {
   font-size: 38px;
   color: #fff;
   font-weight: 300;
@@ -453,7 +453,7 @@ h6 {
 .breadcrumb-section .breadcrumb-item.active {
   background-color: #3b3b3b;
   color: #7a7a7a;
-}
+} */
 
 /*---------------------------------------------------- */
 
