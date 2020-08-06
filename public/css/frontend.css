@@ -254,6 +254,10 @@ h6 {
 .pb10 {
   padding-bottom: 10px;
 }
+.voticon{
+  text-align: center;
+  font-size: 50px;
+}
 
 .gradient-bg,
 .modal-body .nws-button button,
@@ -404,16 +408,20 @@ h6 {
 
 .bg-header {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
-<<<<<<< HEAD
-  padding-top: 7%;
-=======
-<<<<<<< HEAD
-
-=======
-  padding-bottom: 515px;
->>>>>>> b51002ffab99ff5c22dc1d25228cb3500243225b
->>>>>>> 331c7021fba5ad5b3e11b81ec024d3c1e8c7dc5b
+  padding-top: 6%;
 }
+.type{
+  color: #eeeeee;
+  font-family: Open Sans;
+  font-weight: lighter;
+}
+.about{
+  font-family: Ubuntu;
+  font-weight: bold;
+  color:black
+}
+
+
 
 
 /* .breadcrumb-section .blakish-overlay {
@@ -471,6 +479,11 @@ h6 {
 /*Header Section*/
 
 /*----------------------------------------------------*/
+.bord{
+  border: 3px solid  lavender;
+ 
+ 
+}
 
 .main-menu-container {
   position: fixed;
@@ -3502,7 +3515,7 @@ button.alt-menu-btn.float-left {
 }
 
 .teacher-details-area {
-  padding: 80px 0px;
+  padding: 60px 0px;
 }
 
 .course-img {
@@ -3513,27 +3526,7 @@ button.alt-menu-btn.float-left {
   color: #333333;
 }
 
-.teacher-details-text .section-title-2 {
-  margin-bottom: 50px;
-}
 
-.teacher-details-text .section-title-2 h2 {
-  font-size: 30px;
-}
-
-.teacher-details-text .section-title-2 h2:after {
-  bottom: -45px;
-}
-
-.teacher-details-text .teacher-deg {
-  font-weight: 700;
-  font-size: 15px;
-  margin-top: 5px;
-}
-
-.teacher-details-text .teacher-deg span {
-  color: #17d0cf;
-}
 
 .teacher-desc-social {
   margin-bottom: 28px;
@@ -3570,23 +3563,23 @@ button.alt-menu-btn.float-left {
   color: #fff;
 }
 
-.teacher-address .address-details li {
-  color: #000;
-  font-size: 18px;
-  margin-bottom: 10px;
-  display: inline-block;
+ .address-details li {
+  color: white;
+  font-size: 30px;
+  display: inline;
+  margin-left:1% ;
+
 }
 
-.teacher-address .address-details li b {
+ .address-details li b {
   font-weight: 900;
 }
 
-.teacher-address .address-details li .addrs-icon {
-  height: 50px;
-  width: 50px;
+ .address-details li .addrs-icon {
+  
   text-align: center;
   line-height: 50px;
-  font-size: 20px;
+  font-size: 30px;
   border-radius: 5px;
   color: #fff;
   margin-right: 15px;
@@ -3594,7 +3587,7 @@ button.alt-menu-btn.float-left {
   background-color: #01a6fd;
 }
 
-.teacher-address .address-details li .add-info {
+ .address-details li .add-info {
   overflow: hidden;
   margin-top: 10px;
 }
@@ -4600,7 +4593,7 @@ ul.product-tab li.active:after {
 }
 
 .address-details li {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 500;
   color: #fff;
 }
