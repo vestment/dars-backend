@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 class wishlistController extends Controller
 {
-    // public function index(Request $request){
+    public function index(Request $request){
       
 
-    //     $courses = Course::get();
+        $courses = Course::get();
     //    dd($courses);
     
 
-    //     return view('wishlist',compact('courses'));
+        return view('wishlist',compact('courses'));
 
-    //  }
+     }
 
 
     
