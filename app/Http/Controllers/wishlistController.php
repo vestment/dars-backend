@@ -18,18 +18,18 @@ class wishlistController extends Controller
 
      }
 
-     public function remove(Request $request)
-     {
-        if (!Gate::allows('course_delete')) {
-            return abort(401);
-        }
-        $course = Course::findOrFail($id);
-        if ($course->students->count() >= 1) {
-            return redirect()->route('admin.courses.index')->withFlashDanger(trans('alerts.backend.general.delete_warning'));
-        } else {
-            $course->delete();
-        }
+    //  public function remove(Request $request)
+    //  {
+    //     if (!Gate::allows('course_delete')) {
+    //         return abort(401);
+    //     }
+    //     $course = Course::findOrFail($id);
+    //     if ($course->students->count() >= 1) {
+    //         return redirect()->route('admin.courses.index')->withFlashDanger(trans('alerts.backend.general.delete_warning'));
+    //     } else {
+    //         $course->delete();
+    //     }
 
-         return redirect(route('wishlist'));
-     }
+    //      return redirect(route('wishlist'));
+    //  }
 }

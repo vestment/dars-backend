@@ -71,7 +71,7 @@
 
                 </div> 
                 
-                <div class="row mt-3 flex">
+           0     <div class="row mt-3 flex">
                                
                     <div class="row col-lg-6">
 
