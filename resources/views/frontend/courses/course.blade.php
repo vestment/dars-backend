@@ -40,11 +40,7 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header">
-<<<<<<< HEAD
-=======
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
->>>>>>> 5b5a2518d4817dbfa73149ebe7ee99aee3200e2a
         <div class="blakish-overlay"></div>
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
@@ -74,7 +70,7 @@
 
                 </div> 
                 
-           0     <div class="row mt-3 flex">
+              <div class="row mt-3 flex">
                                
                     <div class="row col-lg-6">
 
@@ -155,8 +151,6 @@
                         <!-- {{-- <button type="submit" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                         @lang('labels.frontend.course.add_to_cart')
                         </button> --}} -->
-                        <button type="submt" style="opacity:0.9; width:20%;padding:10px; font-size:15px" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i> Wishlist</button>
-                        <button type="submt"style="opacity:0.9; width:20%;padding:10px; font-size:15px"  class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share</button>
                         <button type="submt" style="opacity:0.9; width:15%;padding:10px; font-size:15px" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i> Wishlist</button>
                         <button type="submt"style="opacity:0.9; width:15%;padding:10px; font-size:15px"  class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share</button>
                     </div>

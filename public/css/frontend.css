@@ -408,11 +408,7 @@ h6 {
 
 .bg-header {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
-<<<<<<< HEAD
   padding-top: 6%;
-=======
-  padding-top: 7%;
-  padding-bottom: 515px;
 
 }
 .bgcolor {
@@ -426,7 +422,6 @@ h6 {
   color: white;
   /* padding-bottom: 515px; */
 
->>>>>>> 5b5a2518d4817dbfa73149ebe7ee99aee3200e2a
 }
 .type{
   color: #eeeeee;
