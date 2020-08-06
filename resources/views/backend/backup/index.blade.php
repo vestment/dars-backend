@@ -7,6 +7,7 @@
         .form-group label {
             margin-bottom: 0px;
         }
+       
     </style>
 @endpush
 
@@ -141,7 +142,7 @@
                         <div class="col">
                             {{ form_cancel(route('admin.general-settings'), __('buttons.general.cancel')) }}
                         </div><!--col-->
-                        <div class="col text-right">
+                        <div class="col text-right ">
                             {{ form_submit(__('buttons.general.crud.update'))->id('submit') }}
                         </div><!--col-->
                     </div><!--row-->

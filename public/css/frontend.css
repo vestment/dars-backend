@@ -74,7 +74,7 @@ body {
 .ul-li ul li {
   list-style: none;
   display: inline-block;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .animation,
@@ -402,13 +402,17 @@ h6 {
   background-color: #17d0cf;
 }
 
-.breadcrumb-section {
+.bg-header {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+<<<<<<< HEAD
+  padding-top: 7%;
+=======
 <<<<<<< HEAD
 
 =======
   padding-bottom: 515px;
 >>>>>>> b51002ffab99ff5c22dc1d25228cb3500243225b
+>>>>>>> 331c7021fba5ad5b3e11b81ec024d3c1e8c7dc5b
 }
 
 
@@ -427,7 +431,7 @@ h6 {
   right: 0;
 } */
 
-.breadcrumb-section .breadcrumb-head {
+/* .breadcrumb-section .breadcrumb-head {
   font-size: 38px;
   color: #fff;
   font-weight: 300;
@@ -460,7 +464,7 @@ h6 {
 .breadcrumb-section .breadcrumb-item.active {
   background-color: #3b3b3b;
   color: #7a7a7a;
-}
+} */
 
 /*---------------------------------------------------- */
 

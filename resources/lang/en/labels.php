@@ -1269,6 +1269,9 @@ return array (
       'continue_course' => 'Continue Course',
       'enrolled' => 'Enrolled',
       'chapters' => 'Chapters',
+      'lessons' => 'lessons',
+      'instructors' => 'Instructors',
+
       'category' => 'Category',
       'author' => 'Author',
       'courses' => 'Courses',
@@ -1285,6 +1288,8 @@ return array (
       'course_details' => '<span>Course Details.</span>',
       'course_detail' => 'Course Details',
       'course_timeline' => 'Course <b>Timeline:</b>',
+      'course_content' => 'Course <b>Content</b>',
+
       'go' => 'Go',
       'course_reviews' => 'Course <span>Reviews:</span>',
       'average_rating' => 'Average Rating',
