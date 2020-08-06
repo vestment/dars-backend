@@ -62,8 +62,8 @@
                                     <div class="col-md-4">
                                         <div class="teacher-img text-center" >
                                             
-                                            <!-- <img  src="{{url('0cO22dmhKMuEwF5aOGUT5YfYCqNLuLG60UOy7mxh.png')}}" alt=""> -->
-                                            <img  src="./../../storage/app/public/{{$teacher->avatar_location}}" alt="">
+                                            <img  src="{{url('0cO22dmhKMuEwF5aOGUT5YfYCqNLuLG60UOy7mxh.png')}}" alt="">
+                                            <!-- <img  src="./../../storage/app/public/{{$teacher->avatar_location}}" alt=""> -->
 
                                         </div>
                                     </div>
