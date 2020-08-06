@@ -404,16 +404,15 @@ h6 {
 
 .bg-header {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
-<<<<<<< HEAD
   padding-top: 7%;
-=======
-<<<<<<< HEAD
-
-=======
   padding-bottom: 515px;
->>>>>>> b51002ffab99ff5c22dc1d25228cb3500243225b
->>>>>>> 331c7021fba5ad5b3e11b81ec024d3c1e8c7dc5b
 }
+.bgcolor {
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+  padding-top: 7%;
+  padding-bottom: 215px;
+}
+
 
 
 /* .breadcrumb-section .blakish-overlay {
@@ -6331,7 +6330,7 @@ ul.product-tab li.active:after {
 
 .paragraph1{
   position: absolute;
-  top: 48%;
+  top: 41%;
   -webkit-transform: translateY(-40%);
           transform: translateY(-40%);
   left: 120px;
@@ -6376,22 +6375,6 @@ ul.product-tab li.active:after {
   font-size: 34px;
   color: #000;
 }
-<<<<<<< HEAD
-.collapse{
-  border-style: ridge;
-}
-
-
-
-.pragchechout{
-  padding-top: 12%;
-
-}
-
-
-.w-td{
-  width:30%;
-=======
 .smpara{
   font-size: 12px;
 }
@@ -6482,5 +6465,4 @@ display: inline-block;
   .footerHidden {
     display: none;
   }
->>>>>>> b51002ffab99ff5c22dc1d25228cb3500243225b
 }
