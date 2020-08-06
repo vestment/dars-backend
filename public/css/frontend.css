@@ -408,6 +408,11 @@ h6 {
   padding-bottom: 515px;
 
 }
+.bgcolor {
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+  padding-top: 7%;
+  padding-bottom: 215px;
+}
 .bg-header-ch {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
   padding-top: 3%;
@@ -415,6 +420,7 @@ h6 {
   /* padding-bottom: 515px; */
 
 }
+
 
 /* .breadcrumb-section .blakish-overlay {
   opacity: 1;
@@ -6331,7 +6337,7 @@ ul.product-tab li.active:after {
 
 .paragraph1{
   position: absolute;
-  top: 48%;
+  top: 41%;
   -webkit-transform: translateY(-40%);
           transform: translateY(-40%);
   left: 120px;

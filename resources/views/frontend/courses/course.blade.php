@@ -41,17 +41,18 @@
     <!-- Start of breadcrumb section
         ============================================= -->
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
         <div class="blakish-overlay"></div>
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
-                <div class="m-3">    
+                <div class="m-1">    
                     <p >Explore /{{$course->category->name}}</p>
                 </div>
-                <div class="p-3">
+                <div class="p-1">
                     <h2 class="text-white"><b>{{$course->title}}</b></h2>
                 </div>
 
-                <div class="p-3">            
+                <div class="p-1">            
                     <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
                     <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
                     <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
@@ -83,7 +84,7 @@
                         @elseif(!auth()->check())
                             @if($course->free == 1)
                                 <a id="openLoginModal"
-                                   class="genius-btn btn-block text-white  gradient-bg text-center text-uppercase  bold-font"
+                                   class="btn btn-outline-light m-1"
                                    data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
                                             class="fas fa-caret-right"></i></a>
                             @else
@@ -107,7 +108,7 @@
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                     <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                    <button class="genius-btn btn-block text-white  gradient-bg text-center text-uppercase  bold-font"
+                                    <button class="btn btn-outline-light m-1" style="opacity:0.9; width:200px; padding:10px"
                                             href="#">@lang('labels.frontend.course.get_now') <i
                                                 class="fas fa-caret-right"></i></button>
                                 </form>
@@ -117,7 +118,7 @@
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                     <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                    <button type="submit" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    <button type="submit" class="btn btn-outline-light m-1" style="opacity:0.9; width:200px; padding:10px"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                         @lang('labels.frontend.course.add_to_cart')
                                         </button>
                                 </form>
@@ -153,6 +154,8 @@
                         </button> --}} -->
                         <button type="submt" style="opacity:0.9; width:20%;padding:10px; font-size:15px" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i> Wishlist</button>
                         <button type="submt"style="opacity:0.9; width:20%;padding:10px; font-size:15px"  class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share</button>
+                        <button type="submt" style="opacity:0.9; width:15%;padding:10px; font-size:15px" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i> Wishlist</button>
+                        <button type="submt"style="opacity:0.9; width:15%;padding:10px; font-size:15px"  class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share</button>
                     </div>
                 </div>
             </div>
