@@ -40,7 +40,7 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header-ch">
         <div class="blakish-overlay" ></div>
         <div class="container">
             <div class="page-breadcrumb-content">

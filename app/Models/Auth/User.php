@@ -122,7 +122,12 @@ class User extends Authenticatable implements MessageableInterface
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'course_user');
+        return $this->belongsToMany(Course::class, 'course_user')->withPivot(['rating','wishlist']);
+    }
+
+    public function courses_active()
+    {
+        return $this->belongsToMany(Course::class, 'course_student')->withTimestamps()->withPivot(['rating','wishlist'])->wherePivot('wishlist', 1);
     }
 
     public function bundles()
