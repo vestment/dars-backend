@@ -148,7 +148,7 @@ return array (
       'edit' => 'تحرير الفئة',
       'fields' => 
       array (
-        'courses' => 'الدورات',
+        'course_detail' => 'Course Detail',
         'icon' => 'أيقونة',
         'icon_type' => 
         array (
@@ -1402,6 +1402,11 @@ return array (
       'send_now' => 'ارسل الان',
       'students' => 'الطلاب',
       'title' => 'معلمون',
+      'courses' => 'الدورات',
+      'views' => 'الدورات',
+
+
+
     ),
     'user' => 
     array (

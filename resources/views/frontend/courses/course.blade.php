@@ -41,7 +41,10 @@
     <!-- Start of breadcrumb section
         ============================================= -->
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header">
+<<<<<<< HEAD
+=======
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
+>>>>>>> 5b5a2518d4817dbfa73149ebe7ee99aee3200e2a
         <div class="blakish-overlay"></div>
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
