@@ -40,23 +40,29 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
         <div class="blakish-overlay"></div>
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
-                <div class="m-3">    
+                <div class="m-1">    
                     <p >Explore /{{$course->category->name}}</p>
                 </div>
-                <div class="p-3">
+                <div class="p-1">
                     <h2 class="text-white"><b>{{$course->title}}</b></h2>
                 </div>
 
-                <div class="p-3">            
+                <div class="p-1">    
+                     
+                    <i class="fas fa-star" style="color: yellow"></i>
+                    <i class="fas fa-star" style="color: yellow"></i>
+                    <i class="fas fa-star" style="color: yellow"></i>
+                    <i class="fas fa-star" style="color: yellow"></i>
+                    <i class="fas fa-star" style="color: yellow"></i>
+                    {{-- <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
                     <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
                     <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
                     <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (5).png">
+                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (5).png"> --}}
                     <span class="text-white">{{$course_rating}}</span>
                 </div>
 
@@ -70,7 +76,7 @@
 
                 </div> 
                 
-                <div class="row mt-3 flex">
+              <div class="row mt-3 flex">
                                
                     <div class="row col-lg-6">
 
@@ -83,7 +89,7 @@
                         @elseif(!auth()->check())
                             @if($course->free == 1)
                                 <a id="openLoginModal"
-                                   class="genius-btn btn-block text-white  gradient-bg text-center text-uppercase  bold-font"
+                                   class="btn btn-outline-light m-1"
                                    data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
                                             class="fas fa-caret-right"></i></a>
                             @else
@@ -95,10 +101,10 @@
                                 @lang('labels.frontend.course.add_to_cart')
                                 </button>
 
-                            {{-- <a id="openLoginModal"
+                            <!-- {{-- <a id="openLoginModal"
                                class="genius-btn btn-block my-2 bg-dark text-center text-white text-uppercase "
                                data-target="#myModal" href="#">@lang('labels.frontend.course.add_to_cart') <i
-                                        class="fa fa-shopping-bag"></i></a> --}}
+                                        class="fa fa-shopping-bag"></i></a> --}} -->
                             @endif
                         @elseif(auth()->check() && (auth()->user()->hasRole('student')))
 
@@ -107,7 +113,7 @@
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                     <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                    <button class="genius-btn btn-block text-white  gradient-bg text-center text-uppercase  bold-font"
+                                    <button class="btn btn-outline-light m-1" style="opacity:0.9; width:200px; padding:10px"
                                             href="#">@lang('labels.frontend.course.get_now') <i
                                                 class="fas fa-caret-right"></i></button>
                                 </form>
@@ -117,7 +123,7 @@
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                     <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                    <button type="submit" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    <button type="submit" class="btn btn-outline-light m-1" style="opacity:0.9; width:200px; padding:10px"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                         @lang('labels.frontend.course.add_to_cart')
                                         </button>
                                 </form>
@@ -148,11 +154,11 @@
 
 
 
-                        {{-- <button type="submit" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                        <!-- {{-- <button type="submit" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                         @lang('labels.frontend.course.add_to_cart')
-                        </button> --}}
-                        <button type="submt" style="opacity:0.9; width:20%;padding:10px; font-size:15px" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i> Wishlist</button>
-                        <button type="submt"style="opacity:0.9; width:20%;padding:10px; font-size:15px"  class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share</button>
+                        </button> --}} -->
+                        <button type="submt" style="opacity:0.9; width:15%;padding:10px; font-size:15px" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i> Wishlist</button>
+                        <button type="submt"style="opacity:0.9; width:15%;padding:10px; font-size:15px"  class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share</button>
                     </div>
                 </div>
             </div>
@@ -228,8 +234,8 @@
                     <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
                     <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters')</p>
                     <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>
-                    {{-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
-                    <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> --}}
+                    <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
+                    <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
 
 
 
@@ -394,7 +400,7 @@
                 <div class="col-lg-2 col-md-2 col-sm-3">
                     <img src=" {{$teacher->picture}}" alt="">
 
-                    {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}}
+                    <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
                 </div>
                 <div class="col-lg-3 col-md-5 col-sm-3">
                     @php $key++ @endphp

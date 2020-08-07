@@ -1435,6 +1435,12 @@ return array (
       'title' => 'Teachers',
       'courses_by_teacher' => 'Courses <span>By Teacher.</span>',
       'course_detail' => 'Course Detail',
+      'courses' => 'Courses',
+      'views' => 'Views',
+
+
+
+
     ),
     'academy' => 
     array (
