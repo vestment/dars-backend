@@ -1291,6 +1291,12 @@ return array (
       'not_attempted' => 'لم تحاول',
       'find_your_bundle' => '<span> ابحث عن </span> الحزمة الخاصة بك',
       'select_category' => 'اختر الفئة',
+
+      'lessons' => 'دروس',
+      'wishlist'=> 'قائمة الرغبات',
+      'Share'=>'مشاركة',
+      'instructors' => 'مدرسين',
+
     ),
     'faq' => 
     array (

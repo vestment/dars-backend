@@ -414,7 +414,7 @@ h6 {
 .bgcolor {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
   padding-top: 7%;
-  padding-bottom: 18%;
+  padding-bottom: 315px;
 }
 .bg-header-ch {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
@@ -6310,11 +6310,12 @@ ul.product-tab li.active:after {
   background-color: white;
   z-index: 1;
 
+
 }
 @media(max-width :1024px){
   .divfixed {
     top: 80%;
-    right: 18px;
+    right: -18px;
   }
 }
 @media(max-width :768px){
@@ -6344,26 +6345,44 @@ ul.product-tab li.active:after {
   right: 0;
   color:#00000075;
 }
-@media(max-width :425px){
+
+@media(max-width: 768px) {
+  .paragraph1 {
+    width: 100%;
+    left: -40px;
+    right: 0;
+    top: 40%;
+  }
+
+@media(max-width : 425px){
   .paragraph1 {
     top: 38%;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .paragraph1 {
-    width: 100%;
-    left: -40px;
-    right: 0;
-  }
+
   .paragraph1 h2{
     font-size: 20px;
   }
 }
 
+.paddingleft{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+}
 .divpoly{
-  clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% );
-  background-color: violet;
+  clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% );
+
+  /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+
+  /* background-color: violet; */
+}
+.pricebottom{
+  bottom: 40px;
 }
 .coursesec{
   padding-top: 35px;
@@ -6487,9 +6506,52 @@ display: inline-block;
   .footerHidden {
     display: none;
   }
-<<<<<<< HEAD
->>>>>>> b51002ffab99ff5c22dc1d25228cb3500243225b
 }
-=======
+/* style="opacity:0.9; width:15%;padding:10px; font-size:15px" */
+.buttoncart button {
+  opacity: 0.9;
+  width: 15%;
+  padding: 10px;
+  font-size: 15px;
+  height: 39px;
 }
->>>>>>> 5b5a2518d4817dbfa73149ebe7ee99aee3200e2a
+
+
+  @media(max-width :1024px){
+    .buttoncart button {
+      width: 17%;
+      padding: 2px;
+      font-size: 13px;
+      }
+    }
+    @media(max-width :425px){
+      .buttoncart button {
+        width: 24%;
+        padding: 2px;
+        font-size: 12px;
+        }
+      }
+
+
+.addcart{
+  opacity: 0.9 !important;
+  width: 200px !important;
+  padding: 10px !important;
+  font-size: 15px !important;
+}
+@media(max-width :1024px){
+  .addcart {
+    width: 100px !important;
+    padding: 8px !important;
+    font-size: 13px !important;
+    }
+  }
+@media(max-width :425px){
+  .addcart {
+    width: 100px !important;
+    padding: 6px !important;
+    font-size: 13px !important;
+    }
+  }
+
+  

@@ -1269,8 +1269,6 @@ return array (
       'continue_course' => 'Continue Course',
       'enrolled' => 'Enrolled',
       'chapters' => 'Chapters',
-      'lessons' => 'lessons',
-      'instructors' => 'Instructors',
 
       'category' => 'Category',
       'author' => 'Author',
@@ -1332,6 +1330,12 @@ return array (
       'explanation' => 'Explanation',
       'find_your_bundle' => '<span>Find</span> your Bundle',
       'select_category' => 'Select Category',
+      
+      'lessons' => 'lessons',
+      'instructors' => 'Instructors',
+      'wishlist'=>'wishlist',
+      'Share'=>'Share',
+
     ),
     'home' => 
     array (
