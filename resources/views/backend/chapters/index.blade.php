@@ -9,7 +9,7 @@
             <h3 class="page-title d-inline">@lang('labels.backend.chapters.title')</h3>
             @can('lesson_create')
                 <div class="float-right">
-                    <a href="{{ route('admin.lessons.create') }}@if(request('course_id')){{'?course_id='.request('course_id')}}@endif"
+                    <a href="{{ route('admin.chaptersteacher@lms.com.create') }}@if(request('course_id')){{'?course_id='.request('course_id')}}@endif"
                        class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>

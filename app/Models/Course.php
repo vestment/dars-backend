@@ -235,13 +235,13 @@ class Course extends Model
     }
     public function chapters(){
 
-        return $this->hasmany('App\Models\chapters');
+        return $this->hasmany('App\Models\Chapter');
     
     }
 
     public function test(){
 
-        return $this->belongsto('App\Models\chapters');
+        return $this->belongsto('App\Models\Chapter');
     
     }
 

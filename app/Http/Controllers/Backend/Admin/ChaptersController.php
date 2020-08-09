@@ -7,7 +7,7 @@ use App\Models\CourseTimeline;
 use App\Models\Lesson;
 use App\Models\Media;
 use App\Models\Test;
-use App\Models\Chapters;
+use App\Models\Chapter;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -20,6 +20,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ChaptersController extends Controller
 {
+    use FileUploadTrait;
     public function index(Request $request)
     {
        
@@ -35,7 +36,7 @@ class ChaptersController extends Controller
         $has_delete = false;
         $has_edit = false;
         $chapters = "";
-        $chapters = Chapters::whereIn('course_id', Course::ofTeacher()->pluck('id'));
+        $chapters = Chapter::whereIn('course_id', Course::ofTeacher()->pluck('id'));
 
 
         if ($request->course_id != "") {
@@ -46,7 +47,7 @@ class ChaptersController extends Controller
             if (!Gate::allows('lesson_delete')) {
                 return abort(401);
             }
-            $chapters = Chapters::query()->with('course')->orderBy('created_at', 'desc')->onlyTrashed()->get();
+            $chapters = Chapter::query()->with('course')->orderBy('created_at', 'desc')->onlyTrashed()->get();
         }
 
 
@@ -89,7 +90,7 @@ class ChaptersController extends Controller
 
                 if (auth()->user()->can('test_view')) {
                     if ($q->test != "") {
-                        $view .= '<a href="' . route('admin.tests.index', ['lesson_id' => $q->id]) . '" class="btn btn-success btn-block mb-1">' . trans('labels.backend.tests.title') . '</a>';
+                        $view .= '<a href="' . route('admin.tests.index', ['chapter_id' => $q->id]) . '" class="btn btn-success btn-block mb-1">' . trans('labels.backend.tests.title') . '</a>';
                     }
                 }
 
@@ -111,5 +112,125 @@ class ChaptersController extends Controller
             ->rawColumns(['lesson_image', 'actions'])
             ->make();
     }
+    public function create()
+    {
+        if (!Gate::allows('lesson_create')) {
+            return abort(401);
+        }
+        $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
+        return view('backend.chapters.create', compact('courses'));
+    }
+    public function store(Request $request)
+    {
+        if (!Gate::allows('lesson_create')) {
+            return abort(401);
+        }
+
+        $slug = "";
+        if (($request->slug == "") || $request->slug == null) {
+            $slug = str_slug($request->title);
+        }else if($request->slug != null){
+            $slug = $request->slug;
+        }
+
+        $slug_chapter = Chapter::where('slug','=',$slug)->first();
+        if($slug_chapter != null){
+            return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
+        }
+
+        $chapter = Chapter::create($request->except('downloadable_files', 'lesson_image')
+            + ['position' => Chapter::where('course_id', $request->course_id)->max('position') + 1]);
+
+        $chapter->slug = $slug;
+        $chapter->save();
+
+
+
+
+        //Saving  videos
+        if ($request->media_type != "") {
+            $model_type = Chapter::class;
+            $model_id = $chapter->id;
+            $size = 0;
+            $media = '';
+            $url = '';
+            $video_id = '';
+            $name = $chapter->title . ' - video';
+
+            if (($request->media_type == 'youtube') || ($request->media_type == 'vimeo')) {
+                $video = $request->video;
+                $url = $video;
+                $video_id = array_last(explode('/', $request->video));
+                $media = Media::where('url', $video_id)
+                    ->where('type', '=', $request->media_type)
+                    ->where('model_type', '=', 'App\Models\Chapter')
+                    ->where('model_id', '=', $chapter->id)
+                    ->first();
+                $size = 0;
+
+            } elseif ($request->media_type == 'upload') {
+                if (\Illuminate\Support\Facades\Request::hasFile('video_file')) {
+                    $file = \Illuminate\Support\Facades\Request::file('video_file');
+                    $filename = time() . '-' . $file->getClientOriginalName();
+                    $size = $file->getSize() / 1024;
+                    $path = public_path() . '/storage/uploads/';
+                    $file->move($path, $filename);
+
+                    $video_id = $filename;
+                    $url = asset('storage/uploads/' . $filename);
+
+                    $media = Media::where('type', '=', $request->media_type)
+                        ->where('model_type', '=', 'App\Models\Chapter')
+                        ->where('model_id', '=', $chapter->id)
+                        ->first();
+                }
+            } else if ($request->media_type == 'embed') {
+                $url = $request->video;
+                $filename = $chapter->title . ' - video';
+            }
+
+            if ($media == null) {
+                $media = new Media();
+                $media->model_type = $model_type;
+                $media->model_id = $model_id;
+                $media->name = $name;
+                $media->url = $url;
+                $media->type = $request->media_type;
+                $media->file_name = $video_id;
+                $media->size = 0;
+                $media->save();
+            }
+        }
+
+        $request = $this->saveAllFiles($request, 'downloadable_files', Chapter::class, $chapter);
+
+        if (($request->slug == "") || $request->slug == null) {
+            $chapter->slug = str_slug($request->title);
+            $chapter->save();
+        }
+
+        $sequence = 1;
+        if (count($chapter->course->courseTimeline) > 0) {
+            $sequence = $chapter->course->courseTimeline->max('sequence');
+            $sequence = $sequence + 1;
+        }
+
+        if ($chapter->published == 1) {
+            $timeline = CourseTimeline::where('model_type', '=', Chapter::class)
+                ->where('model_id', '=', $chapter->id)
+                ->where('course_id', $request->course_id)->first();
+            if ($timeline == null) {
+                $timeline = new CourseTimeline();
+            }
+            $timeline->course_id = $request->course_id;
+            $timeline->model_id = $chapter->id;
+            $timeline->model_type = Chapter::class;
+            $timeline->sequence = $sequence;
+            $timeline->save();
+        }
+
+        return redirect()->route('admin.chapters.index', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.created'));
+    }
+
 
 }
