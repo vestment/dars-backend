@@ -1407,6 +1407,7 @@ return array (
       'lessons' => 'lessons',
       'instructors' => 'Instructors',
       'wishlist'=>'wishlist',
+      'added_to_wishlist'=>'added to wishlist',
       'Share'=>'Share',
 
     ),
@@ -1457,6 +1458,8 @@ return array (
         'browse_course_by_category' => 'Browse Courses<span> By Category.</span>',
         'faq_full' => 'Frequently<span> Asked Questions</span>',
         'social_network' => 'Social Network',
+        'follow_us' => 'Follow Us',
+
         'subscribe_newsletter' => 'Subscribe Newsletter',
         'subscribe_now' => 'Subscribe Now',
         'latest_news_blog' => 'Latest <span>News Blog.</span>',

@@ -14,6 +14,7 @@ use Stripe\Charge;
 use Stripe\Customer;
 use Cart;
 use App\Models\TeacherProfile;
+use App\Models\Chapter;
 
 
 class CoursesController extends Controller
@@ -76,6 +77,7 @@ class CoursesController extends Controller
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with('publishedLessons')->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
         // $teacher_data = TeacherProfile::where('user_id', '=', $course_slug->id)->first();
+        $chapters = Chapter::where('course_id', $course_slug)->where('published', '=', 1)->get();
 
         if(($course->published == 0) && ($purchased_course == false)){
             abort(404);
@@ -111,7 +113,7 @@ class CoursesController extends Controller
 
         }
 
-        return view( $this->path.'.courses.course', compact('course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
+        return view( $this->path.'.courses.course', compact('chapters','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
     }
 
 

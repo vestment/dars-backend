@@ -449,8 +449,8 @@
 
                              @endforeach -->
 
-                             @foreach($chapters as $chapter)
-                             <div class="row m-2 shadow">
+    @foreach($chapters as $chapter)
+        <div class="row m-2 shadow">
             <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" id="headingOne">
@@ -490,9 +490,7 @@
              
             </div>
         </div>
-
-
-        @endforeach
+    @endforeach
 
 
 
