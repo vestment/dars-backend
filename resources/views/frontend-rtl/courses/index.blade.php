@@ -2,36 +2,7 @@
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
-    <style>
-        .couse-pagination li.active {
-            color: #333333!important;
-            font-weight: 700;
-        }
-        .page-link {
-            position: relative;
-            display: block;
-            padding: .5rem .75rem;
-            margin-left: -1px;
-            line-height: 1.25;
-            color: #c7c7c7;
-            background-color: white;
-            border: none;
-        }
-        .page-item.active .page-link {
-            z-index: 1;
-            color: #333333;
-            background-color:white;
-            border:none;
-
-        }
-        ul.pagination{
-            display: inline;
-            text-align: center;
-        }
-        .listing-filter-form select{
-            height:50px!important;
-        }
-    </style>
+    <link rel="stylesheet" href="../../assets-rtl/css/course.css"/>
 @endpush
 @section('content')
 
@@ -91,7 +62,122 @@
                                            @if($courses->count() > 0)
 
                                         @foreach($courses as $course)
+                                            <div class="col-lg-4 col-md-6">
+                                                <div class="best-course-pic-text relative-position">
+                                                    <div class="best-course-pic piclip relative-position"
+                                                            @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                                                            <div class="course-price text-center gradient-bg">
+                                                            @if($course->free == 1)
+                                                                <span>{{trans('labels.backend.courses.fields.free')}}</span>
+                                                            @else
+                                                                <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
+                                                            @endif
+                                                        </div>
+                                                        <!-- <div class="course-details-btn">
+                                                            <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
+                                                                <i class="fas fa-arrow-right"></i></a>
+                                                        </div>
+                                                        <div class="blakish-overlay"></div> -->
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <h3 class="card-title titleofcard">{{$course->title}}</h3>
+                                                        <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="course-rate ul-li">
+                                                                <ul>
+                                                                    @for($i=1; $i<=(int)$course->rating; $i++)
+                                                                        <li><i class="fas fa-star"></i></li>
+                                                                    @endfor
+                                                                </ul>
+                                                            </div>
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <span class="ml-1  rate">4.4 (222)</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="course-meta my-1">
+                                                            <span class="course-category" style="margin-right:-2%">
+                                                                <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
+                                                            </span>
+                                                            <span class="course-author" style="margin-right:-2%"><a href="#">{{ $course->students()->count() }}
+                                                                    @lang('labels.frontend.course.students')</a></span>
+                                                            <!-- <span class="course-author"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd" d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 0 0 .014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 0 0 .022.004zm7.973.056v-.002.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                                                                            </svg> {{ $course->students()->count() }}Students</span> -->
+                                                            <span class="course-author" style="margin-right:-2%">
+                                                                    {{ $course->lessons()->count() }}    @lang('labels.backend.courses.lessons') 
+                                                            </span>
+                                                    </div>
+                                                    <div class="row my-3">
+                                                            <div class="col-3">
+                                                                <img src="../../assets/img/course/c-3.jpg" class="rounded-circle">
+                                                            </div>
+                                                            <div class="col-9">
+                                                                <div class="row">
+                                                                <div class="col-12 metatitle">{{$course->meta_title}}</div>
+                                                                <div class="col-12 metadescr">{{$course->meta_description}}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="col-10">
+                                                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                                                        <button type="submit" class="btn btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart') 
+                                                                            <i class="fa fa-shopping-bag ml-1"></i>
+                                                                        </button> 
+                                                                    
+                                                                @elseif(!auth()->check())
+                                                                    @if($course->free == 1)
+                                                                                <a id="openLoginModal"
+                                                                                class="btn btn-block btnAddCard"
+                                                                                data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
+                                                                                            class="fas fa-caret-right"></i></a>
+                                                                        @else
+               
+                                                                            <a id="openLoginModal"
+                                                                                class="btn btn-block btnAddCard"
+                                                                                data-target="#myModal" href="#">@lang('labels.frontend.course.add_to_cart') 
+                                                                                <i class="fa fa-shopping-bag"></i>
+                                                                            </a>
+                                                                        @endif
+                                                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
 
+                                                                    @if($course->free == 1)
+                                                                            <form action="{{ route('cart.getnow') }}" method="POST">
+                                                                                @csrf
+                                                                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                                                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                                <button class="btn btn-block btnAddCard"
+                                                                                        href="#">@lang('labels.frontend.course.get_now') <i
+                                                                                            class="fas fa-caret-right"></i></button>
+                                                                            </form>
+                                                                    @else
+                                                                            <form action="{{ route('cart.addToCart') }}" method="POST">
+                                                                                @csrf
+                                                                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                                                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                                <button type="submit"
+                                                                                        class="btn btn-block btnAddCard">
+                                                                                    @lang('labels.frontend.course.add_to_cart') <i
+                                                                                            class="fa fa-shopping-bag"></i></button>
+                                                                            </form>
+                                                                    @endif
+                                                                @endif
+                                                            </div>
+                                                            <div class="col-2 "  style="margin-right: -27px;">
+                                                                <a href="{{ route('courses.show', [$course->slug]) }}" class="btn btnWishList">
+                                                                    <i class="far fa-bookmark"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                            </div>
+
+                                                <!-- /*his rtl */
                                             <div class="col-md-4">
                                                 <div class="best-course-pic-text relative-position">
                                                     <div class="best-course-pic relative-position" @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
@@ -140,7 +226,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                     @endforeach
                                     @else
                                             <h3>@lang('labels.general.no_data_available')</h3>

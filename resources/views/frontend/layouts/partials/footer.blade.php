@@ -24,6 +24,30 @@
                     </div>
                     <div class="col-md-9">
                         <div class="row">
+
+                        <!-- @if($footer_data->section1->status == 1)
+                                @php
+                                    $section_data = section_filter($footer_data->section1)
+                                @endphp
+
+                                @include('frontend.layouts.partials.footer_section',['section_data' => $section_data])
+                            @endif
+
+                            @if($footer_data->section2->status == 1)
+                                @php
+                                    $section_data = section_filter($footer_data->section2)
+                                @endphp
+
+                                @include('frontend.layouts.partials.footer_section',['section_data' => $section_data])
+                            @endif
+
+                            @if($footer_data->section3->status == 1)
+                                @php
+                                    $section_data = section_filter($footer_data->section3)
+                                @endphp
+
+                                @include('frontend.layouts.partials.footer_section',['section_data' => $section_data])
+                        @endif -->
                             <div class="col footersec">
                                 <h2>Featured Course</h2>
                                 <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
@@ -61,7 +85,8 @@
                     @if(($footer_data->social_links->status == 1) && (count($footer_data->social_links->links) > 0))
                         <div class="col-md-3">
                             <div class="footer-social ul-li footersec ">
-                                <h2>Follow Us</h2>
+                            <h2>@lang('labels.frontend.layouts.partials.follow_us')</h2>
+                                <!-- <h2>Follow Us</h2> -->
                                 <ul>
                                     @foreach($footer_data->social_links->links as $item)
                                         <li><a href="{{$item->link}}"><i class="{{$item->icon}}"></i></a></li>
@@ -78,7 +103,7 @@
                                 <h2 >@lang('labels.frontend.layouts.partials.subscribe_newsletter')</h2>
 
                                 <div class="subs-form relative-position">
-                                    <form action="{{route("subscribe")}}" method="post">
+                                    <form action="{{route('subscribe')}}" method="post">
                                         @csrf
                                         <input class="email" required name="subs_email" type="email" placeholder="@lang('labels.frontend.layouts.partials.email_address').">
                                         <div class="nws-button text-center  text-uppercase">

@@ -6051,10 +6051,17 @@ ul.product-tab li.active:after {
   font-weight: 700;
   color: #333333;
 }
+.t-b{
+  color: black;
+}
 
 .purchase-list .in-total span {
   color: #17d0cf;
   float: right;
+}
+
+.bt-pay{
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
 }
 
 /*---------------------------------------------------- */
@@ -6301,7 +6308,7 @@ ul.product-tab li.active:after {
 
 .divfixed{
   position: absolute;
-  top: 40%;
+  top: 38%;
   -webkit-transform: translateY(-40%);
           transform: translateY(-40%);
   right: 80px;

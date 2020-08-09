@@ -11,6 +11,8 @@ use App\Models\Test;
 use App\Models\TestsResult;
 use App\Models\VideoProgress;
 use Illuminate\Http\Request;
+use App\Models\Chapter;
+
 
 class LessonsController extends Controller
 {
@@ -37,7 +39,9 @@ class LessonsController extends Controller
         $test_result = "";
         $completed_lessons = "";
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
-
+        $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
+        // dd($course_id);
+// dd($chapters);
         if ($lesson == "") {
             $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->firstOrFail();
             $lesson->full_text = $lesson->description;
@@ -97,7 +101,7 @@ class LessonsController extends Controller
             ->pluck('model_id')
             ->toArray();
 
-        return view($this->path . '.courses.lesson', compact('lesson', 'previous_lesson', 'next_lesson', 'test_result',
+        return view($this->path . '.courses.lesson', compact('chapters','lesson', 'previous_lesson', 'next_lesson', 'test_result',
             'purchased_course', 'test_exists', 'lessons', 'completed_lessons'));
     }
 

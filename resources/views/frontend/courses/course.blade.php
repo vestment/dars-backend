@@ -89,7 +89,7 @@
                             @elseif(!auth()->check())
                                 @if($course->free == 1)
                                     <a id="openLoginModal"
-                                    class="btn btn-outline-light m-1"
+                                    class="btn btn-outline-light m-1 addcart"
                                     data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
                                                 class="fas fa-caret-right"></i></a>
                                 @else
@@ -97,7 +97,7 @@
 
 
                                 <button id="openLoginModal" type="submit"
-                                data-target="#myModal" href="#" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                data-target="#myModal" href="#" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
                                     </button>
 
@@ -138,7 +138,7 @@
                             @if($continue_course)
 
                             <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}"
-                            class="genius-btn btn-block text-white  gradient-bg text-center text-uppercase  bold-font">
+                            class="btn btn-outline-light m-1 addcart">
 
                                 @lang('labels.frontend.course.continue_course')
 
@@ -147,17 +147,70 @@
 
                         @endif
 
-
-
-
-
-
-
-
                             <!-- {{-- <button type="submit" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                             @lang('labels.frontend.course.add_to_cart')
                             </button> --}} -->
-                           
+                   
+
+
+            <!-- wishlist -->
+            @if (!$purchased_course)
+                    
+                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                        <button class="btn btn-outline-light m-1 addcart"
+                                type="submit">@lang('labels.frontend.course.added_to_wishlist')
+                        </button>
+                    @elseif(!auth()->check())
+                        @if($course->free == 1)
+                            <a id="openLoginModal"
+                            class="btn btn-outline-light m-1 addcart"
+                            data-target="#myModal" href="#">@lang('labels.frontend.course.wishlist') <i
+                                        class="fas fa-caret-right"></i></a>
+                        @else
+        
+
+
+                        <button id="openLoginModal" type="submit"
+                        data-target="#myModal" href="#" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            @lang('labels.frontend.course.wishlist')
+                            </button>
+
+                        @endif
+                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                        @if($course->free == 1)
+                            <form action="{{ route('wishlist') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                <button class="btn btn-outline-light m-1 addcart"
+                                        href="#">@lang('labels.frontend.course.wishlist') <i
+                                            class="fas fa-caret-right"></i></button>
+                            </form>
+                        @else
+                        
+                            <form action="{{ route('wishlist') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                <button type="submit" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.wishlist')
+                                    </button>
+                            </form>
+                        @endif
+
+
+                    @else
+                        <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                @endif
+
+            @endif
+
+
+
+
+
+
                             <button type="submt" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i>
                                 @lang('labels.frontend.course.wishlist')
                             </button>
@@ -222,12 +275,40 @@
                 <p > <i class="fa fa-angle-down p-2" aria-hidden="true"></i>
                     Nothing except a positive attitude!</p>
             </div>
+ 
 
             
             <div class="col-4 m-5 shadow-lg divfixed paddingleft">
-                <div class="col divpoly embed-responsive embed-responsive-16by9">
+            <!-- video -->
+
+                            @if($course->mediaVideo && $course->mediavideo->count() > 0)
+                                <div class="course-single-text">
+                                    @if($course->mediavideo != "")
+                                        <div class="course-details-content mt-3">
+                                            <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
+                                                @if($course->mediavideo->type == 'youtube')
+
+
+                                                    <div id="player" class="js-player col divpoly embed-responsive embed-responsive-16by9" data-plyr-provider="youtube"
+                                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                                @elseif($course->mediavideo->type == 'vimeo')
+                                                    <div id="player" class="js-player" data-plyr-provider="vimeo"
+                                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                                @elseif($course->mediavideo->type == 'upload')
+                                                    <video poster="" id="player" class="js-player" playsinline controls>
+                                                        <source src="{{$course->mediavideo->url}}" type="video/mp4"/>
+                                                    </video>
+                                                @elseif($course->mediavideo->type == 'embed')
+                                                    {!! $course->mediavideo->url !!}
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                <!-- <div class="col divpoly embed-responsive embed-responsive-16by9">
                         <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/XHOmBV4js_E" allowfullscreen></iframe>
-                </div>
+                </div> -->
                     {{-- <h3>hello</h3> --}}
                 <div class="col mr-3 pricebottom">
                     <h3 class="font49">
@@ -316,7 +397,88 @@
 
  <!-- Start of course section
         ============================================= -->
-<section id="course-page" class="course-page-section">
+
+
+
+
+        <section id="course-page" class="course-page-section">
+    <div class="container">
+        <div class="row  coursecontent d-block m-2">
+            <h2>@lang('labels.frontend.course.course_content') </h2>
+        </div>
+        <div class="row smpara d-block m-2">
+            <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') •
+                <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
+        </div>
+        
+        @foreach($chapters as $chapter)
+
+        <div class="row m-2 shadow">
+            @if(count($lessons)  > 0)
+                @php $count = 0; @endphp
+                @foreach($lessons as $key=> $lesson)
+                    @if($lesson->model && $lesson->model->published == 1)
+                        @php $count++ @endphp
+                        <div class="accordion" id="accordionExample">
+                            @if(auth()->check())
+                                @if(in_array($lesson->model->id,$completed_lessons))
+                                    <div class="position-absolute" style="right: 0;top:0px">
+                                        <span class="gradient-bg p-1 text-white font-weight-bold completed">@lang('labels.frontend.course.completed')</span>
+                                    </div>
+                                @endif
+                            @endif
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                                        {{$chapter->title}}
+                                        <!-- Chapter 1  -->
+                                            <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+                                        </button>
+                                        </h2>
+                                        @if($lesson->model_type == 'App\Models\Test')
+                                                            <div class="leanth-course">
+                                                                <span>@lang('labels.frontend.course.test')</span>
+                                                            </div>
+                                                        @endif
+                                    </div>
+                            
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="bordered">
+                                            @if($lesson->model_type == 'App\Models\Test')
+                                                            {{ mb_substr($lesson->model->description,0,20).'...'}}
+                                                        @else
+                                                            {{$lesson->model->short_text}}
+
+                                                        @endif
+                                                        @if(auth()->check())
+
+                                                            @if(in_array($lesson->model->id,$completed_lessons))
+                                                                <div>
+                                                                    <a class="btn btn-warning mt-3"
+                                                                       href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$lesson->model->slug])}}">
+                                                                        <span class=" text-white font-weight-bold ">@lang('labels.frontend.course.go') ></span>
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+                                                <!-- <p class="subtitle2"> Adding Value to Customers- Episode 1 </p> -->
+                                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>              
+                        </div>
+                    @endif
+                @endforeach
+            @endif
+        </div>
+        @endforeach
+
+    </div>
+</section>
+<!-- <section id="course-page" class="course-page-section">
     <div class="container">
         <div class="row  coursecontent d-block m-2">
             <h2>@lang('labels.frontend.course.course_content') </h2>
@@ -327,6 +489,8 @@
         </div>
         
         <div class="row m-2 shadow">
+        
+
             <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" id="headingOne">
@@ -391,7 +555,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
  <!-- end of course content section -->
 
 
