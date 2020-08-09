@@ -1,4 +1,4 @@
-<section id="contact-area" class="contact-area-section backgroud-style">
+<section id="contact-area" class="c">
     <div class="container">
         <div class="contact-area-content">
             <div class="row">

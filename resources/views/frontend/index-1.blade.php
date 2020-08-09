@@ -131,8 +131,8 @@
     @if(($sections->reasons->status != 0) || ($sections->testimonial->status != 0))
         <!-- Start of why choose us section
         ============================================= -->
-        <section id="why-choose-us" class="why-choose-us-section">
-            <div class="jarallax  backgroud-style">
+        <section id="why-choose-us" class="">
+            <div class=" ">
                 <div class="container">
                     @if($sections->reasons->status == 1)
 
@@ -239,23 +239,35 @@
     @if($sections->teachers->status == 1)
         <!-- Start of course teacher
         ============================================= -->
-        <section id="course-teacher" class="course-teacher-section">
-            <div class="jarallax">
+        <section id="course-teacher" class="course-teacher-section p-5">
+            <div class="">
                 <div class="container">
-                    <div class="section-title mb20 headline text-center ">
-                        <span class="subtitle text-uppercase">@lang('labels.frontend.home.our_professionals')</span>
-                        <h2>{{env('APP_NAME')}} <span>@lang('labels.frontend.home.teachers').</span></h2>
+                    <div class=" mb20 headline p-5 mb-5">
+                        <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
+                        <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.Instructors').</span></h1>
                     </div>
 
-                    <div class="teacher-list">
-                        <div class="row justify-content-center">
+                    <div class="teacher-list tech-pics">
+                        <div class="row justify-content-center pb-5">
                             <!-- /teacher -->
                             @if(count($teachers)> 0)
                                 @foreach($teachers as $item)
-                                    <div class="col-md-3">
-                                        <div class="teacher-img-content ">
-                                            <div class="teacher-cntent">
-                                                <div class="teacher-social-name ul-li-block">
+                                    <div class="col-md-3 " >
+                                        <div class="text-center ">
+                                            <div class="bg-card">
+                                            <div >
+                                                <div class="finger-img">
+                                                    <img src="/assets/img/banner/01.png" alt="">
+                                                </div>
+                                                    <div class="prof-img ">
+                                                        <img class="teacher-image p-3" src="{{$item->picture}}"  alt="">
+                                                    </div>
+                                                   
+                                                </div>
+                                                <div class="teacher-social-name ul-li-block pt-3">
+                                                <div class="teacher-name">
+                                                        <span>{{$item->full_name}}</span>
+                                                    </div>
                                                     <ul>
                                                         <li><a href="{{'mailto:'.$item->email}}"><i
                                                                         class="fa fa-envelope"></i></a></li>
@@ -263,33 +275,74 @@
                                                             <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i
                                                                         class="fa fa-comments"></i></a></li>
                                                     </ul>
-                                                    <div class="teacher-name">
-                                                        <span>{{$item->full_name}}</span>
-                                                    </div>
+                                                   
                                                 </div>
-                                                <div class="teacher-img-category">
-                                                    <div class="teacher-img">
-                                                        <img src="{{$item->picture}}" style="height: 100%" alt="">
-                                                        {{--<div class="course-price text-uppercase text-center gradient-bg">--}}
-                                                        {{--<span>Featured</span>--}}
-                                                        {{--</div>--}}
-                                                    </div>
-                                                    {{--<div class="teacher-category float-right">--}}
-                                                    {{--<span class="st-name">{{$item->name}} </span>--}}
-                                                    {{--</div>--}}
-                                                </div>
+                                               
                                             </div>
                                         </div>
                                     </div>
+                                  
+                                   
                                 @endforeach
                             @endif
                         </div>
 
-                        <div class="genius-btn gradient-bg text-center text-uppercase ul-li-block bold-font ">
+                        <div class="genius-btn gradient-bg text-center text-uppercase ul-li-block bold-font">
                             <a href="{{route('teachers.index')}}">@lang('labels.frontend.home.all_teachers')<i
                                         class="fas fa-caret-right"></i></a>
                         </div>
                     </div>
+
+                    <div id="carouselExampleControls" class="carousel slide tech-slider" data-ride="carousel">
+                   
+                            <div class="carousel-inner">
+                                @if(count($teachers)> 0)
+                                @foreach($teachers as $key=>$item)
+                                {{--@php $key++; @endphp--}}
+                                    <div class="carousel-item @if($key == 0) active @endif ">
+                                    <div class="text-center ">
+                                            <div class="bg-card">
+                                            <div >
+                                                <div class="finger-img">
+                                                    <img src="/assets/img/banner/01.png" alt="">
+                                                </div>
+                                                    <div class="prof-img ">
+                                                        <img class="teacher-image p-3" src="{{$item->picture}}"  alt="">
+                                                    </div>
+                                                   
+                                                </div>
+                                                <div class="teacher-social-name ul-li-block pt-3">
+                                                <div class="teacher-name">
+                                                        <span>{{$item->full_name}}</span>
+                                                    </div>
+                                                    <ul>
+                                                        <li><a href="{{'mailto:'.$item->email}}"><i
+                                                                        class="fa fa-envelope"></i></a></li>
+                                                        <li>
+                                                            <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i
+                                                                        class="fa fa-comments"></i></a></li>
+                                                    </ul>
+                                                   
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+    </div>
+   
+  @endforeach
+                            @endif
+   
+  </div>
+
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
                 </div>
             </div>
         </section>

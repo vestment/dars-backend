@@ -1382,7 +1382,7 @@ return array (
       'search_courses' => '<span>Search</span> Courses.',
       'students_enrolled' => 'Students Enrolled',
       'online_available_courses' => 'Online Available Courses',
-      'teachers' => 'Teachers',
+      'Instructors' => 'Instructors',
       'academies' => 'Academies',
       
 
@@ -1565,7 +1565,7 @@ return array (
     'bank_details' => 
     array (
       'name' => 'Bank Name',
-      'bank_code' => 'Bank Code',
+      'title' => 'Title',
       'account' => 'Account Number',
       'holder_name' => 'Account Name',
       'account_number' => 'Account Number',
