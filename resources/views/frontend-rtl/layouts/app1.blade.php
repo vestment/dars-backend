@@ -169,10 +169,9 @@
                                         @else
                                             <li>
                                                 <div class="log-in mt-0">
-                                                    <a id="openLoginModal" data-target="#myModal"
-                                                       href="#">@lang('navs.general.login')</a>
-                                                    <!-- The Modal -->
-                                                    {{--@include('frontend.layouts.modals.loginModal')--}}
+                                                    <a 
+                                                       href="{{ url('login/ar') }}">@lang('navs.general.login')</a>
+                                                  
                                                 </div>
                                             </li>
                                         @endif

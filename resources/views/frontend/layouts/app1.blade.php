@@ -162,9 +162,9 @@
                                         @else
                                             <li>
                                                 <div class="log-in mt-0">
-                                                    <a id="openLoginModal" data-target="#myModal"
-                                                    href="{{ route('login.index') }}">@lang('navs.general.login')</a>
-                                                    {{--@include('frontend.layouts.modals.loginModal')--}}
+                                                    <a 
+                                                    href="{{ url('login/en') }}">@lang('navs.general.login')</a>
+                                                   
 
                                                 </div>
                                             </li>

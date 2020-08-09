@@ -70,6 +70,39 @@ return array (
       'edit' => 'Edit Test',
       'view' => 'View Tests',
     ),
+
+
+    'login' => 
+    array (
+      'welcome' => 'Welcome back!',
+      'please_login' => 'Please login to your account',
+      'user_name' => 'User Name',
+      'password' => 'Password',
+      'remember' => 'Remember me',
+      'forgot' => 'Forgot Password',
+      'login' => 'Login',
+      'facebook' => 'Facebook',
+      'google' => 'Google',
+      'login_with' => 'login with',
+      'sign_up' => 'SIGN UP',
+      'terms_of_use' => 'Term of use. Privacy policy',
+    ),
+
+    'sign_up' => 
+    array (
+      'first_name' => 'First name',
+      'last_name' => 'Last name',
+      'user_name' => 'User Name',
+      'email' => 'Email',
+      'password' => 'Password',
+      'confirm_password' => 'Confirm Password',
+      'agreement' => 'I agree with terms and conditions',
+      'sign_up' => 'Sign up',
+      'already_have_account' => 'Already have an account? Sign in.',
+      'terms_of_use' => 'Term of use. Privacy policy',
+    ),
+
+    
     'orders' => 
     array (
       'fields' => 
@@ -1394,6 +1427,7 @@ return array (
     ),
     'modal' => 
     array (
+
       'new_user_note' => 'New User? Register Here',
       'registration_message' => 'Registration Successful. Please LogIn',
       'my_account' => 'My Account',

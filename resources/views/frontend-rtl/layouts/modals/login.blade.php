@@ -14,13 +14,21 @@
     <title>E-Council</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200&display=swap" rel="stylesheet">
     <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
     <style>
 body{
-    font-family: ubuntu;
+    font-family:Cairo;
 }
 .imgDiv{
     background-image: url("{{ asset('img/frontend/course/01.svg') }}");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin-left: -3.5%;
+    
+}
+.imgDivReg{
+    background-image: url("{{ asset('img/frontend/course/02.svg') }}");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     margin-left: -3.5%;
@@ -69,48 +77,46 @@ body{
 }
 </style>
 </head>
-
 <body>
 @if(!auth()->check())
 
-    <div class="container-fluid">
+<div class="container-fluid">
       <div class="row">
-        <div  class="col-md-6 imgDiv">
-        </div>
+       
         <div class="formDiv col-lg-6 text-md-left text-center">
         <div class="row col-lg-8"> 
        
-          <div class="col-md-10 offset-md-1">
+          <div class="col-md-10 offset-md-1 text-right">
             <img class="img-fluid"  src="{{ asset('img/frontend/course/E-Council.png') }}">
           </div>
-          <div class="col-md-10 offset-md-1 mb-3">
-            <h2>@lang('labels.backend.login.welcome')</h2>
-          <h6 class="text-muted">@lang('labels.backend.login.please_login')</h6>
+          <div class="col-md-10 offset-md-1 mb-3 text-right">
+            <h2>@lang('labels.frontend.login.welcome')</h2>
+          <h6 class="text-muted">@lang('labels.frontend.login.please_login')</h6>
           </div>
-          <div class="col-md-10 offset-md-1">
+          <div class="col-md-10 offset-md-1 text-right">
           <span class="success-response text-success">{{(session()->get('flash_success'))}}</span>
           <form id="loginForm" action="{{route('frontend.auth.login.post')}}"
                                   method="POST" enctype="multipart/form-data">
                                   @csrf
-            <div class="form-group ">
-              <label for="exampleInputEmail1">@lang('labels.backend.login.user_name')</label>
+            <div class="form-group text-right">
+              <label for="exampleInputEmail1">@lang('labels.frontend.login.user_name')</label>
               <input name="email" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
               <span id="login-email-error" class="text-danger"></span>
             </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">@lang('labels.backend.login.password')</label>
+            <div class="form-group text-right">
+              <label for="exampleInputPassword1">@lang('labels.frontend.login.password')</label>
               <input name="password" type="password" class="form-control" id="exampleInputPassword1">
               <span id="login-password-error" class="text-danger"></span>
             </div>
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6 text-right">
                 <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">@lang('labels.backend.login.remember')</label>
+                <label class="form-check-label" for="exampleCheck1">@lang('labels.frontend.login.remember')</label>
               </div>
               </div>
               <div class="col-md-6">
-                <a  href="{{ route('frontend.auth.password.reset') }}" class="text-muted">@lang('labels.backend.login.forgot')</a>
+                <a  href="{{ route('frontend.auth.password.reset') }}" class="text-muted">@lang('labels.frontend.login.forgot')</a>
               </div>
               @if(config('access.captcha.registration'))
                                     <div class="contact-info mb-2 text-center">
@@ -118,38 +124,39 @@ body{
                                         {{ html()->hidden('captcha_status', 'true') }}
                                         <span id="login-captcha-error" class="text-danger"></span>
 
-                                    </div><!--col-->
+                                    </div>
                                 @endif
             </div>
-            <button type="submit"  value="Submit" class="btn loginBtn text-white col-12 mt-5">@lang('labels.backend.login.login')</button>
+            <button type="submit"  value="Submit" class="btn loginBtn text-white col-12 mt-5">@lang('labels.frontend.login.login')</button>
           </form>
-          <h5 class="mt-5"> @lang('labels.backend.login.login_with') </h5>
-          <div class="row mt-3">
+          <h5 class="mt-5"> @lang('labels.frontend.login.login_with') </h5>
+          <div class="row mt-3 ">
             <div class="col-md-6">
-              <a  href="{{ url('login/facebook') }}" class="btn btn-block facebookBtn text-white"><img src="{{ asset('img/frontend/course/facebook.svg') }}">@lang('labels.backend.login.facebook')</a>
+              <a  href="{{ url('login/facebook') }}" class="btn btn-block facebookBtn text-white"><img src="{{ asset('img/frontend/course/facebook.svg') }}">@lang('labels.frontend.login.facebook')</a>
             </div>
             <div class="col-md-6 mt-3 mt-md-0">
-              <a   class="btn btn-block googleBtn text-white"><img src="{{ asset('img/frontend/course/google.svg') }}">@lang('labels.backend.login.google')</a>
+              <a   class="btn btn-block googleBtn text-white"><img src="{{ asset('img/frontend/course/google.svg') }}">@lang('labels.frontend.login.google')</a>
             </div>
           </div>
-            <div><a href="{{ route('register.index') }}" class="text-dark col-12 d-flex justify-content-center mt-5">@lang('labels.backend.login.sign_up')</a></div>
-            <div class="mb-2"><a href="#" class="text-dark col-12 d-flex justify-content-center mt-3">@lang('labels.backend.login.terms_of_use')</a></div>
+            <div><a href="{{ route('registerrtl.indexrtl') }}" class="text-dark col-12 d-flex justify-content-center mt-5">@lang('labels.frontend.login.sign_up')</a></div>
+            <div class="mb-2"><a href="#" class="text-dark col-12 d-flex justify-content-center mt-3">@lang('labels.frontend.login.terms_of_use')</a></div>
         
-     
         </div>  
         </div>
+        
       </div>
+      <div  class="col-md-6 imgDiv">
+        </div>
     </div>
 
 
-
- @endif
+    @endif
  @push('after-scripts')
 
 
 
 
- <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
     <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
@@ -293,7 +300,6 @@ body{
         });
     </script>
 
-  
 
   
 </body>
