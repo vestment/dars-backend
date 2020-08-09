@@ -6307,7 +6307,7 @@ ul.product-tab li.active:after {
 
 .divfixed{
   position: absolute;
-  top: 40%;
+  top: 38%;
   -webkit-transform: translateY(-40%);
           transform: translateY(-40%);
   right: 80px;

@@ -89,7 +89,7 @@
                             @elseif(!auth()->check())
                                 @if($course->free == 1)
                                     <a id="openLoginModal"
-                                    class="btn btn-outline-light m-1"
+                                    class="btn btn-outline-light m-1 addcart"
                                     data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
                                                 class="fas fa-caret-right"></i></a>
                                 @else
@@ -97,7 +97,7 @@
 
 
                                 <button id="openLoginModal" type="submit"
-                                data-target="#myModal" href="#" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                data-target="#myModal" href="#" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
                                     </button>
 
@@ -327,6 +327,7 @@
         </div>
         
         <div class="row m-2 shadow">
+        
             <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" id="headingOne">

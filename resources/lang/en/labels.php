@@ -75,6 +75,39 @@ return array (
       'edit' => 'Edit Test',
       'view' => 'View Tests',
     ),
+
+
+    'login' => 
+    array (
+      'welcome' => 'Welcome back!',
+      'please_login' => 'Please login to your account',
+      'user_name' => 'User Name',
+      'password' => 'Password',
+      'remember' => 'Remember me',
+      'forgot' => 'Forgot Password',
+      'login' => 'Login',
+      'facebook' => 'Facebook',
+      'google' => 'Google',
+      'login_with' => 'login with',
+      'sign_up' => 'SIGN UP',
+      'terms_of_use' => 'Term of use. Privacy policy',
+    ),
+
+    'sign_up' => 
+    array (
+      'first_name' => 'First name',
+      'last_name' => 'Last name',
+      'user_name' => 'User Name',
+      'email' => 'Email',
+      'password' => 'Password',
+      'confirm_password' => 'Confirm Password',
+      'agreement' => 'I agree with terms and conditions',
+      'sign_up' => 'Sign up',
+      'already_have_account' => 'Already have an account? Sign in.',
+      'terms_of_use' => 'Term of use. Privacy policy',
+    ),
+
+    
     'orders' => 
     array (
       'fields' => 
@@ -274,6 +307,46 @@ return array (
       'create' => 'Create Lesson',
       'edit' => 'Edit Lesson',
       'view' => 'View Lessons',
+      'video_guide' => '<p class="mb-1"><b>Youtube :</b> Go to Youtube -> Go to video you want to display -> click on share button below video. Copy that links and paste in above text box </p>
+<p class="mb-1"><b>Vimeo :</b> Go to Vimeo -> Go to video you want to display -> click on share button and copy paste video url here </p>
+<p class="mb-1"><b>Upload :</b> Upload <b>mp4</b> file in file input</p>
+<p class="mb-1"><b>Embed :</b> Copy / Paste embed code in above text box</p>',
+      'remove' => 'Remove',
+    ),
+    'chapters' => 
+    array (
+      'slug_placeholder' => 'Input slug or it will be generated automatically',
+      'fields' => 
+      array (
+        'course' => 'Course',
+        'title' => 'Title',
+        'slug' => 'Slug',
+        'lesson_image' => 'Chapter Image',
+        'short_text' => 'Short Text',
+        'full_text' => 'Full Text',
+        'downloadable_files' => 'Downloadable Files',
+        'free_lesson' => 'Free Chapter',
+        'published' => 'Published',
+        'position' => 'Position',
+        'youtube_videos' => 'YouTube Videos',
+        'add_pdf' => 'Add PDF',
+        'add_video' => 'Add Video',
+        'media_video' => 'Media Video',
+        'media_audio' => 'Media Audio',
+        'media_pdf' => 'Media PDF',
+        'add_audio' => 'Add Audio',
+      ),
+      'max_file_size' => '(max file size 5MB)',
+      'short_description_placeholder' => 'Input short description of Chapter',
+      'select_course' => 'Select Course',
+      'yt_note' => '<b>Instructions to add Video link: </b><br> Go to youtube -> open video -> right click on video and <b>Copy Video URL</b> and paste here.<br> If you want to add multiple videos, then separate them with <b>,</b> (Comma) Sign.',
+      'vimeo_note' => '<b>Instructions to add Video link: </b><br> Go to vimeo -> open video -> right click on video and <b>Copy Video URL</b> and paste here.<br> If you want to add multiple videos, then separate them with <b>,</b> (Comma) Sign.',
+      'title' => 'Chapters',
+      'enter_video_url' => 'Enter video data',
+      'enter_video_embed_code' => 'Enter video embed code',
+      'create' => 'Create Chapter',
+      'edit' => 'Edit Chapter',
+      'view' => 'View Chapters',
       'video_guide' => '<p class="mb-1"><b>Youtube :</b> Go to Youtube -> Go to video you want to display -> click on share button below video. Copy that links and paste in above text box </p>
 <p class="mb-1"><b>Vimeo :</b> Go to Vimeo -> Go to video you want to display -> click on share button and copy paste video url here </p>
 <p class="mb-1"><b>Upload :</b> Upload <b>mp4</b> file in file input</p>
@@ -1411,6 +1484,7 @@ return array (
     ),
     'modal' => 
     array (
+
       'new_user_note' => 'New User? Register Here',
       'registration_message' => 'Registration Successful. Please LogIn',
       'my_account' => 'My Account',

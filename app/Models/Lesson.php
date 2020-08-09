@@ -174,7 +174,7 @@ class Lesson extends Model
     }
     public function chapter(){
 
-        return $this->belongsto('App\Models\chapters');
+        return $this->belongsto('App\Models\Chapter');
     
     }
 

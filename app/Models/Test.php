@@ -20,7 +20,7 @@ class Test extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'description','slug', 'published', 'course_id', 'lesson_id'];
+    protected $fillable = ['title', 'description','slug', 'published', 'course_id', 'lesson_id','chapter_id'];
 
 
     protected static function boot()
@@ -93,10 +93,11 @@ class Test extends Model
         return false;
 
     }
-    public function chapter(){
 
-        return $this->belongsto('App\Models\Chapters');
-    
+
+    public function chapter()
+    {
+        return $this->belongsTo(Chapter::class, 'chapter_id')->withTrashed();
     }
 
 }

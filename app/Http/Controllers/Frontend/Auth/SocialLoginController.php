@@ -45,8 +45,12 @@ class SocialLoginController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|mixed
      */
-    public function login(Request $request, $provider)
+    public function login( $provider)
     {
+        // $provider = "facebook";
+        // $request->mail = "s@gmail.com";
+        $request = new request();
+        
         // There's a high probability something will go wrong
         $user = null;
 
