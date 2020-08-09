@@ -77,7 +77,7 @@
                     </div>
                 @endif
                 <div class="row">
-                    <div class="col-lg-9 col-md-12 ">
+                    <div class="col-lg-12 col-md-12 ">
                         <div class="order-item mb30 course-page-section">
                             <div class="section-title-2  headline text-left">
                                 <h2>@lang('labels.frontend.cart.order_item')</h2>
@@ -355,13 +355,15 @@
                                                 @include('frontend.cart.partials.order-stats')
                                             </div>
                                         @else
-                                        <div class="purchase-list mt15 ul-li-block">
-        
+                                        <div class="purchase-list mt15 ul-li-block row">
+                                            <div class="col-6">
                                                 <span class="in-total text-uppercase">@lang('labels.frontend.cart.total') </span>
                                                        
                                                 <span>(0-items)</span>
+                                            </div>
+                                            <div class="col-6">
                                                 <span>{{$appCurrency['symbol']}}0.00</span>
-                                                
+                                            </div>
                                             </div> 
         
                                         @endif

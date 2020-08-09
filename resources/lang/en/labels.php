@@ -1238,7 +1238,9 @@ return array (
       'invalid_coupon' => 'Invalid Coupon!',
       'amount' => 'Amount',
       'total_payable' => 'Total Payable',
-      'price' => 'Price',
+      'total_price' => 'Total Price',
+      'pay'=>'Pay'
+
     ),
     'contact' => 
     array (

@@ -6050,10 +6050,17 @@ ul.product-tab li.active:after {
   font-weight: 700;
   color: #333333;
 }
+.t-b{
+  color: black;
+}
 
 .purchase-list .in-total span {
   color: #17d0cf;
   float: right;
+}
+
+.bt-pay{
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
 }
 
 /*---------------------------------------------------- */

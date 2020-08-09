@@ -1207,6 +1207,11 @@ return array (
       'sub_total' => 'المجموع الفرعي',
       'total_payable' => 'مجموع المستحق',
       'wishlist' => 'قائمه المفضلات',
+      'action' => 'عمل',
+      'remove'=>'إزالة',
+      'your_shopping_cart'=>'سله مشترياتك',
+      'course_category' => 'فئة التدريب',
+      'category'=>'الفئة'
     ),
     'contact' => 
     array (
