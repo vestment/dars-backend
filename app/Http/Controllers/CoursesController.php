@@ -13,6 +13,8 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use Stripe\Customer;
 use Cart;
+use App\Models\TeacherProfile;
+
 
 class CoursesController extends Controller
 {
@@ -73,6 +75,8 @@ class CoursesController extends Controller
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with('publishedLessons')->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+        // $teacher_data = TeacherProfile::where('user_id', '=', $course_slug->id)->first();
+
         if(($course->published == 0) && ($purchased_course == false)){
             abort(404);
         }
