@@ -254,6 +254,10 @@ h6 {
 .pb10 {
   padding-bottom: 10px;
 }
+.voticon{
+  text-align: center;
+  font-size: 50px;
+}
 
 .gradient-bg,
 .modal-body .nws-button button,
@@ -404,14 +408,32 @@ h6 {
 
 .bg-header {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
-  padding-top: 7%;
-  padding-bottom: 515px;
+  padding-top: 6%;
+
 }
 .bgcolor {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
   padding-top: 7%;
-  padding-bottom: 215px;
+  padding-bottom: 315px;
 }
+.bg-header-ch {
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+  padding-top: 3%;
+  color: white;
+  /* padding-bottom: 515px; */
+
+}
+.type{
+  color: #eeeeee;
+  font-family: Open Sans;
+  font-weight: lighter;
+}
+.about{
+  font-family: Ubuntu;
+  font-weight: bold;
+  color:black
+}
+
 
 
 
@@ -470,6 +492,11 @@ h6 {
 /*Header Section*/
 
 /*----------------------------------------------------*/
+.bord{
+  border: 3px solid  lavender;
+ 
+ 
+}
 
 .main-menu-container {
   position: fixed;
@@ -3501,7 +3528,7 @@ button.alt-menu-btn.float-left {
 }
 
 .teacher-details-area {
-  padding: 80px 0px;
+  padding: 60px 0px;
 }
 
 .course-img {
@@ -3512,27 +3539,7 @@ button.alt-menu-btn.float-left {
   color: #333333;
 }
 
-.teacher-details-text .section-title-2 {
-  margin-bottom: 50px;
-}
 
-.teacher-details-text .section-title-2 h2 {
-  font-size: 30px;
-}
-
-.teacher-details-text .section-title-2 h2:after {
-  bottom: -45px;
-}
-
-.teacher-details-text .teacher-deg {
-  font-weight: 700;
-  font-size: 15px;
-  margin-top: 5px;
-}
-
-.teacher-details-text .teacher-deg span {
-  color: #17d0cf;
-}
 
 .teacher-desc-social {
   margin-bottom: 28px;
@@ -3569,23 +3576,23 @@ button.alt-menu-btn.float-left {
   color: #fff;
 }
 
-.teacher-address .address-details li {
-  color: #000;
-  font-size: 18px;
-  margin-bottom: 10px;
-  display: inline-block;
+ .address-details li {
+  color: white;
+  font-size: 30px;
+  display: inline;
+  margin-left:1% ;
+
 }
 
-.teacher-address .address-details li b {
+ .address-details li b {
   font-weight: 900;
 }
 
-.teacher-address .address-details li .addrs-icon {
-  height: 50px;
-  width: 50px;
+ .address-details li .addrs-icon {
+  
   text-align: center;
   line-height: 50px;
-  font-size: 20px;
+  font-size: 30px;
   border-radius: 5px;
   color: #fff;
   margin-right: 15px;
@@ -3593,7 +3600,7 @@ button.alt-menu-btn.float-left {
   background-color: #01a6fd;
 }
 
-.teacher-address .address-details li .add-info {
+ .address-details li .add-info {
   overflow: hidden;
   margin-top: 10px;
 }
@@ -4599,7 +4606,7 @@ ul.product-tab li.active:after {
 }
 
 .address-details li {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 500;
   color: #fff;
 }
@@ -6303,11 +6310,12 @@ ul.product-tab li.active:after {
   background-color: white;
   z-index: 1;
 
+
 }
 @media(max-width :1024px){
   .divfixed {
     top: 80%;
-    right: 18px;
+    right: -18px;
   }
 }
 @media(max-width :768px){
@@ -6337,26 +6345,44 @@ ul.product-tab li.active:after {
   right: 0;
   color:#00000075;
 }
-@media(max-width :425px){
+
+@media(max-width: 768px) {
+  .paragraph1 {
+    width: 100%;
+    left: -40px;
+    right: 0;
+    top: 40%;
+  }
+
+@media(max-width : 425px){
   .paragraph1 {
     top: 38%;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .paragraph1 {
-    width: 100%;
-    left: -40px;
-    right: 0;
-  }
+
   .paragraph1 h2{
     font-size: 20px;
   }
 }
 
+.paddingleft{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+}
 .divpoly{
-  clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% );
-  background-color: violet;
+  clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% );
+
+  /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+
+  /* background-color: violet; */
+}
+.pricebottom{
+  bottom: 40px;
 }
 .coursesec{
   padding-top: 35px;
@@ -6374,6 +6400,21 @@ ul.product-tab li.active:after {
 .coursecontent{
   font-size: 34px;
   color: #000;
+}
+.collapse{
+  border-style: ridge;
+}
+
+
+
+.pragchechout{
+ margin-top: 3%;
+
+}
+
+
+.w-td{
+  width:30%;
 }
 .smpara{
   font-size: 12px;
@@ -6466,3 +6507,51 @@ display: inline-block;
     display: none;
   }
 }
+/* style="opacity:0.9; width:15%;padding:10px; font-size:15px" */
+.buttoncart button {
+  opacity: 0.9;
+  width: 15%;
+  padding: 10px;
+  font-size: 15px;
+  height: 39px;
+}
+
+
+  @media(max-width :1024px){
+    .buttoncart button {
+      width: 17%;
+      padding: 2px;
+      font-size: 13px;
+      }
+    }
+    @media(max-width :425px){
+      .buttoncart button {
+        width: 24%;
+        padding: 2px;
+        font-size: 12px;
+        }
+      }
+
+
+.addcart{
+  opacity: 0.9 !important;
+  width: 200px !important;
+  padding: 10px !important;
+  font-size: 15px !important;
+}
+@media(max-width :1024px){
+  .addcart {
+    width: 100px !important;
+    padding: 8px !important;
+    font-size: 13px !important;
+    }
+  }
+@media(max-width :425px){
+  .addcart {
+    width: 100px !important;
+    padding: 6px !important;
+    font-size: 13px !important;
+    }
+  }
+
+  

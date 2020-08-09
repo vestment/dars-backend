@@ -2,7 +2,7 @@
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
-    <style>
+<style>
         .couse-pagination li.active {
             color: #333333 !important;
             font-weight: 700;
@@ -34,7 +34,66 @@
             display: inline;
             text-align: center;
         }
-    </style>
+        /* .best-course-pic-text .course-price{
+            bottom: 0%; top: 0%;
+        } */
+        .best-course-pic-text .best-course-pic {
+            width: 100%;
+        }
+       .card-title{
+        text-align: left;
+        font: Bold 15px Ubuntu;
+        letter-spacing: -0.2px;
+        color: #000000CC;
+        margin-top: -36px;
+    }
+    .rate{
+            text-align: left;
+            font-size:0.9rem;
+            letter-spacing: 0.01px;
+            color: #00000099;
+    }
+    .styleicon{
+        text-align: left;
+    font: Regular 12px Open Sans;
+    letter-spacing: 0px;
+    color: #00000099;
+    }
+    .x{
+        text-align: left;
+        font-size: 0.7rem;
+    letter-spacing: 0px;
+    color: #D2498B;
+    }
+    .y{
+        text-align: left;
+        font-size: 0.7rem;
+    letter-spacing: 0.01px;
+    color: #00000099;
+    }
+   .course-author{
+    font-size: 0.7rem;
+   }
+   .course-meta span {
+    font-size: 71%;
+    margin-right: 8%;
+    }
+    .best-course-pic{
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 0 94%);
+    }
+
+    .gradient-bg{
+        background: #D2498B 
+    }
+    .gradient-bg:hover{
+        background: #D2498B 
+    }
+    .best-course-pic-text {
+        padding-top: 0;
+        margin-bottom: 10%;
+        box-shadow: 2px 2px 10px #eee;
+    }
+</style>
 @endpush
 @section('content')
 

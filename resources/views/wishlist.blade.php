@@ -42,7 +42,7 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header-ch">
         <div class="blakish-overlay" ></div>
         <div class="container">
             <div class="page-breadcrumb-content">
@@ -130,7 +130,7 @@
                                                     class="fa fa-shopping-bag"></i></button>
                                     </form></td>
                                     <td> <a  class="te-remove "
-                                        href="{{route('cart.remove',['course'=>$courses])}}">remove</a></td>
+                                        href="{{route('wishlist.remove',['course'=>$courses])}}">remove</a></td>
                                 </tr>                                    
                                 
                                 @endforeach
