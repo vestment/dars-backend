@@ -407,7 +407,104 @@
                             @endif
 
 
-                            <ul class="course-timeline-list">
+
+                            <!-- @foreach($chapters as $chapter)
+                            <div class="accordion" id="accordionExample">
+                                    <div class="card">
+                                        <div class="card-header" id="{{$chapter->id}}">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                           {{ $chapter->title}}
+                                            </button>
+                                        </h2>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="{{$chapter->id}}" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                        @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
+                                      
+                                        @if($item->model && $item->model->published == 1)
+                                    
+                                        {{--@php $key++; @endphp--}}
+                                        <li class="@if($lesson->id == $item->model->id) active @endif ">
+                                            <a @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                                {{$item->model->title}}
+                                                @if($item->model_type == 'App\Models\Test')
+                                                    <p class="mb-0 text-primary">
+                                                        - @lang('labels.frontend.course.test')</p>
+                                                @endif
+                                                @if(in_array($item->model->id,$completed_lessons)) <i
+                                                        class="fa text-success float-right fa-check-square"></i> @endif
+                                            </a>
+                                        </li>
+                              
+                                    @endif
+                                    @endforeach
+                                        </div>
+                                        </div>
+                                       
+                                    </div>
+ 
+                             </div>
+
+                             @endforeach -->
+
+                             @foreach($chapters as $chapter)
+                             <div class="row m-2 shadow">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                        {{ $chapter->title}} <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+                        </button>
+                        </h2>
+                    </div>
+            
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="bordered">
+                            @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
+                                      
+                                      @if($item->model && $item->model->published == 1)
+                                  
+                                      {{--@php $key++; @endphp--}}
+                                <p class="subtitle2">  <a @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                                {{$item->model->title}}
+                                                @if($item->model_type == 'App\Models\Test')
+                                                    <p class="mb-0 text-primary">
+                                                        - @lang('labels.frontend.course.test')</p>
+                                                @endif
+                                                @if(in_array($item->model->id,$completed_lessons)) <i
+                                                        class="fa text-success float-right fa-check-square"></i> @endif
+                                            </a> </p>
+                                <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
+                                @endif
+                                    @endforeach
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+
+             
+            </div>
+        </div>
+
+
+        @endforeach
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- <ul class="course-timeline-list">
                                 @foreach($lesson->course->courseTimeline()->orderBy('sequence')->get() as $key=>$item)
                                     @if($item->model && $item->model->published == 1)
                                         {{--@php $key++; @endphp--}}
@@ -424,7 +521,7 @@
                                         </li>
                                     @endif
                                 @endforeach
-                            </ul>
+                            </ul> -->
                         </div>
                         
                     </div>
