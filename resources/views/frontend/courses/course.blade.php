@@ -53,17 +53,20 @@
 
                 <div class="p-1">    
                      
+                    {{-- <i class="fas fa-star" style="color: yellow"></i>
                     <i class="fas fa-star" style="color: yellow"></i>
                     <i class="fas fa-star" style="color: yellow"></i>
                     <i class="fas fa-star" style="color: yellow"></i>
-                    <i class="fas fa-star" style="color: yellow"></i>
-                    <i class="fas fa-star" style="color: yellow"></i>
-                    {{-- <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                    <img src="img/frontend/course/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (5).png"> --}}
-                    <span class="text-white">{{$course_rating}}</span>
+                    <i class="fas fa-star" style="color: yellow"></i> --}}
+          
+                    @for($r=1; $r<=$course_rating; $r++)
+                        <i class="fas fa-star" style="color: yellow"></i>
+                    @endfor
+                    @for($r=1; $r<=5-$course_rating; $r++)
+                    <i class="fas fa-star"></i>
+                    @endfor
+
+                <span class="text-white">{{$course_rating}}</span>
                 </div>
 
 
@@ -291,6 +294,7 @@
 
                                                     <div id="player" class="js-player col divpoly embed-responsive embed-responsive-16by9" data-plyr-provider="youtube"
                                                          data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                                         
                                                 @elseif($course->mediavideo->type == 'vimeo')
                                                     <div id="player" class="js-player" data-plyr-provider="vimeo"
                                                          data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
@@ -431,7 +435,7 @@
                                     <div class="card-header" id="headingOne">
                                         <h2 class="mb-0">
                                         <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
-                                        {{$chapter->title}}
+                                            {{$chapter->title}}
                                         <!-- Chapter 1  -->
                                             <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
                                         </button>
@@ -481,11 +485,11 @@
 <!-- <section id="course-page" class="course-page-section">
     <div class="container">
         <div class="row  coursecontent d-block m-2">
-            <h2>@lang('labels.frontend.course.course_content') </h2>
+            {{-- <h2>@lang('labels.frontend.course.course_content') </h2> --}}
         </div>
         <div class="row smpara d-block m-2">
-            <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') •
-                <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
+            {{-- <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') • --}}
+                {{-- <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p> --}}
         </div>
         
         <div class="row m-2 shadow">
@@ -621,14 +625,18 @@
                 <div class="col-lg-3 col-md-5 col-sm-3">
                     @php $key++ @endphp
                     <p style="font-size:30px;">{{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
-                    <p>  {{$teacher->description}} </p>
-                    <p>  {{ $teacher->description }}</p>
+                </div>
+                <div class="col-3">
+                    <p>{{$teacher->description}}</p>
                 </div>
             @endforeach
 
         </div>
+            
         <div class="row m-2">
-            <p> Chris has sold more than 1,000,000 of his online business & self improvement courses 
+            <p>  </p>
+
+            {{-- <p> Chris has sold more than 1,000,000 of his online business & self improvement courses 
                 in 12 languages in 196 countries and his courses have been profiled in Business Insider, NBC, Inc, Forbes,
                 CNN, Entrepreneur & on other business news websites. Chris is the author of the #1 best selling online 
                 business course called "An Entire MBA in 1 Course®” & many other courses.</p> 
@@ -639,7 +647,7 @@
             
             <p>"​He is the founder & CEO of Haroun Education Ventures, an award winning business school professor, 
                 MBA graduate from Columbia University & former Goldman Sachs employee. He has raised/managed over $1bn 
-                in his career.</p>
+                in his career.</p> --}}
         </div>
      
     </div>
