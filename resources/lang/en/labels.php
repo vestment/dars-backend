@@ -75,6 +75,39 @@ return array (
       'edit' => 'Edit Test',
       'view' => 'View Tests',
     ),
+
+
+    'login' => 
+    array (
+      'welcome' => 'Welcome back!',
+      'please_login' => 'Please login to your account',
+      'user_name' => 'User Name',
+      'password' => 'Password',
+      'remember' => 'Remember me',
+      'forgot' => 'Forgot Password',
+      'login' => 'Login',
+      'facebook' => 'Facebook',
+      'google' => 'Google',
+      'login_with' => 'login with',
+      'sign_up' => 'SIGN UP',
+      'terms_of_use' => 'Term of use. Privacy policy',
+    ),
+
+    'sign_up' => 
+    array (
+      'first_name' => 'First name',
+      'last_name' => 'Last name',
+      'user_name' => 'User Name',
+      'email' => 'Email',
+      'password' => 'Password',
+      'confirm_password' => 'Confirm Password',
+      'agreement' => 'I agree with terms and conditions',
+      'sign_up' => 'Sign up',
+      'already_have_account' => 'Already have an account? Sign in.',
+      'terms_of_use' => 'Term of use. Privacy policy',
+    ),
+
+    
     'orders' => 
     array (
       'fields' => 
@@ -1246,6 +1279,7 @@ return array (
       'course_name' => 'Course Name',
       'course_type' => 'Course Type',
       'starts' => 'Starts',
+      'action' => 'Action',
       'empty_cart' => 'Your cart is empty',
       'order_payment' => 'Order <span>Payment.</span>',
       'name_on_card' => 'Name on Card',
@@ -1308,6 +1342,7 @@ return array (
       'continue_course' => 'Continue Course',
       'enrolled' => 'Enrolled',
       'chapters' => 'Chapters',
+
       'category' => 'Category',
       'author' => 'Author',
       'courses' => 'Courses',
@@ -1324,6 +1359,8 @@ return array (
       'course_details' => '<span>Course Details.</span>',
       'course_detail' => 'Course Details',
       'course_timeline' => 'Course <b>Timeline:</b>',
+      'course_content' => 'Course <b>Content</b>',
+
       'go' => 'Go',
       'course_reviews' => 'Course <span>Reviews:</span>',
       'average_rating' => 'Average Rating',
@@ -1366,6 +1403,12 @@ return array (
       'explanation' => 'Explanation',
       'find_your_bundle' => '<span>Find</span> your Bundle',
       'select_category' => 'Select Category',
+      
+      'lessons' => 'lessons',
+      'instructors' => 'Instructors',
+      'wishlist'=>'wishlist',
+      'Share'=>'Share',
+
     ),
     'home' => 
     array (
@@ -1439,6 +1482,7 @@ return array (
     ),
     'modal' => 
     array (
+
       'new_user_note' => 'New User? Register Here',
       'registration_message' => 'Registration Successful. Please LogIn',
       'my_account' => 'My Account',
@@ -1469,6 +1513,12 @@ return array (
       'title' => 'Teachers',
       'courses_by_teacher' => 'Courses <span>By Teacher.</span>',
       'course_detail' => 'Course Detail',
+      'courses' => 'Courses',
+      'views' => 'Views',
+
+
+
+
     ),
     'academy' => 
     array (

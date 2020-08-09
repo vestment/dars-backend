@@ -3,14 +3,15 @@
 @section('title', __('labels.backend.chapters.title').' | '.app_name())
 
 @section('content')
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.chapters.title')</h3>
+<div class="title my-3 mx-5">
+<h3 class="page-title d-inline mb-5">@lang('labels.backend.chapters.title')</h3>
+</div>
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
             @can('lesson_create')
                 <div class="float-right">
-                    <a href="{{ route('admin.chaptersteacher@lms.com.create') }}@if(request('course_id')){{'?course_id='.request('course_id')}}@endif"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                    <a href="{{ route('admin.lessons.create') }}@if(request('course_id')){{'?course_id='.request('course_id')}}@endif"
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
             @endcan

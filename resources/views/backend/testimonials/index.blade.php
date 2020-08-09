@@ -3,21 +3,23 @@
 @section('title', __('labels.backend.testimonials.title').' | '.app_name())
 
 @section('content')
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title float-left mb-0">@lang('labels.backend.testimonials.title')</h3>
+<div >      
+          
+</div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
+        <h3 class="page-title float-left my-3">@lang('labels.backend.testimonials.title')</h3>
                 <div class="float-right">
                     <a href="{{ route('admin.testimonials.create') }}"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
         </div>
         <div class="card-body table-responsive">
 
             <table id="myTable"
-                   class="table table-bordered table-striped">
-                <thead>
+                   class="border-0">
+                   <thead class="thead">
                 <tr>
                     @can('question_delete')
                         @if ( request('show_deleted') != 1 )

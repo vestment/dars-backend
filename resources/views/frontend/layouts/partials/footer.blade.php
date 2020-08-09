@@ -7,7 +7,7 @@
 <footer>
     <section id="footer-area" class="footer-area-section">
         <div class="container">
-            <div class="footer-content pb10">
+            <div class="footer-content pb10 footerHidden">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="footer-widget ">

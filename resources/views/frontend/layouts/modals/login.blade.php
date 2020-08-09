@@ -2,7 +2,11 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+@langrtl
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
+@else
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    @endlangrtl
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -16,14 +20,7 @@ body{
     font-family: ubuntu;
 }
 .imgDiv{
-    background-image: url(IMG/01.svg);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    margin-left: -3.5%;
-    
-}
-.imgDivReg{
-    background-image: url(IMG/02.svg);
+    background-image: url("{{ asset('img/frontend/course/01.svg') }}");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     margin-left: -3.5%;
@@ -82,12 +79,13 @@ body{
         </div>
         <div class="formDiv col-lg-6 text-md-left text-center">
         <div class="row col-lg-8"> 
+       
           <div class="col-md-10 offset-md-1">
-            <img class="img-fluid"  src="IMG/logo/0E---Council-logo.png">
+            <img class="img-fluid"  src="{{ asset('img/frontend/course/E-Council.png') }}">
           </div>
           <div class="col-md-10 offset-md-1 mb-3">
-            <h2>Welcome back!</h2>
-          <h6 class="text-muted">Please login to your account</h6>
+            <h2>@lang('labels.backend.login.welcome')</h2>
+          <h6 class="text-muted">@lang('labels.backend.login.please_login')</h6>
           </div>
           <div class="col-md-10 offset-md-1">
           <span class="success-response text-success">{{(session()->get('flash_success'))}}</span>
@@ -95,12 +93,12 @@ body{
                                   method="POST" enctype="multipart/form-data">
                                   @csrf
             <div class="form-group ">
-              <label for="exampleInputEmail1">User Name</label>
+              <label for="exampleInputEmail1">@lang('labels.backend.login.user_name')</label>
               <input name="email" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
               <span id="login-email-error" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
+              <label for="exampleInputPassword1">@lang('labels.backend.login.password')</label>
               <input name="password" type="password" class="form-control" id="exampleInputPassword1">
               <span id="login-password-error" class="text-danger"></span>
             </div>
@@ -108,11 +106,11 @@ body{
               <div class="col-md-6">
                 <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                <label class="form-check-label" for="exampleCheck1">@lang('labels.backend.login.remember')</label>
               </div>
               </div>
               <div class="col-md-6">
-                <a  href="{{ route('frontend.auth.password.reset') }}" class="text-muted">Forgot Password</a>
+                <a  href="{{ route('frontend.auth.password.reset') }}" class="text-muted">@lang('labels.backend.login.forgot')</a>
               </div>
               @if(config('access.captcha.registration'))
                                     <div class="contact-info mb-2 text-center">
@@ -123,27 +121,35 @@ body{
                                     </div><!--col-->
                                 @endif
             </div>
-            <button type="submit"  value="Submit" class="btn loginBtn text-white col-12 mt-5">Login</button>
+            <button type="submit"  value="Submit" class="btn loginBtn text-white col-12 mt-5">@lang('labels.backend.login.login')</button>
           </form>
-          <h5 class="mt-5"> login with </h5>
+          <h5 class="mt-5"> @lang('labels.backend.login.login_with') </h5>
           <div class="row mt-3">
             <div class="col-md-6">
-              <button  class="btn btn-block facebookBtn text-white"><img src="IMG/facebook.svg">Facebook</button>
+              <a  href="{{ url('login/facebook') }}" class="btn btn-block facebookBtn text-white"><img src="{{ asset('img/frontend/course/facebook.svg') }}">@lang('labels.backend.login.facebook')</a>
             </div>
             <div class="col-md-6 mt-3 mt-md-0">
-              <button  class="btn btn-block googleBtn text-white"><img src="IMG/brands-and-logotypes (1).svg">Google</button>
+              <a   class="btn btn-block googleBtn text-white"><img src="{{ asset('img/frontend/course/google.svg') }}">@lang('labels.backend.login.google')</a>
             </div>
           </div>
-            <div><a href="{{ route('register.index') }}" class="text-dark col-12 d-flex justify-content-center mt-5">SIGN UP</a></div>
-            <div class="mb-2"><a href="#" class="text-dark col-12 d-flex justify-content-center mt-3">Term of use. Privacy policy</a></div>
+            <div><a href="{{ route('register.index') }}" class="text-dark col-12 d-flex justify-content-center mt-5">@lang('labels.backend.login.sign_up')</a></div>
+            <div class="mb-2"><a href="#" class="text-dark col-12 d-flex justify-content-center mt-3">@lang('labels.backend.login.terms_of_use')</a></div>
         
+     
         </div>  
         </div>
       </div>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-    <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
+
+
+ @endif
+ @push('after-scripts')
+
+
+
+
+ <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
     <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
@@ -158,13 +164,7 @@ body{
     <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
 
     <script src="{{asset('assets/js/switch.js')}}"></script>
-
- @endif
- @push('after-scripts')
-  
- <script>
-$(document).ready(function () {
-
+    <script>
         $(function () {
             $.ajaxSetup({
                 headers: {
@@ -227,7 +227,7 @@ $(document).ready(function () {
                             if (response.success) {
                                 $('#loginForm')[0].reset();
                                 if (response.redirect == 'back') {
-                                    location.reload();
+                                    window.location.href = "{{url('/')}}"
                                 } else {
                                     window.location.href = "{{route('admin.dashboard')}}"
                                 }
@@ -291,8 +291,8 @@ $(document).ready(function () {
             });
 
         });
-    });
     </script>
+
   
 
   

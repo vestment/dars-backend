@@ -19,6 +19,7 @@ return array (
           'total' => 'مجموع الأدوار |',
         ),
       ),
+
       'users' => 
       array (
         'active' => 'المستخدمين النشطين',
@@ -148,7 +149,7 @@ return array (
       'edit' => 'تحرير الفئة',
       'fields' => 
       array (
-        'courses' => 'الدورات',
+        'course_detail' => 'Course Detail',
         'icon' => 'أيقونة',
         'icon_type' => 
         array (
@@ -1169,6 +1170,38 @@ return array (
       'register_button' => 'تسجيل',
       'remember_me' => 'تذكرنى',
     ),
+
+    'login' => 
+    array (
+      'welcome' => 'مرحبا!',
+      'please_login' => 'من فضلك ادخل بياناتك',
+      'user_name' => 'اسم المستخدم',
+      'password' => 'كلمة المرور ',
+      'remember' => 'تذكرنى',
+      'forgot' => 'نسيت كلمة المرور',
+      'login' => 'تسجيل الدخول',
+      'facebook' => 'فيسبوك',
+      'google' => 'جوجل',
+      'login_with' => 'الدخول بواسطة',
+      'sign_up' => 'تسجيل مستخدم جديد',
+      'terms_of_use' => 'سياسة اﻻستخدام وسياسة الخصوصيه',
+    ),
+
+   
+  'sign_up' => 
+  array (
+    'first_name' => 'اﻻسم اﻻول',
+    'last_name' => 'اﻻسم الثانى',
+    'user_name' => 'اسم المستخدم',
+    'email' => 'البريد الالكترونى ',
+    'password' => 'كلمة المرور',
+    'confirm_password' => 'تاكيد كلمة المرور',
+    'agreement' => 'اوافق على الشروط واﻻحكام ',
+    'sign_up' => 'تسجيل',
+    'already_have_account' => 'لديك حساب بالفعل ؟تسجيل الدخول',
+    'terms_of_use' => 'سياسة اﻻستخدام وسياسة الخصوصيه',
+  ),
+
     'badges' => 
     array (
       'trending' => 'الشائع',
@@ -1246,6 +1279,7 @@ return array (
       'price' => 'السعر',
       'sub_total' => 'المجموع الفرعي',
       'total_payable' => 'مجموع المستحق',
+      'wishlist' => 'قائمه المفضلات',
     ),
     'contact' => 
     array (
@@ -1330,6 +1364,12 @@ return array (
       'not_attempted' => 'لم تحاول',
       'find_your_bundle' => '<span> ابحث عن </span> الحزمة الخاصة بك',
       'select_category' => 'اختر الفئة',
+
+      'lessons' => 'دروس',
+      'wishlist'=> 'قائمة الرغبات',
+      'Share'=>'مشاركة',
+      'instructors' => 'مدرسين',
+
     ),
     'faq' => 
     array (
@@ -1441,6 +1481,11 @@ return array (
       'send_now' => 'ارسل الان',
       'students' => 'الطلاب',
       'title' => 'معلمون',
+      'courses' => 'الدورات',
+      'views' => 'الدورات',
+
+
+
     ),
     'user' => 
     array (

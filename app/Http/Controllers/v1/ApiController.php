@@ -93,6 +93,9 @@ class ApiController extends Controller
 public function index(){
     return view('frontend.layouts.modals.login');
 }
+public function indexrtl(){
+    return view('frontend-rtl.layouts.modals.login');
+}
 
 public function registerIndex(){
     return view('frontend.layouts.modals.register');

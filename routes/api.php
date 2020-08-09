@@ -18,15 +18,20 @@ use Illuminate\Http\Request;
 //});
 
 
+
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
 
-
+    Route::get('login/en', 'ApiController@index')->name('login.index');
+    Route::get('signup', 'ApiController@registerIndex')->name('register.index');
+    
+    Route::get('login/ar', 'ApiController@indexrtl')->name('loginrtl.indexrtl');
+    
     Route::group([
         'prefix' => 'auth'
     ], function () {
 
-   Route::get('login', 'ApiController@index')->name('login.index');
-        Route::get('signup', 'ApiController@registerIndex')->name('register.index');;
+        // Route::get('signup', 'ApiController@registerIndex')->name('register.index');
+
         Route::post('signup-save', 'ApiController@signup');
 
         Route::group([

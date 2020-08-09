@@ -40,12 +40,12 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header-ch">
         <div class="blakish-overlay" ></div>
         <div class="container">
-            <div class="page-breadcrumb-content p-5">
+            <div class="page-breadcrumb-content">
                     <div class="page-breadcrumb-title">
-                        <p class="text-white p-1">
+                        <p class="text-white pragchechout">
                             explore/buissniss/chechout
                         </p>                  
                     </div>
@@ -64,11 +64,11 @@
     <section id="checkout" class="checkout-section">
         <div class="container">
             <div class="row">
-                <div class="col-9">
+                <div class="col-lg-9 col-md-12">
             <div class="section-title mb45 headline ">
-<p>Your Shopping Cart</p>    
-<h2>Complete Your Purchases.</h2>
-</div>
+                <p>Your Shopping Cart</p>    
+                <h2>Complete Your Purchases.</h2>
+            </div>
             <div class="checkout-content">
                 @if(session()->has('danger'))
                     <div class="alert alert-dismissable alert-danger fade show">
@@ -77,7 +77,7 @@
                     </div>
                 @endif
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-lg-9 col-md-12 ">
                         <div class="order-item mb30 course-page-section">
                             <div class="section-title-2  headline text-left">
                                 <h2>@lang('labels.frontend.cart.order_item')</h2>
@@ -91,7 +91,8 @@
                                         <th>@lang('labels.frontend.cart.course_name')</th>
                                         <th>@lang('labels.frontend.cart.course_type')</th>
                                         <th>@lang('labels.frontend.cart.starts')</th>
-                                        <th></th>
+                                        <th>@lang('labels.frontend.cart.action')</th>
+                                       
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -100,21 +101,19 @@
                                             <tr class="position-relative">
 
                                                 <td>
-                                                    <a style="right: 3%;" class="position-absolute te-remove"
-                                                       href="{{route('cart.remove',['course'=>$course])}}">remove</a>
                                                     <div class="course-list-img-text">
                                                         <div class="course-list-img"
                                                              @if($course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$course->course_image)}})" @endif >
 
                                                         </div>
                                                         <div class="course-list-text">
-                                                            <h3>
+                                                            <h3 class="h-width">
                                                                 <a href="{{ route('courses.show', [$course->slug]) }}">{{$course->title}}</a>
                                                             </h3>
                                                             <div class="course-meta">
                                                                 <span class="course-category bold-font"><a
                                                                             href="#">@if($course->free == 1)
-                                                                            <span>{{trans('labels.backend.bundles.fields.free')}}</span>
+                                                                            <span class="priceLabel">{{trans('labels.backend.bundles.fields.free')}}</span>
                                                                         @else
                                                                             <span class="priceLabel"> {{$appCurrency['symbol'].' '.$course->price}}</span>
                                                                         @endif</a></span>
@@ -129,6 +128,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                   
                                                 </td>
                                                 <td>
                                                     <div class="course-type-list">
@@ -136,6 +136,8 @@
                                                     </div>
                                                 </td>
                                                 <td>{{($course->start_date != "") ? $course->start_date : 'N/A'}}</td>
+                                                <td> <a  class="te-remove "
+                                                    href="{{route('cart.remove',['course'=>$course])}}">remove</a></td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -353,11 +355,11 @@
                                                 @include('frontend.cart.partials.order-stats')
                                             </div>
                                         @else
-                                            <div class="purchase-list mt15 ul-li-block">
+                                        <div class="purchase-list mt15 ul-li-block">
         
                                                 <span class="in-total text-uppercase">@lang('labels.frontend.cart.total') </span>
                                                        
-                                                <span>(3-items)</span>
+                                                <span>(0-items)</span>
                                                 <span>{{$appCurrency['symbol']}}0.00</span>
                                                 
                                             </div> 
@@ -410,21 +412,21 @@
                 </div>
             </div>
         </div>
-        <div class="col-3 bg-right-list">
-               <ul class="mmm">
-                   <li >business</li>
-                   <li>business</li>
-                   <li>business</li>
-                   <li>business</li>
-                   <li>business</li>
-                   <li>business</li>
-                   <li>business</li>
-                   <li>business</li>
-               </ul>
-            </div>
+        <div class="col-lg-2 bg-right-list">
+            <P>COURSES CATEGORIES</P>
+            <h2 class="black bold">Category</h2>
+
+                <ul class="ul-right">
+                        @if(count($categories) > 0)
+                        @foreach($categories as $category)
+                        <li class="li-right"><a href=""><i class="{{$category->icon}} p-2"></i>{{$category->name}}</a></li>
+                        @endforeach
+                    @endif
+                </ul>
+        </div>
     </div>
   
-    </div>
+    </div> 
 
     </section>
     <!-- End  of Checkout content
@@ -498,3 +500,8 @@
         })
     </script>
 @endpush
+
+
+
+
+

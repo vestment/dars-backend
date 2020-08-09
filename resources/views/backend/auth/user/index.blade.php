@@ -7,12 +7,18 @@
 @endsection
 
 @section('content')
-    <div class="card">
+<div class="title my-3 mx-5">
+<h3 class="card-title mb-0">
+                        {{ __('labels.backend.access.users.management') }}
+                        
+                    </h3>
+                    </div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-7">
                     <h4 class="card-title mb-0">
-                        {{ __('labels.backend.access.users.management') }}
+                      
                         <small class="text-muted">{{ __('labels.backend.access.users.active') }}</small>
                     </h4>
                 </div><!--col-->
@@ -37,8 +43,8 @@
                 <div class="col">
 
                     <div class="table-responsive">
-                        <table id="myTable" class="table table-bordered table-striped">
-                            <thead>
+                        <table id="myTable" class="border-0">
+                        <thead class="thead">
                             <tr>
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.access.users.table.first_name')</th>

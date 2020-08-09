@@ -16698,6 +16698,8 @@ button.bg-purple:focus {
 
 .bg-pink {
   background-color: #e83e8dde !important;
+}.text-pink{
+  color: #e83e8dde !important;
 }
 
 a.bg-pink:hover,
@@ -22450,4 +22452,14 @@ div.dt-buttons {
   background-color: var(--navbarbg);
   color:#fff;
 }
+.icon{
+  font-size: 40px;
+}
+.bg-blue{
+  background-color: var(--navbarbg) !important;
+}
 
+.btn-blue:hover{
+  background-color: grey ;
+  color:white;
+}

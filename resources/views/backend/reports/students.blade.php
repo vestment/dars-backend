@@ -4,31 +4,22 @@
 
 @push('after-styles')
     <style>
-        .dataTables_wrapper .dataTables_filter {
-            float: right !important;
-            text-align: left;
-            margin-left: 25%;
-        }
-
-        div.dt-buttons {
-            display: inline-block;
-            width: 100%;
-            text-align: center;
-        }
+      
+=
     </style>
 @endpush
 @section('content')
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title d-inline">@lang('labels.backend.reports.students_report')</h3>
+<div class="title my-3 mx-5">
+            <h3 class="page-title d-inline mb-5">@lang('labels.backend.reports.students_report')</h3>
         </div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+       
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
-                        <table id="myTable" class="table table-bordered table-striped ">
-                            <thead>
+                        <table id="myTable" class="border-0 ">
+                            <thead class="thead">
                             <tr>
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.reports.fields.course')</th>

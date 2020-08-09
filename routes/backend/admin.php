@@ -253,6 +253,8 @@ Route::delete('questions_options_perma_del/{id}', ['uses' => 'Admin\QuestionsOpt
 
 //===== Tests Routes =====//
 Route::resource('tests', 'Admin\TestsController');
+// Route::get('testschapter/{id}', 'Admin\TestsController@showChapter');
+
 Route::get('get-tests-data', ['uses' => 'Admin\TestsController@getData', 'as' => 'tests.get_data']);
 Route::post('tests_mass_destroy', ['uses' => 'Admin\TestsController@massDestroy', 'as' => 'tests.mass_destroy']);
 Route::post('tests_restore/{id}', ['uses' => 'Admin\TestsController@restore', 'as' => 'tests.restore']);

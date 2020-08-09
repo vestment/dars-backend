@@ -97,13 +97,14 @@
 
 @endpush
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title mb-0">
+<div class="title my-3 mx-5">
+            <h2 class="page-title mb-3">
                 {{ __('labels.backend.menu-manager.title') }}
 
-            </h3>
+            </h2    >
         </div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+       
         <div class="card-body">
             @if(isset($menu))
                 {!! Menu::render()->with(['menu' => $menu,'menu_list' => $menu_list,'pages' =>$pages]) !!}

@@ -7,18 +7,19 @@
         .form-group label {
             margin-bottom: 0px;
         }
+       
     </style>
 @endpush
 
 @section('content')
     {{ html()->form('POST', route('admin.backup.store'))->id('general-settings-form')->class('form-horizontal')->acceptsFiles()->open() }}
-
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
+    <div class="title my-3 mx-5">
                     <h3 class="page-title d-inline">@lang('labels.backend.backup.title')</h3>
                 </div><!--card-header-->
+    <div class="row">
+        <div class="col">
+        <div class="shadow-lg p-3 mb-5 bg-white rounded">
+               
                 <div class="card-body">
 
                     <!---General Tab--->
@@ -141,7 +142,7 @@
                         <div class="col">
                             {{ form_cancel(route('admin.general-settings'), __('buttons.general.cancel')) }}
                         </div><!--col-->
-                        <div class="col text-right">
+                        <div class="col text-right ">
                             {{ form_submit(__('buttons.general.crud.update'))->id('submit') }}
                         </div><!--col-->
                     </div><!--row-->
