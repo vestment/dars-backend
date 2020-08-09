@@ -1,12 +1,18 @@
-<div class="in-total font-weight-normal mb-3">@lang('labels.frontend.cart.price')
+<div class="purchase-list mt15 ul-li-block row">
+        <div class="col-6">
+        <span class="font-weight-bold">
+            @if(isset($total))
+             {{$appCurrency['symbol'].' '.$total}}
+            @endif
+        </span>
+        </div>
+        <div class="col-6">
     <small class="text-muted">
         ({{Cart::getContent()->count()}}{{(Cart::getContent()->count() > 1) ? ' '.trans('labels.frontend.cart.items') : ' '.trans('labels.frontend.cart.item')}})
     </small>
-    <span class="font-weight-bold">
-                                                @if(isset($total))
-            {{$appCurrency['symbol'].' '.$total}}
-        @endif
-                                            </span>
+    
+    <span class="in-total text-uppercase ">@lang('labels.frontend.cart.total') </span>  
+</div>
 </div>
 @if(Cart::getConditionsByType('coupon') != null)
     @foreach(Cart::getConditionsByType('coupon') as $condition)
