@@ -75,12 +75,22 @@
 
                         @can('lesson_access')
                             <li class="nav-item ">
+                                <a class="nav-link {{ $request->segment(2) == 'chapters' ? 'active' : '' }}"
+                                   href="{{ route('admin.chapters.index') }}">
+                                    <span class="title">@lang('menus.backend.sidebar.chapters.title')</span>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('lesson_access')
+                            <li class="nav-item ">
                                 <a class="nav-link {{ $request->segment(2) == 'lessons' ? 'active' : '' }}"
                                    href="{{ route('admin.lessons.index') }}">
                                     <span class="title">@lang('menus.backend.sidebar.lessons.title')</span>
                                 </a>
                             </li>
                         @endcan
+                       
 
                         @can('test_access')
                             <li class="nav-item ">

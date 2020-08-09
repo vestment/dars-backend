@@ -94,12 +94,12 @@
                         <div class="navbar-default">
                             <div class="navbar-header float-left">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
-                                    {{--<img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">--}}
-                                    <!-- <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo"> -->
-                                    <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo" style="width: 35%;">
+                                 
+                                    <img src="{{asset('img/backend/brand/Council-logo-200px.png')}}" alt="logo" style="width: 35%;">
 
                                 </a>
-                            </div><!-- /.navbar-header -->
+                            </div>
+                            <!-- /.navbar-header -->
 
                             <div class="cart-search float-right ul-li">
                                 <ul>

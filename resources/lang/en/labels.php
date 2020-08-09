@@ -54,6 +54,11 @@ return array (
       'timeline_description' => 'Drag and change sequence of Lessons/Tests for course',
       'listing_note' => 'Only Published Lessons and Tests will be Displayed and Sorted.',
     ),
+    'chapters' =>
+    array(
+
+      'title'=>'Chapters'
+    ),
     'tests' => 
     array (
       'title' => 'Tests',
@@ -1234,6 +1239,7 @@ return array (
       'course_name' => 'Course Name',
       'course_type' => 'Course Type',
       'starts' => 'Starts',
+      'action' => 'Action',
       'empty_cart' => 'Your cart is empty',
       'order_payment' => 'Order <span>Payment.</span>',
       'name_on_card' => 'Name on Card',
@@ -1296,6 +1302,7 @@ return array (
       'continue_course' => 'Continue Course',
       'enrolled' => 'Enrolled',
       'chapters' => 'Chapters',
+
       'category' => 'Category',
       'author' => 'Author',
       'courses' => 'Courses',
@@ -1312,6 +1319,8 @@ return array (
       'course_details' => '<span>Course Details.</span>',
       'course_detail' => 'Course Details',
       'course_timeline' => 'Course <b>Timeline:</b>',
+      'course_content' => 'Course <b>Content</b>',
+
       'go' => 'Go',
       'course_reviews' => 'Course <span>Reviews:</span>',
       'average_rating' => 'Average Rating',
@@ -1354,6 +1363,12 @@ return array (
       'explanation' => 'Explanation',
       'find_your_bundle' => '<span>Find</span> your Bundle',
       'select_category' => 'Select Category',
+      
+      'lessons' => 'lessons',
+      'instructors' => 'Instructors',
+      'wishlist'=>'wishlist',
+      'Share'=>'Share',
+
     ),
     'home' => 
     array (
@@ -1458,6 +1473,12 @@ return array (
       'title' => 'Teachers',
       'courses_by_teacher' => 'Courses <span>By Teacher.</span>',
       'course_detail' => 'Course Detail',
+      'courses' => 'Courses',
+      'views' => 'Views',
+
+
+
+
     ),
     'academy' => 
     array (

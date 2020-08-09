@@ -4,20 +4,23 @@
 
 @section('content')
 
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title float-left mb-0">@lang('labels.backend.faqs.title')</h3>
+
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
+        <div class="title my-3 mx-5">
+        <h2 class="page-title float-left mb-5">@lang('labels.backend.faqs.title')</h2>
+</div>
                 <div class="float-right">
                     <a href="{{ route('admin.faqs.create') }}"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
         </div>
         <div class="card-body table-responsive">
 
             <table id="myTable"
-                   class="table table-bordered table-striped">
-                <thead>
+                   class="border-0">
+                   <thead class="thead">
                 <tr>
                     @can('question_delete')
                         @if ( request('show_deleted') != 1 )

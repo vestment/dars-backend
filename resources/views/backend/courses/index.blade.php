@@ -3,15 +3,16 @@
 @section('title', __('labels.backend.courses.title').' | '.app_name())
 
 @section('content')
+<div class="title my-3 mx-5">     
+            <h1 class="page-title d-inline mb-5">@lang('labels.backend.courses.title')</h1>
+</div>
 
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="page-title float-left mb-0">@lang('labels.backend.courses.title')</h3>
+    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
             @can('course_create')
                 <div class="float-right">
                     <a href="{{ route('admin.courses.create') }}"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
             @endcan
@@ -33,8 +34,8 @@
                 </div>
 
 
-                <table id="myTable" class="table table-bordered table-striped @can('course_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                    <thead>
+                <table id="myTable" class="border-0 shadow-lg @can('course_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                    <thead class="thead">
                     <tr>
                         @can('course_delete')
                             @if ( request('show_deleted') != 1 )

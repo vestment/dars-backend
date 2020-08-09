@@ -3,19 +3,19 @@
 
 @section('content')
 
-    <div class="card">
-        <div class="card-header">
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="my-3">
             @if(isset($sponsor))
-            <h3 class="page-title d-inline">@lang('labels.backend.sponsors.edit')</h3>
+            <h3 class="page-title d-inline my-5">@lang('labels.backend.sponsors.edit')</h3>
                 <div class="float-right">
                     <a href="{{ route('admin.sponsors.index') }}"
-                       class="btn btn-success">@lang('labels.backend.sponsors.view')</a>
+                       class="btn btn-pink">@lang('labels.backend.sponsors.view')</a>
                 </div>
             @else
                 <h3 class="page-title d-inline">@lang('labels.backend.sponsors.create')</h3>
                 <div class="float-right">
                     <a data-toggle="collapse" id="createCatBtn" data-target="#createCat" href="#"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
             @endif
@@ -83,8 +83,8 @@
 
 
                         <table id="myTable"
-                               class="table table-bordered table-striped @can('category_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                            <thead>
+                               class="border-0 @can('category_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                            <thead class="thead">
                             <tr>
 
                                 @can('category_delete')

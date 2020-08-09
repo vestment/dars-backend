@@ -54,14 +54,14 @@
 @section('content')
     {{ html()->form('POST', route('admin.general-settings'))->id('general-settings-form')->class('form-horizontal')->acceptsFiles()->open() }}
 
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-sm-5">
-                    <h3 class="page-title d-inline">@lang('labels.backend.general_settings.contact.title')</h3>
-                </div>
-            </div>
+    <div class="title my-3 mx-5">
+           
+                    <h3 class="page-title d-inline mb-5">@lang('labels.backend.general_settings.contact.title')</h3>
+               
         </div>
+
+        <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        
 
         <div class="card-body" id="contact">
 

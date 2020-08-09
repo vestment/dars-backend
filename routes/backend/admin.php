@@ -228,6 +228,12 @@ Route::post('lessons_mass_destroy', ['uses' => 'Admin\LessonsController@massDest
 Route::post('lessons_restore/{id}', ['uses' => 'Admin\LessonsController@restore', 'as' => 'lessons.restore']);
 Route::delete('lessons_perma_del/{id}', ['uses' => 'Admin\LessonsController@perma_del', 'as' => 'lessons.perma_del']);
 
+//===== chapters Routes =====//
+Route::resource('chapters', 'Admin\ChaptersController');
+Route::get('get-chapters-data', ['uses' => 'Admin\ChaptersController@getData', 'as' => 'chapters.get_data']);
+Route::post('chapters_mass_destroy', ['uses' => 'Admin\ChaptersController@massDestroy', 'as' => 'chapters.mass_destroy']);
+Route::post('chapters_restore/{id}', ['uses' => 'Admin\ChaptersController@restore', 'as' => 'chapters.restore']);
+Route::delete('chapters_perma_del/{id}', ['uses' => 'Admin\ChaptersController@perma_del', 'as' => 'chapters.perma_del']);
 
 //===== Questions Routes =====//
 Route::resource('questions', 'Admin\QuestionsController');
@@ -247,6 +253,8 @@ Route::delete('questions_options_perma_del/{id}', ['uses' => 'Admin\QuestionsOpt
 
 //===== Tests Routes =====//
 Route::resource('tests', 'Admin\TestsController');
+// Route::get('testschapter/{id}', 'Admin\TestsController@showChapter');
+
 Route::get('get-tests-data', ['uses' => 'Admin\TestsController@getData', 'as' => 'tests.get_data']);
 Route::post('tests_mass_destroy', ['uses' => 'Admin\TestsController@massDestroy', 'as' => 'tests.mass_destroy']);
 Route::post('tests_restore/{id}', ['uses' => 'Admin\TestsController@restore', 'as' => 'tests.restore']);

@@ -9,7 +9,7 @@
             <h3 class="page-title float-left mb-0">@lang('labels.backend.faqs.create')</h3>
             <div class="float-right">
                 <a href="{{ route('admin.faqs.index') }}"
-                   class="btn btn-success">@lang('labels.backend.faqs.view')</a>
+                   class="btn btn-pink">@lang('labels.backend.faqs.view')</a>
             </div>
         </div>
         <div class="card-body">

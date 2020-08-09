@@ -149,7 +149,7 @@ return array (
       'edit' => 'تحرير الفئة',
       'fields' => 
       array (
-        'courses' => 'الدورات',
+        'course_detail' => 'Course Detail',
         'icon' => 'أيقونة',
         'icon_type' => 
         array (
@@ -1239,6 +1239,7 @@ return array (
       'price' => 'السعر',
       'sub_total' => 'المجموع الفرعي',
       'total_payable' => 'مجموع المستحق',
+      'wishlist' => 'قائمه المفضلات',
     ),
     'contact' => 
     array (
@@ -1323,6 +1324,12 @@ return array (
       'not_attempted' => 'لم تحاول',
       'find_your_bundle' => '<span> ابحث عن </span> الحزمة الخاصة بك',
       'select_category' => 'اختر الفئة',
+
+      'lessons' => 'دروس',
+      'wishlist'=> 'قائمة الرغبات',
+      'Share'=>'مشاركة',
+      'instructors' => 'مدرسين',
+
     ),
     'faq' => 
     array (
@@ -1434,6 +1441,11 @@ return array (
       'send_now' => 'ارسل الان',
       'students' => 'الطلاب',
       'title' => 'معلمون',
+      'courses' => 'الدورات',
+      'views' => 'الدورات',
+
+
+
     ),
     'user' => 
     array (

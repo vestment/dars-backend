@@ -61,8 +61,7 @@ class CartController extends Controller
         $total = $courses->sum('price');
         //Apply Tax
         $taxData = $this->applyTax('total');
-
-
+        
         return view($this->path . '.cart.checkout', compact('courses', 'bundles', 'total', 'taxData'));
     }
 
@@ -94,8 +93,6 @@ class CartController extends Controller
                         'teachers' => $teachers
                     ]);
         }
-
-
         Session::flash('success', trans('labels.frontend.cart.product_added'));
         return back();
     }

@@ -6,18 +6,19 @@
 @endpush
 
 @section('content')
+<div class="title my-3 mx-5">             
+       <h2 class="page-title d-inline mb-5">@lang('labels.backend.reasons.title')</h2>
+</div>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="">
 
-    <div class="card">
-        <div class="card-header">
-
-                <h3 class="page-title d-inline">@lang('labels.backend.reasons.title')</h3>
-                <div class="float-right">
+                <div class=" float-right">
                     <a href="{{ route('admin.reasons.create') }}"
-                       class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
+                       class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
                 </div>
 
         </div>
-        <div class="card-body">
+        <div class="card-body my-5">
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
@@ -37,8 +38,8 @@
 
 
                         <table id="myTable"
-                               class="table table-bordered table-striped @can('category_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                            <thead>
+                               class="border-0 @can('category_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
+                               <thead class="thead">
                             <tr>
 
                                 @can('category_delete')
