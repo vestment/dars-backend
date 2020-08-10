@@ -2,8 +2,7 @@
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
-<link rel="stylesheet" href="../../assets/css/course.css"/>
-<!-- <style>
+    <style>
         .couse-pagination li.active {
             color: #333333 !important;
             font-weight: 700;
@@ -35,75 +34,7 @@
             display: inline;
             text-align: center;
         }
-        /* .best-course-pic-text .best-course-pic {
-            width: 100%;
-        } */
-       .titleofcard{
-        text-align: left;
-        font: Bold 15px Ubuntu;
-        letter-spacing: -0.2px;
-        color: #000000CC;
-        margin-top: -36px;
-        }
-        
-        .rate{
-                text-align: left;
-                font-size:0.9rem;
-                letter-spacing: 0.01px;
-                color: #00000099;
-        }
-        .styleicon{
-            text-align: left;
-        font: Regular 12px Open Sans;
-        letter-spacing: 0px;
-        color: #00000099;
-        }
-        .metatitle{
-            text-align: left;
-            font-size: 0.7rem;
-        letter-spacing: 0px;
-        color: #D2498B;
-        }
-        .metadescr{
-            text-align: left;
-            font-size: 0.7rem;
-        letter-spacing: 0.01px;
-        color: #00000099;
-        }
-        .course-author{
-            font-size: 0.7rem;
-        }
-    .course-meta span {
-        font-size: 71%;
-        margin-right: 10%;
-    }
-    .piclip{
-        clip-path: polygon(0 0, 100% 0, 100% 70%, 0 94%); width: 100%;
-    }
-
-    .gradient-bg{
-        background: #D2498B 
-    }
-    .gradient-bg:hover{
-        background: #D2498B 
-    }
-    .best-course-pic-text {
-        background-image: url('../../assets/img/card/card.png');
-        background-size:cover;
-        padding-top: 0;
-        margin-bottom: 10%;
-        box-shadow: 2px 2px 10px #eee;
-    }
-    .btnAddCard{
-        background: #52ADE1 ;
-        color:#fff!important;
-    }
-    .btnWishList{
-        background: #D2498B;
-        color:#fff!important;
-        opacity:0.5;
-    }
-</style> -->
+    </style>
 @endpush
 @section('content')
 
@@ -291,10 +222,24 @@
                                         @else    
                                         @if($courses->count() > 0)
                                             @foreach($courses as $course)
-                                                <div class="col-lg-4 col-md-6" >
+
+                                                <div class="col-md-4">
                                                     <div class="best-course-pic-text relative-position">
-                                                        <div class="best-course-pic piclip relative-position"
+                                                        <div class="best-course-pic relative-position"
                                                              @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+
+                                                            @if($course->trending == 1)
+                                                                <div class="trend-badge-2 text-center text-uppercase">
+                                                                    <i class="fas fa-bolt"></i>
+                                                                    <span>@lang('labels.frontend.badges.trending')</span>
+                                                                </div>
+                                                            @endif
+                                                                @if($course->free == 1)
+                                                                    <div class="trend-badge-3 text-center text-uppercase">
+                                                                        <i class="fas fa-bolt"></i>
+                                                                        <span>@lang('labels.backend.courses.fields.free')</span>
+                                                                    </div>
+                                                                @endif
                                                             <div class="course-price text-center gradient-bg">
                                                                 @if($course->free == 1)
                                                                     <span>{{trans('labels.backend.courses.fields.free')}}</span>
@@ -302,12 +247,21 @@
                                                                     <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
                                                                 @endif
                                                             </div>
-                                                            <!-- <div class="course-details-btn">
+
+                                                            <div class="course-rate ul-li">
+                                                                <ul>
+                                                                    @for($i=1; $i<=(int)$course->rating; $i++)
+                                                                        <li><i class="fas fa-star"></i></li>
+                                                                    @endfor
+                                                                </ul>
+                                                            </div>
+                                                            <div class="course-details-btn">
                                                                 <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
                                                                     <i class="fas fa-arrow-right"></i></a>
                                                             </div>
-                                                            <div class="blakish-overlay"></div> -->
+                                                            <div class="blakish-overlay"></div>
                                                         </div>
+<<<<<<< HEAD
                                                         <div class="card-body">
                                                             <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                                             <div class="row">
@@ -397,18 +351,25 @@
                                                                             </form>
                                                                     @endif
                                                                 @endif
+=======
+                                                        <div class="best-course-text">
+                                                            <div class="course-title mb20 headline relative-position">
+                                                                <h3>
+                                                                    <a href="{{ route('courses.show', [$course->slug]) }}">{{$course->title}}</a>
+                                                                </h3>
+>>>>>>> 9f81d364198cc535f2139c25056e75efd58b40b1
                                                             </div>
-                                                            <div class="col-2 " style="margin-left: -10%;">
-                                                                <a href="{{ route('courses.show', [$course->slug]) }}" class="btn btnWishList">
-                                                                    <i class="far fa-bookmark"></i>
-                                                                </a>
+                                                            <div class="course-meta">
+                                                                <span class="course-category"><a
+                                                                            href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a></span>
+                                                                <span class="course-author"><a href="#">{{ $course->students()->count() }}
+                                                                        @lang('labels.frontend.course.students')</a></span>
                                                             </div>
                                                         </div>
-                                                    </div> 
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                         @endforeach
+                                            @endforeach
                                         @else
                                             <h3>@lang('labels.general.no_data_available')</h3>
                                     @endif
@@ -425,7 +386,7 @@
                                         <tr class="list-head">
                                             <th>@lang('labels.frontend.course.course_name')</th>
                                             <th>@lang('labels.frontend.course.course_type')</th>
-                                               <th>@lang('labels.frontend.course.starts')</th>
+                                            <th>@lang('labels.frontend.course.starts')</th>
                                         </tr>
                                         @if($courses->count() > 0)
                                             @foreach($courses as $course)
@@ -547,6 +508,8 @@
                                         </div>
                                         <!-- /post -->
                                     @endforeach
+
+
                                     <div class="view-all-btn bold-font">
                                         <a href="{{route('blogs.index')}}">@lang('labels.frontend.course.view_all_news')
                                             <i class="fas fa-chevron-circle-right"></i></a>
@@ -555,6 +518,7 @@
                             </div>
 
                         @endif
+
 
                         @if($global_featured_course != "")
                             <div class="side-bar-widget">
@@ -796,7 +760,6 @@ nn
             @if(request('type') != "")
             $('#sortBy').find('option[value="' + "{{request('type')}}" + '"]').attr('selected', true);
             @endif
-
         });
 
     </script>

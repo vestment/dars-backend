@@ -405,7 +405,7 @@
 
 
 
-        <section id="course-page" class="course-page-section">
+<section id="course-page" class="course-page-section">
     <div class="container">
         <div class="row  coursecontent d-block m-2">
             <h2>@lang('labels.frontend.course.course_content') </h2>
@@ -416,69 +416,51 @@
         </div>
         
         @foreach($chapters as $chapter)
-
         <div class="row m-2 shadow">
-            @if(count($lessons)  > 0)
-                @php $count = 0; @endphp
-                @foreach($lessons as $key=> $lesson)
-                    @if($lesson->model && $lesson->model->published == 1)
-                        @php $count++ @endphp
-                        <div class="accordion" id="accordionExample">
-                            @if(auth()->check())
-                                @if(in_array($lesson->model->id,$completed_lessons))
-                                    <div class="position-absolute" style="right: 0;top:0px">
-                                        <span class="gradient-bg p-1 text-white font-weight-bold completed">@lang('labels.frontend.course.completed')</span>
-                                    </div>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#{{$chapter->id}}" aria-expanded="true" aria-controls="{{$chapter->id}}" >
+                        {{ $chapter->title}} <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+                        </button>
+                        </h2>
+                    </div>
+            
+                    <div id="{{$chapter->id}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                        @foreach($lessons->get() as $key=>$item)
+                        @php $key++; @endphp
+
+                            <div class="bordered">
+                                      
+                                      @if($item->model && $item->model->published == 1)
+                                  
+                                      
+                                <p class="subtitle2">  <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
+                                               @if($item->model->chapter_id == $chapter->id)
+                                                {{$item->model->title}}
+                                                @endif
+                                                @if($item->model_type == 'App\Models\Test')
+                                                    <p class="mb-0 text-primary">
+                                                        - @lang('labels.frontend.course.test')</p>
+                                                @endif
+                                               
+                                            </a> </p>
+                                <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
                                 @endif
-                            @endif
-                                <div class="card">
-                                    <div class="card-header" id="headingOne">
-                                        <h2 class="mb-0">
-                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
-                                            {{$chapter->title}}
-                                        <!-- Chapter 1  -->
-                                            <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
-                                        </button>
-                                        </h2>
-                                        @if($lesson->model_type == 'App\Models\Test')
-                                                            <div class="leanth-course">
-                                                                <span>@lang('labels.frontend.course.test')</span>
-                                                            </div>
-                                                        @endif
-                                    </div>
-                            
-                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="bordered">
-                                            @if($lesson->model_type == 'App\Models\Test')
-                                                            {{ mb_substr($lesson->model->description,0,20).'...'}}
-                                                        @else
-                                                            {{$lesson->model->short_text}}
+                            </div>
+                            @endforeach
 
-                                                        @endif
-                                                        @if(auth()->check())
-
-                                                            @if(in_array($lesson->model->id,$completed_lessons))
-                                                                <div>
-                                                                    <a class="btn btn-warning mt-3"
-                                                                       href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$lesson->model->slug])}}">
-                                                                        <span class=" text-white font-weight-bold ">@lang('labels.frontend.course.go') ></span>
-                                                                    </a>
-                                                                </div>
-                                                            @endif
-                                                        @endif
-                                                <!-- <p class="subtitle2"> Adding Value to Customers- Episode 1 </p> -->
-                                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>              
                         </div>
-                    @endif
-                @endforeach
-            @endif
+                       
+                    </div>
+                </div>
+
+             
+            </div>
         </div>
-        @endforeach
+    @endforeach
 
     </div>
 </section>
@@ -582,6 +564,10 @@
                                         @for($r=1; $r<=$course_rating; $r++)
                                             <li><i class="fas fa-star"></i></li>
                                         @endfor
+                                        @for($r=1; $r<=5-$course_rating; $r++)
+                                        <i class="fas fa-star"></i>
+                                        @endfor
+
                                     </ul>
                                     <b>{{$total_ratings}} @lang('labels.frontend.course.ratings')</b>
                                 </div>
@@ -604,6 +590,7 @@
             </div>
         </div>
     </div>
+    
  </section>
 
 

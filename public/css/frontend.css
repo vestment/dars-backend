@@ -6612,5 +6612,42 @@ hr{
 .owl-carousel .owl-nav .owl-next{
   color: #D2498B;
 }
+.btndropdown{
+  background-color: #0C0C3F;
+  border-color:#0C0C3F;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 15px;
+  padding: 7px 15px;
+  font-weight: 500;
+  position: relative;
+  border-radius: 4px;
+}
+
+.btndropdown:hover{
+  background-color: #0C0C3F;
+  border-color:#0C0C3F;
+  color: white;
+}
 
   
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
+  background-color: #0C0C3F;
+  border-color:#0C0C3F;
+}
+.dropright .dropdown-menu{
+  transform:translate3d(11px, 50px, 6px) !important;
+}
+.droplist{
+  background-color: #0C0C3F;
+  color: white;
+}
+.linkdrop{
+  padding: 15px;
+}
+.btn-group, .btn-group-vertical{
+  color: white;
+}
+.divloginsearch{
+margin-top: 8px;
+}
