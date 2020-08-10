@@ -1398,6 +1398,9 @@ return array (
       'title' => 'الصفحة الرئيسية',
       'what_they_say_about_us' => 'ماذا يقولون عنا',
       'no_data_available' => 'لا تتوافر بيانات',
+      'Acadimes' =>' الاكادميات',
+
+
     ),
     'layouts' => 
     array (

@@ -16,6 +16,8 @@ use App\Models\Page;
 use App\Models\Reason;
 use App\Models\Sponsor;
 use App\Models\TeacherProfile;
+use App\academy;
+
 
 use App\Models\System\Session;
 use App\Models\Tag;
@@ -108,7 +110,9 @@ class HomeController extends Controller
         }
 
         $categories = Category::get();
-        return view($this->path . '.index-' . config('theme_layout'), compact('popular_courses', 'featured_courses', 'sponsors', 'total_students', 'total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
+        $teacher_data = TeacherProfile::get();
+        $acadimies = academy::get();
+        return view($this->path . '.index-' . config('theme_layout'), compact('popular_courses','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
     }
 
     public function getFaqs()

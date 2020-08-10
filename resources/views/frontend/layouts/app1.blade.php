@@ -21,6 +21,9 @@
     <!-- Check if the language is set to RTL, so apply the RTL layouts -->
         <!-- Otherwise apply the normal LTR layouts -->
 
+
+
+
         <link rel="stylesheet" href="{{asset('assets/css/owl.carousel.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/flaticon.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('assets/css/meanmenu.css')}}">
