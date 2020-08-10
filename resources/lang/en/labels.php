@@ -5,6 +5,7 @@ return array (
   array (
     'courses' => 
     array (
+      'content' => 'Content',
       'title' => 'Courses',
       'fields' => 
       array (
@@ -278,6 +279,7 @@ return array (
       'slug_placeholder' => 'Input slug or it will be generated automatically',
       'fields' => 
       array (
+        'content' => 'Content',
         'course' => 'Course',
         'title' => 'Title',
         'slug' => 'Slug',

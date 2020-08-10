@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Models\Course;
 use App\Models\CourseTimeline;
 use App\Models\Lesson;
+use App\Models\Chapter;
 use App\Models\Media;
 use App\Models\Test;
 use Illuminate\Http\Request;
@@ -30,9 +31,12 @@ class LessonsController extends Controller
         if (!Gate::allows('lesson_access')) {
             return abort(401);
         }
-        $courses = $courses = Course::has('category')->ofTeacher()->pluck('title', 'id')->prepend('Please select', '');
+      $courses = Course::has('category')->ofTeacher()->pluck('title', 'id')->prepend('Please select', '');
+      $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
+      $lessons = Lesson::get();
 
-        return view('backend.lessons.index', compact('courses'));
+
+        return view('backend.lessons.index', compact('courses','chapters','lessons'));
     }
 
     /**
@@ -47,11 +51,11 @@ class LessonsController extends Controller
         $has_delete = false;
         $has_edit = false;
         $lessons = "";
-        $lessons = Lesson::whereIn('course_id', Course::ofTeacher()->pluck('id'));
+        $lessons = Lesson::whereIn('chapter_id', Chapter::pluck('id'));
 
 
-        if ($request->course_id != "") {
-            $lessons = $lessons->where('course_id', (int)$request->course_id)->orderBy('created_at', 'desc')->get();
+        if ($request->chapter_id != "") {
+            $lessons = $lessons->where('chapter_id', (int)$request->chapter_id)->orderBy('created_at', 'desc')->get();
         }
 
         if ($request->show_deleted == 1) {
@@ -135,7 +139,9 @@ class LessonsController extends Controller
             return abort(401);
         }
         $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
-        return view('backend.lessons.create', compact('courses'));
+        $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
+
+        return view('backend.lessons.create', compact('courses','chapters'));
     }
 
     /**
@@ -247,6 +253,7 @@ class LessonsController extends Controller
                 $timeline = new CourseTimeline();
             }
             $timeline->course_id = $request->course_id;
+            $timeline->chapter_id = $request->chapter_id;
             $timeline->model_id = $lesson->id;
             $timeline->model_type = Lesson::class;
             $timeline->sequence = $sequence;
