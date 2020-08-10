@@ -80,10 +80,14 @@ class CoursesController extends Controller
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with('publishedLessons')->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
         $chapters = Chapter::where('course_id',$course_id)->get();
+        // dd($teacherprofile = TeacherProfile::where('user_id',$user_id)->get('description'));
+
         // dd($chapters);
         $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
         // $chapter_lessons = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
        $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count() ;
+       $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count() ;
+
 // return($lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count());
 // dd($chapter_lessons);
         
@@ -97,6 +101,7 @@ class CoursesController extends Controller
         $completed_lessons = "";
         $is_reviewed = false;
         // return Course::class;
+        // dd($course->reviews()->where('reviewable_id',$is_reviewed));
 
 
         if(auth()->check() && $course->reviews()->where('user_id','=',auth()->user()->id)->first()){
@@ -127,7 +132,7 @@ class CoursesController extends Controller
 
         }
         // $course=(Course::with('teachers.teacherProfile')->find(2));
-        return view( $this->path.'.courses.course', compact('chapter_lessons','lessoncount','chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
+        return view( $this->path.'.courses.course', compact('chaptercount','chapter_lessons','lessoncount','chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
     }
 
 

@@ -399,10 +399,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <div class="search-bar">
-        <input class="input-text" type="text" name="q" placeholder="search here">
-        <i class="icon fa fa-search"></i>
-    </div>
+  
 
 
 <script>

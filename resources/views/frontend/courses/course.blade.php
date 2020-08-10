@@ -323,7 +323,7 @@
                                         @endif</h3>
                     <h6 class="font20">This course includes: </h6>
                     <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
-                    <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters')</p>
+                    <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters')</p>
                     <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>
                     <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
                     <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
@@ -411,7 +411,7 @@
             <h2>@lang('labels.frontend.course.course_content') </h2>
         </div>
         <div class="row smpara d-block m-2">
-            <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') •
+            <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
                 <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
         </div>
         
