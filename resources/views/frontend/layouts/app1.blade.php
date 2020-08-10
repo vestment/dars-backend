@@ -101,7 +101,7 @@
                             </div>
                             <!-- /.navbar-header -->
 
-                            <div class="cart-search float-right ul-li">
+                            <!-- <div class="cart-search float-right ul-li">
                                 <ul>
                                     <li>
                                         <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
@@ -111,19 +111,33 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
 
 
                             <!-- Collect the nav links, forms, and other content for toggling -->
-                            <nav class="navbar-menu float-right">
+                            <nav class="navbar-menu float-left">
                                 <div class="nav-menu ul-li">
                                     <ul>
+                                        
+                                    <div class="btn-group dropright">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle btndropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Courses                                        
+                                        </button>
+                                        <div class="dropdown-menu droplist">
+                                            <a class="linkdrop" href="">hsdfghs</a>
+    
+                                        </div>
+                                    </div>
+
+
                                         @if(count($custom_menus) > 0 )
                                             @foreach($custom_menus as $menu)
                                                 {{--@if(is_array($menu['id']) && $menu['id'] == $menu['parent'])--}}
                                                     {{--@if($menu->subs && (count($menu->subs) > 0))--}}
                                                 @if($menu['id'] == $menu['parent'])
                                                     @if(count($menu->subs) == 0)
+                                  
+
                                                         <li class="">
                                                             <a href="{{asset($menu->link)}}"
                                                                class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
@@ -143,6 +157,38 @@
                                                 @endif
                                             @endforeach
                                         @endif
+
+                
+
+                                    </ul>
+                                </div>
+                            </nav>
+
+
+                            <nav class="navbar-menu float-right divloginsearch">
+                                <div class="nav-menu ul-li hoverpink">
+                                    <ul>
+                                            <li>
+                                                            <div class="mt-0">
+                                                                <a 
+                                                                href="">Offers</a>
+                                                            </div>
+                                            </li>
+                                            <li>
+                                                    <div class="log-in mt-0">
+                                                        <a 
+                                                        href="{{ url('signup/en') }}">@lang('navs.general.signup')</a>
+                                                    
+
+                                                    </div>
+                                            </li>
+                                            <li>
+                                            <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
+                                                @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
+                                                    <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
+                                                @endif
+                                            </a>
+                                        </li>
 
                                         @if(auth()->check())
                                             <li class="menu-item-has-children ul-li-block">
@@ -169,7 +215,11 @@
                                                 </div>
                                             </li>
                                         @endif
-                                            @if(count($locales) > 1)
+
+
+                    
+
+                                        @if(count($locales) > 1)
                                             <li class="menu-item-has-children ul-li-block">
                                                 <a href="#">
                                                     <span class="d-md-down-none">@lang('menus.language-picker.language')
@@ -190,6 +240,7 @@
                                     </ul>
                                 </div>
                             </nav>
+
 
                             <div class="mobile-menu">
                                 <div class="logo">

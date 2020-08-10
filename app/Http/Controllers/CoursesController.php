@@ -7,6 +7,7 @@ use App\Models\Bundle;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Review;
+use App\Models\Lesson ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
@@ -73,11 +74,17 @@ class CoursesController extends Controller
     public function show($course_slug)
     {
         $continue_course=NULL;
+        $course_id = Course::where('slug',$course_slug)->value('id');
+        // dd($course_id);
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with('publishedLessons')->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
-        $chapters = $course->chapters;
-// return($chapters = $course->chapters);
+        $chapters = Chapter::where('course_id',$course_id)->get();
+        // dd($chapters);
+        $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
+// dd($chapter_lessons);
+        
+        // return($chapters = $course->chapters);
 
         if(($course->published == 0) && ($purchased_course == false)){
             abort(404);
@@ -88,6 +95,7 @@ class CoursesController extends Controller
         $is_reviewed = false;
         // return Course::class;
 
+
         if(auth()->check() && $course->reviews()->where('user_id','=',auth()->user()->id)->first()){
             $is_reviewed = true;
         }
@@ -95,7 +103,7 @@ class CoursesController extends Controller
             $course_rating = $course->reviews->avg('rating');
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
         }
-        $lessons = $course->courseTimeline()->orderby('sequence','asc')->get();
+        $lessons = $course->courseTimeline()->orderby('sequence','asc');
 
         if (\Auth::check()) {
 
@@ -114,8 +122,8 @@ class CoursesController extends Controller
             }
 
         }
-        $course=(Course::with('teachers.teacherProfile')->find(2));
-        return view( $this->path.'.courses.course', compact('chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
+        // $course=(Course::with('teachers.teacherProfile')->find(2));
+        return view( $this->path.'.courses.course', compact('chapter_lessons','chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
     }
 
 

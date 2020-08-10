@@ -1,11 +1,8 @@
 <?php return array (
   'nav-menu' => 
   array (
-    'blog' => 'Blog',
     'courses' => 'Courses',
-    'bundles' => 'Bundles',
-    'forums' => 'Forums',
-    'contact' => 'Contact',
-    'about-us' => 'About Us',
+    'ecouncil-for-business' => 'Ecouncil for business',
+    'thanoy-aaam' => 'ثانوية عامة',
   ),
 );
