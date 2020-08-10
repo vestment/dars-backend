@@ -85,7 +85,7 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 85%;
   margin: 0 auto;
 }
 
@@ -96,7 +96,8 @@ body {
 
 .ul-li-block ul li {
   list-style: none;
-  display: block;
+  display: inline;
+  margin-left: 5%;
 }
 
 div#preloader {
@@ -6050,10 +6051,17 @@ ul.product-tab li.active:after {
   font-weight: 700;
   color: #333333;
 }
+.t-b{
+  color: black;
+}
 
 .purchase-list .in-total span {
   color: #17d0cf;
   float: right;
+}
+
+.bt-pay{
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
 }
 
 /*---------------------------------------------------- */
@@ -6517,21 +6525,7 @@ display: inline-block;
 }
 
 
-  @media(max-width :1024px){
-    .buttoncart button {
-      width: 17%;
-      padding: 2px;
-      font-size: 13px;
-      }
-    }
-    @media(max-width :425px){
-      .buttoncart button {
-        width: 24%;
-        padding: 2px;
-        font-size: 12px;
-        }
-      }
-
+ 
 
 .addcart{
   opacity: 0.9 !important;
@@ -6539,19 +6533,71 @@ display: inline-block;
   padding: 10px !important;
   font-size: 15px !important;
 }
-@media(max-width :1024px){
+@media(min-width :425px){
   .addcart {
     width: 100px !important;
     padding: 8px !important;
     font-size: 13px !important;
     }
+    .buttoncart button {
+      width: 17%;
+      padding: 2px;
+      font-size: 13px;
+      }
+   
   }
+  @media(min-width :1009px){
+    .tech-slider{
+      display: none;
+    }
+    .tech-pics{
+      display: block;
+    }
+
+  }
+  @media(max-width :1009px){
+    
+    .tech-pics{
+    display: none;
+  }
+  .tech-slider{
+    display: block;
+  }
+}
+
 @media(max-width :425px){
   .addcart {
     width: 100px !important;
     padding: 6px !important;
     font-size: 13px !important;
     }
+    .buttoncart button {
+      width: 24%;
+      padding: 2px;
+      font-size: 12px;
+      }
+    
+ 
+    }
+  .teacher-image{
+    border-radius: 50%;
+    width: 230px;
   }
+.bg-card{
+ position: relative;
+
+}
+.finger-img{
+  position: relative;
+  z-index: 1;
+}
+.prof-img{
+  position: absolute;
+  margin-bottom: 100px;
+  z-index: 2;
+  right: -6px;
+  top: 32px;
+  left: 5px;
+}
 
   

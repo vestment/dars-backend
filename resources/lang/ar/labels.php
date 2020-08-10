@@ -1280,6 +1280,11 @@ return array (
       'sub_total' => 'المجموع الفرعي',
       'total_payable' => 'مجموع المستحق',
       'wishlist' => 'قائمه المفضلات',
+      'action' => 'عمل',
+      'remove'=>'إزالة',
+      'your_shopping_cart'=>'سله مشترياتك',
+      'course_category' => 'فئة التدريب',
+      'category'=>'الفئة'
     ),
     'contact' => 
     array (
@@ -1389,7 +1394,7 @@ return array (
       'search_course_placeholder' => 'اكتب ماذا تريد أن تتعلم اليوم؟',
       'search_courses' => '<span> بحث </span> عن الدورات التدريبية.',
       'students_enrolled' => 'الطلاب المسجلين',
-      'teachers' => 'معلمون',
+      'Instructors' => 'معلمون',
       'title' => 'الصفحة الرئيسية',
       'what_they_say_about_us' => 'ماذا يقولون عنا',
       'no_data_available' => 'لا تتوافر بيانات',
@@ -1551,7 +1556,7 @@ return array (
       'account' => 'رقم حساب',
       'holder_name' => 'أسم الحساب',
       'account_number' => 'رقم حساب',
-      'bank_code' => 'رمز بنكي',
+      'title' => 'المسمى الوظيفى',
     ),
     'description' => 'وصف',
   ),

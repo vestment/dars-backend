@@ -16,6 +16,8 @@ class CreateTeacherProfilesTable extends Migration
         Schema::create('teacher_profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            // $table->text('title');
+
             // $table->unsignedInteger('academy_id')->nullable();
             $table->text('facebook_link')->nullable();
             $table->text('twitter_link')->nullable();
