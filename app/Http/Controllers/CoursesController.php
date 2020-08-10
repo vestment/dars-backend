@@ -82,6 +82,8 @@ class CoursesController extends Controller
         $chapters = Chapter::where('course_id',$course_id)->get();
         // dd($chapters);
         $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
+        // $chapter_lessons = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
+
 // dd($chapter_lessons);
         
         // return($chapters = $course->chapters);
@@ -104,6 +106,7 @@ class CoursesController extends Controller
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
         }
         $lessons = $course->courseTimeline()->orderby('sequence','asc');
+        // dd($lessons);
 
         if (\Auth::check()) {
 

@@ -421,33 +421,37 @@
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#{{$chapter->id}}" aria-expanded="true" aria-controls="{{$chapter->id}}" >
                         {{ $chapter->title}} <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
                         </button>
                         </h2>
                     </div>
             
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div id="{{$chapter->id}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
+                        @foreach($lessons->get() as $key=>$item)
+                        @php $key++; @endphp
+
                             <div class="bordered">
-                            @foreach($lessons->where('chapter_id',$chapter->id)->get() as $key=>$item)
                                       
                                       @if($item->model && $item->model->published == 1)
                                   
-                                      {{--@php $key++; @endphp--}}
+                                      
                                 <p class="subtitle2">  <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
+                                               @if($item->model->chapter_id == $chapter->id)
                                                 {{$item->model->title}}
+                                                @endif
                                                 @if($item->model_type == 'App\Models\Test')
                                                     <p class="mb-0 text-primary">
                                                         - @lang('labels.frontend.course.test')</p>
                                                 @endif
-                                                <i
-                                                        class="fa text-success float-right fa-check-square"></i> 
+                                               
                                             </a> </p>
                                 <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
                                 @endif
-                                    @endforeach
                             </div>
+                            @endforeach
+
                         </div>
                        
                     </div>
