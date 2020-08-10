@@ -15,7 +15,7 @@ class TeacherProfile extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description','academy_id','type','percentage'
+        'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description','academy_id','type','percentage','title'
     ];
 
     /**

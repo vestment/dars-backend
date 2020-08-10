@@ -2128,8 +2128,8 @@ button.alt-menu-btn.float-left {
 }
 
 .owl-nav {
-  right: 0;
-  top: -90px;
+  right: 677px;
+  bottom: -32px;
   position: absolute;
 }
 
@@ -3013,7 +3013,10 @@ button.alt-menu-btn.float-left {
   display: inline-block;
   width: 100%;
 }
-
+ul.product-tab li{
+direction: none;
+display: inline;
+}
 .course-button ul.product-tab li.active:after {
   display: none;
 }
@@ -6597,7 +6600,17 @@ display: inline-block;
   z-index: 2;
   right: -6px;
   top: 32px;
-  left: 5px;
+  left: 28px;
+}
+hr{
+  background-color: fuchsia;
+  width: 30%;
+}
+.owl-carousel .owl-nav .owl-prev{
+  color: #D2498B;
+}
+.owl-carousel .owl-nav .owl-next{
+  color: #D2498B;
 }
 
   
