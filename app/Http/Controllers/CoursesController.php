@@ -83,7 +83,8 @@ class CoursesController extends Controller
         // dd($chapters);
         $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
         // $chapter_lessons = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
-
+       $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count() ;
+// return($lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count());
 // dd($chapter_lessons);
         
         // return($chapters = $course->chapters);
@@ -126,7 +127,7 @@ class CoursesController extends Controller
 
         }
         // $course=(Course::with('teachers.teacherProfile')->find(2));
-        return view( $this->path.'.courses.course', compact('chapter_lessons','chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
+        return view( $this->path.'.courses.course', compact('chapter_lessons','lessoncount','chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
     }
 
 
@@ -262,4 +263,6 @@ class CoursesController extends Controller
         }
         return abort(404);
     }
+
+    
 }

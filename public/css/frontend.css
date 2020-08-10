@@ -511,7 +511,7 @@ h6 {
 }
 
 .nav-menu {
-  padding-top: 15px;
+  padding-top: 25px;
 }
 
 .nav-menu li a {
@@ -552,6 +552,8 @@ h6 {
 .nav-menu li a:hover:after {
   opacity: 1;
   visibility: visible;
+  background: linear-gradient(to right, #01a6fd 0%, #17d0cf 51%, #01a6fd 100%);
+
 }
 
 .nav-menu li a.submenu {
@@ -6650,4 +6652,53 @@ hr{
 }
 .divloginsearch{
 margin-top: 8px;
+margin-right: 15px;
+}
+
+iframe {
+width: 100%;
+clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
+
+}
+
+
+
+
+
+
+.search-bar {
+  position: relative;
+  background-color:#0C0C3F;
+
+
+}
+
+.search-bar.active .input-text {
+  max-width: 80%;
+  border: 1px solid #ccc;
+  background: #eee;
+}
+
+.search-bar .icon {
+  cursor: pointer;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  transform: translateY(-50%);
+  padding: 13px 15px 13px 11px;
+  background-color:#0C0C3F;
+
+}
+
+.search-bar .input-text {
+  max-width: 0;
+  border: 0;
+  border-color: #0C0C3F;
+  height: 20px;
+  padding: 8px 6px 8px 35px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  padding:8px 6px 8px 45px;
+  background-color:#0C0C3F;
+
 }
