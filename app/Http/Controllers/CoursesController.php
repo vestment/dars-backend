@@ -147,12 +147,34 @@ class CoursesController extends Controller
             } else {
                 $courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->orderBy('id', 'desc')->paginate(9);
             }
+            $popular_course = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
+           
+            $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
-            return view( $this->path.'.courses.index', compact('courses', 'category', 'recent_news','featured_courses','categories'));
+    
+
+            return view( $this->path.'.courses.index', compact('courses','popular_course', 'category', 'recent_news','featured_courses','categories'));
         }
         return abort(404);
     }
+
+
+    // public function try(Request $request)
+    // {
+       
+    //             $popular_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+
+           
+    //             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+
+        
+
+
+    //         return view( $this->path.'.courses.index', compact('courses', 'category', 'recent_news','featured_courses','categories'));
+        
+    
+    // }
 
     public function addReview(Request $request)
     {

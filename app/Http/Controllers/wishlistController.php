@@ -10,26 +10,27 @@ class wishlistController extends Controller
     public function index(Request $request){
 
         $courses = auth()->user()->courses_active;
-        // $courses = Course::with('students')->get();
-        // $courses = Course::get();
-        // $wishlists= ($courses->students->where('user_id', auth()->id()));
-
+        // dd($courses);
         return view('wishlist',compact('courses'));
 
      }
 
-    //  public function remove(Request $request)
-    //  {
-    //     if (!Gate::allows('course_delete')) {
-    //         return abort(401);
-    //     }
-    //     $course = Course::findOrFail($id);
-    //     if ($course->students->count() >= 1) {
-    //         return redirect()->route('admin.courses.index')->withFlashDanger(trans('alerts.backend.general.delete_warning'));
-    //     } else {
-    //         $course->delete();
-    //     }
+     public function remove(Request $request)
+     {
 
-    //      return redirect(route('wishlist'));
-    //  }
+
+        // dd($request->course);
+        $course_id = $request->course;
+        $user_id = auth()->user()->id;
+        $wishlist_id = auth()->user()->courses_active->where('id',$course_id)->first();
+       
+        $wishlist_id->update([
+            "wishlist"=> 0
+        ]);
+
+
+        // $courses = auth()->user()->courses_active;
+        // $courses->updateExistingPivot('wishlist' , 0);
+        return redirect(route('wishlist'));
+     }
 }

@@ -123,7 +123,7 @@
                                         </div>
                                     @endif
                                     <div class="date-meta">
-                                        <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}}
+                                        {{-- <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}} --}}
                                     </div>
                                     <h3 class="latest-title bold-font"><a
                                                 href="{{route('courses.show',['slug'=>$item->slug])}}">{{$item->title}}</a>

@@ -146,14 +146,6 @@
                             @endif
 
                         @endif
-
-
-
-
-
-
-
-
                             <!-- {{-- <button type="submit" class="btn btn-outline-light m-1"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                             @lang('labels.frontend.course.add_to_cart')
                             </button> --}} -->

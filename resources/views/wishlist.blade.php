@@ -98,11 +98,11 @@
                                                     <a href="{{ route('courses.show', [$courses->slug]) }}">{{$courses->title}}</a>
                                                 </h3>   
                                                 <div>    
-                                               <img src="storage/uploads/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                                               <img src="storage/uploads/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                                               <img src="storage/uploads/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                                               <img src="storage/uploads/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
-                                               <img src="storage/uploads/urn_aaid_sc_US_260d37c0-84ad-4627-9667-26030c180189 (1).png">
+                                               <img src="storage/uploads/star.png">
+                                               <img src="storage/uploads/star.png">
+                                               <img src="storage/uploads/star.png">
+                                               <img src="storage/uploads/star.png">
+                                               <img src="storage/uploads/star.png">
                                                 </div>
                                                 <div>
                                                     <small><i class="fas fa-map-marker-alt"></i> cairo |</small><small> <i class="far fa-clock"></i> 10 hours |</small><small> <i class="fab fa-youtube"></i> 10 lecture </small>
