@@ -6402,7 +6402,7 @@ ul.product-tab li.active:after {
   color: #000;
 }
 .collapse{
-  border-style: ridge;
+  /* border-style: ridge; */
 }
 
 

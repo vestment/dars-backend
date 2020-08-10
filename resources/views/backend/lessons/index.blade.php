@@ -1,7 +1,29 @@
 @inject('request', 'Illuminate\Http\Request')
 @extends('backend.layouts.app')
 @section('title', __('labels.backend.lessons.title').' | '.app_name())
+<link rel="stylesheet" type="text/css" href="{{asset('plugins/amigo-sorter/css/theme-default.css')}}">
+    <style>
+        ul.sorter > span {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            background: #f5f5f5;
+            color: #333333;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            padding: 0px;
+        }
 
+        ul.sorter li > span .title {
+            padding-left: 15px;
+        }
+
+        ul.sorter li > span .btn {
+            width: 20%;
+        }
+
+
+    </style>
 @section('content')
 <div class="title my-3 mx-5">   
              <h1 class="page-title d-inline mb-5">@lang('labels.backend.lessons.title')</h1>
@@ -10,23 +32,29 @@
         <div class="">
             @can('lesson_create')
                 <div class="float-right">
-                    <a href="{{ route('admin.lessons.create') }}@if(request('course_id')){{'?course_id='.request('course_id')}}@endif"
+                    <a href="{{ route('admin.lessons.create') }}@if(request('chapter_id')){{'?chapter_id='.request('chapter_id')}}@endif"
                        class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
 
                 </div>
             @endcan
         </div>
         <div class="card-body">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('course_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
                     {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'course_id']) !!}
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('chapter_id', trans('labels.backend.lessons.fields.chapter'), ['class' => 'control-label']) !!}
+                    {!! Form::select('chapter_id', $chapters,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'chapter_id']) !!}
                 </div>
             </div>
             <div class="d-block">
                 <ul class="list-inline">
                     <li class="list-inline-item">
-                        <a href="{{ route('admin.lessons.index',['course_id'=>request('course_id')]) }}"
+                        <a href="{{ route('admin.lessons.index',['chapter_id'=>request('chapter_id')]) }}"
                            style="{{ request('show_deleted') == 1 ? '' : 'font-weight: 700' }}">{{trans('labels.general.all')}}</a>
                     </li>
                     |
@@ -37,7 +65,7 @@
                 </ul>
             </div>
 
-            @if(request('course_id') != "" || request('show_deleted') != "")
+            @if(request('chapter_id') != "" || request('show_deleted') != "")
                 <div class="table-responsive">
 
                     <table id="myTable"
@@ -66,12 +94,42 @@
                 </div>
             @endif
 
+             <div class="card-body">
+            @if(count($lessons) > 0)
+                <div class="row justify-content-center">
+                    <div class="col-6  ">
+                        <!-- <h4 class="">@lang('labels.backend.hero_slider.sequence_note')</h4> -->
+                        <ul class="sorter d-inline-block">
+                            @foreach($lessons as $item)
+                                <li>
+                            <span data-id="{{$item->id}}" data-sequence="{{$item->sequence}}">
+
+                                <p class="title d-inline ml-2">{{$item->title}}</p>
+                           </span>
+
+                                </li>
+                            @endforeach
+                        </ul>
+                        <a href="{{ route('admin.courses.index') }}"
+                           class="btn btn-default border float-left">@lang('strings.backend.general.app_back_to_list')</a>
+
+                        <a href="#" id="save_timeline"
+                           class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
+
+                    </div>
+
+                </div>
+            @endif
+        </div>
+
         </div>
     </div>
 
 @stop
 
 @push('after-scripts')
+<script src="{{asset('plugins/amigo-sorter/js/amigo-sorter.min.js')}}"></script>
+
     <script>
 
         $(document).ready(function () {
@@ -80,15 +138,15 @@
 
             @php
                 $show_deleted = (request('show_deleted') == 1) ? 1 : 0;
-                $course_id = (request('course_id') != "") ? request('course_id') : 0;
-            $route = route('admin.lessons.get_data',['show_deleted' => $show_deleted,'course_id' => $course_id]);
+                $chapter_id = (request('chapter_id') != "") ? request('chapter_id') : 0;
+            $route = route('admin.lessons.get_data',['show_deleted' => $show_deleted,'chapter_id' => $chapter_id]);
             @endphp
 
             route = '{{$route}}';
             route = route.replace(/&amp;/g, '&');
 
 
-            @if(request('course_id') != "" || request('show_deleted') != "")
+            @if(request('chapter_id') != "" || request('show_deleted') != "")
 
             $('#myTable').DataTable({
                 processing: true,
@@ -159,11 +217,50 @@
             $(".js-example-placeholder-single").select2({
                 placeholder: "{{trans('labels.backend.lessons.select_course')}}",
             });
-            $(document).on('change', '#course_id', function (e) {
-                var course_id = $(this).val();
-                window.location.href = "{{route('admin.lessons.index')}}" + "?course_id=" + course_id
+            $(document).on('change', '#chapter_id', function (e) {
+                var chapter_id = $(this).val();
+                window.location.href = "{{route('admin.lessons.index')}}" + "?chapter_id=" + chapter_id
             });
         });
 
+
+        $('ul.sorter').amigoSorter({
+            li_helper: "li_helper",
+            li_empty: "empty",
+        });
+        $(document).on('click', '#save_timeline', function (e) {
+            e.preventDefault();
+            var list = [];
+            $('ul.sorter li').each(function (key, value) {
+                key++;
+                var val = $(value).find('span').data('id');
+                list.push({id: val, sequence: key});
+            });
+
+            $.ajax({
+                method: 'POST',
+                url: "{{route('admin.sliders.saveSequence')}}",
+                data: {
+                    _token: '{{csrf_token()}}',
+                    list: list
+                }
+            }).done(function () {
+                location.reload();
+            });
+        })
+
+        $(document).on('click', '.switch-input', function (e) {
+            var id = $(this).data('id');
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.sliders.status') }}",
+                data: {
+                    _token:'{{ csrf_token() }}',
+                    id: id,
+                },
+            }).done(function() {
+                location.reload();
+            });
+        })
     </script>
 @endpush

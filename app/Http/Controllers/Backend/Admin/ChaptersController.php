@@ -29,6 +29,13 @@ class ChaptersController extends Controller
         return view('backend.chapters.index', compact('courses'));
     }
 
+    public function getChapterContent(Request $requset)
+    {
+        $timeline =  CourseTimeline::where('chapter_id', '=', $request->chapter_id);
+        
+        $content = $timeline->model_type::where('id', '=', $timeline->model_id);
+    }
+
     public function getData(Request $request)
     {
 

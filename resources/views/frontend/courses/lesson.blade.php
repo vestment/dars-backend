@@ -161,6 +161,14 @@
     margin-left: 4%;
     margin-top: -1%;
 }
+.subtitle2 {
+    font-weight: light;
+    font-size: 14px;
+  
+    padding-bottom: 17px;
+ 
+    border-bottom: solid 1px #e4e4e4;
+}
     </style>
 @endpush
 

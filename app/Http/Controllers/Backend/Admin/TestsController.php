@@ -231,7 +231,7 @@ class TestsController extends Controller
         $test->save();
 
 
-        $sequence = 1;
+        $sequence = 1; 
         if (count($test->course->courseTimeline) > 0) {
             $sequence = $test->course->courseTimeline->max('sequence');
             $sequence = $sequence + 1;
@@ -245,6 +245,7 @@ class TestsController extends Controller
                 $timeline = new CourseTimeline();
             }
             $timeline->course_id = $request->course_id;
+            $timeline->chapter_id = $request->chapter_id;
             $timeline->model_id = $test->id;
             $timeline->model_type = Test::class;
             $timeline->sequence = $sequence;
