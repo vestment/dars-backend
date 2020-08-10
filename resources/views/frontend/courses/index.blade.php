@@ -425,7 +425,7 @@
                                         <tr class="list-head">
                                             <th>@lang('labels.frontend.course.course_name')</th>
                                             <th>@lang('labels.frontend.course.course_type')</th>
-                                            <th>@lang('labels.frontend.course.starts')</th>
+                                               <th>@lang('labels.frontend.course.starts')</th>
                                         </tr>
                                         @if($courses->count() > 0)
                                             @foreach($courses as $course)

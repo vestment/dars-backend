@@ -14,6 +14,7 @@ use Stripe\Charge;
 use Stripe\Customer;
 use Cart;
 use App\Models\TeacherProfile;
+use App\Models\Chapter;
 
 
 class CoursesController extends Controller
@@ -75,7 +76,8 @@ class CoursesController extends Controller
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with('publishedLessons')->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
-        // $teacher_data = TeacherProfile::where('user_id', '=', $course_slug->id)->first();
+        $chapters = $course->chapters;
+// return($chapters = $course->chapters);
 
         if(($course->published == 0) && ($purchased_course == false)){
             abort(404);
@@ -84,6 +86,8 @@ class CoursesController extends Controller
         $total_ratings = 0;
         $completed_lessons = "";
         $is_reviewed = false;
+        // return Course::class;
+
         if(auth()->check() && $course->reviews()->where('user_id','=',auth()->user()->id)->first()){
             $is_reviewed = true;
         }
@@ -110,8 +114,8 @@ class CoursesController extends Controller
             }
 
         }
-
-        return view( $this->path.'.courses.course', compact('course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
+        $course=(Course::with('teachers.teacherProfile')->find(2));
+        return view( $this->path.'.courses.course', compact('chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
     }
 
 
@@ -203,7 +207,6 @@ class CoursesController extends Controller
             $course_rating = 0;
             $total_ratings = 0;
             $lessons = $course->courseTimeline()->orderby('sequence','asc')->get();
-
             if ($course->reviews->count() > 0) {
                 $course_rating = $course->reviews->avg('rating');
                 $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();

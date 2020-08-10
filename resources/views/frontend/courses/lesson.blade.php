@@ -161,6 +161,14 @@
     margin-left: 4%;
     margin-top: -1%;
 }
+.subtitle2 {
+    font-weight: light;
+    font-size: 14px;
+  
+    padding-bottom: 17px;
+ 
+    border-bottom: solid 1px #e4e4e4;
+}
     </style>
 @endpush
 
@@ -449,8 +457,8 @@
 
                              @endforeach -->
 
-                             @foreach($chapters as $chapter)
-                             <div class="row m-2 shadow">
+    @foreach($chapters as $chapter)
+        <div class="row m-2 shadow">
             <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" id="headingOne">
@@ -490,9 +498,7 @@
              
             </div>
         </div>
-
-
-        @endforeach
+    @endforeach
 
 
 

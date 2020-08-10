@@ -1394,10 +1394,13 @@ return array (
       'search_course_placeholder' => 'اكتب ماذا تريد أن تتعلم اليوم؟',
       'search_courses' => '<span> بحث </span> عن الدورات التدريبية.',
       'students_enrolled' => 'الطلاب المسجلين',
-      'teachers' => 'معلمون',
+      'Instructors' => 'معلمون',
       'title' => 'الصفحة الرئيسية',
       'what_they_say_about_us' => 'ماذا يقولون عنا',
       'no_data_available' => 'لا تتوافر بيانات',
+      'Acadimes' =>' الاكادميات',
+
+
     ),
     'layouts' => 
     array (
@@ -1556,7 +1559,7 @@ return array (
       'account' => 'رقم حساب',
       'holder_name' => 'أسم الحساب',
       'account_number' => 'رقم حساب',
-      'bank_code' => 'رمز بنكي',
+      'title' => 'المسمى الوظيفى',
     ),
     'description' => 'وصف',
   ),

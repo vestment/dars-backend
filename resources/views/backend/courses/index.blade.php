@@ -54,7 +54,7 @@
                         <th>@lang('labels.backend.courses.fields.category')</th>
                         <th>@lang('labels.backend.courses.fields.price') <br><small>(in {{$appCurrency['symbol']}})</small></th>
                             <th>@lang('labels.backend.courses.fields.status')</th>
-                            <th>@lang('labels.backend.lessons.title')</th>
+                            <th>@lang('labels.backend.courses.content')</th>
                         @if( request('show_deleted') == 1 )
                             <th>&nbsp; @lang('strings.backend.general.actions')</th>
                         @else

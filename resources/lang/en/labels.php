@@ -5,6 +5,7 @@ return array (
   array (
     'courses' => 
     array (
+      'content' => 'Content',
       'title' => 'Courses',
       'fields' => 
       array (
@@ -278,6 +279,7 @@ return array (
       'slug_placeholder' => 'Input slug or it will be generated automatically',
       'fields' => 
       array (
+        'content' => 'Content',
         'course' => 'Course',
         'title' => 'Title',
         'slug' => 'Slug',
@@ -1409,6 +1411,7 @@ return array (
       'lessons' => 'lessons',
       'instructors' => 'Instructors',
       'wishlist'=>'wishlist',
+      'added_to_wishlist'=>'added to wishlist',
       'Share'=>'Share',
 
     ),
@@ -1424,7 +1427,7 @@ return array (
       'search_courses' => '<span>Search</span> Courses.',
       'students_enrolled' => 'Students Enrolled',
       'online_available_courses' => 'Online Available Courses',
-      'teachers' => 'Teachers',
+      'Instructors' => 'Instructors',
       'academies' => 'Academies',
       
 
@@ -1459,6 +1462,8 @@ return array (
         'browse_course_by_category' => 'Browse Courses<span> By Category.</span>',
         'faq_full' => 'Frequently<span> Asked Questions</span>',
         'social_network' => 'Social Network',
+        'follow_us' => 'Follow Us',
+
         'subscribe_newsletter' => 'Subscribe Newsletter',
         'subscribe_now' => 'Subscribe Now',
         'latest_news_blog' => 'Latest <span>News Blog.</span>',
@@ -1607,7 +1612,7 @@ return array (
     'bank_details' => 
     array (
       'name' => 'Bank Name',
-      'bank_code' => 'Bank Code',
+      'title' => 'Title',
       'account' => 'Account Number',
       'holder_name' => 'Account Name',
       'account_number' => 'Account Number',

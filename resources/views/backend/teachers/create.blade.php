@@ -41,6 +41,15 @@
                     </div><!--form-group-->
 
                     <div class="form-group row">
+                            {{ html()->label(__('labels.teacher.bank_details.title'))->class('col-md-2 form-control-label')->for('title') }}
+                            <div class="col-md-10">
+                                {{ html()->text('title')
+                                        ->class('form-control')
+                                        ->placeholder(__('labels.teacher.bank_details.title')) }}
+                            </div><!--col-->
+                        </div>
+
+                    <div class="form-group row">
                         {{ html()->label(__('labels.backend.teachers.fields.email'))->class('col-md-2 form-control-label')->for('email') }}
 
                         <div class="col-md-10">
