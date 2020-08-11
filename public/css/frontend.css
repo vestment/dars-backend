@@ -523,6 +523,7 @@ h6 {
   font-weight: 500;
   position: relative;
   border-radius: 4px;
+  font-family: cairo;
 }
 
 .nav-menu li a:after {
@@ -6391,10 +6392,17 @@ ul.product-tab li.active:after {
   /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
   padding-left: 0 !important;
   padding-right: 0 !important;
+  background-repeat: no-repeat;
+  height: 350px;
+  background-size: cover;
+  background-position: 50% 50%;
+
 
 
   /* background-color: violet; */
 }
+
+
 .pricebottom{
   bottom: 40px;
 }
@@ -6469,7 +6477,8 @@ display: inline-block;
 
 .footer-logo{
   background-color: #0C0C3F;
-  width: 50%;
+  width: 40%;
+  padding: 15px;
 }
 .footersec h2{
   font-size: 24px;
@@ -6493,7 +6502,6 @@ display: inline-block;
   padding: 15px;
 }
 .l-h{
-  line-height: 38px;
   font-size: 13px;
 }
 
@@ -6524,22 +6532,21 @@ display: inline-block;
 /* style="opacity:0.9; width:15%;padding:10px; font-size:15px" */
 .buttoncart button {
   opacity: 0.9;
-  width: 15%;
   padding: 10px;
   font-size: 15px;
   height: 39px;
 }
 
 
- 
 
 .addcart{
   opacity: 0.9 !important;
   width: 200px !important;
   padding: 10px !important;
   font-size: 15px !important;
+  color: white;
 }
-@media(min-width :425px){
+@media(max-width :425px){
   .addcart {
     width: 100px !important;
     padding: 8px !important;
@@ -6648,9 +6655,19 @@ hr{
 .dropright .dropdown-menu{
   transform:translate3d(11px, 50px, 6px) !important;
 }
+
+.dropright button{
+  font-weight: 500;
+  font-family: cairo !important;
+  font-weight: 500 !important;
+}
 .droplist{
   background-color: #0C0C3F;
   color: white;
+  
+}
+.droplist ul li :hover{
+  background: linear-gradient(to right, #01a6fd 0%, #17d0cf 51%, #01a6fd 100%);
 }
 .linkdrop{
   padding: 15px;
@@ -6665,14 +6682,15 @@ margin-right: 15px;
 
 iframe {
 width: 100%;
-clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
+/* clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% ); */
+height: 500px;
 
 }
 
 
 
 
-
+/* search in navbar */
 
 .search-bar {
   position: relative;
@@ -6685,6 +6703,10 @@ clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
   max-width: 80%;
   border: 1px solid #ccc;
   background: #eee;
+  transform:translate3d(45px, -2px, 6px);
+  height: 37px;
+  border-radius: 25px;
+
 }
 
 .search-bar .icon {
@@ -6710,6 +6732,7 @@ clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
   background-color:#0C0C3F;
 
 }
+<<<<<<< HEAD
 .p-re{
   z-index: 7;
 
@@ -6752,4 +6775,13 @@ clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
   background-repeat: no-repeat;
   background-blend-mode: overlay;
 
+=======
+/* end of search in navbar */
+
+/* display none of logo for navbar  */
+@media(max-width :768px){
+  .logonone {
+    display: none;
+  }
+>>>>>>> 5869e2cb5acc19d79969b9ef6f8d4fbbaf8739c5
 }

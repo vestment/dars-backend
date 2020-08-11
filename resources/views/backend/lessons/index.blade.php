@@ -47,7 +47,7 @@
             </div> -->
             <div class="row">
                 <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('chapter_id', trans('labels.backend.lessons.fields.chapter'), ['class' => 'control-label']) !!}
+                    {!! Form::label('chapter_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
                     {!! Form::select('chapter_id', $chapters,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'chapter_id']) !!}
                 </div>
             </div>
