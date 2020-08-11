@@ -5360,8 +5360,8 @@ ul.product-tab li.active:after {
 }
 
 .course-page-section .course-list-img {
-  height: 70px;
-  width: 70px;
+  height: 70;
+  width: 70;
   float: left;
   margin-right: 20px;
   background-position: center;

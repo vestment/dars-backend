@@ -9,11 +9,14 @@ class wishlistController extends Controller
 {
     public function index(Request $request){
 
-        $courses = auth()->user()->courses_active;
-        // dd($courses);
+        $courses = auth()->user()->courses_ac;
+        
         return view('wishlist',compact('courses'));
 
      }
+
+
+     
 
      public function remove(Request $request)
      {
@@ -22,10 +25,10 @@ class wishlistController extends Controller
         // dd($request->course);
         $course_id = $request->course;
         $user_id = auth()->user()->id;
-        $wishlist_id = auth()->user()->courses_active->where('id',$course_id)->first();
-       
+        $wishlist_id = auth()->user()->courses_ac->where('id',$course_id)->first();
+    //    dd( $wishlist_id);
         $wishlist_id->update([
-            "wishlist"=> 0
+            "pivot_wishlist" => 0
         ]);
 
 

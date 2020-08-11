@@ -33,7 +33,7 @@ ul.pagination {
     font: Bold 15px Ubuntu;
     letter-spacing: -0.2px;
     color: #000000CC;
-    margin-top: -36px;
+    margin-top: -20px;
 }
 
 .rate{
@@ -95,4 +95,41 @@ ul.pagination {
     background: #D2498B;
     color:#fff!important;
     opacity:0.5;
+    height: 37px;
 }
+
+
+.hei-sec{
+    height: 300px;
+    overflow: hidden;
+}
+
+.noborder{
+    border: none;
+}
+
+
+.course-page-sec .course-li-img {
+    height: 300px;
+    width: 100%;
+    float: left;
+    margin-right: 20px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #777777;
+    overflow: hidden;
+  }
+
+
+  .course-page-sec .course-l-img {
+    height: 220px;
+    width: 100%;
+    float: left;
+    margin-right: 20px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #777777;
+    overflow: hidden;
+  }
