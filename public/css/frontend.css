@@ -2132,9 +2132,9 @@ border: none;
 }
 
 .owl-nav {
-  right: 677px;
-  bottom: -32px;
-  position: absolute;
+  /* right: 677px; */
+  /* bottom: -32px; */
+  /* position: absolute; */
 }
 
 .owl-nav .owl-prev,

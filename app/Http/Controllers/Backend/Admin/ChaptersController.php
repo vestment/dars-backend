@@ -31,7 +31,7 @@ class ChaptersController extends Controller
 
     public function getChapterContent(Request $requset)
     {
-        $timeline =  CourseTimeline::where('chapter_id', '=', $request->chapter_id);
+        $timeline =  CourseTimeline::where('chapter_id', '=', $requset->chapter_id);
         
         $content = $timeline->model_type::where('id', '=', $timeline->model_id);
     }

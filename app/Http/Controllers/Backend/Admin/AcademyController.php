@@ -23,13 +23,11 @@ class AcademyController extends Controller
      */
     public function index()
     {
-        
-        
         $users = User::role('academy')->get();
         return view('backend.academies.index', compact('users'));
     }
 
-   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -93,13 +91,14 @@ class AcademyController extends Controller
             })
             ->editColumn('status', function ($q) {
                 $html = html()->label(html()->checkbox('')->id($q->id)
-                ->checked(($q->active == 1) ? true : false)->class('switch-input')->attribute('data-id', $q->id)->value(($q->active == 1) ? 1 : 0).'<span class="switch-label"></span><span class="switch-handle"></span>')->class('switch switch-lg switch-3d switch-primary');
+                        ->checked(($q->active == 1) ? true : false)->class('switch-input')->attribute('data-id', $q->id)->value(($q->active == 1) ? 1 : 0) . '<span class="switch-label"></span><span class="switch-handle"></span>')->class('switch switch-lg switch-3d switch-primary');
                 return $html;
                 // return ($q->active == 1) ? "Enabled" : "Disabled";
             })
             ->rawColumns(['actions', 'image', 'status'])
             ->make();
     }
+
     public function create()
     {
         return view('backend.academies.create');
@@ -108,7 +107,7 @@ class AcademyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -121,29 +120,35 @@ class AcademyController extends Controller
             $academy->avatar_type = 'storage';
             $academy->avatar_location = $request->image->store('/avatars', 'public');
         }
-        $academy->active = isset($request->active)?1:0;
+        $academy->active = isset($request->active) ? 1 : 0;
         $academy->save();
         $academy->assignRole('academy');
-
+        $file = $request->file('image');
+        $filename = time().'-'.$file->getClientOriginalName();
+        $size = $file->getSize() / 1024;
+        $path = public_path() . '/storage/uploads/academies';
+        $file->move($path, $filename);
+        $academyLogo = asset('storage/uploads/academies/' . $filename);
         $payment_details = [
-            'bank_name'         => request()->payment_method == 'bank'?request()->bank_name:'',
-            'ifsc_code'         => request()->payment_method == 'bank'?request()->ifsc_code:'',
-            'account_number'    => request()->payment_method == 'bank'?request()->account_number:'',
-            'account_name'      => request()->payment_method == 'bank'?request()->account_name:'',
-            'paypal_email'      => request()->payment_method == 'paypal'?request()->paypal_email:'',
+            'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
+            'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
+            'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
+            'account_name' => request()->payment_method == 'bank' ? request()->account_name : '',
+            'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
         ];
         $data = [
-            'user_id'           => $academy->id,
-            'facebook_link'     => request()->facebook_link,
-            'twitter_link'      => request()->twitter_link,
-            'linkedin_link'     => request()->linkedin_link,
-            'payment_method'    => request()->payment_method,
-            'payment_details'   => json_encode($payment_details),
-            'description'       => request()->description,
-            'logo'              => request()->image,
-            'percentage'        => request()->percentage,
-            'adress'           => request()->adress,
+            'user_id' => $academy->id,
+            'facebook_link' => request()->facebook_link,
+            'twitter_link' => request()->twitter_link,
+            'linkedin_link' => request()->linkedin_link,
+            'payment_method' => request()->payment_method,
+            'payment_details' => json_encode($payment_details),
+            'description' => request()->description,
+            'logo' => $academyLogo,
+            'percentage' => request()->percentage,
+            'adress' => request()->adress,
         ];
+//        dd($data);
         academy::create($data);
 
 
@@ -153,7 +158,7 @@ class AcademyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -166,7 +171,7 @@ class AcademyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -178,8 +183,8 @@ class AcademyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -190,18 +195,18 @@ class AcademyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $teacher = User::findOrFail($id);
 
-        
-            // return redirect()->route('admin.teachers.index')->withFlashDanger(trans('alerts.backend.general.teacher_delete_warning'));
-      
-            $teacher->delete();
-        
+
+        // return redirect()->route('admin.teachers.index')->withFlashDanger(trans('alerts.backend.general.teacher_delete_warning'));
+
+        $teacher->delete();
+
 
         return redirect()->route('admin.academies.index')->withFlashSuccess(trans('alerts.backend.general.deleted'));
     }

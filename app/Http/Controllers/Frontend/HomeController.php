@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\Blog;
@@ -113,7 +114,8 @@ class HomeController extends Controller
 
         $categories = Category::get();
         $teacher_data = TeacherProfile::get();
-        $acadimies = academy::get();
+        $acadimies = User::role('academy')->with('academy')->where('active', '=', 1)->take(7)->get();
+
         $trending = Course::where('trending', '=', 1)->get();
 
         return view($this->path . '.index-' . config('theme_layout'), compact('popular_courses','trending','total_bundle','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
