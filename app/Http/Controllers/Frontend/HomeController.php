@@ -79,6 +79,7 @@ class HomeController extends Controller
             ->where('featured', '=', 1)->take(8)->get();
 
         $course_categories = Category::with('courses')->where('icon', '!=', "")->take(12)->get();
+        
 
         $trending_courses = Course::withoutGlobalScope('filter')
             ->whereHas('category')
@@ -108,11 +109,14 @@ class HomeController extends Controller
             $total_courses = $total_course + $total_bundle;
             $total_teachers = User::role('teacher')->get()->count();
         }
+        $total_bundle = Bundle::where('published', '=', 1)->get();
 
         $categories = Category::get();
         $teacher_data = TeacherProfile::get();
         $acadimies = academy::get();
-        return view($this->path . '.index-' . config('theme_layout'), compact('popular_courses','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
+        $trending = Course::where('trending', '=', 1)->get();
+
+        return view($this->path . '.index-' . config('theme_layout'), compact('popular_courses','trending','total_bundle','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
     }
 
     public function getFaqs()
