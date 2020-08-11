@@ -1185,6 +1185,8 @@ return array (
       'login_with' => 'الدخول بواسطة',
       'sign_up' => 'تسجيل مستخدم جديد',
       'terms_of_use' => 'سياسة اﻻستخدام وسياسة الخصوصيه',
+      'Privacy Policy' => 'سياسة خاصة',
+
     ),
 
    
@@ -1444,8 +1446,10 @@ return array (
         'view_all_trending_courses' => 'عرض جميع الدورات التدريبية',
         'why_choose' => 'السبب في اختيار',
         'certificate_verification' => 'التحقق من الشهادة',
+        'terms_of_use' => 'سياسة خاصة',
         'more_faqs' => 'المزيد من الأسئلة الشائعة',
         'offers' => 'عروض',
+        'follow_us'=>'تابعنا',
       ),
     ),
     'modal' => 

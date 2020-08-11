@@ -93,12 +93,14 @@
         <header>
             <div id="main-menu" class="main-menu-container">
                 <div class="main-menu">
-                    <div class="container">
+                    {{-- <div class="container"> --}}
+                    <div class="offset-1">
+
                         <div class="navbar-default">
                             <div class="navbar-header float-left">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
                                  
-                                    <img src="{{asset('img/backend/brand/Council-logo-200px.png')}}" alt="logo" style="width: 35%;">
+                                    <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo">
 
                                 </a>
                             </div>
@@ -127,7 +129,12 @@
                                             Courses                                        
                                         </button>
                                         <div class="dropdown-menu droplist">
-                                            <a class="linkdrop" href="">hsdfghs</a>
+                                            {{-- <a class="linkdrop" href="">hsdfghs</a> --}}
+                                            @if(count($categories) > 0)
+                                            @foreach($categories as $category)
+                                                <a class="linkdrop" href="{{$category->id}}"> {{$category->name}}</a>
+                                            @endforeach
+                                        @endif
     
                                         </div>
                                     </div>
@@ -172,10 +179,9 @@
                                 <div class="nav-menu ul-li hoverpink">
                                     <ul>
                                             <li>
-                                                            <div class="mt-0">
-                                                                <a 
-                                                                href="">Offers</a>
-                                                            </div>
+                                                <div class="mt-0">
+                                                    <a href="">Offers</a>
+                                                </div>
                                             </li>
                                             <li>
                                                     <div class="log-in mt-0">
@@ -220,6 +226,26 @@
                                         @endif
 
 
+                                        <li>
+                                            <form action="{{route('search')}}" method="get">
+
+                                                <div class="search-bar">
+                                                    <input class="input-text course" name="q" type="text" placeholder="search here">
+                                                    <i class="icon fa fa-search"></i>
+
+                                                </div>
+                                            </form>
+                                            {{-- <form action="{{route('search')}}" method="get">
+
+                                                <div class="input-group search-group">
+
+                                                    <input class="course" name="q" type="text"
+                                                           placeholder="@lang('labels.frontend.home.search_course_placeholder')">
+                                                </div>
+                                            </form> --}}
+                                        </li>
+
+
                     
 
                                         @if(count($locales) > 1)
@@ -240,9 +266,16 @@
                                                 </ul>
                                             </li>
                                         @endif
+                               
                                     </ul>
                                 </div>
                             </nav>
+
+
+
+
+
+
 
 
                             <div class="mobile-menu">
@@ -324,6 +357,7 @@
 
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -360,6 +394,21 @@
     <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
 
     <script src="{{asset('assets/js/switch.js')}}"></script>
+
+
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+  
+
+
+<script>
+$('.search-bar .icon').on('click', function() {
+  $(this).parent().toggleClass('active');
+});
+</script>
+
+
 
     <script>
         @if(request()->has('user')  && (request('user') == 'admin'))

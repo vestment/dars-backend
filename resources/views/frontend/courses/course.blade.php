@@ -157,7 +157,7 @@
 
 
             <!-- wishlist -->
-            @if (!$purchased_course)
+            {{-- @if (!$purchased_course)
                     
                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
                         <button class="btn btn-outline-light m-1 addcart"
@@ -207,7 +207,7 @@
                         <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
                 @endif
 
-            @endif
+            @endif --}}
 
 
 
@@ -287,7 +287,7 @@
                             @if($course->mediaVideo && $course->mediavideo->count() > 0)
                                 <div class="course-single-text">
                                     @if($course->mediavideo != "")
-                                        <div class="course-details-content mt-3">
+                                        <div class="course-details-content">
                                             <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
                                                 @if($course->mediavideo->type == 'youtube')
 
@@ -323,7 +323,7 @@
                                         @endif</h3>
                     <h6 class="font20">This course includes: </h6>
                     <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
-                    <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters')</p>
+                    <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters')</p>
                     <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>
                     <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
                     <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
@@ -411,8 +411,8 @@
             <h2>@lang('labels.frontend.course.course_content') </h2>
         </div>
         <div class="row smpara d-block m-2">
-            <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') •
-                <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
+            <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
+                <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
         </div>
         
         @foreach($chapters as $chapter)
@@ -589,6 +589,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     
  </section>

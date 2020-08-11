@@ -2,7 +2,8 @@
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
-    <style>
+<link rel="stylesheet" href="../../assets/css/course.css"/>
+<!-- <style>
         .couse-pagination li.active {
             color: #333333 !important;
             font-weight: 700;
@@ -34,7 +35,75 @@
             display: inline;
             text-align: center;
         }
-    </style>
+        /* .best-course-pic-text .best-course-pic {
+            width: 100%;
+        } */
+       .titleofcard{
+        text-align: left;
+        font: Bold 15px Ubuntu;
+        letter-spacing: -0.2px;
+        color: #000000CC;
+        margin-top: -36px;
+        }
+        
+        .rate{
+                text-align: left;
+                font-size:0.9rem;
+                letter-spacing: 0.01px;
+                color: #00000099;
+        }
+        .styleicon{
+            text-align: left;
+        font: Regular 12px Open Sans;
+        letter-spacing: 0px;
+        color: #00000099;
+        }
+        .metatitle{
+            text-align: left;
+            font-size: 0.7rem;
+        letter-spacing: 0px;
+        color: #D2498B;
+        }
+        .metadescr{
+            text-align: left;
+            font-size: 0.7rem;
+        letter-spacing: 0.01px;
+        color: #00000099;
+        }
+        .course-author{
+            font-size: 0.7rem;
+        }
+    .course-meta span {
+        font-size: 71%;
+        margin-right: 10%;
+    }
+    .piclip{
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 0 94%); width: 100%;
+    }
+
+    .gradient-bg{
+        background: #D2498B 
+    }
+    .gradient-bg:hover{
+        background: #D2498B 
+    }
+    .best-course-pic-text {
+        background-image: url('../../assets/img/card/card.png');
+        background-size:cover;
+        padding-top: 0;
+        margin-bottom: 10%;
+        box-shadow: 2px 2px 10px #eee;
+    }
+    .btnAddCard{
+        background: #52ADE1 ;
+        color:#fff!important;
+    }
+    .btnWishList{
+        background: #D2498B;
+        color:#fff!important;
+        opacity:0.5;
+    }
+</style> -->
 @endpush
 @section('content')
 
@@ -58,7 +127,11 @@
 
     <!-- Start of course section
         ============================================= -->
+<<<<<<< HEAD
    <section id="course-page" class="course-page-section">
+=======
+    <section id="course-page" class="course-page-section">
+>>>>>>> 0876ac4943a8513b4d55e355949e4017c02a4cf8
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
@@ -93,11 +166,17 @@
                             <div id="tab1" class="tab-content-1 pt35">
                                 <div class="best-course-area best-course-v2">
                                     <div class="row">
+                                        @if($courses->count() > 0)
 
+<<<<<<< HEAD
                                         @if(@isset($category))
                                             @if($popular_course->count() > 0)
                                             @foreach($popular_course as $course)
                                             <div class="col-lg-4 col-md-6" >
+=======
+                                            @foreach($courses as $course)
+                                                <div class="col-lg-4 col-md-6" >
+>>>>>>> 0876ac4943a8513b4d55e355949e4017c02a4cf8
                                                     <div class="best-course-pic-text relative-position">
                                                         <div class="best-course-pic piclip relative-position"
                                                              @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
@@ -118,11 +197,11 @@
                                                             <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                                             <div class="row">
                                                             <div class="col-12">
-                                                                <img src="../../assets/img/course/Cat – 1/star.png">
-                                                                <img src="../../assets/img/course/Cat – 1/star.png">
-                                                                <img src="../../assets/img/course/Cat – 1/star.png">
-                                                                <img src="../../assets/img/course/Cat – 1/star.png">
-                                                                <img src="../../assets/img/course/Cat – 1/star.png">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
                                                                 <span class="ml-1  rate">0</span>
                                                             </div>
                                                         </div>
@@ -282,6 +361,7 @@
                                             <h3>@lang('labels.general.no_data_available')</h3>
                                     @endif
                                     @endif
+
                                     <!-- /course -->
 
                                     </div>
@@ -416,8 +496,6 @@
                                         </div>
                                         <!-- /post -->
                                     @endforeach
-
-
                                     <div class="view-all-btn bold-font">
                                         <a href="{{route('blogs.index')}}">@lang('labels.frontend.course.view_all_news')
                                             <i class="fas fa-chevron-circle-right"></i></a>
@@ -426,7 +504,6 @@
                             </div>
 
                         @endif
-
 
                         @if($global_featured_course != "")
                             <div class="side-bar-widget">
@@ -470,8 +547,8 @@
                 </div>
             </div>
         </div>
-    </section> --}}
-    {{-- <section>
+    </section>
+    <section>
         <div class="container">
             <div class="card mb-3 " >
                 <div class="row no-gutters">
@@ -661,6 +738,9 @@ nn
     </div>
 </section>
  {{-- end myyy of course section --}}
+    <!-- End of course section
+        ============================================= -->
+
     <!-- Start of best course
    =============================================  -->
     @include('frontend.layouts.partials.browse_courses')
@@ -684,6 +764,7 @@ nn
             @if(request('type') != "")
             $('#sortBy').find('option[value="' + "{{request('type')}}" + '"]').attr('selected', true);
             @endif
+
         });
 
     </script>
