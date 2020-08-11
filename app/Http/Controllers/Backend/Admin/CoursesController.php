@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Models\Auth\User;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Chapter;
 use App\Models\CourseTimeline;
 use App\Models\Media;
 use function foo\func;
@@ -140,7 +141,7 @@ class CoursesController extends Controller
                 return $teachers;
             })
             ->addColumn('lessons', function ($q) {
-                $lesson = '<a href="' . route('admin.lessons.create', ['course_id' => $q->id]) . '" class="btn btn-success mb-1"><i class="fa fa-plus-circle"></i></a>  <a href="' . route('admin.lessons.index', ['course_id' => $q->id]) . '" class="btn mb-1 btn-warning text-white"><i class="fa fa-arrow-circle-right"></a>';
+                $lesson = '<a href="' . route('admin.lessons.create', ['course_id' => $q->id]) . '" class="btn btn-success mb-1"><i class="fa fa-plus-circle"></i></a>  <a href="' . route('admin.courses.courseContent', ['course_id' => $q->id]) . '" class="btn mb-1 btn-warning text-white"><i class="fa fa-arrow-circle-right"></a>';
                 return $lesson;
             })
             ->editColumn('course_image', function ($q) {
@@ -577,5 +578,30 @@ class CoursesController extends Controller
         $course->save();
 
         return back()->withFlashSuccess(trans('alerts.backend.general.updated'));
+    }
+
+
+    public function courseContent($course_id){
+
+        $timeline =  CourseTimeline::where('course_id', $course_id)->get();
+        // dd($timeline[0]->model_type);
+        foreach ($timeline as $item) {
+        $content = $item->model_type::where('id', '=', $item->model_id)->get();
+        }
+
+        // $course = Course::findOrFail($course_id);
+        // $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
+        // $chapters = $courseTimeline->where('model_type','chapter');
+        dd($content);
+
+        // $chaptersOfCourse = Chapter::where('id',$chapters->model_id);
+
+
+        return view('backend.courses.courseContent', compact( 'courseTimeline'));
+
+
+
+
+
     }
 }
