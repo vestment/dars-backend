@@ -84,6 +84,8 @@ Route::get('courses/review/{id}/edit', ['uses' => 'CoursesController@editReview'
 Route::post('courses/review/{id}/edit', ['uses' => 'CoursesController@updateReview', 'as' => 'courses.review.update']);
 Route::get('courses/review/{id}/delete', ['uses' => 'CoursesController@deleteReview', 'as' => 'courses.review.delete']);
 
+//============ Academy Routes=================//
+Route::get('academy/{id}', ['uses' => 'AcademyController@show', 'as' => 'academy.show']);
 
 //============Bundle Routes=================//
 Route::get('bundles', ['uses' => 'BundlesController@all', 'as' => 'bundles.all']);

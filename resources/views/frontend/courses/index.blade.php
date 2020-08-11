@@ -1,109 +1,9 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+z@extends('frontend.layouts.app'.config('theme_layout'))
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
 <link rel="stylesheet" href="../../assets/css/course.css"/>
-<!-- <style>
-        .couse-pagination li.active {
-            color: #333333 !important;
-            font-weight: 700;
-        }
 
-        .page-link {
-            position: relative;
-            display: block;
-            padding: .5rem .75rem;
-            margin-left: -1px;
-            line-height: 1.25;
-            color: #c7c7c7;
-            background-color: white;
-            border: none;
-        }
-
-        .page-item.active .page-link {
-            z-index: 1;
-            color: #333333;
-            background-color: white;
-            border: none;
-
-        }
-     .listing-filter-form select{
-            height:50px!important;
-        }
-
-        ul.pagination {
-            display: inline;
-            text-align: center;
-        }
-        /* .best-course-pic-text .best-course-pic {
-            width: 100%;
-        } */
-       .titleofcard{
-        text-align: left;
-        font: Bold 15px Ubuntu;
-        letter-spacing: -0.2px;
-        color: #000000CC;
-        margin-top: -36px;
-        }
-        
-        .rate{
-                text-align: left;
-                font-size:0.9rem;
-                letter-spacing: 0.01px;
-                color: #00000099;
-        }
-        .styleicon{
-            text-align: left;
-        font: Regular 12px Open Sans;
-        letter-spacing: 0px;
-        color: #00000099;
-        }
-        .metatitle{
-            text-align: left;
-            font-size: 0.7rem;
-        letter-spacing: 0px;
-        color: #D2498B;
-        }
-        .metadescr{
-            text-align: left;
-            font-size: 0.7rem;
-        letter-spacing: 0.01px;
-        color: #00000099;
-        }
-        .course-author{
-            font-size: 0.7rem;
-        }
-    .course-meta span {
-        font-size: 71%;
-        margin-right: 10%;
-    }
-    .piclip{
-        clip-path: polygon(0 0, 100% 0, 100% 70%, 0 94%); width: 100%;
-    }
-
-    .gradient-bg{
-        background: #D2498B 
-    }
-    .gradient-bg:hover{
-        background: #D2498B 
-    }
-    .best-course-pic-text {
-        background-image: url('../../assets/img/card/card.png');
-        background-size:cover;
-        padding-top: 0;
-        margin-bottom: 10%;
-        box-shadow: 2px 2px 10px #eee;
-    }
-    .btnAddCard{
-        background: #52ADE1 ;
-        color:#fff!important;
-    }
-    .btnWishList{
-        background: #D2498B;
-        color:#fff!important;
-        opacity:0.5;
-    }
-</style> -->
 @endpush
 @section('content')
 
@@ -527,7 +427,7 @@
                                         <label>@lang('labels.frontend.course.full_text')</label>
                                         <input type="text" class="" name="q" placeholder="{{trans('labels.frontend.course.looking_for')}}">
                                     </div>
-                                    <button class="genius-btn gradient-bg text-center text-uppercase btn-block text-white font-weight-bold"
+                                    <button class="btn btn-pink gradient-bg text-center text-uppercase btn-block text-white font-weight-bold"
                                             type="submit">@lang('labels.frontend.course.find_courses') <i
                                                 class="fas fa-caret-right"></i></button>
                                 </form>

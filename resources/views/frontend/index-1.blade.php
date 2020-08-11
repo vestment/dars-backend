@@ -9,6 +9,22 @@
 
 @push('after-styles')
 <link rel="stylesheet" href="../../assets/css/course.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+   <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
+    <script src="{{asset('assets/js/jarallax.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.meanmenu.js')}}"></script>
+    <script src="{{asset('assets/js/scrollreveal.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
+    <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery-ui.js')}}"></script>
+    <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/switch.js')}}"></script>
 
     <style>
         /*.address-details.ul-li-block{*/
@@ -28,6 +44,7 @@
             margin: auto;
             display: inline-block;
         }
+        
 
     </style>
 @endpush
@@ -47,14 +64,11 @@
     @if($sections->search_section->status == 1)
         <!-- End of slider section
             ============================================= -->
-        <section id="search-course" class="search-course-section">
+        <section id="search-course" class="search-course-section shadow-lg">
             <div class="container">
-                <div class="section-title mb20 headline text-center ">
-                    <span class="subtitle text-uppercase">@lang('labels.frontend.home.learn_new_skills')</span>
-                    <h2>@lang('labels.frontend.home.search_courses')</h2>
-                </div>
+              
                 
-                <div class="search-course mb30 relative-position ">
+                <div class="search-course  relative-position ">
                     <form action="{{route('search')}}" method="get">
 
                         <div class="input-group search-group">
@@ -79,49 +93,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="search-counter-up">
-                    <div class="row p-5">
-                        <div class="col-md-4 col-sm-4">
-                            <div class="counter-icon-number ">
-                                <div class="counter-icon">
-                                    <i class="text-gradiant flaticon-graduation-hat"></i>
-                                </div>
-                                <div class="counter-number">
-                                    <span class=" bold-font">{{$total_students}}</span>
-                                    <p>@lang('labels.frontend.home.students_enrolled')</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /counter -->
-
-                        <div class="col-md-4 col-sm-4">
-                            <div class="counter-icon-number ">
-                                <div class="counter-icon">
-                                    <i class="text-gradiant flaticon-book"></i>
-                                </div>
-                                <div class="counter-number">
-                                    <span class=" bold-font">{{$total_courses}}</span>
-                                    <p>@lang('labels.frontend.home.online_available_courses')</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /counter -->
-
-
-                        <div class="col-md-4 col-sm-4">
-                            <div class="counter-icon-number ">
-                                <div class="counter-icon">
-                                    <i class="text-gradiant flaticon-group"></i>
-                                </div>
-                                <div class="counter-number">
-                                    <span class=" bold-font">{{$total_teachers}}</span>
-                                    <p>@lang('labels.frontend.home.teachers')</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /counter -->
-                    </div>
-                </div>
+               
             </div>
         </section>
         <!-- End of Search Courses
@@ -138,55 +110,178 @@
         ============================================= -->
         <section id="why-choose-us" class="">
             <div class=" ">
-                <div class="container">
-                    @if($sections->reasons->status == 1)
+                <div class="">
+                  
 
-                        <div class="section-title mb20 headline text-center ">
-                            <span class="subtitle text-uppercase">{{env('APP_NAME')}} @lang('labels.frontend.layouts.partials.advantages')</span>
-                            <h2>@lang('labels.frontend.layouts.partials.why_choose') <span>{{app_name()}}</span></h2>
+                        <div class="section-title mb20 headline text-center pt-5">
+                            
                         </div>
-                        @if($reasons->count() > 0)
-                            <div id="service-slide-item" class="service-slide">
-                                @foreach($reasons as $item)
-                                    <div class="service-text-icon ">
+                       <div class="row bg-grd p-5">
+                            <div class="col-lg-4 pic-hd ">
+                                    <div class=" position-relative p-re">
+                                        <div class="position-absolute p-ab ">
+                                            <div>
+                                                <div class="text-white tex">
+                                                    <h3 class="pb-4">Bundle Course</h3>
+                                                    <h2 class="pb-5 textbold">World-class learning for anyone, anywhere</h2>
+                                                    </div>
+                                                    <div class=" text-center btn-p">
+                                                    <button class=" btn btn-outline-info ">view plans</button>
+                                                    </div>
+                                               
+                                            
 
-                                        <div class="service-icon float-left">
-                                            <i class="text-gradiant {{$item->icon}}"></i>
-                                        </div>
-                                        <div class="service-text">
-                                            <h3 class="bold-font">{{$item->title}}</h3>
-                                            <p>{{$item->content}}.</p>
-                                        </div>
-                                    </div>
-
-                                @endforeach
-
-                            </div>
-                        @endif
-                    @endif
-                <!-- /service-slide -->
-                    @if($sections->testimonial->status == 1)
-                        <div class="testimonial-slide">
-                            <div class="section-title-2 mb65 headline text-left ">
-                                <h2>@lang('labels.frontend.layouts.partials.students_testimonial')</h2>
-                            </div>
-                            @if($testimonials->count() > 0)
-                                <div id="testimonial-slide-item" class="testimonial-slide-area">
-                                    @foreach($testimonials as $item)
-                                        <div class="student-qoute ">
-                                            <p>{{$item->content}}</p>
-                                            <div class="student-name-designation">
-                                                <span class="st-name bold-font">{{$item->name}} </span>
-                                                <span class="st-designation">{{$item->occupation}}</span>
                                             </div>
                                         </div>
-                                    @endforeach
+
+
+                                    </div>
+                            </div>
+                            <div  class="offset-1 col-lg-7 col-sm-12 text-white">
+                                <div class="p-5">
+                                    <span class=" pb-3">{{env('APP_NAME')}} @lang('labels.frontend.layouts.partials.OfferCourses')</span>
+                                    <h2>@lang('labels.frontend.layouts.partials.packagecourse') <span>{{app_name()}}</span></h2>
                                 </div>
-                            @else
-                                <h4>@lang('labels.general.no_data_available')</h4>
-                            @endif
-                        </div>
-                    @endif
+                                     
+                                @if($total_bundle->count() > 0)
+                                <div class="owl-carousel1 owl-theme ">
+                              
+                                        @foreach($total_bundle as $course)
+                                        <div class="item">
+                                                
+                                            <div class="" >
+                                                <div class="best-course-pic-text relative-position">
+                                                    <div class="best-course-pic piclip relative-position"
+                                                        @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                                                        <div class="course-price text-center gradient-bg">
+                                                            @if($course->free == 1)
+                                                                <span>{{trans('labels.backend.courses.fields.free')}}</span>
+                                                            @else
+                                                                <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
+                                                            @endif
+                                                        </div>
+                                                        <!-- <div class="course-details-btn">
+                                                            <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
+                                                                <i class="fas fa-arrow-right"></i></a>
+                                                        </div>
+                                                        <div class="blakish-overlay"></div> -->
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <h3 class="card-title titleofcard">{{$course->title}}</h3>
+                                                        <div class="row">
+                                                        <div class="col-12">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <span class="ml-1  rate">0</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="course-meta my-1 vv">
+                                                        <span class="course-category">
+                                                            <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
+                                                        </span>
+                                                        <span class="course-author"><a href="#">{{ $course->students()->count() }}
+                                                                @lang('labels.frontend.course.students')</a></span>
+                                                        
+                                                    </div>
+                                                   
+                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                                                    <button type="submit" class="btn btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart') 
+                                                                        <i class="fa fa-shopping-bag ml-1"></i>
+                                                                    </button> 
+                                                                
+                                                            @elseif(!auth()->check())
+                                                                @if($course->free == 1)
+                                                                            <a id="openLoginModal"
+                                                                            class="btn btn-block btnAddCard"
+                                                                            data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
+                                                                                        class="fas fa-caret-right"></i></a>
+                                                                    @else
+
+                                                                        <a id="openLoginModal"
+                                                                            class="btn btn-block btnAddCard"
+                                                                            data-target="#myModal" href="#">@lang('labels.frontend.course.add_to_cart') 
+                                                                            <i class="fa fa-shopping-bag"></i>
+                                                                        </a>
+                                                                    @endif
+                                                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                                                                @if($course->free == 1)
+                                                                        <form action="{{ route('cart.getnow') }}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                                                            <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                            <button class="btn btn-block btnAddCard"
+                                                                                    href="#">@lang('labels.frontend.course.get_now') <i
+                                                                                        class="fas fa-caret-right"></i></button>
+                                                                        </form>
+                                                                @else
+                                                                        <form action="{{ route('cart.addToCart') }}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                                                            <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                            <button type="submit"
+                                                                                    class="btn btn-block btnAddCard">
+                                                                                @lang('labels.frontend.course.add_to_cart') <i
+                                                                                        class="fa fa-shopping-bag"></i></button>
+                                                                        </form>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                        <div class="col-2 " style="margin-left: -10%;">
+                                                            <a href="{{ route('courses.show', [$course->slug]) }}" class="btn btnWishList">
+                                                                <i class="far fa-bookmark"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                            </div> 
+                                        </div>
+                                </div>
+                                        
+                                        @endforeach
+                                        @else
+                                        <h3>@lang('labels.general.no_data_available')</h3>
+                                        
+
+                                </div>
+                                @endif
+
+                                <script>
+                    $(document).ready(function(){
+                        $(".owl-carousel1").owlCarousel({
+
+                            loop:true,
+                            margin:15,
+                            nav:true,
+                            responsive:{
+                                0:{
+                                    items:1
+                                },
+                                600:{
+                                    items:2
+                                },
+                                1000:{
+                                    items:3
+                                }
+                            }
+                    }) 
+                    });
+                    </script>
+
+
+
+
+                            </div>
+
+                       
+                       </div>
+                   
+                    
                 </div>
             </div>
         </section>
@@ -202,54 +297,39 @@
             ============================================= -->
     @endif
 
-
-    @if($sections->sponsors->status == 1)
-        @if(count($sponsors) > 0 )
-            <!-- Start of sponsor section
+    @if($sections->course_by_category->status == 1)
+        <!-- Start Course category
         ============================================= -->
-            <section id="sponsor" class="sponsor-section">
-                <div class="container">
-                    <div class="section-title-2 mb65 headline text-left ">
-                        <h2>{{env('APP_NAME')}} <span>@lang('labels.frontend.layouts.partials.sponsors')</span></h2>
-                    </div>
-
-                    <div class="sponsor-item sponsor-1 text-center">
-                        @foreach($sponsors as $sponsor)
-                            <div class="sponsor-pic text-center">
-                                <a href="{{ ($sponsor->link != "") ? $sponsor->link : '#' }}">
-                                    <img src={{asset("storage/uploads/".$sponsor->logo)}} alt="{{$sponsor->name}}">
-                                </a>
-
-                            </div>
-                        @endforeach
-
-                    </div>
-                </div>
-            </section>
-            <!-- End of sponsor section
-       ============================================= -->
-        @endif
-    @endif
-
-
-    @if($sections->featured_courses->status == 1)
-        <!-- Start of best course
-        ============================================= -->
-        {{--@include('frontend.layouts.partials.browse_courses')--}}
-        <!-- End of best course
+        @include('frontend.layouts.partials.course_by_category')
+        <!-- End Course category
             ============================================= -->
     @endif
 
+    <section class="bg-static">
 
-    @if($sections->teachers->status == 1)
-        <!-- Start of course teacher
-        ============================================= -->
+<div class="row  ">
+    <div class="col-6 p-5">
+    <div class="p-5">
+        <img src="/img/backend/brand/Council-logo-100px.png" alt="">
+    </div>
+    <div class="text-white text-justify p-5">
+        <h1>Offline Booking Center.</h1>
+        <p class="">we see first-hand every day how technology makes the impossible, possible. It’s why Pluralsight One exists: To advance our mission of democratizing technology skills, challenging assumptions about solutions and create significant, lasting social impact.</p>
+    </div>
+    <div class="p-5">
+        <button class="btn btn-outline-info">view plans</button>
+    </div>
+    </div>
+    <div class="col-5"></div>
+
+</div>
+</section>
 <section id="course-teacher" class="course-teacher-section p-5">
    <div class="">
       <div class="container ">
          <div class=" mb20 headline p-5 mb-5">
             <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-            <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.Instructors').</span></h1>
+            <h1 class="text-dark font-weight-bolder ">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.Instructors').</span></h1>
          </div>
          
          <div class="owl-carousel owl-theme">
@@ -300,24 +380,57 @@
       </div>
    </div>
 </section>
-    <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
-    <script src="{{asset('assets/js/popper.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('assets/js/jarallax.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('assets/js/lightbox.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.meanmenu.js')}}"></script>
-    <script src="{{asset('assets/js/scrollreveal.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
-    <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery-ui.js')}}"></script>
-    <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
 
-    <script src="{{asset('assets/js/switch.js')}}"></script>
+    @if($sections->sponsors->status == 1)
+        @if(count($sponsors) > 0 )
+            <!-- Start of sponsor section
+        ============================================= -->
+            <section id="sponsor" class="sponsor-section">
+                <div class="container">
+                    <div class="section-title-2 mb65 headline text-left ">
+                        <h2>{{env('APP_NAME')}} <span>@lang('labels.frontend.layouts.partials.sponsors')</span></h2>
+                    </div>
+
+                    <div class="sponsor-item sponsor-1 text-center">
+                        @foreach($sponsors as $sponsor)
+                            <div class="sponsor-pic text-center">
+                                <a href="{{ ($sponsor->link != "") ? $sponsor->link : '#' }}">
+                                    <img src={{asset("storage/uploads/".$sponsor->logo)}} alt="{{$sponsor->name}}">
+                                </a>
+
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
+            </section>
+            <!-- End of sponsor section
+       ============================================= -->
+        @endif
+    @endif
+
+
+    @if($sections->featured_courses->status == 1)
+        <!-- Start of best course
+        ============================================= -->
+        {{--@include('frontend.layouts.partials.browse_courses')--}}
+        <!-- End of best course
+            ============================================= -->
+    @endif
+
+
+    @if($sections->teachers->status == 1)
+        <!-- Start of course teacher
+        ============================================= -->
+
+
         <!-- End of course teacher
             ============================================= -->
-            <script>
+          
+
+    @endif
+
+    <script>
                     $(document).ready(function(){
                         $(".owl-carousel").owlCarousel({
 
@@ -339,9 +452,6 @@
                     });
                     </script>
 
-    @endif
-
-
     @if($sections->faq->status == 1)
         <!-- Start FAQ section
         ============================================= -->
@@ -351,13 +461,7 @@
     @endif
 
 
-    @if($sections->course_by_category->status == 1)
-        <!-- Start Course category
-        ============================================= -->
-        @include('frontend.layouts.partials.course_by_category')
-        <!-- End Course category
-            ============================================= -->
-    @endif
+  
 
     <div>
     <div class=" mb20 headline p-5 mb-5">

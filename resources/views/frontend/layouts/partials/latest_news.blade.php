@@ -1,156 +1,137 @@
-<section id="latest-area" class="latest-area-section {{isset($pt) ? $pt : ''}}">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="latest-area-content  ">
-                    <div class="section-title-2 mb65 headline text-left">
-                        <h2>@lang('labels.frontend.layouts.partials.latest_news_blog')</h2>
-                    </div>
-                    <div class="latest-news-posts">
-                        @if(count($news) > 0)
-                            @foreach($news as  $item)
-                                <div class="latest-news-area">
-                                    @if($item->image != null)
-                                        <div class="latest-news-thumbnile relative-position"
-                                             style="background-image: url('{{asset("storage/uploads/".$item->image)}}');">
-                                            <div class="hover-search">
-                                                {{--<i class="fas fa-search"></i>--}}
-                                            </div>
-                                            <div class="blakish-overlay"></div>
-                                        </div>
-                                    @endif
-
-                                    <div class="date-meta">
-                                        <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}}
-                                    </div>
-                                    <h3 class="latest-title bold-font"><a
-                                                href="{{route('blogs.index',['slug' => $item->slug.'-'.$item->id])}}">{{$item->title}}</a>
-                                    </h3>
-                                    <h3 class="latest-title text-primary"><a
-                                                href="{{route('blogs.category',['category' => $item->category->slug])}}">{{$item->category->name}}</a>
-                                    </h3>
-                                    <div class="course-viewer ul-li">
-                                        <ul>
-                                            {{--<li><a href=""><i class="fas fa-user"></i> 1.220</a></li>--}}
-                                            @if($item->comments->count() > 1)
-                                                <li><a href=""><i
-                                                                class="fas fa-comment-dots"></i>{{ $item->comments->count() }}
-                                                    </a></li>
-                                            @endif
-                                        </ul>
-                                    </div>
-                                </div>
-
-                        @endforeach
-                    @endif
-
-                    <!-- /post -->
-
-                        <div class="view-all-btn bold-font">
-                            <a href="{{route('blogs.index')}}">@lang('labels.frontend.layouts.partials.view_all_news') <i class="fas fa-chevron-circle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-4">
-                <div class="latest-area-content  ">
-                    <div class="section-title-2 mb65 headline text-left">
-                        <h2>@lang('labels.frontend.layouts.partials.trending_courses')</h2>
-                    </div>
-                    <div class="latest-news-posts">
-                        @if(count($trending_courses) > 0)
-                            @foreach($trending_courses as  $item)
-                                <div class="latest-news-area">
-                                    @if($item->course_image != null)
-                                        <div class="latest-news-thumbnile relative-position"
-                                             style="background-image: url('{{asset("storage/uploads/".$item->course_image)}}');">
-                                            <div class="hover-search">
-                                                {{--<i class="fas fa-search"></i>--}}
-                                            </div>
-                                            <div class="blakish-overlay"></div>
-                                        </div>
-                                    @endif
-                                    <div class="date-meta">
-                                        <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}}
-                                    </div>
-                                    <h3 class="latest-title bold-font"><a
-                                                href="{{route('courses.show',['slug'=>$item->slug])}}">{{$item->title}}</a>
-                                    </h3>
-                                    <h3 class="latest-title text-primary"><a
-                                                href="{{route('courses.category',['category'=>$item->category->slug])}}">{{$item->category->name}}</a>
-                                    </h3>
-                                    <div class="course-viewer ul-li">
-                                        <ul>
-                                            <li><a href=""><i
-                                                            class="fas fa-user"></i> {{$item->students->count()}}
-                                                </a></li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-
-                        @endforeach
-                    @endif
-
-                    <!-- /post -->
-
-                        <div class="view-all-btn bold-font">
-                            <a href="{{route('courses.all',['type'=>'trending'])}}">@lang('labels.frontend.layouts.partials.view_all_trending_courses')  <i
-                                        class="fas fa-chevron-circle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="latest-area-content  ">
-                    <div class="section-title-2 mb65 headline text-left">
-                        <h2>@lang('labels.frontend.layouts.partials.popular_courses')</h2>
-                    </div>
-                    <div class="latest-news-posts">
-                        @if(count($popular_courses) > 0)
-                            @foreach($popular_courses->take(2) as  $item)
-                                <div class="latest-news-area">
-                                    @if($item->image != null)
-                                        <div class="latest-news-thumbnile relative-position"
-                                             style="background-image: url('{{asset("storage/uploads/".$item->course_image)}}');">
-                                            <div class="hover-search">
-                                                {{--<i class="fas fa-search"></i>--}}
-                                            </div>
-                                            <div class="blakish-overlay"></div>
-                                        </div>
-                                    @endif
-                                    <div class="date-meta">
-                                        {{-- <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}} --}}
-                                    </div>
-                                    <h3 class="latest-title bold-font"><a
-                                                href="{{route('courses.show',['slug'=>$item->slug])}}">{{$item->title}}</a>
-                                    </h3>
-                                    <h3 class="latest-title text-primary"><a
-                                                href="{{route('courses.category',['category'=>$item->category->slug])}}">{{$item->category->name}}</a>
-                                    </h3>
-                                    <div class="course-viewer ul-li">
-                                        <ul>
-                                            <li><a href=""><i
-                                                            class="fas fa-user"></i> {{$item->students->count()}}
-                                                </a></li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                        @endforeach
-                    @endif
-
-                    <!-- /post -->
-                        <div class="view-all-btn bold-font">
-                            <a href="{{route('courses.all',['type'=>'popular'])}}">@lang('labels.frontend.layouts.partials.view_all_popular_courses') <i
-                                        class="fas fa-chevron-circle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section id="latest-area" class="">
+    <div class="container p-5">
+        <div class="text-dark p-5">
+            <p class="font-weight-lighter">The world's largest selection of courses</p>
+            <h2 class="font-weight-bolder">Trending Courses.</h2>
+            <p>Choose from 100,000 online video courses with new additions published every month</p>
         </div>
+    <div class="owl-carousel owl-theme p-3   ">
+                        @if($trending->count() > 0)
+ 
+                        @foreach($trending as $course)
+                        <div class="item">
+                                
+                            <div class="" >
+                                <div class="best-course-pic-text relative-position">
+                                    <div class="best-course-pic piclip relative-position"
+                                        @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                                        <div class="course-price text-center gradient-bg">
+                                            @if($course->free == 1)
+                                                <span>{{trans('labels.backend.courses.fields.free')}}</span>
+                                            @else
+                                                <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
+                                            @endif
+                                        </div>
+                                        <!-- <div class="course-details-btn">
+                                            <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
+                                                <i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                        <div class="blakish-overlay"></div> -->
+                                    </div>
+                                    <div class="card-body">
+                                            <h3 class="card-title titleofcard">{{$course->title}}</h3>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                <span class="ml-1  rate">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="course-meta my-1 vv">
+                                            <span class="course-category">
+                                                <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
+                                            </span>
+                                            <span class="course-author"><a href="#">{{ $course->students()->count() }}
+                                                    @lang('labels.frontend.course.students')</a></span>
+                                            <span class="course-author">
+                                                    {{ $course->lessons()->count() }} @lang('labels.backend.courses.lessons') 
+                                            </span>
+                                        </div>
+                                        <div class="row my-2">
+                                                <div class="col-3">
+                                                    <img src="../../assets/img/course/c-3.jpg" class="rounded-circle">
+                                                </div>
+                                                <div class="col-9">
+                                                    <div class="row">
+                                                        @foreach($course->teachers as $key=>$teacher)
+                                                            @php $key++ @endphp
+                                                            <a href="{{route('teachers.show',['id'=>$teacher->id])}}" target="_blank">
+                                                                {{$teacher->full_name}}@if($key < count($course->teachers )), @endif
+                                                            </a>
+                                                        @endforeach
+                                                        @foreach($course->teachers as $key=>$teacher)
+                                                            @php $key++ @endphp
+                                                            <a href="{{route('teachers.show',['id'=>$teacher->id])}}" target="_blank">
+                                                                {{$teacher->description}}
+                                                            </a>
+                                                        @endforeach
+                                                    
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-10">
+                                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                                        <button type="submit" class="btn btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart') 
+                                                            <i class="fa fa-shopping-bag ml-1"></i>
+                                                        </button> 
+                                                    
+                                                @elseif(!auth()->check())
+                                                    @if($course->free == 1)
+                                                                <a id="openLoginModal"
+                                                                class="btn btn-block btnAddCard"
+                                                                data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
+                                                                            class="fas fa-caret-right"></i></a>
+                                                        @else
+
+                                                            <a id="openLoginModal"
+                                                                class="btn btn-block btnAddCard"
+                                                                data-target="#myModal" href="#">@lang('labels.frontend.course.add_to_cart') 
+                                                                <i class="fa fa-shopping-bag"></i>
+                                                            </a>
+                                                        @endif
+                                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                                                    @if($course->free == 1)
+                                                            <form action="{{ route('cart.getnow') }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                <button class="btn btn-block btnAddCard"
+                                                                        href="#">@lang('labels.frontend.course.get_now') <i
+                                                                            class="fas fa-caret-right"></i></button>
+                                                            </form>
+                                                    @else
+                                                            <form action="{{ route('cart.addToCart') }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                <button type="submit"
+                                                                        class="btn btn-block btnAddCard">
+                                                                    @lang('labels.frontend.course.add_to_cart') <i
+                                                                            class="fa fa-shopping-bag"></i></button>
+                                                            </form>
+                                                    @endif
+                                                @endif
+                                            </div>
+                                            <div class="col-2 " style="margin-left: -10%;">
+                                                <a href="{{ route('courses.show', [$course->slug]) }}" class="btn btnWishList">
+                                                    <i class="far fa-bookmark"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        @else
+                        <h3>@lang('labels.general.no_data_available')</h3>
+                        @endif
+
+                </div>
     </div>
 </section>

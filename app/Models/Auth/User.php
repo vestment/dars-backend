@@ -268,4 +268,5 @@ class User extends Authenticatable implements MessageableInterface
         return $query;
     }
 
+
 }

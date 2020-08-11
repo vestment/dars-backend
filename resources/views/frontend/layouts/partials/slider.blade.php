@@ -130,6 +130,38 @@
             }, 1000);
 
         }
+@if(count($slides) == 1)
+$('#slider-item').owlCarousel({
+                    margin: 0,
+                    responsiveClass: true,
+                    nav: true,
+                    loop:false,
+                    dots: true,
+                    autoplay: false,
+                    navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+                    smartSpeed: 1000,
+                    responsive: {
+                        0: {
+                            items: 1,
+                        },
+                        400: {
+                            items: 1,
+                        },
+                        600: {
+                            items: 1,
+                        },
+                        700: {
+                            items: 1,
+                        },
+                        800: {
+                            items: 1,
+                        },
+                        1000: {
+                            items: 1,
 
+                        }
+                    },
+                })
+@endif
     </script>
 @endpush

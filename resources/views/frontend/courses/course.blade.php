@@ -91,18 +91,20 @@
                                 </button>
                             @elseif(!auth()->check())
                                 @if($course->free == 1)
-                                    <a id="openLoginModal"
-                                    class="btn btn-outline-light m-1 addcart"
-                                    data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
-                                                class="fas fa-caret-right"></i></a>
+                                    <a id="openLoginModal" data-target="#myModal" href="#"> 
+                                        <button class="btn btn-outline-light m-1 addcart"> 
+                                            @lang('labels.frontend.course.get_now') 
+                                            <i class="fas fa-caret-right"></i>
+                                        </button>
+                                    </a>
                                 @else
                 
 
 
                                 <button id="openLoginModal" type="submit"
-                                data-target="#myModal" href="#" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    data-target="#myModal" href="#" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
-                                    </button>
+                                </button>
 
                                 <!-- {{-- <a id="openLoginModal"
                                 class="genius-btn btn-block my-2 bg-dark text-center text-white text-uppercase "
@@ -116,7 +118,7 @@
                                         @csrf
                                         <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                         <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button class="btn btn-outline-light m-1 addcart"
+                                        <button class="btn btn-outline-light text-white m-1 addcart"
                                                 href="#">@lang('labels.frontend.course.get_now') <i
                                                     class="fas fa-caret-right"></i></button>
                                     </form>
@@ -139,13 +141,17 @@
                         @else
 
                             @if($continue_course)
-
-                            <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}"
+                            <a  href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
+                                <button class="btn btn-outline-light m-1 addcart" type="submit">
+                                    @lang('labels.frontend.course.continue_course')
+                                    <i class="fa fa-arow-right"></i>
+                                </button>
+                            </a>
+                            
+                            <!-- <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}"
                             class="btn btn-outline-light m-1 addcart">
-
                                 @lang('labels.frontend.course.continue_course')
-
-                                <i class="fa fa-arow-right"></i></a>
+                                <i class="fa fa-arow-right"></i></a> -->
                             @endif
 
                         @endif
@@ -157,63 +163,7 @@
 
 
             <!-- wishlist -->
-            {{-- @if (!$purchased_course)
-                    
-                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                        <button class="btn btn-outline-light m-1 addcart"
-                                type="submit">@lang('labels.frontend.course.added_to_wishlist')
-                        </button>
-                    @elseif(!auth()->check())
-                        @if($course->free == 1)
-                            <a id="openLoginModal"
-                            class="btn btn-outline-light m-1 addcart"
-                            data-target="#myModal" href="#">@lang('labels.frontend.course.wishlist') <i
-                                        class="fas fa-caret-right"></i></a>
-                        @else
         
-
-
-                        <button id="openLoginModal" type="submit"
-                        data-target="#myModal" href="#" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                            @lang('labels.frontend.course.wishlist')
-                            </button>
-
-                        @endif
-                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                        @if($course->free == 1)
-                            <form action="{{ route('wishlist') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                <button class="btn btn-outline-light m-1 addcart"
-                                        href="#">@lang('labels.frontend.course.wishlist') <i
-                                            class="fas fa-caret-right"></i></button>
-                            </form>
-                        @else
-                        
-                            <form action="{{ route('wishlist') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                <button type="submit" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                    @lang('labels.frontend.course.wishlist')
-                                    </button>
-                            </form>
-                        @endif
-
-
-                    @else
-                        <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
-                @endif
-
-            @endif --}}
-
-
-
-
-
-
                             <button type="submt" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i>
                                 @lang('labels.frontend.course.wishlist')
                             </button>
@@ -280,11 +230,9 @@
             </div>
  
 
-            
-            <div class="col-4 m-5 shadow-lg divfixed paddingleft">
-            <!-- video -->
+            <!-- video modal -->
 
-                            @if($course->mediaVideo && $course->mediavideo->count() > 0)
+            <!-- @if($course->mediaVideo && $course->mediavideo->count() > 0)
                                 <div class="course-single-text">
                                     @if($course->mediavideo != "")
                                         <div class="course-details-content">
@@ -309,7 +257,90 @@
                                         </div>
                                     @endif
                                 </div>
+            @endif -->
+
+
+
+                <!--Modal: Name-->
+                <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <!--Content-->
+                        <!-- <div class="modal-content"> -->
+                        <!--Body-->
+                        <div class="modal-body mb-0 p-0 mt-5">
+                            @if($course->mediaVideo && $course->mediavideo->count() > 0)
+                                    <!-- <div class="course-single-text"> -->
+                                        @if($course->mediavideo != "")
+                                            <div class="course-details-content">
+                                                <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
+                                                    @if($course->mediavideo->type == 'youtube')
+
+
+                                                        <div id="player" class="js-player embed-responsive embed-responsive-16by9" data-plyr-provider="youtube"
+                                                            data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                                            
+                                                    @elseif($course->mediavideo->type == 'vimeo')
+                                                        <div id="player" class="js-player" data-plyr-provider="vimeo"
+                                                            data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                                    @elseif($course->mediavideo->type == 'upload')
+                                                        <video poster="" id="player" class="js-player" playsinline controls>
+                                                            <source src="{{$course->mediavideo->url}}" type="video/mp4"/>
+                                                        </video>
+                                                    @elseif($course->mediavideo->type == 'embed')
+                                                        {!! $course->mediavideo->url !!}
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
                             @endif
+                            </div>
+                        <!-- </div> -->
+                        <!--/.Content-->
+                    </div>
+                </div>
+                <!--Modal: Name-->
+            
+
+            <div class="col-4 m-5 shadow-lg divfixed paddingleft">
+            <!-- video -->
+                <!-- Grid row -->
+           <a>
+                <div class="col divpoly" data-toggle="modal" data-target="#modal1"
+                    @if($course->course_image != "") 
+                    style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                </div>
+            </a>
+                <!-- Grid row -->
+
+                            <!-- @if($course->mediaVideo && $course->mediavideo->count() > 0)
+                                <div class="course-single-text">
+                                    @if($course->mediavideo != "")
+                                        <div class="course-details-content">
+                                            <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
+                                                @if($course->mediavideo->type == 'youtube')
+
+
+                                                    <div id="player" class="js-player col divpoly embed-responsive embed-responsive-16by9" data-plyr-provider="youtube"
+                                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                                         
+                                                @elseif($course->mediavideo->type == 'vimeo')
+                                                    <div id="player" class="js-player" data-plyr-provider="vimeo"
+                                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                                @elseif($course->mediavideo->type == 'upload')
+                                                    <video poster="" id="player" class="js-player" playsinline controls>
+                                                        <source src="{{$course->mediavideo->url}}" type="video/mp4"/>
+                                                    </video>
+                                                @elseif($course->mediavideo->type == 'embed')
+                                                    {!! $course->mediavideo->url !!}
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif -->
+
+
                 <!-- <div class="col divpoly embed-responsive embed-responsive-16by9">
                         <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/XHOmBV4js_E" allowfullscreen></iframe>
                 </div> -->
@@ -424,6 +455,10 @@
                         <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#{{$chapter->id}}" aria-expanded="true" aria-controls="{{$chapter->id}}" >
                         {{ $chapter->title}} <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
                         </button>
+                        @if($course->trending == 1)
+                            <span class="trend-badge text-uppercase bold-font"><i
+                                class="fas fa-bolt"></i> @lang('labels.frontend.badges.trending')</span>
+                        @endif
                         </h2>
                     </div>
             
@@ -663,4 +698,12 @@
     </script>
 @endpush
 
+<script>
 
+$('#modal1').on('hidden.bs.modal', function (e) {
+  // do something...
+  $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
+});
+
+
+</script>

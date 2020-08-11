@@ -12,19 +12,23 @@ class Category extends Model
 
     protected $guarded = [];
 
-    public function courses(){
+    public function courses()
+    {
         return $this->hasMany(Course::class);
     }
 
-    public function bundles(){
+    public function bundles()
+    {
         return $this->hasMany(Bundle::class);
     }
 
-    public function blogs(){
+    public function blogs()
+    {
         return $this->hasMany(Blog::class);
     }
 
-    public function faqs(){
+    public function faqs()
+    {
         return $this->hasMany(Faq::class);
     }
 
