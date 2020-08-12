@@ -133,7 +133,7 @@ class CoursesController extends Controller
 
         }
         // $course=(Course::with('teachers.teacherProfile')->find(2));
-        return view( $this->path.'.courses.course', compact('chaptercount','chapter_lessons','lessoncount','chapters','teacher_data','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
+        return view( $this->path.'.courses.course', compact('chaptercount','chapter_lessons','lessoncount','chapters','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
     }
 
 
