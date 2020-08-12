@@ -278,35 +278,8 @@
                                 </div>
                                 @endif
 
-                                <script>
-                                $(document).ready(function(){
-                                    $(".owl-carousel1").owlCarousel({
-
-                                        loop:true,
-                                        margin:15,
-                                        nav:true,
-                                        responsive:{
-                                            0:{
-                                                items:1
-                                            },
-                                            600:{
-                                                items:2
-                                            },
-                                            1000:{
-                                                items:3
-                                            }
-                                        }
-                                }) 
-                                });
-                                </script>
-
-                                    @endforeach
-                                    @else
-                                        <h3>@lang('labels.general.no_data_available')</h3>
-
 
                                 </div>
-                            @endif
                         </div>
 
 
@@ -338,13 +311,8 @@
 
     <section class="bg-static">
             <div class="row  ">
-<<<<<<< HEAD
-                <div class="col-5 p-5">
-                    <div class="">
-=======
                 <div class="col-5">
                     <div class="p-5">
->>>>>>> 35bbd3de2dec9226c8044b84ea73ab8be70d0741
                         <img src="/img/backend/brand/Council-logo-100px.png" alt="">
                     </div>
                     <div class="pl-5 text-white">
@@ -354,11 +322,7 @@
                             challenging
                             assumptions about solutions and create significant, lasting social impact.</p>
                     </div>
-<<<<<<< HEAD
-                    <div class="">
-=======
                     <div class="p-5">
->>>>>>> 35bbd3de2dec9226c8044b84ea73ab8be70d0741
                         <button class="btn btn-outline-info">View Plans</button>
                     </div>
                 </div>

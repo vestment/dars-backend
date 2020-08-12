@@ -1452,7 +1452,7 @@ button.alt-menu-btn.float-left {
 #slider-item .owl-next , #slider-item .owl-prev {
   box-shadow: none;
   border-radius: 4px;
-
+}
 #slider-item .owl-next {
   float: right;
 }

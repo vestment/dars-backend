@@ -434,7 +434,7 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            
         </div>
     </section>
     <!-- <section id="course-page" class="course-page-section">
