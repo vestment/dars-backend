@@ -18,13 +18,7 @@
         {{-- See https://laravel.com/docs/5.5/blade#stacks for usage --}}
         @stack('before-styles')
 
-    <!-- Check if the language is set to RTL, so apply the RTL layouts -->
-        <!-- Otherwise apply the normal LTR layouts -->
-
-
-
-
-        <link rel="stylesheet" href="{{asset('assets/css/owl.carousel.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/css/owl.carousel.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/flaticon.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('assets/css/meanmenu.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
@@ -87,7 +81,6 @@
     {{--<div id="preloader"></div>--}}
     @include('frontend.layouts.modals.loginModal')
 
-
     <!-- Start of Header section
         ============================================= -->
         <header>
@@ -124,10 +117,10 @@
                             <nav class="navbar-menu float-left">
                                 <div class="nav-menu ul-li">
                                     <ul>
-                                        
+
                                     <div class="btn-group dropright">
                                         <button type="button" class="btn btn-secondary dropdown-toggle btndropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Courses                                        
+                                            Courses
                                         </button>
                                         <div class="dropdown-menu droplist">
                                             {{-- <a class="linkdrop" href="">hsdfghs</a> --}}
@@ -148,7 +141,7 @@
                                                     {{--@if($menu->subs && (count($menu->subs) > 0))--}}
                                                 @if($menu['id'] == $menu['parent'])
                                                     @if(count($menu->subs) == 0)
-                                  
+
 
                                                         <li class="">
                                                             <a href="{{asset($menu->link)}}"
@@ -170,7 +163,7 @@
                                             @endforeach
                                         @endif
 
-                
+
 
                                     </ul>
                                 </div>
@@ -188,9 +181,9 @@
                                             <li>
                                                 @if(!auth()->check())
                                                     <div class="log-in mt-0">
-                                                        <a 
+                                                        <a
                                                         href="{{ url('signup/en') }}">@lang('navs.general.signup')</a>
-                                                    
+
 
                                                     </div>
                                                     @endif
@@ -221,9 +214,9 @@
                                         @else
                                             <li>
                                                 <div class="log-in mt-0">
-                                                    <a 
+                                                    <a
                                                     href="{{ url('login/en') }}">@lang('navs.general.login')</a>
-                                                   
+
 
                                                 </div>
                                             </li>
@@ -250,7 +243,7 @@
                                         </li>
 
 
-                    
+
 
                                         @if(count($locales) > 1)
                                             <li class="menu-item-has-children ul-li-block">
@@ -270,7 +263,7 @@
                                                 </ul>
                                             </li>
                                         @endif
-                               
+
                                     </ul>
                                 </div>
                             </nav>
@@ -399,11 +392,6 @@
 
     <script src="{{asset('assets/js/switch.js')}}"></script>
 
-
-
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
-  
 
 
 <script>

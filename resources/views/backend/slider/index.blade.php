@@ -118,7 +118,8 @@
             </div>
         </div>
     </div>
-<div class="title my-3 mx-5">            <h2 class="page-title d-inline mb-5">@lang('labels.backend.hero_slider.manage_sequence')</h2>
+<div class="title my-3 mx-5">        
+    <h2 class="page-title d-inline mb-5">@lang('labels.backend.hero_slider.manage_sequence')</h2>
 </div>
     <div class="shadow-lg p-3 mb-5 bg-white rounded">
         <div class="">
@@ -126,7 +127,7 @@
         <div class="card-body">
             @if(count($slides_list) > 0)
                 <div class="row justify-content-center">
-                    <div class="col-6  ">
+                    <div class="col-6">
                         <h4 class="">@lang('labels.backend.hero_slider.sequence_note')</h4>
                         <ul class="sorter d-inline-block">
                             @foreach($slides_list as $item)

@@ -52,12 +52,7 @@
                 </div>
 
                 <div class="p-1">    
-                     
-                    {{-- <i class="fas fa-star" style="color: yellow"></i>
-                    <i class="fas fa-star" style="color: yellow"></i>
-                    <i class="fas fa-star" style="color: yellow"></i>
-                    <i class="fas fa-star" style="color: yellow"></i>
-                    <i class="fas fa-star" style="color: yellow"></i> --}}
+
           
                     @for($r=1; $r<=$course_rating; $r++)
                         <i class="fas fa-star" style="color: yellow"></i>
@@ -98,11 +93,8 @@
                                         </button>
                                     </a>
                                 @else
-                
-
-
                                 <button id="openLoginModal" type="submit"
-                                    data-target="#myModal" href="#" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    data-target="#myModal" href="#" class="btn btn-danger ml-1 btn-sm"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
                                 </button>
 
@@ -118,7 +110,7 @@
                                         @csrf
                                         <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                         <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button class="btn btn-outline-light text-white m-1 addcart"
+                                        <button class="btn btn-outline-light text-white ml-1 btn-sm"
                                                 href="#">@lang('labels.frontend.course.get_now') <i
                                                     class="fas fa-caret-right"></i></button>
                                     </form>
@@ -128,7 +120,7 @@
                                         @csrf
                                         <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                         <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button type="submit" class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        <button type="submit" class="btn btn-outline-light ml-1 btn-sm"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                             @lang('labels.frontend.course.add_to_cart')
                                             </button>
                                     </form>
@@ -142,9 +134,9 @@
 
                             @if($continue_course)
                             <a  href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
-                                <button class="btn btn-outline-light m-1 addcart" type="submit">
+                                <button class="btn btn-outline-light ml-1 btn-sm" type="submit">
                                     @lang('labels.frontend.course.continue_course')
-                                    <i class="fa fa-arow-right"></i>
+                                    <i class="fa fa-arrow-right"></i>
                                 </button>
                             </a>
                             
@@ -164,10 +156,10 @@
 
             <!-- wishlist -->
         
-                            <button type="submt" class="btn btn-outline-light m-1 btnsize"> <i class="fa fa-bookmark" aria-hidden="true"></i>
+                            <button type="submit" class="btn btn-outline-light ml-1 btn-sm"> <i class="fa fa-heart" aria-hidden="true"></i>
                                 @lang('labels.frontend.course.wishlist')
                             </button>
-                            <button type="submt" class="btn btn-outline-light m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i>
+                            <button type="submit" class="btn btn-outline-light btn-sm ml-1"> <i class="fa fa-share-alt" aria-hidden="true"></i>
                                 @lang('labels.frontend.course.Share')
                                 </button>
                         </div>
@@ -228,41 +220,10 @@
                 <p > <i class="fa fa-angle-down p-2" aria-hidden="true"></i>
                     Nothing except a positive attitude!</p>
             </div>
- 
 
             <!-- video modal -->
-
-            <!-- @if($course->mediaVideo && $course->mediavideo->count() > 0)
-                                <div class="course-single-text">
-                                    @if($course->mediavideo != "")
-                                        <div class="course-details-content">
-                                            <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
-                                                @if($course->mediavideo->type == 'youtube')
-
-
-                                                    <div id="player" class="js-player col divpoly embed-responsive embed-responsive-16by9" data-plyr-provider="youtube"
-                                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
-                                                         
-                                                @elseif($course->mediavideo->type == 'vimeo')
-                                                    <div id="player" class="js-player" data-plyr-provider="vimeo"
-                                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
-                                                @elseif($course->mediavideo->type == 'upload')
-                                                    <video poster="" id="player" class="js-player" playsinline controls>
-                                                        <source src="{{$course->mediavideo->url}}" type="video/mp4"/>
-                                                    </video>
-                                                @elseif($course->mediavideo->type == 'embed')
-                                                    {!! $course->mediavideo->url !!}
-                                                @endif
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-            @endif -->
-
-
-
-                <!--Modal: Name-->
-                <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!--Modal: Name-->
+            <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <!--Content-->
                         <!-- <div class="modal-content"> -->
@@ -300,10 +261,9 @@
                     </div>
                 </div>
                 <!--Modal: Name-->
-            
 
-            <div class="col-4 m-5 shadow-lg divfixed paddingleft">
             <!-- video -->
+        <div class="col-4 m-5 shadow-lg divfixed paddingleft">
                 <!-- Grid row -->
            <a>
                 <div class="col divpoly" data-toggle="modal" data-target="#modal1"
@@ -312,8 +272,7 @@
                 </div>
             </a>
                 <!-- Grid row -->
-
-                            <!-- @if($course->mediaVideo && $course->mediavideo->count() > 0)
+                    {{-- <!-- @if($course->mediaVideo && $course->mediavideo->count() > 0)
                                 <div class="course-single-text">
                                     @if($course->mediavideo != "")
                                         <div class="course-details-content">
@@ -338,8 +297,7 @@
                                         </div>
                                     @endif
                                 </div>
-                            @endif -->
-
+                    @endif --> --}}
 
                 <!-- <div class="col divpoly embed-responsive embed-responsive-16by9">
                         <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/XHOmBV4js_E" allowfullscreen></iframe>
@@ -358,9 +316,6 @@
                     <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>
                     <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
                     <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
-
-
-
 
                 @if (!$purchased_course)
                         @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
@@ -392,7 +347,6 @@
                                                 class="fas fa-caret-right"></i></button>
                                 </form>
                             @else
-                              
                                 <form action="{{ route('cart.addToCart') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
@@ -422,9 +376,6 @@
                     @endif
                 </div>
             </div>
-
-
-        </div>
     </section>
     <!-- End of course content section
         ============================================= -->
@@ -693,17 +644,13 @@
             @if(request('type') != "")
             $('#sortBy').find('option[value="' + "{{request('type')}}" + '"]').attr('selected', true);
             @endif
+
+            $('#modal1').on('hidden.bs.modal', function (e) {
+                // do something...
+                $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
+            });
         });
 
     </script>
 @endpush
 
-<script>
-
-$('#modal1').on('hidden.bs.modal', function (e) {
-  // do something...
-  $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
-});
-
-
-</script>
