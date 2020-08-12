@@ -123,6 +123,11 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_student')->withTimestamps()->withPivot(['rating','wishlist']);
     }
 
+
+    public function wishlist(){
+        return $this->hasMany(Wishlist::class);
+     }
+
     public function lessons()
     {
         return $this->hasMany(Lesson::class)->orderBy('position');

@@ -287,7 +287,7 @@
                             <span>   {{$appCurrency['symbol'].' '.$course->price}}</span>
                     @endif
                 </h3>
-                <h6 class="font20">This course includes: </h6>
+                <h6 class="font20">@lang('labels.frontend.course.This_course_includes')</h6>
                 <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
                 <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters')</p>
                 <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>

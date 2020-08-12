@@ -1377,6 +1377,7 @@ return array (
       'Share'=>'مشاركة',
       'instructors' => 'مدرسين',
       'course_content' => 'محتوي الكورس',
+      'This_course_includes' => 'هذا الكورس يحتوي علي:',
 
 
     ),

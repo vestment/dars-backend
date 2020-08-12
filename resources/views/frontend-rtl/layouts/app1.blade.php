@@ -57,6 +57,7 @@
               title="color-8">
         <link href="{{asset('assets/css/colors/color-9.css')}}" rel="alternate stylesheet" type="text/css"
               title="color-9">
+              <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
 
         @yield('css')
         @stack('after-styles')
@@ -126,7 +127,7 @@
 
 
                             <!-- Collect the nav links, forms, and other content for toggling -->
-<nav class="big-nav">
+<nav class="big-nav col-lg-12">
                             <nav class="navbar-menu float-right divloginsearch">
                                 <div class="nav-menu ul-li hoverpink">
                                     <ul>
