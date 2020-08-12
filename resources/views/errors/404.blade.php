@@ -1,7 +1,7 @@
 @extends('frontend'.(session()->get('display_type') == "rtl"?"-rtl":"").'.layouts.app'.config('theme_layout'))
 @push('after-styles')
     <style>
-    .icon{
+    .iconss{
         font-size:90px;
     }
     
@@ -174,7 +174,7 @@
                 @foreach($categories as $categ)
                 <div class="col-3 categ">
                 <a href="{{url('/')}}">
-                <span class="icon"><i class="{{$categ->icon}}"></i></span>
+                <span class="iconss"><i class="{{$categ->icon}}"></i></span>
                 <h3>{{$categ->name}}</h3>
                 </a>
                 </div>

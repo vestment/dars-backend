@@ -36,6 +36,11 @@
                     {!! Form::select('course_id', $courses, old('course_id'), ['class' => 'form-control select2']) !!}
 
                 </div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('chapter_id', trans('labels.backend.tests.fields.chapter'), ['class' => 'control-label']) !!}
+                    {!! Form::select('chapter_id', $chapters, old('chapter_id'), ['class' => 'form-control select2']) !!}
+
+                </div>
 
                 <div class="col-12 col-lg-6  form-group">
                     {!! Form::label('title',trans('labels.backend.tests.fields.title'), ['class' => 'control-label']) !!}

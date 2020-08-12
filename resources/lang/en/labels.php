@@ -1419,7 +1419,7 @@ return array (
     'home' => 
     array (
       'title' => 'Home',
-      'search_course_placeholder' => 'Type what do you want to learn today?',
+      'search_course_placeholder' => 'Search Here',
       'popular_teachers' => '<span>Popular</span> Teachers',
       'popular_academies' => '<span>Popular</span> Academies',
 

@@ -61,9 +61,15 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="teacher-img text-center" >
-                                            
-                                            <!-- <img  src="{{url('0cO22dmhKMuEwF5aOGUT5YfYCqNLuLG60UOy7mxh.png')}}" alt=""> -->
-                                            <img  src="{{$teacher->avatar_location}}" alt="">
+                                        @if($teacher->avatar_location == "")
+                                                            <img class="teacher-image p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
+                                                                 alt="">
+                                                        @else
+                                                                <img class="teacher-image p-3" src="{{$teacher->avatar_location}}"
+                                                                 alt="">
+                                                        @endif
+
+                                         
 
                                         </div>
                                     </div>

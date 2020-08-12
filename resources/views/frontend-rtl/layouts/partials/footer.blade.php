@@ -54,9 +54,10 @@
                 <div class="footer-social-subscribe mb65">
                     <div class="row">
                         @if(($footer_data->social_links->status == 1) && (count($footer_data->social_links->links) > 0))
-                            <div class="col-md-4">
-                                <div class="footer-social ul-li ">
-                                    <h2 class="widget-title">@lang('labels.frontend.layouts.partials.social_network')</h2>
+                            <div class="col-md-3">
+                                <div class="footer-social ul-li footersec ">
+                                <h2>@lang('labels.frontend.layouts.partials.follow_us')</h2>
+                                    <!-- <h2>Follow Us</h2> -->
                                     <ul>
                                         @foreach($footer_data->social_links->links as $item)
                                             <li><a href="{{$item->link}}"><i class="{{$item->icon}}"></i></a></li>
@@ -68,64 +69,60 @@
                         @endif
 
                         @if($footer_data->newsletter_form->status == 1)
-                            <div class="col-md-8">
-                                <div class="subscribe-form ml-0 ">
-                                    <h2 class="widget-title">@lang('labels.frontend.layouts.partials.subscribe_newsletter')</h2>
+                        <div class="col-md-9">
+                            <div class="subscribe-form ml-0 footersec">
+                                <h2 >@lang('labels.frontend.layouts.partials.subscribe_newsletter')</h2>
 
-                                    <div class="subs-form relative-position">
-                                        <form action="{{route("subscribe")}}" method="post">
-                                            @csrf
-                                            <input class="email" required name="subs_email" type="email"
-                                                   placeholder="@lang('labels.frontend.layouts.partials.email_address').">
-                                            <div class="nws-button text-center  gradient-bg text-uppercase">
-                                                <button type="submit"
-                                                        value="Submit">@lang('labels.frontend.layouts.partials.subscribe_now')</button>
-                                            </div>
-                                            @if($errors->has('email'))
-                                                <p class="text-danger text-left">{{$errors->first('email')}}</p>
-                                            @endif
-                                        </form>
+                                <div class="subs-form relative-position">
+                                    <form action="{{route('subscribe')}}" method="post">
+                                        @csrf
+                                        <input class="email" required name="subs_email" type="email" placeholder="@lang('labels.frontend.layouts.partials.email_address').">
+                                        <div class="nws-button text-center  text-uppercase">
+                                            <button type="submit" value="Submit">@lang('labels.frontend.layouts.partials.subscribe_now')</button>
+                                        </div>
+                                        @if($errors->has('email'))
+                                            <p class="text-danger text-left">{{$errors->first('email')}}</p>
+                                        @endif
+                                    </form>
 
-                                    </div>
                                 </div>
                             </div>
-                        @endif
+                        </div>
+                    @endif
+
                     </div>
                 </div>
+            </div>
 
-                @if($footer_data->bottom_footer->status == 1)
-                    <div class="copy-right-menu">
-                        <div class="row">
-                            @if($footer_data->copyright_text->status == 1)
-                                <div class="col-md-6">
-                                    <div class="copy-right-text">
-                                        <!-- <p>Powered By <a href="https://www.neonlms.com/" target="_blank" class="mr-4"> -->
-                                                <!-- NeonLMS</a> {!!  $footer_data->copyright_text->text !!}</p> -->
-                                    </div>
-                                </div>
-                            @endif
-                            @if(($footer_data->bottom_footer_links->status == 1) && (count($footer_data->bottom_footer_links->links) > 0))
-                                <div class="col-md-6">
-                                    <div class="copy-right-menu-item float-right ul-li">
-                                        <ul>
-
-                                            @foreach($footer_data->bottom_footer_links->links as $item)
-                                                <li><a href="{{$item->link}}">{{$item->label}}</a></li>
-                                            @endforeach
-                                                @if(config('show_offers'))
-                                                    <li><a href="{{route('frontend.offers')}}">@lang('labels.frontend.layouts.partials.offers')</a> </li>
-                                                @endif
-                                            <li>
-                                                <a href="{{route('frontend.certificates.getVerificationForm')}}">@lang('labels.frontend.layouts.partials.certificate_verification')</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            @endif
+            @if($footer_data->bottom_footer->status == 1)
+            <div class="copy-right-menu">
+                <div class="row">
+                    @if($footer_data->copyright_text->status == 1)
+                        <div class="col-md-6">
+                            <div class="copy-right-text">
+                                <p class="l-h">{!!  $footer_data->copyright_text->text !!}</p>
+                            <!-- <p class="l-h">© Copyright © 2004 - 2020 E-Council LLC. All rights reserved</p> -->
+                            </div>
+                        </div>
+                    @endif
+                    @if(($footer_data->bottom_footer_links->status == 1) && (count($footer_data->bottom_footer_links->links) > 0))
+                    <div class="col-md-6">
+                        <div class="copy-right-menu-item float-right ul-li">
+                            <ul>
+                                @foreach($footer_data->bottom_footer_links->links as $item)
+                                <li><a href="{{$item->link}}">{{$item->label}}</a></li>
+                                @endforeach
+                                @if(config('show_offers'))
+                                    <li><a href="{{route('frontend.offers')}}">@lang('labels.frontend.layouts.partials.offers')</a> </li>
+                                @endif
+                                <li><a href="{{route('frontend.certificates.getVerificationForm')}}">@lang('labels.frontend.layouts.partials.certificate_verification')</a></li>
+                            </ul>
                         </div>
                     </div>
-                @endif
+                     @endif
+                </div>
             </div>
+        @endif
         </section>
     </footer>
 @endif

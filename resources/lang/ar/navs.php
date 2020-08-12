@@ -8,6 +8,11 @@ return array (
     'dashboard' => 'لوحة القيادة',
     'forums' => 'المنتديات',
     'login' => 'تسجيل الدخول',
+    'signup' => 'حساب جديد',
+    'offers' => 'العروض',
+    'courses' => 'الكورسات',
+
+
     'macros' => 'وحدات الماكرو',
     'register' => 'تسجيل',
     'user' => 
@@ -24,7 +29,11 @@ return array (
   array (
     'home' => 'الصفحة الرئيسية',
     'login' => 'تسجيل الدخول',
+    'signup' => 'حساب جديد',
     'logout' => 'الخروج',
+    'offers' => 'العروض',
+    'courses' => 'الكورسات',
+
     'account' => 'الحساب',
     'messages' => 'رسائل',
     'no_messages' => 'لا توجد رسائل',

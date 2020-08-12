@@ -37,10 +37,6 @@
         </div>
         <div class="card-body">
            
-          
-         
-            
-
              <div class="card-body">
             @if(count($chapterContent) > 0)
                 <div class="row justify-content-center">
@@ -50,14 +46,15 @@
                             @foreach($chapterContent as $item)
                             @foreach ($timeline as  $singleTimeline)
                             @if($singleTimeline->model_id == $item->id)
-                                <li  class="@if ($singleTimeline->model_type == 'App\Models\Lesson') margin_left @endif"  >
+                                <li  class="@if ($singleTimeline->model_type != 'App\Models\Chapter') margin_left @endif"  >
                             <span data-id="{{$item->id}}" data-sequence="{{$singleTimeline->sequence}}">
 
-                                <p  class="title d-inline ml-2">{{$item->title}} @if($singleTimeline->model_id == $item->id){{$singleTimeline->sequence}}@endif</p>
+                                <p  class="title d-inline ml-2">{{$item->title}} {{$singleTimeline->sequence}}</p>
                            </span>
 
                                 </li>
                                 @endif
+
                             @endforeach
                             @endforeach
 

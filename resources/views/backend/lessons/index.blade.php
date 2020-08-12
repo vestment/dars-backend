@@ -94,33 +94,7 @@
                 </div>
             @endif
 
-             <div class="card-body">
-            @if(count($lessons) > 0)
-                <div class="row justify-content-center">
-                    <div class="col-6  ">
-                        <!-- <h4 class="">@lang('labels.backend.hero_slider.sequence_note')</h4> -->
-                        <ul class="sorter d-inline-block">
-                            @foreach($lessons as $item)
-                                <li>
-                            <span data-id="{{$item->id}}" data-sequence="{{$item->sequence}}">
-
-                                <p class="title d-inline ml-2">{{$item->title}}</p>
-                           </span>
-
-                                </li>
-                            @endforeach
-                        </ul>
-                        <a href="{{ route('admin.courses.index') }}"
-                           class="btn btn-default border float-left">@lang('strings.backend.general.app_back_to_list')</a>
-
-                        <a href="#" id="save_timeline"
-                           class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
-
-                    </div>
-
-                </div>
-            @endif
-        </div>
+          
 
         </div>
     </div>
@@ -128,7 +102,7 @@
 @stop
 
 @push('after-scripts')
-<script src="{{asset('plugins/amigo-sorter/js/amigo-sorter.min.js')}}"></script>
+<!-- <script src="{{asset('plugins/amigo-sorter/js/amigo-sorter.min.js')}}"></script> -->
 
     <script>
 
@@ -224,43 +198,5 @@
         });
 
 
-        $('ul.sorter').amigoSorter({
-            li_helper: "li_helper",
-            li_empty: "empty",
-        });
-        $(document).on('click', '#save_timeline', function (e) {
-            e.preventDefault();
-            var list = [];
-            $('ul.sorter li').each(function (key, value) {
-                key++;
-                var val = $(value).find('span').data('id');
-                list.push({id: val, sequence: key});
-            });
-
-            $.ajax({
-                method: 'POST',
-                url: "{{route('admin.sliders.saveSequence')}}",
-                data: {
-                    _token: '{{csrf_token()}}',
-                    list: list
-                }
-            }).done(function () {
-                location.reload();
-            });
-        })
-
-        $(document).on('click', '.switch-input', function (e) {
-            var id = $(this).data('id');
-            $.ajax({
-                type: "POST",
-                url: "{{ route('admin.sliders.status') }}",
-                data: {
-                    _token:'{{ csrf_token() }}',
-                    id: id,
-                },
-            }).done(function() {
-                location.reload();
-            });
-        })
     </script>
 @endpush
