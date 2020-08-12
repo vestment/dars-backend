@@ -179,7 +179,7 @@ class CoursesController extends Controller
 
             $cour = Course::with('teachers')->get();
             //  dd($cour);
-            return view( $this->path.'.courses.index', compact('courses','cour','popular_course', 'category', 'recent_news','featured_courses','categories'));
+            return view( $this->path.'.courses.index', compact('courses','cour','popular_course','trending_courses', 'category', 'recent_news','featured_courses','categories'));
         }
         return abort(404);
     }

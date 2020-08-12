@@ -29,7 +29,7 @@ return array (
         'meta_description' => 'Meta Description',
         'meta_keywords' => 'Meta Keywords',
         'sidebar' => 'Add Sidebar',
-        'lessons' => 
+        'lessons' => 'Lessons',
         array (
           'add' => 'Add Lessons',
           'view' => 'View Lessons',
@@ -1413,6 +1413,7 @@ return array (
       'wishlist'=>'wishlist',
       'added_to_wishlist'=>'added to wishlist',
       'Share'=>'Share',
+      'lessons' => 'Lessons',
 
     ),
     'home' => 

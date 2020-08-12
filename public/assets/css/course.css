@@ -30,7 +30,7 @@ ul.pagination {
 /**/
 .titleofcard{
     text-align: left;
-    font: Bold 15px Ubuntu;
+    font: Bold 20px/30px Ubuntu;
     letter-spacing: -0.2px;
     color: #000000CC;
     margin-top: -20px;
@@ -98,7 +98,9 @@ ul.pagination {
     height: 37px;
 }
 
-
+.instructor-name{
+    color: #D2498B;
+}
 .hei-sec{
     height: 300px;
     overflow: hidden;
@@ -133,3 +135,23 @@ ul.pagination {
     background-color: #777777;
     overflow: hidden;
   }
+
+  .sta{
+
+    width: 6% !important;
+
+      /* display: inline; */
+  }
+
+.vv{
+    opacity: 0.8;
+    font-size: 20px;
+}
+
+/* .back-im{
+    background-image: url('../../assets/img/');
+} */
+
+.popular-navs li .act-pop{
+    background-color: #D2498B !important;
+}
