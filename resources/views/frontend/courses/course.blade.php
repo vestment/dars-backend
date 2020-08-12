@@ -94,7 +94,7 @@
                                     </a>
                                 @else
                                 <button id="openLoginModal" type="submit"
-                                    data-target="#myModal" href="#" class="btn btn-danger ml-1 btn-sm"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    data-target="#myModal" href="#" class="btn btn-outline-light addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
                                 </button>
 
@@ -310,7 +310,7 @@
                                         @else
                                         <span>   {{$appCurrency['symbol'].' '.$course->price}}</span>
                                         @endif</h3>
-                    <h6 class="font20">This course includes: </h6>
+                    <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
                     <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
                     <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters')</p>
                     <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>
@@ -434,7 +434,8 @@
                         </div>
                     </div>
                 </div>
-            
+            @endforeach
+
         </div>
     </section>
     <!-- <section id="course-page" class="course-page-section">
@@ -473,7 +474,6 @@
                                     <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
                                 </div>
                             </div>
-                            @endforeach
 
                         </div>
                        

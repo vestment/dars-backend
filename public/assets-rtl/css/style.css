@@ -370,17 +370,17 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #17d0cf;
 }
 
-.breadcrumb-section {
+/* .breadcrumb-section {
     background-image: url(../img/banner/brt-1.jpg);
     padding-bottom: 355px;
-}
+} */
 
-.breadcrumb-section .blakish-overlay {
+/* .breadcrumb-section .blakish-overlay {
     opacity: 1;
     visibility: visible;
-}
+} */
 
-.breadcrumb-section .page-breadcrumb-content {
+/* .breadcrumb-section .page-breadcrumb-content {
     position: absolute;
     top: 60%;
     -webkit-transform: translateY(-60%);
@@ -388,24 +388,24 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(-60%);
     right: 0;
     left: 0;
-}
+} */
 
-.breadcrumb-section .breadcrumb-head {
+/* .breadcrumb-section .breadcrumb-head {
     font-size: 38px;
     color: #fff;
     font-weight: 300;
-}
+} */
 
-.breadcrumb-section .breadcrumb-head span {
+/* .breadcrumb-section .breadcrumb-head span {
     font-weight: 700;
-}
+} */
 
-.breadcrumb-section .breadcrumb {
+/* .breadcrumb-section .breadcrumb {
     text-align: center;
     display: inherit;
     background-color: transparent;
-}
-
+} */
+/* 
 .breadcrumb-section .breadcrumb-item {
     background-color: #17d0cf;
     color: #fff;
@@ -413,16 +413,16 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 13px;
     font-weight: 700;
     border-radius: 4px;
-}
+} */
 
-.breadcrumb-section .breadcrumb-item::before {
+/* .breadcrumb-section .breadcrumb-item::before {
     display: none;
 }
 
 .breadcrumb-section .breadcrumb-item.active {
     background-color: #3b3b3b;
     color: #7a7a7a;
-}
+} */
 
 /*---------------------------------------------------- */
 /*Header Section*/
@@ -5984,37 +5984,82 @@ ul.product-tab li.active:after {
     background: transparent linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%) 0% 0% no-repeat padding-box;
   }
 
+  .bgcolor {
+    background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+    padding-top: 7%;
+    padding-bottom: 315px;
+  }
+
   .paragraph1{
     position: absolute;
     top: 41%;
     -webkit-transform: translateY(-40%);
             transform: translateY(-40%);
     right: 165px;
+    left: 0;
     /* right: 0; */
     color:#00000075;
   }
-  @media(max-width : 425px){
-    .paragraph1 {
-      top: 38%;
-    }
-  }
+
 
   @media(max-width: 768px) {
     .paragraph1 {
       width: 100%;
       left: -40px;
-      right: 0;
+      right: -25px;
       top: 40%;
     }
   
- 
-  
+  @media(max-width : 425px){
+    .paragraph1 {
+      top: 38%;
+    }
+  }
   
     .paragraph1 h2{
       font-size: 20px;
     }
   }
-
+  
+  .buttoncart button {
+    opacity: 0.9;
+    padding: 10px;
+    font-size: 15px;
+    height: 39px;
+  }
+  
+  .addcart{
+    opacity: 0.9 !important;
+    width: 200px !important;
+    padding: 10px !important;
+    font-size: 15px !important;
+    color: white;
+  }
+  @media(max-width :425px){
+    .addcart {
+      width: 100px !important;
+      padding: 8px !important;
+      font-size: 13px !important;
+      }
+      .buttoncart button {
+        width: 17%;
+        padding: 2px;
+        font-size: 13px;
+        }
+     
+    }
+@media(max-width :425px){
+    .addcart {
+        width: 100px !important;
+        padding: 0px !important;
+        font-size: 13px !important;
+        }
+        .buttoncart button {
+        width: 24%;
+        padding: 2px;
+        font-size: 12px;
+        }
+        }
 
 
   /* ======================================================= second section */
@@ -6056,7 +6101,7 @@ ul.product-tab li.active:after {
   @media(max-width :1024px){
     .divfixed {
       top: 80%;
-      right: -18px;
+      left: -18px;
     }
   }
   @media(max-width :768px){
@@ -6079,14 +6124,14 @@ ul.product-tab li.active:after {
     padding-left: 0 !important;
     padding-right: 0 !important;
     background-repeat: no-repeat;
-    height: 350px;
+    height: 250px;
     background-size: cover;
     background-position: 50% 50%;
     /* background-color: violet; */
   }
   
   .pricebottom{
-    bottom: 40px;
+    bottom: 10px;
   }
   .font49{
     font-size: 49px;
@@ -6284,12 +6329,17 @@ padding:11px;
   }
   /* end of search in navbar */
   
+
+
+  .logonone {
+      margin-right: 60px;
+  }
   /* display none of logo for navbar  */
-  @media (max-width :768px){
+  /* @media (max-width :768px){
     .logonone {
       display: none;
     }
-  }
+  } */
   .navlist{
       margin-top: 6px !important;
   }

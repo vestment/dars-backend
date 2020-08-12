@@ -1414,6 +1414,8 @@ return array (
       'added_to_wishlist'=>'added to wishlist',
       'Share'=>'Share',
       'lessons' => 'Lessons',
+      'This_course_includes' => 'This course includes:',
+
 
     ),
     'home' => 

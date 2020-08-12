@@ -79,8 +79,8 @@
 	}
 	.navbar-header {
 		right: 0;
-		left: 0;
-		top: 20px;
+		left: 300px;
+		/* top: 20px; */
 		margin: 0 auto;
 		position: absolute;
 	}
@@ -488,9 +488,9 @@
 	.contact-form-area_3 {
 		padding: 65px 0px;
 	}
-	.breadcrumb-section {
+	/* .breadcrumb-section {
 		padding-bottom: 250px;
-	}
+	} */
 	.breadcrumb-section .breadcrumb-head {
 		font-size: 26px;
 	}

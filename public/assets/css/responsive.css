@@ -246,11 +246,13 @@
 
 	.navbar-header {
 
-		left: 0;
+		/* left: 0; */
+		left: 120px;
+
 
 		right: 0;
 
-		top: 20px;
+		/* top: 20px; */
 
 		margin: 0 auto;
 
@@ -604,11 +606,12 @@
 
 	}
 
-	.subscribe-form {
+	/* .subscribe-form {
 
 		margin-left: 0;
 
-	}
+	} */
+
 
 	.copy-right-menu-item {
 
@@ -776,9 +779,9 @@
 
 	.navbar-header {
 
-		width: 180px;
-
-		right: 80px;
+		/* width: 180px; */
+		left: 85px;
+		/* right: 80px; */
 
 	}
 
@@ -1432,7 +1435,7 @@
 
 	.navbar-header {
 
-		width: 140px;
+		/* width: 140px; */
 
 	}
 
@@ -1641,3 +1644,4 @@
 	}
 
 }
+
