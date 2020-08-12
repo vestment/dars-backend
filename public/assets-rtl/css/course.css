@@ -83,10 +83,10 @@ ul.pagination {
 }
 
 .gradient-bg{
-    background: #D2498B 
+    background: #0c0c3f;
 }
 .gradient-bg:hover{
-    background: #D2498B 
+    background: #3b3b6f;
 }
 .best-course-pic-text {
     background-image: url('../../assets/img/card/card.png');
