@@ -427,20 +427,8 @@ h1, h2, h3, h4, h5, h6 {
 /*---------------------------------------------------- */
 /*Header Section*/
 /*----------------------------------------------------*/
-.main-menu-container {
-    position: fixed;
-    width: 100%;
-    padding: 45px 0px;
-    -webkit-transition: .3s all ease-in-out;
-    -o-transition: .3s all ease-in-out;
-    transition: .3s all ease-in-out;
-    z-index: 9;
-    
-}
 
-.nav-menu {
-    padding-top: 15px;
-}
+
 
 .sub-menu li:last-child {
     border-bottom: none;
@@ -451,9 +439,10 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
     font-size: 15px;
     padding: 7px 15px;
-    font-weight: 700;
+    font-weight: 500;
     position: relative;
     border-radius: 4px;
+    font-family: cairo;
 }
 
 .nav-menu li a:after {
@@ -481,11 +470,22 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     visibility: hidden;
 }
+.nav-menu li a.submenu:after {
+    opacity: 0;
+    visibility: hidden;
+  }
 
-.nav-menu li a:hover:after {
+  .nav-menu li a:hover:after {
     opacity: 1;
     visibility: visible;
-}
+    background: linear-gradient(to right, #01a6fd 0%, #17d0cf 51%, #01a6fd 100%);
+  
+  }
+  .nav-menu li a.submenu {
+    color: #333333;
+  }
+  
+
 
 .log-in {
     margin-top: 20px;
@@ -601,8 +601,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-style-2 .nav-menu li a {
-    color: #999999;
-}
+    color: #616161;
+  }
 
 .header-style-2 .nav-menu li a:hover {
     color: #fff;
@@ -696,6 +696,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 4px;
     padding: 25px 20px 15px 20px;
     position: absolute;
+    line-height: 25px;
     right: 0;
     left: 0;
     max-width: 1170px;
@@ -737,7 +738,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 40px;
     width: 1px;
     background-color: #eee;
-    top: -10px;
+    top: -8px;
     right: -20px;
     content: '';
 }
@@ -759,6 +760,21 @@ h1, h2, h3, h4, h5, h6 {
 .nav-menu-4 .login-cart-lang .login a {
     color: #17d0cf;
 }
+.nav-menu-4 .login-cart-lang button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+  }
+
+
+  .header_3 .nav-menu-4 .nav-menu a {
+    -webkit-transition: .3s all ease-in-out;
+    transition: .3s all ease-in-out;
+  }
+  
+  .header_3 .nav-menu-4 .nav-menu a:hover {
+    color: #00eab2;
+  }
 
 .search-body {
     top: 55px;
@@ -1600,12 +1616,18 @@ button.alt-menu-btn.float-left {
 }
 
 .copy-right-menu-item li {
-    color: #cccccc;
-    margin-right: 30px;
+    color: #989898;
+    margin-left: 12px;
+    font-size: 13px;
 }
+@media(max-width :425px){
+    .copy-right-menu-item li  {
+      font-size: 10px;
+    }
+  }
 
 .copy-right-menu {
-    padding: 45px 0px;
+    padding: 30px 0px;
     border-top: 1px solid #ddd6d6;
 }
 
@@ -5019,9 +5041,10 @@ ul.product-tab li.active:after {
 /*---------------------------------------------------- */
 /*course  section*/
 /*----------------------------------------------------*/
-.course-page-section {
+
+/* .course-page-section {
     padding: 80px 0px 0px;
-}
+} */
 
 .course-page-section .short-filter-tab {
     border-bottom: 1px solid #eee;
@@ -5925,4 +5948,374 @@ ul.product-tab li.active:after {
         height: 100%;
     }
 
+}
+
+
+
+
+/* ========================================================================= me */
+
+/* ========================================================================= nav bar */
+.nav-menu {
+    padding-top: 15px;
+}
+
+.main-menu-container {
+    position: fixed;
+    width: 100%;
+    /* padding: 45px 0px; */
+    -webkit-transition: .3s all ease-in-out;
+    -o-transition: .3s all ease-in-out;
+    transition: .3s all ease-in-out;
+    z-index: 9;
+    background-color: #0C0C3F;  
+}
+
+
+/* =================================================================== first section */
+.blakish-overlay {
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    position: absolute;
+    visibility: hidden;
+    -webkit-transition: .3s all ease-in-out;
+    transition: .3s all ease-in-out;
+    background: transparent linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%) 0% 0% no-repeat padding-box;
+  }
+
+  .paragraph1{
+    position: absolute;
+    top: 41%;
+    -webkit-transform: translateY(-40%);
+            transform: translateY(-40%);
+    right: 165px;
+    /* right: 0; */
+    color:#00000075;
+  }
+  @media(max-width : 425px){
+    .paragraph1 {
+      top: 38%;
+    }
+  }
+
+  @media(max-width: 768px) {
+    .paragraph1 {
+      width: 100%;
+      left: -40px;
+      right: 0;
+      top: 40%;
+    }
+  
+ 
+  
+  
+    .paragraph1 h2{
+      font-size: 20px;
+    }
+  }
+
+
+
+  /* ======================================================= second section */
+.course-page-section {
+    padding: 40px 0px 0px;
+  }
+  .coursesec{
+    padding-top: 35px;
+  }
+  .coursesec h2{
+    font-size: 24px;
+    color: #000;
+    padding-bottom:13px;
+  }
+  .subtitle2{
+    font-weight: light;
+    font-size: 14px;
+  }
+
+  .paddingleft{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  
+  }
+
+  .divfixed{
+    position: absolute;
+    top: 38%;
+    -webkit-transform: translateY(-40%);
+            transform: translateY(-40%);
+    left: 80px;
+    color:black;
+    box-shadow: 5px 5px 5px #888888;
+  
+    background-color: white;
+    z-index: 1;
+  }
+  
+  @media(max-width :1024px){
+    .divfixed {
+      top: 80%;
+      right: -18px;
+    }
+  }
+  @media(max-width :768px){
+    .divfixed {
+      top: 52%;
+      right: 50px;
+    }
+  }
+  
+  @media(max-width :768px){
+    .divfixed {
+      display: none;
+    }
+  }
+
+  .divpoly{
+    clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% );
+  
+    /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background-repeat: no-repeat;
+    height: 350px;
+    background-size: cover;
+    background-position: 50% 50%;
+    /* background-color: violet; */
+  }
+  
+  .pricebottom{
+    bottom: 40px;
+  }
+  .font49{
+    font-size: 49px;
+  }
+  .font20{
+    font-size: 20px;
+  
+  }
+  .smpara{
+    font-size: 12px;
+  }
+  .btncolor{
+    background-color: #52ADE1;
+   }
+
+   iframe {
+    width: 100%;
+    /* clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% ); */
+    height: 500px;
+    
+    }
+    
+/* ================================================================== third section */
+.coursecontent{
+    font-size: 34px;
+    color: #000;
+}
+.accordion{
+    width: 100%;
+}
+.btn-link {
+    color: black;
+    font-size: 20px;
+  }
+.card-body{
+border-bottom: 1px solid rgba(0,0,0,.125);
+padding:11px;
+}
+
+
+/* =========================================== footer */
+.footer-logo{
+    background-color: #0C0C3F;
+    width: 40%;
+    padding: 15px;
+  }
+  .copy-right-menu{
+    background-color: #0C0C3F;
+    padding: 15px;
+  }
+  .copy-right-menu p {
+    margin: 0;
+  } 
+  .l-h{
+    font-size: 13px;
+  }
+  
+  
+  @media(max-width :425px){
+    .l-h {
+      font-size: 10px;
+    }
+  } 
+
+
+  /*  */
+
+  .dropright .dropdown-menu{
+    transform:translate3d(11px, 50px, 6px) !important;
+  }
+  .dropright button{
+    font-weight: 500;
+    font-family: cairo !important;
+    font-weight: 500 !important;
+  }
+  .droplist{
+    background-color: #0C0C3F;
+    color: white;
+    
+  }
+  .droplist ul li :hover{
+    background: linear-gradient(to right, #01a6fd 0%, #17d0cf 51%, #01a6fd 100%);
+  }
+    
+  .linkdrop{
+    padding: 15px;
+  }
+  .btndropdown{
+    background-color: #0C0C3F;
+    border-color:#0C0C3F;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    padding: 7px 15px;
+    font-weight: 500;
+    position: relative;
+    border-radius: 4px;
+  }
+  
+  .btndropdown:hover{
+    background-color: #0C0C3F;
+    border-color:#0C0C3F;
+    color: white;
+  }
+  .divloginsearch{
+    margin-top: 8px;
+    margin-right: 15px;
+    }
+
+    
+
+    /* search in navbar */
+
+.search-bar {
+    position: relative;
+    background-color:#0C0C3F;
+  
+  
+  }
+  
+  .search-bar.active .input-text {
+    max-width: 80%;
+    border: 1px solid #ccc;
+    background: #eee;
+    /* transform:translate3d(45px, -2px, 6px); */
+    height: 37px;
+    border-radius: 25px;
+  
+  }
+  
+  .search-bar .icon {
+    cursor: pointer;
+    position: absolute;
+    top: 30%;
+    left: 0;
+    transform: translateY(-50%);
+    padding: 13px 15px 13px 11px;
+    background-color:#0C0C3F;
+  
+  }
+  
+  .search-bar .input-text {
+    max-width: 0;
+    border: 0;
+    border-color: #0C0C3F;
+    height: 20px;
+    padding: 8px 6px 8px 35px;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    padding:8px 6px 8px 45px;
+    background-color:#0C0C3F;
+  
+  }
+  .p-re{
+    z-index: 7;
+  
+  }
+  .p-ab{
+    background: linear-gradient(rgba(48, 50, 53, 0.45), 
+    rgba(63, 60, 65, 0.45) ),
+    url('/assets/img/banner/44.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 112px;
+    top:-88px;
+    z-index: 8;
+  }
+  .tex{
+    padding-top: 200px;
+    padding-left: 70px;
+  
+  }
+  .bg-grd{
+    background-image: linear-gradient(to right, #326f92,#625CA8,#D2498B);
+  
+  
+  }
+  .textbold{
+    font-size: 34px;
+    font-weight: bolder;
+  }
+  .btn-p{
+    padding-top: 15%;
+    padding-bottom: 40%;
+  }
+  .bg-static{
+    
+    background:linear-gradient(
+      rgba(82, 109, 167, 0.45), 
+      rgba(66, 10, 99, 0.45)
+     ), url('/assets/img/banner/yyy.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: overlay;
+  }
+  /* end of search in navbar */
+  
+  /* display none of logo for navbar  */
+  @media (max-width :768px){
+    .logonone {
+      display: none;
+    }
+  }
+  .navlist{
+      margin-top: 6px !important;
+  }
+
+  /* footer */
+  .footersec h2{
+    font-size: 24px;
+    color: #000;
+    padding-bottom:13px;
+  }
+  .search-course .nws-button,
+.subs-form .nws-button {
+  top: 0;
+  /* right: 0; */
+  height: 60px;
+  width: 195px;
+  line-height: 60px;
+  position: absolute;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+}
+@media(max-width :425px){
+  .footerHidden {
+    display: none;
+  }
 }

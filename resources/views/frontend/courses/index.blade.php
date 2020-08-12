@@ -1,4 +1,4 @@
-z@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app'.config('theme_layout'))
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
@@ -601,6 +601,7 @@ nn
 </div>
 <div  class="col-9">
 <div class="row">
+@if(@isset($category))
         @if($courses->count() > 0)
        
         @foreach($cour as $course)
@@ -689,6 +690,7 @@ nn
      @endforeach
                                         @else
                                             <h3>@lang('labels.general.no_data_available')</h3>
+                                    @endif
                                     @endif
 </div>
 </div>

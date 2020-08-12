@@ -127,7 +127,7 @@
                                         
                                     <div class="btn-group dropright">
                                         <button type="button" class="btn btn-secondary dropdown-toggle btndropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Courses                                        
+                                        @lang('navs.general.courses')                                        
                                         </button>
                                         <div class="dropdown-menu droplist">
                                             {{-- <a class="linkdrop" href="">hsdfghs</a> --}}
@@ -182,7 +182,7 @@
                                     <ul>
                                             <li>
                                                 <div class="mt-0">
-                                                    <a href="">Offers</a>
+                                                    <a href="">@lang('navs.general.offers')</a>
                                                 </div>
                                             </li>
                                             <li>
@@ -270,6 +270,7 @@
                                                 </ul>
                                             </li>
                                         @endif
+                               
                                
                                     </ul>
                                 </div>
@@ -366,8 +367,8 @@
                 </div>
             </div>
         </header>
-        <!-- Start of Header section
-            ============================================= -->
+    <!-- Start of Header section
+        ============================================= -->
 
 
         @yield('content')
@@ -406,11 +407,11 @@
   
 
 
-<script>
-$('.search-bar .icon').on('click', function() {
-  $(this).parent().toggleClass('active');
-});
-</script>
+    <script>
+    $('.search-bar .icon').on('click', function() {
+    $(this).parent().toggleClass('active');
+    });
+    </script>
 
 
 

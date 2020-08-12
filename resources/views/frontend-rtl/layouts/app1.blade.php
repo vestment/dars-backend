@@ -39,8 +39,8 @@
 
         <link rel="stylesheet" href="{{asset('assets-rtl/css/responsive.css')}}">
         {{--<link rel="stylesheet" href="{{ asset('css/frontend.css') }}">--}}
-        <link rel="stylesheet" href="{{asset('assets/css/colors/switch.css')}}">
 
+        <link rel="stylesheet" href="{{asset('assets/css/colors/switch.css')}}">
         <link href="{{asset('assets/css/colors/color-2.css')}}" rel="alternate stylesheet" type="text/css"
               title="color-2">
         <link href="{{asset('assets/css/colors/color-3.css')}}" rel="alternate stylesheet" type="text/css"
@@ -98,16 +98,21 @@
         <header>
             <div id="main-menu" class="main-menu-container">
                 <div class="main-menu">
-                    <div class="container">
-                        <div class="navbar-default">
-                            <div class="navbar-header float-left">
-                                <a class="navbar-brand text-uppercase" href="{{url('/')}}">
-                                    {{--<img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">--}}
-                                    <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
-                                </a>
-                            </div><!-- /.navbar-header -->
+                    {{-- <div class="container"> --}}
+                    <div class="offset-1">
 
-                            <div class="cart-search float-right ul-li">
+                        <div class="navbar-default">
+                            <div class="navbar-header logonone float-left">
+                                <a class="navbar-brand text-uppercase" href="{{url('/')}}">
+                                <img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
+
+                                    <!-- <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo"> -->
+
+                                </a>
+                            </div>
+                            <!-- /.navbar-header -->
+
+                            <!-- <div class="cart-search float-right ul-li">
                                 <ul>
                                     <li>
                                         <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
@@ -117,39 +122,36 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
 
 
                             <!-- Collect the nav links, forms, and other content for toggling -->
-                            <nav class="navbar-menu float-right">
-                                <div class="nav-menu ul-li">
-
+<nav class="big-nav">
+                            <nav class="navbar-menu float-right divloginsearch">
+                                <div class="nav-menu ul-li hoverpink">
                                     <ul>
-                                        @if(count($custom_menus) > 0 )
-                                            @foreach($custom_menus as $menu)
-                                                @if($menu['id'] == $menu['parent'])
-                                                    @if(count($menu->subs) == 0)
+                                            <li>
+                                                <div class="mt-0">
+                                                    <a href="">@lang('navs.general.offers')</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                @if(!auth()->check())
+                                                    <div class="log-in mt-0">
+                                                        <a 
+                                                        href="{{ url('signup/en') }}">@lang('navs.general.signup')</a>
+                                                    
 
-                                                        <li class="nav-item">
-                                                            <a href="{{asset($menu->link)}}"
-                                                               class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
-                                                               id="menu-{{$menu->id}}">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
-                                                        </li>
-
-                                                    @else
-                                                        <li class="menu-item-has-children ul-li-block">
-                                                            <a href="#!">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
-                                                            <ul class="sub-menu">
-                                                                @foreach($menu->subs as $item)
-                                                                    @include('frontend.layouts.partials.dropdown', $item)
-                                                                @endforeach
-                                                            </ul>
-                                                        </li>
+                                                    </div>
                                                     @endif
-
+                                            </li>
+                                            <li>
+                                            <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
+                                                @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
+                                                    <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
                                                 @endif
-                                            @endforeach
-                                        @endif
+                                            </a>
+                                        </li>
 
                                         @if(auth()->check())
                                             <li class="menu-item-has-children ul-li-block">
@@ -170,15 +172,40 @@
                                             <li>
                                                 <div class="log-in mt-0">
                                                     <a 
-                                                       href="{{ url('login/ar') }}">@lang('navs.general.login')</a>
-                                                  
+                                                    href="{{ url('login/en') }}">@lang('navs.general.login')</a>
+                                                   
+
                                                 </div>
                                             </li>
                                         @endif
+
+
+                                        <li>
+                                            <form action="{{route('search')}}" method="get">
+
+                                                <div class="search-bar">
+                                                    <input class="input-text course text-left" name="q" type="text" placeholder="@lang('labels.frontend.home.search_course_placeholder')">
+                                                    <i class="icon fa fa-search"></i>
+
+                                                </div>
+                                            </form>
+                                            {{-- <form action="{{route('search')}}" method="get">
+
+                                                <div class="input-group search-group">
+
+                                                    <input class="course" name="q" type="text"
+                                                           placeholder="@lang('labels.frontend.home.search_course_placeholder')">
+                                                </div>
+                                            </form> --}}
+                                        </li>
+
+
+                    
+
                                         @if(count($locales) > 1)
                                             <li class="menu-item-has-children ul-li-block">
                                                 <a href="#">
-                                                    <span class="d-md-down-none"> @lang('menus.language-picker.language')
+                                                    <span class="d-md-down-none">@lang('menus.language-picker.language')
                                                         ({{ strtoupper(app()->getLocale()) }})</span>
                                                 </a>
                                                 <ul class="sub-menu">
@@ -193,9 +220,71 @@
                                                 </ul>
                                             </li>
                                         @endif
+                               
                                     </ul>
                                 </div>
                             </nav>
+
+
+                            <nav class="navbar-menu text-right">
+                                <div class="nav-menu ul-li float-left">
+                                    <ul class="navlist">
+                                        
+                                    <div class="btn-group dropright">
+                                      
+                                        <div class="dropdown-menu droplist">
+                                            {{-- <a class="linkdrop" href="">hsdfghs</a> --}}
+                                            <ul>
+                                            @if(count($categories) > 0)
+                                                @foreach($categories as $category)
+                                                    <li><a class="linkdrop" href="{{$category->id}}"><i class="{{$category->icon}} p-2"></i> {{$category->name}}</a></li>
+                                                @endforeach
+                                            @endif
+                                            </ul>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary dropdown-toggle btndropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        @lang('navs.general.courses')                                        
+                                        </button>
+                                    </div>
+
+
+                                        @if(count($custom_menus) > 0 )
+                                            @foreach($custom_menus as $menu)
+                                                {{--@if(is_array($menu['id']) && $menu['id'] == $menu['parent'])--}}
+                                                    {{--@if($menu->subs && (count($menu->subs) > 0))--}}
+                                                @if($menu['id'] == $menu['parent'])
+                                                    @if(count($menu->subs) == 0)
+                                  
+
+                                                        <li class="">
+                                                            <a href="{{asset($menu->link)}}"
+                                                               class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
+                                                               id="menu-{{$menu->id}}">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
+                                                        </li>
+
+                                                    @else
+                                                        <li class="menu-item-has-children ul-li-block">
+                                                            <a href="#!">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
+                                                            <ul class="sub-menu">
+                                                                @foreach($menu->subs as $item)
+                                                                    @include('frontend.layouts.partials.dropdown', $item)
+                                                                @endforeach
+                                                            </ul>
+                                                        </li>
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endif
+
+                
+
+                                    </ul>
+                                </div>
+                            </nav>
+</nav>
+
+                          
+
 
                             <div class="mobile-menu">
                                 <div class="logo">
@@ -208,13 +297,7 @@
                                         @if(count($custom_menus) > 0 )
                                             @foreach($custom_menus as $menu)
                                                 @if($menu['id'] == $menu['parent'])
-                                                    @if(count($menu->subs) == 0)
-                                                        <li class="">
-                                                            <a href="{{asset($menu->link)}}"
-                                                               class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
-                                                               id="menu-{{$menu->id}}">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
-                                                        </li>
-                                                    @else
+                                                    @if(count($menu->subs) > 0)
                                                         <li class="">
                                                             <a href="#!">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
                                                             <ul class="">
@@ -223,7 +306,14 @@
                                                                 @endforeach
                                                             </ul>
                                                         </li>
-                                                        @endif
+                                                     @else
+                                                        <li class="">
+                                                            <a href="{{asset($menu->link)}}"
+                                                               class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
+                                                               id="menu-{{$menu->id}}">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
+                                                        </li>
+                                                    @endif
+
                                                 @endif
                                             @endforeach
                                         @endif
@@ -252,35 +342,37 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if(count($locales) > 1)
-                                            <li class="menu-item-has-children ul-li-block">
-                                                <a href="#">
+                                            @if(count($locales) > 1)
+                                                <li class="menu-item-has-children ul-li-block">
+                                                    <a href="#">
                                                     <span class="d-md-down-none">@lang('menus.language-picker.language')
                                                         ({{ strtoupper(app()->getLocale()) }})</span>
-                                                </a>
-                                                <ul class="">
-                                                    @foreach($locales as $lang)
-                                                        @if($lang != app()->getLocale())
-                                                            <li>
-                                                                <a href="{{ '/lang/'.$lang }}"
-                                                                   class=""> @lang('menus.language-picker.langs.'.$lang)</a>
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ul>
-                                            </li>
-                                        @endif
+                                                    </a>
+                                                    <ul class="">
+                                                        @foreach($locales as $lang)
+                                                            @if($lang != app()->getLocale())
+                                                                <li>
+                                                                    <a href="{{ '/lang/'.$lang }}"
+                                                                       class=""> @lang('menus.language-picker.langs.'.$lang)</a>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                            @endif
                                     </ul>
                                 </nav>
 
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </header>
-        <!-- Start of Header section
-            ============================================= -->
+    <!-- Start of Header section
+        ============================================= -->
+
 
 
         @yield('content')
@@ -308,6 +400,17 @@
     <script src="{{asset('assets-rtl/js/gmap3.min.js')}}"></script>
 
     <script src="{{asset('assets-rtl/js/switch.js')}}"></script>
+
+
+    <script>
+    $('.search-bar .icon').on('click', function() {
+    $(this).parent().toggleClass('active');
+    });
+    </script>
+
+
+
+
 
     <script>
         @if(request()->has('user')  && (request('user') == 'admin'))
