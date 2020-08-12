@@ -62,7 +62,7 @@ body {
   font-size: 16px;
   line-height: 1.4;
   color: #777777;
-  font-family: cairo !important;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -194,7 +194,7 @@ h3,
 h4,
 h5,
 h6 {
-  /* font-family: "Roboto", sans-serif; */
+  font-family: "Roboto", sans-serif;
 }
 
 .mb20 {
@@ -362,7 +362,7 @@ h6 {
   font-size: 55px;
   font-weight: 300;
   color: #333333;
-  font: Bold 34px/50px Cairo;
+  font: Bold 34px/50px Ubuntu;
 }
 
 .section-title h2 span {
@@ -431,7 +431,7 @@ h6 {
   font-weight: lighter;
 }
 .about{
-  font-family: Cairo;
+  font-family: Ubuntu;
   font-weight: bold;
   color:black
 }
@@ -2132,9 +2132,9 @@ border: none;
 }
 
 .owl-nav {
-  /* right: 677px; */
-  /* bottom: -32px; */
-  /* position: absolute; */
+  right: 677px;
+  bottom: -32px;
+  position: absolute;
 }
 
 .owl-nav .owl-prev,
@@ -2911,8 +2911,9 @@ border: none;
 }
 
 .best-course-pic-text .best-course-pic {
+  width: 270px;
+  background-position: center;
   background-size: cover;
-  background-position: 50% 50%;
   background-repeat: no-repeat;
   height: 220px;
   background-color: #555555;
@@ -2921,7 +2922,9 @@ border: none;
 }
 
 .best-course-pic-text .course-price {
+  bottom: 20px;
   z-index: 1;
+  top: inherit;
 }
 
 .best-course-pic-text .course-rate {
@@ -5359,8 +5362,8 @@ ul.product-tab li.active:after {
 }
 
 .course-page-section .course-list-img {
-  height: 70;
-  width: 70;
+  height: 70px;
+  width: 70px;
   float: left;
   margin-right: 20px;
   background-position: center;
@@ -6314,12 +6317,15 @@ ul.product-tab li.active:after {
   position: absolute;
   top: 38%;
   -webkit-transform: translateY(-40%);
-  transform: translateY(-40%);
+          transform: translateY(-40%);
   right: 80px;
   color:black;
-  box-shadow: 0 0 3px 1px #212529;
+  box-shadow: 5px 5px 5px #888888;
+
   background-color: white;
   z-index: 1;
+
+
 }
 @media(max-width :1024px){
   .divfixed {
@@ -6378,15 +6384,21 @@ ul.product-tab li.active:after {
 .paddingleft{
   padding-left: 0 !important;
   padding-right: 0 !important;
+
 }
 .divpoly{
-  clip-path: polygon(0 0,100% 0, 100% 60%, 0 75% );
+  clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% );
+
+  /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
   padding-left: 0 !important;
   padding-right: 0 !important;
   background-repeat: no-repeat;
   height: 350px;
   background-size: cover;
   background-position: 50% 50%;
+
+
+
   /* background-color: violet; */
 }
 
@@ -6762,12 +6774,19 @@ height: 500px;
   background-repeat: no-repeat;
   background-blend-mode: overlay;
 }
-/* end of search in navbar */
 
-/* display none of logo for navbar  */
-@media (max-width :768px){
+@media(max-width :768px){
   .logonone {
     display: none;
   }
 }
+.ll{
+  font-size :40px;
+  font-weight: lighter;
+  opacity: 50%;
+}
+.tx-fnt{
+  font-size: 22px;
+}
 
+ 

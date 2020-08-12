@@ -147,6 +147,7 @@ class TeachersController extends Controller
             $teacher->avatar_type = 'storage';
             $teacher->avatar_location = $request->image->store('/avatars', 'public');
         }
+        
         $teacher->active = isset($request->active)?1:0;
         $teacher->save();
         $teacher->assignRole('teacher');

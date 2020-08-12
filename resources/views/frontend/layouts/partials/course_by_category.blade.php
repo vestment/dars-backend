@@ -22,6 +22,10 @@
 
 
         }
+        .iconss{
+        font-size:90px;
+    }
+    
 </style>
 <section id="course-category" class="course-category-section">
     <div class="container">
@@ -36,10 +40,10 @@
                         <div class="col-md-3 categ">
                             <a href="{{route('courses.category',['category'=>$category->slug])}}">
                                 <div class=" text-center ">
-                                    <div class="category-icon">
-                                        <i class="text-gradiant {{$category->icon}}"></i>
+                                    <div class="iconss">
+                                        <i class=" {{$category->icon}}"></i>
                                     </div>
-                                    <div class="category-title">
+                                    <div class="">
                                         <h4>{{$category->name}}</h4>
                                     </div>
                                 </div>

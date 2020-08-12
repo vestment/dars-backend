@@ -70,6 +70,7 @@
             margin: auto;
             display: inline-block;
         }
+       
 
 
     </style>
@@ -90,35 +91,56 @@
     @if($sections->search_section->status == 1)
         <!-- End of slider section
             ============================================= -->
-        <section id="search-course" class="search-course-section shadow-lg">
+        <section id="search-course" class=" border ">
             <div class="container">
+                <div class="row p-2">
+                    <div class="col-7  ">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="assets/img/banner/260d37c0-84ad-4627-9667-26030c180189 (1).png" alt="">
+                                <span class="ll">|</span>
+                                <span class="tx-fnt">Expert Teachers</span>
 
+                            </div>
+                            <div class="col-4">
+                                <img src="assets/img/banner/55.png" alt="">
+                                <span class="ll">|</span>
 
-                <div class="search-course  relative-position ">
-                    <form action="{{route('search')}}" method="get">
+                                <span class="tx-fnt">Learn Anywhere </span>
 
-                        <div class="input-group search-group">
-                            <input class="course" name="q" type="text"
-                                   placeholder="@lang('labels.frontend.home.search_course_placeholder')">
-                            <select name="category" class="select form-control">
-                                @if(count($categories) > 0 )
-                                    <option value="">@lang('labels.frontend.course.select_category')</option>
-                                    @foreach($categories as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                            </div>
+                            <div class="col-4">
+                                <img src="assets/img/banner/dfeferf9 (1).png" alt="">
+                                <span class="ll">|</span>
 
-                                    @endforeach
-                                @else
-                                    <option>>@lang('labels.frontend.home.no_data_available')</option>
-                                @endif
+                                <span class="tx-fnt">Earn a certificate or degree</span>
 
-                            </select>
-                            <div class="nws-button position-relative text-center  gradient-bg text-capitalize">
-                                <button type="submit"
-                                        value="Submit">@lang('labels.frontend.home.search_course')</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                
+                    <div class="col-5">
+                    <div class="row">
+                            <div class="col-6">
+                            <img src="assets/img/banner/dffb.png" alt="">
+                            <span class="ll">|</span>
+
+                                <span class="tx-fnt">Earn a certificate or degree</span>
+                            </div>
+                            <div class="col-6">
+                            <img src="assets/img/banner/fdfvds.png" alt="">
+                            <span class="ll">|</span>
+
+                                <span class="tx-fnt">Earn a certificate or degree</span>
+                            </div>
+                    </div>
+
+
+                    </div>
                 </div>
+            
+
+
 
             </div>
         </section>
@@ -321,10 +343,9 @@
     @endif
 
     <section class="bg-static">
-        <div class="container">
             <div class="row  ">
-                <div class="col-lg-6 col-xl-6 p-5 m-auto text-center">
-                    <div class="py-5">
+                <div class="col-5 p-5">
+                    <div class="">
                         <img src="/img/backend/brand/Council-logo-100px.png" alt="">
                     </div>
                     <div class="text-white">
@@ -334,11 +355,10 @@
                             challenging
                             assumptions about solutions and create significant, lasting social impact.</p>
                     </div>
-                    <div class="py-5">
-                        <button class="btn btn-primary">View Plans</button>
+                    <div class="">
+                        <button class="btn btn-outline-info">View Plans</button>
                     </div>
                 </div>
-            </div>
         </div>
     </section>
 
@@ -405,9 +425,17 @@
                                                         <div class="finger-img">
                                                             <img src="/assets/img/banner/01.png" alt="">
                                                         </div>
+                                                      
                                                         <div class="prof-img ">
-                                                            <img class="teacher-image p-3" src="{{$item->picture}}"
-                                                                 alt="">
+                                                        @if($item->avatar_location == "")
+                                                            <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
+                                                                 alt=""></a>
+                                                        @else
+                                                                 <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image p-3" src="{{$item->avatar_location}}"
+                                                                 alt=""></a>
+                                                        @endif
+
+                                                        
                                                         </div>
                                                     </div>
                                                     <div class="teacher-social-name ul-li-block pt-3">
@@ -491,13 +519,7 @@
     </section>
 
 
-    @if($sections->contact_us->status == 1)
-        <!-- Start of contact area
-        ============================================= -->
-        @include('frontend.layouts.partials.contact_area')
-        <!-- End of contact area
-            ============================================= -->
-    @endif
+   
 
 
 @endsection

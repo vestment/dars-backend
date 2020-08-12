@@ -1,10 +1,21 @@
+<style>
+    .navl{
+        background-color:#CECECE;
+        color:black;
+        margin-left:1%;
+    } 
+    .navv .active{
+        background-color:#D2498B !important;
+        color:white !important;
+    } 
+    </style>
 
 <!-- Start popular course
        ============================================= -->
 @if(count($popular_courses) > 0)
-    <section id="popular-course" class="popular-course-section {{isset($class) ? $class : ''}}">
+    <section id="popular-course" class="popular-course-section {{isset($class) ? $class : ''}} pt-5">
         <div class="container">
-            <div class="section-title mb20 headline text-left ">
+            <div class="section-title mb20 headline text-left pt-5">
                 <span class="subtitle text-uppercase">@lang('labels.frontend.layouts.partials.learn_new_skills')</span>
                 <h2>@lang('labels.frontend.layouts.partials.popular_courses')</h2>
             </div>
@@ -13,8 +24,8 @@
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 @foreach($categories as $key=>$category)
-  <li class="nav-item" role="presentation">
-    <a class="nav-link @if ($key == 0) active @endif" id="{{$category->id}}" data-toggle="tab" href="#content-{{$category->id}}" role="tab" aria-controls="{{$category->id}}" aria-selected="true">{{$category->name}}</a>
+  <li class="nav-item navv" role="presentation">
+    <a class=" nav-link navl @if ($key == 0) active @endif" id="{{$category->id}}" data-toggle="tab" href="#content-{{$category->id}}" role="tab" aria-controls="{{$category->id}}" aria-selected="true">{{$category->name}}</a>
   </li>
   
   @endforeach
