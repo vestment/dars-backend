@@ -269,25 +269,14 @@
                                                 </div>
                                             </div>
                                         </div>
-<<<<<<< HEAD
 
                                     @endforeach
                                     @else
                                         <h3>@lang('labels.general.no_data_available')</h3>
-=======
-                                 </div>
-                                        
-                                        @endforeach
-                                        @else
-                                        <h3>@lang('labels.general.no_data_available')</h3>
-                                        
-
-                                </div>
-                                @endif
->>>>>>> 1ee6dcfd8c3928c0a3f0bdd938c4f9f50e46cfb2
 
 
                                 </div>
+                            @endif
                         </div>
 
 
@@ -318,15 +307,9 @@
     @endif
 
     <section class="bg-static">
-<<<<<<< HEAD
             <div class="row bg-static1 ">
                 <div class="col-5 p-5">
                     <div class="p-5 ">
-=======
-            <div class="row  ">
-                <div class="col-5">
-                    <div class="p-5">
->>>>>>> 1ee6dcfd8c3928c0a3f0bdd938c4f9f50e46cfb2
                         <img src="/img/backend/brand/Council-logo-100px.png" alt="">
                     </div>
                     <div class="text-white pl-5 pb-5">
@@ -336,13 +319,8 @@
                             challenging
                             assumptions about solutions and create significant, lasting social impact.</p>
                     </div>
-<<<<<<< HEAD
                     <div class="pl-5 pb-5">
                         <button class="btn btn-outline-info ">View Plans</button>
-=======
-                    <div class="p-5">
-                        <button class="btn btn-outline-info">View Plans</button>
->>>>>>> 1ee6dcfd8c3928c0a3f0bdd938c4f9f50e46cfb2
                     </div>
                 </div>
         </div>
