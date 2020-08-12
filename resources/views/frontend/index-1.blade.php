@@ -23,7 +23,6 @@
     <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
     <script src="{{asset('assets/js/jquery-ui.js')}}"></script>
     <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
-
     <script src="{{asset('assets/js/switch.js')}}"></script>
 
     <style>

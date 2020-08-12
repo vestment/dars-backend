@@ -1,4 +1,4 @@
-z@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app'.config('theme_layout'))
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
@@ -603,7 +603,7 @@ nn
 <div class="row">
         @if($courses->count() > 0)
        
-        @foreach($cour as $course)
+        @foreach($courses as $course)
         
     <div  class="col-6">
             <div class="card " >

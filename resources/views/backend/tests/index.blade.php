@@ -79,63 +79,7 @@
 
 
 
-    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
- 
-        <div class="card-body table-responsive">
-            <div class="row">
-                <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('chapter_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
-                    {!! Form::select('chapter_id', $tests,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'chapter_id']) !!}
-                </div>
-            </div>
-            <div class="d-block">
-                <ul class="list-inline">
-                    <li class="list-inline-item">
-                        <a href="{{ route('admin.tests.index',['course_id'=>request('course_id')]) }}"
-                           style="{{ request('show_deleted') == 1 ? '' : 'font-weight: 700' }}">{{trans('labels.general.all')}}</a>
-                    </li>
-                    |
-                    <li class="list-inline-item">
-                        <a href="{{trashUrl(request()) }}"
-                           style="{{ request('show_deleted') == 1 ? 'font-weight: 700' : '' }}">{{trans('labels.general.trash')}}</a>
-                    </li>
-                </ul>
-            </div>
-
-            @if(request('course_id') != "" || request('show_deleted') == 1)
-
-
-            <table id="myTable"
-                   class="border-0 shadow-lg  @can('test_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
-                <thead class="thead">
-                <tr>
-                    @can('test_delete')
-                        @if ( request('show_deleted') != 1 )
-                            <th style="text-align:center;"><input type="checkbox" class="mass" id="select-all"/>
-                            </th>@endif
-                    @endcan
-                    <th>@lang('labels.general.sr_no')</th>
-                    <th>@lang('labels.backend.tests.fields.course')</th>
-                    <th>@lang('labels.backend.tests.fields.title')</th>
-                    <th>@lang('labels.backend.tests.fields.questions')</th>
-                    <th>@lang('labels.backend.tests.fields.published')</th>
-                    @if( request('show_deleted') == 1 )
-                        <th>@lang('labels.general.actions')</th>
-
-                    @else
-                        <th>@lang('labels.general.actions')</th>
-                    @endif
-                </tr>
-                </thead>
-
-                <tbody>
-
-                </tbody>
-            </table>
-            @endif
-        </div>
-    </div>
-
+    
 
 
 
