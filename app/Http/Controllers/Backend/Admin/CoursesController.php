@@ -544,10 +544,12 @@ class CoursesController extends Controller
      */
     public function saveSequence(Request $request)
     {
+         
+
+
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
-
         foreach ($request->list as $item) {
             $courseTimeline = CourseTimeline::find($item['id']);
             $courseTimeline->sequence = $item['sequence'];
@@ -584,20 +586,28 @@ class CoursesController extends Controller
     public function courseContent($course_id){
 
         $timeline =  CourseTimeline::where('course_id', $course_id)->get();
-        // dd($timeline[0]->model_type);
         foreach ($timeline as $item) {
-        $content = $item->model_type::where('id', '=', $item->model_id)->get();
+        $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
+
+        }
+    
+
+
+        foreach ($content as $key=>$item){
+            foreach($item as $j=>$item){
+                $chapterContent[] = $content[$key][$j];
+            }
+
         }
 
         // $course = Course::findOrFail($course_id);
         // $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
         // $chapters = $courseTimeline->where('model_type','chapter');
-        dd($content);
 
         // $chaptersOfCourse = Chapter::where('id',$chapters->model_id);
 
 
-        return view('backend.courses.courseContent', compact( 'courseTimeline'));
+        return view('backend.courses.courseContent', compact( 'chapterContent','timeline'));
 
 
 
