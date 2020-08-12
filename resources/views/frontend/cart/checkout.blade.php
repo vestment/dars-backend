@@ -421,13 +421,13 @@
                 <ul class="ul-right">
                         @if(count($categories) > 0)
                         @foreach($categories as $category)
-                        <li class="li-right"><a href=""><i class="{{$category->icon}} p-2"></i>{{$category->name}}</a></li>
+                        <a href="{{route('courses.category',['category'=>$category->slug])}}"> <li class="li-right"><i class="{{$category->icon}} p-2"></i>{{$category->name}}</li></a>
                         @endforeach
                     @endif
                 </ul>
         </div>
     </div>
-  
+ 
     </div> 
 
     </section>

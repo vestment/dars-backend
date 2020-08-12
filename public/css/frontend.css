@@ -89,6 +89,7 @@ body {
   margin: 0 auto;
 }
 
+
 .ul-li-block ul {
   margin: 0;
   padding: 0;
@@ -522,6 +523,7 @@ h6 {
   font-weight: 500;
   position: relative;
   border-radius: 4px;
+  font-family: cairo;
 }
 
 .nav-menu li a:after {
@@ -1700,7 +1702,7 @@ button.alt-menu-btn.float-left {
 /*----------------------------------------------------*/
 
 .search-course-section {
-  padding: 125px 0px 100px 0px;
+  padding-bottom: 3%;
 }
 
 .search-course input,
@@ -1716,7 +1718,7 @@ button.alt-menu-btn.float-left {
   width: 100%;
   height: 60px;
   background-color: #f9f9f9;
-  border: none;
+border: none;
   padding: 0px 20px;
   border-radius: 5px;
 }
@@ -2130,9 +2132,9 @@ button.alt-menu-btn.float-left {
 }
 
 .owl-nav {
-  right: 677px;
-  bottom: -32px;
-  position: absolute;
+  /* right: 677px; */
+  /* bottom: -32px; */
+  /* position: absolute; */
 }
 
 .owl-nav .owl-prev,
@@ -5360,8 +5362,8 @@ ul.product-tab li.active:after {
 }
 
 .course-page-section .course-list-img {
-  height: 70px;
-  width: 70px;
+  height: 70;
+  width: 70;
   float: left;
   margin-right: 20px;
   background-position: center;
@@ -6390,10 +6392,17 @@ ul.product-tab li.active:after {
   /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
   padding-left: 0 !important;
   padding-right: 0 !important;
+  background-repeat: no-repeat;
+  height: 350px;
+  background-size: cover;
+  background-position: 50% 50%;
+
 
 
   /* background-color: violet; */
 }
+
+
 .pricebottom{
   bottom: 40px;
 }
@@ -6468,7 +6477,8 @@ display: inline-block;
 
 .footer-logo{
   background-color: #0C0C3F;
-  width: 50%;
+  width: 40%;
+  padding: 15px;
 }
 .footersec h2{
   font-size: 24px;
@@ -6492,7 +6502,6 @@ display: inline-block;
   padding: 15px;
 }
 .l-h{
-  line-height: 38px;
   font-size: 13px;
 }
 
@@ -6523,22 +6532,21 @@ display: inline-block;
 /* style="opacity:0.9; width:15%;padding:10px; font-size:15px" */
 .buttoncart button {
   opacity: 0.9;
-  width: 15%;
   padding: 10px;
   font-size: 15px;
   height: 39px;
 }
 
 
- 
 
 .addcart{
   opacity: 0.9 !important;
   width: 200px !important;
   padding: 10px !important;
   font-size: 15px !important;
+  color: white;
 }
-@media(min-width :425px){
+@media(max-width :425px){
   .addcart {
     width: 100px !important;
     padding: 8px !important;
@@ -6568,6 +6576,13 @@ display: inline-block;
   .tech-slider{
     display: block;
   }
+}
+@media(max-width :1310px){
+    
+  .pic-hd{
+  display: none;
+}
+
 }
 
 @media(max-width :425px){
@@ -6640,9 +6655,19 @@ hr{
 .dropright .dropdown-menu{
   transform:translate3d(11px, 50px, 6px) !important;
 }
+
+.dropright button{
+  font-weight: 500;
+  font-family: cairo !important;
+  font-weight: 500 !important;
+}
 .droplist{
   background-color: #0C0C3F;
   color: white;
+  
+}
+.droplist ul li :hover{
+  background: linear-gradient(to right, #01a6fd 0%, #17d0cf 51%, #01a6fd 100%);
 }
 .linkdrop{
   padding: 15px;
@@ -6657,14 +6682,15 @@ margin-right: 15px;
 
 iframe {
 width: 100%;
-clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
+/* clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% ); */
+height: 500px;
 
 }
 
 
 
 
-
+/* search in navbar */
 
 .search-bar {
   position: relative;
@@ -6677,6 +6703,10 @@ clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
   max-width: 80%;
   border: 1px solid #ccc;
   background: #eee;
+  transform:translate3d(45px, -2px, 6px);
+  height: 37px;
+  border-radius: 25px;
+
 }
 
 .search-bar .icon {
@@ -6702,3 +6732,54 @@ clip-path: polygon(0 0,123% 0, 140% 46%, 0 80% );
   background-color:#0C0C3F;
 
 }
+.p-re{
+  z-index: 7;
+
+}
+.p-ab{
+  background: linear-gradient(rgba(48, 50, 53, 0.45), 
+  rgba(63, 60, 65, 0.45) ),
+  url('/assets/img/banner/44.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  left: 112px;
+  top:-88px;
+  z-index: 8;
+}
+.tex{
+  padding-top: 200px;
+  padding-left: 70px;
+
+}
+.bg-grd{
+  background-image: linear-gradient(to right, #326f92,#625CA8,#D2498B);
+
+
+}
+.textbold{
+  font-size: 34px;
+  font-weight: bolder;
+}
+.btn-p{
+  padding-top: 15%;
+  padding-bottom: 40%;
+}
+.bg-static{
+  
+  background:linear-gradient(
+    rgba(82, 109, 167, 0.45), 
+    rgba(66, 10, 99, 0.45)
+   ), url('/assets/img/banner/yyy.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
+}
+/* end of search in navbar */
+
+/* display none of logo for navbar  */
+@media (max-width :768px){
+  .logonone {
+    display: none;
+  }
+}
+

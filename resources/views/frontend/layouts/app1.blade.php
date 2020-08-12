@@ -55,7 +55,7 @@
               title="color-8">
         <link href="{{asset('assets/css/colors/color-9.css')}}" rel="alternate stylesheet" type="text/css"
               title="color-9">
-
+              <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
         @yield('css')
         @stack('after-styles')
 
@@ -97,10 +97,11 @@
                     <div class="offset-1">
 
                         <div class="navbar-default">
-                            <div class="navbar-header float-left">
+                            <div class="navbar-header logonone float-left">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
-                                 
-                                    <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo">
+                                <img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
+
+                                    <!-- <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo"> -->
 
                                 </a>
                             </div>
@@ -130,12 +131,13 @@
                                         </button>
                                         <div class="dropdown-menu droplist">
                                             {{-- <a class="linkdrop" href="">hsdfghs</a> --}}
+                                            <ul>
                                             @if(count($categories) > 0)
-                                            @foreach($categories as $category)
-                                                <a class="linkdrop" href="{{$category->id}}"> {{$category->name}}</a>
-                                            @endforeach
-                                        @endif
-    
+                                                @foreach($categories as $category)
+                                                    <li><a class="linkdrop" href="{{$category->id}}"><i class="{{$category->icon}} p-2"></i> {{$category->name}}</a></li>
+                                                @endforeach
+                                            @endif
+                                            </ul>
                                         </div>
                                     </div>
 
@@ -184,12 +186,14 @@
                                                 </div>
                                             </li>
                                             <li>
+                                                @if(!auth()->check())
                                                     <div class="log-in mt-0">
                                                         <a 
                                                         href="{{ url('signup/en') }}">@lang('navs.general.signup')</a>
                                                     
 
                                                     </div>
+                                                    @endif
                                             </li>
                                             <li>
                                             <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>

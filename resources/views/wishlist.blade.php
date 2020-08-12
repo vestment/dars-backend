@@ -65,7 +65,7 @@
                     <div class="col-12">
                         <div class="order-item mb30 course-page-section">
                             <div class="section-title mb45 headline ">
-                            <p>Order Item.</p>    
+                         
                         </div>
                       
 
@@ -134,13 +134,34 @@
                                 </tr>                                    
                                 
                                 @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="4">@lang('labels.frontend.cart.empty_cart')</td>
-                                    </tr>
-                                @endif
-                                </tbody>
+                            </tbody>
                         </table>
+                                @else
+                                <div class="text-center">
+                                  <div class="row">
+                                      <div class="col-12">
+                                            <h2 style="font-weight:bold; font-size: -webkit-xxx-large; color:black">oh no</h2>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                        <div class="col-12">
+                                            <h3 class="text-black-50">no wish list</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                            <div class="col-12">
+                                               <a href="{{route('courses.all')}}"><button class="btn btn-primary">course</button></a>
+                                            </div>
+                                        </div>
+                                    <div class="row">
+                                            <div class="col-12">
+                                                <img src="{{url('img/frontend/user/error.svg')}}">
+                                            </div>
+                                        </div>
+
+                                </div>
+                                @endif
+                               
 
                     </div>
                 </div>

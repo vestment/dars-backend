@@ -1,6 +1,6 @@
 <section id="course-category" class="course-category-section">
     <div class="container">
-        <div class="section-title mb45 headline text-center ">
+        <div class="section-title mb45 headline ">
             <span class="subtitle text-uppercase">@lang('labels.frontend.layouts.partials.courses_categories')</span>
             <h2>@lang('labels.frontend.layouts.partials.browse_course_by_category')</h2>
         </div>

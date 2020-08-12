@@ -39,7 +39,7 @@ class CoursesController extends Controller
     }
 
     public function all()
-    {
+     {
         if (request('type') == 'popular') {
             $courses = Course::withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
@@ -64,12 +64,13 @@ class CoursesController extends Controller
                 ->orderBy('id', 'desc')
                 ->get();
         }
+
         $featured_courses = Course::withoutGlobalScope('filter')->where('published', '=', 1)
             ->where('featured', '=', 1)->take(8)->get();
 
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         return view( $this->path.'.courses.index', compact('courses', 'purchased_courses', 'recent_news','featured_courses','categories'));
-    }
+     }
 
     public function show($course_slug)
     {
@@ -144,6 +145,9 @@ class CoursesController extends Controller
         return redirect()->back()->with('success', 'Thank you for rating.');
     }
 
+
+
+
     public function getByCategory(Request $request)
     {
         $category = Category::where('slug', '=', $request->category)
@@ -173,9 +177,9 @@ class CoursesController extends Controller
            
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
-    
-
-            return view( $this->path.'.courses.index', compact('courses','popular_course', 'category', 'recent_news','featured_courses','categories'));
+            $cour = Course::with('teachers')->get();
+             dd($cour);
+            return view( $this->path.'.courses.index', compact('courses','cour','popular_course', 'category', 'recent_news','featured_courses','categories'));
         }
         return abort(404);
     }

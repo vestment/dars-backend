@@ -9,11 +9,13 @@
         <div class="container">
             <div class="footer-content pb10 footerHidden">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="footer-widget ">
                             <div class="footer-logo mb35">
+                            <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
+
                                 <!-- <img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo"> -->
-                                <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo" style="width: 100%;">
+                                <!-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo" style="width: 100%;"> -->
                             </div>
                             @if($footer_data->short_description->status == 1)
                                 <div class="footer-about-text">
@@ -22,10 +24,10 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="row">
 
-                        <!-- @if($footer_data->section1->status == 1)
+                        @if($footer_data->section1->status == 1)
                                 @php
                                     $section_data = section_filter($footer_data->section1)
                                 @endphp
@@ -47,8 +49,10 @@
                                 @endphp
 
                                 @include('frontend.layouts.partials.footer_section',['section_data' => $section_data])
-                        @endif -->
-                            <div class="col footersec">
+                        @endif
+
+
+                            <!-- <div class="col footersec">
                                 <h2>Featured Course</h2>
                                 <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
                                 <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
@@ -74,7 +78,7 @@
                                 <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Accusamus libero odio tempore voluptatem laudantium.</p>
                                 <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
                                 <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -120,15 +124,20 @@
                     @endif
                 </div>
             </div>
+
+            
         </div>
+        @if($footer_data->bottom_footer->status == 1)
             <div class="copy-right-menu">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="copy-right-text">
-                            <!-- <p>Powered By <a href="https://www.neonlms.com/" target="_blank" class="mr-4"> NeonLMS</a>  {!!  $footer_data->copyright_text->text !!}</p> -->
-                        <p class="l-h">© Copyright © 2004 - 2020 E-Council LLC. All rights reserved</p>
+                    @if($footer_data->copyright_text->status == 1)
+                        <div class="col-md-6">
+                            <div class="copy-right-text">
+                                <p class="l-h">{!!  $footer_data->copyright_text->text !!}</p>
+                            <!-- <p class="l-h">© Copyright © 2004 - 2020 E-Council LLC. All rights reserved</p> -->
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     @if(($footer_data->bottom_footer_links->status == 1) && (count($footer_data->bottom_footer_links->links) > 0))
                     <div class="col-md-6">
                         <div class="copy-right-menu-item float-right ul-li">
@@ -146,6 +155,8 @@
                      @endif
                 </div>
             </div>
+        @endif
+
         <!-- </div> -->
     </section>
 </footer>

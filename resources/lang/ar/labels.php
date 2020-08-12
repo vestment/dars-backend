@@ -1321,7 +1321,7 @@ return array (
       'course_detail' => 'تفاصيل الدورة',
       'course_details' => '<span> تفاصيل الدورة. </span>',
       'course_name' => 'اسم الدورة التدريبية',
-      'course_reviews' => 'الدورة التدريبية <span> من المراجعات: </span>',
+      'course_reviews' => ':الدورة التدريبية <span> من المراجعات </span>',
       'course_timeline' => 'الدورة التدريبية <b> الجدول الزمني: </b>',
       'course_type' => 'دورة كتابية',
       'courses' => 'الدورات',
@@ -1376,6 +1376,8 @@ return array (
       'wishlist'=> 'قائمة الرغبات',
       'Share'=>'مشاركة',
       'instructors' => 'مدرسين',
+      'course_content' => 'محتوي الكورس',
+
 
     ),
     'faq' => 
@@ -1408,7 +1410,7 @@ return array (
     array (
       'partials' => 
       array (
-        'advantages' => 'مزايا',
+        'OfferCourses' => 'الدورات المخفضة',
         'browse_course_by_category' => 'استعرض الدورات <span> حسب الفئة. </span>',
         'browse_featured_course' => 'استعرض <span> الدورة التدريبية المميزة. </span>',
         'call_us_registration' => 'اتصل بنا للحصول على تسجيل مجاني',
@@ -1444,7 +1446,7 @@ return array (
         'view_all_news' => 'عرض جميع الأخبار',
         'view_all_popular_courses' => 'عرض جميع الدورات الشعبية',
         'view_all_trending_courses' => 'عرض جميع الدورات التدريبية',
-        'why_choose' => 'السبب في اختيار',
+        'packagecourse' => 'مجموعة الدورات الخفضة',
         'certificate_verification' => 'التحقق من الشهادة',
         'terms_of_use' => 'سياسة خاصة',
         'more_faqs' => 'المزيد من الأسئلة الشائعة',

@@ -1443,7 +1443,7 @@ return array (
     array (
       'partials' => 
       array (
-        'advantages' => 'Advantages',
+        'OfferCourses' => 'Offer Courses',
         'email_address' => 'Email Address',
         'email_registration' => 'Email Us For Free Registration',
         'call_us_registration' => 'Call Us For Free Registration',
@@ -1482,7 +1482,7 @@ return array (
         'search_courses' => 'Search Courses',
         'sponsors' => 'Sponsors.',
         'students_testimonial' => 'Students <span>Testimonial.</span>',
-        'why_choose' => 'Reason Why Choose',
+        'packagecourse' => 'package course',
         'certificate_verification' => 'Certificate Verification',
         'offers' => 'Offers',
       ),

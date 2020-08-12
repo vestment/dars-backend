@@ -29,12 +29,10 @@ class TeachersController extends Controller
 
 
         if (request('show_deleted') == 1) {
-            
             $teachers = TeacherProfile::onlyTrashed()->ofAcademy()->get();
         } else {
             $teachers = TeacherProfile::ofAcademy()->get();
         }
-
         return view('backend.teachers.index', compact('teachers'));
     }
 
