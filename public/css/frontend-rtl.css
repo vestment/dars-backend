@@ -5920,11 +5920,3 @@ ul.product-tab li.active:after {
 
 
 /* me */
-.paragraph1{
-  position: absolute;
-  top: 41%;
-  -webkit-transform: translateY(-40%);
-          transform: translateY(-40%);
-  color:#00000075;
-}
-

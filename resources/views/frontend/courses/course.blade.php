@@ -172,7 +172,7 @@
         ============================================= -->
 
 
-    <!-- Start of course section
+    <!-- Start of what you will learn content section
         ============================================= -->
     <section id="course-page" class="course-page-section">
         <div class="container">
@@ -377,103 +377,129 @@
                 </div>
             </div>
     </section>
-    <!-- End of course content section
+    <!-- End of what you will learn  section
         ============================================= -->
 
 
- <!-- Start of course section
+    <!-- Start of course content section
         ============================================= -->
-
-
-
-
-<section id="course-page" class="course-page-section">
-    <div class="container">
-        <div class="row  coursecontent d-block m-2">
-            <h2>@lang('labels.frontend.course.course_content') </h2>
-        </div>
-        <div class="row smpara d-block m-2">
-            <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
-                <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
-        </div>
-        
-        @foreach($chapters as $chapter)
-        <div class="row m-2 shadow">
-            <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#{{$chapter->id}}" aria-expanded="true" aria-controls="{{$chapter->id}}" >
-                        {{ $chapter->title}} <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
-                        </button>
-                        @if($course->trending == 1)
-                            <span class="trend-badge text-uppercase bold-font"><i
-                                class="fas fa-bolt"></i> @lang('labels.frontend.badges.trending')</span>
-                        @endif
-                        </h2>
-                    </div>
+    <section id="course-page" class="course-page-section">
+        <div class="container">
+            <div class="row  coursecontent d-block m-2">
+                <h2>@lang('labels.frontend.course.course_content') </h2>
+            </div>
+            <div class="row smpara d-block m-2">
+                <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
+                    <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
+            </div>
             
-                    <div id="{{$chapter->id}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div class="card-body">
-                        @foreach($lessons->get() as $key=>$item)
-                        @php $key++; @endphp
-
-                            <div class="bordered">
-                                      
-                                      @if($item->model && $item->model->published == 1)
-                                  
-                                      
-                                <p class="subtitle2">  <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
-                                               @if($item->model->chapter_id == $chapter->id)
-                                                {{$item->model->title}}
-                                                @endif
-                                                @if($item->model_type == 'App\Models\Test')
-                                                    <p class="mb-0 text-primary">
-                                                        - @lang('labels.frontend.course.test')</p>
-                                                @endif
-                                               
-                                            </a> </p>
-                                <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
+            @foreach($chapters as $chapter)
+                <div class="row m-2 shadow">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#{{$chapter->id}}" aria-expanded="true" aria-controls="{{$chapter->id}}" >
+                                {{ $chapter->title}} <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+                                </button>
+                                @if($course->trending == 1)
+                                    <span class="trend-badge text-uppercase bold-font"><i
+                                        class="fas fa-bolt"></i> @lang('labels.frontend.badges.trending')</span>
                                 @endif
+                                </h2>
+                            </div>
+                    
+                            <div id="{{$chapter->id}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    @foreach($lessons->get() as $key=>$item)
+                                        @php $key++; @endphp
+                                        <div class="bordered">
+                                            @if($item->model && $item->model->published == 1)    
+                                                <p class="subtitle2">  
+                                                    <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
+                                                        @if($item->model->chapter_id == $chapter->id)
+                                                            {{$item->model->title}}
+                                                        @endif
+                                                        @if($item->model_type == 'App\Models\Test')
+                                                            <p class="mb-0 text-primary">- @lang('labels.frontend.course.test')</p>
+                                                        @endif  
+                                                    </a> 
+                                                </p>
+                                            <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+    </section>
+    <!-- <section id="course-page" class="course-page-section">
+        <div class="container">
+            <div class="row  coursecontent d-block m-2">
+                {{-- <h2>@lang('labels.frontend.course.course_content') </h2> --}}
+            </div>
+            <div class="row smpara d-block m-2">
+                {{-- <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') • --}}
+                    {{-- <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p> --}}
+            </div>
+            
+            <div class="row m-2 shadow">
+            
+
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                                Chapter 1 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+                            </button>
+                            </h2>
+                        </div>
+                
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="bordered">
+                                    <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
+                                    <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="bordered">
+                                    <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
+                                    <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
+                                </div>
                             </div>
                             @endforeach
 
                         </div>
                        
                     </div>
-                </div>
 
-             
-            </div>
-        </div>
-    @endforeach
-
-    </div>
-</section>
-<!-- <section id="course-page" class="course-page-section">
-    <div class="container">
-        <div class="row  coursecontent d-block m-2">
-            {{-- <h2>@lang('labels.frontend.course.course_content') </h2> --}}
-        </div>
-        <div class="row smpara d-block m-2">
-            {{-- <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') • --}}
-                {{-- <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p> --}}
-        </div>
-        
-        <div class="row m-2 shadow">
-        
-
-            <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
+                    <div class="card">
+                    <div class="card-header" id="headingTwo">
                         <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
-                            Chapter 1 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Chapter 2 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
                         </button>
                         </h2>
                     </div>
-            
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="bordered">
+                                <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
+                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="bordered">
+                                <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
+                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <div class="bordered">
                                 <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
@@ -487,145 +513,110 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Chapter 2 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
-                    </button>
-                    </h2>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                    <div class="card-body">
-                        <div class="bordered">
-                            <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                            <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="bordered">
-                            <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                            <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="bordered">
-                            <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                            <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="bordered">
-                            <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                            <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                        </div>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
-    </div>
-</section> -->
- <!-- end of course content section -->
+    </section> -->
+    <!-- End of course content section
+        ============================================= -->
 
 
+    <!-- Start of course review section
+        ============================================= --> 
+    <section id="course-page" class="course-page-section">
+        <div class="container">
+            <div class="course-review">
+                <div class="section-title-2 mb20 headline text-left">
+                    <h2>@lang('labels.frontend.course.course_reviews')</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="ratting-preview">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="avrg-rating ul-li">
+                                        <b>@lang('labels.frontend.course.average_rating')</b>
+                                        <span class="avrg-rate">{{$course_rating}}</span>
+                                        <ul>
+                                            @for($r=1; $r<=$course_rating; $r++)
+                                                <li><i class="fas fa-star"></i></li>
+                                            @endfor
+                                            @for($r=1; $r<=5-$course_rating; $r++)
+                                            <i class="fas fa-star"></i>
+                                            @endfor
 
- <section id="course-page" class="course-page-section">
-    <div class="container">
-        <div class="course-review">
-            <div class="section-title-2 mb20 headline text-left">
-                <h2>@lang('labels.frontend.course.course_reviews')</h2>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="ratting-preview">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="avrg-rating ul-li">
-                                    <b>@lang('labels.frontend.course.average_rating')</b>
-                                    <span class="avrg-rate">{{$course_rating}}</span>
-                                    <ul>
-                                        @for($r=1; $r<=$course_rating; $r++)
-                                            <li><i class="fas fa-star"></i></li>
-                                        @endfor
-                                        @for($r=1; $r<=5-$course_rating; $r++)
-                                        <i class="fas fa-star"></i>
-                                        @endfor
-
-                                    </ul>
-                                    <b>{{$total_ratings}} @lang('labels.frontend.course.ratings')</b>
+                                        </ul>
+                                        <b>{{$total_ratings}} @lang('labels.frontend.course.ratings')</b>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="avrg-rating ul-li">
-                                    <span><b>@lang('labels.frontend.course.details')</b></span>
-                                    @for($r=5; $r>=1; $r--)
-                                        <div class="rating-overview">
-                                            <span class="start-item">{{$r}} @lang('labels.frontend.course.stars')</span>
-                                            <span class="start-bar"></span>
-                                            <span class="start-count">{{$course->reviews()->where('rating','=',$r)->get()->count()}}</span>
-                                        </div>
-                                    @endfor
+                                <div class="col-md-8">
+                                    <div class="avrg-rating ul-li">
+                                        <span><b>@lang('labels.frontend.course.details')</b></span>
+                                        @for($r=5; $r>=1; $r--)
+                                            <div class="rating-overview">
+                                                <span class="start-item">{{$r}} @lang('labels.frontend.course.stars')</span>
+                                                <span class="start-bar"></span>
+                                                <span class="start-count">{{$course->reviews()->where('rating','=',$r)->get()->count()}}</span>
+                                            </div>
+                                        @endfor
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-    </div>
-    
- </section>
-
-
-
-
-
-<section id="course-page" class="course-page-section">
-    <div class="container">
-        <div class="row  coursecontent d-block m-2">
-            <h2> @lang('labels.frontend.course.instructors') </h2>
-        </div>
-        <div class="row m-2">
-            @foreach($course->teachers as $key=>$teacher)
-                <div class="col-lg-2 col-md-2 col-sm-3">
-                    <img src=" {{$teacher->picture}}" alt="">
-
-                    <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
-                </div>
-                <div class="col-lg-3 col-md-5 col-sm-3">
-                    @php $key++ @endphp
-                    <p style="font-size:30px;">{{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
-                </div>
-                <div class="col-3">
-                    <p>{{$teacher->description}}</p>
-                </div>
-            @endforeach
 
         </div>
-            
-        <div class="row m-2">
-            <p>  </p>
+        
+    </section>
+    <!-- End of course review section
+        ============================================= -->
 
-            {{-- <p> Chris has sold more than 1,000,000 of his online business & self improvement courses 
-                in 12 languages in 196 countries and his courses have been profiled in Business Insider, NBC, Inc, Forbes,
-                CNN, Entrepreneur & on other business news websites. Chris is the author of the #1 best selling online 
-                business course called "An Entire MBA in 1 Course®” & many other courses.</p> 
+    <!-- Start of Instructor info review section
+        ============================================= --> 
+    <section id="course-page" class="course-page-section">
+        <div class="container">
+            <div class="row  coursecontent d-block m-2">
+                <h2> @lang('labels.frontend.course.instructors') </h2>
+            </div>
+            <div class="row m-2">
+                @foreach($course->teachers as $key=>$teacher)
+                    <div class="col-lg-2 col-md-2 col-sm-3">
+                        <img src=" {{$teacher->picture}}" alt="">
+
+                        <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
+                    </div>
+                    <div class="col-lg-3 col-md-5 col-sm-3">
+                        @php $key++ @endphp
+                        <p style="font-size:30px;">{{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
+                    </div>
+                    <div class="col-3">
+                        <p>{{$teacher->description}}</p>
+                    </div>
+                @endforeach
+            </div>
+            <div class="row m-2">
+                <p>  </p>
+
+                {{-- <p> Chris has sold more than 1,000,000 of his online business & self improvement courses 
+                    in 12 languages in 196 countries and his courses have been profiled in Business Insider, NBC, Inc, Forbes,
+                    CNN, Entrepreneur & on other business news websites. Chris is the author of the #1 best selling online 
+                    business course called "An Entire MBA in 1 Course®” & many other courses.</p> 
+                    
+                <p> He’s the author of the book "101 Crucial Lessons They Don't Teach You in Business School®,"​ which 
+                Business Insider wrote is "the most popular book of 2016."​ Forbes called this book "1 of 6 books that all 
+                entrepreneurs must read right now. </p>
                 
-            <p> He’s the author of the book "101 Crucial Lessons They Don't Teach You in Business School®,"​ which 
-            Business Insider wrote is "the most popular book of 2016."​ Forbes called this book "1 of 6 books that all 
-            entrepreneurs must read right now. </p>
-            
-            <p>"​He is the founder & CEO of Haroun Education Ventures, an award winning business school professor, 
-                MBA graduate from Columbia University & former Goldman Sachs employee. He has raised/managed over $1bn 
-                in his career.</p> --}}
+                <p>"​He is the founder & CEO of Haroun Education Ventures, an award winning business school professor, 
+                    MBA graduate from Columbia University & former Goldman Sachs employee. He has raised/managed over $1bn 
+                    in his career.</p> --}}
+            </div>
         </div>
-     
-    </div>
-</section>
+    </section>
+  <!-- End of Instructor info review section
+        ============================================= --> 
 
 
 @endsection
@@ -654,3 +645,11 @@
     </script>
 @endpush
 
+<script>
+
+$('#modal1').on('hidden.bs.modal', function (e) {
+  // do something...
+  $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
+});
+
+</script>
