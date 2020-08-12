@@ -24,14 +24,13 @@
 
             <ul class="nav nav-tabs custom-tabs" id="myTab" role="tablist">
                 @foreach($categories as $key=>$category)
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link @if ($key == 0) active @endif" id="{{$category->id}}" data-toggle="tab"
-                           href="#content-{{$category->id}}" role="tab" aria-controls="{{$category->id}}"
-                           aria-selected="true">{{$category->name}}</a>
-                    </li>
+  <li class="nav-item navv" role="presentation">
+    <a class=" nav-link navl @if ($key == 0) active @endif" id="{{$category->id}}" data-toggle="tab" href="#content-{{$category->id}}" role="tab" aria-controls="{{$category->id}}" aria-selected="true">{{$category->name}}</a>
+  </li>
+  
+  @endforeach
+</ul>
 
-                @endforeach
-            </ul>
             <div class="tab-content">
                 @foreach($categories as $key=>$category)
                     <div class="tab-pane fade in @if ($key == 0) active @endif" id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">

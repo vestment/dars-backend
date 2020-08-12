@@ -339,19 +339,6 @@ h6 {
   position: relative;
 }
 
-.section-title .subtitle:before,
-.section-title .subtitle:after {
-  content: ".";
-  font-size: 70px;
-  left: -45px;
-  pointer-events: none;
-  position: absolute;
-  text-shadow: transparent 0px 0px;
-  top: -10px;
-  line-height: 0;
-  color: #17d0cf;
-  text-shadow: 15px 0 #17d0cf;
-}
 
 .section-title .subtitle:after {
   right: -28px;
@@ -1394,14 +1381,13 @@ button.alt-menu-btn.float-left {
   position: absolute;
   top: 50%;
   right: 0;
-  left: 0;
+  left: -374px;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
 }
 
 .slider-text .section-title {
   width: 70%;
-  margin: auto;
 }
 
 .slider-text .section-title h2 {
@@ -1428,7 +1414,7 @@ button.alt-menu-btn.float-left {
 }
 
 #slider-item .genius-btn {
-  border: 2px solid #17d0cf;
+  border: 2px solid white;
   margin-top: 30px;
 }
 
@@ -1465,6 +1451,7 @@ button.alt-menu-btn.float-left {
 #slider-item .owl-next , #slider-item .owl-prev {
   box-shadow: none;
   border-radius: 4px;
+}
 
 #slider-item .owl-next {
   float: right;
@@ -1688,7 +1675,10 @@ button.alt-menu-btn.float-left {
   height: 100%;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(to right,
+    rgba(0, 0, 0, 0.7), 
+    rgba(255, 255, 255, 0.0)
+   );;
   opacity: 1;
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
@@ -2307,6 +2297,12 @@ border: none;
 .about-btn .genius-btn {
   display: inline-block;
   margin-right: 25px;
+}
+
+.about-btn .genius-btn:hover{
+  background-color: #D2498B;
+  color: white;
+  border: 2px solid #D2498B !important; 
 }
 
 .home-secound .about-resigter-form {
@@ -6766,13 +6762,20 @@ height: 500px;
 }
 .bg-static{
   
-  background:linear-gradient(
-    rgba(82, 109, 167, 0.45), 
-    rgba(66, 10, 99, 0.45)
-   ), url('/assets/img/banner/yyy.png');
+  background-image: url('/assets/img/banner/scott-graham-5fNmWej4tAA-unsplash.png');
   background-size: cover;
   background-repeat: no-repeat;
-  background-blend-mode: overlay;
+}
+.bg-static1{
+background:linear-gradient(
+  rgba(37, 68, 95, 0.60), 
+  rgba(118, 15, 73, 0.60)
+ );
+ 
+}
+.bg-static1 img{
+  width:120px;
+
 }
 
 @media(max-width :768px){
@@ -6780,7 +6783,6 @@ height: 500px;
     display: none;
   }
 }
-<<<<<<< HEAD
 .ll{
   font-size :40px;
   font-weight: lighter;
@@ -6791,7 +6793,6 @@ height: 500px;
 }
 
  
-=======
 .custom-tabs .nav-link {
   color: #333333;
   font-weight: bold;
@@ -6858,4 +6859,3 @@ height: 500px;
   overflow: hidden;
   width: 100%;
 }
->>>>>>> 35bbd3de2dec9226c8044b84ea73ab8be70d0741
