@@ -4,7 +4,4 @@
     'ecouncil-for-business' => 'Ecouncil for business',
     'thanoy-aaam' => 'ثانوية عامة',
   ),
-  'kkkkkkk' => 
-  array (
-  ),
 );
