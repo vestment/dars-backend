@@ -8,18 +8,6 @@
 @push('after-styles')
     <link rel="stylesheet" href="../../assets/css/course.css"/>
     <style>
-      
-
-        .academy {
-            height: 130px;
-            box-shadow: 0 0 3px 2px #343a406b;
-        }
-
-        .academy img {
-            max-height: 100%;
-        }
-    </style>
-    <style>
         .teacher-img-content .teacher-social-name {
             max-width: 67px;
         }
@@ -34,8 +22,9 @@
             margin: auto;
             display: inline-block;
         }
-       
-
+       section{
+           overflow: unset;
+       }
 
     </style>
 @endpush
@@ -58,48 +47,24 @@
         <section id="search-course" class=" border ">
             <div class="container">
                 <div class="row pb-3 pt-4">
-                    <div class="col-7  ">
+                    <div class="col-12">
                         <div class="row">
-                            <div class="col-4">
-                                <img src="assets/img/banner/260d37c0-84ad-4627-9667-26030c180189 (1).png" alt="">
-                                <span class="ll">|</span>
-                                <span class="tx-fnt">Expert Teachers</span>
+                            <div class="hero-section">
+                                <ul class="nav justify-content-center">
+                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/260d37c0-84ad-4627-9667-26030c180189 (1).png" alt=""> </span><span class="text">Expert Teachers</span>
+                                    </li>
+                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/55.png" alt=""></span><span class="text">Learn Anywhere</span>
+                                    </li>
+                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/dfeferf9 (1).png" alt=""></span><span class="text">Earn a certificate or degree</span>
+                                    </li>
 
-                            </div>
-                            <div class="col-4">
-                                <img src="assets/img/banner/55.png" alt="">
-                                <span class="ll">|</span>
-
-                                <span class="tx-fnt">Learn Anywhere </span>
-
-                            </div>
-                            <div class="col-4">
-                                <img src="assets/img/banner/dfeferf9 (1).png" alt="">
-                                <span class="ll">|</span>
-
-                                <span class="tx-fnt">Earn a certificate or degree</span>
-
+                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/fdfvds.png" alt=""></span><span class="text">Learn the latest skills</span>
+                                    </li>
+                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/fdfvds.png" alt=""></span><span class="text">Booking center online or offline</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
-                
-                    <div class="col-5">
-                    <div class="row">
-                            <div class="col-6">
-                            <img src="assets/img/banner/dffb.png" alt="">
-                            <span class="ll">|</span>
-
-                                <span class="tx-fnt">Earn a certificate or degree</span>
-                            </div>
-                            <div class="col-6">
-                            <img src="assets/img/banner/fdfvds.png" alt="">
-                            <span class="ll">|</span>
-
-                                <span class="tx-fnt">Earn a certificate or degree</span>
-                            </div>
-                    </div>
-
-
                     </div>
                 </div>
             
@@ -138,7 +103,7 @@
                                             <h2 class="pb-5 textbold">World-class learning for anyone, anywhere</h2>
                                         </div>
                                         <div class=" text-center btn-p">
-                                            <button class=" btn btn-outline-info pb-5">view plans</button>
+                                            <button class=" btn btn-outline-info">view plans</button>
                                         </div>
 
 
@@ -156,13 +121,12 @@
                             </div>
 
                             @if($total_bundle->count() > 0)
-                                <div class="owl-carousel owl-theme ">
+                                <div class="owl-carousel default-owl-theme ">
 
                                     @foreach($total_bundle as $course)
                                         <div class="item">
-
                                             <div class="">
-                                                <div class="best-course-pic-text relative-position">
+                                                <div class="best-course-pic-text bg-white relative-position">
                                                     <div class="best-course-pic piclip relative-position"
                                                          @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
                                                         <div class="course-price text-center gradient-bg">
@@ -178,15 +142,15 @@
                                                     </div>
                                                     <div class="blakish-overlay"></div> -->
                                                     </div>
-                                                    <div class="card-body">
+                                                    <div class="card-body text-dark">
                                                         <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
                                                                 <span class="ml-1  rate">0</span>
                                                             </div>
                                                         </div>
@@ -198,74 +162,71 @@
                                                                     @lang('labels.frontend.course.students')</a></span>
 
                                                         </div>
+                                                        <div class="row justify-content-around">
+                                                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                                                    <button type="submit"
+                                                                            class="btn btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')
+                                                                        <i class="fa fa-shopping-bag ml-1"></i>
+                                                                    </button>
 
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-10">
-                                                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                                                <button type="submit"
-                                                                        class="btn btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart')
-                                                                    <i class="fa fa-shopping-bag ml-1"></i>
-                                                                </button>
-
-                                                            @elseif(!auth()->check())
-                                                                @if($course->free == 1)
-                                                                    <a id="openLoginModal"
-                                                                       class="btn btn-block btnAddCard"
-                                                                       data-target="#myModal"
-                                                                       href="#">@lang('labels.frontend.course.get_now')
-                                                                        <i
-                                                                                class="fas fa-caret-right"></i></a>
-                                                                @else
-
-                                                                    <a id="openLoginModal"
-                                                                       class="btn btn-block btnAddCard"
-                                                                       data-target="#myModal"
-                                                                       href="#">@lang('labels.frontend.course.add_to_cart')
-                                                                        <i class="fa fa-shopping-bag"></i>
-                                                                    </a>
-                                                                @endif
-                                                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                                                @if($course->free == 1)
-                                                                    <form action="{{ route('cart.getnow') }}"
-                                                                          method="POST">
-                                                                        @csrf
-                                                                        <input type="hidden" name="course_id"
-                                                                               value="{{ $course->id }}"/>
-                                                                        <input type="hidden" name="amount"
-                                                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                        <button class="btn btn-block btnAddCard"
-                                                                                href="#">@lang('labels.frontend.course.get_now')
+                                                                @elseif(!auth()->check())
+                                                                    @if($course->free == 1)
+                                                                        <a id="openLoginModal"
+                                                                           class="btn btn-block btnAddCard"
+                                                                           data-target="#myModal"
+                                                                           href="#">@lang('labels.frontend.course.get_now')
                                                                             <i
-                                                                                    class="fas fa-caret-right"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                @else
-                                                                    <form action="{{ route('cart.addToCart') }}"
-                                                                          method="POST">
-                                                                        @csrf
-                                                                        <input type="hidden" name="course_id"
-                                                                               value="{{ $course->id }}"/>
-                                                                        <input type="hidden" name="amount"
-                                                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                        <button type="submit"
-                                                                                class="btn btn-block btnAddCard">
-                                                                            @lang('labels.frontend.course.add_to_cart')
-                                                                            <i
-                                                                                    class="fa fa-shopping-bag"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                                    class="fas fa-caret-right"></i></a>
+                                                                    @else
+
+                                                                        <a id="openLoginModal"
+                                                                           class="btn btn-info btnAddCard"
+                                                                           data-target="#myModal"
+                                                                           href="#">@lang('labels.frontend.course.add_to_cart')
+                                                                            <i class="fa fa-shopping-bag"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                                                                    @if($course->free == 1)
+                                                                        <form action="{{ route('cart.getnow') }}"
+                                                                              method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="course_id"
+                                                                                   value="{{ $course->id }}"/>
+                                                                            <input type="hidden" name="amount"
+                                                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                            <button class="btn btn-info btnAddCard"
+                                                                                    href="#">@lang('labels.frontend.course.get_now')
+                                                                                <i
+                                                                                        class="fas fa-caret-right"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    @else
+                                                                        <form action="{{ route('cart.addToCart') }}"
+                                                                              method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="course_id"
+                                                                                   value="{{ $course->id }}"/>
+                                                                            <input type="hidden" name="amount"
+                                                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                            <button type="submit"
+                                                                                    class="btn btn-info btnAddCard">
+                                                                                @lang('labels.frontend.course.add_to_cart')
+                                                                                <i
+                                                                                        class="fa fa-shopping-bag"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
                                                                 @endif
-                                                            @endif
-                                                        </div>
-                                                        <div class="col-2 " style="margin-left: -10%;">
-                                                            <a href="{{ route('courses.show', [$course->slug]) }}"
-                                                               class="btn btnWishList">
-                                                                <i class="far fa-bookmark"></i>
-                                                            </a>
+
+                                                                <a href="{{ route('courses.show', [$course->slug]) }}"
+                                                                   class="btn btnWishList">
+                                                                    <i class="far fa-bookmark"></i>
+                                                                </a>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -308,7 +269,7 @@
 
     <section class="bg-static">
             <div class="row bg-static1 ">
-                <div class="col-5 p-5">
+                <div class="col-xl-5 col-sm-6 p-5">
                     <div class="p-5 ">
                         <img src="/img/backend/brand/Council-logo-100px.png" alt="">
                     </div>
@@ -395,7 +356,7 @@
                                                             <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
                                                                  alt=""></a>
                                                         @else
-                                                                 <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image p-3" src="{{$item->avatar_location}}"
+                                                                 <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image p-3" src="{{asset($item->avatar_location)}}"
                                                                  alt=""></a>
                                                         @endif
 
@@ -404,11 +365,9 @@
                                                     </div>
                                                     <div class="teacher-social-name ul-li-block pt-3">
                                                         <div class="teacher-name text-dark font-weight-bold">
-                                                            <h5>{{$item->full_name}}</h5>
+                                                            <h5>{{$teacher->title}}.{{$item->full_name}}</h5>
                                                         </div>
-                                                        <div class="teacher-name  text-center">
-                                                            <span>{{$teacher->title}}</span>
-                                                        </div>
+
                                                         <hr>
                                                         <div class="teacher-name text-dark  justify-content-center">
                                                             <span>{{$teacher->description}}</span>
@@ -512,12 +471,13 @@
                                 </script>
 
     <script>
-        $(document).ready(function () {
+        $(window).on('load', function () {
             $(".owl-carousel").owlCarousel({
                 rewind: true,
                 margin: 10,
                 nav: true,
-                navText: ['Next', 'Prev'],
+                navText: ["<i class='fas fa-chevron-left'></i>",
+                    "<i class='fas fa-chevron-right'></i>"],
                 responsive: {
                     0: {
                         items: 1
@@ -532,30 +492,14 @@
                         items: 5
                     }
                 }
-            })
-            $(".custom-owl-theme").owlCarousel({
-                rewind: true,
-                margin: 10,
-                nav: true,
-                navText: ['', ''],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 1
-                    },
-                    768: {
-                        items: 3
-                    },
-                    991: {
-                        items: 5
-                    }
-                }
-            })
+            });
+
         });
     </script>
     <script>
+        setTimeout(function () {
+            $('.owl-carousel').trigger('refresh.owl.carousel');
+        },100)
         $('ul.product-tab').find('li:first').addClass('active');
     </script>
 @endpush

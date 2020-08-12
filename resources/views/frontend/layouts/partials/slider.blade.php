@@ -1,5 +1,5 @@
 <section id="slide" class="slider-section @if(config('theme_layout') == 3) pt150 @endif">
-    <div id="slider-item" class="slider-item-details">
+    <div id="slider-item" class="slider-item-details default-owl-theme">
         @foreach($slides as $slide)
             <div class="slider-area slider-bg-5 relative-position" style="background: none;">
 
@@ -9,8 +9,10 @@
                 <div class="slider-text">
                     @if(isset($content->widget))
                         @if($content->widget->type == 2)
+                            <?php
+                            $contentTimer = $content->widget->timer;
+                            ?>
                             <div class="layer-1-3">
-
                                 <span class="timer-data d-none" data-timer="{{$content->widget->timer}}"></span>
                                 <div class="coming-countdown ul-li">
                                     <ul>
@@ -39,8 +41,8 @@
                         @endif
                     @endif
 
-                    <div class="section-title mb20 headline  ">
-                    @if($content->hero_text)
+                    <div class="section-title headline  ">
+                        @if($content->hero_text)
                             <div class="layer-1-3">
                                 <h2><span>{{ $content->hero_text }}</span></h2>
                             </div>
@@ -50,7 +52,7 @@
                                 <span class="subtitle text-uppercase">{{$content->sub_text}}</span>
                             </div>
                         @endif
-                      
+
                     </div>
                     @if(isset($content->widget))
                         <div class="layer-1-3">
@@ -60,7 +62,8 @@
                                         <input class="course" name="q" type="text"
                                                placeholder="@lang('labels.frontend.layouts.partials.search_placeholder')">
                                         <div class="nws-button text-center  gradient-bg text-capitalize">
-                                            <button type="submit" value="Submit">@lang('labels.frontend.layouts.partials.search_courses')</button>
+                                            <button type="submit"
+                                                    value="Submit">@lang('labels.frontend.layouts.partials.search_courses')</button>
                                         </div>
                                     </form>
                                 </div>
@@ -74,8 +77,8 @@
                             <div class="about-btn ">
                                 @foreach($content->buttons as $button)
                                     <div class="genius-btn  text-uppercase ul-li-block bold-font">
-                                        <a href="{{$button->link}}">{{$button->label}} 
-                                                    </a>
+                                        <a href="{{$button->link}}">{{$button->label}}
+                                        </a>
                                     </div>
                                 @endforeach
                             </div>
@@ -94,21 +97,20 @@
 @push('after-scripts')
     <script>
         if ($('.coming-countdown').length > 0) {
-            var date = $('.coming-countdown').siblings('.timer-data').data('timer')
+            var date = '{{$contentTimer}}';
             // Specify the deadline date
-            var deadlineDate = new Date(date).getTime();
+            var deadlineDate = Date.parse(date);
             // var deadlineDate = new Date('2019/02/09 22:00').getTime();
 
             // Cache all countdown boxes into consts
-            var countdownDays = document.querySelector('.days .number');
-            var countdownHours = document.querySelector('.hours .number');
-            var countdownMinutes = document.querySelector('.minutes .number');
-            var countdownSeconds = document.querySelector('.seconds .number');
-
+            var countdownDays = $('.days .number');
+            var countdownHours = $('.hours .number');
+            var countdownMinutes = $('.minutes .number');
+            var countdownSeconds = $('.seconds .number');
             // Update the count down every 1 second (1000 milliseconds)
             setInterval(function () {
                 // Get current date and time
-                var currentDate = new Date().getTime();
+                var currentDate = Date.now();
 
                 // Calculate the distance between current date and time and the deadline date and time
                 var distance = deadlineDate - currentDate;
@@ -120,10 +122,10 @@
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                 // Insert the result data into individual countdown boxes
-                countdownDays.innerHTML = days;
-                countdownHours.innerHTML = hours;
-                countdownMinutes.innerHTML = minutes;
-                countdownSeconds.innerHTML = seconds;
+                countdownDays.text(days);
+                countdownHours.text(hours);
+                countdownMinutes.text(minutes);
+                countdownSeconds.text(seconds);
 
                 if (distance < 0) {
                     $('.coming-countdown').empty();
@@ -131,43 +133,43 @@
             }, 1000);
 
         }
-@if(count($slides) == 1)
-$('#slider-item').owlCarousel({
-                    margin: 0,
-                    responsiveClass: true,
-                    nav: true,
-                    loop:false,
-                    dots: true,
-                    autoplay: false,
-                    navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
-                    smartSpeed: 1000,
-                    responsive: {
-                        0: {
-                            items: 1,
-                        },
-                        400: {
-                            items: 1,
-                        },
-                        600: {
-                            items: 1,
-                        },
-                        700: {
-                            items: 1,
-                        },
-                        800: {
-                            items: 1,
-                        },
-                        1000: {
-                            items: 1,
+        @if(count($slides) == 1)
+        $('#slider-item').owlCarousel({
+            margin: 0,
+            responsiveClass: true,
+            nav: true,
+            loop: false,
+            dots: true,
+            autoplay: false,
+            navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+            smartSpeed: 1000,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                400: {
+                    items: 1,
+                },
+                600: {
+                    items: 1,
+                },
+                700: {
+                    items: 1,
+                },
+                800: {
+                    items: 1,
+                },
+                1000: {
+                    items: 1,
 
-                        }
-                    },
-                });
-                $('#slider-item .owl-nav').hide();
-                $('#slider-item .owl-dots').hide();
+                }
+            },
+        });
+        $('#slider-item .owl-nav').hide();
+        $('#slider-item .owl-dots').hide();
 
 
 
-@endif
+        @endif
     </script>
 @endpush

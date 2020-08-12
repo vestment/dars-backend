@@ -2,6 +2,7 @@
 
 namespace App;
 use App\Models\Auth\User;
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TeacherProfile;
 use Illuminate\Database\Eloquent\Model;
@@ -20,8 +21,8 @@ class academy extends Model
     /**
     * Get the teacher profile that owns the user.
     */
-    public function teacher(){
-        return $this->hasMany(TeacherProfile::class);
+    public function teachers(){
+        return $this->hasMany(TeacherProfile::class,'academy_id','user_id');
     }
     // public function scopeofAcademy($query)
     // {

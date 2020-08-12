@@ -41,7 +41,7 @@ class TeachersController extends Controller
     //     $academies = User::role('academy')->get();
     //     return view('backend.teachers.create', compact('academies'));
 
-        
+
     // }
 
     /**
@@ -107,7 +107,7 @@ class TeachersController extends Controller
             })
             ->editColumn('status', function ($q) {
                 $html = html()->label(html()->checkbox('')->id($q->id)
-                ->checked(($q->active == 1) ? true : false)->class('switch-input')->attribute('data-id', $q->id)->value(($q->active == 1) ? 1 : 0).'<span class="switch-label"></span><span class="switch-handle"></span>')->class('switch switch-lg switch-3d switch-primary');
+                        ->checked(($q->active == 1) ? true : false)->class('switch-input')->attribute('data-id', $q->id)->value(($q->active == 1) ? 1 : 0) . '<span class="switch-label"></span><span class="switch-handle"></span>')->class('switch switch-lg switch-3d switch-primary');
                 return $html;
                 // return ($q->active == 1) ? "Enabled" : "Disabled";
             })
@@ -133,7 +133,7 @@ class TeachersController extends Controller
     /**
      * Store a newly created Category in storage.
      *
-     * @param  \App\Http\Requests\StoreTeachersRequest $request
+     * @param \App\Http\Requests\StoreTeachersRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTeachersRequest $request)
@@ -143,46 +143,46 @@ class TeachersController extends Controller
 
         $teacher = User::create($request->all());
         $teacher->confirmed = 1;
-        if ($request->image) {
-            $teacher->avatar_type = 'storage';
-            $teacher->avatar_location = $request->image->store('/avatars', 'public');
+        $teacher->active = isset($request->active) ? 1 : 0;
+        if (request()->type == "individual") {
+            $academy_id = 0;
+        } else {
+            $academy_id = request()->academy_id;
         }
-        
-        $teacher->active = isset($request->active)?1:0;
-        $teacher->save();
-        $teacher->assignRole('teacher');
-  if(request()->type == "individual"){
-      $academy_id = 0 ;
-  }
-  else{
-    $academy_id = request()->academy_id;
-  }
 
         $payment_details = [
-            'bank_name'         => request()->payment_method == 'bank'?request()->bank_name:'',
-            'ifsc_code'         => request()->payment_method == 'bank'?request()->ifsc_code:'',
-            'account_number'    => request()->payment_method == 'bank'?request()->account_number:'',
-            'account_name'      => request()->payment_method == 'bank'?request()->account_name:'',
-            'paypal_email'      => request()->payment_method == 'paypal'?request()->paypal_email:'',
+            'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
+            'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
+            'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
+            'account_name' => request()->payment_method == 'bank' ? request()->account_name : '',
+            'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
         ];
         $data = [
-            'user_id'           => $teacher->id,
-            'facebook_link'     => request()->facebook_link,
-            'twitter_link'      => request()->twitter_link,
-            'linkedin_link'     => request()->linkedin_link,
-            'payment_method'    => request()->payment_method,
-            'payment_details'   => json_encode($payment_details),
-            'description'       => request()->description,
-            'type'              => request()->type,
-            'percentage'        => request()->percentage,
-            'title'             => request()->title,
-            'academy_id'        =>  $academy_id,
+            'user_id' => $teacher->id,
+            'facebook_link' => request()->facebook_link,
+            'twitter_link' => request()->twitter_link,
+            'linkedin_link' => request()->linkedin_link,
+            'payment_method' => request()->payment_method,
+            'payment_details' => json_encode($payment_details),
+            'description' => request()->description,
+            'type' => request()->type,
+            'percentage' => request()->percentage,
+            'title' => request()->title,
+            'academy_id' => $academy_id,
 
 
         ];
         TeacherProfile::create($data);
-
-
+        if ($request->image) {
+            $teacher->avatar_type = 'storage';
+            $file = $request->file('image');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $path = public_path() . '/storage/avatars';
+            $file->move($path, $filename);
+            $teacher->avatar_location = 'storage/avatars/' . $filename;
+        }
+        $teacher->save();
+        $teacher->assignRole('teacher');
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 
@@ -190,7 +190,7 @@ class TeachersController extends Controller
     /**
      * Show the form for editing Category.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -202,8 +202,8 @@ class TeachersController extends Controller
     /**
      * Update Category in storage.
      *
-     * @param  \App\Http\Requests\UpdateTeachersRequest $request
-     * @param  int $id
+     * @param \App\Http\Requests\UpdateTeachersRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateTeachersRequest $request, $id)
@@ -216,25 +216,25 @@ class TeachersController extends Controller
             $teacher->avatar_type = 'storage';
             $teacher->avatar_location = $request->image->store('/avatars', 'public');
         }
-        $teacher->active = isset($request->active)?1:0;
+        $teacher->active = isset($request->active) ? 1 : 0;
         $teacher->save();
 
         $payment_details = [
-            'bank_name'         => request()->payment_method == 'bank'?request()->bank_name:'',
-            'ifsc_code'         => request()->payment_method == 'bank'?request()->ifsc_code:'',
-            'account_number'    => request()->payment_method == 'bank'?request()->account_number:'',
-            'account_name'      => request()->payment_method == 'bank'?request()->account_name:'',
-            'paypal_email'      => request()->payment_method == 'paypal'?request()->paypal_email:'',
+            'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
+            'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
+            'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
+            'account_name' => request()->payment_method == 'bank' ? request()->account_name : '',
+            'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
         ];
         $data = [
             // 'user_id'           => $user->id,
-            'facebook_link'     => request()->facebook_link,
-            'twitter_link'      => request()->twitter_link,
-            'linkedin_link'     => request()->linkedin_link,
-            'payment_method'    => request()->payment_method,
-            'payment_details'   => json_encode($payment_details),
-            'description'       => request()->description,
-            'title'             => request()->title,
+            'facebook_link' => request()->facebook_link,
+            'twitter_link' => request()->twitter_link,
+            'linkedin_link' => request()->linkedin_link,
+            'payment_method' => request()->payment_method,
+            'payment_details' => json_encode($payment_details),
+            'description' => request()->description,
+            'title' => request()->title,
 
         ];
         $teacher->teacherProfile->update($data);
@@ -247,7 +247,7 @@ class TeachersController extends Controller
     /**
      * Display Category.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -261,7 +261,7 @@ class TeachersController extends Controller
     /**
      * Remove Category from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -299,7 +299,7 @@ class TeachersController extends Controller
     /**
      * Restore Category from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
@@ -313,7 +313,7 @@ class TeachersController extends Controller
     /**
      * Permanently delete Category from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function perma_del($id)
@@ -336,7 +336,7 @@ class TeachersController extends Controller
     public function updateStatus()
     {
         $teacher = User::find(request('id'));
-        $teacher->active = $teacher->active == 1? 0 : 1;
+        $teacher->active = $teacher->active == 1 ? 0 : 1;
         $teacher->save();
     }
 }

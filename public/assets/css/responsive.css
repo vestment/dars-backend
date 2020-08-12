@@ -65,11 +65,17 @@
       .b-not_found .b-searchform .btn:hover {
         opacity: 0.75; }
         @media (max-width: 990px) {
+			.d-sm-none {
+				display: none !important;
+			}
   .b-not_found .b-page_header::before {
     font-size: 300px; }
   .b-not_found h2 {
     font-size: 28px; } }
 @media (max-width: 767px) {
+	.d-sm-none {
+		display: none !important;
+	}
   .b-not_found .b-page_header h1 {
     font-size: 35px;
     padding: 55px 0; }
@@ -80,8 +86,10 @@
     font-size: 22px; }
   .b-not_found .b-searchform {
     max-width: 300px; } }
-@media screen and (max-width: 1024px) { 
-
+@media screen and (max-width: 1024px) {
+	.d-sm-none {
+		display: none !important;
+	}
 	.select-lang {
 
 		display: none;

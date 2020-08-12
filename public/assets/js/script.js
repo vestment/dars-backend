@@ -133,7 +133,7 @@ Author:         HTMLMATE Team
                     margin: 0,
                     responsiveClass: true,
                     nav: true,
-                    loop:true,
+                    loop: true,
                     dots: true,
                     autoplay: false,
                     navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
@@ -915,9 +915,9 @@ Author:         HTMLMATE Team
             countDown: function () {
                 if ($('.coming-countdown').length > 0) {
                     // Specify the deadline date
-                    var deadlineDate = new Date('Decembar 21, 2018 23:59:59').getTime();
+                    var deadlineDate = new Date($('.timer-data').data('timer')).getTime();
                     // var deadlineDate = new Date('2019/02/09 22:00').getTime();
-
+                    console.log(deadlineDate)
                     // Cache all countdown boxes into consts
                     var countdownDays = document.querySelector('.days .number');
                     var countdownHours = document.querySelector('.hours .number');
@@ -946,7 +946,6 @@ Author:         HTMLMATE Team
                     }, 1000);
 
                 }
-                ;
             },
 
             quickScroll: function () {
