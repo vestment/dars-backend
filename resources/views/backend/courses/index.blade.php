@@ -73,8 +73,8 @@
 
 @push('after-scripts')
     <script>
-
         $(document).ready(function () {
+
             var route = '{{route('admin.courses.get_data')}}';
 
             @if(request('show_deleted') == 1)
@@ -151,11 +151,7 @@
                     }
                 }
             });
-            {{--@can('course_delete')--}}
-            {{--@if(request('show_deleted') != 1)--}}
-            {{--$('.actions').html('<a href="' + '{{ route('admin.courses.mass_destroy') }}' + '" class="btn btn-xs btn-danger js-delete-selected" style="margin-top:0.755em;margin-left: 20px;">Delete selected</a>');--}}
-            {{--@endif--}}
-            {{--@endcan--}}
+
         });
 
     </script>

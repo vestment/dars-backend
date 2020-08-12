@@ -1448,7 +1448,7 @@ button.alt-menu-btn.float-left {
 
 #slider-item .owl-dots .owl-dot {
   height: 20px;
-  background-color: #585656;
+  background-color: #0c0d3f;
   width: 3px;
 }
 
@@ -1462,6 +1462,9 @@ button.alt-menu-btn.float-left {
   right: 0;
   margin: 0 auto;
 }
+#slider-item .owl-next , #slider-item .owl-prev {
+  box-shadow: none;
+  border-radius: 4px;
 
 #slider-item .owl-next {
   float: right;
@@ -2131,23 +2134,6 @@ border: none;
   visibility: visible;
 }
 
-.owl-nav {
-  /* right: 677px; */
-  /* bottom: -32px; */
-  /* position: absolute; */
-}
-
-.owl-nav .owl-prev,
-.owl-nav .owl-next {
-  float: left;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
-  text-align: center;
-  margin: 0 5px;
-  border-radius: 4px;
-  background-color: #f7f7f7;
-}
 
 .popular-three {
   background-color: #f7f7f7;
@@ -2911,8 +2897,6 @@ border: none;
 }
 
 .best-course-pic-text .best-course-pic {
- 
-  background-position: center;
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -6613,12 +6597,6 @@ hr{
   background-color: fuchsia;
   width: 30%;
 }
-.owl-carousel .owl-nav .owl-prev{
-  color: #D2498B;
-}
-.owl-carousel .owl-nav .owl-next{
-  color: #D2498B;
-}
 .btndropdown{
   background-color: #0C0C3F;
   border-color:#0C0C3F;
@@ -6772,4 +6750,69 @@ height: 500px;
     display: none;
   }
 }
+.custom-tabs .nav-link {
+  color: #333333;
+  font-weight: bold;
+  background-color: #CECECE;
+  margin-right: 0.2rem;
+  border-color: transparent !important;
+}
+.custom-tabs .nav-link.active,.custom-tabs .nav-link:hover {
+  color: #fff;
+  background-color: #D2498B;
+}
+.owl-carousel .owl-next ,.owl-carousel .owl-prev {
+  background-color: #fff;
+  box-shadow: -1px 4px 6px 0px #777777;
+  border-radius: 50%;
+  color: #495057;
+  float: left;
+  width: 50px;
+  height: 50px;
+  line-height: 3.2;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0 5px;
+}
+.owl-carousel .owl-nav {
+  position: absolute;
+  top: 0;
+  -webkit-transform: translateY(-130%);
+  transform: translateY(-130%);
+  left: auto;
+  right: 0;
+  margin: 0 auto;
+}
+@media screen and (max-width: 480px) {
+  .owl-carousel .owl-nav .owl-next {
+    float: unset;
+  }
 
+  .owl-carousel .owl-nav {
+    position: static;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 95%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+}
+#why-choose-us .best-course-pic-text:before {
+  background-image: url(../../assets/img/banner/01.png);
+  background-size: cover;
+  background-position: center;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  content: ' ';
+  position: absolute;
+  top: 40px;
+  clip: rect(0,155px,202px,0);
+  z-index: 0;
+  transform: translate(11%, 15%) scale(1.25);
+  height: 100%;
+  opacity: 0.07;
+  overflow: hidden;
+  width: 100%;
+}

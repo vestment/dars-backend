@@ -2678,9 +2678,7 @@ button.alt-menu-btn.float-left {
 }
 
 .best-course-pic-text .course-price {
-    bottom: 20px;
     z-index: 1;
-    top: inherit;
 }
 
 .best-course-pic-text .course-rate {
