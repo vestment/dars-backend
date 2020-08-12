@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Models\Course;
 use App\Models\CourseTimeline;
 use App\Models\Test;
+use App\Models\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
@@ -135,11 +136,15 @@ class TestsController extends Controller
             return abort(401);
         }
         $courses = \App\Models\Course::ofTeacher()->get();
+
         $courses_ids = $courses->pluck('id');
         $courses = $courses->pluck('title', 'id')->prepend('Please select', '');
-        $lessons = \App\Models\Lesson::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
+        // $chapters = $courses->pluck('title', 'id')->prepend('Please select', '');
 
-        return view('backend.tests.create', compact('courses', 'lessons'));
+        $lessons = \App\Models\Lesson::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
+        $chapters = \App\Models\Chapter::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
+
+        return view('backend.tests.create', compact('courses', 'lessons','chapters'));
     }
 
     /**
@@ -180,6 +185,8 @@ class TestsController extends Controller
                 $timeline = new CourseTimeline();
             }
             $timeline->course_id = $request->course_id;
+            $timeline->chapter_id = $request->chapter_id;
+
             $timeline->model_id = $test->id;
             $timeline->model_type = Test::class;
             $timeline->sequence = $sequence;

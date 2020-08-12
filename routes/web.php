@@ -20,7 +20,9 @@ Route::get('lang/{lang}', [LanguageController::class, 'swap']);
 
 Route::get('/sitemap-' .str_slug(config('app.name')) . '/{file?}', 'SitemapController@index');
 
-
+Route::get('add-remove', function () {
+    return view('frontend/courses/add-remove');
+    });
 
 /*
  * Frontend Routes
