@@ -39,17 +39,18 @@
                         @endif
                     @endif
 
-                    <div class="section-title mb20 headline text-center ">
-                        @if($content->sub_text)
-                            <div class="layer-1-1">
-                                <span class="subtitle text-uppercase">{{$content->sub_text}}</span>
-                            </div>
-                        @endif
-                        @if($content->hero_text)
+                    <div class="section-title mb20 headline  ">
+                    @if($content->hero_text)
                             <div class="layer-1-3">
                                 <h2><span>{{ $content->hero_text }}</span></h2>
                             </div>
                         @endif
+                        @if($content->sub_text)
+                            <div class="layer-1-1 pt-5">
+                                <span class="subtitle text-uppercase">{{$content->sub_text}}</span>
+                            </div>
+                        @endif
+                      
                     </div>
                     @if(isset($content->widget))
                         <div class="layer-1-3">
@@ -70,11 +71,11 @@
                     @endif
                     @if(isset($content->buttons))
                         <div class="layer-1-4">
-                            <div class="about-btn text-center">
+                            <div class="about-btn ">
                                 @foreach($content->buttons as $button)
-                                    <div class="genius-btn text-center text-uppercase ul-li-block bold-font">
-                                        <a href="{{$button->link}}">{{$button->label}} <i
-                                                    class="fas fa-caret-right"></i></a>
+                                    <div class="genius-btn  text-uppercase ul-li-block bold-font">
+                                        <a href="{{$button->link}}">{{$button->label}} 
+                                                    </a>
                                     </div>
                                 @endforeach
                             </div>
@@ -161,7 +162,12 @@ $('#slider-item').owlCarousel({
 
                         }
                     },
-                })
+                });
+                $('#slider-item .owl-nav').hide();
+                $('#slider-item .owl-dots').hide();
+
+
+
 @endif
     </script>
 @endpush

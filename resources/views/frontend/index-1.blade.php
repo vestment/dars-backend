@@ -8,6 +8,7 @@
 @push('after-styles')
     <link rel="stylesheet" href="../../assets/css/course.css"/>
     <style>
+      
 
         .academy {
             height: 130px;
@@ -56,7 +57,7 @@
             ============================================= -->
         <section id="search-course" class=" border ">
             <div class="container">
-                <div class="row p-2">
+                <div class="row pb-3 pt-4">
                     <div class="col-7  ">
                         <div class="row">
                             <div class="col-4">
@@ -137,7 +138,7 @@
                                             <h2 class="pb-5 textbold">World-class learning for anyone, anywhere</h2>
                                         </div>
                                         <div class=" text-center btn-p">
-                                            <button class=" btn btn-outline-info ">View Plans</button>
+                                            <button class=" btn btn-outline-info pb-5">view plans</button>
                                         </div>
 
 
@@ -148,7 +149,7 @@
                             </div>
                         </div>
                         <div class="offset-1 col-lg-7 col-sm-12 text-white">
-                            <div class="pb-5">
+                            <div class="p-5">
                                 <span class=" pb-3">{{env('APP_NAME')}} @lang('labels.frontend.layouts.partials.OfferCourses')</span>
                                 <h2>@lang('labels.frontend.layouts.partials.packagecourse') <span>{{app_name()}}</span>
                                 </h2>
@@ -181,11 +182,11 @@
                                                         <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <i class="fa-sm fa fa-star text-warning"></i>
-                                                                <i class="fa-sm fa fa-star text-warning"></i>
-                                                                <i class="fa-sm fa fa-star text-warning"></i>
-                                                                <i class="fa-sm fa fa-star text-warning"></i>
-                                                                <i class="fa-sm fa fa-star"></i>
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                                <img src="../../assets/img/course/Cat – 1/star.svg">
                                                                 <span class="ml-1  rate">0</span>
                                                             </div>
                                                         </div>
@@ -268,18 +269,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                 </div>
-                                        
-                                        @endforeach
-                                        @else
+
+                                    @endforeach
+                                    @else
                                         <h3>@lang('labels.general.no_data_available')</h3>
-                                        
-
-                                </div>
-                                @endif
 
 
                                 </div>
+                            @endif
                         </div>
 
 
@@ -310,20 +307,20 @@
     @endif
 
     <section class="bg-static">
-            <div class="row  ">
-                <div class="col-5">
-                    <div class="p-5">
+            <div class="row bg-static1 ">
+                <div class="col-5 p-5">
+                    <div class="p-5 ">
                         <img src="/img/backend/brand/Council-logo-100px.png" alt="">
                     </div>
-                    <div class="pl-5 text-white">
+                    <div class="text-white pl-5 pb-5">
                         <h1>Offline Booking Center.</h1>
                         <p class="">we see first-hand every day how technology makes the impossible, possible. It’s why
                             Pluralsight One exists: To advance our mission of democratizing technology skills,
                             challenging
                             assumptions about solutions and create significant, lasting social impact.</p>
                     </div>
-                    <div class="p-5">
-                        <button class="btn btn-outline-info">View Plans</button>
+                    <div class="pl-5 pb-5">
+                        <button class="btn btn-outline-info ">View Plans</button>
                     </div>
                 </div>
         </div>
@@ -492,13 +489,35 @@
 @endsection
 
 @push('after-scripts')
+<script>
+                                $(document).ready(function(){
+                                    $(".owl-carousel1").owlCarousel({
+
+                                        loop:true,
+                                        margin:15,
+                                        nav:true,
+                                        responsive:{
+                                            0:{
+                                                items:1
+                                            },
+                                            600:{
+                                                items:2
+                                            },
+                                            1000:{
+                                                items:3
+                                            }
+                                        }
+                                }) 
+                                });
+                                </script>
+
     <script>
         $(document).ready(function () {
             $(".owl-carousel").owlCarousel({
                 rewind: true,
                 margin: 10,
                 nav: true,
-                navText: ["<i class='fas fa-arrow-left'></i>", "<i class='fas fa-arrow-right'></i>"],
+                navText: ['Next', 'Prev'],
                 responsive: {
                     0: {
                         items: 1
@@ -518,7 +537,7 @@
                 rewind: true,
                 margin: 10,
                 nav: true,
-                navText: ["<i class='fas fa-arrow-left'></i>", "<i class='fas fa-arrow-right'></i>"],
+                navText: ['', ''],
                 responsive: {
                     0: {
                         items: 1
