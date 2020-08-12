@@ -1321,7 +1321,7 @@ return array (
       'course_detail' => 'تفاصيل الدورة',
       'course_details' => '<span> تفاصيل الدورة. </span>',
       'course_name' => 'اسم الدورة التدريبية',
-      'course_reviews' => 'الدورة التدريبية <span> من المراجعات: </span>',
+      'course_reviews' => ':الدورة التدريبية <span> من المراجعات </span>',
       'course_timeline' => 'الدورة التدريبية <b> الجدول الزمني: </b>',
       'course_type' => 'دورة كتابية',
       'courses' => 'الدورات',
@@ -1376,6 +1376,8 @@ return array (
       'wishlist'=> 'قائمة الرغبات',
       'Share'=>'مشاركة',
       'instructors' => 'مدرسين',
+      'course_content' => 'محتوي الكورس',
+
 
     ),
     'faq' => 
