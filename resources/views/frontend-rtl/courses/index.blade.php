@@ -90,11 +90,11 @@
                                                                     @endfor
                                                                 </ul>
                                                             </div>
-                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
-                                                            <img src="../../assets/img/course/Cat – 1/star.svg">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
                                                             <span class="ml-1  rate">4.4 (222)</span>
                                                         </div>
                                                     </div>
@@ -122,23 +122,22 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                            <div class="col-10">
+                                                    <div class="row justify-content-around">
                                                                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                                                        <button type="submit" class="btn btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart') 
+                                                                        <button type="submit" class="btn  btn-info">   @lang('labels.frontend.course.add_to_cart') 
                                                                             <i class="fa fa-shopping-bag ml-1"></i>
                                                                         </button> 
                                                                     
                                                                 @elseif(!auth()->check())
                                                                     @if($course->free == 1)
                                                                                 <a id="openLoginModal"
-                                                                                class="btn btn-block btnAddCard"
+                                                                                class="btn  btn-info"
                                                                                 data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
                                                                                             class="fas fa-caret-right"></i></a>
                                                                         @else
                
                                                                             <a id="openLoginModal"
-                                                                                class="btn btn-block btnAddCard"
+                                                                                class="btn  btn-info"
                                                                                 data-target="#myModal" href="#">@lang('labels.frontend.course.add_to_cart') 
                                                                                 <i class="fa fa-shopping-bag"></i>
                                                                             </a>
@@ -150,7 +149,7 @@
                                                                                 @csrf
                                                                                 <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                                                                 <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                                <button class="btn btn-block btnAddCard"
+                                                                                <button class="btn  btn-info"
                                                                                         href="#">@lang('labels.frontend.course.get_now') <i
                                                                                             class="fas fa-caret-right"></i></button>
                                                                             </form>
@@ -160,18 +159,16 @@
                                                                                 <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                                                                 <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
                                                                                 <button type="submit"
-                                                                                        class="btn btn-block btnAddCard">
+                                                                                        class="btn  btn-info">
                                                                                     @lang('labels.frontend.course.add_to_cart') <i
                                                                                             class="fa fa-shopping-bag"></i></button>
                                                                             </form>
                                                                     @endif
                                                                 @endif
-                                                            </div>
-                                                            <div class="col-2 "  style="margin-right: -27px;">
+
                                                                 <a href="{{ route('courses.show', [$course->slug]) }}" class="btn btnWishList">
                                                                     <i class="far fa-bookmark"></i>
                                                                 </a>
-                                                            </div>
                                                         </div>
                                                     </div> 
                                                 </div>
@@ -336,7 +333,7 @@
                                         <input type="text" class="" value="{{(request('q') ? request('q') : old('q'))}}"
                                                name="q" placeholder="{{trans('labels.frontend.course.looking_for')}}">
                                     </div>
-                                    <button class="genius-btn gradient-bg text-center text-uppercase btn-block text-white font-weight-bold"
+                                    <button class="genius-btn gradient-bg text-center text-uppercase  text-white font-weight-bold"
                                             type="submit">@lang('labels.frontend.course.find_courses') <i
                                                 class="fas fa-caret-right"></i></button>
                                 </form>

@@ -319,19 +319,19 @@
 
                 @if (!$purchased_course)
                         @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                            <button class="btn btncolor btn-sm btn-block text-white"
+                            <button class="btn btn-info btn-sm btn-block text-white"
                                     type="submit">@lang('labels.frontend.course.added_to_cart')
                             </button>
                         @elseif(!auth()->check())
                             @if($course->free == 1)
                                 <a id="openLoginModal"
-                                   class="genius-btn btn-block text-white  gradient-bg text-center text-uppercase  bold-font"
+                                   class="btn-info btn btn-block text-white  text-center text-uppercase  bold-font"
                                    data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
                                             class="fas fa-caret-right"></i></a>
                             @else
 
                             <button id="openLoginModal" type="submit"
-                            data-target="#myModal" href="#" class="btn btncolor btn-sm btn-block text-white"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            data-target="#myModal" href="#" class="btn btn-info btn-sm btn-block text-white"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                 @lang('labels.frontend.course.add_to_cart')
                                 </button>
                             @endif
@@ -342,7 +342,7 @@
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                     <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                    <button class="btn btncolor btn-sm btn-block text-white"
+                                    <button class="btn btn-info btn-sm btn-block text-white"
                                             href="#">@lang('labels.frontend.course.get_now') <i
                                                 class="fas fa-caret-right"></i></button>
                                 </form>
@@ -351,7 +351,7 @@
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                     <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                    <button type="submit" class="btn btncolor btn-sm btn-block text-white"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    <button type="submit" class="btn btn-info btn-sm btn-block text-white"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                         @lang('labels.frontend.course.add_to_cart')
                                         </button>
                                 </form>
@@ -645,11 +645,3 @@
     </script>
 @endpush
 
-<script>
-
-$('#modal1').on('hidden.bs.modal', function (e) {
-  // do something...
-  $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
-});
-
-</script>

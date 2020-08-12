@@ -52,7 +52,7 @@ body {
     line-height: 1.4;
     color: #aaaaaa;
     direction: rtl;
-    font-family: "Roboto", sans-serif;
+    font-family: Cairo;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -176,7 +176,7 @@ select:visited {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Roboto", sans-serif;
+    font-family: Cairo;
 }
 
 .mb20 {
@@ -4394,7 +4394,7 @@ ul.product-tab li.active:after {
 .address-details li {
     font-size: 20px;
     font-weight: 700;
-    color: #fff;
+    color: #212529;
 }
 
 .address-details li span {

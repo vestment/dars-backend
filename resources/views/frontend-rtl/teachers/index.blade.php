@@ -60,7 +60,7 @@
 								<div class="col-md-4 col-sm-6">
 									<div class="teacher-pic-content">
 										<div class="teacher-img-content relative-position">
-											<img src="{{$item->picture}}" alt="">
+											<img src="{{asset($item->avatar_location)}}" alt="">
 											<div class="teacher-hover-item">
 												<div class="teacher-social-name ul-li-block">
 													<ul>

@@ -268,7 +268,7 @@
                                                 </div>
                                                 <div class="teacher-img-category">
                                                     <div class="teacher-img">
-                                                        <img src="{{$item->picture}}" style="height: 100%" alt="">
+                                                        <img src="{{asset($item->avatar_location)}}" style="height: 100%" alt="">
                                                         {{--<div class="course-price text-uppercase text-center gradient-bg">--}}
                                                         {{--<span>Featured</span>--}}
                                                         {{--</div>--}}
