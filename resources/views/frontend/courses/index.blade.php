@@ -326,12 +326,13 @@
                                     <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                         <div class="row">
                                             <div class="col-12">
-
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
+                                                <div class="course-rate ul-li">
+                                                    <ul>
+                                                        @for($i=1; $i<=(int)$course->rating; $i++)
+                                                            <li><i class="fas fa-star"></i></li>
+                                                        @endfor
+                                                    </ul>
+                                                </div>
                                                     <span class="ml-1  rate">0</span>
                                             </div>
                                         </div>
@@ -654,6 +655,78 @@
             </div>
         </div>
     </section>
+
+{{--    <section>--}}
+{{--        <div class="container">--}}
+{{--            <div class="card mb-3 " >--}}
+{{--                <div class="row no-gutters hei-sec">--}}
+{{--                    <div class="col-md-6 ">--}}
+{{--                        <div class="best-course-pic relative-position ">--}}
+{{--                                <div class="course-list-img-text course-page-sec">--}}
+{{--                                        <div class="course-li-img"--}}
+{{--                                        @if($course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$course->course_image)}})" @endif >--}}
+{{--                                   </div>--}}
+{{--                                </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-6">--}}
+{{--                        <div class="card-body noborder">--}}
+{{--                            <h3 class=" mt-3 display-6">{{$course->title}}</h3>--}}
+{{--                            <div class="row">--}}
+{{--                                <div class="col-12">--}}
+{{--                                    <div class="course-rate ul-li">--}}
+{{--                                        <ul>--}}
+{{--                                            @for($i=1; $i<=(int)$course->rating; $i++)--}}
+{{--                                                <li><i class="fas fa-star"></i></li>--}}
+{{--                                            @endfor--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                  <i class="fa fa-star"></i>--}}
+{{--                                  <i class="fa fa-star"></i>--}}
+{{--                                  <i class="fa fa-star"></i>--}}
+{{--                                  <i class="fa fa-star"></i>--}}
+{{--                                  <i class="fa fa-star"></i>--}}
+{{--                                    <span class="ml-1  rate">4.4 (222)</span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="course-meta my-2">--}}
+{{--                                <span class="course-category">--}}
+{{--                                    <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>--}}
+{{--                                </span>--}}
+{{--                                <span class="course-author"><a href="#">{{ $course->students()->count() }}--}}
+{{--                                        @lang('labels.frontend.course.students')</a></span>--}}
+{{--                                <span class="course-author">--}}
+{{--                                        {{ $course->lessons()->count() }} Lessons--}}
+{{--                                </span>--}}
+{{--                            </div>--}}
+{{--                            <div class="row my-3">--}}
+{{--                                <div class="col-2">--}}
+{{--                                    <img src="../../assets/img/course/c-3.jpg" class="rounded-circle">--}}
+{{--                                </div>--}}
+{{--                                <div class="col-9">--}}
+{{--                                    <div class="row pt-2">--}}
+{{--                                        <div class="col-12 x">{{$course->meta_title}}</div>--}}
+{{--                                        <div class="col-12 y">{{$course->meta_description}}</div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="row">--}}
+{{--                                <div class="col-5">--}}
+{{--                                    <a href="#" class="btn btn-block btn-info">Add To Cart <i class="fa fa-shopping-bag"></i>--}}
+{{--                                    </a> --}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-2 " style="margin-left:-3%">--}}
+{{--                                        <a href="{{ route('courses.show', [$course->slug]) }}" class="btn" style="background: #D2498B;color:#fff;opacity:0.5;">--}}
+{{--                                            <i class="far fa-bookmark"></i>--}}
+{{--                                        </a>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div> --}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </section>--}}
 
     <!-- End of course section
         ============================================= -->

@@ -166,7 +166,9 @@
             },
         });
         $('#slider-item .owl-nav').hide();
-        $('#slider-item .owl-dots').hide();
+        setTimeout(() => {
+            $('#slider-item .owl-dots').hide();
+        }, 300);
 
 
 

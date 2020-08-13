@@ -3066,13 +3066,13 @@ display: inline;
   margin-bottom: 70px;
 }
 
-.course-teacher-section .section-title h2 {
-  color: #fff;
+
+
+.package{
+  min-height: 690px;
 }
 
-.course-teacher-section .section-title span {
-  color: #fff;
-}
+
 
 .course-teacher-section .genius-btn {
   margin: 0 auto;
@@ -6107,6 +6107,9 @@ ul.product-tab li.active:after {
   .subscribe-form .email{
     margin-left: -30px;
   }
+  .package{
+    height: auto;
+  }
 }
 
 
@@ -7019,4 +7022,16 @@ background:linear-gradient(
     border-bottom: 1px solid #cecece;
   }
 
+}
+.categories-container .active {
+  color: #fff !important;
+  background-color: #D2498B !important;
+
+}
+.course-container:not(.show){
+  display: none;
+}
+.academy-logo {
+  padding: 15px;
+  max-width: 284px;
 }
