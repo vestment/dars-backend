@@ -116,19 +116,27 @@ class AcademyController extends Controller
 
         $academy = User::create($request->all());
         $academy->confirmed = 1;
-        if ($academy->image) {
+        if ($academy->image || $request->file('image')) {
             $academy->avatar_type = 'storage';
-            $academy->avatar_location = $request->image->store('/avatars', 'public');
+            $file = $request->file('image');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $path = public_path() . '/storage/avatars';
+            $file->move($path, $filename);
+//            $academyLogo = asset('storage/uploads/academies/' . $filename);
+            $academy->avatar_location = 'storage/avatars/' . $filename;
         }
         $academy->active = isset($request->active) ? 1 : 0;
         $academy->save();
         $academy->assignRole('academy');
-        $file = $request->file('image');
-        $filename = time().'-'.$file->getClientOriginalName();
-        $size = $file->getSize() / 1024;
-        $path = public_path() . '/storage/uploads/academies';
-        $file->move($path, $filename);
-        $academyLogo = asset('storage/uploads/academies/' . $filename);
+        $galleryFiles = request()->gallery;
+        $galleryImages = [];
+        foreach ($galleryFiles as $galleryImage) {
+            $filename = time() . '-' . $galleryImage->getClientOriginalName();
+            $path = public_path() . '/storage/uploads/academies/'.$academy->id.'/gallery';
+            $galleryImage->move($path, $filename);
+            array_push($galleryImages ,asset('storage/uploads/academies/'.$academy->id.'/gallery/' . $filename));
+        }
+//        dd();
         $payment_details = [
             'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
             'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
@@ -144,9 +152,10 @@ class AcademyController extends Controller
             'payment_method' => request()->payment_method,
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
-            'logo' => $academyLogo,
+            'logo' => $academy->avatar_location,
             'percentage' => request()->percentage,
             'adress' => request()->adress,
+            'gallery' => json_encode($galleryImages)
         ];
 //        dd($data);
         academy::create($data);
@@ -165,6 +174,7 @@ class AcademyController extends Controller
     {
         $academy = User::findOrFail($id);
 
+
         return view('backend.academies.show', compact('academy'));
     }
 
@@ -177,7 +187,9 @@ class AcademyController extends Controller
     public function edit($id)
     {
         $academy = User::findOrFail($id);
-        return view('backend.academies.edit', compact('academy'));
+        $academyData = academy::where('user_id',$id)->get()[0];
+       
+        return view('backend.academies.edit', compact('academy','academyData'));
     }
 
     /**

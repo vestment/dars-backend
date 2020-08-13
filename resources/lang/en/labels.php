@@ -224,6 +224,12 @@ return array (
               'last_name' => 'Last Name',
               'status' => 'Status',
               'timezone' => 'Timezone',
+              'address' => ' Address',
+              'city' => ' City',
+              'phone' => ' Phone',
+              'title' => ' Title',
+
+
             ),
           ),
         ),
@@ -846,7 +852,14 @@ return array (
         'image' => 'Image',
         'status' => 'Status',
         'academy' => 'Academy',
-        'percentage' => 'percentage'
+        'percentage' => 'percentage',
+        'address' => ' Address',
+              'city' => ' City',
+              'phone' => ' Phone',
+              'title' => ' Title',
+              'bank_code' => '  Bank Code',
+
+
       ),
       'title' => 'Teachers',
       'create' => 'Create Teacher',
@@ -863,7 +876,12 @@ return array (
         'password' => 'Password',
         'image' => 'Logo',
         'status' => 'Status',
+        'address' => ' Address',
+        'city' => ' City',
+        'phone' => ' Phone',
+  
       ),
+      'gallery' => 'Gallery',
       'title' => 'Academies',
       'create' => 'Create Academy',
       'edit' => 'Edit Academy',
@@ -1536,6 +1554,7 @@ return array (
       'send_now' => 'Send Now',
       'students' => 'Students',
       'title' => 'Academies',
+      'Gallery' => 'Gallery',
       'courses_by_teacher' => 'Courses <span>By Teacher.</span>',
       'course_detail' => 'Course Detail',
     ),
@@ -1621,6 +1640,14 @@ return array (
       'holder_name' => 'Account Name',
       'account_number' => 'Account Number',
       'ifsc_code' => 'IFSC Code',
+      'address' => ' Address',
+      'city' => ' City',
+      'phone' => ' Address',
+      'bank_code' => '  Bank Code',
+
+
+
+
     ),
     'description' => 'Description',
   ),

@@ -970,6 +970,7 @@ Author:         HTMLMATE Team
     }
     jQuery(document).ready(function () {
         Genius.init();
+
     });
 
 })();
