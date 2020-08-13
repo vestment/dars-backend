@@ -6424,7 +6424,8 @@ ul.product-tab li.active:after {
 }
 
 .divpoly{
-  clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% );
+  clip-path: polygon(0 0,101% 0, 174% 30%, 0 90% );
+  /* clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% ); */
 
   /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
   padding-left: 0 !important;
@@ -6435,7 +6436,15 @@ ul.product-tab li.active:after {
   background-position: 50% 50%;
   /* background-color: violet; */
 }
+.iconimage{
+  font-size: 90px;
+  margin-left: 200px;
+  margin-top: 50px;
+  color:white;
+  font-weight: 200px;
+  cursor: pointer;
 
+}
 .pricebottom{
   bottom: 10px;
 }
@@ -6871,11 +6880,11 @@ background:linear-gradient(to right,
 .logonone {
     margin-left: 6px;
 }
-@media(max-width :768px){
+/* @media(max-width :768px){
   .logonone {
     display: none;
   }
-}
+} */
 .ll{
   font-size :40px;
   font-weight: lighter;
@@ -7043,4 +7052,16 @@ background:linear-gradient(to right,
     border-bottom: 1px solid #cecece;
   }
 
+}
+.categories-container .active {
+  color: #fff !important;
+  background-color: #D2498B !important;
+
+}
+.course-container:not(.show){
+  display: none;
+}
+.academy-logo {
+  padding: 15px;
+  max-width: 284px;
 }

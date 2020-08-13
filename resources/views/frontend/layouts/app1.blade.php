@@ -438,6 +438,44 @@
                 @endif
         var font_color = "{{config('font_color')}}"
         setActiveStyleSheet(font_color);
+        $(window).on('load', function () {
+            $(".owl-carousel").owlCarousel({
+                rewind: true,
+                margin: 10,
+                nav: true,
+                navText: ["<i class='fas fa-chevron-left'></i>",
+                    "<i class='fas fa-chevron-right'></i>"],
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 1
+                    },
+                    768: {
+                        items: 3
+                    },
+                    991: {
+                        items: 5
+                    }
+                }
+            });
+
+        });
+        function showTab(element,button) {
+            var elem = element[0];
+            $('.course-container.show').addClass('hide');
+            $('button.active').removeClass('active');
+            $('button.active').removeClass('active');
+            $('.course-container.show').removeClass('show');
+            $('.course-container.hide').css('display','none');
+            $(elem).removeClass('hide');
+            $(elem).addClass('show acive');
+            $(elem).css('display','block');
+            button.addClass('active');
+            // console.log(elem.classList)
+            window.dispatchEvent(new Event('resize'));
+        }
     </script>
 
     @yield('js')

@@ -98,9 +98,9 @@
         <div class="container">
 
 
-            <div class="m-5 d-flex shadow-lg divfixed">
-                <div class="justify-content-center">
-                    <img src="{{$academyData->logo}}" alt="{{$academy->full_name}}">
+            <div class="m-5 col-2 d-flex shadow-lg divfixed">
+                <div class="teacher-img text-center">
+                    <img class="academy-logo" src="{{$academyData->logo}}" alt="{{$academy->full_name}}">
                 </div>
             </div>
 

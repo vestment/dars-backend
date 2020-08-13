@@ -6118,7 +6118,8 @@ ul.product-tab li.active:after {
   }
 
   .divpoly{
-    clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% );
+    clip-path: polygon(0 0,101% 0, 174% 30%, 0 90% );
+    /* clip-path: polygon(0 0,123% 0, 100% 46%, 0 80% ); */
   
     /* clip-path: polygon(0 0,100% 0, 65% 70%, 0 94% ); */
     padding-left: 0 !important;
@@ -6128,6 +6129,15 @@ ul.product-tab li.active:after {
     background-size: cover;
     background-position: 50% 50%;
     /* background-color: violet; */
+  }
+  .iconimage{
+    font-size: 90px;
+    margin-right:222px;
+    margin-top: 50px;
+    color:white;
+    font-weight: 200px;
+    cursor: pointer;
+  
   }
   
   .pricebottom{
