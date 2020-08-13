@@ -6731,7 +6731,7 @@ display: inline-block;
   margin-bottom: 100px;
   z-index: 2;
   right: -6px;
-  top: 32px;
+  top: 29px;
   left: 28px;
 }
 hr{
@@ -6993,7 +6993,7 @@ background:linear-gradient(to right,
 .best-course-pic-text .card-body .btn{
   z-index: 1;
 }
-#why-choose-us .best-course-pic-text:before {
+.best-course-pic-text:before {
   background-image: url(../../assets/img/banner/01.png);
   background-size: cover;
   background-position: center;
