@@ -157,3 +157,13 @@ ul.pagination {
 .popular-navs li .act-pop{
     background-color: #D2498B !important;
 }
+
+.teach_img{
+width: 60px;
+height: 60px;
+border-radius:50%; 
+}
+
+.im{
+    height: 130px !important;
+}

@@ -57,25 +57,25 @@
                                         <div class="col-9">
                                             <div class="row">
                                                 @foreach($course->teachers as $key=>$teacher)
+                                                    <?php
+                                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->get()[0];
+                                                    ?>
                                                     @php $key++ @endphp
-                                                    <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                                    <a class="text-pink" href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                                        target="_blank">
                                                         {{$teacher->full_name}}@if($key < count($course->teachers ))
                                                             , @endif
                                                     </a>
-                                                @endforeach
-                                                @foreach($course->teachers as $key=>$teacher)
                                                     @php $key++ @endphp
-                                                    <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                                    <a class="text-muted teacher-title" href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                                        target="_blank">
-                                                        {{$teacher->description}}
+                                                        {{$teacherProfile->title}}
                                                     </a>
                                                     <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                                        target="_blank">
                                                         {{$teacher->title}}
                                                     </a>
                                                 @endforeach
-
                                             </div>
                                         </div>
                                     </div>

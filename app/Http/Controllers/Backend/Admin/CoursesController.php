@@ -245,32 +245,37 @@ class CoursesController extends Controller
                     ->first();
                 $size = 0;
 
-            } elseif ($request->media_type == 'upload') {
+            }
+            
+            elseif ($request->media_type == 'upload') {
 
 
-            //     $file = Request::file('file');
-            // $filename = $file->getClientOriginalName();
-            // $path = public_path().'/uploads/';
-            // return $file->move($path, $filename);
-
-
-
-                if (\Illuminate\Support\Facades\Request::hasFile('video_file')) {
+                if ($request->video_file != null) {
                     $file = \Illuminate\Support\Facades\Request::file('video_file');
                     $filename = $file->getClientOriginalName();
-                    $size = $file->getSize() / 1024;
-                    $path = public_path() . '/storage/uploads/';
-                    $file->move($path, $filename);
 
-                    $video_id = $filename;
-                    $url = asset('storage/uploads/' . $filename);
-
-                    $media = Media::where('type', '=', $request->media_type)
-                        ->where('model_type', '=', 'App\Models\Lesson')
+                    $media = Media::where('type', '=', 'upload')
+                        ->where('model_type', '=', 'App\Models\Course')
                         ->where('model_id', '=', $course->id)
                         ->first();
+
+                    if ($media == null) {
+                        $media = new Media();
+                    }
+                    $media->model_type = $model_type;
+                    $media->model_id = $model_id;
+                    $media->name = $name;
+                    $media->url = url('storage/uploads/'.$filename);
+                    $media->type = $request->media_type;
+                    $media->file_name = $request->video_file;
+                    $media->size = 0;
+                    $media->save();
+
                 }
-            } else if ($request->media_type == 'embed') {
+            } 
+            
+            
+            else if ($request->media_type == 'embed') {
                 $url = $request->video;
                 $filename = $course->title . ' - video';
             }
