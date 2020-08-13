@@ -152,14 +152,7 @@
             </div>
 
 
-            <div class="input_fields_container_part">
-            <!-- <div class="col-12 form-group" name="tags">
-                    {!! Form::label('knowledge',  trans('labels.backend.courses.fields.knowledge'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('knowledge', old('knowledge'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.knowledge')]) !!}
-
-    <button class="btn btn-sm btn-primary add_more_button">Add More Fields</button>
-</div> -->
-</div>
+        
 
             <div class="row">
                 <div class="col-12  text-center form-group">
@@ -226,7 +219,7 @@ $('.add_more_button').click(function(e){ //click event on add more fields button
 e.preventDefault();
 if(x < max_fields_limit){ //check conditions
 x++; //counter increment
-$('.input_fields_container_part').append('<div><input type="text" name="tags"/><a href="#" class="remove_field" style="margin-left:10px;">Remove</a></div>'); //add input field
+$('.input_fields_container_part').append('<div><input type="text" name="knowledge"/><a href="#" class="remove_field" style="margin-left:10px;">Remove</a></div>'); //add input field
 }
 }); 
 $('.input_fields_container_part').on("click",".remove_field", function(e){ //user click on remove text links
