@@ -178,7 +178,7 @@ class CoursesController extends Controller
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
             $cour = Course::with('teachers')->get();
-            //  dd($cour);
+//              dd($cour);
             return view( $this->path.'.courses.index', compact('courses','cour','popular_course','trending_courses', 'category', 'recent_news','featured_courses','categories'));
         }
         return abort(404);

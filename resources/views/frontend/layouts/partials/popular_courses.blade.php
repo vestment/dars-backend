@@ -202,20 +202,7 @@
         ============================================= -->
     @push('after-scripts')
         <script>
-            function showTab(element,button) {
-                var elem = element[0];
-                $('.course-container.show').addClass('hide');
-                $('button.active').removeClass('active');
-                $('button.active').removeClass('active');
-                $('.course-container.show').removeClass('show');
-                $('.course-container.hide').css('display','none');
-                $(elem).removeClass('hide');
-                $(elem).addClass('show acive');
-                $(elem).css('display','block');
-                button.addClass('active');
-                // console.log(elem.classList)
-                window.dispatchEvent(new Event('resize'));
-            }
+
         </script>
     @endpush
 @endif
