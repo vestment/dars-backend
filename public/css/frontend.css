@@ -7020,3 +7020,7 @@ background:linear-gradient(
   }
 
 }
+.categories-container .active {
+  color: #fff !important;
+  background-color: #D2498B !important;
+}
