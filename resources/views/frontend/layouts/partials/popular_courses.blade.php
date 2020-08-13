@@ -28,9 +28,9 @@
                                     class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->name}}</button>
                         @endforeach
                     </div>
-                    <div class="col-xl-12">
+                    <div class="col-xl-12 courses-container">
                         @foreach($categories as $key=>$category)
-                            <div class="courses-container fade in @if ($key == 0) show active @endif"
+                            <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
                                  id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
                                 <div class="owl-carousel default-owl-theme p-3 ">
                                     <?php
@@ -204,16 +204,17 @@
         <script>
             function showTab(element,button) {
                 var elem = element[0];
-                $('.courses-container.show').addClass('hide');
+                $('.course-container.show').addClass('hide');
                 $('button.active').removeClass('active');
                 $('button.active').removeClass('active');
-                $('.courses-container.show').removeClass('show');
-                $('.courses-container.hide').css('display','none');
+                $('.course-container.show').removeClass('show');
+                $('.course-container.hide').css('display','none');
                 $(elem).removeClass('hide');
                 $(elem).addClass('show acive');
                 $(elem).css('display','block');
                 button.addClass('active');
-                console.log(elem.classList)
+                // console.log(elem.classList)
+                window.dispatchEvent(new Event('resize'));
             }
         </script>
     @endpush

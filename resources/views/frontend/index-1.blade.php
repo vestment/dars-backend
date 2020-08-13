@@ -88,12 +88,10 @@
         <section id="why-choose-us" class="">
             <div class=" ">
                 <div class="">
-
-
                     <div class="section-title mb20 headline text-center pt-5">
 
                     </div>
-                    <div class="row bg-grd p-5">
+                    <div class="row bg-grd package p-5">
                         <div class="col-lg-4 pic-hd ">
                             <div class=" position-relative p-re">
                                 <div class="position-absolute p-ab ">
