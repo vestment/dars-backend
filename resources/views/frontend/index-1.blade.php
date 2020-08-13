@@ -46,7 +46,7 @@
             ============================================= -->
         <section id="search-course" class=" border ">
             <div class="container">
-                <div class="row pb-3 pt-4">
+                <div class="row ">
                     <div class="col-12">
                         <div class="row">
                             <div class="hero-section">
@@ -332,10 +332,10 @@
         <section id="course-teacher" class="course-teacher-section p-5">
             <div class="">
                 <div class="container ">
-                    <div class=" mb20 headline p-5 mb-5">
-                        <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-                        <h1 class="text-dark font-weight-bolder ">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.Instructors').</span>
-                        </h1>
+                    <div class=" section-title mb20 headline p-5 mb-5">
+                        <span class=" subtitle text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
+                        <h2 class="text-dark font-weight-bolder "><span>{{env('APP_NAME')}} @lang('labels.frontend.home.Instructors').<span>
+                        </h2>
                     </div>
 
                     <div class="owl-carousel custom-owl-theme">
@@ -414,8 +414,8 @@
     <section id="course-teacher" class="course-teacher-section p-5">
         <div class="">
             <div class="container ">
-                <div class=" mb20 headline p-5 mb-5">
-                    <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
+                <div class="section-title mb20 headline p-5 mb-5">
+                    <span class=" subtitle text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
                     <h1 class="text-dark font-weight-bolder ">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.academies').</span>
                     </h1>
                 </div>
