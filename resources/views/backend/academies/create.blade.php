@@ -67,7 +67,14 @@
                         {{ html()->label(__('labels.backend.academies.fields.image'))->class('col-md-2 form-control-label')->for('image') }}
 
                         <div class="col-md-10">
-                            {!! Form::file('image', ['class' => 'form-control d-inline-block', 'placeholder' => '']) !!}
+                            {!! Form::file('image', ['class' => 'form-control d-inline-block', 'placeholder' => '','required' => 'required']) !!}
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.gallery'))->class('col-md-2 form-control-label')->for('gallery') }}
+
+                        <div class="col-md-10">
+                            {!! Form::file('gallery[]', ['class' => 'form-control d-inline-block', 'placeholder' => '','multiple' => 'multiple']) !!}
                         </div><!--col-->
                     </div>
                     <div class="form-group row">

@@ -6411,11 +6411,24 @@ ul.product-tab li.active:after {
 }
 @media(max-width :768px){
   .divfixed {
-    top: 52%;
-    right: 50px;
+    top: 15%;
+    right: 0;
+  }
+  .academy-logo {
+     padding: unset !important;
+     max-width: 100% !important;
   }
 }
-
+@media screen and (min-width :1440px){
+  .divfixed {
+    top: 30%;
+    right: 0;
+  }
+  .academy-logo {
+    padding: unset !important;
+    max-width: 100% !important;
+  }
+}
 
 @media(max-width :768px){
   .divfixed {
