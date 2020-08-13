@@ -294,6 +294,8 @@
                                 @endforeach
                     </div>
                     @endif
+
+
                     @elseif(auth()->user()->hasRole('teacher'))
                         <div class="col-12">
                             <div class="row">
@@ -343,7 +345,7 @@
                                                            href="{{route('courses.show',[$item->reviewable->slug])}}">{{$item->reviewable->title}}</a>
                                                     </td>
                                                     <td>{{$item->content}}</td>
-                                                    <td>{{$item->created_at->diffforhumans()}}</td>
+{{--                                                    <td>{{$item->created_at->diffforhumans()}}</td>--}}
                                                 </tr>
                                             @endforeach
                                         @else
@@ -393,6 +395,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                     @elseif(auth()->user()->hasRole('administrator'))
                         <div class="col-md-4 col-12">
