@@ -120,7 +120,7 @@
                             </div>
 
                             @if($total_bundle->count() > 0)
-                                <div class="owl-carousel default-owl-theme ">
+                                <div class="owl-carousel default-owl-theme " data-items="3">
 
                                     @foreach($total_bundle as $course)
                                         <div class="item">
