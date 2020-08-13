@@ -1,8 +1,8 @@
 <section id="latest-area" class="">
     <div class="container p-5">
-        <div class="text-dark p-5">
-            <p class="font-weight-lighter">The world's largest selection of courses</p>
-            <h2 class="font-weight-bolder">Trending Courses.</h2>
+        <div class="section-title  text-dark p-5">
+            <p class="subtitle font-weight-lighter">The world's largest selection of courses</p>
+            <h2 class="font-weight-bolder">Trending <span>Courses.</span> </h2>
             <p>Choose from 100,000 online video courses with new additions published every month</p>
         </div>
         <div class="owl-carousel default-owl-theme p-3   ">

@@ -3066,13 +3066,13 @@ display: inline;
   margin-bottom: 70px;
 }
 
-.course-teacher-section .section-title h2 {
-  color: #fff;
+
+
+.package{
+  min-height: 690px;
 }
 
-.course-teacher-section .section-title span {
-  color: #fff;
-}
+
 
 .course-teacher-section .genius-btn {
   margin: 0 auto;
@@ -6106,6 +6106,9 @@ ul.product-tab li.active:after {
 @media screen and (max-width: 767px){
   .subscribe-form .email{
     margin-left: -30px;
+  }
+  .package{
+    height: auto;
   }
 }
 
