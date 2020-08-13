@@ -16,8 +16,7 @@ use Stripe\Customer;
 use Cart;
 use App\Models\TeacherProfile;
 use App\Models\Chapter;
-
-
+use App\Models\Auth\User;
 class CoursesController extends Controller
 {
 
@@ -79,7 +78,16 @@ class CoursesController extends Controller
 
         }
        
-        return view( $this->path.'.courses.index', compact('teacher_data','chapters','course_lessons','courses', 'purchased_courses', 'recent_news','featured_courses','categories'));
+       
+        if ($course->reviews->count() > 0) {
+            $course_rating = $course->reviews->avg('rating');
+            $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
+        }
+        $teacher_dat=TeacherProfile::get();
+        $teachers=User::get();
+        $popular_course = Course::withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+       
+        return view( $this->path.'.courses.index', compact('teacher_dat','teachers','popular_course','course_rating','teacher_data','chapters','course_lessons','courses', 'purchased_courses', 'recent_news','featured_courses','categories'));
      }
 
     public function show($course_slug)
@@ -142,6 +150,7 @@ class CoursesController extends Controller
             }
 
         }
+        
         // $course=(Course::with('teachers.teacherProfile')->find(2));
         return view( $this->path.'.courses.course', compact('chaptercount','chapter_lessons','lessoncount','chapters','course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons','total_ratings','is_reviewed','lessons','continue_course'));
     }
@@ -184,12 +193,13 @@ class CoursesController extends Controller
             }
             $popular_course = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
-           
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
-
+            $teacher_data=TeacherProfile::get();
+            $teachers=User::get();
+            // dd($teacher);
             $cour = Course::with('teachers')->get();
-//              dd($cour);
-            return view( $this->path.'.courses.index', compact('courses','cour','popular_course','trending_courses', 'category', 'recent_news','featured_courses','categories'));
+            //  dd($cour);
+            return view( $this->path.'.courses.index', compact('courses','teachers','teacher_data','cour','popular_course','trending_courses', 'category', 'recent_news','featured_courses','categories'));
         }
         return abort(404);
     }

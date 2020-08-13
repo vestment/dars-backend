@@ -8,9 +8,7 @@
 @push('after-styles')
     <link rel="stylesheet" href="../../assets/css/course.css"/>
     <style>
-        .teacher-img-content .teacher-social-name {
-            max-width: 67px;
-        }
+      
 
         .my-alert {
             position: absolute;
@@ -341,7 +339,7 @@
                             @foreach($teachers as $key=>$item)
                                 @foreach($teacher_data as $teacher)
                                     @if($item->id == $teacher->user_id)
-                                        <div class="item ml-lg-5">
+                                        <div class="item">
                                             <div class="text-center ">
                                                 <div class="bg-card">
                                                     <div>

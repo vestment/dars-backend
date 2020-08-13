@@ -412,6 +412,13 @@ h6 {
   /* padding-bottom: 515px; */
 
 }
+.bg-header-cat {
+  background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
+  padding-top: 10%;
+  color: white;
+  /* padding-bottom: 515px; */
+
+}
 .type{
   color: #eeeeee;
   font-family: Open Sans;
@@ -423,7 +430,13 @@ h6 {
   color:black
 }
 
-
+.menna{
+  width: 43%!important;
+    margin-top: 0%;
+    position: absolute;
+   
+    bottom: -48px;
+}
 
 
 /* .breadcrumb-section .blakish-overlay {
@@ -6691,8 +6704,14 @@ display: inline-block;
 
   .teacher-image{
     border-radius: 50%;
-    width: 230px;
+    width: 230px !important;
+   
   }
+
+
+  .teacher-img-content .teacher-social-name {
+    max-width: 67px;
+}
 .bg-card{
  position: relative;
 

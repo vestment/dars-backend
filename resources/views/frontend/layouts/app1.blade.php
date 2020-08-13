@@ -439,6 +439,8 @@
         var font_color = "{{config('font_color')}}"
         setActiveStyleSheet(font_color);
         $(window).on('load', function () {
+            var itemsToView = $('.owl-carousel').data('items');
+            console.log(itemsToView);
             $(".owl-carousel").owlCarousel({
                 rewind: true,
                 margin: 10,
@@ -456,7 +458,7 @@
                         items: 3
                     },
                     991: {
-                        items: 5
+                        items: 4
                     }
                 }
             });
