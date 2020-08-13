@@ -343,7 +343,7 @@
                                                            href="{{route('courses.show',[$item->reviewable->slug])}}">{{$item->reviewable->title}}</a>
                                                     </td>
                                                     <td>{{$item->content}}</td>
-                                                    <td>{{$item->created_at->diffforhumans()}}</td>
+{{--                                                    <td>{{$item->created_at->diffforhumans()}}</td>--}}
                                                 </tr>
                                             @endforeach
                                         @else

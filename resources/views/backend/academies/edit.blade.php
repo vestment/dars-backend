@@ -41,6 +41,39 @@
                     </div><!--form-group-->
 
                     <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.city'))->class('col-md-2 form-control-label')->for('city') }}
+
+                        <div class="col-md-10">
+                            {{ html()->email('city')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.city'))
+                                ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.address'))->class('col-md-2 form-control-label')->for('address') }}
+
+                        <div class="col-md-10">
+                            {{ html()->email('address')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.address'))
+                                ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.phone'))->class('col-md-2 form-control-label')->for('phone') }}
+
+                        <div class="col-md-10">
+                            {{ html()->email('phone')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.phone'))
+                                ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
                         {{ html()->label(__('labels.backend.academies.fields.email'))->class('col-md-2 form-control-label')->for('email') }}
 
                         <div class="col-md-10">
@@ -136,13 +169,13 @@
 
                     </div>
 
-                    <div class="bank_details" style="display:{{ $academy->academy->payment_method == 'bank'?'':'none' }}">
+                    <div class="bank_details" style="display:{{ $academyData->payment_method == 'bank'?'':'none' }}">
                         <div class="form-group row">
                             {{ html()->label(__('labels.academy.bank_details.name'))->class('col-md-2 form-control-label')->for('bank_name') }}
                             <div class="col-md-10">
-                                {{ html()->text('bank_name')
+                                {{ html()->text($academyData->bank_name)
                                         ->class('form-control')
-                                        ->value($payment_details->bank_name)
+                                        ->value($academyData->bank_name)
                                         ->placeholder(__('labels.academy.bank_details.name')) }}
                             </div><!--col-->
                         </div>
@@ -150,9 +183,9 @@
                         <div class="form-group row">
                             {{ html()->label(__('labels.academy.bank_details.bank_code'))->class('col-md-2 form-control-label')->for('ifsc_code') }}
                             <div class="col-md-10">
-                                {{ html()->text('ifsc_code')
+                                {{ html()->text('$academyData->ifsc_code')
                                         ->class('form-control')
-                                        ->value($payment_details->ifsc_code)
+                                        ->value($academyData->ifsc_code)
                                         ->placeholder(__('labels.academy.bank_details.bank_code')) }}
                             </div><!--col-->
                         </div>
@@ -160,9 +193,9 @@
                         <div class="form-group row">
                             {{ html()->label(__('labels.academy.bank_details.account'))->class('col-md-2 form-control-label')->for('account_number') }}
                             <div class="col-md-10">
-                                {{ html()->text('account_number')
+                                {{ html()->text('$academyData->account_number')
                                         ->class('form-control')
-                                        ->value($payment_details->account_number)
+                                        ->value($academyData->account_number)
                                         ->placeholder(__('labels.academy.bank_details.account')) }}
                             </div><!--col-->
                         </div>
@@ -170,21 +203,21 @@
                         <div class="form-group row">
                             {{ html()->label(__('labels.academy.bank_details.holder_name'))->class('col-md-2 form-control-label')->for('account_name') }}
                             <div class="col-md-10">
-                                {{ html()->text('account_name')
+                                {{ html()->text('$academyData->account_name')
                                         ->class('form-control')
-                                        ->value($payment_details->account_name)
+                                        ->value($academyData->account_name)
                                         ->placeholder(__('labels.academy.bank_details.holder_name')) }}
                             </div><!--col-->
                         </div>
                     </div>
 
-                    <div class="paypal_details" style="display:{{ $academy->academy->payment_method == 'paypal'?'':'none' }}">
+                    <div class="paypal_details" style="display:{{ $academyData->payment_method == 'paypal'?'':'none' }}">
                         <div class="form-group row">
                             {{ html()->label(__('labels.academy.paypal_email'))->class('col-md-2 form-control-label')->for('paypal_email') }}
                             <div class="col-md-10">
-                                {{ html()->text('paypal_email')
+                                {{ html()->text('$academyData->paypal_email')
                                         ->class('form-control')
-                                        ->value($payment_details->paypal_email)
+                                        ->value($academyData->paypal_email)
                                         ->placeholder(__('labels.academy.paypal_email')) }}
                             </div><!--col-->
                         </div>
@@ -196,7 +229,7 @@
                         <div class="col-md-10">
                             {{ html()->textarea('description')
                                     ->class('form-control')
-                                    ->value($teacherProfile->description)
+                                    ->value($academyData->description)
                                     ->placeholder(__('labels.academy.description')) }}
                         </div><!--col-->
                     </div>

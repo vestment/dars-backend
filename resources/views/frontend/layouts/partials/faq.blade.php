@@ -1,14 +1,14 @@
-<section id="faq" class="faq-section {{isset($classes) ? $classes : '' }}">
+<section id="faq" class=" shadow-lg p-3 mb-5 rounded bg-light faq-section {{isset($classes) ? $classes : '' }}">
     <div class="container">
-        <div class="section-title mb45 headline text-center ">
+        <div class="section-title mb45 headline  ">
             <span class="subtitle text-uppercase">{{env('APP_NAME')}} @lang('labels.frontend.layouts.partials.faq')</span>
             <h2>@lang('labels.frontend.layouts.partials.faq_full')</h2>
         </div>
         @if(count($faqs)> 0)
 
-            <div class="faq-tab">
+            <div class="faq-tab text-center">
                 <div class="faq-tab-ques ul-li">
-                    <div class="tab-button text-center mb65 ">
+                    <div class="tab-button pt-5 mb65 ">
                         <ul class="product-tab">
                             @foreach($faqs as $key=>$faq)
                                 <li rel="tab{{$faq->id}}">{{$faq->name}}</li>

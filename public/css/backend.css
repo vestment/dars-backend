@@ -14326,7 +14326,7 @@ canvas {
   letter-spacing: 0.25rem;
   font-weight: 700;
   color: #e4e7ea;
-  background-color: #09091f;
+  background-color: var(--navbarbg);
   text-transform: uppercase;
 }
 

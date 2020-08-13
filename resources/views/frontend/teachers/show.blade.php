@@ -33,7 +33,6 @@
         }
         .bg-fr{
             color:white;
-            background-image: url('/assets/img/banner/11.png');
 
         }
         .containe{
@@ -54,7 +53,7 @@
     <section id="breadcrumb" class="bg-header ">
        
             <div class="containe row ">
-                <div class="col-8">
+                <div class="col-md-8 col-sm-12">
                     <div class="row ">
                         <div class="col-md-9">
                             <div class="teacher-details-content mb45">
@@ -65,7 +64,7 @@
                                                             <img class="teacher-image p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
                                                                  alt="">
                                                         @else
-                                                                <img class="teacher-image p-3" src="{{$teacher->avatar_location}}"
+                                                                <img class="teacher-image p-3" src="{{asset($teacher->avatar_location)}}"
                                                                  alt="">
                                                         @endif
 
@@ -106,23 +105,19 @@
 
                         </div>
 
-                    @include('frontend.layouts.partials.right-sidebar')
+
 
                     </div>
                 </div>  
-                <div  class="col-4 bg-fr">
-                    <div class="row pb-5">
-                        <div class="col-5  bord  mr-3 voticon p-3">
+                <div  class="col-md-4 col-sm-6 bg-fr">
+                    <div class="row pb-5 text-center">
+                        <div class=" col-6 offset-3 bord voticon p-3">
                             <span><i class="fas fa-graduation-cap"></i></span>
                             <h3>{{count($courses)}}</h3>
-                            <h2>@lang('labels.frontend.teacher.courses')</h2>
+                            <h2 class="fon">@lang('labels.frontend.teacher.courses')</h2>
 
                         </div>
-                        <div class="col-5 bord voticon p-3">                            
-                            <span><i class="fas fa-user-friends"></i></span>
-                            <h2>@lang('labels.frontend.teacher.views')</h2>
-
-                        </div>
+                        
 
                     </div>            
                 </div>

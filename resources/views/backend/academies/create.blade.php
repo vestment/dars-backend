@@ -39,7 +39,39 @@
                                 ->required() }}
                         </div><!--col-->
                     </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.address'))->class('col-md-2 form-control-label')->for('address') }}
 
+                        <div class="col-md-10">
+                            {{ html()->text('address')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.address'))
+                                ->attribute('maxlength', 191)
+                                 }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.phone'))->class('col-md-2 form-control-label')->for('phone') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('phone')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.phone'))
+                                ->attribute('maxlength', 191)
+                                 }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.city'))->class('col-md-2 form-control-label')->for('city') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('city')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.city'))
+                                ->attribute('maxlength', 191)
+                                 }}
+                        </div><!--col-->
+                    </div><!--form-group-->
                     <div class="form-group row">
                         {{ html()->label(__('labels.backend.academies.fields.email'))->class('col-md-2 form-control-label')->for('email') }}
 
@@ -67,18 +99,17 @@
                         {{ html()->label(__('labels.backend.academies.fields.image'))->class('col-md-2 form-control-label')->for('image') }}
 
                         <div class="col-md-10">
-                            {!! Form::file('image', ['class' => 'form-control d-inline-block', 'placeholder' => '']) !!}
+                            {!! Form::file('image', ['class' => 'form-control d-inline-block', 'placeholder' => '','required' => 'required']) !!}
                         </div><!--col-->
                     </div>
                     <div class="form-group row">
-                        {{ html()->label(__('labels.academy.adress'))->class('col-md-2 form-control-label')->for('adress') }}
+                        {{ html()->label(__('labels.backend.academies.gallery'))->class('col-md-2 form-control-label')->for('gallery') }}
 
                         <div class="col-md-10">
-                            {{ html()->text('adress')
-                                            ->class('form-control')
-                                            ->placeholder(__('labels.academy.adress')) }}
+                            {!! Form::file('gallery[]', ['class' => 'form-control d-inline-block', 'placeholder' => '','multiple' => 'multiple']) !!}
                         </div><!--col-->
                     </div>
+                    
                     <div class="form-group row">
                         {{ html()->label(__('labels.academy.percentage'))->class('col-md-2 form-control-label')->for('percentage') }}
 

@@ -36,6 +36,45 @@
             display: inline;
             text-align: center;
         }
+
+        .gallery {
+            -webkit-column-count: 3;
+            -moz-column-count: 3;
+            column-count: 3;
+            -webkit-column-width: 33%;
+            -moz-column-width: 33%;
+            column-width: 33%;
+        }
+
+        .gallery .pics {
+            -webkit-transition: all 350ms ease;
+            transition: all 350ms ease;
+        }
+
+        .gallery .animation {
+            visibility: unset !important;;
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+        }
+
+        @media (max-width: 450px) {
+            .gallery {
+                -webkit-column-count: 1;
+                -moz-column-count: 1;
+                column-count: 1;
+                -webkit-column-width: 100%;
+                -moz-column-width: 100%;
+                column-width: 100%;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .btn.filter {
+                padding-left: 1.1rem;
+                padding-right: 1.1rem;
+            }
+        }
     </style>
 @endpush
 @section('content')
@@ -98,9 +137,9 @@
         <div class="container">
 
 
-            <div class="m-5 d-flex shadow-lg divfixed">
-                <div class="justify-content-center">
-                    <img src="{{$academyData->logo}}" alt="{{$academy->full_name}}">
+            <div class="m-5 col-2 d-lg-flex d-lg-flex d-md-flex shadow-lg divfixed">
+                <div class="teacher-img text-center">
+                    <img class="academy-logo" src="{{asset($academyData->logo)}}" alt="{{$academy->full_name}}">
                 </div>
             </div>
 
@@ -181,19 +220,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <ul class="nav nav-tabs custom-tabs" id="myTab" role="tablist">
+                    <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
-                            <li class="nav-item navv" role="presentation">
-                                <a class=" nav-link navl @if ($key == 0) active @endif" id="{{$category->id}}"
-                                   data-toggle="tab" href="#content-{{$category->id}}" role="tab"
-                                   aria-controls="{{$category->id}}" aria-selected="true">{{$category->name}}</a>
-                            </li>
-
+                            <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
+                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->name}}</button>
                         @endforeach
-                    </ul>
-                    <div class="tab-content">
+                    </div>
+                    <div class="col-xl-12 courses-container">
                         @foreach($categories as $key=>$category)
-                            <div class="tab-pane fade in @if ($key == 0) show active @endif"
+                            <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
                                  id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
                                 <div class="owl-carousel default-owl-theme p-3 ">
                                     @if(count($courses) > 0)
@@ -355,12 +390,40 @@
                         @endforeach
                     </div>
                 </div>
+
             </div>
         </div>
 
 
     </section>
+    <section class="about-page-section">
+        <div class="container">
+            <div class="row">
+                <div class=" mb20 headline p-5 mb-5">
+                    <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
+                    <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.academy.Gallery').</span>
+                    </h1>
+                </div>
+                <div class="col-md-12">
+                    <div class="gallery">
+                    @if ($academyData->gallery != null)
+                        @foreach(json_decode($academyData->gallery) as $key=>$image)
+                            <!-- Grid column -->
+                                <div class="mb-3 pics 2">
+                                    <img class="img-fluid"
+                                         src="{{$image}}"
+                                         alt="Image {{$key}}">
+                                </div>
+                                <!-- Grid column -->
 
+                            @endforeach
+                        @endif
+                    </div>
+                    <!-- Grid row -->
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
 
 @push('after-scripts')
@@ -398,6 +461,18 @@
             @if(request('type') != "")
             $('#sortBy').find('option[value="' + "{{request('type')}}" + '"]').attr('selected', true);
             @endif
+            $(function () {
+                var selectedClass = "";
+                $(".filter").click(function () {
+                    selectedClass = $(this).attr("data-rel");
+                    $("#gallery").fadeTo(100, 0.1);
+                    $("#gallery div").not("." + selectedClass).fadeOut().removeClass('animation');
+                    setTimeout(function () {
+                        $("." + selectedClass).fadeIn().addClass('animation');
+                        $("#gallery").fadeTo(300, 1);
+                    }, 300);
+                });
+            });
         });
 
     </script>

@@ -69,7 +69,17 @@ class CoursesController extends Controller
             ->where('featured', '=', 1)->take(8)->get();
 
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
-        return view( $this->path.'.courses.index', compact('courses', 'purchased_courses', 'recent_news','featured_courses','categories'));
+
+        $chapters=Course::with('chapters')->get();
+        //  dd($chapters);
+        foreach($courses as $course){
+            foreach($course->teachers as $teacher){
+            $teacher_data =TeacherProfile::where('user_id',$teacher->id)->get() ;
+            }
+
+        }
+       
+        return view( $this->path.'.courses.index', compact('teacher_data','chapters','course_lessons','courses', 'purchased_courses', 'recent_news','featured_courses','categories'));
      }
 
     public function show($course_slug)
@@ -178,7 +188,7 @@ class CoursesController extends Controller
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
             $cour = Course::with('teachers')->get();
-            //  dd($cour);
+//              dd($cour);
             return view( $this->path.'.courses.index', compact('courses','cour','popular_course','trending_courses', 'category', 'recent_news','featured_courses','categories'));
         }
         return abort(404);

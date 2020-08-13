@@ -39,7 +39,30 @@
                                 ->required() }}
                         </div><!--col-->
                     </div><!--form-group-->
-
+                    <div class="form-group row">
+                            {{ html()->label(__('labels.teacher.bank_details.phone'))->class('col-md-2 form-control-label')->for('phone') }}
+                            <div class="col-md-10">
+                                {{ html()->text('phone')
+                                        ->class('form-control')
+                                        ->placeholder(__('labels.teacher.bank_details.phone')) }}
+                            </div><!--col-->
+                        </div>
+                        <div class="form-group row">
+                            {{ html()->label(__('labels.teacher.bank_details.address'))->class('col-md-2 form-control-label')->for('address') }}
+                            <div class="col-md-10">
+                                {{ html()->text('address')
+                                        ->class('form-control')
+                                        ->placeholder(__('labels.teacher.bank_details.address')) }}
+                            </div><!--col-->
+                        </div>
+                        <div class="form-group row">
+                            {{ html()->label(__('labels.teacher.bank_details.city'))->class('col-md-2 form-control-label')->for('city') }}
+                            <div class="col-md-10">
+                                {{ html()->text('city')
+                                        ->class('form-control')
+                                        ->placeholder(__('labels.teacher.bank_details.city')) }}
+                            </div><!--col-->
+                        </div>
                     <div class="form-group row">
                             {{ html()->label(__('labels.teacher.bank_details.title'))->class('col-md-2 form-control-label')->for('title') }}
                             <div class="col-md-10">
