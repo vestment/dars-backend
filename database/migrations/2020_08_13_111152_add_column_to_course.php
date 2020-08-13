@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnsToCourses extends Migration
+class AddColumnToCourse extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,7 @@ class AddColumnsToCourses extends Migration
     public function up()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->json('knowledge')->nullable();
-            $table->json('requirements')->nullable();
-
-
+            $table->integer('course_hours')->nullable();
         });
     }
 
@@ -29,9 +26,7 @@ class AddColumnsToCourses extends Migration
     public function down()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->dropColumn('knowledge');
-            $table->dropColumn('requirements');
-
+            $table->dropColumn('course_hours');
         });
     }
 }
