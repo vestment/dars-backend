@@ -106,7 +106,7 @@
 
                         </div>
 
-                    @include('frontend.layouts.partials.right-sidebar')
+{{--                    @include('frontend.layouts.partials.right-sidebar')--}}
 
                     </div>
                 </div>  

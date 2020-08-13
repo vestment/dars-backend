@@ -88,12 +88,10 @@
         <section id="why-choose-us" class="">
             <div class=" ">
                 <div class="">
-
-
                     <div class="section-title mb20 headline text-center pt-5">
 
                     </div>
-                    <div class="row bg-grd p-5">
+                    <div class="row bg-grd package p-5">
                         <div class="col-lg-4 pic-hd ">
                             <div class=" position-relative p-re">
                                 <div class="position-absolute p-ab ">
@@ -471,30 +469,7 @@
                                 </script>
 
     <script>
-        $(window).on('load', function () {
-            $(".owl-carousel").owlCarousel({
-                rewind: true,
-                margin: 10,
-                nav: true,
-                navText: ["<i class='fas fa-chevron-left'></i>",
-                    "<i class='fas fa-chevron-right'></i>"],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 1
-                    },
-                    768: {
-                        items: 3
-                    },
-                    991: {
-                        items: 5
-                    }
-                }
-            });
 
-        });
     </script>
     <script>
         setTimeout(function () {

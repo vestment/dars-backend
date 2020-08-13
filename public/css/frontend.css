@@ -7032,3 +7032,15 @@ background:linear-gradient(
   }
 
 }
+.categories-container .active {
+  color: #fff !important;
+  background-color: #D2498B !important;
+
+}
+.course-container:not(.show){
+  display: none;
+}
+.academy-logo {
+  padding: 15px;
+  max-width: 284px;
+}
