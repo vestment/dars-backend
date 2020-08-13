@@ -153,12 +153,12 @@
 
 
             <div class="input_fields_container_part">
-            <div class="col-12 form-group" name="tags">
+            <!-- <div class="col-12 form-group" name="tags">
                     {!! Form::label('knowledge',  trans('labels.backend.courses.fields.knowledge'), ['class' => 'control-label']) !!}
                     {!! Form::textarea('knowledge', old('knowledge'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.knowledge')]) !!}
 
     <button class="btn btn-sm btn-primary add_more_button">Add More Fields</button>
-</div>
+</div> -->
 </div>
 
             <div class="row">

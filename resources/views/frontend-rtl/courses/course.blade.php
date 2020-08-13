@@ -245,6 +245,8 @@
                 <div class="col divpoly" data-toggle="modal" data-target="#modal1"
                     @if($course->course_image != "") 
                     style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                    <i class="far fa-play-circle iconimage"></i>
+
                 </div>
             </a>
                 <!-- Grid row -->
@@ -302,7 +304,7 @@
                             @elseif(!auth()->check())
                                 @if($course->free == 1)
                                     <a id="openLoginModal"
-                                    class="genius-btn btn-block text-white  gradient-bg text-center text-uppercase  bold-font"
+                                    class="btn-info btn btn-block text-white  text-center text-uppercase  bold-font"
                                     data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
                                                 class="fas fa-caret-right"></i>
                                     </a>
