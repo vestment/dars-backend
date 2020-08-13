@@ -14,17 +14,17 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         // error will occur if this table was not pre-added into the database first
-        Schema::dropIfExists('categories');
-        Schema::create('categories', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-            $table->string('name');
-            $table->string('slug')->nullable();
-            $table->text('icon')->nullable();
-            $table->integer('status')->default(1)->comment('0 - disabled, 1 - enabled');
-            $table->timestamps();
-            $table->softDeletes();
+        // Schema::dropIfExists('categories');
+        // Schema::create('categories', function (Blueprint $table) {
+        //     $table->increments('id')->unsigned();
+        //     $table->string('name');
+        //     $table->string('slug')->nullable();
+        //     $table->text('icon')->nullable();
+        //     $table->integer('status')->default(1)->comment('0 - disabled, 1 - enabled');
+        //     $table->timestamps();
+        //     $table->softDeletes();
 
-        });
+        // });
     }
 
     /**
@@ -34,6 +34,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        // Schema::dropIfExists('categories');
     }
 }
