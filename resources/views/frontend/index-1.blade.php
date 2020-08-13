@@ -26,6 +26,7 @@
            overflow: unset;
        }
 
+       
     </style>
 @endpush
 
@@ -351,10 +352,10 @@
                                                       
                                                         <div class="prof-img ">
                                                         @if($item->avatar_location == "")
-                                                            <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
+                                                            <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image shadow-lg p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
                                                                  alt=""></a>
                                                         @else
-                                                                 <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image p-3" src="{{asset($item->avatar_location)}}"
+                                                                 <a href="{{route('teachers.show',['id'=>$item->id])}}"><img class="teacher-image shadow-lg p-3" src="{{asset($item->avatar_location)}}"
                                                                  alt=""></a>
                                                         @endif
 

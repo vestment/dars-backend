@@ -39,6 +39,51 @@
                                 ->required() }}
                         </div><!--col-->
                     </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.teachers.fields.address'))->class('col-md-2 form-control-label')->for('address') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('address')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.teachers.fields.address'))
+                                ->attribute('maxlength', 191)
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.teachers.fields.city'))->class('col-md-2 form-control-label')->for('city') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('city')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.teachers.fields.city'))
+                                ->attribute('maxlength', 191)
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.teachers.fields.phone'))->class('col-md-2 form-control-label')->for('phone') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('phone')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.teachers.fields.phone'))
+                                ->attribute('maxlength', 191)
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.teachers.fields.title'))->class('col-md-2 form-control-label')->for('title') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('title')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.teachers.fields.title'))
+                                ->attribute('maxlength', 191)
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.backend.teachers.fields.email'))->class('col-md-2 form-control-label')->for('email') }}

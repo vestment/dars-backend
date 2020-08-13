@@ -8,7 +8,7 @@
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
         <div class="blakish-overlay"></div>
         <div class="container">
-            <div class="page-breadcrumb-content text-center">
+            <div class="page-breadcrumb-content ">
                 <div class="page-breadcrumb-title">
                     <h2 class="breadcrumb-head black bold">@lang('labels.frontend.faq.title')</h2>
                 </div>
@@ -97,10 +97,10 @@
                         </div>
 
                         <div class="about-btn">
-                            <div class="genius-btn gradient-bg text-center text-uppercase ul-li-block bold-font">
+                            <div class="genius-btn gradient-bg  text-uppercase ul-li-block bold-font">
                                 <a href="{{asset('forums')}}">@lang('labels.frontend.faq.make_question') <i class="fas fa-caret-right"></i></a>
                             </div>
-                            <div class="genius-btn gradient-bg text-center text-uppercase ul-li-block bold-font">
+                            <div class="genius-btn gradient-bg  text-uppercase ul-li-block bold-font">
                                 <a href="{{route('contact')}}">@lang('labels.frontend.faq.contact_us') <i class="fas fa-caret-right"></i></a>
                             </div>
 
