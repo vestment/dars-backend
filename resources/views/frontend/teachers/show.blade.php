@@ -105,10 +105,6 @@
 
                         </div>
 
-<<<<<<< HEAD
-=======
-{{--                    @include('frontend.layouts.partials.right-sidebar')--}}
->>>>>>> 1d4808c79916e5e19d7c14ddbc17c4a666d2f6b1
 
                     </div>
                 </div>  

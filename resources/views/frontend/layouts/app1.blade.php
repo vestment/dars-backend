@@ -49,7 +49,7 @@
               title="color-8">
         <link href="{{asset('assets/css/colors/color-9.css')}}" rel="alternate stylesheet" type="text/css"
               title="color-9">
-              <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
         @yield('css')
         @stack('after-styles')
 
@@ -58,16 +58,20 @@
         @endif
 
         @if(config('google_analytics_id') != "")
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{config('google_analytics_id')}}"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{config('google_analytics_id')}}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
 
-            gtag('config', '{{config('google_analytics_id')}}');
-        </script>
-            @endif
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+
+                gtag('js', new Date());
+
+                gtag('config', '{{config('google_analytics_id')}}');
+            </script>
+        @endif
         @if(!empty(config('custom_css')))
             <style>
                 {!! config('custom_css')  !!}
@@ -92,25 +96,25 @@
                         <div class="navbar-default">
                             <div class="navbar-header logonone float-left">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
-                                <img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
+                                    <img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
 
-                                    <!-- <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo"> -->
+                                <!-- <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo"> -->
 
                                 </a>
                             </div>
                             <!-- /.navbar-header -->
 
-                            <!-- <div class="cart-search float-right ul-li">
+                        <!-- <div class="cart-search float-right ul-li">
                                 <ul>
                                     <li>
                                         <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
                                             @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
-                                                <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
+                            <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
                                             @endif
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div> -->
+                                </a>
+                            </li>
+                        </ul>
+                    </div> -->
 
 
                             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -118,27 +122,30 @@
                                 <div class="nav-menu ul-li">
                                     <ul>
 
-                                    <div class="btn-group dropright">
-                                        <button type="button" class="btn btn-secondary dropdown-toggle btndropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @lang('navs.general.courses')                                        
-                                        </button>
-                                        <div class="dropdown-menu droplist">
-                                            {{-- <a class="linkdrop" href="">hsdfghs</a> --}}
-                                            <ul>
-                                            @if(count($categories) > 0)
-                                                @foreach($categories as $category)
-                                                    <li><a class="linkdrop" href="{{$category->id}}"><i class="{{$category->icon}} p-2"></i> {{$category->name}}</a></li>
-                                                @endforeach
-                                            @endif
-                                            </ul>
+                                        <div class="btn-group dropright">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle btndropdown"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                @lang('navs.general.courses')
+                                            </button>
+                                            <div class="dropdown-menu droplist">
+                                                {{-- <a class="linkdrop" href="">hsdfghs</a> --}}
+                                                <ul>
+                                                    @if(count($categories) > 0)
+                                                        @foreach($categories as $category)
+                                                            <li><a class="linkdrop" href="{{$category->id}}"><i
+                                                                            class="{{$category->icon}} p-2"></i> {{$category->name}}
+                                                                </a></li>
+                                                        @endforeach
+                                                    @endif
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
 
 
                                         @if(count($custom_menus) > 0 )
                                             @foreach($custom_menus as $menu)
                                                 {{--@if(is_array($menu['id']) && $menu['id'] == $menu['parent'])--}}
-                                                    {{--@if($menu->subs && (count($menu->subs) > 0))--}}
+                                                {{--@if($menu->subs && (count($menu->subs) > 0))--}}
                                                 @if($menu['id'] == $menu['parent'])
                                                     @if(count($menu->subs) == 0)
 
@@ -164,7 +171,6 @@
                                         @endif
 
 
-
                                     </ul>
                                 </div>
                             </nav>
@@ -173,22 +179,22 @@
                             <nav class="navbar-menu float-right divloginsearch">
                                 <div class="nav-menu ul-li hoverpink">
                                     <ul>
-                                            <li>
-                                                <div class="mt-0">
-                                                    <a href="">@lang('navs.general.offers')</a>
+                                        <li>
+                                            <div class="mt-0">
+                                                <a href="">@lang('navs.general.offers')</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            @if(!auth()->check())
+                                                <div class="log-in mt-0">
+                                                    <a
+                                                            href="{{ url('signup/en') }}">@lang('navs.general.signup')</a>
+
+
                                                 </div>
-                                            </li>
-                                            <li>
-                                                @if(!auth()->check())
-                                                    <div class="log-in mt-0">
-                                                        <a
-                                                        href="{{ url('signup/en') }}">@lang('navs.general.signup')</a>
-
-
-                                                    </div>
-                                                    @endif
-                                            </li>
-                                            <li>
+                                            @endif
+                                        </li>
+                                        <li>
                                             <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
                                                 @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
                                                     <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
@@ -215,7 +221,7 @@
                                             <li>
                                                 <div class="log-in mt-0">
                                                     <a
-                                                    href="{{ url('login/en') }}">@lang('navs.general.login')</a>
+                                                            href="{{ url('login/en') }}">@lang('navs.general.login')</a>
 
 
                                                 </div>
@@ -227,7 +233,8 @@
                                             <form action="{{route('search')}}" method="get">
 
                                                 <div class="search-bar">
-                                                    <input class="input-text course" name="q" type="text" placeholder="search here">
+                                                    <input class="input-text course" name="q" type="text"
+                                                           placeholder="search here">
                                                     <i class="icon fa fa-search"></i>
 
                                                 </div>
@@ -241,8 +248,6 @@
                                                 </div>
                                             </form> --}}
                                         </li>
-
-
 
 
                                         @if(count($locales) > 1)
@@ -263,17 +268,11 @@
                                                 </ul>
                                             </li>
                                         @endif
-                               
-                               
+
+
                                     </ul>
                                 </div>
                             </nav>
-
-
-
-
-
-
 
 
                             <div class="mobile-menu">
@@ -296,7 +295,7 @@
                                                                 @endforeach
                                                             </ul>
                                                         </li>
-                                                     @else
+                                                    @else
                                                         <li class="">
                                                             <a href="{{asset($menu->link)}}"
                                                                class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
@@ -332,24 +331,24 @@
                                                 </div>
                                             </li>
                                         @endif
-                                            @if(count($locales) > 1)
-                                                <li class="menu-item-has-children ul-li-block">
-                                                    <a href="#">
+                                        @if(count($locales) > 1)
+                                            <li class="menu-item-has-children ul-li-block">
+                                                <a href="#">
                                                     <span class="d-md-down-none">@lang('menus.language-picker.language')
                                                         ({{ strtoupper(app()->getLocale()) }})</span>
-                                                    </a>
-                                                    <ul class="">
-                                                        @foreach($locales as $lang)
-                                                            @if($lang != app()->getLocale())
-                                                                <li>
-                                                                    <a href="{{ '/lang/'.$lang }}"
-                                                                       class=""> @lang('menus.language-picker.langs.'.$lang)</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                </li>
-                                            @endif
+                                                </a>
+                                                <ul class="">
+                                                    @foreach($locales as $lang)
+                                                        @if($lang != app()->getLocale())
+                                                            <li>
+                                                                <a href="{{ '/lang/'.$lang }}"
+                                                                   class=""> @lang('menus.language-picker.langs.'.$lang)</a>
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </nav>
 
@@ -360,8 +359,8 @@
                 </div>
             </div>
         </header>
-    <!-- Start of Header section
-        ============================================= -->
+        <!-- Start of Header section
+            ============================================= -->
 
 
         @yield('content')
@@ -394,18 +393,15 @@
     <script src="{{asset('assets/js/switch.js')}}"></script>
 
 
-
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
     <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
-  
 
 
     <script>
-    $('.search-bar .icon').on('click', function() {
-    $(this).parent().toggleClass('active');
-    });
+        $('.search-bar .icon').on('click', function () {
+            $(this).parent().toggleClass('active');
+        });
     </script>
-
 
 
     <script>
@@ -435,7 +431,7 @@
     <script>
         @if((session()->has('show_login')) && (session('show_login') == true))
         $('#myModal').modal('show');
-                @endif
+        @endif
         var font_color = "{{config('font_color')}}"
         setActiveStyleSheet(font_color);
         $(window).on('load', function () {
@@ -462,16 +458,31 @@
             });
 
         });
-        function showTab(element,button) {
+        $(document).ready(function () {
+            $('.owl-carousel').on('changed.owl.carousel', function (event) {
+                var items = event.target.dataset.items;
+                if (items) {
+                    event.relatedTarget.settings.items = items
+                }
+            })
+        })
+
+        function setOwlItems(element, noItems) {
+            $(element).owlCarousel({
+                items: noItems
+            })
+        }
+
+        function showTab(element, button) {
             var elem = element[0];
             $('.course-container.show').addClass('hide');
             $('button.active').removeClass('active');
             $('button.active').removeClass('active');
             $('.course-container.show').removeClass('show');
-            $('.course-container.hide').css('display','none');
+            $('.course-container.hide').css('display', 'none');
             $(elem).removeClass('hide');
             $(elem).addClass('show acive');
-            $(elem).css('display','block');
+            $(elem).css('display', 'block');
             button.addClass('active');
             // console.log(elem.classList)
             window.dispatchEvent(new Event('resize'));

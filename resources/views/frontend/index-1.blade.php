@@ -120,7 +120,7 @@
                             </div>
 
                             @if($total_bundle->count() > 0)
-                                <div class="owl-carousel default-owl-theme ">
+                                <div class="owl-carousel default-owl-theme" data-items="3">
 
                                     @foreach($total_bundle as $course)
                                         <div class="item">
@@ -337,7 +337,7 @@
                         </h2>
                     </div>
 
-                    <div class="owl-carousel custom-owl-theme">
+                    <div class="owl-carousel custom-owl-theme" data-items="5">
                         @if(count($teachers)> 0)
                             @foreach($teachers as $key=>$item)
                                 @foreach($teacher_data as $teacher)
@@ -420,7 +420,7 @@
                 </div>
 
                 @if(count($acadimies)> 0)
-                    <div class="owl-carousel custom-owl-theme">
+                    <div class="owl-carousel custom-owl-theme" data-items="5">
                         @foreach($acadimies as $academy)
                             @if($academy->academy != null)
                                 <div class="item ml-lg-5">

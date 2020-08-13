@@ -294,6 +294,8 @@
                                 @endforeach
                     </div>
                     @endif
+
+
                     @elseif(auth()->user()->hasRole('teacher'))
                         <div class="col-12">
                             <div class="row">
@@ -393,6 +395,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                     @elseif(auth()->user()->hasRole('administrator'))
                         <div class="col-md-4 col-12">
