@@ -6993,7 +6993,7 @@ background:linear-gradient(to right,
 .best-course-pic-text .card-body .btn{
   z-index: 1;
 }
-#why-choose-us .best-course-pic-text:before {
+.best-course-pic-text:before {
   background-image: url(../../assets/img/banner/01.png);
   background-size: cover;
   background-position: center;

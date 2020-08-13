@@ -45,6 +45,8 @@ Route::post('academies_mass_destroy', ['uses' => 'Admin\AcademyController@massDe
 Route::post('academies_restore/{id}', ['uses' => 'Admin\AcademyController@restore', 'as' => 'academies.restore']);
 Route::delete('academies_perma_del/{id}', ['uses' => 'Admin\AcademyController@perma_del', 'as' => 'academies.perma_del']);
 Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus', 'as' => 'academies.status']);
+Route::post('user/academies/{id}', ['uses' => 'Admin\AcademyController@update', 'as' => 'academies.update']);
+
 
     //===== FORUMS Routes =====//
     Route::resource('forums-category', 'Admin\ForumController');
