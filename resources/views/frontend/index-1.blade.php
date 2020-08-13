@@ -364,7 +364,8 @@
                                                     </div>
                                                     <div class="teacher-social-name ul-li-block pt-3">
                                                         <div class="teacher-name text-dark font-weight-bold">
-                                                            <h5>{{$teacher->title}}.{{$item->full_name}}</h5>
+                                                            <h5 class="text-sec1">{{$item->full_name}}</h5>
+                                                            <span class="text-sec">{{$teacher->title}}</span>
                                                         </div>
 
                                                         <hr>

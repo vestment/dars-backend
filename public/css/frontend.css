@@ -6768,8 +6768,16 @@ hr{
   border-color:#0C0C3F;
 }
 
+.text-sec1{
+  font-weight: lighter ;
+  font-family: Open Sans;
+}
 
-
+.text-sec{
+  color: #666464;
+  font-weight: lighter ;
+  font-family: Open Sans;
+}
 
 
 .btn-group, .btn-group-vertical{

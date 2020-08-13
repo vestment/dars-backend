@@ -102,6 +102,10 @@
                                                                                target="_blank">
                                                                                 {{$teacher->description}}
                                                                             </a>
+                                                                            <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                                                               target="_blank">
+                                                                                {{$teacher->title}}
+                                                                            </a>
                                                                         @endforeach
 
                                                                     </div>

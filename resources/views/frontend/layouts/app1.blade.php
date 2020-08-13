@@ -92,7 +92,7 @@
                         <div class="navbar-default">
                             <div class="navbar-header logonone float-left">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
-                                <img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
+                                <img style="width:28%;" src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
 
                                     <!-- <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo"> -->
 
