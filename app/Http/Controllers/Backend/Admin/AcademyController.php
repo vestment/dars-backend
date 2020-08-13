@@ -165,6 +165,7 @@ class AcademyController extends Controller
     {
         $academy = User::findOrFail($id);
 
+
         return view('backend.academies.show', compact('academy'));
     }
 
@@ -177,7 +178,9 @@ class AcademyController extends Controller
     public function edit($id)
     {
         $academy = User::findOrFail($id);
-        return view('backend.academies.edit', compact('academy'));
+        $academyData = academy::where('user_id',$id)->get()[0];
+       
+        return view('backend.academies.edit', compact('academy','academyData'));
     }
 
     /**

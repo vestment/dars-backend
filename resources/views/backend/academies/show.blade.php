@@ -32,6 +32,18 @@
                             <th>@lang('labels.backend.access.users.tabs.content.overview.name')</th>
                             <td>{{ $academy->name }}</td>
                         </tr>
+                        <tr>
+                            <th>@lang('labels.backend.access.users.tabs.content.overview.city')</th>
+                            <td>{{ $academy->city }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('labels.backend.access.users.tabs.content.overview.address')</th>
+                            <td>{{ $academy->address }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('labels.backend.access.users.tabs.content.overview.phone')</th>
+                            <td>{{ $academy->phone }}</td>
+                        </tr>
 
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.email')</th>
