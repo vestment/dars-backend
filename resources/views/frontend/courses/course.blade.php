@@ -418,7 +418,7 @@
                                                 <p class="subtitle2">  
                                                     <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
                                                         @if($item->model->chapter_id == $chapter->id)
-                                                            {{$item->model->title}}
+                                                            {{$item->model->title}}  {{$item->model->downloadableMedia}}
                                                         @endif
                                                         @if($item->model_type == 'App\Models\Test')
                                                             <p class="mb-0 text-primary">- @lang('labels.frontend.course.test')</p>

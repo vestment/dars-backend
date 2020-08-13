@@ -9,6 +9,7 @@ return array (
       'title' => 'Courses',
       'fields' => 
       array (
+        'knowledge' => 'What You will learn',
         'published' => 'Published',
         'unpublished' => 'Not Published',
         'featured' => 'Featured',
