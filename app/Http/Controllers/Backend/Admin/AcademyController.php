@@ -120,22 +120,29 @@ class AcademyController extends Controller
             $academy->avatar_type = 'storage';
             $file = $request->file('image');
             $filename = time() . '-' . $file->getClientOriginalName();
-            $path = public_path() . '/storage/avatars';
+            $path = public_path() . '/storage/uploads/academies/' . $academy->id;
             $file->move($path, $filename);
 //            $academyLogo = asset('storage/uploads/academies/' . $filename);
-            $academy->avatar_location = 'storage/avatars/' . $filename;
+            $academy->avatar_location = 'storage/uploads/academies/' . $academy->id . '/' . $filename;
         }
         $academy->active = isset($request->active) ? 1 : 0;
         $academy->save();
         $academy->assignRole('academy');
         $galleryFiles = request()->gallery;
-        $galleryImages = [];
-        foreach ($galleryFiles as $galleryImage) {
-            $filename = time() . '-' . $galleryImage->getClientOriginalName();
-            $path = public_path() . '/storage/uploads/academies/'.$academy->id.'/gallery';
-            $galleryImage->move($path, $filename);
-            array_push($galleryImages ,asset('storage/uploads/academies/'.$academy->id.'/gallery/' . $filename));
-        }        $payment_details = [
+        if ($galleryFiles) {
+            $galleryImages = [];
+            foreach ($galleryFiles as $galleryImage) {
+                $filename = time() . '-' . $galleryImage->getClientOriginalName();
+                $path = public_path() . '/storage/uploads/academies/' . $academy->id . '/gallery';
+                $galleryImage->move($path, $filename);
+                array_push($galleryImages, asset('storage/uploads/academies/' . $academy->id . '/gallery/' . $filename));
+            }
+            $gallery = json_encode($galleryImages);
+        } else {
+            $gallery = null;
+        }
+
+        $payment_details = [
             'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
             'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
             'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
@@ -152,8 +159,8 @@ class AcademyController extends Controller
             'description' => request()->description,
             'logo' => $academy->avatar_location,
             'percentage' => request()->percentage,
-            'adress' => request()->adress,
-            'gallery' => json_encode($galleryImages)
+            'adress' => request()->address,
+            'gallery' => $gallery
         ];
 //        dd($data);
         academy::create($data);
@@ -185,9 +192,9 @@ class AcademyController extends Controller
     public function edit($id)
     {
         $academy = User::findOrFail($id);
-        $academyData = academy::where('user_id',$id)->get()[0];
-       
-        return view('backend.academies.edit', compact('academy','academyData'));
+        $academyData = academy::where('user_id', $id)->get()[0];
+
+        return view('backend.academies.edit', compact('academy', 'academyData'));
     }
 
     /**
@@ -202,7 +209,7 @@ class AcademyController extends Controller
 
         $academy = User::findOrFail($id);
         $academy->update($request->except('email'));
-        $academyData = academy::where('user_id',$id)->get()[0];
+        $academyData = academy::where('user_id', $id)->get()[0];
         if ($request->file('image')) {
             $academy->avatar_type = 'storage';
             $file = $request->file('image');
@@ -215,18 +222,17 @@ class AcademyController extends Controller
         $academy->active = isset($request->active) ? 1 : 0;
         $academy->save();
         if (request()->gallery) {
-        $galleryFiles = request()->gallery;
-        $galleryImages = [];
-        foreach ($galleryFiles as $galleryImage) {
-            $filename = time() . '-' . $galleryImage->getClientOriginalName();
-            $path = public_path() . '/storage/uploads/academies/'.$academy->id.'/gallery';
-            $galleryImage->move($path, $filename);
-            array_push($galleryImages ,asset('storage/uploads/academies/'.$academy->id.'/gallery/' . $filename));
-        }  
+            $newGalleryFiles = request()->gallery; // New Images
+            $galleryImages = $academyData->gallery ? json_decode($academyData->gallery) : []; // Old Gallery images
+            foreach ($newGalleryFiles as $newGalleryImage) {
+                $filename = time() . '-' . $newGalleryImage->getClientOriginalName();
+                $path = public_path() . '/storage/uploads/academies/' . $academy->id . '/gallery';
+                $newGalleryImage->move($path, $filename);
+                array_push($galleryImages, asset('storage/uploads/academies/' . $academy->id . '/gallery/' . $filename));
+            }
         } else {
             $galleryImages = $academyData->gallery;
-        }     
-        
+        }
 
         $payment_details = [
             'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
@@ -236,7 +242,6 @@ class AcademyController extends Controller
             'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
         ];
         $data = [
-            // 'user_id'           => $user->id,
             'facebook_link' => request()->facebook_link,
             'twitter_link' => request()->twitter_link,
             'linkedin_link' => request()->linkedin_link,

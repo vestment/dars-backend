@@ -138,16 +138,19 @@ class TeachersController extends Controller
      */
     public function store(StoreTeachersRequest $request)
     {
-//        $request = $this->saveFiles($request);
-// dd($request->all());
 
         $teacher = User::create($request->all());
         $teacher->confirmed = 1;
         $teacher->active = isset($request->active) ? 1 : 0;
-        if (request()->type == "individual") {
-            $academy_id = 0;
+        if (auth()->user()->hasRole('academy')) {
+            $academy_id = auth()->user()->id;
+            request()->type = 'academy';
         } else {
-            $academy_id = request()->academy_id;
+            if (request()->type == "individual") {
+                $academy_id = 0;
+            } else {
+                $academy_id = request()->academy_id;
+            }
         }
 
         $payment_details = [
@@ -169,8 +172,6 @@ class TeachersController extends Controller
             'percentage' => request()->percentage,
             'title' => request()->title,
             'academy_id' => $academy_id,
-
-
         ];
         TeacherProfile::create($data);
         if ($request->image) {

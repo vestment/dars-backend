@@ -40,37 +40,37 @@
                         </div><!--col-->
                     </div><!--form-group-->
                     <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.phone'))->class('col-md-2 form-control-label')->for('phone') }}
-                            <div class="col-md-10">
-                                {{ html()->text('phone')
-                                        ->class('form-control')
-                                        ->placeholder(__('labels.teacher.bank_details.phone')) }}
-                            </div><!--col-->
-                        </div>
-                        <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.address'))->class('col-md-2 form-control-label')->for('address') }}
-                            <div class="col-md-10">
-                                {{ html()->text('address')
-                                        ->class('form-control')
-                                        ->placeholder(__('labels.teacher.bank_details.address')) }}
-                            </div><!--col-->
-                        </div>
-                        <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.city'))->class('col-md-2 form-control-label')->for('city') }}
-                            <div class="col-md-10">
-                                {{ html()->text('city')
-                                        ->class('form-control')
-                                        ->placeholder(__('labels.teacher.bank_details.city')) }}
-                            </div><!--col-->
-                        </div>
+                        {{ html()->label(__('labels.teacher.bank_details.phone'))->class('col-md-2 form-control-label')->for('phone') }}
+                        <div class="col-md-10">
+                            {{ html()->text('phone')
+                                    ->class('form-control')
+                                    ->placeholder(__('labels.teacher.bank_details.phone')) }}
+                        </div><!--col-->
+                    </div>
                     <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.title'))->class('col-md-2 form-control-label')->for('title') }}
-                            <div class="col-md-10">
-                                {{ html()->text('title')
-                                        ->class('form-control')
-                                        ->placeholder(__('labels.teacher.bank_details.title')) }}
-                            </div><!--col-->
-                        </div>
+                        {{ html()->label(__('labels.teacher.bank_details.address'))->class('col-md-2 form-control-label')->for('address') }}
+                        <div class="col-md-10">
+                            {{ html()->text('address')
+                                    ->class('form-control')
+                                    ->placeholder(__('labels.teacher.bank_details.address')) }}
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.teacher.bank_details.city'))->class('col-md-2 form-control-label')->for('city') }}
+                        <div class="col-md-10">
+                            {{ html()->text('city')
+                                    ->class('form-control')
+                                    ->placeholder(__('labels.teacher.bank_details.city')) }}
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.teacher.bank_details.title'))->class('col-md-2 form-control-label')->for('title') }}
+                        <div class="col-md-10">
+                            {{ html()->text('title')
+                                    ->class('form-control')
+                                    ->placeholder(__('labels.teacher.bank_details.title')) }}
+                        </div><!--col-->
+                    </div>
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.backend.teachers.fields.email'))->class('col-md-2 form-control-label')->for('email') }}
@@ -106,13 +106,16 @@
                         {{ html()->label(__('labels.backend.general_settings.user_registration_settings.fields.gender'))->class('col-md-2 form-control-label')->for('gender') }}
                         <div class="col-md-10">
                             <label class="radio-inline mr-3 mb-0">
-                                <input type="radio" name="gender" value="male"> {{__('validation.attributes.frontend.male')}}
+                                <input type="radio" name="gender" {{old('gender') == 'male'? 'checked':''}}
+                                value="male"> {{__('validation.attributes.frontend.male')}}
                             </label>
                             <label class="radio-inline mr-3 mb-0">
-                                <input type="radio" name="gender" value="female"> {{__('validation.attributes.frontend.female')}}
+                                <input type="radio" name="gender" {{old('gender') == 'female'? 'checked':''}}
+                                       value="female"> {{__('validation.attributes.frontend.female')}}
                             </label>
                             <label class="radio-inline mr-3 mb-0">
-                                <input type="radio" name="gender" value="other"> {{__('validation.attributes.frontend.other')}}
+                                <input type="radio" name="gender" {{old('gender') == 'other'? 'checked':''}}
+                                       value="other"> {{__('validation.attributes.frontend.other')}}
                             </label>
                         </div>
                     </div>
@@ -150,36 +153,41 @@
                     <div class="form-group row">
                         {{ html()->label(__('labels.teacher.type'))->class('col-md-2 form-control-label')->for('type') }}
                         <div class="col-md-10">
-                            <select class="form-control" name="type" id="type" required>
-                                <option value="academy" {{ old('type') == 'academy'?'selected':'' }}>{{ trans('labels.teacher.academy') }}</option>
-                                <option value="individual" {{ old('type') == 'individual'?'selected':'' }}>{{ trans('labels.teacher.individual') }}</option>
+                            @if (auth()->user()->hasRole('academy'))
+                                {{ html()->text('type')
+                                ->class('form-control')
+                                ->placeholder(__('labels.teacher.type'))
+                                ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                ->value('academy')}}
+                            @else
+                                <select class="form-control" name="type" id="type" required>
+                                    <option value="academy" {{ old('type') == 'academy'?'selected':'' }}>{{ trans('labels.teacher.academy') }}</option>
+                                    <option value="individual" {{ old('type') == 'individual'?'selected':'' }}>{{ trans('labels.teacher.individual') }}</option>
 
-                            </select>
+                                </select>
+                            @endif
                         </div>
 
                     </div>
 
-                    
-                <!-- <div class = "academy">
-                    <div class="form-group row ">
-                    {!! Form::label('academy_id',trans('labels.backend.teachers.fields.academy'), ['class' => 'col-md-2 form-control-label']) !!}
-
-                        <div class="col-md-10">
-                            {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                    <div class="row academy">
+                        <div class="col-10 form-group">
+                            {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                            @if (auth()->user()->hasRole('academy'))
+                                {{ html()->text('academy_id')
+                                ->class('form-control')
+                                ->placeholder(auth()->user()->full_name)
+                                ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                ->value(auth()->user()->full_name)}}
+                            @else
+                                {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false, 'required' => true]) !!}
+                            @endif
                         </div>
-                    
-                    </div>
-                   </div> -->
-                   <div class="row academy">
-                    <div class="col-10 form-group">
-                        {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
-                        {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false, 'required' => true]) !!}
-                    </div>
                     <!-- <div class="col-2 d-flex form-group flex-column">
                         OR <a target="_blank" class="btn btn-primary mt-auto"
                               href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
                     </div> -->
-                </div>
+                    </div>
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.teacher.payment_details'))->class('col-md-2 form-control-label')->for('payment_details') }}
@@ -288,39 +296,39 @@
     {{ html()->form()->close() }}
 @endsection
 @push('after-scripts')
-<script>
-    @if(old('payment_method') && old('payment_method') == 'bank')
-    $('.paypal_details').hide();
-    $('.bank_details').show();
-    @elseif(old('payment_method') && old('payment_method') == 'paypal')
-    $('.paypal_details').show();
-    $('.bank_details').hide();
-    @else
-    $('.paypal_details').hide();
-    @endif
-    $(document).on('change', '#payment_method', function(){
-        if($(this).val() === 'bank'){
-            $('.paypal_details').hide();
-            $('.bank_details').show();
-        }else{
-            $('.paypal_details').show();
-            $('.bank_details').hide();
-        }
-    });
+    <script>
+        @if(old('payment_method') && old('payment_method') == 'bank')
+        $('.paypal_details').hide();
+        $('.bank_details').show();
+        @elseif(old('payment_method') && old('payment_method') == 'paypal')
+        $('.paypal_details').show();
+        $('.bank_details').hide();
+        @else
+        $('.paypal_details').hide();
+        @endif
+        $(document).on('change', '#payment_method', function () {
+            if ($(this).val() === 'bank') {
+                $('.paypal_details').hide();
+                $('.bank_details').show();
+            } else {
+                $('.paypal_details').show();
+                $('.bank_details').hide();
+            }
+        });
 
-    @if(old('type') && old('type') == 'individual')
-    $('.academy').hide();
-    @elseif(old('type')&& old('type')  == 'academy')
-    $('.academy').show();
-    @endif
-    $(document).on('change', '#type', function(){
-        if($(this).val() === 'individual'){
-            $('.academy').hide();
-          
-        }else{
-            $('.academy').show();
-           
-        }
-    });
-</script>
+        @if(old('type') && old('type') == 'individual')
+        $('.academy').hide();
+        @elseif(old('type')&& old('type')  == 'academy')
+        $('.academy').show();
+        @endif
+        $(document).on('change', '#type', function () {
+            if ($(this).val() === 'individual') {
+                $('.academy').hide();
+
+            } else {
+                $('.academy').show();
+
+            }
+        });
+    </script>
 @endpush

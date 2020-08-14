@@ -15,9 +15,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
     <style>
 body{
-    font-family: ubuntu;
+    font-family: Cairo;
 }
 .imgDiv{
     background-image: url("{{ asset('img/frontend/course/01.svg') }}");
@@ -121,18 +122,18 @@ body{
                                     </div><!--col-->
                                 @endif
             </div>
-            <button type="submit"  value="Submit" class="btn loginBtn text-white col-12 mt-5">@lang('labels.backend.login.login')</button>
+            <button type="submit"  value="Submit" class="btn btn-info btn-lg text-white col-12 mt-5">@lang('labels.backend.login.login')</button>
           </form>
           <h5 class="mt-5"> @lang('labels.backend.login.login_with') </h5>
           <div class="row mt-3">
             <div class="col-md-6">
-              <a  href="{{ url('login/facebook') }}" class="btn btn-block facebookBtn text-white"><img src="{{ asset('img/frontend/course/facebook.svg') }}">@lang('labels.backend.login.facebook')</a>
+              <a  href="{{ url('login/facebook') }}" class="btn btn-block btn-primary btn-lg text-white"><i class="fa fa-facebook-f mr-2"></i> @lang('labels.backend.login.facebook')</a>
             </div>
             <div class="col-md-6 mt-3 mt-md-0">
-              <a   class="btn btn-block googleBtn text-white"><img src="{{ asset('img/frontend/course/google.svg') }}">@lang('labels.backend.login.google')</a>
+              <a   class="btn btn-danger btn-block btn-lg text-white"><i class="fa fa-google mr-2"></i> @lang('labels.backend.login.google')</a>
             </div>
           </div>
-            <div><a href="{{ route('register.index') }}" class="text-dark col-12 d-flex justify-content-center mt-5">@lang('labels.backend.login.sign_up')</a></div>
+            <div><a href="{{ route('register.index') }}" class="text-dark font-weight-bold col-12 d-flex justify-content-center mt-5">@lang('labels.backend.login.sign_up')</a></div>
             <div class="mb-2"><a href="#" class="text-dark col-12 d-flex justify-content-center mt-3">@lang('labels.backend.login.terms_of_use')</a></div>
         
      

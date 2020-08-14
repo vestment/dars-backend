@@ -30,14 +30,6 @@ Route::group(['middleware' => 'role:academy|administrator'], function () {
 
 Route::group(['middleware' => 'role:administrator'], function () {
 
-    //===== Teachers Routes =====//
-    // Route::resource('teachers', 'Admin\TeachersController');
-    // Route::get('get-teachers-data', ['uses' => 'Admin\TeachersController@getData', 'as' => 'teachers.get_data']);
-    // Route::post('teachers_mass_destroy', ['uses' => 'Admin\TeachersController@massDestroy', 'as' => 'teachers.mass_destroy']);
-    // Route::post('teachers_restore/{id}', ['uses' => 'Admin\TeachersController@restore', 'as' => 'teachers.restore']);
-    // Route::delete('teachers_perma_del/{id}', ['uses' => 'Admin\TeachersController@perma_del', 'as' => 'teachers.perma_del']);
-    // Route::post('teacher/status', ['uses' => 'Admin\TeachersController@updateStatus', 'as' => 'teachers.status']);
-
 //===== Academies Routes =====//
 Route::resource('academies', 'Admin\AcademyController');
 Route::get('get-academies-data', ['uses' => 'Admin\AcademyController@getData', 'as' => 'academies.get_data']);
@@ -45,7 +37,6 @@ Route::post('academies_mass_destroy', ['uses' => 'Admin\AcademyController@massDe
 Route::post('academies_restore/{id}', ['uses' => 'Admin\AcademyController@restore', 'as' => 'academies.restore']);
 Route::delete('academies_perma_del/{id}', ['uses' => 'Admin\AcademyController@perma_del', 'as' => 'academies.perma_del']);
 Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus', 'as' => 'academies.status']);
-Route::post('user/academies/{id}', ['uses' => 'Admin\AcademyController@update', 'as' => 'academies.update']);
 
 
     //===== FORUMS Routes =====//

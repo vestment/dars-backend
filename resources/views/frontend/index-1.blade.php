@@ -8,7 +8,7 @@
 @push('after-styles')
     <link rel="stylesheet" href="../../assets/css/course.css"/>
     <style>
-      
+
 
         .my-alert {
             position: absolute;
@@ -21,9 +21,9 @@
             display: inline-block;
         }
 
-        section {
-            overflow: unset;
-        }
+        /*section {*/
+        /*    overflow: unset;*/
+        /*}*/
 
 
     </style>
@@ -165,68 +165,59 @@
                                                                     @lang('labels.frontend.course.students')</a></span>
 
                                                         </div>
-                                                        <div class="row justify-content-around">
-                                                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                                                <button type="submit"
-                                                                        class="btn btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')
-                                                                    <i class="fa fa-shopping-bag ml-1"></i>
-                                                                </button>
+                                                        <div class="row">
+                                                            <div class="col-xl-10 col-10">
+                                                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                                                    <button type="submit"
+                                                                            class="btn btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')
+                                                                        <i class="fa fa-shopping-bag ml-1"></i>
+                                                                    </button>
 
-                                                            @elseif(!auth()->check())
-                                                                @if($course->free == 1)
-                                                                    <a id="openLoginModal"
-                                                                       class="btn btn-block btnAddCard"
-                                                                       data-target="#myModal"
-                                                                       href="#">@lang('labels.frontend.course.get_now')
-                                                                        <i
-                                                                                class="fas fa-caret-right"></i></a>
-                                                                @else
+                                                                @elseif(!auth()->check())
+                                                                    @if($course->free == 1)
+                                                                        <a class="btn btn-info btn-block btnAddCard"
+                                                                           href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now') <i
+                                                                                    class="fas fa-caret-right"></i></a>
+                                                                    @else
 
-                                                                    <a id="openLoginModal"
-                                                                       class="btn btn-info btnAddCard"
-                                                                       data-target="#myModal"
-                                                                       href="#">@lang('labels.frontend.course.add_to_cart')
-                                                                        <i class="fa fa-shopping-bag"></i>
-                                                                    </a>
+                                                                        <a class="btn btn-info btnAddCard btn-block"
+                                                                           href="{{ route('login.index') }}">@lang('labels.frontend.course.add_to_cart')
+                                                                            <i class="fa fa-shopping-bag"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                                                                    @if($course->free == 1)
+                                                                        <form action="{{ route('cart.getnow') }}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="course_id"
+                                                                                   value="{{ $course->id }}"/>
+                                                                            <input type="hidden" name="amount"
+                                                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                            <button class="btn btn-info btnAddCard btn-block">@lang('labels.frontend.course.get_now') <i
+                                                                                        class="fas fa-caret-right"></i></button>
+                                                                        </form>
+                                                                    @else
+                                                                        <form action="{{ route('cart.addToCart') }}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="course_id"
+                                                                                   value="{{ $course->id }}"/>
+                                                                            <input type="hidden" name="amount"
+                                                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                                                            <button type="submit"
+                                                                                    class="btn btn-info btnAddCard btn-block">
+                                                                                @lang('labels.frontend.course.add_to_cart')<i
+                                                                                        class="fa fa-shopping-bag"></i></button>
+                                                                        </form>
+                                                                    @endif
                                                                 @endif
-                                                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                                                @if($course->free == 1)
-                                                                    <form action="{{ route('cart.getnow') }}"
-                                                                          method="POST">
-                                                                        @csrf
-                                                                        <input type="hidden" name="course_id"
-                                                                               value="{{ $course->id }}"/>
-                                                                        <input type="hidden" name="amount"
-                                                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                        <button class="btn btn-info btnAddCard"
-                                                                                href="#">@lang('labels.frontend.course.get_now')
-                                                                            <i
-                                                                                    class="fas fa-caret-right"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                @else
-                                                                    <form action="{{ route('cart.addToCart') }}"
-                                                                          method="POST">
-                                                                        @csrf
-                                                                        <input type="hidden" name="course_id"
-                                                                               value="{{ $course->id }}"/>
-                                                                        <input type="hidden" name="amount"
-                                                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                        <button type="submit"
-                                                                                class="btn btn-info btnAddCard">
-                                                                            @lang('labels.frontend.course.add_to_cart')
-                                                                            <i
-                                                                                    class="fa fa-shopping-bag"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                @endif
-                                                            @endif
-
-                                                            <a href="{{ route('courses.show', [$course->slug]) }}"
-                                                               class="btn btnWishList">
-                                                                <i class="far fa-bookmark"></i>
-                                                            </a>
+                                                            </div>
+                                                            <div class="">
+                                                                <a href="{{ route('courses.show', [$course->slug]) }}"
+                                                                   class="btn btnWishList">
+                                                                    <i class="far fa-bookmark"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -340,11 +331,7 @@
                         <h2 class="text-dark font-weight-bolder "><span>{{env('APP_NAME')}} @lang('labels.frontend.home.Instructors').<span>
                         </h2>
                     </div>
-                    <style>
-                        .teacher-title {
-                            font-size: 0.9rem;
-                        }
-                    </style>
+
                     <div class="owl-carousel custom-owl-theme">
                         @if(count($teachers)> 0)
                             @foreach($teachers as $key=>$item)
@@ -427,9 +414,9 @@
     <section id="course-teacher" class="course-teacher-section p-5">
         <div class="">
             <div class="container ">
-                <div class="section-title mb20 headline p-5 mb-5">
+                <div class="section-title headline mb-5">
                     <span class=" subtitle text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-                    <h1 class="text-dark font-weight-bolder ">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.academies').</span>
+                    <h1 class="text-dark font-weight-bolder "><span>@lang('labels.frontend.home.academies').</span>
                     </h1>
                 </div>
 
@@ -461,31 +448,6 @@
 @endsection
 
 @push('after-scripts')
-    <script>
-        $(document).ready(function () {
-            $(".owl-carousel1").owlCarousel({
-
-                loop: true,
-                margin: 15,
-                nav: true,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    600: {
-                        items: 2
-                    },
-                    1000: {
-                        items: 3
-                    }
-                }
-            })
-        });
-    </script>
-
-    <script>
-
-    </script>
     <script>
         setTimeout(function () {
             $('.owl-carousel').trigger('refresh.owl.carousel');

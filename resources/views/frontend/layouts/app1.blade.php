@@ -95,8 +95,9 @@
 
                         <div class="navbar-default">
                             <div class="navbar-header logonone float-left">
-                                <a class="navbar-brand text-uppercase" href="{{url('/')}}">
-                                <img style="width:28%;" src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
+                                <a class="navbar-brand" href="{{url('/')}}">
+                                    <img src="{{asset("storage/logos/".config('logo_b_image'))}}"
+                                         alt="{{env('APP_NAME')}}">
 
                                 <!-- <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo"> -->
 
@@ -186,10 +187,9 @@
                                         </li>
                                         <li>
                                             @if(!auth()->check())
-                                                <div class="log-in mt-0">
+                                                <div class="sign-up mt-0">
                                                     <a
-                                                            href="{{ url('signup/en') }}">@lang('navs.general.signup')</a>
-
+                                                            href="{{ route('register.index') }}">@lang('navs.general.signup')</a>
 
                                                 </div>
                                             @endif
@@ -221,7 +221,7 @@
                                             <li>
                                                 <div class="log-in mt-0">
                                                     <a
-                                                            href="{{ url('login/en') }}">@lang('navs.general.login')</a>
+                                                            href="{{ route('login.index') }}">@lang('navs.general.login')</a>
 
 
                                                 </div>
@@ -431,14 +431,13 @@
     <script>
         @if((session()->has('show_login')) && (session('show_login') == true))
         $('#myModal').modal('show');
-        @endif
+                @endif
         var font_color = "{{config('font_color')}}"
         setActiveStyleSheet(font_color);
         $(window).on('load', function () {
-            var itemsToView = $('.owl-carousel').data('items');
-            console.log(itemsToView);
             $(".owl-carousel").owlCarousel({
                 rewind: true,
+                padding:2,
                 margin: 10,
                 nav: true,
                 navText: ["<i class='fas fa-chevron-left'></i>",
@@ -454,7 +453,7 @@
                         items: 3
                     },
                     991: {
-                        items: 4
+                        items: 5
                     }
                 }
             });
@@ -464,7 +463,9 @@
             $('.owl-carousel').on('changed.owl.carousel', function (event) {
                 var items = event.target.dataset.items;
                 if (items) {
-                    event.relatedTarget.settings.items = items
+                    if ($(window).width() > 768) {
+                        event.relatedTarget.settings.items = items
+                    }
                 }
             })
         })

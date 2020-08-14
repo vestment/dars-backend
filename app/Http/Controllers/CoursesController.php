@@ -77,8 +77,9 @@ class CoursesController extends Controller
             }
 
         }
-       
-       
+
+         $course_rating = 0; // Default value
+         $course_lessons = null; // Not Used but exported in the return
         if ($course->reviews->count() > 0) {
             $course_rating = $course->reviews->avg('rating');
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
