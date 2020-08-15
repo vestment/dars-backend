@@ -74,24 +74,21 @@ class DashboardController extends Controller
 
             } elseif (auth()->user()->hasRole('academy')) {
                 //IF logged in user is Academy
-                $students_count = Course::whereHas('teachers', function ($query) {
-                    $teachers = TeacherProfile::where('academy_id', '=', auth()->user()->id)->pluck('user_id');
+                $teachers = TeacherProfile::where('academy_id', '=', auth()->user()->id)->pluck('user_id');
+                $students_count = Course::whereHas('teachers', function ($query) use ($teachers) {
                     $query->whereIn('user_id', $teachers);
                 })
                     ->withCount('students')
                     ->get()
                     ->sum('students_count');
-                $courses = Course::whereHas('teachers', function ($query) {
-                    $teachers = TeacherProfile::where('academy_id', '=', auth()->user()->id)->pluck('user_id');
+
+                $courses = Course::whereHas('teachers', function ($query) use ($teachers) {
                     $query->whereIn('user_id', $teachers);
                 });
+
                 $courses_count = $courses->count();
-                $bundles_count = Course::whereHas('bundles', function ($query) {
-                    $courses = Course::whereHas('teachers', function ($query) {
-                        $teachers = TeacherProfile::where('academy_id', '=', auth()->user()->id)->pluck('user_id');
-                        $query->whereIn('user_id', $teachers);
-                    })->pluck('id');
-                    $query->whereIn('course_id', $courses);
+                $bundles_count = Course::whereHas('bundles', function ($query) use ($courses) {
+                    $query->whereIn('course_id', $courses->pluck('id'));
                 })->count();
 
                 $courses_id = $courses->has('reviews')->pluck('id')->toArray();

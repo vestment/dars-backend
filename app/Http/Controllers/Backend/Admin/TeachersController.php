@@ -26,12 +26,10 @@ class TeachersController extends Controller
      */
     public function index()
     {
-
-
         if (request('show_deleted') == 1) {
-            $teachers = TeacherProfile::onlyTrashed()->ofAcademy()->get();
+            $teachers = TeacherProfile::onlyTrashed()->ofAcademy()->with('teacher')->get();
         } else {
-            $teachers = TeacherProfile::ofAcademy()->get();
+            $teachers = TeacherProfile::ofAcademy()->with('teacher')->get();
         }
         return view('backend.teachers.index', compact('teachers'));
     }
@@ -62,8 +60,8 @@ class TeachersController extends Controller
             $teachers = User::ofAcademy()->role('teacher')->onlyTrashed()->orderBy('created_at', 'desc')->get();
         } else {
             $teachers = User::ofAcademy()->role('teacher')->orderBy('created_at', 'desc')->get();
-        }
 
+        }
         if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) {
             $has_view = true;
             $has_edit = true;

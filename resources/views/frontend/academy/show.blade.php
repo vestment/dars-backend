@@ -73,16 +73,15 @@
 
 
                 <div class="row col-lg-3 flex">
-                    @if($academyData->facebook_link) <a href="{{$academyData->facebook_link}}"
+                    @if($academy->academy->facebook_link) <a href="{{$academy->academy->facebook_link}}"
                                                         class="btn btn-sm btn-outline-light mr-1"><i
                                 class="fab fa-facebook-f"></i> </a> @endif
-                    @if($academyData->twitter_link)<a href="{{$academyData->twitter_link}}"
+                    @if($academy->academy->twitter_link)<a href="{{$academy->academy->twitter_link}}"
                                                       class="btn btn-sm btn-outline-light mr-1"><i
                                 class="fab fa-twitter"></i> </a>@endif
-                    @if($academyData->linkedin_link)<a href="{{$academyData->linkedin_link}}"
+                    @if($academy->academy->linkedin_link)<a href="{{$academy->academy->linkedin_link}}"
                                                        class=" btn btn-sm btn-outline-light mr-1"><i
                                 class="fab fa-linkedin"></i> </a>@endif
-                    {{--                    <a href="{{$academyData->instegram_link}}" class="btn btn-sm btn-outline-light mr-1"><i class="fab fa-instagram"></i> </a>--}}
 
                 </div>
 
@@ -93,7 +92,7 @@
                     </div>
                     <div class="col-lg-3 col-xl-4">
                         <span class=" text-light font-weight-bold">Address:</span> <span
-                                class="text-white font-weight-light">{{$academyData->adress}}</span>
+                                class="text-white font-weight-light">{{$academy->academy->adress}}</span>
                     </div>
                 </div>
             </div>
@@ -110,15 +109,12 @@
 
 
             <div class="m-5 col-2 d-lg-flex d-lg-flex d-md-flex shadow-lg divfixed">
-                <img class="academy-logo" src="{{asset($academyData->logo)}}" alt="{{$academy->full_name}}">
+                <img class="academy-logo" src="{{asset($academy->academy->logo)}}" alt="{{$academy->full_name}}">
             </div>
 
 
         </div>
     </section>
-    <?php
-    $courses = [];
-    ?>
     <!-- End of academy logo section
         ============================================= -->
     <!-- Start of Teacher section
@@ -131,17 +127,9 @@
                 <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.Instructors').</span>
                 </h1>
             </div>
-            @if(count($academyData->teachers)> 0)
+            @if(count($academyTeachers)> 0)
                 <div class="owl-carousel custom-owl-theme">
-                    @foreach($academyData->teachers as $teacher)
-                        <?php
-                        $teacherInfo = \App\Models\Auth\User::role('teacher')->with('courses')->where('id', $teacher->user_id)->get()[0];
-                        //                            dd($teacherInfo);
-                        //                            $courses = $teacherInfo->courses;
-                        foreach ($teacherInfo->courses as $teacherCourse) {
-                            array_push($courses, $teacherCourse);
-                        }
-                        ?>
+                    @foreach($academyTeachers as $teacher)
                         <div class="item">
                             <div class="text-center ">
                                 <div class="bg-card">
@@ -151,23 +139,26 @@
                                         </div>
                                         <div class="prof-img ">
                                             <img class="teacher-image p-3"
-                                                 src="{{asset($teacherInfo->avatar_location)}}"
+                                                 src="{{asset($teacher->teacher->avatar_location)}}"
                                                  alt="">
                                         </div>
                                     </div>
                                     <div class="teacher-social-name ul-li-block pt-3">
                                         <div class="teacher-name text-dark font-weight-bold">
-                                            <h5>{{$teacher->title}}.{{$teacherInfo->full_name}}</h5>
+                                            <h5>{{$teacher->teacher->full_name}}</h5>
+                                        </div>
+                                        <div class="teacher-title text-muted font-weight-light">
+                                            {{$teacher->title}}
                                         </div>
                                         <hr>
                                         <div class="teacher-name text-dark  justify-content-center">
                                             <span>{{$teacher->description}}</span>
                                         </div>
                                         <ul>
-                                            <li><a href="{{'mailto:'.$teacherInfo->email}}"><i
+                                            <li><a href="{{'mailto:'.$teacher->teacher->email}}"><i
                                                             class="fa fa-envelope"></i></a></li>
                                             <li>
-                                                <a href="{{route('admin.messages',['teacher_id'=>$teacherInfo->id])}}"><i
+                                                <a href="{{route('admin.messages',['teacher_id'=>$teacher->teacher->id])}}"><i
                                                             class="fa fa-comments"></i></a>
                                             </li>
                                         </ul>
@@ -373,11 +364,11 @@
                 <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.academy.Gallery').</span>
                 </h1>
             </div>
-            @if ($academyData->gallery != null)
+            @if ($academy->academy->gallery != null)
                 <div class="col-md-12">
                     <div class="gallery">
 
-                    @foreach(json_decode($academyData->gallery) as $key=>$image)
+                    @foreach(json_decode($academy->academy->gallery) as $key=>$image)
                         <!-- Grid column -->
                             <div class="mb-3 pics 2">
                                 <img class="img-fluid"

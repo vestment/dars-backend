@@ -9,27 +9,32 @@ use App\academy;
 
 class TeacherProfile extends Model
 {
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description','academy_id','type','percentage','title','testCol'
+        'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description', 'academy_id', 'type', 'percentage', 'title', 'testCol'
     ];
 
     /**
-    * Get the teacher profile that owns the user.
-    */
-    public function teacher(){
-        return $this->belongsTo(User::class);
+     * Get the teacher profile that owns the user.
+     */
+    public function teacher()
+    {
+//        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function academy(){
-        return $this->belongsTo(academy::class);
+    public function academy()
+    {
+//        return $this->belongsTo(academy::class);
+        return $this->belongsTo(academy::class, 'academy_id', 'user_id');
 
 
     }
+
     public function scopeofAcademy($query)
     {
         if (!Auth::user()->isAdmin()) {
@@ -39,5 +44,5 @@ class TeacherProfile extends Model
         }
         return $query;
     }
-  
+
 }
