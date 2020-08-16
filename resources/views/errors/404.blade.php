@@ -1,10 +1,10 @@
 @extends('frontend'.(session()->get('display_type') == "rtl"?"-rtl":"").'.layouts.app'.config('theme_layout'))
 @push('after-styles')
     <style>
-    .iconss{
-        font-size:90px;
-    }
-    
+        .iconss {
+            font-size: 90px;
+        }
+
         .b-not_found {
             padding-bottom: 100px;
             padding-top: 50px;
@@ -40,10 +40,11 @@
             opacity: .8;
             letter-spacing: 3px;
             font-weight: 700;
-            color:black;
+            color: black;
         }
-        h1{
-            color:black;
+
+        h1 {
+            color: black;
             font-size: 70px;
 
 
@@ -95,24 +96,25 @@
         .b-not_found .b-searchform .btn:hover {
             opacity: 0.75;
         }
-        .categ{
-            text-align:center;
-            padding:3%;
+
+        .categ {
+            text-align: center;
+            padding: 3%;
         }
+
         .categ:hover {
             /* background-color: linear-gradient(98deg, #52ADE1 0%, #625CA8 50%, #D2498B 100%); */
-            background: -webkit-linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);  
-    background: -moz-linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);  
-    background: -o-linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);  
-    background: linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);  
+            background: -webkit-linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);
+            background: -moz-linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);
+            background: -o-linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);
+            background: linear-gradient(to bottom right, #52ADE1 0%, #625CA8 50%, #D2498B 100%);
 
-    -webkit-transition: background 1s ease-out;  
-    -moz-transition: background 1s ease-out;  
-    -o-transition: background 1s ease-out;  
-    transition: background 1s ease-out;  
-    color: white;
-    border-radius: 5px;  
-   
+            -webkit-transition: background 1s ease-out;
+            -moz-transition: background 1s ease-out;
+            -o-transition: background 1s ease-out;
+            transition: background 1s ease-out;
+            color: white;
+            border-radius: 5px;
 
 
         }
@@ -151,39 +153,39 @@
 @endpush
 
 @section('content')
-   
+
     <section id="about-page" class="about-page-section pb-0">
         <div class="container">
             <div class="row">
                 <div class="b-not_found w-100">
                     <div class="text-center">
-                            <h1 ><b>@lang('http.404.title')</b></h1>
-                        
+                        <h1><b>@lang('http.404.title')</b></h1>
+
                         <h4><b>@lang('http.404.description')</b></h4>
                         <p>
                             @lang('http.404.description2')
-    </p>
-                        <div >
-                            <a href="{{url('/')}}"><img src="{{url('img/frontend/user/404.png')}}"/></a>
+                        </p>
+                        <div>
+                            <a href="{{url('/')}}"><img src="{{url('img/frontend/user/404.svg')}}"/></a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-            @if(count($categories) > 0)
-                @foreach($categories as $categ)
-                <div class="col-3 categ">
-                <a href="{{url('/')}}">
-                <span class="iconss"><i class="{{$categ->icon}}"></i></span>
-                <h3>{{$categ->name}}</h3>
-                </a>
-                </div>
-                @endforeach
+                @if(count($categories) > 0)
+                    @foreach($categories as $categ)
+                        <div class="col-3 categ">
+                            <a href="{{url('/')}}">
+                                <span class="iconss"><i class="{{$categ->icon}}"></i></span>
+                                <h3>{{$categ->name}}</h3>
+                            </a>
+                        </div>
+                    @endforeach
                 @endif
 
-               
+
             </div>
-            
+
         </div>
     </section>    <!-- Start of footer section
 

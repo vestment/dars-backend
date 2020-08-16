@@ -141,6 +141,12 @@ class Course extends Model
     public function scopeOfTeacher($query)
     {
         if (!Auth::user()->isAdmin()) {
+            if(Auth::user()->hasRole('academy')) {
+                $academyTeachersIds= TeacherProfile::where('academy_id', Auth::user()->id)->pluck('user_id');
+                return $query->whereHas('teachers', function ($q) use ($academyTeachersIds) {
+                    $q->whereIn('user_id', $academyTeachersIds);
+                });
+            }
             return $query->whereHas('teachers', function ($q) {
                 $q->where('user_id', Auth::user()->id);
             });

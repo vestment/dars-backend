@@ -1,11 +1,11 @@
 <section id="latest-area" class="">
-    <div class="container p-5">
+    <div class="container-fluid">
         <div class="section-title  text-dark p-5">
             <p class="subtitle font-weight-lighter">The world's largest selection of courses</p>
             <h2 class="font-weight-bolder">Trending <span>Courses.</span> </h2>
             <p>Choose from 100,000 online video courses with new additions published every month</p>
         </div>
-        <div class="owl-carousel default-owl-theme p-3   ">
+        <div class="owl-carousel default-owl-theme p-3">
             @if($trending->count() > 0)
 
                 @foreach($trending as $course)
@@ -22,11 +22,6 @@
                                             <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
                                         @endif
                                     </div>
-                                <!-- <div class="course-details-btn">
-                                            <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
-                                        <i class="fas fa-arrow-right"></i></a>
-                                </div>
-                                <div class="blakish-overlay"></div> -->
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title titleofcard">{{$course->title}}</h3>
@@ -71,35 +66,31 @@
                                                        target="_blank">
                                                         {{$teacherProfile->title}}
                                                     </a>
-                                                    <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                       target="_blank">
-                                                        {{$teacher->title}}
-                                                    </a>
+{{--                                                    <a href="{{route('teachers.show',['id'=>$teacher->id])}}"--}}
+{{--                                                       target="_blank">--}}
+{{--                                                        {{$teacher->title}}--}}
+{{--                                                    </a>--}}
                                                 @endforeach
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row justify-content-around">
-                                        <div class="">
+                                    <div class="row">
+                                        <div class="col-xl-10 col-10">
                                             @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
                                                 <button type="submit"
-                                                        class="btn btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')
+                                                        class="btn btn-block btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')
                                                     <i class="fa fa-shopping-bag ml-1"></i>
                                                 </button>
 
                                             @elseif(!auth()->check())
                                                 @if($course->free == 1)
-                                                    <a id="openLoginModal"
-                                                       class="btn btn-info btnAddCard"
-                                                       data-target="#myModal"
-                                                       href="#"><span class="d-lg-inline-block d-sm-none">@lang('labels.frontend.course.get_now')</span> <i
+                                                    <a class="btn btn-info btn-block btnAddCard"
+                                                       href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now') <i
                                                                 class="fas fa-caret-right"></i></a>
                                                 @else
 
-                                                    <a id="openLoginModal"
-                                                       class="btn btn-info btnAddCard w-100"
-                                                       data-target="#myModal"
-                                                       href="#"><span class="d-lg-inline-block d-sm-none">@lang('labels.frontend.course.add_to_cart')</span>
+                                                    <a class="btn btn-info btnAddCard btn-block"
+                                                       href="{{ route('login.index') }}">@lang('labels.frontend.course.add_to_cart')
                                                         <i class="fa fa-shopping-bag"></i>
                                                     </a>
                                                 @endif
@@ -112,8 +103,8 @@
                                                                value="{{ $course->id }}"/>
                                                         <input type="hidden" name="amount"
                                                                value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                        <button class="btn btn-info btnAddCard w-100"
-                                                                href="#"><span class="d-lg-inline-block d-sm-none">@lang('labels.frontend.course.get_now')</span> <i
+                                                        <button class="btn btn-info btnAddCard btn-block"
+                                                                href="#">@lang('labels.frontend.course.get_now') <i
                                                                     class="fas fa-caret-right"></i></button>
                                                     </form>
                                                 @else
@@ -124,8 +115,8 @@
                                                         <input type="hidden" name="amount"
                                                                value="{{($course->free == 1) ? 0 : $course->price}}"/>
                                                         <button type="submit"
-                                                                class="btn btn-info btnAddCard w-100">
-                                                            <span class="d-lg-inline-block d-sm-none"> @lang('labels.frontend.course.add_to_cart')</span> <i
+                                                                class="btn btn-info btnAddCard btn-block">
+                                                           @lang('labels.frontend.course.add_to_cart') <i
                                                                     class="fa fa-shopping-bag"></i></button>
                                                     </form>
                                                 @endif

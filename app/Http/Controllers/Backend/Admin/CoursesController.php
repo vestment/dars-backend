@@ -78,13 +78,12 @@ class CoursesController extends Controller
             $id = request('cat_id');
             $courses = Course::ofTeacher()
                 ->whereHas('category')
-                ->where('category_id', '=', $id)->orderBy('created_at', 'desc')->get();
+                ->where('category_id',  $id)->orderBy('created_at', 'desc')->get();
         } else {
             $courses = Course::ofTeacher()
                 ->whereHas('category')
                 ->orderBy('created_at', 'desc')->get();
         }
-
 
         if (auth()->user()->can('course_view')) {
             $has_view = true;
@@ -122,13 +121,13 @@ class CoursesController extends Controller
                         ->render();
                     $view .= $delete;
                 }
-                if($q->published == 1){
+                if ($q->published == 1) {
                     $type = 'action-unpublish';
-                }else{
+                } else {
                     $type = 'action-publish';
                 }
 
-                $view .= view('backend.datatable.'.$type)
+                $view .= view('backend.datatable.' . $type)
                     ->with(['route' => route('admin.courses.publish', ['course' => $q->id])])->render();
                 return $view;
 
@@ -150,7 +149,7 @@ class CoursesController extends Controller
             ->editColumn('status', function ($q) {
                 $text = "";
                 $text = ($q->published == 1) ? "<p class='text-white mb-1 font-weight-bold text-center bg-pink p-1 mr-1' >" . trans('labels.backend.courses.fields.published') . "</p>" : "<p class='text-white mb-1 font-weight-bold text-center bg-primary p-1 mr-1' >" . trans('labels.backend.courses.fields.unpublished') . "</p>";
-                if (auth()->user()->isAdmin()){
+                if (auth()->user()->isAdmin()) {
                     $text .= ($q->featured == 1) ? "<p class='text-white mb-1 font-weight-bold text-center bg-warning p-1 mr-1' >" . trans('labels.backend.courses.fields.featured') . "</p>" : "";
                     $text .= ($q->trending == 1) ? "<p class='text-white mb-1 font-weight-bold text-center bg-pink p-1 mr-1' >" . trans('labels.backend.courses.fields.trending') . "</p>" : "";
                     $text .= ($q->popular == 1) ? "<p class='text-white mb-1 font-weight-bold text-center bg-primary p-1 mr-1' >" . trans('labels.backend.courses.fields.popular') . "</p>" : "";
@@ -194,7 +193,7 @@ class CoursesController extends Controller
     /**
      * Store a newly created Course in storage.
      *
-     * @param  \App\Http\Requests\StoreCoursesRequest $request
+     * @param \App\Http\Requests\StoreCoursesRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCoursesRequest $request)
@@ -210,12 +209,12 @@ class CoursesController extends Controller
         $slug = "";
         if (($request->slug == "") || $request->slug == null) {
             $slug = str_slug($request->title);
-        }else if($request->slug != null){
+        } else if ($request->slug != null) {
             $slug = $request->slug;
         }
 
-        $slug_lesson = Course::where('slug','=',$slug)->first();
-        if($slug_lesson != null){
+        $slug_lesson = Course::where('slug', '=', $slug)->first();
+        if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
 
@@ -245,9 +244,7 @@ class CoursesController extends Controller
                     ->first();
                 $size = 0;
 
-            }
-            
-            elseif ($request->media_type == 'upload') {
+            } elseif ($request->media_type == 'upload') {
 
 
                 if ($request->video_file != null) {
@@ -265,17 +262,14 @@ class CoursesController extends Controller
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = url('storage/uploads/'.$filename);
+                    $media->url = url('storage/uploads/' . $filename);
                     $media->type = $request->media_type;
                     $media->file_name = $request->video_file;
                     $media->size = 0;
                     $media->save();
 
                 }
-            } 
-            
-            
-            else if ($request->media_type == 'embed') {
+            } else if ($request->media_type == 'embed') {
                 $url = $request->video;
                 $filename = $course->title . ' - video';
             }
@@ -292,8 +286,6 @@ class CoursesController extends Controller
                 $media->save();
             }
         }
-
-
 
 
         if ((int)$request->price == 0) {
@@ -313,7 +305,7 @@ class CoursesController extends Controller
     /**
      * Show the form for editing Course.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -335,8 +327,8 @@ class CoursesController extends Controller
     /**
      * Update Course in storage.
      *
-     * @param  \App\Http\Requests\UpdateCoursesRequest $request
-     * @param  int $id
+     * @param \App\Http\Requests\UpdateCoursesRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCoursesRequest $request, $id)
@@ -349,22 +341,21 @@ class CoursesController extends Controller
         $slug = "";
         if (($request->slug == "") || $request->slug == null) {
             $slug = str_slug($request->title);
-        }else if($request->slug != null){
+        } else if ($request->slug != null) {
             $slug = $request->slug;
         }
 
-        $slug_lesson = Course::where('slug','=',$slug)->where('id','!=',$course->id)->first();
-        if($slug_lesson != null){
+        $slug_lesson = Course::where('slug', '=', $slug)->where('id', '!=', $course->id)->first();
+        if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-
 
 
         $request = $this->saveFiles($request);
 
         //Saving  videos
-        if ($request->media_type != "" || $request->media_type  != null) {
-            if($course->mediavideo){
+        if ($request->media_type != "" || $request->media_type != null) {
+            if ($course->mediavideo) {
                 $course->mediavideo->delete();
             }
             $model_type = Course::class;
@@ -416,7 +407,7 @@ class CoursesController extends Controller
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = url('storage/uploads/'.$filename);
+                    $media->url = url('storage/uploads/' . $filename);
                     $media->type = $request->media_type;
                     $media->file_name = $request->video_file;
                     $media->size = 0;
@@ -447,7 +438,7 @@ class CoursesController extends Controller
     /**
      * Display Course.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -469,7 +460,7 @@ class CoursesController extends Controller
     /**
      * Remove Course from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -511,7 +502,7 @@ class CoursesController extends Controller
     /**
      * Restore Course from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
@@ -528,7 +519,7 @@ class CoursesController extends Controller
     /**
      * Permanently delete Course from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function perma_del($id)
@@ -545,11 +536,10 @@ class CoursesController extends Controller
     /**
      * Permanently save Sequence from storage.
      *
-     * @param  Request
+     * @param Request
      */
     public function saveSequence(Request $request)
     {
-         
 
 
         if (!Gate::allows('course_edit')) {
@@ -568,7 +558,7 @@ class CoursesController extends Controller
     /**
      * Publish / Unpublish courses
      *
-     * @param  Request
+     * @param Request
      */
     public function publish($id)
     {
@@ -588,18 +578,18 @@ class CoursesController extends Controller
     }
 
 
-    public function courseContent($course_id){
+    public function courseContent($course_id)
+    {
 
-        $timeline =  CourseTimeline::where('course_id', $course_id)->get();
+        $timeline = CourseTimeline::where('course_id', $course_id)->get();
         foreach ($timeline as $item) {
-        $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
+            $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
 
         }
-    
 
 
-        foreach ($content as $key=>$item){
-            foreach($item as $j=>$item){
+        foreach ($content as $key => $item) {
+            foreach ($item as $j => $item) {
                 $chapterContent[] = $content[$key][$j];
             }
 
@@ -612,10 +602,7 @@ class CoursesController extends Controller
         // $chaptersOfCourse = Chapter::where('id',$chapters->model_id);
 
 
-        return view('backend.courses.courseContent', compact( 'chapterContent','timeline'));
-
-
-
+        return view('backend.courses.courseContent', compact('chapterContent', 'timeline'));
 
 
     }

@@ -105,24 +105,34 @@
                         </div><!--col-->
                     </div>
                     <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.gallery'))->class('col-md-2 form-control-label')->for('gallery') }}
+
+                        <div class="col-md-10">
+                            {!! Form::file('gallery[]', ['class' => 'form-control d-inline-block', 'placeholder' => '','multiple' => 'multiple']) !!}
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
                         {{ html()->label(__('labels.backend.general_settings.user_registration_settings.fields.gender'))->class('col-md-2 form-control-label')->for('gender') }}
                         <div class="col-md-10">
                             <label class="radio-inline mr-3 mb-0">
-                                <input type="radio" name="gender" value="male" {{ $academy->gender == 'male'?'checked':'' }}> {{__('validation.attributes.frontend.male')}}
+                                <input type="radio" name="gender"
+                                       value="male" {{ $academy->gender == 'male'?'checked':'' }}> {{__('validation.attributes.frontend.male')}}
                             </label>
                             <label class="radio-inline mr-3 mb-0">
-                                <input type="radio" name="gender" value="female" {{ $academy->gender == 'female'?'checked':'' }}> {{__('validation.attributes.frontend.female')}}
+                                <input type="radio" name="gender"
+                                       value="female" {{ $academy->gender == 'female'?'checked':'' }}> {{__('validation.attributes.frontend.female')}}
                             </label>
                             <label class="radio-inline mr-3 mb-0">
-                                <input type="radio" name="gender" value="other" {{ $academy->gender == 'other'?'checked':'' }}> {{__('validation.attributes.frontend.other')}}
+                                <input type="radio" name="gender"
+                                       value="other" {{ $academy->gender == 'other'?'checked':'' }}> {{__('validation.attributes.frontend.other')}}
                             </label>
                         </div>
                     </div>
 
-                    <!-- @php
-                        $teacherProfile = $academy->teacherProfile?:'';
-                        $payment_details = $academy->teacherProfile?json_decode($academy->teacherProfile->payment_details):new stdClass();
-                    @endphp -->
+                <!-- @php
+                    $teacherProfile = $academy->teacherProfile?:'';
+                    $payment_details = $academy->teacherProfile?json_decode($academy->teacherProfile->payment_details):new stdClass();
+                @endphp -->
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.academy.facebook_link'))->class('col-md-2 form-control-label')->for('facebook_link') }}
@@ -211,7 +221,8 @@
                         </div>
                     </div>
 
-                    <div class="paypal_details" style="display:{{ $academyData->payment_method == 'paypal'?'':'none' }}">
+                    <div class="paypal_details"
+                         style="display:{{ $academyData->payment_method == 'paypal'?'':'none' }}">
                         <div class="form-group row">
                             {{ html()->label(__('labels.academy.paypal_email'))->class('col-md-2 form-control-label')->for('paypal_email') }}
                             <div class="col-md-10">
@@ -263,11 +274,11 @@
 @endsection
 @push('after-scripts')
     <script>
-        $(document).on('change', '#payment_method', function(){
-            if($(this).val() === 'bank'){
+        $(document).on('change', '#payment_method', function () {
+            if ($(this).val() === 'bank') {
                 $('.paypal_details').hide();
                 $('.bank_details').show();
-            }else{
+            } else {
                 $('.paypal_details').show();
                 $('.bank_details').hide();
             }

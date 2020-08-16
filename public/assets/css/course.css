@@ -82,8 +82,8 @@ ul.pagination {
     background: #D2498B 
 }
 .best-course-pic-text {
-    background-image: url('../../assets/img/card/card.png');
-    background-size:cover;
+    /*background-image: url('../../assets/img/card/card.png');*/
+    /*background-size:cover;*/
     padding-top: 0;
     margin-bottom: 10%;
     box-shadow: 0px 1px 10px #212529;
@@ -160,10 +160,7 @@ ul.pagination {
 
 .teach_img{
 width: 60px;
-height: 60px;
+height: unset;
 border-radius:50%; 
 }
 
-.im{
-    height: 130px !important;
-}

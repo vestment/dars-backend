@@ -1089,7 +1089,7 @@ h6 {
 
 .sub-menu {
     width: 300px;
-    display: table;
+    display: inline-grid;
     -webkit-box-shadow: 0 5px 10px 0 rgba(83, 82, 82, 0.1);
     box-shadow: 0 5px 10px 0 rgba(83, 82, 82, 0.1);
     background-color: #fff;
@@ -6404,7 +6404,9 @@ ul.product-tab li.active:after {
 .course-page-section {
     padding: 40px 0px 0px;
 }
-
+.gallery-section {
+    padding: 40px 0px 0px;
+}
 .coursesec {
     padding-top: 35px;
 }
@@ -6458,7 +6460,7 @@ ul.product-tab li.active:after {
     }
 }
 
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1440px) and (max-width: 1900px){
     .divfixed {
         top: 30%;
         right: 0;
@@ -6744,7 +6746,7 @@ iframe {
 
 .teacher-image {
     border-radius: 50%;
-    width: 185px !important;
+    /*width: 185px !important;*/
 
 }
 
@@ -7040,14 +7042,22 @@ hr {
 
 @media (max-width: 991px) {
     .custom-owl-theme .owl-nav .owl-prev {
-        left: -40%;
+        left: -15%;
     }
 
     .custom-owl-theme .owl-nav .owl-next {
-        right: -40%;
+        right: -15%;
     }
 }
-
+.sign-up {
+    background-color: #d2498b;
+    border-radius: 4px;
+    padding: 10px;
+    transition: .3s all ease-in-out
+}
+.sign-up:hover {
+    background-color: #b3276b;
+}
 .academy {
     height: 130px;
     box-shadow: 0 0 3px 2px #343a406b;
@@ -7062,17 +7072,17 @@ hr {
 }
 
 .best-course-pic-text:before {
-    background-image: url(../../assets/img/banner/01.png);
-    background-size: cover;
+    background-image: url(../../images/MIX-SLP8.svg);
     background-position: center;
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
     content: ' ';
     position: absolute;
+    top: 10%;
     z-index: 0;
-    transform: scale(1.75);
+    transform: scale(2);
     height: 100%;
-    opacity: 0.13;
+    opacity: 0.08;
     overflow: hidden;
     width: 100%;
 }
@@ -7156,8 +7166,42 @@ hr {
 .course-container:not(.show) {
     display: none;
 }
-
+.teacher-title {
+    font-size: 0.9rem;
+    width: 100%;
+}
 .academy-logo {
     padding: 15px;
     max-width: 284px;
+}
+.gallery {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    -webkit-column-width: 33%;
+    -moz-column-width: 33%;
+    column-width: 33%;
+}
+
+.gallery .pics {
+    -webkit-transition: all 350ms ease;
+    transition: all 350ms ease;
+}
+
+.gallery .animation {
+    visibility: unset !important;;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+}
+
+@media (max-width: 450px) {
+    .gallery {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+        -webkit-column-width: 100%;
+        -moz-column-width: 100%;
+        column-width: 100%;
+    }
 }

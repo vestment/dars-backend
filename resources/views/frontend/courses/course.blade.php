@@ -34,6 +34,15 @@
             display: inline;
             text-align: center;
         }
+        .divider {
+            height: 2px;
+        }
+        .teacher-description {
+            /*border-bottom: 1px solid;*/
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
     </style>
 @endpush
 @section('content')
@@ -63,11 +72,9 @@
 
                 <span class="text-white">{{$course_rating}}</span>
                 </div>
-
-
                 <div class="row col-lg-3 flex">
                     @foreach($course->teachers as $key=>$teacher)
-                            <img style="border-radius: 50%"  src=" {{$teacher->picture}}" alt="">
+                            <img style="border-radius: 50%"  src=" {{asset($teacher->picture)}}" alt="">
                             @php $key++ @endphp
                                 <p class="text-white mt-4 ml-2">   {{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
                     @endforeach
@@ -572,41 +579,33 @@
         ============================================= --> 
     <section id="course-page" class="course-page-section">
         <div class="container">
-            <div class="row  coursecontent d-block m-2">
+            <div class="row  coursecontent d-block m-2 pb-2">
                 <h2> @lang('labels.frontend.course.instructors') </h2>
             </div>
-            <div class="row m-2">
+
                 @foreach($course->teachers as $key=>$teacher)
-                    <div class="col-lg-2 col-md-2 col-sm-3">
-                        <img src=" {{$teacher->picture}}" alt="">
+                    @php
+                        $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                    @endphp
+            <div class="row">
+
+                    <div class="col-lg-1 col-md-2 col-sm-3">
+                        <img style="max-width: 100px" class="rounded-circle" src=" {{asset($teacher->avatar_location)}}" alt="">
 
                         <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
                     </div>
                     <div class="col-lg-3 col-md-5 col-sm-3">
                         @php $key++ @endphp
-                        <p style="font-size:30px;">{{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
-                    </div>
-                    <div class="col-3">
-                        <p>{{$teacher->description}}</p>
-                    </div>
-                @endforeach
-            </div>
-            <div class="row m-2">
-                <p>  </p>
+                        <p style="font-size:30px;">{{$teacher->full_name}}</p>
+                        <p class="teacher-title">{{$teacherProfile->title}}</p>
+                        <hr class="ml-0 divider">
 
-                {{-- <p> Chris has sold more than 1,000,000 of his online business & self improvement courses 
-                    in 12 languages in 196 countries and his courses have been profiled in Business Insider, NBC, Inc, Forbes,
-                    CNN, Entrepreneur & on other business news websites. Chris is the author of the #1 best selling online 
-                    business course called "An Entire MBA in 1 Course®” & many other courses.</p> 
-                    
-                <p> He’s the author of the book "101 Crucial Lessons They Don't Teach You in Business School®,"​ which 
-                Business Insider wrote is "the most popular book of 2016."​ Forbes called this book "1 of 6 books that all 
-                entrepreneurs must read right now. </p>
-                
-                <p>"​He is the founder & CEO of Haroun Education Ventures, an award winning business school professor, 
-                    MBA graduate from Columbia University & former Goldman Sachs employee. He has raised/managed over $1bn 
-                    in his career.</p> --}}
-            </div>
+                    </div>
+                    <div class="col-12 teacher-description">
+                        <p>{{$teacherProfile->description}}</p>
+                    </div>
+                </div>
+                @endforeach
         </div>
     </section>
   <!-- End of Instructor info review section

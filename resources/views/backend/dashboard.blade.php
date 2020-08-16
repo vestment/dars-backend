@@ -295,6 +295,107 @@
                     </div>
                     @endif
 
+                    @elseif(auth()->user()->hasRole('academy'))
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-3 col-12 border-right">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card text-dark bg-white ">
+                                                <div class="card-body">
+                                                    <h5 class="">@lang('labels.backend.dashboard.course_and_bundles')</h5>
+                                                    <h2 class="">{{$courses_count + $bundles_count}}</h2>
+                                                    <h6>{{$courses_count}} Courses | {{$bundles_count}} Bundle</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="card text-dark bg-white ">
+                                                <div class="card-body">
+                                                    <h2 class="">{{$students_count}}</h2>
+                                                    <h5>@lang('labels.backend.dashboard.students_enrolled')</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-12 border-right">
+                                    <div class="d-inline-block form-group w-100">
+                                        <h4 class="mb-0">@lang('labels.backend.dashboard.recent_reviews') <a
+                                                    class="btn btn-primary float-right"
+                                                    href="{{route('admin.reviews.index')}}">@lang('labels.backend.dashboard.view_all')</a>
+                                        </h4>
+
+                                    </div>
+                                    <table class="table table-responsive-sm table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>@lang('labels.backend.dashboard.course')</td>
+                                            <td>@lang('labels.backend.dashboard.review')</td>
+                                            <td>@lang('labels.backend.dashboard.time')</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(count($recent_reviews) > 0)
+                                            @foreach($recent_reviews as $item)
+                                                <tr>
+                                                    <td>
+                                                        <a target="_blank"
+                                                           href="{{route('courses.show',[$item->reviewable->slug])}}">{{$item->reviewable->title}}</a>
+                                                    </td>
+                                                    <td>{{$item->content}}</td>
+                                                    {{--                                                    <td>{{$item->created_at->diffforhumans()}}</td>--}}
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="3">@lang('labels.backend.dashboard.no_data')</td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <div class="d-inline-block form-group w-100">
+                                        <h4 class="mb-0">@lang('labels.backend.dashboard.recent_messages') <a
+                                                    class="btn btn-primary float-right"
+                                                    href="{{route('admin.messages')}}">@lang('labels.backend.dashboard.view_all')</a>
+                                        </h4>
+                                    </div>
+
+
+                                    <table class="table table-responsive-sm table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>@lang('labels.backend.dashboard.message_by')</td>
+                                            <td>@lang('labels.backend.dashboard.message')</td>
+                                            <td>@lang('labels.backend.dashboard.time')</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(count($threads) > 0)
+                                            @foreach($threads as $item)
+                                                <tr>
+                                                    <td>
+                                                        <a target="_blank"
+                                                           href="{{asset('/user/messages/?thread='.$item->id)}}">{{$item->title}}</a>
+                                                    </td>
+                                                    <td>{{$item->lastMessage->body}}</td>
+                                                    <td>{{$item->lastMessage->created_at->diffForHumans() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="3">@lang('labels.backend.dashboard.no_data')</td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                     @elseif(auth()->user()->hasRole('teacher'))
                         <div class="col-12">

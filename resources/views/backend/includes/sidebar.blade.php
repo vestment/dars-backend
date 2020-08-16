@@ -5,7 +5,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-title ">
-            <a href="{{ route('admin.dashboard') }}"> <img class="logo" src="{{url('img/backend/brand/logo.png')}}"></a>
+                <a href="{{ route('admin.dashboard') }}"> <img class="logo" src="{{url('img/backend/brand/logo.png')}}"></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ active_class(Active::checkUriPattern('admin/dashboard')) }}"
@@ -33,13 +33,15 @@
                         <span class="title">@lang('menus.backend.sidebar.teachers.title')</span>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ $request->segment(2) == 'academies' ? 'active' : '' }}"
-                       href="{{ route('admin.academies.index') }}">
-                        <i class="nav-icon icon-directions"></i>
-                        <span class="title">@lang('menus.backend.sidebar.academies.title')</span>
-                    </a>
-                </li>
+                @if ($logged_in_user->isAdmin())
+                    <li class="nav-item ">
+                        <a class="nav-link {{ $request->segment(2) == 'academies' ? 'active' : '' }}"
+                           href="{{ route('admin.academies.index') }}">
+                            <i class="nav-icon icon-directions"></i>
+                            <span class="title">@lang('menus.backend.sidebar.academies.title')</span>
+                        </a>
+                    </li>
+                @endif
             @endif
 
             @can('category_access')
@@ -90,7 +92,7 @@
                                 </a>
                             </li>
                         @endcan
-                       
+
 
                         @can('test_access')
                             <li class="nav-item ">
@@ -449,13 +451,13 @@
             @endif
 
             @if ($logged_in_user->hasRole('teacher'))
-            <li class="nav-item ">
-                <a class="nav-link {{ $request->segment(2) == 'payments' ? 'active' : '' }}"
-                    href="{{ route('admin.payments') }}">
-                    <i class="nav-icon icon-wallet"></i>
-                    <span class="title">@lang('menus.backend.sidebar.payments.title')</span>
-                </a>
-            </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ $request->segment(2) == 'payments' ? 'active' : '' }}"
+                       href="{{ route('admin.payments') }}">
+                        <i class="nav-icon icon-wallet"></i>
+                        <span class="title">@lang('menus.backend.sidebar.payments.title')</span>
+                    </a>
+                </li>
             @endif
 
         </ul>

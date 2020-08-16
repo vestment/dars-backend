@@ -1643,7 +1643,7 @@ return array (
       'ifsc_code' => 'IFSC Code',
       'address' => ' Address',
       'city' => ' City',
-      'phone' => ' Address',
+      'phone' => ' Phone',
       'bank_code' => '  Bank Code',
 
 
