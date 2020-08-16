@@ -13,9 +13,9 @@ class AddColumnToCourse extends Migration
      */
     public function up()
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->integer('course_hours')->nullable();
-        });
+        // Schema::table('courses', function (Blueprint $table) {
+        //     $table->integer('course_hours')->nullable();
+        // });
     }
 
     /**
@@ -25,8 +25,8 @@ class AddColumnToCourse extends Migration
      */
     public function down()
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->dropColumn('course_hours');
-        });
+        // Schema::table('courses', function (Blueprint $table) {
+        //     $table->dropColumn('course_hours');
+        // });
     }
 }

@@ -24,7 +24,7 @@
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
         <div class="blakish-overlay"></div>
             <div class="container">
-                <div class="col m-5 p-3 paragraph1">
+                <div class="col mt-5 p-3 paragraph1">
                     <div class="m-1">    
                         <p >Explore /{{$course->category->name}}</p>
                     </div>
@@ -45,14 +45,29 @@
                         @endfor
                         <span class="text-white">{{$course_rating}}</span>
                     </div>
-                    <div class="row col-lg-3 flex">
-                        @foreach($course->teachers as $key=>$teacher)
-                                <img style="border-radius: 50%"  src=" {{$teacher->picture}}" alt="">
+                
+                    <div class="row col-lg-5 col-sm-9 flex teacherdesc mt-2">
+                            @foreach($course->teachers as $key=>$teacher)
+                                @php
+                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                                @endphp
+                            @php $key++ @endphp
+                            <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
+                            @php $key++ @endphp
+                            <div class="col-lg-5 col-sm-3 mt-3">
+                                <p class="text-white font12">{{$teacher->full_name}}</p>
+                                <p class="text-white font10">{{$teacherProfile->description}}</p>
+                            </div>
+                            @endforeach
+
+                        <!-- @foreach($course->teachers as $key=>$teacher)
+                                <img style="border-radius: 50%"  src=" {{asset($teacher->picture)}}" alt="">
                                 @php $key++ @endphp
                                     <p class="text-white mt-4 ml-2">   {{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
-                        @endforeach
+                        @endforeach -->
 
-                    </div>         
+                    </div> 
+                        
                     <div class="row mt-3 flex">        
                         <div class="row col-lg-6 buttoncart">
                             @if (!$purchased_course)
@@ -290,11 +305,10 @@
                     @endif
                 </h3>
                 <h6 class="font20">@lang('labels.frontend.course.This_course_includes')</h6>
-                <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
+                <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> {{ $course->course_hours }} hours</p>
                 <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters')</p>
                 <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 65 downloadable resources</p>
-                    <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
-                    <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
+        
 
                 @if (!$purchased_course)
                         @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
@@ -370,7 +384,7 @@
             </div>
             <div class="row smpara d-block m-2">
                 <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
-                    <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
+                    <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • {{ $course->course_hours }} hours</p>
             </div>
             
             @foreach($chapters as $chapter)
@@ -479,22 +493,33 @@
             <div class="row  coursecontent d-block m-2">
                 <h2> @lang('labels.frontend.course.instructors') </h2>
             </div>
-            <div class="row m-2">
-                @foreach($course->teachers as $key=>$teacher)
-                    <div class="col-lg-2 col-md-2 col-sm-3">
-                        <img src=" {{$teacher->picture}}" alt="">
+
+
+            @foreach($course->teachers as $key=>$teacher)
+                    @php
+                        $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                    @endphp
+            <div class="row">
+
+                    <div class="col-lg-1 col-md-2 col-sm-3">
+                        <img style="max-width: 100px" class="rounded-circle" src=" {{asset($teacher->avatar_location)}}" alt="">
 
                         <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
                     </div>
                     <div class="col-lg-3 col-md-5 col-sm-3">
                         @php $key++ @endphp
-                        <p style="font-size:30px;">{{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
+                        <p style="font-size:30px;">{{$teacher->full_name}}</p>
+                        <p class="teacher-title">{{$teacherProfile->title}}</p>
+                        <hr class="ml-0 divider">
+
                     </div>
-                    <div class="col-3">
-                        <p>{{$teacher->description}}</p>
+                    <div class="col-12 teacher-description">
+                        <p>{{$teacherProfile->description}}</p>
                     </div>
-                @endforeach
             </div>
+                @endforeach
+
+
             <div class="row m-2">
                 <p>  </p>
 

@@ -30,6 +30,7 @@ $(document).on('click', '#btn-submit', function (e) {
             var buttons=[];
             $('.button-container .button-wrapper').each(function (key, value) {
                var label = $(value).find('input[name="button_label"]').val();
+
                var link =  $(value).find('input[name="button_link"]').val();
                 buttons.push({label:label,link:link});
             })
@@ -41,6 +42,41 @@ $(document).on('click', '#btn-submit', function (e) {
 
         $('<input>').attr('type','hidden').attr('name','dataJson').val(dataJson).appendTo($('#slider-create')[0]);
         $('#slider-create')[0].submit();
+
+
+        var dataJson_ar = {};
+        var hero_text_ar = $('input[name="hero_text_ar"]').val()
+        var sub_text_ar = $('input[name="sub_text_ar"]').val()
+
+        dataJson_ar.hero_text_ar =  hero_text_ar;
+        dataJson_ar.sub_text_ar=  sub_text_ar;
+
+        if($('select[name="widget"]').val() == 2){
+            var  timer = $('#timer').val();
+            dataJson_ar.widget = {type:2,timer:timer}
+        }else if($('select[name="widget"]').val() == 1){
+            dataJson_ar.widget = {type:1};
+        }
+
+
+        if($('.button-wrapper').length > 0){
+            var buttons=[];
+            $('.button-container .button-wrapper').each(function (key, value) {
+                var label = $(value).find('input[name="button_label"]').val();
+
+               var label = $(value).find('input[name="button_label_ar"]').val();
+               var link =  $(value).find('input[name="button_link"]').val();
+                buttons.push({label:label,link:link});
+            })
+            dataJson_ar.buttons = buttons;
+        }
+
+        //Created json object of content for slide
+        dataJson_ar = JSON.stringify(dataJson_ar);
+
+        $('<input>').attr('type','hidden').attr('name','dataJson_ar').val(dataJson_ar).appendTo($('#slider-create')[0]);
+        $('#slider-create')[0].submit();
+
 
     } else {
         $('.alert.alert-danger').removeClass('d-none')

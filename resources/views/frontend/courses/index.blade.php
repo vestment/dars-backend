@@ -967,7 +967,14 @@
     {{-- start myyy of course section --}}
     @if(@isset($category))
         <section>
-            <div class="container-fluid">
+            <div class="container-fluid"> 
+            <div class="row">
+            <div class="col-2"></div>
+            <div class="col-5"></div>
+            <div class="col-5"></div>
+
+
+            </div>
                 <div class="row">
                     <div class="col-2">
                         nn
@@ -1011,14 +1018,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="course-meta ">
-                                    <span class="course-category">
-                                        <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
-                                    </span>
+                                                            <span class="course-category">
+                                                                <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
+                                                            </span>
                                                             <span class="course-author"><a href="#">{{ $course->students()->count() }}
                                                                     @lang('labels.frontend.course.students')</a></span>
                                                             <span class="course-author">
-                                            {{ $course->lessons()->count() }} Lessons
-                                    </span>
+                                                                    {{ $course->lessons()->count() }} Lessons
+                                                            </span>
                                                         </div>
                                                         <div class="row ">
                                                             <div class="col-2">

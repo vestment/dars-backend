@@ -359,8 +359,12 @@ return array (
           'placeholder' => 'إضافة عدد من الأزرار التي تريد إضافتها',
           'title' => 'وصفت',
         ),
-        'hero_text' => 'نص البطل',
-        'name' => 'اسم',
+        'hero_text_english' => 'نص البطل بالانجليزية',
+        'hero_text_arabic' => ' نص البطل بالعربى ',
+
+        'name' => 'الاسم بالانجليزية',
+        'ar_name' => 'الاسم بالعربى',
+
         'overlay' => 
         array (
           'note' => 'إذا قمت بتشغيله. سيتم عرض تراكب أسود على صورتك. سيكون مفيدًا عندما لا تكون صورة BG أغمق أو لا تحتوي على تراكب',
@@ -1387,12 +1391,14 @@ return array (
       'find_your_bundle' => '<span> ابحث عن </span> الحزمة الخاصة بك',
       'select_category' => 'اختر الفئة',
 
+
       'lessons' => 'دروس',
       'wishlist'=> 'قائمة الرغبات',
       'Share'=>'مشاركة',
       'instructors' => 'مدرسين',
-      'course_content' => 'محتوي الكورس',
+      'course_content' => 'محتوي الدورة',
       'This_course_includes' => 'هذا الكورس يحتوي علي:',
+      'related_courses' => 'دوزات ذات صلة',
 
 
     ),

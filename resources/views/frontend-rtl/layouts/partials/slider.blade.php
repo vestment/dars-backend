@@ -1,16 +1,16 @@
 <section id="slide" class="slider-section @if(config('theme_layout') == 3) pt150 @endif">
-    <div id="slider-item" class="slider-item-details">
+    <div id="slider-item" class="slider-item-details default-owl-theme">
         @foreach($slides as $slide)
-            <div class="slider-area slider-bg-5 relative-position" style="background:none;">
+            <div class="slider-area slider-bg-5 relative-position" style="background: none;">
                 <div class="bg-image @if($slide->overlay == 1) overlay  @endif"
                      style="background-image: url({{asset('storage/uploads/'.$slide->bg_image)}})"></div>
-                @php $content = json_decode($slide->content) @endphp
+                @php $ar_content = json_decode($slide->ar_content) @endphp
                 <div class="slider-text">
-                    @if(isset($content->widget))
-                        @if($content->widget->type == 2)
+                    @if(isset($ar_content->widget))
+                        @if($ar_content->widget->type == 2)
+                           
                             <div class="layer-1-3">
-
-                                <span class="timer-data d-none" data-timer="{{$content->widget->timer}}"></span>
+                                <span class="timer-data d-none" data-timer="{{$ar_content->widget->timer}}"></span>
                                 <div class="coming-countdown ul-li">
                                     <ul>
                                         <li class="days">
@@ -38,27 +38,29 @@
                         @endif
                     @endif
 
-                    <div class="section-title mb20 headline text-center ">
-                        @if($content->sub_text)
-                            <div class="layer-1-1">
-                                <span class="subtitle text-uppercase">{{$content->sub_text}}</span>
-                            </div>
-                        @endif
-                        @if($content->hero_text)
+                    <div class="section-title headline  ">
+                        @if($ar_content->hero_text_ar)
                             <div class="layer-1-3">
-                                <h2><span>{{ $content->hero_text }}</span></h2>
+                                <h2><span>{{ $ar_content->hero_text_ar }}</span></h2>
                             </div>
                         @endif
+                        @if($ar_content->sub_text_ar)
+                            <div class="layer-1-1 pt-5  font-weight-bold">
+                                <span class="subtitle text-uppercase">{{$ar_content->sub_text_ar}}</span>
+                            </div>
+                        @endif
+
                     </div>
-                    @if(isset($content->widget))
+                    @if(isset($ar_content->widget))
                         <div class="layer-1-3">
-                            @if($content->widget->type == 1)
+                            @if($ar_content->widget->type == 1)
                                 <div class="search-course mb30 relative-position">
                                     <form action="{{route('search')}}" method="get">
                                         <input class="course" name="q" type="text"
                                                placeholder="@lang('labels.frontend.layouts.partials.search_placeholder')">
                                         <div class="nws-button text-center  gradient-bg text-capitalize">
-                                            <button type="submit" value="Submit">@lang('labels.frontend.layouts.partials.search_courses')</button>
+                                            <button type="submit"
+                                                    value="Submit">@lang('labels.frontend.layouts.partials.search_courses')</button>
                                         </div>
                                     </form>
                                 </div>
@@ -67,13 +69,13 @@
 
                         </div>
                     @endif
-                    @if(isset($content->buttons))
+                    @if(isset($ar_content->buttons))
                         <div class="layer-1-4">
-                            <div class="about-btn text-center">
-                                @foreach($content->buttons as $button)
-                                    <div class="genius-btn text-center text-uppercase ul-li-block bold-font">
-                                        <a href="{{$button->link}}">{{$button->label}} <i
-                                                    class="fas fa-caret-right"></i></a>
+                            <div class="about-btn ">
+                                @foreach($ar_content->buttons as $button)
+                                    <div class="genius-btn  text-uppercase ul-li-block bold-font">
+                                        <a href="{{$button->link}}">{{$button->label}}
+                                        </a>
                                     </div>
                                 @endforeach
                             </div>
@@ -128,6 +130,46 @@
             }, 1000);
 
         }
+        @if(count($slides) == 1)
+        $('#slider-item').owlCarousel({
+            margin: 0,
+            responsiveClass: true,
+            nav: true,
+            loop: false,
+            dots: true,
+            autoplay: false,
+            navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+            smartSpeed: 1000,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                400: {
+                    items: 1,
+                },
+                600: {
+                    items: 1,
+                },
+                700: {
+                    items: 1,
+                },
+                800: {
+                    items: 1,
+                },
+                1000: {
+                    items: 1,
+
+                }
+            },
+        });
+        $('#slider-item .owl-nav').hide();
+        setTimeout(() => {
+            $('#slider-item .owl-dots').hide();
+        }, 300);
+
+
+
+        @endif
 
     </script>
 @endpush
