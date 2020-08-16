@@ -880,7 +880,6 @@
     @endif
     <!-- End of course section
         ============================================= -->
-<<<<<<< HEAD
        
         <!-- Start of course teacher
         ============================================= -->
@@ -945,67 +944,11 @@
                                                                             class="fa fa-comments"></i></a>
                                                             </li>
                                                         </ul>
-=======
-    <section id="course-teacher" class="course-teacher-section p-5">
-        <div class="">
-            <div class="container ">
-                <div class=" section-title mb20 headline p-5 mb-5">
-                    <span class=" subtitle text-uppercase font-weight-lighter">OUR PROFESSIONALS</span>
-                    <h4 class="text-dark font-weight-bolder "><span>Instructors.<span>
-                    </h4>
-                </div>
-                <div class="owl-carousel custom-owl-theme" data-items=5>
-                    @if(count($teachers)> 0)
-                        @foreach($teachers as $key=>$item)
-                            @foreach($teacher_data as $teacher)
-                                @if($item->id == $teacher->user_id)
-                                    <div class="item ml-lg-5">
-                                        <div class="text-center ">
-                                            <div class="bg-card">
-                                                <div>
-                                                    <div class="finger-img">
-                                                        <img src="/assets/img/banner/01.png" alt="">
-                                                    </div>
-
-                                                    <div class="prof-img ">
-                                                        @if($item->avatar_location == "")
-                                                            <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
-                                                                        class="teacher-image p-3 im"
-                                                                        src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                        alt=""></a>
-                                                        @else
-                                                            <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
-                                                                        class="teacher-image p-3 im"
-                                                                        src="{{asset($item->avatar_location)}}"
-                                                                        alt=""></a>
-                                                        @endif
-
-
->>>>>>> accbb535e95c0bdb9c80f379174dfa6b226fd4a5
                                                     </div>
                                                 </div>
-                                                <div class="teacher-social-name ul-li-block pt-3">
-                                                    <div class="teacher-name text-dark font-weight-bold">
-                                                        <h5>{{$teacher->title}}.{{$item->full_name}}</h5>
-                                                    </div>
-
-                                                    <hr>
-                                                    <hr>
-                                                    <div class="teacher-name text-dark  justify-content-center">
-                                                        <span>{{$teacher->description}}</span>
-                                                    </div>
-                                                    <ul>
-                                                        <li><a href="{{'mailto:'.$item->email}}"><i
-                                                                        class="fa fa-envelope"></i></a></li>
-                                                        <li>
-                                                            <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i
-                                                                        class="fa fa-comments"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                               
                                             </div>
                                         </div>
-<<<<<<< HEAD
                                     @endif
                                 @endforeach
                             @endforeach
@@ -1021,18 +964,6 @@
 
 
 
-=======
-                                    </div>
-                                @endif
-                            @endforeach
-                        @endforeach
-                    @endif
-                </div>
-
-            </div>
-        </div>
-    </section>
->>>>>>> accbb535e95c0bdb9c80f379174dfa6b226fd4a5
     {{-- start myyy of course section --}}
     @if(@isset($category))
         <section>
