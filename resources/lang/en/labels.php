@@ -9,7 +9,7 @@ return array (
       'title' => 'Courses',
       'fields' => 
       array (
-        'knowledge' => 'What You will learn',
+        'knowledgez' => 'What You will learn',
         'published' => 'Published',
         'unpublished' => 'Not Published',
         'featured' => 'Featured',
@@ -368,6 +368,8 @@ return array (
       'fields' => 
       array (
         'name' => 'Name',
+        'ar_name' => 'Arabic Name',
+        'en_name' => 'English Name',
         'select_icon' => 'Select Icon',
         'image' => 'Image',
         'icon' => 'Icon',
@@ -847,20 +849,27 @@ return array (
       'fields' => 
       array (
         'first_name' => 'First Name',
+        'en_first_name' => 'English First Name',
+        'en_last_name' => 'English Last Name',
         'last_name' => 'Last Name',
+        'ar_first_name' => 'Arabic First Name',
+        'ar_last_name' => 'Arabic Last Name',
         'email' => 'Email Address',
         'password' => 'Password',
         'image' => 'Image',
         'status' => 'Status',
         'academy' => 'Academy',
         'percentage' => 'percentage',
-        'address' => ' Address',
-              'city' => ' City',
-              'phone' => ' Phone',
-              'title' => ' Title',
-              'bank_code' => '  Bank Code',
-
-
+        'address' => 'Address',
+        'en_address' => 'English Address',
+        'ar_address' => 'Arabic Address',
+        'city' => 'City',
+        'en_city' => 'English City',
+        'ar_city' => 'Arabic City',
+        'phone' => ' Phone',
+        'title' => ' Title',
+        'ar_title' => 'Arabic Title',
+        'bank_code' => '  Bank Code',
       ),
       'title' => 'Teachers',
       'create' => 'Create Teacher',
@@ -871,6 +880,10 @@ return array (
     array (
       'fields' => 
       array (
+        'en_first_name' => 'English First Name',
+        'en_last_name' => 'English Last Name',
+        'ar_first_name' => 'Arabic First Name',
+        'ar_last_name' => 'Arabic Last Name',
         'first_name' => 'First Name',
         'last_name' => 'Last Name',
         'email' => 'Email Address',
@@ -879,6 +892,10 @@ return array (
         'status' => 'Status',
         'address' => ' Address',
         'city' => ' City',
+        'en_city' => 'English City',
+        'en_address' => 'Engliish Address',
+        'ar_city' => 'Arabic City',
+        'ar_address' => 'Arabic Address',
         'phone' => ' Phone',
   
       ),
@@ -1637,6 +1654,9 @@ return array (
     array (
       'name' => 'Bank Name',
       'title' => 'Title',
+      'en_title' => 'English Title',
+      'ar_title' => 'Arabic Title',
+
       'account' => 'Account Number',
       'holder_name' => 'Account Name',
       'account_number' => 'Account Number',
@@ -1651,6 +1671,9 @@ return array (
 
     ),
     'description' => 'Description',
+    'en_description' => 'English Description',
+    'ar_description' => 'Arabic Description',
+
   ),
   'academy' => 
   array (
@@ -1676,5 +1699,8 @@ return array (
       'ifsc_code' => 'IFSC Code',
     ),
     'description' => 'Description',
+    'ar_description' => 'Arabic Description',
+    'en_description' => 'English Description',
+
   ),
 );

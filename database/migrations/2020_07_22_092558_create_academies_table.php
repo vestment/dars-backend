@@ -24,7 +24,7 @@ class CreateAcademiesTable extends Migration
             $table->text('payment_details');
             $table->string('percentage');
             $table->text('logo');
-            $table->json('gallary');
+            $table->json('gallery');
             $table->text('adress');
             $table->text('description');
             $table->softDeletes();

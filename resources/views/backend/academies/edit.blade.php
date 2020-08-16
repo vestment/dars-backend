@@ -16,12 +16,24 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group row">
-                        {{ html()->label(__('labels.backend.academies.fields.first_name'))->class('col-md-2 form-control-label')->for('first_name') }}
+                        {{ html()->label(__('labels.backend.academies.fields.en_first_name'))->class('col-md-2 form-control-label')->for('first_name') }}
 
                         <div class="col-md-10">
                             {{ html()->text('first_name')
                                 ->class('form-control')
-                                ->placeholder(__('labels.backend.academies.fields.first_name'))
+                                ->placeholder(__('labels.backend.academies.fields.en_first_name'))
+                                ->attribute('maxlength', 191)
+                                ->required()
+                                ->autofocus() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.ar_first_name'))->class('col-md-2 form-control-label')->for('ar_first_name') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('ar_first_name')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.ar_first_name'))
                                 ->attribute('maxlength', 191)
                                 ->required()
                                 ->autofocus() }}
@@ -29,24 +41,46 @@
                     </div><!--form-group-->
 
                     <div class="form-group row">
-                        {{ html()->label(__('labels.backend.academies.fields.last_name'))->class('col-md-2 form-control-label')->for('last_name') }}
+                        {{ html()->label(__('labels.backend.academies.fields.en_last_name'))->class('col-md-2 form-control-label')->for('last_name') }}
 
                         <div class="col-md-10">
                             {{ html()->text('last_name')
                                 ->class('form-control')
-                                ->placeholder(__('labels.backend.academies.fields.last_name'))
+                                ->placeholder(__('labels.backend.academies.fields.en_last_name'))
+                                ->attribute('maxlength', 191)
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.ar_last_name'))->class('col-md-2 form-control-label')->for('ar_last_name') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('ar_last_name')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.ar_last_name'))
                                 ->attribute('maxlength', 191)
                                 ->required() }}
                         </div><!--col-->
                     </div><!--form-group-->
 
                     <div class="form-group row">
-                        {{ html()->label(__('labels.backend.academies.fields.city'))->class('col-md-2 form-control-label')->for('city') }}
+                        {{ html()->label(__('labels.backend.academies.fields.en_city'))->class('col-md-2 form-control-label')->for('en_city') }}
 
                         <div class="col-md-10">
-                            {{ html()->email('city')
+                            {{ html()->text('en_city')
                                 ->class('form-control')
-                                ->placeholder(__('labels.backend.academies.fields.city'))
+                                ->placeholder(__('labels.backend.academies.fields.en_city'))
+                                ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.ar_city'))->class('col-md-2 form-control-label')->for('ar_city') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('ar_city')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.ar_city'))
                                 ->attributes(['maxlength'=> 191,'readonly'=>true])
                                 ->required() }}
                         </div><!--col-->
@@ -58,6 +92,17 @@
                             {{ html()->email('address')
                                 ->class('form-control')
                                 ->placeholder(__('labels.backend.academies.fields.address'))
+                                ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                ->required() }}
+                        </div><!--col-->
+                    </div><!--form-group-->
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.academies.fields.ar_address'))->class('col-md-2 form-control-label')->for('ar_address') }}
+
+                        <div class="col-md-10">
+                            {{ html()->text('ar_address')
+                                ->class('form-control')
+                                ->placeholder(__('labels.backend.academies.fields.ar_address'))
                                 ->attributes(['maxlength'=> 191,'readonly'=>true])
                                 ->required() }}
                         </div><!--col-->
@@ -235,13 +280,23 @@
                     </div>
 
                     <div class="form-group row">
-                        {{ html()->label(__('labels.academy.description'))->class('col-md-2 form-control-label')->for('description') }}
+                        {{ html()->label(__('labels.academy.en_description'))->class('col-md-2 form-control-label')->for('description') }}
 
                         <div class="col-md-10">
                             {{ html()->textarea('description')
                                     ->class('form-control')
                                     ->value($academyData->description)
-                                    ->placeholder(__('labels.academy.description')) }}
+                                    ->placeholder(__('labels.academy.en_description')) }}
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.academy.ar_description'))->class('col-md-2 form-control-label')->for('ar_description') }}
+
+                        <div class="col-md-10">
+                            {{ html()->textarea('ar_description')
+                                    ->class('form-control')
+                                    ->value($academyData->ar_description)
+                                    ->placeholder(__('labels.academy.ar_description')) }}
                         </div><!--col-->
                     </div>
 

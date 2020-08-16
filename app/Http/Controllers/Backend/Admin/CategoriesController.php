@@ -172,6 +172,8 @@ class CategoriesController extends Controller
             $category = new  Category();
         }
         $category->name = $request->name;
+        $category->ar_name = $request->ar_name;
+
         $category->slug = str_slug($request->name);
         $category->icon = $request->icon;
         $category->save();
@@ -216,6 +218,8 @@ class CategoriesController extends Controller
 
         $category = Category::findOrFail($id);
         $category->name = $request->name;
+        $category->ar_name = $request->ar_name;
+
         $category->slug = str_slug($request->name);
         $category->icon = $request->icon;
         $category->save();

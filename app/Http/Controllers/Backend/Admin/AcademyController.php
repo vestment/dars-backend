@@ -157,9 +157,10 @@ class AcademyController extends Controller
             'payment_method' => request()->payment_method,
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
+            'ar_description' => request()->ar_description,
+
             'logo' => $academy->avatar_location,
             'percentage' => request()->percentage,
-            'adress' => request()->address,
             'gallery' => $gallery
         ];
 //        dd($data);
@@ -248,6 +249,7 @@ class AcademyController extends Controller
             'payment_method' => request()->payment_method,
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
+            'ar_description' => request()->ar_description,
             'gallery' => json_encode($galleryImages)
 
         ];

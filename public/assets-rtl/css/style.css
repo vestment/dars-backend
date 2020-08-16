@@ -6377,3 +6377,45 @@ padding:11px;
     display: none;
   }
 }
+
+.teacher-image {
+    border-radius: 50%;
+    width: 58% !important;
+
+}
+
+.bg-card {
+    position: relative;
+
+}
+
+.finger-img {
+    position: relative;
+    z-index: 1;
+    width: 66%;
+}
+
+.prof-img {
+    position: absolute;
+    margin-bottom: 100px;
+    z-index: 2;
+    right: -6px;
+    top: 17px;
+    left: 19px;
+}
+
+hr {
+    background-color: fuchsia;
+    width: 30%;
+}
+
+.custom-owl-theme .owl-nav .owl-prev {
+    color: #D2498B;
+}
+
+.custom-owl-theme .owl-nav .owl-next {
+    color: #D2498B;
+}
+.owl-carousel{
+    display: block;
+}
