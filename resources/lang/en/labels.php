@@ -739,15 +739,21 @@ return array (
     array (
       'fields' => 
       array (
-        'name' => 'Name',
+        'name' => 'Name in english',
+        'ar_name' => 'Name in arabic',
+
         'bg_image' => 'BG Image',
         'overlay' => 
         array (
           'title' => 'Overlay',
           'note' => 'If you turn it on. A black overlay will be displayed on your image. It will be helpful when BG image is not darker or does not have Overlay',
         ),
-        'hero_text' => 'Hero Text',
-        'sub_text' => 'Sub Text',
+        'hero_text_english' => 'Hero Text in english',
+        'hero_text_arabic' => 'Hero Text in arabic',
+
+        'sub_text' => 'Sub Text in english',
+        'sub_text_arabic' => 'Sub Text in arabic',
+
         'widget' => 
         array (
           'title' => 'Widget',

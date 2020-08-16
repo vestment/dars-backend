@@ -56,6 +56,18 @@
                 </div><!--col-->
             </div>
             <div class="row form-group">
+                {{ html()->label(__('labels.backend.hero_slider.fields.ar_name'))->class('col-md-2 form-control-label')->for('first_name_ar') }}
+
+                <div class="col-md-10">
+                    {{ html()->text('ar_name')
+                        ->class('form-control')
+                        ->placeholder(__('labels.backend.hero_slider.fields.ar_name'))
+                        ->attribute('maxlength', 191)
+                    ->autofocus()
+                    }}
+                </div><!--col-->
+            </div>
+            <div class="row form-group">
                 {{ html()->label(__('labels.backend.hero_slider.fields.bg_image'))->class('col-md-2 form-control-label')->for('image') }}
 
                 <div class="col-md-8">
@@ -93,11 +105,30 @@
                 </div>
             </div>
             <div class="row form-group">
+                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_arabic'))->class('col-md-2 form-control-label')->for('hero_text_ar') }}
+
+                <div class="col-md-10">
+                    {{ html()->text('hero_text_ar')
+                        ->class('form-control')
+                        ->placeholder(__('labels.backend.hero_slider.fields.hero_text_arabic'))
+                        }}
+                </div>
+            </div>
+            <div class="row form-group">
                 {{ html()->label(__('labels.backend.hero_slider.fields.sub_text'))->class('col-md-2 form-control-label')->for('sub_text') }}
                 <div class="col-md-10">
                     {{ html()->text('sub_text')
                         ->class('form-control')
                         ->placeholder(__('labels.backend.hero_slider.fields.sub_text'))
+                         }}
+                </div><!--col-->
+            </div>
+            <div class="row form-group">
+                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text_arabic'))->class('col-md-2 form-control-label')->for('sub_text_ar') }}
+                <div class="col-md-10">
+                    {{ html()->text('sub_text_ar')
+                        ->class('form-control')
+                        ->placeholder(__('labels.backend.hero_slider.fields.sub_text_arabic'))
                          }}
                 </div><!--col-->
             </div>
@@ -179,10 +210,13 @@
                     var name ='Button';
                     var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + name + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
                         "<div class='row'>" +
-                        "<div class='col-lg-6'>" +
+                        "<div class='col-lg-4'>" +
                         "<input type='text' required name='button_label' class='form-control' placeholder='Button label'>" +
                         "</div>" +
-                        "<div class='col-lg-6'>" +
+                        "<div class='col-lg-4'>" +
+                        "<input type='text' required name='button_label_ar' class='form-control' placeholder='Button label'>" +
+                        "</div>" +
+                        "<div class='col-lg-4'>" +
                         "<input type='text' required name='button_link' class='form-control' placeholder='Button Link'>" +
                         "</div>" +
                         "</div></div>";
@@ -199,39 +233,60 @@
                 }
             })
             var date;
-           @if($slide->content != "")
+           @if(($slide->ar_content != "") || ($slide->content != ""))
+            var dataJson_ar = "{{$slide->ar_content}}";
             var dataJson = "{{$slide->content}}";
             dataJson = JSON.parse(dataJson.replace(/&quot;/g, '"'));
+            dataJson_ar = JSON.parse(dataJson_ar.replace(/&quot;/g, '"'));
 
             //Adding texts
+            $('input[name="hero_text_ar"]').val(dataJson_ar.hero_text_ar);
+            $('input[name="sub_text_ar"]').val(dataJson_ar.sub_text_ar);
             $('input[name="hero_text"]').val(dataJson.hero_text);
             $('input[name="sub_text"]').val(dataJson.sub_text);
+            $('input[name="first_name"]').val(dataJson.first_name);
+            $('input[name="first_name_ar"]').val(dataJson_ar.first_name_ar);
 
+
+
+
+           
             //Adding widgets
 
-            if(dataJson.widget){
-                if(dataJson.widget.type == 1){
+            if(dataJson_ar.widget || dataJson.widget ){
+                if((dataJson_ar.widget.type == 1)|| (dataJson.widget.type == 1)){
                     $('select[name="widget"] option:eq(1)').prop('selected', true)
                     date = new Date();
 
                 }else{
                     $('select[name="widget"] option:eq(2)').prop('selected', true);
                     $('.widget-container ').removeClass('d-none');
-                    date = dataJson.widget.timer;
+                    date = dataJson_ar.widget.timer;
                 }
 
             }
-
+           
+            var ar_buttons=[]
+            var en_buttons = [];
+            $(dataJson_ar.buttons).each(function (key,data) {
+            ar_buttons.push(data.label);
+            });
+            $(dataJson.buttons).each(function (key,data) {
+            en_buttons.push(data.label);
+            });
             //Adding buttons
             if(dataJson.buttons){
                 $(dataJson.buttons).each(function (key,data) {
                     var name = 'Button';
                     var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + name + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
                         "<div class='row'>" +
-                        "<div class='col-lg-6'>" +
-                        "<input type='text' value='"+data.label+"' required name='button_label' class='form-control' placeholder='Button label'>" +
+                        "<div class='col-lg-4'>" +
+                        "<input type='text' value='"+en_buttons[key]+"' required name='button_label' class='form-control' placeholder='Button label in english'>" +
                         "</div>" +
-                        "<div class='col-lg-6'>" +
+                        "<div class='col-lg-4'>" +
+                        "<input type='text' value='"+ar_buttons[key]+"' required name='button_label_ar' class='form-control' placeholder='Button label in arabic'>" +
+                        "</div>" +
+                        "<div class='col-lg-4'>" +
                         "<input type='text' required name='button_link' value='"+data.link+"' class='form-control' placeholder='Button Link'>" +
                         "</div>" +
                         "</div></div>";
@@ -241,7 +296,10 @@
 
             }
 
+
             @endif
+           
+
 
 
 

@@ -967,7 +967,14 @@
     {{-- start myyy of course section --}}
     @if(@isset($category))
         <section>
-            <div class="container-fluid">
+            <div class="container-fluid"> 
+            <div class="row">
+            <div class="col-2"></div>
+            <div class="col-5"></div>
+            <div class="col-5"></div>
+
+
+            </div>
                 <div class="row">
                     <div class="col-2">
                         nn

@@ -54,6 +54,19 @@
 
                 </div><!--col-->
             </div>
+            <div class="row form-group">
+                {{ html()->label(__('labels.backend.hero_slider.fields.ar_name'))->class('col-md-2 form-control-label')->for('first_name_ar') }}
+
+                <div class="col-md-10">
+                    {{ html()->text('ar_name')
+                        ->class('form-control')
+                        ->placeholder(__('labels.backend.hero_slider.fields.ar_name'))
+                        ->attribute('maxlength', 191)
+                    ->autofocus()
+                    }}
+
+                </div><!--col-->
+            </div>
 
             <div class="row form-group">
                 {{ html()->label(__('labels.backend.hero_slider.fields.bg_image'))->class('col-md-2 form-control-label')->for('image') }}
@@ -79,12 +92,22 @@
                 </div>
             </div>
             <div class="row form-group">
-                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text'))->class('col-md-2 form-control-label')->for('hero_text') }}
+                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_english'))->class('col-md-2 form-control-label')->for('hero_text') }}
 
                 <div class="col-md-10">
                     {{ html()->text('hero_text')
                         ->class('form-control')
-                        ->placeholder(__('labels.backend.hero_slider.fields.hero_text'))
+                        ->placeholder(__('labels.backend.hero_slider.fields.hero_text_english'))
+                        }}
+                </div>
+            </div>
+            <div class="row form-group">
+                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_arabic'))->class('col-md-2 form-control-label')->for('hero_text_ar') }}
+
+                <div class="col-md-10">
+                    {{ html()->text('hero_text_ar')
+                        ->class('form-control')
+                        ->placeholder(__('labels.backend.hero_slider.fields.hero_text_arabic'))
                         }}
                 </div>
             </div>
@@ -94,6 +117,15 @@
                     {{ html()->text('sub_text')
                         ->class('form-control')
                         ->placeholder(__('labels.backend.hero_slider.fields.sub_text'))
+                         }}
+                </div><!--col-->
+            </div>
+            <div class="row form-group">
+                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text_arabic'))->class('col-md-2 form-control-label')->for('sub_text_ar') }}
+                <div class="col-md-10">
+                    {{ html()->text('sub_text_ar')
+                        ->class('form-control')
+                        ->placeholder(__('labels.backend.hero_slider.fields.sub_text_arabic'))
                          }}
                 </div><!--col-->
             </div>
@@ -175,10 +207,13 @@
                     var name = 'Button';
                     var html = "<div class='button-wrapper'> <h6 class='mt-3'> "+name+" <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
                         "<div class='row'>" +
-                        "<div class='col-lg-6'>" +
-                        "<input type='text' required name='button_label' class='form-control' placeholder='Button label'>" +
+                        "<div class='col-lg-4'>" +
+                        "<input type='text' required name='button_label' class='form-control' placeholder='Button label in english'>" +
                         "</div>" +
-                        "<div class='col-lg-6'>" +
+                        "<div class='col-lg-4'>" +
+                        "<input type='text' required name='button_label_ar' class='form-control' placeholder='Button label in arabic'>" +
+                        "</div>" +
+                        "<div class='col-lg-4'>" +
                         "<input type='text' required name='button_link' class='form-control' placeholder='Button Link'>" +
                         "</div>" +
                         "</div></div>";
