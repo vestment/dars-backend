@@ -1435,6 +1435,8 @@ return array (
       'Share'=>'Share',
       'lessons' => 'Lessons',
       'This_course_includes' => 'This_course_includes:',
+      'related_courses' => 'Related Courses',
+
 
 
     ),

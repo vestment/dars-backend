@@ -6323,7 +6323,7 @@ ul.product-tab li.active:after {
 .bgcolor {
     background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
     padding-top: 7%;
-    padding-bottom: 315px;
+    padding-bottom: 320px;
 }
 
 .paragraph1 {
@@ -6354,6 +6354,35 @@ ul.product-tab li.active:after {
         font-size: 20px;
     }
 }
+
+.teacherdesc img{
+    width:55px; 
+    height:55px;
+
+}
+.font12{
+    font-size: 12px;
+    margin-top: 0px !important;
+    margin-bottom: 1px !important;
+
+}
+.font10{
+    font-size: 10px;
+    margin-top: 0px !important;
+}
+.btnWishList{
+    background-color: #D2498B;
+}
+
+.imgcard {
+    background-repeat: no-repeat;
+    height: 250px;
+    background-size: cover;
+    background-position: 50% 50%;
+    /* background-color: violet; */
+}
+
+
 
 .buttoncart button {
     opacity: 0.9;
@@ -6549,6 +6578,17 @@ iframe {
     border-bottom: 1px solid rgba(0, 0, 0, .125);
     padding: 11px;
 }
+
+
+/* ================================================fourth section related courses */
+.btncardrelated{
+    width: 182px;
+    height: 36px;
+    padding: 7px;    ;
+}
+
+
+
 
 /* =========================================== footer */
 .footer-logo {
