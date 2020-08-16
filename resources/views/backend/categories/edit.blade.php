@@ -25,8 +25,13 @@
         <div class="card-body">
             <div class="row justify-content-center">
             <div class="col-12 col-lg-4 form-group">
-                {!! Form::label('title', trans('labels.backend.categories.fields.name').' *', ['class' => 'control-label']) !!}
+                {!! Form::label('title', trans('labels.backend.categories.fields.en_name').' *', ['class' => 'control-label']) !!}
                 {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Enter Category Name', 'required' => false]) !!}
+
+            </div>
+            <div class="col-12 col-lg-4 form-group">
+                {!! Form::label('title', trans('labels.backend.categories.fields.ar_name').' *', ['class' => 'control-label']) !!}
+                {!! Form::text('ar_name', old('ar_name'), ['class' => 'form-control', 'placeholder' => 'Enter Category Name', 'required' => false]) !!}
 
             </div>
 

@@ -166,9 +166,12 @@ class TeachersController extends Controller
             'payment_method' => request()->payment_method,
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
+            'ar_description' => request()->ar_description,
             'type' => request()->type,
             'percentage' => request()->percentage,
             'title' => request()->title,
+            'ar_title' => request()->ar_title,
+
             'academy_id' => $academy_id,
         ];
         TeacherProfile::create($data);
@@ -234,6 +237,8 @@ class TeachersController extends Controller
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
             'title' => request()->title,
+            'ar_description' => request()->ar_description,
+            'ar_title' => request()->ar_title,
 
         ];
         $teacher->teacherProfile->update($data);

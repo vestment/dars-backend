@@ -241,58 +241,81 @@
     @if($sections->teachers->status == 1)
         <!-- Start of course teacher
         ============================================= -->
-        <section id="course-teacher" class="course-teacher-section">
-            <div class="jarallax">
-                <div class="container">
-                    <div class="section-title mb20 headline text-center ">
-                        <span class="subtitle text-uppercase">@lang('labels.frontend.home.our_professionals')</span>
-                        <h2>{{env('APP_NAME')}} <span>@lang('labels.frontend.home.teachers').</span></h2>
+        <section id="course-teacher" class="course-teacher-section p-5">
+            <div class="">
+                <div class="container ">
+                    <div class=" section-title mb20 headline p-5 mb-5">
+                        <span class=" subtitle text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
+                        <h2 class="text-dark font-weight-bolder "><span>{{env('APP_NAME')}} @lang('labels.frontend.home.Instructors').<span>
+                        </h2>
                     </div>
 
-                    <div class="teacher-list">
-                        <div class="row justify-content-center">
-                            <!-- /teacher -->
-                            @if(count($teachers)> 0)
-                                @foreach($teachers as $item)
-                                    <div class="col-md-3">
-                                        <div class="teacher-img-content ">
-                                            <div class="teacher-cntent">
-                                                <div class="teacher-social-name ul-li-block">
-                                                    <ul>
-                                                        <li><a href="{{'mailto:'.$item->email}}"><i class="fa fa-envelope"></i></a></li>
-                                                        <li><a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i class="fa fa-comments"></i></a></li>
-                                                    </ul>
-                                                    <div class="teacher-name">
-                                                        <span>{{$item->full_name}}</span>
+                    <div class="owl-carousel custom-owl-theme">
+                        @if(count($teachers)> 0)
+                            @foreach($teachers as $key=>$item)
+                                @foreach($teacher_data as $teacher)
+                                    @if($item->id == $teacher->user_id)
+                                        <div class="item">
+                                            <div class="text-center ">
+                                                <div class="bg-card">
+                                                    <div>
+                                                        <div class="finger-img">
+                                                            <img src="/assets/img/banner/01.png" alt="">
+                                                        </div>
+
+                                                        <div class="prof-img ">
+                                                            @if($item->avatar_location == "")
+                                                                <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
+                                                                            class="teacher-image shadow-lg p-3"
+                                                                            src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
+                                                                            alt=""></a>
+                                                            @else
+                                                                <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
+                                                                            class="teacher-image shadow-lg p-3"
+                                                                            src="{{asset($item->avatar_location)}}"
+                                                                            alt=""></a>
+                                                            @endif
+
+
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="teacher-img-category">
-                                                    <div class="teacher-img">
-                                                        <img src="{{asset($item->avatar_location)}}" style="height: 100%" alt="">
-                                                        {{--<div class="course-price text-uppercase text-center gradient-bg">--}}
-                                                        {{--<span>Featured</span>--}}
-                                                        {{--</div>--}}
+                                                    <div class="teacher-social-name ul-li-block pt-3">
+                                                        <div class="teacher-name text-dark font-weight-bold">
+                                                            <h5>{{$item->full_name}}</h5>
+                                                        </div>
+                                                        <div class="teacher-title text-muted font-weight-light">
+                                                            {{$teacher->title}}
+                                                        </div>
+                                                        <hr>
+                                                        <div class="teacher-name text-dark  justify-content-center">
+                                                            <span>{{$teacher->description}}</span>
+                                                        </div>
+                                                        <ul>
+                                                            <li><a href="{{'mailto:'.$item->email}}"><i
+                                                                            class="fa fa-envelope"></i></a></li>
+                                                            <li>
+                                                                <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i
+                                                                            class="fa fa-comments"></i></a>
+                                                            </li>
+                                                        </ul>
                                                     </div>
-                                                    {{--<div class="teacher-category float-right">--}}
-                                                    {{--<span class="st-name">{{$item->name}} </span>--}}
-                                                    {{--</div>--}}
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endforeach
-                            @endif
-                        </div>
-
-                        <div class="genius-btn gradient-bg text-center text-uppercase ul-li-block bold-font ">
-                            <a href="{{route('teachers.index')}}">@lang('labels.frontend.home.all_teachers')<i class="fas fa-caret-left"></i></a>
-                        </div>
+                            @endforeach
+                        @endif
                     </div>
+
                 </div>
             </div>
         </section>
+
         <!-- End of course teacher
             ============================================= -->
+
+
     @endif
 
 
@@ -325,8 +348,13 @@
 
 @endsection
 
+
 @push('after-scripts')
     <script>
+        setTimeout(function () {
+            $('.owl-carousel').trigger('refresh.owl.carousel');
+        }, 100)
         $('ul.product-tab').find('li:first').addClass('active');
     </script>
 @endpush
+

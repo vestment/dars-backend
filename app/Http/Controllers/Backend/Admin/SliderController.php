@@ -46,16 +46,18 @@ class SliderController extends Controller
             'name' => 'required',
             'image' => 'required|file',
         ]);
-
         $request = $this->saveFiles($request);
         $sequence = Slider::max('sequence');
         $sequence += 1;
         $slide = new Slider();
         $slide->name = $request->name;
+        $slide->ar_name = $request->ar_name;
         $slide->bg_image = $request->image;
         $slide->overlay = $request->overlay;
         $slide->sequence = $sequence;
         $slide->content = $request->dataJson;
+        $slide->ar_content = $request->dataJson_ar;
+
         $slide->status = 1;
         $slide->save();
 
@@ -82,6 +84,7 @@ class SliderController extends Controller
     public function edit($id)
     {
         $slide = Slider::findOrFail($id);
+        // dd($slide);
         return view('backend.slider.edit',compact('slide'));
     }
 
@@ -106,6 +109,10 @@ class SliderController extends Controller
         $slide->name = $request->name;
         $slide->overlay = ($request->overlay == "") ? 0 : 1 ;
         $slide->content = $request->dataJson;
+        $slide->ar_content = $request->dataJson_ar;
+        $slide->ar_name = $request->ar_name;
+
+
         $slide->save();
 
         return redirect()->route('admin.sliders.index')->withFlashSuccess(trans('alerts.backend.general.updated'));

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class EditColumnAddressInAcademiesCopy extends Migration
+class EditSlidersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class EditColumnAddressInAcademiesCopy extends Migration
      */
     public function up()
     {
-        Schema::table('academies', function (Blueprint $table) {
-            $table->text('address')->nullable();
+        Schema::table('sliders', function (Blueprint $table) {
+            $table->text('ar_name')->nullable();
+            $table->longText('ar_content')->nullable();
+
 
 
         });
@@ -27,8 +29,9 @@ class EditColumnAddressInAcademiesCopy extends Migration
      */
     public function down()
     {
-        Schema::table('academies', function (Blueprint $table) {
-            $table->text('address')->nullable();
+        Schema::table('sliders', function (Blueprint $table) {
+            $table->dropColumn('ar_name')->nullable();
+            $table->dropColumn('ar_content')->nullable();
 
 
         });

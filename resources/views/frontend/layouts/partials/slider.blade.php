@@ -96,6 +96,8 @@
 
 @push('after-scripts')
     <script>
+        @if(isset($content->widget))
+                        @if($content->widget->type == 2)
         if ($('.coming-countdown').length > 0) {
             var date = '{{$contentTimer}}';
             // Specify the deadline date
@@ -133,6 +135,8 @@
             }, 1000);
 
         }
+        @endif
+        @endif
         @if(count($slides) == 1)
         $('#slider-item').owlCarousel({
             margin: 0,

@@ -72,23 +72,38 @@
 
                 <span class="text-white">{{$course_rating}}</span>
                 </div>
-                <div class="row col-lg-3 flex">
+
+
+                <div class="row col-lg-5 col-sm-9 flex teacherdesc mt-2">
                     @foreach($course->teachers as $key=>$teacher)
+                                @php
+                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                                @endphp
+                            @php $key++ @endphp
+                            <img style="" class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
+                            @php $key++ @endphp
+                            <div class="col-lg-5 col-sm-3 mt-3">
+                                <p class="text-white font12">{{$teacher->full_name}}</p>
+                                <p class="text-white font10">{{$teacherProfile->description}}</p>
+                            </div>
+                            @endforeach
+
+                    <!-- @foreach($course->teachers as $key=>$teacher)
                             <img style="border-radius: 50%"  src=" {{asset($teacher->picture)}}" alt="">
                             @php $key++ @endphp
                                 <p class="text-white mt-4 ml-2">   {{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
-                    @endforeach
+                    @endforeach -->
 
                 </div> 
                 
-                <div class="row mt-3 flex">
+                <div class="row mt-1 flex">
                                 
                         <div class="row col-lg-6 buttoncart">
 
                         @if (!$purchased_course)
              
                                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                        <button class="btn btn-outline-light m-1 addcart"
+                                        <button class="btn btn-outline-light  addcart"
                                                 type="submit">@lang('labels.frontend.course.added_to_cart')
                                         </button>
                                     @elseif(!auth()->check())
