@@ -1391,12 +1391,14 @@ return array (
       'find_your_bundle' => '<span> ابحث عن </span> الحزمة الخاصة بك',
       'select_category' => 'اختر الفئة',
 
+
       'lessons' => 'دروس',
       'wishlist'=> 'قائمة الرغبات',
       'Share'=>'مشاركة',
       'instructors' => 'مدرسين',
-      'course_content' => 'محتوي الكورس',
+      'course_content' => 'محتوي الدورة',
       'This_course_includes' => 'هذا الكورس يحتوي علي:',
+      'related_courses' => 'دوزات ذات صلة',
 
 
     ),

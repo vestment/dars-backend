@@ -72,36 +72,51 @@
 
                 <span class="text-white">{{$course_rating}}</span>
                 </div>
-                <div class="row col-lg-3 flex">
-                    @foreach($course->teachers as $key=>$teacher)
+
+
+                <div class="row col-lg-5 col-sm-9 flex teacherdesc mt-2">
+                            @foreach($course->teachers as $key=>$teacher)
+                                @php
+                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                                @endphp
+                            @php $key++ @endphp
+                            <img style="" class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
+                            @php $key++ @endphp
+                            <div class="col-lg-5 col-sm-3 mt-3">
+                                <p class="text-white font12">{{$teacher->full_name}}</p>
+                                <p class="text-white font10">{{$teacherProfile->description}}</p>
+                            </div>
+                            @endforeach
+
+                    <!-- @foreach($course->teachers as $key=>$teacher)
                             <img style="border-radius: 50%"  src=" {{asset($teacher->picture)}}" alt="">
                             @php $key++ @endphp
                                 <p class="text-white mt-4 ml-2">   {{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
-                    @endforeach
+                    @endforeach -->
 
                 </div> 
                 
-                <div class="row mt-3 flex">
+                <div class="row mt-1 flex">
                                 
                         <div class="row col-lg-6 buttoncart">
 
                         @if (!$purchased_course)
              
                                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                        <button class="btn btn-outline-light m-1 addcart"
+                                        <button class="btn btn-outline-light  addcart"
                                                 type="submit">@lang('labels.frontend.course.added_to_cart')
                                         </button>
                                     @elseif(!auth()->check())
                                         @if($course->free == 1)
                                                 <a id="openLoginModal" data-target="#myModal" href="#"> 
-                                                    <button class="btn btn-outline-light m-1 addcart"> 
+                                                    <button class="btn btn-outline-light addcart"> 
                                                         @lang('labels.frontend.course.get_now') 
                                                         <i class="fas fa-caret-right"></i>
                                                     </button>
                                                 </a>
                                             @else
                                                 <a id="openLoginModal" data-target="#myModal" href="#"> 
-                                                    <button class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                                    <button class="btn btn-outline-light addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                                         @lang('labels.frontend.course.add_to_cart')
                                                     </button>
                                                 </a>
@@ -114,7 +129,7 @@
                                                 @csrf
                                                 <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                                 <input type="hidden" name="amount" value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                <button class="btn btn-outline-light m-1 addcart"
+                                                <button class="btn btn-outline-light  addcart"
                                                         href="#">@lang('labels.frontend.course.get_now') <i
                                                             class="fas fa-caret-right"></i></button>
                                             </form>
@@ -308,7 +323,7 @@
                                         <span>   {{$appCurrency['symbol'].' '.$course->price}}</span>
                                         @endif</h3>
                     <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
-                    <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> 8 hours on-demand video</p>
+                    <p class="smpara"> <i class="fa fa-play-circle" aria-hidden="true"></i> {{ $course->course_hours }} hours</p>
                     <p class="smpara"> <i class="fa fa-file" aria-hidden="true"></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters')</p>
                     <p class="smpara"> <i class="fa fa-download" aria-hidden="true"></i> 
                     
@@ -391,7 +406,7 @@
             </div>
             <div class="row smpara d-block m-2">
                 <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
-                    <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
+                    <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • {{ $course->course_hours }} hours</p>
             </div>
             
             @foreach($chapters as $chapter)
@@ -523,6 +538,103 @@
         ============================================= -->
 
 
+    <!-- Start of Related Courses section
+        ============================================= -->
+<section id="course-page" class="course-page-section">
+    <div class="container">
+        <div class="row  coursecontent d-block m-2">
+                <h2>@lang('labels.frontend.course.related_courses') </h2>
+        </div>
+        <div class="row smpara d-block m-2">
+                <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
+                    <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • {{ $course->course_hours }} hours</p>
+        </div>
+        <div class="card ">
+
+            <div class="row col-lg-6 no-gutters">
+                <div class="col-md-6 ">
+                    <div class="best-course-pic relative-position ">
+                        <div class="course-list-img-text course-page-sec">
+
+                            <div class="col imgcard"
+                                @if($course->course_image != "") 
+                                style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body" style="border: none">
+                        <h3 class=" font20">{{$course->title}}</h3>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="course-rate ul-li">
+                                    <ul>
+                                        @for($r=1; $r<=$course_rating; $r++)
+                                            <i class="fas fa-star" style="color: yellow; font-size:10px;"></i>
+                                        @endfor
+                                        @for($r=1; $r<=5-$course_rating; $r++)
+                                            <i class="fas fa-star"  style="font-size:10px;"></i>
+                                        @endfor
+                                        <span class="text-white">{{$course_rating}}</span>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-meta ">
+                            <span>
+                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} hours
+
+                            </span>
+                            <span>
+                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> @lang('labels.frontend.course.lessons') 
+
+                            </span>
+                     
+                        </div>
+
+                        <div class="row col-lg-12 flex teacherdesc mt-2">
+                            @foreach($course->teachers as $key=>$teacher)
+                                @php
+                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                                @endphp
+                            @php $key++ @endphp
+                            <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
+                            @php $key++ @endphp
+                            <div class="col-lg-9 col-sm-3 mt-3">
+                                <p class="font12">{{$teacher->full_name}}</p>
+                                <p class="font10">{{$teacherProfile->description}}</p>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <div class="row pl-3">
+                                <a href="#" class="btn btncolor btn-sm text-white btncardrelated">Add To Cart
+                                    <i class="fa fa-shopping-bag"></i>
+                                </a>
+                            <div class="pl-1">
+                                <a href="{{ route('courses.show', [$course->slug]) }}"
+                                    class="btn btnWishList">
+                                    <i class="far fa-bookmark text-white"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</section>
+
+    <!-- End of Related Courses section
+        ============================================= -->
+
     <!-- Start of course review section
         ============================================= --> 
     <section id="course-page" class="course-page-section">
@@ -604,9 +716,9 @@
                     <div class="col-12 teacher-description">
                         <p>{{$teacherProfile->description}}</p>
                     </div>
-                </div>
+            </div>
                 @endforeach
-        </div>
+            </div>
     </section>
   <!-- End of Instructor info review section
         ============================================= --> 
