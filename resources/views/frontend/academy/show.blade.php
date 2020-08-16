@@ -267,29 +267,24 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row justify-content-around">
-                                                                <div class="">
+                                                            <div class="row">
+                                                                <div class="col-xl-10 col-9">
                                                                     @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
                                                                         <button type="submit"
-                                                                                class="btn btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')
+                                                                                class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart')
                                                                             <i class="fa fa-shopping-bag ml-1"></i>
                                                                         </button>
 
                                                                     @elseif(!auth()->check())
                                                                         @if($course->free == 1)
-                                                                            <a id="openLoginModal"
-                                                                               class="btn btn-info btnAddCard"
-                                                                               data-target="#myModal"
-                                                                               href="#"><span
-                                                                                        class="d-lg-inline-block d-sm-none">@lang('labels.frontend.course.get_now') </span><i
+                                                                            <a class="btn btn-info btn-block btnAddCard"
+                                                                               href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now')
+                                                                                <i
                                                                                         class="fas fa-caret-right"></i></a>
                                                                         @else
 
-                                                                            <a id="openLoginModal"
-                                                                               class="btn btn-info btnAddCard w-100"
-                                                                               data-target="#myModal"
-                                                                               href="#"><span
-                                                                                        class="d-lg-inline-block d-sm-none">@lang('labels.frontend.course.add_to_cart')</span>
+                                                                            <a class="btn btn-info btnAddCard btn-block"
+                                                                               href="{{ route('login.index') }}">@lang('labels.frontend.course.add_to_cart')
                                                                                 <i class="fa fa-shopping-bag"></i>
                                                                             </a>
                                                                         @endif
@@ -299,14 +294,12 @@
                                                                             <form action="{{ route('cart.getnow') }}"
                                                                                   method="POST">
                                                                                 @csrf
-                                                                                <input type="hidden"
-                                                                                       name="course_id"
+                                                                                <input type="hidden" name="course_id"
                                                                                        value="{{ $course->id }}"/>
                                                                                 <input type="hidden" name="amount"
                                                                                        value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                                <button class="btn btn-info btnAddCard w-100"
-                                                                                        href="#"><span
-                                                                                            class="d-lg-inline-block d-sm-none">@lang('labels.frontend.course.get_now')</span>
+                                                                                <button class="btn btn-info btnAddCard btn-block"
+                                                                                        href="#">@lang('labels.frontend.course.get_now')
                                                                                     <i
                                                                                             class="fas fa-caret-right"></i>
                                                                                 </button>
@@ -315,14 +308,13 @@
                                                                             <form action="{{ route('cart.addToCart') }}"
                                                                                   method="POST">
                                                                                 @csrf
-                                                                                <input type="hidden"
-                                                                                       name="course_id"
+                                                                                <input type="hidden" name="course_id"
                                                                                        value="{{ $course->id }}"/>
                                                                                 <input type="hidden" name="amount"
                                                                                        value="{{($course->free == 1) ? 0 : $course->price}}"/>
                                                                                 <button type="submit"
-                                                                                        class="btn btn-info btnAddCard w-100">
-                                                                                    <span class="d-lg-inline-block d-sm-none"> @lang('labels.frontend.course.add_to_cart')</span>
+                                                                                        class="btn btn-info btnAddCard btn-block">
+                                                                                    @lang('labels.frontend.course.add_to_cart')
                                                                                     <i
                                                                                             class="fa fa-shopping-bag"></i>
                                                                                 </button>

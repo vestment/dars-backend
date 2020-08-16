@@ -93,14 +93,14 @@
                                         </button>
                                     @elseif(!auth()->check())
                                         @if($course->free == 1)
-                                                <a id="openLoginModal" data-target="#myModal" href="#"> 
+                                                <a href="{{route('login.index')}}">
                                                     <button class="btn btn-outline-light m-1 addcart"> 
                                                         @lang('labels.frontend.course.get_now') 
                                                         <i class="fas fa-caret-right"></i>
                                                     </button>
                                                 </a>
                                             @else
-                                                <a id="openLoginModal" data-target="#myModal" href="#"> 
+                                                <a href="{{route('login.index')}}">
                                                     <button class="btn btn-outline-light m-1 addcart"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                                         @lang('labels.frontend.course.add_to_cart')
                                                     </button>
@@ -326,16 +326,14 @@
                             </button>
                         @elseif(!auth()->check())
                             @if($course->free == 1)
-                                <a id="openLoginModal"
-                                   class="btn btncolor btn-sm btn-block text-white"
-                                   data-target="#myModal" href="#">@lang('labels.frontend.course.get_now') <i
+                                <a class="btn btncolor btn-sm btn-block text-white"
+                                   href="{{route('login.index')}}">@lang('labels.frontend.course.get_now') <i
                                             class="fas fa-caret-right"></i></a>
                             @else
 
-                            <button id="openLoginModal" type="submit"
-                            data-target="#myModal" href="#" class="btn btncolor btn-sm btn-block text-white"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            <a href="{{route('login.index')}}" class="btn btncolor btn-sm btn-block text-white"> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                 @lang('labels.frontend.course.add_to_cart')
-                                </button>
+                                </a>
                             @endif
                         @elseif(auth()->check() && (auth()->user()->hasRole('student')))
                   @if($course->free == 1)
@@ -390,7 +388,7 @@
                 <h2>@lang('labels.frontend.course.course_content') </h2>
             </div>
             <div class="row smpara d-block m-2">
-                <p></i> <span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
+                <p><span>  {{$chaptercount}} </span>  @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p>
             </div>
             

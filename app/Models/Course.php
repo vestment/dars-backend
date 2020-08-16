@@ -56,7 +56,20 @@ class Course extends Model
 
     }
 
+    public function scopeFilter($q)
+    {
+        if (request('maxPrice')) {
+            $q->where('price', '>', request('maxPrice'));
+        }
+        if (request('rating')) {
+            $q->where('color', '>', request('color'));
+        }
+        if (request('duration')) {
+            $q->where('color', '>', request('duration'));
+        }
 
+        return $q;
+    }
     public function getImageAttribute()
     {
         if ($this->course_image != null) {

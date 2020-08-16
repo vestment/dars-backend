@@ -75,7 +75,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-xl-10 col-10">
+                                        <div class="col-xl-10 col-9">
                                             @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
                                                 <button type="submit"
                                                         class="btn btn-block btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')

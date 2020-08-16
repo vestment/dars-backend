@@ -1,13 +1,13 @@
 <?php
 
 return array (
-  'backend' => 
+  'backend' =>
   array (
-    'courses' => 
+    'courses' =>
     array (
       'content' => 'Content',
       'title' => 'Courses',
-      'fields' => 
+      'fields' =>
       array (
         'knowledge' => 'What You will learn',
         'published' => 'Published',
@@ -38,6 +38,7 @@ return array (
         'course' => 'Course',
         'status' => 'Status',
       ),
+
       'add_teachers' => 'Add Teachers',
       'add_academies' => 'Add Academies',
 
@@ -62,10 +63,10 @@ return array (
 
       'title'=>'Chapters'
     ),
-    'tests' => 
+    'tests' =>
     array (
       'title' => 'Tests',
-      'fields' => 
+      'fields' =>
       array (
         'course' => 'Course',
         'lesson' => 'Lesson',
@@ -80,7 +81,7 @@ return array (
     ),
 
 
-    'login' => 
+    'login' =>
     array (
       'welcome' => 'Welcome back!',
       'please_login' => 'Please login to your account',
@@ -96,7 +97,7 @@ return array (
       'terms_of_use' => 'Term of use. Privacy policy',
     ),
 
-    'sign_up' => 
+    'sign_up' =>
     array (
       'first_name' => 'First name',
       'last_name' => 'Last name',
@@ -110,19 +111,19 @@ return array (
       'terms_of_use' => 'Term of use. Privacy policy',
     ),
 
-    
-    'orders' => 
+
+    'orders' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
-        'payment_status' => 
+        'payment_status' =>
         array (
           'pending' => 'Pending',
           'completed' => 'Completed',
           'failed' => 'Failed',
           'title' => 'Payment',
         ),
-        'payment_type' => 
+        'payment_type' =>
         array (
           'stripe' => 'Credit / Debit Card (Stripe Payment Gateway)',
           'paypal' => 'Paypal',
@@ -142,9 +143,9 @@ return array (
       'download_invoice' => 'Download Invoice',
       'title' => 'Orders',
     ),
-    'pages' => 
+    'pages' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'published' => 'Published',
         'drafted' => 'Drafted',
@@ -166,16 +167,16 @@ return array (
       'edit' => 'Edit Page',
       'view' => 'View Pages',
     ),
-    'access' => 
+    'access' =>
     array (
-      'users' => 
+      'users' =>
       array (
         'user_actions' => 'User Actions',
         'management' => 'User Management',
         'change_password' => 'Change Password',
         'change_password_for' => 'Change Password for :user',
         'create' => 'Create User',
-        'table' => 
+        'table' =>
         array (
           'abilities' => 'Abilities',
           'total' => 'user total|users total',
@@ -201,16 +202,16 @@ return array (
         'edit' => 'Edit User',
         'active' => 'Active Users',
         'view' => 'View User',
-        'tabs' => 
+        'tabs' =>
         array (
-          'titles' => 
+          'titles' =>
           array (
             'overview' => 'Overview',
             'history' => 'History',
           ),
-          'content' => 
+          'content' =>
           array (
-            'overview' => 
+            'overview' =>
             array (
               'avatar' => 'Avatar',
               'confirmed' => 'Confirmed',
@@ -239,12 +240,12 @@ return array (
         'permissions' => 'Permissions',
         'select_role' => 'Select Role',
       ),
-      'roles' => 
+      'roles' =>
       array (
         'management' => 'Role Management',
         'create' => 'Create Role',
         'edit' => 'Edit Role',
-        'table' => 
+        'table' =>
         array (
           'total' => 'role total|roles total',
           'number_of_users' => 'Number of Users',
@@ -254,9 +255,9 @@ return array (
         ),
       ),
     ),
-    'blogs' => 
+    'blogs' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'title' => 'Title',
         'category' => 'Category',
@@ -282,10 +283,10 @@ return array (
       'edit' => 'Edit Blog',
       'view' => 'View Blogs',
     ),
-    'lessons' => 
+    'lessons' =>
     array (
       'slug_placeholder' => 'Input slug or it will be generated automatically',
-      'fields' => 
+      'fields' =>
       array (
         'content' => 'Content',
         'course' => 'Course',
@@ -323,10 +324,10 @@ return array (
 <p class="mb-1"><b>Embed :</b> Copy / Paste embed code in above text box</p>',
       'remove' => 'Remove',
     ),
-    'chapters' => 
+    'chapters' =>
     array (
       'slug_placeholder' => 'Input slug or it will be generated automatically',
-      'fields' => 
+      'fields' =>
       array (
         'course' => 'Course',
         'title' => 'Title',
@@ -363,15 +364,15 @@ return array (
 <p class="mb-1"><b>Embed :</b> Copy / Paste embed code in above text box</p>',
       'remove' => 'Remove',
     ),
-    'categories' => 
+    'categories' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'select_icon' => 'Select Icon',
         'image' => 'Image',
         'icon' => 'Icon',
-        'icon_type' => 
+        'icon_type' =>
         array (
           'title' => 'Icon type',
           'select_any' => 'Select Any',
@@ -390,9 +391,9 @@ return array (
       'view' => 'View Categories',
       'not_allowed' => 'Not allowed! Category contains data.',
     ),
-    'faqs' => 
+    'faqs' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'question' => 'Question',
         'answer' => 'Answer',
@@ -404,9 +405,9 @@ return array (
       'edit' => 'Edit FAQ',
       'view' => 'View FAQs',
     ),
-    'invoices' => 
+    'invoices' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'view' => 'View',
         'download' => 'Download',
@@ -415,11 +416,11 @@ return array (
       ),
       'title' => 'Invoices',
     ),
-    'menu-manager' => 
+    'menu-manager' =>
     array (
       'title' => 'Menu Manager',
     ),
-    'messages' => 
+    'messages' =>
     array (
       'compose' => 'Compose',
       'search_user' => 'Search User',
@@ -428,9 +429,9 @@ return array (
       'type_a_message' => 'Type a message',
       'title' => 'Messages',
     ),
-    'questions' => 
+    'questions' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'question' => 'Question',
         'question_image' => 'Question Image',
@@ -449,9 +450,9 @@ return array (
       'view' => 'View Questions',
       'test' => 'Test',
     ),
-    'reasons' => 
+    'reasons' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'title' => 'Title',
         'icon' => 'Icon',
@@ -464,10 +465,10 @@ return array (
       'view' => 'View Reasons',
       'note' => 'Reasons will be displayed as a slider on homepage as below',
     ),
-    'general_settings' => 
+    'general_settings' =>
     array (
       'title' => 'General',
-      'contact' => 
+      'contact' =>
       array (
         'short_text' => 'Short Text',
         'show' => 'Show',
@@ -492,7 +493,7 @@ return array (
         'title' => 'Contact',
         'primary_email_note' => 'This email will be used to correspond "Contact Us" emails',
       ),
-      'footer' => 
+      'footer' =>
       array (
         'short_description' => 'Short Description',
         'popular_categories' => 'Popular categories',
@@ -516,15 +517,15 @@ return array (
         'section_3' => 'Section 3',
         'recent_news' => 'Recent News',
       ),
-      'logos' => 
+      'logos' =>
       array (
         'title' => 'Logos',
       ),
-      'layout' => 
+      'layout' =>
       array (
         'title' => 'Layout',
       ),
-      'email' => 
+      'email' =>
       array (
         'title' => 'Mail Configuration',
         'mail_from_name' => 'Mail From Name',
@@ -547,7 +548,7 @@ return array (
 <li>Scroll down to <b>Less secure app access</b> and set it <b>ON</b></li>
 </ul>',
       ),
-      'payment_settings' => 
+      'payment_settings' =>
       array (
         'title' => 'Payment Configuration',
         'select_currency' => 'Select Currency',
@@ -594,7 +595,7 @@ return array (
       'theme_layout' => 'Theme Layout',
       'layout_note' => 'This will change frontend theme layout',
       'show_offers_note' => 'Enable / Disable if Coupon offers page link to be displayed in bottom footer',
-      'newsletter' => 
+      'newsletter' =>
       array (
         'mail_provider' => 'Mail Service Provider',
         'mailchimp' => 'Mailchimp',
@@ -639,14 +640,14 @@ return array (
       'captcha_site_secret' => 'Captcha Secret',
       'google_analytics' => 'Google Analytics Code',
       'sections_note' => 'Once you click on update, you will see list of sections to on/off.',
-      'general' => 
+      'general' =>
       array (
         'title' => 'General',
       ),
       'captcha' => 'Whether the registration - login - contact captcha is on or off',
       'captcha_note' => 'How to get Google reCaptcha credentials?',
       'retest_note' => 'Enable / Disable if user will be able to give retest for same exam',
-      'language_settings' => 
+      'language_settings' =>
       array (
         'title' => 'Language Settings',
         'default_language' => 'Default Language',
@@ -654,11 +655,11 @@ return array (
         'left_to_right' => 'Left to right',
         'display_type' => 'Display Type',
       ),
-      'user_registration_settings' => 
+      'user_registration_settings' =>
       array (
         'title' => 'User Registration Settings',
         'desc' => 'Checked fields from the right sidebar will be displayed in registration form',
-        'fields' => 
+        'fields' =>
         array (
           'first_name' => 'First Name',
           'last_name' => 'Last Name',
@@ -681,13 +682,13 @@ return array (
       'onesignal_note' => 'Enable / Disble OneSignal configuration for Website.',
       'how_to_onesignal' => 'How to create app in OneSignal?',
       'setup_onesignal' => 'How to set up OneSignal?',
-      'api_clients' => 
+      'api_clients' =>
       array (
         'title' => 'API Clients',
         'generate' => 'Generate',
         'note' => '<span class="text-danger font-weight-bold">Note :</span> This section will be helpful for API purpose. You can generate <b>Client ID</b> and <b>Client Secret</b> to use in your Android app or Postman to test the API.<br> You need to customise parameters and URL according to your requirement.',
         'developer_manual' => 'Developer Manual',
-        'fields' => 
+        'fields' =>
         array (
           'name' => 'Name',
           'id' => 'ID',
@@ -709,7 +710,7 @@ return array (
       'layout_type_note' => 'This will change frontend theme layout type',
       'layout_label' => 'Layout',
     ),
-    'logo' => 
+    'logo' =>
     array (
       'logo_b' => 'Logo 1',
       'logo_b_note' => 'Note : Upload logo with <b>black text and transparent background in .png format</b> and <b>294x50</b>(WxH) pixels.<br> <b>Height</b> should be fixed, <b>width</b> according to your <b>aspect ratio</b>.',
@@ -723,7 +724,7 @@ return array (
       'favicon_note' => 'Note : Upload logo with resolution <b>32x32</b> pixels and extension <b>.png</b> or <b>.gif</b> or <b>.ico</b>',
       'title' => 'Change Logo',
     ),
-    'social_settings' => 
+    'social_settings' =>
     array (
       'management' => 'Social Settings',
       'fb_note' => 'Enable / disable facebook login for website',
@@ -735,20 +736,20 @@ return array (
       'linkedin_api_note' => 'How to get LinkedIn API Credentials?',
       'linkedin_note' => 'Enable / disable LinkedIn login for website',
     ),
-    'hero_slider' => 
+    'hero_slider' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'bg_image' => 'BG Image',
-        'overlay' => 
+        'overlay' =>
         array (
           'title' => 'Overlay',
           'note' => 'If you turn it on. A black overlay will be displayed on your image. It will be helpful when BG image is not darker or does not have Overlay',
         ),
         'hero_text' => 'Hero Text',
         'sub_text' => 'Sub Text',
-        'widget' => 
+        'widget' =>
         array (
           'title' => 'Widget',
           'input_date_time' => 'Input date and time',
@@ -756,7 +757,7 @@ return array (
           'search_bar' => 'Search Bar',
           'countdown_timer' => 'Countdown Timer',
         ),
-        'buttons' => 
+        'buttons' =>
         array (
           'title' => 'Buttons',
           'add' => 'Add',
@@ -780,7 +781,7 @@ return array (
       'sequence_note' => 'Drag and change sequence of a Slide',
       'save_sequence' => 'Save Sequence',
     ),
-    'tax' => 
+    'tax' =>
     array (
       'title' => 'Tax',
       'create' => 'Create Tax',
@@ -788,14 +789,14 @@ return array (
       'view' => 'View Tax',
       'on' => 'On',
       'off' => 'Off',
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'rate' => 'Rate',
         'status' => 'Status',
       ),
     ),
-    'coupons' => 
+    'coupons' =>
     array (
       'title' => 'Coupons',
       'create' => 'Create Coupon',
@@ -811,7 +812,7 @@ return array (
       'amount_note' => 'If <b>Discount Rate</b> selected, input rate of percentage. If <b>Flat Rate</b> selected, input particular amount to be deducted.',
       'per_user_limit_note' => 'Specify how many times a single user can use this coupon. By default one time use.',
       'total_note' => 'Number of coupons to be issued',
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'code' => 'Code',
@@ -828,10 +829,10 @@ return array (
       'description' => 'Description',
       'unlimited' => 'Unlimited',
     ),
-    'sponsors' => 
+    'sponsors' =>
     array (
       'title' => 'Sponsors',
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'link' => 'Link',
@@ -842,9 +843,9 @@ return array (
       'edit' => 'Edit Sponsors',
       'view' => 'View Sponsors',
     ),
-    'teachers' => 
+    'teachers' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'first_name' => 'First Name',
         'last_name' => 'Last Name',
@@ -867,9 +868,9 @@ return array (
       'edit' => 'Edit Teacher',
       'view' => 'View Teachers',
     ),
-    'academies' => 
+    'academies' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'first_name' => 'First Name',
         'last_name' => 'Last Name',
@@ -880,7 +881,7 @@ return array (
         'address' => ' Address',
         'city' => ' City',
         'phone' => ' Phone',
-  
+
       ),
       'gallery' => 'Gallery',
       'title' => 'Academies',
@@ -888,9 +889,9 @@ return array (
       'edit' => 'Edit Academy',
       'view' => 'View Academies',
     ),
-    'testimonials' => 
+    'testimonials' =>
     array (
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'occupation' => 'Occupation',
@@ -902,7 +903,7 @@ return array (
       'edit' => 'Edit Testimonial',
       'view' => 'View Testimonials',
     ),
-    'dashboard' => 
+    'dashboard' =>
     array (
       'title' => 'Dashboard',
       'students' => 'Students',
@@ -941,13 +942,13 @@ return array (
       'success' => 'Success',
       'failed' => 'Failed',
     ),
-    'questions_options' => 
+    'questions_options' =>
     array (
       'title' => 'Questions Option',
       'create' => 'Create Option',
       'edit' => 'Edit Option',
       'view' => 'View Question Options',
-      'fields' => 
+      'fields' =>
       array (
         'course' => 'Course',
         'lesson' => 'Lesson',
@@ -960,10 +961,10 @@ return array (
         'correct' => 'Correct',
       ),
     ),
-    'reviews' => 
+    'reviews' =>
     array (
       'title' => 'Reviews',
-      'fields' => 
+      'fields' =>
       array (
         'course' => 'Course',
         'user' => 'User',
@@ -971,10 +972,10 @@ return array (
         'time' => 'Time',
       ),
     ),
-    'contacts' => 
+    'contacts' =>
     array (
       'title' => 'Leads',
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'email' => 'Email',
@@ -983,7 +984,7 @@ return array (
         'time' => 'Time',
       ),
     ),
-    'translations' => 
+    'translations' =>
     array (
       'title' => 'Translation Manager',
       'warning' => 'Warning, translations are not visible until they are exported back to the app/lang file, using
@@ -1015,7 +1016,7 @@ return array (
       'publish_all' => 'Publish all',
       'publish_all_warning' => 'Are you sure you want to publish all translations group? This will overwrite existing language files.',
     ),
-    'update' => 
+    'update' =>
     array (
       'title' => 'Update Theme',
       'upload' => 'Upload new version  <small>(update.zip)</small>',
@@ -1027,7 +1028,7 @@ return array (
                         <p>If you are directly uploading from below file input box, your files will be replaced. We strongly recommend you to do it manual replacement of files one by one or edit the changes by comparing your current edited file and new updated files.</p>
                         <p>If you still have confusion. Please contact us, we will guide you to update your application</p>',
     ),
-    'backup' => 
+    'backup' =>
     array (
       'title' => 'Backup',
       'email' => 'Email Notification',
@@ -1056,10 +1057,10 @@ return array (
       'backup_notice' => 'Please refer documentation before beginning backup. It has every details step by step for creating backup with Dropbox.',
       'backup_note' => '<b>Note </b>: To run this backup properly you need to add following code to your <b>CRON TAB:</b><br><code>* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1</code>',
     ),
-    'certificates' => 
+    'certificates' =>
     array (
       'title' => 'Certificates',
-      'fields' => 
+      'fields' =>
       array (
         'course_name' => 'Course Name',
         'progress' => 'Progress',
@@ -1068,10 +1069,10 @@ return array (
       'view' => 'View',
       'download' => 'Download',
     ),
-    'bundles' => 
+    'bundles' =>
     array (
       'title' => 'Bundles',
-      'fields' => 
+      'fields' =>
       array (
         'published' => 'Published',
         'unpublished' => 'Not Published',
@@ -1092,7 +1093,7 @@ return array (
         'meta_description' => 'Meta Description',
         'meta_keywords' => 'Meta Keywords',
         'sidebar' => 'Add Sidebar',
-        'lessons' => 
+        'lessons' =>
         array (
           'add' => 'Add Lessons',
           'view' => 'View Lessons',
@@ -1121,7 +1122,7 @@ return array (
       'timeline_description' => 'Drag and change sequence of Lessons/Tests for course',
       'listing_note' => 'Only Published Lessons and Tests will be Displayed and Sorted.',
     ),
-    'reports' => 
+    'reports' =>
     array (
       'title' => 'Reports',
       'sales_report' => 'Sales Report',
@@ -1130,7 +1131,7 @@ return array (
       'courses' => 'Courses',
       'total_earnings' => 'Total Earnings',
       'total_sales' => 'Total Sales',
-      'fields' => 
+      'fields' =>
       array (
         'name' => 'Name',
         'orders' => 'Orders',
@@ -1144,7 +1145,7 @@ return array (
         'completed' => 'Completed Course',
       ),
     ),
-    'sitemap' => 
+    'sitemap' =>
     array (
       'title' => 'Sitemap',
       'records_per_file' => 'Records Per File',
@@ -1156,7 +1157,7 @@ return array (
       'monthly' => 'Monthly',
       'sitemap_note' => 'This sitemap tool will generate sitemap for published Course, Bundles and Blog.',
     ),
-    'forum_category' => 
+    'forum_category' =>
     array (
       'title' => 'Forum Categories',
       'create' => 'Create Forum Category',
@@ -1164,7 +1165,7 @@ return array (
       'view' => 'View Forum Category',
       'on' => 'On',
       'off' => 'Off',
-      'fields' => 
+      'fields' =>
       array (
         'parent_category' => 'Parent Category',
         'category' => 'Category',
@@ -1173,7 +1174,7 @@ return array (
         'status' => 'Status',
       ),
     ),
-    'payments' => 
+    'payments' =>
     array (
       'title' => 'Payments',
       'total_earnings' => 'Total Earnings',
@@ -1185,19 +1186,19 @@ return array (
       'add_withdrawal_request' => 'Add Withdrawal Request',
       'approve' => 'Approve',
       'reject' => 'Reject',
-      'payment_type' => 
+      'payment_type' =>
       array (
         'bank' => 'Bank',
         'paypal' => 'Paypal',
         'offline' => 'Offline',
       ),
-      'status' => 
+      'status' =>
       array (
         'pending' => 'Pending',
         'approved' => 'Approved',
         'rejected' => 'Rejected',
       ),
-      'fields' => 
+      'fields' =>
       array (
         'amount' => 'Amount',
         'payment_type' => 'Payment Type',
@@ -1208,7 +1209,7 @@ return array (
       ),
     ),
   ),
-  'general' => 
+  'general' =>
   array (
     'active' => 'Active',
     'inactive' => 'Inactive',
@@ -1217,7 +1218,7 @@ return array (
     'none' => 'None',
     'back' => 'Back',
     'more' => 'More',
-    'buttons' => 
+    'buttons' =>
     array (
       'update' => 'Update',
       'cancel' => 'Cancel',
@@ -1240,9 +1241,9 @@ return array (
     'sr_no' => 'Sr No.',
     'read_more' => 'Read More',
   ),
-  'frontend' => 
+  'frontend' =>
   array (
-    'auth' => 
+    'auth' =>
     array (
       'login_button' => 'Login',
       'login_box_title' => 'Login',
@@ -1251,7 +1252,7 @@ return array (
       'register_button' => 'Register',
       'login_with' => 'Login with :social_media',
     ),
-    'passwords' => 
+    'passwords' =>
     array (
       'reset_password_box_title' => 'Reset Password',
       'send_password_reset_link_button' => 'Send Password Reset Link',
@@ -1260,7 +1261,7 @@ return array (
       'reset_password_button' => 'Reset Password',
       'forgot_password' => 'Forgot Your Password?',
     ),
-    'blog' => 
+    'blog' =>
     array (
       'share_this_news' => 'Share this news',
       'related_news' => '<span>Related</span> News',
@@ -1276,7 +1277,7 @@ return array (
       'login_to_post_comment' => 'Login to Post a Comment',
       'no_comments_yet' => 'No comments yet, Be the first to comment.',
     ),
-    'cart' => 
+    'cart' =>
     array (
       'payment_status' => 'Payment Status',
       'payment_cards' => 'Credit or Debit Card',
@@ -1337,7 +1338,7 @@ return array (
       'pay'=>'Pay'
 
     ),
-    'contact' => 
+    'contact' =>
     array (
       'title' => 'Contact',
       'your_name' => 'Your Name',
@@ -1351,12 +1352,18 @@ return array (
       'send_email' => 'Send Email',
       'send_message_now' => 'Send Message Now',
     ),
-    'badges' => 
+    'badges' =>
     array (
       'trending' => 'Trending',
     ),
-    'course' => 
+    'course' =>
     array (
+        'filters' => array(
+            'filters' => 'Filters',
+            'price' => 'Price',
+            'rating' => 'Rating',
+            'duration' => 'Video Duration',
+        ),
       'ratings' => 'Ratings',
       'stars' => 'Stars',
       'by' => 'By',
@@ -1427,7 +1434,7 @@ return array (
       'explanation' => 'Explanation',
       'find_your_bundle' => '<span>Find</span> your Bundle',
       'select_category' => 'Select Category',
-      
+
       'lessons' => 'lessons',
       'instructors' => 'Instructors',
       'wishlist'=>'wishlist',
@@ -1438,7 +1445,7 @@ return array (
 
 
     ),
-    'home' => 
+    'home' =>
     array (
       'title' => 'Home',
       'search_course_placeholder' => 'Search Here',
@@ -1452,7 +1459,7 @@ return array (
       'online_available_courses' => 'Online Available Courses',
       'Instructors' => 'Instructors',
       'academies' => 'Academies',
-      
+
 
       'our_professionals' => 'Our Professionals',
       'all_teachers' => 'All Teachers',
@@ -1462,9 +1469,9 @@ return array (
       'what_they_say_about_us' => 'What they say about us',
       'no_data_available' => 'No data available',
     ),
-    'layouts' => 
+    'layouts' =>
     array (
-      'partials' => 
+      'partials' =>
       array (
         'OfferCourses' => 'Offer Courses',
         'email_address' => 'Email Address',
@@ -1510,7 +1517,7 @@ return array (
         'offers' => 'Offers',
       ),
     ),
-    'modal' => 
+    'modal' =>
     array (
 
       'new_user_note' => 'New User? Register Here',
@@ -1521,7 +1528,7 @@ return array (
       'login_now' => 'LogIn Now',
       'register_now' => 'Register Now',
     ),
-    'search_result' => 
+    'search_result' =>
     array (
       'students' => 'Students',
       'blog' => 'Blog',
@@ -1536,7 +1543,7 @@ return array (
       'starts' => 'Starts',
       'course_detail' => 'Course Detail',
     ),
-    'teacher' => 
+    'teacher' =>
     array (
       'send_now' => 'Send Now',
       'students' => 'Students',
@@ -1545,12 +1552,8 @@ return array (
       'course_detail' => 'Course Detail',
       'courses' => 'Courses',
       'views' => 'Views',
-
-
-
-
     ),
-    'academy' => 
+    'academy' =>
     array (
       'send_now' => 'Send Now',
       'students' => 'Students',
@@ -1559,13 +1562,13 @@ return array (
       'courses_by_teacher' => 'Courses <span>By Teacher.</span>',
       'course_detail' => 'Course Detail',
     ),
-    'user' => 
+    'user' =>
     array (
-      'passwords' => 
+      'passwords' =>
       array (
         'change' => 'Change Password',
       ),
-      'profile' => 
+      'profile' =>
       array (
         'avatar' => 'Avatar',
         'created_at' => 'Created At',
@@ -1578,14 +1581,14 @@ return array (
         'update_information' => 'Update Information',
       ),
     ),
-    'faq' => 
+    'faq' =>
     array (
       'title' => 'Frequently <span>Asked Questions</span>',
       'find' => 'Find <span>Your Questions & Answers.</span>',
       'make_question' => 'Make Question',
       'contact_us' => 'Contact Us',
     ),
-    'certificate_verification' => 
+    'certificate_verification' =>
     array (
       'title' => 'Certificate Verification',
       'name_on_certificate' => 'Name on Certificate. Ex. John',
@@ -1593,7 +1596,7 @@ return array (
       'verify_now' => 'Verify Now',
       'not_found' => 'No certificate found for given information.',
     ),
-    'footer' => 
+    'footer' =>
     array (
       'popular_courses' => 'Popular courses',
       'popular_categories' => 'Popular Categories',
@@ -1601,7 +1604,7 @@ return array (
       'trending_courses' => 'Trending Courses',
       'useful_links' => 'Useful Links',
     ),
-    'offers' => 
+    'offers' =>
     array (
       'title' => 'Offers',
       'no_offers' => 'No Offers',
@@ -1612,14 +1615,14 @@ return array (
       'per_user' => 'Per User',
     ),
   ),
-  'lang' => 
+  'lang' =>
   array (
     'en' => 'English',
     'sp' => 'Spanish',
     'fr' => 'French',
     'ar' => 'Arabic',
   ),
-  'teacher' => 
+  'teacher' =>
   array (
     'teacher_register' => 'Register as Teacher? Click Here',
     'teacher_register_box_title' => 'Teacher Register',
@@ -1633,7 +1636,7 @@ return array (
     'bank' => 'Bank',
     'paypal' => 'Paypal',
     'paypal_email' => 'Paypal Email',
-    'bank_details' => 
+    'bank_details' =>
     array (
       'name' => 'Bank Name',
       'title' => 'Title',
@@ -1652,7 +1655,7 @@ return array (
     ),
     'description' => 'Description',
   ),
-  'academy' => 
+  'academy' =>
   array (
     'academy_register' => 'Register as Academy? Click Here',
     'teacher_register_box_title' => 'Academy Register',
@@ -1666,7 +1669,7 @@ return array (
     'bank' => 'Bank',
     'paypal' => 'Paypal',
     'paypal_email' => 'Paypal Email',
-    'bank_details' => 
+    'bank_details' =>
     array (
       'name' => 'Bank Name',
       'bank_code' => 'Bank Code',

@@ -91,7 +91,7 @@
             <div id="main-menu" class="main-menu-container">
                 <div class="main-menu">
                     {{-- <div class="container"> --}}
-                    <div class="offset-1">
+
 
                         <div class="navbar-default">
                             <div class="navbar-header logonone float-left">
@@ -181,17 +181,14 @@
                                 <div class="nav-menu ul-li hoverpink">
                                     <ul>
                                         <li>
-                                            <div class="mt-0">
-                                                <a href="">@lang('navs.general.offers')</a>
-                                            </div>
+
+                                            <a href="">@lang('navs.general.offers')</a>
+
                                         </li>
                                         <li>
                                             @if(!auth()->check())
-                                                <div class="sign-up mt-0">
-                                                    <a
-                                                            href="{{ route('register.index') }}">@lang('navs.general.signup')</a>
-
-                                                </div>
+                                                <a class="sign-up"
+                                                   href="{{ route('register.index') }}">@lang('navs.general.signup')</a>
                                             @endif
                                         </li>
                                         <li>
@@ -355,7 +352,6 @@
                             </div>
                         </div>
 
-                    </div>
                 </div>
             </div>
         </header>
@@ -431,13 +427,13 @@
     <script>
         @if((session()->has('show_login')) && (session('show_login') == true))
         $('#myModal').modal('show');
-                @endif
+        @endif
         var font_color = "{{config('font_color')}}"
         setActiveStyleSheet(font_color);
         $(window).on('load', function () {
             $(".owl-carousel").owlCarousel({
                 rewind: true,
-                padding:2,
+                padding: 2,
                 margin: 10,
                 nav: true,
                 navText: ["<i class='fas fa-chevron-left'></i>",

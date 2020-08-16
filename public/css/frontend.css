@@ -6994,6 +6994,9 @@ hr {
     margin: 0 5px;
 }
 
+.default-owl-theme .btn {
+    color:#fff !important;
+}
 .default-owl-theme .owl-nav {
     position: absolute;
     top: 0;
@@ -7069,6 +7072,7 @@ hr {
 
 .best-course-pic-text .card-body .btn {
     z-index: 1;
+    color: #fff !important;
 }
 
 .best-course-pic-text:before {
@@ -7151,9 +7155,14 @@ hr {
         border-right: none;
         border-bottom: 1px solid #cecece;
     }
-
+    .bg-header-cat {
+        padding-top: 25%;
+    }
 }
-
+.breadcrumb-image {
+    position: absolute;
+    bottom: -49px;
+}
 .categories-container .active {
     color: #fff !important;
     background-color: #D2498B !important;
