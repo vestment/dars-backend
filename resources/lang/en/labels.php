@@ -1385,6 +1385,8 @@ return array (
             'price' => 'Price',
             'rating' => 'Rating',
             'duration' => 'Video Duration',
+            'apply' => 'Apply filters',
+            'reset' => 'Reset filters',
         ),
       'ratings' => 'Ratings',
       'stars' => 'Stars',
@@ -1393,6 +1395,7 @@ return array (
       'add_to_cart' => 'Add To Cart',
       'buy_note' => 'Only Students Can Buy Course',
       'continue_course' => 'Continue Course',
+      'start_now' => 'Start Course',
       'enrolled' => 'Enrolled',
       'chapters' => 'Chapters',
 
@@ -1459,7 +1462,7 @@ return array (
       
       'lessons' => 'lessons',
       'instructors' => 'Instructors',
-      'wishlist'=>'wishlist',
+      'wishlist'=>'Wishlist',
       'added_to_wishlist'=>'added to wishlist',
       'Share'=>'Share',
       'lessons' => 'Lessons',

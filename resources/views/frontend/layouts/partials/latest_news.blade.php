@@ -27,12 +27,14 @@
                                     <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                     <div class="row">
                                         <div class="col-12">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <span class="ml-1  rate">0</span>
+                                            <div class="course-rate ul-li">
+                                                <ul>
+                                                    @for ($i=0; $i<5; ++$i)
+                                                        <li><i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}" aria-hidden="true"></i></li>
+                                                    @endfor
+                                                    <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="course-meta my-1 vv">

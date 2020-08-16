@@ -34,7 +34,7 @@ ul.pagination {
 /**/
 .titleofcard {
     text-align: left;
-    min-height: 60px;
+    /*min-height: 60px;*/
 
     font: Bold 20px/30px Ubuntu;
     letter-spacing: -0.2px;
@@ -230,26 +230,26 @@ ul.pagination {
     border: 1px solid transparent;
 }
 
-.form-check-input + label:before, .form-check-input + label:after, label.btn input + label:before, label.btn input + label:after {
+.form-check-input[type=radio] + label:before, .form-check-input[type=radio] + label:after, label.btn input + label:before, label.btn input + label:after {
     border-radius: 50%;
     position: absolute;
     top: 0;
-    left: 0;
+    left: -2px;
     z-index: 0;
-    width: 8px;
-    height: 8px;
-    margin: 6px;
+    /*width: 8px;*/
+    /*height: 8px;*/
+    /*margin: 6px;*/
     content: "";
-    -webkit-transition: .28s ease;
-    transition: .28s ease;
+    /*-webkit-transition: .28s ease;*/
+    /*transition: .28s ease;*/
 }
 
-.form-check-input:checked + label:after {
+.form-check-input[type=radio]:checked + label:after {
     border: 2px solid #d2498b;
-}
-
-.form-check-input:checked + label:after {
     background-color: #d2498b;
+    height: 8px;
+    width: 8px;
+    margin: 6px;
 }
 
 .form-check-input:checked + label, .form-check-input:not(:checked) + label {
@@ -277,13 +277,36 @@ ul.pagination {
     -webkit-transition: .28s ease;
     transition: .28s ease;
 }
-
-.price-filter::-webkit-slider-thumb {
-    box-shadow: 0 0 0 1px #fff, 0 0 0 .2rem rgba(0, 123, 255, 0.25);
+.form-check-input[type=checkbox]:checked ~ .form-check-label::before {
+    color: #fff;
+    border-color: #d2498b;
+    background-color: #d2498b;
+}
+.form-check-input[type=checkbox]:not(:checked) + label:after,.form-check-input[type=checkbox] + label:after {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    display: block;
+    color: #fff;
+    font-family: 'Font Awesome 5 Free';
+    content: "\f00c";
+}
+.form-check-input[type=checkbox]+label::before {
+    border-radius: 2px;
+    position: absolute;
+    left: -.1rem;
+    display: block;
+    pointer-events: none;
+    content: "";
+    background-color: #fff;
+    border: #adb5bd solid 1px;
+}
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 .2rem rgb(255 0 241 / 25%);
     /*position: absolute;*/
     border: none;
     border-radius: 50%;
-    background-color: #4285f4;
+    background-color: #d2498b;
     width: 14px;
     height: 14px;
     margin: 0;
@@ -298,7 +321,7 @@ ul.pagination {
 input[type=range] {
     cursor: pointer;
     position: relative;
-    background-color: #4285f4;
+    background-color: #d2498b;
     outline: none;
     width: 100%;
     margin: 15px 0px;
@@ -307,5 +330,4 @@ input[type=range] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    /*border: 1px solid #fff;*/
 }

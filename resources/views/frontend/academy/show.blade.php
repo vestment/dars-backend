@@ -53,7 +53,7 @@
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
         <div class="blakish-overlay"></div>
         <div class="container">
-            <div class="col m-5 p-3 paragraph1">
+            <div class="col m-sm-5 m-5 m-xl-0 paragraph1">
                 <div class="m-1">
                     <p>Explore / Academy / <b class="text-white">{{$academy->full_name}}</b></p>
                 </div>
@@ -138,9 +138,10 @@
                                             <img src="/assets/img/banner/01.png" alt="">
                                         </div>
                                         <div class="prof-img ">
-                                            <img class="teacher-image p-3"
-                                                 src="{{asset($teacher->teacher->avatar_location)}}"
-                                                 alt="">
+                                            <a href="{{route('teachers.show',['id'=>$teacher->teacher->id])}}"><img
+                                                        class="teacher-image shadow-lg p-3"
+                                                        src="{{asset($teacher->teacher->avatar_location)}}"
+                                                        alt=""></a>
                                         </div>
                                     </div>
                                     <div class="teacher-social-name ul-li-block pt-3">
@@ -223,12 +224,14 @@
                                                             <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                                             <div class="row">
                                                                 <div class="col-12">
-                                                                    <i class="fa fa-star text-warning"></i>
-                                                                    <i class="fa fa-star text-warning"></i>
-                                                                    <i class="fa fa-star text-warning"></i>
-                                                                    <i class="fa fa-star text-warning"></i>
-                                                                    <i class="fa fa-star text-warning"></i>
-                                                                    <span class="ml-1  rate">0</span>
+                                                                    <div class="course-rate ul-li">
+                                                                        <ul>
+                                                                            @for ($i=0; $i<5; ++$i)
+                                                                                <li><i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}" aria-hidden="true"></i></li>
+                                                                            @endfor
+                                                                            <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span></li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="course-meta my-1 vv">
