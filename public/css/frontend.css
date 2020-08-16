@@ -6756,6 +6756,7 @@ iframe {
 .finger-img {
     position: relative;
     z-index: 1;
+    width: 66%;
 }
 
 .prof-img {
