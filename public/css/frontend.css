@@ -622,7 +622,8 @@ h6 {
 }
 
 .main-menu-container.menu-bg-overlay {
-    background-color: #0C0C3F;
+    /* background-color: #0C0C3F; */
+    background-color: white;
     padding: 10px 0px;
 }
 
@@ -6641,9 +6642,10 @@ iframe {
 }
 
 .droplist {
-    background-color: #0C0C3F;
-    color: white;
-
+    /* background-color: #0C0C3F;
+    color: white; */
+    background-color: white !important;
+    color: black !important;
 }
 
 .droplist ul li :hover {
@@ -6655,9 +6657,11 @@ iframe {
 }
 
 .btndropdown {
-    background-color: #0C0C3F;
-    border-color: #0C0C3F;
-    color: #fff;
+    /* background-color: #0C0C3F;
+    border-color: #0C0C3F; */
+    background-color: white !important;
+    border-color:  white !important;
+    color: black !important;
     text-transform: uppercase;
     font-size: 15px;
     padding: 7px 15px;

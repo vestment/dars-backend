@@ -29,9 +29,10 @@ a.meanmenu-reveal {
 	padding: 13px 13px 11px 13px;
 	position: absolute;
 	top: 22px;
-	left: 0px !important;
+	left: 20px !important;
 	cursor: pointer;
-	color: #ffffff;
+	/* color: #ffffff; */
+	background-color: black !important;
 	text-decoration: none;
 	font-size: 16px;
 	text-indent: -9999em;
