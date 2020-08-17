@@ -379,7 +379,7 @@ h6 {
     bottom: -20px;
     height: 2px;
     width: 50px;
-    left: 0;
+    right: 0;
     background-color: #17d0cf;
 }
 
@@ -397,7 +397,7 @@ h6 {
     bottom: -20px;
     height: 2px;
     width: 50px;
-    left: 0;
+    right: 0;
     background-color: #17d0cf;
 }
 
@@ -446,57 +446,13 @@ h6 {
     bottom: -48px;
 }
 
-
-/* .breadcrumb-section .blakish-overlay {
-  opacity: 1;
-  visibility: visible;
-} */
-
-
-/* .breadcrumb-section .page-breadcrumb-content {
-  position: absolute;
-  top: 60%;
-  -webkit-transform: translateY(-60%);
-          transform: translateY(-60%);
-  left: 0;
-  right: 0;
-} */
-
-/* .breadcrumb-section .breadcrumb-head {
-  font-size: 38px;
-  color: #fff;
-  font-weight: 300;
-  padding-bottom: 20px;
+/* Icons RTL */
+.fa-caret-right:before {
+    content: "\f0d9" !important;
 }
-
-.breadcrumb-section .breadcrumb-head span {
-  font-weight: 700;
+.fa-arrow-right:before {
+    content: "\f060" !important;
 }
-
-.breadcrumb-section .breadcrumb {
-  text-align: center;
-  display: inherit;
-  background-color: transparent;
-}
-
-.breadcrumb-section .breadcrumb-item {
-  background-color: #17d0cf;
-  color: #fff;
-  padding: 5px 15px;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 4px;
-}
-
-.breadcrumb-section .breadcrumb-item::before {
-  display: none;
-}
-
-.breadcrumb-section .breadcrumb-item.active {
-  background-color: #3b3b3b;
-  color: #7a7a7a;
-} */
-
 /*---------------------------------------------------- */
 
 /*Header Section*/
@@ -504,11 +460,10 @@ h6 {
 /*----------------------------------------------------*/
 .bord {
     border: 3px solid lavender;
-
-
 }
-
-
+.list-inline {
+    padding-right: 0 !important;
+}
 .nav-menu li a {
     color: #fff;
     text-transform: uppercase;
@@ -1087,7 +1042,7 @@ h6 {
 }
 
 .menu-item-has-children li:hover {
-    margin-left: 3px;
+    margin-right: 3px;
 }
 
 .sub-menu {
@@ -1105,7 +1060,7 @@ h6 {
     transition: .3s all ease-in-out;
     top: 30px;
     left: -115px;
-    text-align: left;
+    text-align: right;
     border-radius: 4px;
     padding: 15px !important;
 }
@@ -1997,7 +1952,7 @@ button.alt-menu-btn.float-left {
 }
 
 .course-meta span {
-    float: left;
+    float: right;
     font-size: 14px;
     margin-right: 24px;
     position: relative;
@@ -2021,6 +1976,7 @@ button.alt-menu-btn.float-left {
 .course-meta .course-category,
 .latest-events .course-meta .course-author {
     color: #17d0cf;
+    margin-right: 0%;
 }
 
 .course-meta .course-author {
@@ -7173,7 +7129,7 @@ hr {
     font-weight: 300;
     font-size: 1.25rem;
     margin-top: 1rem;
-    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .hero-section {
@@ -7190,7 +7146,7 @@ hr {
     content: '';
     position: absolute;
     top: 53px;
-    margin-left: 10px;
+    margin-right: 10px;
     bottom: 0;
     width: 1px;
     height: 40%;
@@ -7289,4 +7245,44 @@ hr {
 }
 .categ a:hover {
     color: #fff;
+}
+.float-left {
+    float: right!important;
+}
+.float-right {
+    float: left!important;
+}
+.text-left {
+    text-align: right!important;
+}.text-right {
+    text-align: left!important;
+}
+.tex {
+    padding-right: 70px;
+}
+.form-check-input[type=checkbox]:not(:checked) + label:after, .form-check-input[type=checkbox] + label:after {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: block;
+    color: #fff;
+    font-family: 'Font Awesome 5 Free';
+    content: "\f00c";
+}
+.form-check-input[type=checkbox]+label::before {
+    border-radius: 2px;
+    position: absolute;
+    right: -.1rem;
+    display: block;
+    top: 0px;
+    pointer-events: none;
+    content: "";
+    background-color: #fff;
+    border: #adb5bd solid 1px;
+}
+.form-check-input:not(:checked) + label, .form-check-input:checked + label, label.btn input:not(:checked) + label, label.btn input:checked + label {
+    padding-right: 25px;
+}
+.form-check-input[type=radio] + label:before, .form-check-input[type=radio] + label:after, label.btn input + label:before, label.btn input + label:after {
+    right: -2px;
 }
