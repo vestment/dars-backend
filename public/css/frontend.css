@@ -507,7 +507,8 @@ h6 {
 
 
 .nav-menu li a {
-    color: #fff;
+    /* color: #fff; */
+    color: black;
     text-transform: uppercase;
     font-size: 15px;
     padding: 7px 15px;
@@ -6298,7 +6299,8 @@ ul.product-tab li.active:after {
     -webkit-transition: .3s all ease-in-out;
     transition: .3s all ease-in-out;
     z-index: 9;
-    background-color: #0C0C3F;
+    /* background-color: #0C0C3F; */
+    background-color: white;
 
 }
 
@@ -6866,8 +6868,10 @@ hr {
 
 
 .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show > .btn-secondary.dropdown-toggle {
-    background-color: #0C0C3F;
-    border-color: #0C0C3F;
+    /* background-color: #0C0C3F;
+    border-color: #0C0C3F; */
+    background-color: #72b1ee;
+    border-color: #72b1ee;
 }
 
 
@@ -6903,7 +6907,8 @@ hr {
 
 .search-bar {
     position: relative;
-    background-color: #0C0C3F;
+    /* background-color: #0C0C3F; */
+    background-color: white;
 
 
 }
@@ -6925,7 +6930,8 @@ hr {
     left: 0;
     transform: translateY(-50%);
     padding: 13px 15px 13px 11px;
-    background-color: #0C0C3F;
+    /* background-color: #0C0C3F; */
+    background-color: white;
 
 }
 
@@ -6938,9 +6944,8 @@ hr {
     -webkit-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out;
     padding: 8px 6px 8px 45px;
-    background-color: #0C0C3F;
-
-}
+    /* background-color: #0C0C3F; */
+    background-color: white;}
 
 .p-re {
     z-index: 7;

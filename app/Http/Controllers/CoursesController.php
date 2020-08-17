@@ -151,9 +151,15 @@ class CoursesController extends Controller
             }
 
         }
+        $mandatory_courses = [];
+        $optional_courses = [];
+if ($course->mandatory_courses && $course->optional_courses) {
+        $mandatory_courses = Course::whereIn('id',json_decode($course->mandatory_courses))->get();
+        $optional_courses = Course::whereIn('id',json_decode($course->optional_courses))->get();
+}
 
         // $course=(Course::with('teachers.teacherProfile')->find(2));
-        return view($this->path . '.courses.course', compact('chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view($this->path . '.courses.course', compact('optional_courses','mandatory_courses','chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)

@@ -171,8 +171,28 @@
                     {!! Form::label('meta_keywords',trans('labels.backend.courses.fields.meta_keywords'), ['class' => 'control-label']) !!}
                     {!! Form::textarea('meta_keywords', old('meta_keywords'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_keywords')]) !!}
                 </div>
-
             </div>
+
+
+            @if (Auth::user()->isAdmin())
+                <div class="row">
+                    <div class="col-10 form-group">
+                        {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
+                        {!! Form::select('opt_courses[]', $allCourses,old('opt_courses') ? old('opt_courses') : $opt_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                    </div>
+                </div>
+            @endif
+
+
+
+            @if (Auth::user()->isAdmin())
+                <div class="row">
+                    <div class="col-10 form-group">
+                        {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
+                        {!! Form::select('mand_courses[]', $allCourses, old('mand_courses') ? old('mand_courses') : $mand_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                    </div>    
+                </div>
+            @endif
 
             <div class="row">
                 <div class="col-12  text-center form-group">

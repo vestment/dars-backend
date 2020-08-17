@@ -8,6 +8,8 @@ use App\Models\Course;
 use App\Models\Chapter;
 use App\Models\CourseTimeline;
 use App\Models\Media;
+use App\Models\Courses;
+
 use function foo\func;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -185,9 +187,11 @@ class CoursesController extends Controller
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
+        $courses = Course::pluck('title', 'id');
+
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
 
-        return view('backend.courses.create', compact('teachers', 'categories'));
+        return view('backend.courses.create', compact('teachers', 'categories','courses'));
     }
 
     /**
@@ -217,10 +221,10 @@ class CoursesController extends Controller
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-
-
         $course = Course::create($request->all());
         $course->slug = $slug;
+        $course->optional_courses = json_encode($request->opt_courses);
+        $course->mandatory_courses = json_encode($request->mand_courses);
         $course->save();
 
         //Saving  videos
@@ -318,10 +322,14 @@ class CoursesController extends Controller
         })->get()->pluck('name', 'id');
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
 
+        $allCourses = Course::pluck('title', 'id');
 
         $course = Course::findOrFail($id);
 
-        return view('backend.courses.edit', compact('course', 'teachers', 'categories'));
+        $opt_courses = json_decode($course->optional_courses);
+        $mand_courses = json_decode($course->mandatory_courses);
+
+        return view('backend.courses.edit', compact('course', 'teachers', 'categories','course','opt_courses','mand_courses','allCourses'));
     }
 
     /**
@@ -419,6 +427,15 @@ class CoursesController extends Controller
 
 
         $course->update($request->all());
+        $course->optional_courses = json_encode($request->opt_courses);
+        $course->mandatory_courses = json_encode($request->mand_courses);
+
+        if ( count($request->opt_courses) != 0 ||  count($request->mand_courses) != 0  )  {
+            $course->optional_courses = json_encode($request->opt_courses);
+            $course->mandatory_courses = json_encode($request->mand_courses);
+                $course->save();
+        }
+
         if (($request->slug == "") || $request->slug == null) {
             $course->slug = str_slug($request->title);
             $course->save();
@@ -451,9 +468,13 @@ class CoursesController extends Controller
         $tests = \App\Models\Test::where('course_id', $id)->get();
 
         $course = Course::findOrFail($id);
+
+        $opt_courses = json_decode($course->optional_courses);
+        $mand_courses = json_decode($course->mandatory_courses);
+
         $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
 
-        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline'));
+        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline','opt_courses','mand_courses'));
     }
 
 
@@ -468,6 +489,8 @@ class CoursesController extends Controller
         if (!Gate::allows('course_delete')) {
             return abort(401);
         }
+
+
         $course = Course::findOrFail($id);
         if ($course->students->count() >= 1) {
             return redirect()->route('admin.courses.index')->withFlashDanger(trans('alerts.backend.general.delete_warning'));

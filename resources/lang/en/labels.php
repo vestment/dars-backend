@@ -31,6 +31,9 @@ return array (
         'meta_keywords' => 'Meta Keywords',
         'sidebar' => 'Add Sidebar',
         'lessons' => 'Lessons',
+        'optional_courses' => 'Optional courses',
+        'mandatory_courses' => 'Mandatory courses',
+
         array (
           'add' => 'Add Lessons',
           'view' => 'View Lessons',

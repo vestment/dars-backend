@@ -207,6 +207,10 @@ return array (
         'trending' => 'الشائع',
         'free' => 'حر',
         'unpublished' => 'غير منشور',
+        'optional_courses' => 'دورات اختيارية',
+        'mandatory_courses' => 'دورات اجبارية',
+
+
       ),
       'add_categories' => 'إضافة فئات',
       'add_teachers' => 'إضافة المعلمين',

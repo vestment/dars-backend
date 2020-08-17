@@ -131,6 +131,23 @@
                             <th>@lang('labels.backend.courses.fields.meta_keywords')</th>
                             <td>{{ $course->meta_keywords }}</td>
                         </tr>
+
+
+
+
+
+                        <tr>
+                            <th>@lang('labels.backend.courses.fields.optional_courses')</th>
+                            <td>{{$course->optional_courses}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>@lang('labels.backend.courses.fields.mandatory_courses')</th>
+                            <td>{{$course->mandatory_courses }}</td>
+                        </tr>
+
+
+
                     </table>
                 </div>
             </div><!-- Nav tabs -->
