@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
@@ -62,167 +62,7 @@
                                     @if(count($popular_course) > 0)
                                         @foreach($popular_course as $course)
                                             <div class="item ">
-                                                <div class="best-course-pic-text relative-position">
-                                                    <div class="best-course-pic piclip relative-position"
-                                                         @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
-                                                        <div class="course-price text-center gradient-bg">
-                                                            @if($course->free == 1)
-                                                                <span>{{trans('labels.backend.courses.fields.free')}}</span>
-                                                            @else
-                                                                <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
-                                                            @endif
-                                                        </div>
-                                                    <!-- <div class="course-details-btn">
-                                                        <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
-                                                            <i class="fas fa-arrow-right"></i></a>
-                                                    </div>
-                                                    <div class="blakish-overlay"></div> -->
-                                                    </div>
-                                                    <div class="card-body back-im p-3">
-                                                        <h3 class="card-title titleofcard">{{$course->title}}</h3>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="course-rate ul-li">
-                                                                    <ul>
-                                                                        @for ($i=0; $i<5; ++$i)
-                                                                            <li>
-                                                                                <i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}"
-                                                                                   aria-hidden="true"></i></li>
-                                                                        @endfor
-                                                                        <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="course-meta my-1 vv">
-                                                            <small>
-                                                                <i class="far fa-clock"></i> {{ $course->course_hours }}
-                                                                hours |
-                                                            </small>
-                                                            <small><i
-                                                                        class="fab fa-youtube"></i> {{ $course->chapters()->count() }}
-                                                                lecture
-                                                            </small>
-                                                            {{-- <span class="course-category">
-                                                                <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
-                                                            </span>
-                                                            <span class="course-author"><a href="#">{{ $course->students()->count() }}
-                                                                    @lang('labels.frontend.course.students')</a>
-                                                            </span>
-                                                            <span class="course-author">
-                                                                    {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
-                                                            </span> --}}
-                                                        </div>
-                                                        <div class="row my-2">
-                                                            <div class="col-4">
-                                                                @foreach($course->teachers as $key=>$teacher)
-                                                                    @php $key++ @endphp
-                                                                    {{-- <img src="{{asset($teacher->avatar_location)}}"
-                                                                         class="rounded-circle teach_img"> --}}
-
-                                                                    @if($teacher->avatar_location == "")
-                                                                        <img class="rounded-circle teach_img"
-                                                                             src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                             alt="">
-                                                                    @else
-                                                                        <img class="rounded-circle teach_img"
-                                                                             src="{{asset($teacher->avatar_location)}}"
-                                                                             alt="">
-                                                                    @endif
-                                                                @endforeach
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <div class="row">
-                                                                    @foreach($course->teachers as $key=>$teacher)
-                                                                        @php $key++ @endphp
-
-                                                                        <a class="col-12"
-                                                                           href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                           target="_blank">
-                                                                            {{$teacher->full_name}}@if($key < count($course->teachers ))
-                                                                                , @endif
-                                                                        </a>
-                                                                    @endforeach
-                                                                    @foreach($course->teachers as $key=>$teacher)
-                                                                        @php $key++ @endphp
-                                                                        <a class="col-12"
-                                                                           href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                           target="_blank">
-                                                                            @foreach($teacher_data as $data)
-                                                                                @if($data->user_id == $teacher->id)
-                                                                                    {{$data->description}}
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </a>
-                                                                @endforeach
-                                                                <!-- <div class="col-12 metatitle"></div>
-                                                            <div class="col-12 metadescr"></div> -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-xl-10 col-9">
-                                                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                                                    <button type="submit"
-                                                                            class="btn btn-block btn-info ">   @lang('labels.frontend.course.add_to_cart')
-                                                                        <i class="fa fa-shopping-bag ml-1"></i>
-                                                                    </button>
-
-                                                                @elseif(!auth()->check())
-                                                                    @if($course->free == 1)
-                                                                        <a class="btn btn-block btn-info"
-                                                                           href="{{route('login.index')}}">@lang('labels.frontend.course.get_now')
-                                                                            <i class="fas fa-caret-right"></i>
-                                                                        </a>
-                                                                    @else
-                                                                        <a class="btn btn-block btn-info"
-                                                                           href="{{route('login.index')}}">@lang('labels.frontend.course.add_to_cart')
-                                                                            <i class="fa fa-shopping-bag"></i>
-                                                                        </a>
-                                                                    @endif
-                                                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                                                    @if($course->free == 1)
-                                                                        <form action="{{ route('cart.getnow') }}"
-                                                                              method="POST">
-                                                                            @csrf
-                                                                            <input type="hidden" name="course_id"
-                                                                                   value="{{ $course->id }}"/>
-                                                                            <input type="hidden" name="amount"
-                                                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                            <button class="btn btn-block btn-info"
-                                                                                    href="#">@lang('labels.frontend.course.get_now')
-                                                                                <i class="fas fa-caret-right"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    @else
-                                                                        <form action="{{ route('cart.addToCart') }}"
-                                                                              method="POST">
-                                                                            @csrf
-                                                                            <input type="hidden" name="course_id"
-                                                                                   value="{{ $course->id }}"/>
-                                                                            <input type="hidden" name="amount"
-                                                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                            <button type="submit"
-                                                                                    class="btn btn-block btn-info">
-                                                                                @lang('labels.frontend.course.add_to_cart')
-                                                                                <i class="fa fa-shopping-bag"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    @endif
-                                                                @endif
-                                                            </div>
-                                                            <div class="">
-                                                                <a href="{{ route('courses.show', [$course->slug]) }}"
-                                                                   class="btn btnWishList">
-                                                                    <i class="far fa-bookmark"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @include('frontend.layouts.partials.coursesTemp')
                                             </div>
                                         @endforeach
                                     @endif
@@ -234,464 +74,143 @@
                                     @if($trending_courses->count() > 0)
                                         @foreach($trending_courses as $course)
                                             <div class="item ">
-                                                <div class="best-course-pic-text relative-position">
-                                                    <div class="best-course-pic piclip relative-position"
-                                                         @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
-                                                        <div class="course-price text-center gradient-bg">
-                                                            @if($course->free == 1)
-                                                                <span>{{trans('labels.backend.courses.fields.free')}}</span>
-                                                            @else
-                                                                <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
-                                                            @endif
-                                                        </div>
-                                                    <!-- <div class="course-details-btn">
-                                                        <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
-                                                            <i class="fas fa-arrow-right"></i></a>
-                                                    </div>
-                                                    <div class="blakish-overlay"></div> -->
-                                                    </div>
-                                                    <div class="card-body back-im">
-                                                        <h3 class="card-title titleofcard">{{$course->title}}</h3>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="course-rate ul-li">
-                                                                    <ul>
-                                                                        @for ($i=0; $i<5; ++$i)
-                                                                            <li>
-                                                                                <i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}"
-                                                                                   aria-hidden="true"></i></li>
-                                                                        @endfor
-                                                                        <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <div class="course-meta my-1 vv">
-                                                                <small><i class="far fa-clock"></i> 10 hours
-                                                                    |
-                                                                </small>
-                                                                <small><i class="fab fa-youtube"></i> 10
-                                                                    lecture
-                                                                </small>
-                                                                {{-- <span class="course-category">
-                                                                    <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
-                                                                </span>
-                                                                <span class="course-author"><a href="#">{{ $course->students()->count() }}
-                                                                        @lang('labels.frontend.course.students')</a>
-                                                                </span>
-                                                                <span class="course-author">
-                                                                        {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
-                                                                </span> --}}
-                                                            </div>
-                                                            <div class="row my-2">
-                                                                <div class="col-4">
-                                                                    @foreach($course->teachers as $key=>$teacher)
-
-                                                                        @if($teacher->avatar_location == "")
-                                                                            <img class="rounded-circle teach_img"
-                                                                                 src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                                 alt="">
-                                                                        @else
-                                                                            <img class="rounded-circle teach_img"
-                                                                                 src="{{asset($teacher->avatar_location)}}"
-                                                                                 alt="">
-                                                                        @endif
-                                                                    @endforeach
-                                                                </div>
-                                                                <div class="col-8">
-                                                                    <div class="row">
-                                                                        @foreach($course->teachers as $key=>$teacher)
-                                                                            @php $key++ @endphp
-
-                                                                            <a class="col-12"
-                                                                               href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                               target="_blank">
-                                                                                {{$teacher->full_name}}@if($key < count($course->teachers ))
-                                                                                    , @endif
-                                                                            </a>
-                                                                            @php
-                                                                                $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
-                                                                            @endphp
-                                                                            <a class="col-12"
-                                                                               href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                               target="_blank">
-                                                                                {{$teacherProfile->description}}
-                                                                            </a>
-                                                                    @endforeach
-                                                                    <!-- <div class="col-12 metatitle"></div>
-                                                            <div class="col-12 metadescr"></div> -->
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-xl-10 col-9">
-                                                                    @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                                                        <button type="submit"
-                                                                                class="btn btn-block btn-info ">   @lang('labels.frontend.course.add_to_cart')
-                                                                            <i class="fa fa-shopping-bag ml-1"></i>
-                                                                        </button>
-
-                                                                    @elseif(!auth()->check())
-                                                                        @if($course->free == 1)
-                                                                            <a class="btn btn-block btn-info"
-                                                                               href="{{route('login.index')}}">@lang('labels.frontend.course.get_now')
-                                                                                <i class="fas fa-caret-right"></i>
-                                                                            </a>
-                                                                        @else
-                                                                            <a class="btn btn-block btn-info"
-                                                                               href="{{route('login.index')}}">@lang('labels.frontend.course.add_to_cart')
-                                                                                <i class="fa fa-shopping-bag"></i>
-                                                                            </a>
-                                                                        @endif
-                                                                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                                                        @if($course->free == 1)
-                                                                            <form action="{{ route('cart.getnow') }}"
-                                                                                  method="POST">
-                                                                                @csrf
-                                                                                <input type="hidden" name="course_id"
-                                                                                       value="{{ $course->id }}"/>
-                                                                                <input type="hidden" name="amount"
-                                                                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                                <button class="btn btn-block btn-info"
-                                                                                        href="#">@lang('labels.frontend.course.get_now')
-                                                                                    <i class="fas fa-caret-right"></i>
-                                                                                </button>
-                                                                            </form>
-                                                                        @else
-                                                                            <form action="{{ route('cart.addToCart') }}"
-                                                                                  method="POST">
-                                                                                @csrf
-                                                                                <input type="hidden" name="course_id"
-                                                                                       value="{{ $course->id }}"/>
-                                                                                <input type="hidden" name="amount"
-                                                                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                                <button type="submit"
-                                                                                        class="btn btn-block btn-info">
-                                                                                    @lang('labels.frontend.course.add_to_cart')
-                                                                                    <i class="fa fa-shopping-bag"></i>
-                                                                                </button>
-                                                                            </form>
-                                                                        @endif
-                                                                    @endif
-                                                                </div>
-                                                                <div class="">
-                                                                    <a href="{{ route('courses.show', [$course->slug]) }}"
-                                                                       class="btn btnWishList">
-                                                                        <i class="far fa-bookmark"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                @endforeach
-                                                @endif
+                                                @include('frontend.layouts.partials.coursesTemp')
                                             </div>
-                                </div>
-
-                            </div>
-                            @else
-                                <div class="col-12 col-md-9 col-xl-9">
-                                    @if($chapters->count() > 0)
-                                        <div class="row">
-                                            @foreach($chapters as $course)
-
-                                                <div class="col-12 col-xl-3 col-md-3 col-sm-6">
-                                                    <div class="best-course-pic-text relative-position">
-                                                        <div class="best-course-pic piclip relative-position"
-                                                             @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
-                                                            <div class="course-price text-center gradient-bg">
-                                                                @if($course->free == 1)
-                                                                    <span>{{trans('labels.backend.courses.fields.free')}}</span>
-                                                                @else
-                                                                    <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
-                                                                @endif
-                                                            </div>
-                                                        <!-- <div class="course-details-btn">
-                                        <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
-                                                                <i class="fas fa-arrow-right"></i></a>
-                                                        </div>
-                                                        <div class="blakish-overlay"></div> -->
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <h3 class="card-title titleofcard">{{$course->title}}</h3>
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <div class="course-rate ul-li">
-                                                                        <ul>
-                                                                            @for ($i=0; $i<5; ++$i)
-                                                                                <li>
-                                                                                    <i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}"
-                                                                                       aria-hidden="true"></i></li>
-                                                                            @endfor
-                                                                            <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="course-meta my-1 vv">
-                                                                    {{-- <span class="course-category">
-                                                                        <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
-                                                                    </span>
-                                                                    <span class="course-author"><a href="#">{{ $course->students()->count() }}
-                                                                            @lang('labels.frontend.course.students')</a>
-                                                                    </span>
-                                                                    <span class="course-author">
-                                                                            {{ $course->lessons()->count() }} @lang('labels.backend.courses.lessons')
-                                                                    </span> --}}
-
-                                                                    <small>
-                                                                        <i class="far fa-clock"></i> {{ $course->course_hours }}
-                                                                        hours |
-                                                                    </small>
-                                                                    <small>
-                                                                        <i class="fab fa-youtube"></i> {{ $course->chapters()->count() }}
-                                                                        lecture
-                                                                    </small>
-
-
-                                                                </div>
-                                                                {{-- <div  >
-
-
-
-
-                                                                        </div> --}}
-                                                                <div class="row my-2 teacher">
-                                                                    <div class="col-3 d-flex align-self-center">
-                                                                        @foreach($course->teachers as $key=>$teacher)
-                                                                            @php $key++ @endphp
-                                                                            {{-- <img src="{{asset($teacher->avatar_location)}}"
-                                                                                 class="rounded-circle teach_img"> --}}
-
-                                                                            @if($teacher->avatar_location == "")
-                                                                                <img class="rounded-circle teach_img"
-                                                                                     src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                                     alt="">
-                                                                            @else
-                                                                                <img class="rounded-circle teach_img"
-                                                                                     src="{{asset($teacher->avatar_location)}}"
-                                                                                     alt="">
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </div>
-                                                                    <div class="col-9">
-                                                                        <div class="row">
-                                                                            @foreach($course->teachers as $key=>$teacher)
-                                                                                @php
-                                                                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
-                                                                                @endphp
-                                                                                @php $key++ @endphp
-                                                                                <a class="text-pink"
-                                                                                   href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                                   target="_blank">
-                                                                                    {{$teacher->full_name}}@if($key < count($course->teachers ))
-                                                                                        , @endif
-                                                                                </a>
-                                                                                @php $key++ @endphp
-                                                                                <a class="text-muted teacher-title"
-                                                                                   href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                                   target="_blank">
-                                                                                    {{$teacherProfile->title}}
-                                                                                </a>
-                                                                                <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                                   target="_blank">
-                                                                                    {{$teacher->title}}
-                                                                                </a>
-                                                                            @endforeach
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-10 col-9">
-                                                                        @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                                                            <button type="submit"
-                                                                                    class="btn btn-block btn-info ">   @lang('labels.frontend.course.add_to_cart')
-                                                                                <i class="fa fa-shopping-bag ml-1"></i>
-                                                                            </button>
-
-                                                                        @elseif(!auth()->check())
-                                                                            @if($course->free == 1)
-                                                                                <a class="btn btn-block btn-info"
-                                                                                   href="{{route('login.index')}}">@lang('labels.frontend.course.get_now')
-                                                                                    <i class="fas fa-caret-right"></i>
-                                                                                </a>
-                                                                            @else
-                                                                                <a class="btn btn-block btn-info"
-                                                                                   href="{{route('login.index')}}">@lang('labels.frontend.course.add_to_cart')
-                                                                                    <i class="fa fa-shopping-bag"></i>
-                                                                                </a>
-                                                                            @endif
-                                                                        @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                                                            @if($course->free == 1)
-                                                                                <form action="{{ route('cart.getnow') }}"
-                                                                                      method="POST">
-                                                                                    @csrf
-                                                                                    <input type="hidden"
-                                                                                           name="course_id"
-                                                                                           value="{{ $course->id }}"/>
-                                                                                    <input type="hidden" name="amount"
-                                                                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                                    <button class="btn btn-block btn-info"
-                                                                                            href="#">@lang('labels.frontend.course.get_now')
-                                                                                        <i class="fas fa-caret-right"></i>
-                                                                                    </button>
-                                                                                </form>
-                                                                            @else
-                                                                                <form action="{{ route('cart.addToCart') }}"
-                                                                                      method="POST">
-                                                                                    @csrf
-                                                                                    <input type="hidden"
-                                                                                           name="course_id"
-                                                                                           value="{{ $course->id }}"/>
-                                                                                    <input type="hidden" name="amount"
-                                                                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                                    <button type="submit"
-                                                                                            class="btn btn-block btn-info">
-                                                                                        @lang('labels.frontend.course.add_to_cart')
-                                                                                        <i class="fa fa-shopping-bag"></i>
-                                                                                    </button>
-                                                                                </form>
-                                                                            @endif
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="">
-                                                                        <a href="{{ route('courses.show', [$course->slug]) }}"
-                                                                           class="btn btnWishList">
-                                                                            <i class="far fa-bookmark"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    @endforeach
-                                                </div>
-                                                @endif
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="side-bar">
-
-                                                <div class="side-bar-widget  first-widget">
-                                                    <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.find_your_course')</h2>
-                                                    <div class="listing-filter-form pb30">
-                                                        <form action="{{route('search-course')}}" method="get">
-
-                                                            <div class="filter-search mb20">
-                                                                <label class="text-uppercase">@lang('labels.frontend.course.category')</label>
-                                                                <select name="category"
-                                                                        class="form-control listing-filter-form select">
-                                                                    <option value="">@lang('labels.frontend.course.select_category')</option>
-                                                                    @if(count($categories) > 0)
-                                                                        @foreach($categories as $category)
-                                                                            <option value="{{$category->id}}">{{$category->name}}</option>
-
-                                                                        @endforeach
-                                                                    @endif
-
-                                                                </select>
-                                                            </div>
-
-
-                                                            <div class="filter-search mb20">
-                                                                <label>@lang('labels.frontend.course.full_text')</label>
-                                                                <input type="text" class="" name="q"
-                                                                       placeholder="{{trans('labels.frontend.course.looking_for')}}">
-                                                            </div>
-                                                            <button class="genius-btn gradient-bg text-center text-uppercase btn-block text-white font-weight-bold"
-                                                                    type="submit">@lang('labels.frontend.course.find_courses')
-                                                                <i
-                                                                        class="fas fa-caret-right"></i></button>
-                                                        </form>
-
-                                                    </div>
-                                                </div>
-
-                                                @if($recent_news->count() > 0)
-                                                    <div class="side-bar-widget">
-                                                        <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.recent_news')</h2>
-                                                        <div class="latest-news-posts">
-                                                            @foreach($recent_news as $item)
-                                                                <div class="latest-news-area">
-
-                                                                    @if($item->image != "")
-                                                                        <div class="latest-news-thumbnile relative-position"
-                                                                             style="background-image: url({{asset('storage/uploads/'.$item->image)}})">
-                                                                            <div class="blakish-overlay"></div>
-                                                                        </div>
-                                                                    @endif
-                                                                    <div class="date-meta">
-                                                                        <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}}
-                                                                    </div>
-                                                                    <h3 class="latest-title bold-font"><a
-                                                                                href="{{route('blogs.index',['slug'=>$item->slug.'-'.$item->id])}}">{{$item->title}}</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <!-- /post -->
-                                                            @endforeach
-
-
-                                                            <div class="view-all-btn bold-font">
-                                                                <a href="{{route('blogs.index')}}">@lang('labels.frontend.course.view_all_news')
-                                                                    <i class="fas fa-chevron-circle-right"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                @endif
-
-
-                                                @if($global_featured_course != "")
-                                                    <div class="side-bar-widget">
-                                                        <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.featured_course')</h2>
-                                                        <div class="featured-course">
-                                                            <div class="best-course-pic-text relative-position pt-0">
-                                                                <div class="best-course-pic relative-position "
-                                                                     @if($global_featured_course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$global_featured_course->course_image)}})" @endif>
-
-                                                                    @if($global_featured_course->trending == 1)
-                                                                        <div class="trend-badge-2 text-center text-uppercase">
-                                                                            <i class="fas fa-bolt"></i>
-                                                                            <span>@lang('labels.frontend.badges.trending')</span>
-                                                                        </div>
-                                                                    @endif
-                                                                    @if($global_featured_course->free == 1)
-                                                                        <div class="trend-badge-3 text-center text-uppercase">
-                                                                            <i class="fas fa-bolt"></i>
-                                                                            <span>@lang('labels.backend.courses.fields.free')</span>
-                                                                        </div>
-                                                                    @endif
-
-                                                                </div>
-                                                                <div class="best-course-text" style="left: 0;right: 0;">
-                                                                    <div class="course-title mb20 headline relative-position">
-                                                                        <h3>
-                                                                            <a href="{{ route('courses.show', [$global_featured_course->slug]) }}">{{$global_featured_course->title}}</a>
-                                                                        </h3>
-                                                                    </div>
-                                                                    <div class="course-meta">
-                                            <span class="course-category"><a
-                                                        href="{{route('courses.category',['category'=>$global_featured_course->category->slug])}}">{{$global_featured_course->category->name}}</a></span>
-                                                                        <span class="course-author">{{ $global_featured_course->students()->count() }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     @endif
                                 </div>
+                            </div>
+
                         </div>
+                    @else
+                        <div class="col-12 col-md-9 col-xl-9">
+                            @if($chapters->count() > 0)
+                                <div class="row">
+                                    @foreach($chapters as $course)
+
+                                        <div class="col-12 col-xl-3 col-md-3 col-sm-6">
+                                            @include('frontend.layouts.partials.coursesTemp')
+                                        </div>
+
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-3">
+                            <div class="side-bar">
+
+                                <div class="side-bar-widget  first-widget">
+                                    <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.find_your_course')</h2>
+                                    <div class="listing-filter-form pb30">
+                                        <form action="{{route('search-course')}}" method="get">
+
+                                            <div class="filter-search mb20">
+                                                <label class="text-uppercase">@lang('labels.frontend.course.category')</label>
+                                                <select name="category"
+                                                        class="form-control listing-filter-form select">
+                                                    <option value="">@lang('labels.frontend.course.select_category')</option>
+                                                    @if(count($categories) > 0)
+                                                        @foreach($categories as $category)
+                                                            <option value="{{$category->id}}">{{$category->name}}</option>
+
+                                                        @endforeach
+                                                    @endif
+
+                                                </select>
+                                            </div>
+
+
+                                            <div class="filter-search mb20">
+                                                <label>@lang('labels.frontend.course.full_text')</label>
+                                                <input type="text" class="" name="q"
+                                                       placeholder="{{trans('labels.frontend.course.looking_for')}}">
+                                            </div>
+                                            <button class="genius-btn gradient-bg text-center text-uppercase btn-block text-white font-weight-bold"
+                                                    type="submit">@lang('labels.frontend.course.find_courses')
+                                                <i
+                                                        class="fas fa-caret-right"></i></button>
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                                @if($recent_news->count() > 0)
+                                    <div class="side-bar-widget">
+                                        <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.recent_news')</h2>
+                                        <div class="latest-news-posts">
+                                            @foreach($recent_news as $item)
+                                                <div class="latest-news-area">
+
+                                                    @if($item->image != "")
+                                                        <div class="latest-news-thumbnile relative-position"
+                                                             style="background-image: url({{asset('storage/uploads/'.$item->image)}})">
+                                                            <div class="blakish-overlay"></div>
+                                                        </div>
+                                                    @endif
+                                                    <div class="date-meta">
+                                                        <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}}
+                                                    </div>
+                                                    <h3 class="latest-title bold-font"><a
+                                                                href="{{route('blogs.index',['slug'=>$item->slug.'-'.$item->id])}}">{{$item->title}}</a>
+                                                    </h3>
+                                                </div>
+                                                <!-- /post -->
+                                            @endforeach
+
+
+                                            <div class="view-all-btn bold-font">
+                                                <a href="{{route('blogs.index')}}">@lang('labels.frontend.course.view_all_news')
+                                                    <i class="fas fa-chevron-circle-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                @endif
+
+
+                                @if($global_featured_course != "")
+                                    <div class="side-bar-widget">
+                                        <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.featured_course')</h2>
+                                        <div class="featured-course">
+                                            <div class="best-course-pic-text relative-position pt-0">
+                                                <div class="best-course-pic relative-position "
+                                                     @if($global_featured_course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$global_featured_course->course_image)}})" @endif>
+
+                                                    @if($global_featured_course->trending == 1)
+                                                        <div class="trend-badge-2 text-center text-uppercase">
+                                                            <i class="fas fa-bolt"></i>
+                                                            <span>@lang('labels.frontend.badges.trending')</span>
+                                                        </div>
+                                                    @endif
+                                                    @if($global_featured_course->free == 1)
+                                                        <div class="trend-badge-3 text-center text-uppercase">
+                                                            <i class="fas fa-bolt"></i>
+                                                            <span>@lang('labels.backend.courses.fields.free')</span>
+                                                        </div>
+                                                    @endif
+
+                                                </div>
+                                                <div class="best-course-text" style="left: 0;right: 0;">
+                                                    <div class="course-title mb20 headline relative-position">
+                                                        <h3>
+                                                            <a href="{{ route('courses.show', [$global_featured_course->slug]) }}">{{$global_featured_course->title}}</a>
+                                                        </h3>
+                                                    </div>
+                                                    <div class="course-meta">
+                                            <span class="course-category"><a
+                                                        href="{{route('courses.category',['category'=>$global_featured_course->category->slug])}}">{{$global_featured_course->category->name}}</a></span>
+                                                        <span class="course-author">{{ $global_featured_course->students()->count() }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </section>
     @endif
     @if(@isset($category))
@@ -987,8 +506,7 @@
                     <div class="col-12 col-lg-2 col-xl-2 col-md-4 filters-section">
                         <button type="button"
                                 class="btn btn-block btn-primary btn-toggler mb-xl-0 mb-lg-0 mb-3">@lang('labels.frontend.course.filters.filters')
-                            <i
-                                    class="fas fa-filter"></i></button>
+                            <i class="fas fa-filter"></i></button>
 
                         <!-- Section: Filters -->
                         <section class="p-2 filters-side-bar">
@@ -1182,168 +700,7 @@
                                 @foreach($courses as $course)
 
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-12 mb-2">
-                                        <div class="best-course-pic-text relative-position">
-                                            <div class="best-course-pic piclip relative-position"
-                                                 @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
-                                                <div class="course-price text-center gradient-bg">
-                                                    @if($course->free == 1)
-                                                        <span>{{trans('labels.backend.courses.fields.free')}}</span>
-                                                    @else
-                                                        <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
-                                                    @endif
-                                                </div>
-                                            <!-- <div class="course-details-btn">
-                                                        <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
-                                                    <i class="fas fa-arrow-right"></i></a>
-                                            </div>
-                                            <div class="blakish-overlay"></div> -->
-                                            </div>
-                                            <div class="card-body back-im p-3">
-                                                <h3 class="card-title titleofcard">{{$course->title}}</h3>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="course-rate ul-li">
-                                                            <ul>
-                                                                @for ($i=0; $i<5; ++$i)
-                                                                    <li>
-                                                                        <i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}"
-                                                                           aria-hidden="true"></i></li>
-                                                                @endfor
-                                                                <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span>
-                                                                </li>
-                                                            </ul>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="course-meta my-1 vv">
-                                                    <small>
-                                                        <i class="far fa-clock"></i> {{ $course->course_hours }}
-                                                        hours |
-                                                    </small>
-                                                    <small><i
-                                                                class="fab fa-youtube"></i> {{ $course->chapters()->count() }}
-                                                        lecture
-                                                    </small>
-                                                    {{-- <span class="course-category">
-                                                        <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
-                                                    </span>
-                                                    <span class="course-author"><a href="#">{{ $course->students()->count() }}
-                                                            @lang('labels.frontend.course.students')</a>
-                                                    </span>
-                                                    <span class="course-author">
-                                                            {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
-                                                    </span> --}}
-                                                </div>
-                                                <div class="row my-2">
-                                                    <div class="col-4">
-                                                        @foreach($course->teachers as $key=>$teacher)
-                                                            @php $key++ @endphp
-                                                            {{-- <img src="{{asset($teacher->avatar_location)}}"
-                                                                 class="rounded-circle teach_img"> --}}
-
-                                                            @if($teacher->avatar_location == "")
-                                                                <img class="rounded-circle teach_img"
-                                                                     src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                     alt="">
-                                                            @else
-                                                                <img class="rounded-circle teach_img"
-                                                                     src="{{asset($teacher->avatar_location)}}"
-                                                                     alt="">
-                                                            @endif
-                                                        @endforeach
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <div class="row">
-                                                            @foreach($course->teachers as $key=>$teacher)
-                                                                @php $key++ @endphp
-
-                                                                <a class="col-12"
-                                                                   href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                   target="_blank">
-                                                                    {{$teacher->full_name}}@if($key < count($course->teachers ))
-                                                                        , @endif
-                                                                </a>
-                                                            @endforeach
-                                                            @foreach($course->teachers as $key=>$teacher)
-                                                                @php $key++ @endphp
-                                                                <a class="col-12"
-                                                                   href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                                   target="_blank">
-                                                                    @foreach($teacher_data as $data)
-                                                                        @if($data->user_id == $teacher->id)
-                                                                            {{$data->description}}
-                                                                        @endif
-                                                                    @endforeach
-                                                                </a>
-                                                        @endforeach
-                                                        <!-- <div class="col-12 metatitle"></div>
-                                                            <div class="col-12 metadescr"></div> -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-xl-10 col-9">
-                                                        @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                                            <button type="submit"
-                                                                    class="btn btn-block btn-info ">   @lang('labels.frontend.course.add_to_cart')
-                                                                <i class="fa fa-shopping-bag ml-1"></i>
-                                                            </button>
-
-                                                        @elseif(!auth()->check())
-                                                            @if($course->free == 1)
-                                                                <a class="btn btn-block btn-info"
-                                                                   href="{{route('login.index')}}">@lang('labels.frontend.course.get_now')
-                                                                    <i class="fas fa-caret-right"></i>
-                                                                </a>
-                                                            @else
-                                                                <a class="btn btn-block btn-info"
-                                                                   href="{{route('login.index')}}">@lang('labels.frontend.course.add_to_cart')
-                                                                    <i class="fa fa-shopping-bag"></i>
-                                                                </a>
-                                                            @endif
-                                                        @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                                            @if($course->free == 1)
-                                                                <form action="{{ route('cart.getnow') }}"
-                                                                      method="POST">
-                                                                    @csrf
-                                                                    <input type="hidden" name="course_id"
-                                                                           value="{{ $course->id }}"/>
-                                                                    <input type="hidden" name="amount"
-                                                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                    <button class="btn btn-block btn-info"
-                                                                            href="#">@lang('labels.frontend.course.get_now')
-                                                                        <i class="fas fa-caret-right"></i>
-                                                                    </button>
-                                                                </form>
-                                                            @else
-                                                                <form action="{{ route('cart.addToCart') }}"
-                                                                      method="POST">
-                                                                    @csrf
-                                                                    <input type="hidden" name="course_id"
-                                                                           value="{{ $course->id }}"/>
-                                                                    <input type="hidden" name="amount"
-                                                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                                    <button type="submit"
-                                                                            class="btn btn-block btn-info">
-                                                                        @lang('labels.frontend.course.add_to_cart')
-                                                                        <i class="fa fa-shopping-bag"></i>
-                                                                    </button>
-                                                                </form>
-                                                            @endif
-                                                        @endif
-                                                    </div>
-                                                    <div class="">
-                                                        <a href="{{ route('courses.show', [$course->slug]) }}"
-                                                           class="btn btnWishList">
-                                                            <i class="far fa-bookmark"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @include('frontend.layouts.partials.coursesTemp')
                                     </div>
 
                                 @endforeach
@@ -1377,10 +734,8 @@
         $(document).ready(function () {
             if ($(window).width() <= 768) {
                 $('.filters-section .btn-toggler').click(function () {
-
                     $('.filters-side-bar').toggle(500);
                     $('.filters-category').toggle(500);
-
                 });
             }
             var rating = $('.rating-filter input:checked').data('value');
@@ -1390,7 +745,7 @@
             var sortBy = $('#sortFilter').val();
             $('.filters-section .btn-apply').on('click', function (e) {
                 e.preventDefault();
-                var rating = $('.rating-filter input:checked').data('value');
+                var rating = $('.rating-filter input:checked').data('value') ? $('.rating-filter input:checked').data('value') : '';
                 var duration = $('.duration-filter input:checked').data('value');
                 var maxPrice = $('.price-filter-input').val();
                 var isFree = $('#isFree').prop('checked');
@@ -1401,7 +756,7 @@
                     data: {
                         'rating': rating,
                         'duration': duration,
-                        'maxPrice': parseInt(maxPrice),
+                        'maxPrice': maxPrice,
                         'isFree': isFree,
                         'type': sortBy
                     },
@@ -1412,7 +767,7 @@
                         $(".filtered-items").css('justify-content', 'center').append('<div class="ajax-loader"></div>');
                     },
                     success: function (resp) {
-                        console.log(resp)
+                        console.log(resp);
                         $(".filtered-items").css('justify-content', 'unset');
                         $('.filtered-items').show();
                         $('.filtered-items').html(resp);
@@ -1422,7 +777,7 @@
             $('input[type=range]').on('change', function () {
                 $('#current-price').text($('input[type=range]').val())
             });
-            $('.filters-section input').on('click', function () {
+            $('.filters-section input , #sortFilter').on('click', function () {
                 if (rating || duration || maxPrice !== '0' || isFree || sortBy) {
                     $('.btn-apply').show();
                     $('.btn-reset').show();

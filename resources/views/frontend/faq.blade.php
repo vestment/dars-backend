@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 @section('content')
 
     <!-- Start of breadcrumb section

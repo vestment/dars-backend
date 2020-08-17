@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 
 @section('title', ($blog->meta_title) ? $blog->meta_title : app_name() )
 @section('meta_description', $blog->meta_description)

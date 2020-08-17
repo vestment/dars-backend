@@ -407,6 +407,41 @@
     $('.search-bar .icon').on('click', function() {
     $(this).parent().toggleClass('active');
     });
+    $(window).on('load', function () {
+            $(".owl-carousel").owlCarousel({
+                rewind: true,
+                padding:2,
+                margin: 10,
+                nav: true,
+                navText: ["<i class='fas fa-chevron-left'></i>",
+                    "<i class='fas fa-chevron-right'></i>"],
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 1
+                    },
+                    768: {
+                        items: 3
+                    },
+                    991: {
+                        items: 5
+                    }
+                }
+            });
+
+        });
+        $(document).ready(function () {
+            $('.owl-carousel').on('changed.owl.carousel', function (event) {
+                var items = event.target.dataset.items;
+                if (items) {
+                    if ($(window).width() > 768) {
+                        event.relatedTarget.settings.items = items
+                    }
+                }
+            })
+        })
     </script>
 
 
