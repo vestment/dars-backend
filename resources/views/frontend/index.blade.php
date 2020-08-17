@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 
 @section('title', trans('labels.frontend.home.title').' | '.app_name())
 @section('meta_description', '')

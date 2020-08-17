@@ -80,9 +80,11 @@ if (!function_exists('home_route')) {
             } else {
                 return 'frontend.index';
             }
+        } else {
+            return 'login.index';
         }
 
-        return 'frontend.index';
+//        return 'frontend.index';
     }
 }
 
