@@ -56,7 +56,6 @@ class Course extends Model
 
     }
 
-
     public function getImageAttribute()
     {
         if ($this->course_image != null) {

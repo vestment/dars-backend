@@ -9,7 +9,7 @@ return array (
       'title' => 'Courses',
       'fields' => 
       array (
-        'knowledgez' => 'What You will learn',
+        'knowledge' => 'What You will learn',
         'published' => 'Published',
         'unpublished' => 'Not Published',
         'featured' => 'Featured',
@@ -1380,6 +1380,14 @@ return array (
     ),
     'course' => 
     array (
+        'filters' => array(
+            'filters' => 'Filters',
+            'price' => 'Price',
+            'rating' => 'Rating',
+            'duration' => 'Video Duration',
+            'apply' => 'Apply filters',
+            'reset' => 'Reset filters',
+        ),
       'ratings' => 'Ratings',
       'stars' => 'Stars',
       'by' => 'By',
@@ -1387,6 +1395,7 @@ return array (
       'add_to_cart' => 'Add To Cart',
       'buy_note' => 'Only Students Can Buy Course',
       'continue_course' => 'Continue Course',
+      'start_now' => 'Start Course',
       'enrolled' => 'Enrolled',
       'chapters' => 'Chapters',
 
@@ -1453,7 +1462,7 @@ return array (
       
       'lessons' => 'lessons',
       'instructors' => 'Instructors',
-      'wishlist'=>'wishlist',
+      'wishlist'=>'Wishlist',
       'added_to_wishlist'=>'added to wishlist',
       'Share'=>'Share',
       'lessons' => 'Lessons',
@@ -1570,10 +1579,6 @@ return array (
       'course_detail' => 'Course Detail',
       'courses' => 'Courses',
       'views' => 'Views',
-
-
-
-
     ),
     'academy' => 
     array (

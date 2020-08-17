@@ -40,18 +40,7 @@ class HomeController extends Controller
 
     public function __construct()
     {
-
-        $path = 'frontend';
-        if (session()->has('display_type')) {
-            if (session('display_type') == 'rtl') {
-                $path = 'frontend-rtl';
-            } else {
-                $path = 'frontend';
-            }
-        } else if (config('app.display_type') == 'rtl') {
-            $path = 'frontend-rtl';
-        }
-        $this->path = $path;
+        $this->path = 'frontend';
     }
 
     public function index()
@@ -118,7 +107,7 @@ class HomeController extends Controller
 
         $trending = Course::where('trending', '=', 1)->get();
 
-        return view($this->path . '.index-' . config('theme_layout'), compact('popular_courses','trending','total_bundle','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
+        return view($this->path . '.index', compact('popular_courses','trending','total_bundle','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
     }
 
     public function getFaqs()

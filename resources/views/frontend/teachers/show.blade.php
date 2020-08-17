@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 @push('after-styles')
     <style>
         .section-title-2 h2:after {

@@ -1323,6 +1323,12 @@ return array (
     ),
     'course' => 
     array (
+        'filters' => array(
+            'filters' => 'Filters',
+            'price' => 'السعر',
+            'rating' => 'التقيم',
+            'duration' => 'المدة',
+        ),
       'add_review_now' => 'إضافة مراجعة الآن',
       'add_reviews' => 'أضف <span> مراجعات. </span>',
       'add_to_cart' => 'أضف إلى السلة',

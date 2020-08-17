@@ -26,17 +26,7 @@ class CartController extends Controller
 
     public function __construct()
     {
-        $path = 'frontend';
-        if (session()->has('display_type')) {
-            if (session('display_type') == 'rtl') {
-                $path = 'frontend-rtl';
-            } else {
-                $path = 'frontend';
-            }
-        } else if (config('app.display_type') == 'rtl') {
-            $path = 'frontend-rtl';
-        }
-        $this->path = $path;
+        $this->path = 'frontend';
         $this->currency = getCurrency(config('app.currency'));
 
 

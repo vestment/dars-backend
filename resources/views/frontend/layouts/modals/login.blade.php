@@ -2,11 +2,7 @@
 
 
 <!DOCTYPE html>
-@langrtl
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
-@else
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    @endlangrtl
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" {{app()->getLocale() == 'ar' ? 'dir="rtl"': ''}}>
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">

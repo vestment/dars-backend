@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 
 @section('title', trans('labels.frontend.home.title').' | '.app_name())
 @section('meta_description', '')
@@ -149,12 +149,14 @@
                                                         <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <span class="ml-1  rate">0</span>
+                                                                <div class="course-rate ul-li">
+                                                                    <ul>
+                                                                        @for ($i=0; $i<5; ++$i)
+                                                                            <li><i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}" aria-hidden="true"></i></li>
+                                                                        @endfor
+                                                                        <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span></li>
+                                                                    </ul>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="course-meta my-1 vv">
@@ -166,7 +168,7 @@
 
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-xl-10 col-10">
+                                                            <div class="col-xl-10 col-9">
                                                                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
                                                                     <button type="submit"
                                                                             class="btn btn-info btnAddCard">   @lang('labels.frontend.course.add_to_cart')

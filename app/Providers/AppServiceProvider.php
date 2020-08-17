@@ -141,13 +141,16 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer(['frontend.*', 'backend.*', 'frontend-rtl.*','vendor.invoices.*'], function ($view) {
 
-
+            $cssFile = 'frontend.css';
+            if ( app()->getLocale() == 'ar') {
+                $cssFile = 'frontend-rtl.css';
+            }
             $appCurrency = getCurrency(config('app.currency'));
 
             if (Schema::hasTable('locales')) {
                 $locales = Locale::pluck('short_name as locale')->toArray();
             }
-            $view->with(compact('locales','appCurrency'));
+            $view->with(compact('locales','appCurrency','cssFile'));
 
         });
 
