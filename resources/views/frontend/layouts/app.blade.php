@@ -78,31 +78,16 @@
                                 <a class="navbar-brand" href="{{url('/')}}">
                                     <img src="{{asset("storage/logos/".config('logo_b_image'))}}"
                                          alt="{{env('APP_NAME')}}">
-
-                                <!-- <img src="{{asset('img/backend/brand/Council-logo-100px.png')}}" alt="logo"> -->
-
                                 </a>
                             </div>
                             <!-- /.navbar-header -->
 
-                        <!-- <div class="cart-search float-right ul-li">
-                                <ul>
-                                    <li>
-                                        <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
-                                            @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
-                            <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
-                                            @endif
-                                </a>
-                            </li>
-                        </ul>
-                    </div> -->
 
 
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <nav class="navbar-menu float-left">
                                 <div class="nav-menu ul-li">
                                     <ul>
-
                                         <div class="btn-group dropright">
                                             <button type="button" class="btn btn-secondary dropdown-toggle btndropdown"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -197,8 +182,7 @@
                                         @else
                                             <li>
                                                 <div class="log-in mt-0">
-                                                    <a
-                                                            href="{{ route('login.index') }}">@lang('navs.general.login')</a>
+                                                    <a href="{{ route('login.index') }}">@lang('navs.general.login')</a>
 
 
                                                 </div>
@@ -207,23 +191,7 @@
 
 
                                         <li>
-                                            <form action="{{route('search')}}" method="get">
-
-                                                <div class="search-bar">
-                                                    <input class="input-text course" name="q" type="text"
-                                                           placeholder="search here">
-                                                    <i class="icon fa fa-search"></i>
-
-                                                </div>
-                                            </form>
-                                            {{-- <form action="{{route('search')}}" method="get">
-
-                                                <div class="input-group search-group">
-
-                                                    <input class="course" name="q" type="text"
-                                                           placeholder="@lang('labels.frontend.home.search_course_placeholder')">
-                                                </div>
-                                            </form> --}}
+                                            <i class="search-icon icon fa fa-search"></i>
                                         </li>
 
 
@@ -248,6 +216,7 @@
 
 
                                     </ul>
+
                                 </div>
                             </nav>
 
@@ -333,6 +302,15 @@
                         </div>
 
                 </div>
+
+            </div>
+            <div class="search-form">
+                <form action="{{route('search')}}" method="get">
+                    <div class="search-bar">
+                        <input autocomplete="off" class="input-text course" name="q" type="text"
+                               placeholder="@lang('labels.frontend.home.search_course_placeholder')">
+                    </div>
+                </form>
             </div>
         </header>
         <!-- Start of Header section
@@ -374,8 +352,9 @@
 
 
     <script>
-        $('.search-bar .icon').on('click', function () {
-            $(this).parent().toggleClass('active');
+        $('.search-icon').on('click', function () {
+            $('.search-bar').toggleClass('active');
+            $('.search-form').toggleClass('active');
         });
     </script>
 
@@ -409,11 +388,13 @@
         window.location.href = '{{route('login.index')}}';
         @endif
         var font_color = "{{config('font_color')}}"
+        var lang = "{{app()->getLocale()}}"
         setActiveStyleSheet(font_color);
         $(window).on('load', function () {
             $(".owl-carousel").owlCarousel({
                 rewind: true,
                 padding: 2,
+                rtl: lang == 'ar' ? true : false,
                 margin: 10,
                 nav: true,
                 navText: ["<i class='fas fa-chevron-left'></i>",
@@ -445,12 +426,6 @@
                 }
             })
         })
-
-        function setOwlItems(element, noItems) {
-            $(element).owlCarousel({
-                items: noItems
-            })
-        }
 
         function showTab(element, button) {
             var elem = element[0];

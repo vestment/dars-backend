@@ -135,6 +135,7 @@ Author:         HTMLMATE Team
                     nav: true,
                     loop: true,
                     dots: true,
+                    rtl: lang == 'ar' ? true : false,
                     autoplay: false,
                     navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
                     smartSpeed: 1000,

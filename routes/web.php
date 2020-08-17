@@ -8,10 +8,10 @@ use App\Http\Controllers\Frontend\HomeController;
  * Routes that are used between both frontend and backend.
  */
 
-Route::get('login/en', 'loginController@index')->name('login.index');
-Route::get('login/ar', 'loginController@indexrtl')->name('loginrtl.indexrtl');
-Route::get('signup/en', 'loginController@registerIndex')->name('register.index');
-Route::get('signup/ar', 'loginController@registerIndexrtl')->name('registerrtl.indexrtl');
+Route::get('sign-in', 'loginController@index')->name('login.index');
+//Route::get('login/ar', 'loginController@indexrtl')->name('loginrtl.indexrtl');
+Route::get('sign-up', 'loginController@registerIndex')->name('register.index');
+//Route::get('signup/ar', 'loginController@registerIndexrtl')->name('registerrtl.indexrtl');
 
 
 // Switch between the included languages
