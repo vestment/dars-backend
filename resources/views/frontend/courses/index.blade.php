@@ -1377,10 +1377,8 @@
         $(document).ready(function () {
             if ($(window).width() <= 768) {
                 $('.filters-section .btn-toggler').click(function () {
-
                     $('.filters-side-bar').toggle(500);
                     $('.filters-category').toggle(500);
-
                 });
             }
             var rating = $('.rating-filter input:checked').data('value');
@@ -1412,7 +1410,6 @@
                         $(".filtered-items").css('justify-content', 'center').append('<div class="ajax-loader"></div>');
                     },
                     success: function (resp) {
-                        console.log(resp)
                         $(".filtered-items").css('justify-content', 'unset');
                         $('.filtered-items').show();
                         $('.filtered-items').html(resp);
@@ -1422,7 +1419,7 @@
             $('input[type=range]').on('change', function () {
                 $('#current-price').text($('input[type=range]').val())
             });
-            $('.filters-section input').on('click', function () {
+            $('.filters-section input , #sortFilter').on('click', function () {
                 if (rating || duration || maxPrice !== '0' || isFree || sortBy) {
                     $('.btn-apply').show();
                     $('.btn-reset').show();
