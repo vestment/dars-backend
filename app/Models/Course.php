@@ -184,8 +184,10 @@ class Course extends Model
         }
         return false;
     }
-
-
+    public function getDataFromColumn($col) {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() =='ar' ? $col.'_ar' : $col] ?? null;
+    }
     public function reviews()
     {
         return $this->morphMany('App\Models\Review', 'reviewable');

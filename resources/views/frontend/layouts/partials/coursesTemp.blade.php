@@ -12,7 +12,7 @@
 
             </div>
             <div class="card-body">
-                <h3 class="card-title titleofcard">{{$course->title}}</h3>
+                <h3 class="card-title titleofcard">{{$course->getDataFromColumn('title')}}</h3>
                 <div class="row">
                     <div class="col-12">
                         <div class="course-rate ul-li">

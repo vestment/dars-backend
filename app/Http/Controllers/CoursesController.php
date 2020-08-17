@@ -113,7 +113,6 @@ class CoursesController extends Controller
         $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count();
 
 
-
         if (($course->published == 0) && ($purchased_course == false)) {
             abort(404);
         }
@@ -153,13 +152,13 @@ class CoursesController extends Controller
         }
         $mandatory_courses = [];
         $optional_courses = [];
-if ($course->mandatory_courses && $course->optional_courses) {
-        $mandatory_courses = Course::whereIn('id',json_decode($course->mandatory_courses))->get();
-        $optional_courses = Course::whereIn('id',json_decode($course->optional_courses))->get();
-}
+        if ($course->mandatory_courses && $course->optional_courses) {
+            $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
+            $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->get();
+        }
 
-        // $course=(Course::with('teachers.teacherProfile')->find(2));
-        return view($this->path . '.courses.course', compact('optional_courses','mandatory_courses','chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+//dd($course->getDataFromColumn('title'));
+        return view($this->path . '.courses.course', compact('optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)
@@ -296,7 +295,7 @@ if ($course->mandatory_courses && $course->optional_courses) {
                                                     </div> </div> </div>  </div> </div>';
             }
         } else {
-            $html = '<div class="col-12  d-flex justify-content-center"><div class=""><div class="alert-danger alert"> No courses found </div><img src="'.url('img/frontend/user/lost.svg').'"></div></div>  ';
+            $html = '<div class="col-12  d-flex justify-content-center"><div class=""><div class="alert-danger alert"> No courses found </div><img src="' . url('img/frontend/user/lost.svg') . '"></div></div>  ';
         }
         return $html;
     }
@@ -312,7 +311,7 @@ if ($course->mandatory_courses && $course->optional_courses) {
 
     public function getByCategory(Request $request)
     {
-       
+
         $category = Category::where('slug', '=', $request->category)
             ->where('status', '=', 1)
             ->first();

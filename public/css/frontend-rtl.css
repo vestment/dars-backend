@@ -7335,7 +7335,7 @@ hr {
 .search-form.active {
     display: block;
     position: absolute;
-    top: 13%;
+    top: 9%;
     left: 0;
     z-index: 2;
     background-color: #0c0c3f;

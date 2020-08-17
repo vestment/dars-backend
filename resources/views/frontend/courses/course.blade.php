@@ -57,10 +57,10 @@
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
                 <div class="m-1">
-                    <p>Explore / {{$course->category->name}} / <b class="text-white">{{$course->title}}</b></p>
+                    <p>Explore / {{$course->category->name}} / <b class="text-white">{{$course->getDataFromColumn('title')}}</b></p>
                 </div>
                 <div class="p-1">
-                    <h2 class="text-white"><b>{{$course->title}}</b></h2>
+                    <h2 class="text-white"><b>{{$course->getDataFromColumn('title')}}</b></h2>
                 </div>
 
                 <div class="p-1">
@@ -595,7 +595,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card-body" style="border: none">
-                            <h3 class=" font20">{{$course->title}}</h3>
+                            <h3 class=" font20">{{$course->getDataFromColumn('title')}}</h3>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="course-rate ul-li">
@@ -725,7 +725,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card-body" style="border: none">
-                            <h3 class=" font20">{{$course->title}}</h3>
+                            <h3 class=" font20">{{$course->getDataFromColumn('title')}}</h3>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="course-rate ul-li">
