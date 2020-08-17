@@ -124,8 +124,25 @@ class ChaptersController extends Controller
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
-        $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
-        return view('backend.chapters.create', compact('courses'));
+        $courses = Course::pluck('title', 'id')->prepend('Please select', '');
+       
+        $coursew_ar = Course::pluck('title_ar', 'id')->prepend('Please select', '');
+
+        // $courses_ar = Course::select('title_ar','title', 'id')->get();
+        
+            // foreach($courses_ar as $key=>$course_ar){
+               
+            //     if($course_ar->title_ar){
+            //         $coursew_ar[]=$course_ar->title_ar;
+            //     }
+            //     if(!$course_ar->title_ar){
+            //         $coursew_ar[]=$course_ar->title;
+            //     }
+
+            // }
+
+
+        return view('backend.chapters.create', compact('courses','coursew_ar'));
     }
     public function store(Request $request)
     {
@@ -145,7 +162,7 @@ class ChaptersController extends Controller
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
 
-        $chapter = Chapter::create($request->except('downloadable_files', 'lesson_image')
+        $chapter = Chapter::create($request->except('downloadable_files', 'chapter_image')
             + ['position' => Chapter::where('course_id', $request->course_id)->max('position') + 1]);
 
         $chapter->slug = $slug;
