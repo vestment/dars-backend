@@ -25,6 +25,19 @@ class CoursesController extends Controller
 
     public function __construct()
     {
+
+        // $path = 'frontend';
+        // if (session()->has('display_type')) {
+        //     if (session('display_type') == 'rtl') {
+        //         $path = 'frontend-rtl';
+        //     } else {
+        //         $path = 'frontend';
+        //     }
+        // } else if (config('app.display_type') == 'rtl') {
+        //     $path = 'frontend-rtl';
+        // }
+        // $this->path = $path;
+
         $this->path = 'frontend';
     }
 
@@ -99,10 +112,7 @@ class CoursesController extends Controller
         $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count();
         $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count();
 
-// return($lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count());
-// dd($chapter_lessons);
 
-        // return($chapters = $course->chapters);
 
         if (($course->published == 0) && ($purchased_course == false)) {
             abort(404);
@@ -296,6 +306,7 @@ class CoursesController extends Controller
 
     public function getByCategory(Request $request)
     {
+       
         $category = Category::where('slug', '=', $request->category)
             ->where('status', '=', 1)
             ->first();
@@ -319,7 +330,6 @@ class CoursesController extends Controller
                 $courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->orderBy('id', 'desc')->paginate(9);
             }
             $popular_course = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
             $teacher_data = TeacherProfile::get();
             $teachers = User::get();
