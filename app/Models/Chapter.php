@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Chapter extends Model
 {
-    protected $fillable = ['title', 'slug', 'chapter_image', 'short_text', 'full_text', 'position', 'downloadable_files', 'free_chapter', 'published', 'course_id'];
+    protected $fillable = ['title', 'title_ar','slug', 'chapter_image', 'short_text', 'full_text', 'short_text_ar', 'full_text_ar','position', 'downloadable_files', 'free_chapter', 'published', 'course_id'];
     
 
 
