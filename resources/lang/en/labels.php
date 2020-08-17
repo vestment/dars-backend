@@ -20,15 +20,23 @@ return array (
         'academies' => 'Academies',
 
         'category' => 'Category',
-        'title' => 'Title',
+        'title' => 'Title in english',
+        'title_ar' => 'Title in arabic',
+
         'slug' => 'Slug',
-        'description' => 'Description',
+        'description' => 'Description in english',
+        'description_ar' => 'Description in arabic',
+
+
         'price' => 'Price',
         'course_image' => 'Course Image',
         'start_date' => 'Start Date',
-        'meta_title' => 'Meta Title',
-        'meta_description' => 'Meta Description',
-        'meta_keywords' => 'Meta Keywords',
+        'meta_title' => 'Meta Title in english',
+        'meta_description' => 'Meta Description in english',
+        'meta_keywords' => 'Meta Keywords in english',
+        'meta_title_ar' => 'Meta Title in arabic',
+        'meta_description_ar' => 'Meta Description in arabic',
+        'meta_keywords_ar' => 'Meta Keywords in arabic',
         'sidebar' => 'Add Sidebar',
         'lessons' => 'Lessons',
         'optional_courses' => 'Optional courses',
@@ -41,6 +49,8 @@ return array (
         'course' => 'Course',
         'status' => 'Status',
       ),
+      'course_hours' => 'course hours   ',
+
       'add_teachers' => 'Add Teachers',
       'add_academies' => 'Add Academies',
 
@@ -292,11 +302,17 @@ return array (
       array (
         'content' => 'Content',
         'course' => 'Course',
-        'title' => 'Title',
+        
         'slug' => 'Slug',
         'lesson_image' => 'Lesson Image',
-        'short_text' => 'Short Text',
-        'full_text' => 'Full Text',
+        'short_text' => 'Short Text in english',
+        'short_text_ar' => 'Short Text in arabic',
+        'title' => 'Title in english',
+        'title_ar' => 'Title in arabic',
+
+        'full_text' => 'Full Text in english',
+        'full_text_ar' => 'Full Text in arabic',
+
         'downloadable_files' => 'Downloadable Files',
         'free_lesson' => 'Free Lesson',
         'published' => 'Published',
@@ -348,6 +364,13 @@ return array (
         'media_audio' => 'Media Audio',
         'media_pdf' => 'Media PDF',
         'add_audio' => 'Add Audio',
+        'short_text' => 'Short Text in english',
+        'short_text_ar' => 'Short Text in arabic',
+        'title' => 'Title in english',
+        'title_ar' => 'Title in arabic',
+
+        'full_text' => 'Full Text in english',
+        'full_text_ar' => 'Full Text in arabic',
       ),
       'max_file_size' => '(max file size 5MB)',
       'short_description_placeholder' => 'Input short description of Chapter',

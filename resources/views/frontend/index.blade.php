@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 
 @section('title', trans('labels.frontend.home.title').' | '.app_name())
 @section('meta_description', '')
@@ -44,7 +44,7 @@
     @if($sections->search_section->status == 1)
         <!-- End of slider section
             ============================================= -->
-        <section id="search-course" class=" border ">
+        <section id="search-course" class=" border">
             <div class="container">
                 <div class="row ">
                     <div class="col-12">
@@ -411,7 +411,8 @@
         <!-- End FAQ section
             ============================================= -->
     @endif
-
+  <!-- Start academies section
+        ============================================= -->
 
     <section id="course-teacher" class="course-teacher-section p-5">
         <div class="">
@@ -444,7 +445,8 @@
     </section>
 
 
-
+<!-- End academies section
+            ============================================= -->
 
 
 @endsection

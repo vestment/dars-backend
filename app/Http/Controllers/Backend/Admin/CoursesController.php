@@ -189,9 +189,44 @@ class CoursesController extends Controller
 
         $courses = Course::pluck('title', 'id');
 
+        $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
+            $q->where('role_id', 2);
+        })->select('ar_first_name','ar_last_name' ,'first_name','last_name','id')->get();
+
+        foreach($teachers_ar as $key=>$teacher_ar){
+            if($teacher_ar->ar_first_name && $teacher_ar->ar_last_name){
+        $ar_full_name[] = $teacher_ar->ar_first_name ." ". $teacher_ar->ar_last_name;
+            }
+        
+            if(!$teacher_ar->ar_first_name && !$teacher_ar->ar_last_name){
+                $ar_full_name[] = $teacher_ar->first_name ." ". $teacher_ar->last_name;
+            }
+        
+        
+
+        }
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
+        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id','name')->get();
+        foreach($categories_ar as $key=>$categories_ar){
+            if($categories_ar->ar_name ){
+
+            $categ_name[] = $categories_ar->ar_name ;
+            }
 
         return view('backend.courses.create', compact('teachers', 'categories','courses'));
+                if(!$categories_ar->ar_name ){
+    
+                    $categ_name[] = $categories_ar->name ;
+                }
+            
+            
+    
+            }
+
+
+
+
+        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categories','categ_name'));
     }
 
     /**
@@ -207,7 +242,6 @@ class CoursesController extends Controller
         }
 
         $request->all();
-
         $request = $this->saveFiles($request);
 
         $slug = "";
@@ -301,7 +335,6 @@ class CoursesController extends Controller
         $teachers = \Auth::user()->isAdmin() ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
         $course->teachers()->sync($teachers);
 
-
         return redirect()->route('admin.courses.index')->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 
@@ -320,6 +353,12 @@ class CoursesController extends Controller
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
+
+        $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
+            $q->where('role_id', 2);
+        })->get()->value('ar_first_name', 'ar_last_name','id');
+      
+
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
 
         $allCourses = Course::pluck('title', 'id');
@@ -329,7 +368,7 @@ class CoursesController extends Controller
         $opt_courses = json_decode($course->optional_courses);
         $mand_courses = json_decode($course->mandatory_courses);
 
-        return view('backend.courses.edit', compact('course', 'teachers', 'categories','course','opt_courses','mand_courses','allCourses'));
+        return view('backend.courses.edit', compact('course', 'teachers', 'categories','course','opt_courses','mand_courses','allCourses','teachers_ar', 'categories'));
     }
 
     /**

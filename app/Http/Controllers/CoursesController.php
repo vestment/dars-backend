@@ -25,17 +25,20 @@ class CoursesController extends Controller
 
     public function __construct()
     {
-        $path = 'frontend';
-        if (session()->has('display_type')) {
-            if (session('display_type') == 'rtl') {
-                $path = 'frontend-rtl';
-            } else {
-                $path = 'frontend';
-            }
-        } else if (config('app.display_type') == 'rtl') {
-            $path = 'frontend-rtl';
-        }
-        $this->path = $path;
+
+        // $path = 'frontend';
+        // if (session()->has('display_type')) {
+        //     if (session('display_type') == 'rtl') {
+        //         $path = 'frontend-rtl';
+        //     } else {
+        //         $path = 'frontend';
+        //     }
+        // } else if (config('app.display_type') == 'rtl') {
+        //     $path = 'frontend-rtl';
+        // }
+        // $this->path = $path;
+
+        $this->path = 'frontend';
     }
 
     public function all()
@@ -109,10 +112,7 @@ class CoursesController extends Controller
         $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count();
         $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count();
 
-// return($lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count());
-// dd($chapter_lessons);
 
-        // return($chapters = $course->chapters);
 
         if (($course->published == 0) && ($purchased_course == false)) {
             abort(404);
@@ -167,32 +167,32 @@ if ($course->mandatory_courses && $course->optional_courses) {
         $courses = [];
         if ($request->type == 'popular') {
             $courses = Course::withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1);
-
         } else if ($request->type == 'trending') {
             $courses = Course::withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('trending', '=', 1);
-
         } else if ($request->type == 'featured') {
             $courses = Course::withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('featured', '=', 1);
-
-        } else {
+        } elseif ($request->type == 'All') {
             $courses = Course::withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1);
         }
-        if ($request->maxPrice != 0) {
-            $courses = $courses->where('price', '<=', $request->maxPrice);
+        if (intval($request->maxPrice) && $request->maxPrice != 0) {
+            $courses = $courses->where('price', '<=', intval($request->maxPrice));
+
         }
         if ($request->isFree != 'false') {
             $courses = $courses->where('free', 1);
         }
-        if ($request->rating) {
+        if ($request->duration) {
+
+            $cond .= ' + duration';
+        }
+        if (intval($request->rating) && $request->rating != 'NaN') {
             $coursesIds = [];
             foreach ($courses->orderBy('id', 'desc')->paginate(8)->items() as $course) {
-                if ($course->reviews->avg('rating') >= $request->rating && $course->reviews->avg('rating') != 0) {
+                if ($course->reviews->avg('rating') >= intval($request->rating) && $course->reviews->avg('rating') != 0) {
                     array_push($coursesIds, $course->id);
                 }
             }
-
             $courses = $courses->whereIn('id', $coursesIds);
-
         }
         $courses = $courses->orderBy('id', 'desc')->paginate(8);
         $html = '';
@@ -312,6 +312,7 @@ if ($course->mandatory_courses && $course->optional_courses) {
 
     public function getByCategory(Request $request)
     {
+       
         $category = Category::where('slug', '=', $request->category)
             ->where('status', '=', 1)
             ->first();
@@ -335,7 +336,6 @@ if ($course->mandatory_courses && $course->optional_courses) {
                 $courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->orderBy('id', 'desc')->paginate(9);
             }
             $popular_course = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
             $teacher_data = TeacherProfile::get();
             $teachers = User::get();

@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 @section('title', trans('labels.frontend.blog.title').' | '.app_name())
 
 @push('after-styles')

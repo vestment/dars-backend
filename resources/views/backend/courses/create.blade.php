@@ -19,7 +19,12 @@
                 <div class="row">
                     <div class="col-10 form-group">
                         {!! Form::label('teachers',trans('labels.backend.courses.fields.teachers'), ['class' => 'control-label']) !!}
+                        @if(app()->getLocale() == 'en')
                         {!! Form::select('teachers[]', $teachers, old('teachers'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                        @endif
+                        @if(app()->getLocale() == 'ar')
+                        {!! Form::select('ar_full_name[]', $ar_full_name, old('ar_full_name'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                        @endif
                     </div>
                     <div class="col-2 d-flex form-group flex-column">
                         OR <a target="_blank" class="btn btn-primary mt-auto"
@@ -31,7 +36,13 @@
             <div class="row">
                 <div class="col-10 form-group">
                     {!! Form::label('category_id',trans('labels.backend.courses.fields.category'), ['class' => 'control-label']) !!}
+                    @if(app()->getLocale() == 'en')
                     {!! Form::select('category_id', $categories, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                    @endif
+                    @if(app()->getLocale() == 'ar')
+                    {!! Form::select('category_id', $categ_name, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                    @endif
+
                 </div>
                 <div class="col-2 d-flex form-group flex-column">
                     OR <a target="_blank" class="btn btn-primary mt-auto"
@@ -40,23 +51,44 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-lg-6 form-group">
+                <div class="col-6 col-lg-6 form-group">
+
                     {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
                     {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title'), 'required' => false]) !!}
-                </div>
+                    </div>
+
+                    <div class="col-6 col-lg-6 form-group">
+                        {!! Form::label('title', trans('labels.backend.courses.fields.title_ar').' *', ['class' => 'control-label']) !!}
+
+                        {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar'), 'required' => false]) !!}
+                    </div>
+                    </div>
+                    <div class="row">
+
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('slug',  trans('labels.backend.courses.fields.slug'), ['class' => 'control-label']) !!}
                     {!! Form::text('slug', old('slug'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.slug_placeholder')]) !!}
 
                 </div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('course_hours',  trans('labels.backend.courses.course_hours'), ['class' => 'control-label']) !!}
+                    {!! Form::text('course_hours', old('course_hours'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.course_hours')]) !!}
+
+                </div>
             </div>
             <div class="row">
 
-                <div class="col-12 form-group">
+                <div class="col-6 form-group">
                     {!! Form::label('description',  trans('labels.backend.courses.fields.description'), ['class' => 'control-label']) !!}
                     {!! Form::textarea('description', old('description'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description')]) !!}
+                    </div>
+                    <div class="col-6 form-group"> 
+                    {!! Form::label('description',  trans('labels.backend.courses.fields.description_ar'), ['class' => 'control-label']) !!}
 
-                </div>
+                    {!! Form::textarea('description_ar', old('description_ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description_ar')]) !!}
+                    </div>
+
+                
             </div>
             <div class="row">
                 <div class="col-12 col-lg-4 form-group">
@@ -93,7 +125,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+            <div class="row">
                 <div class="col-12 form-group">
                     <div class="checkbox d-inline mr-3">
                         {!! Form::hidden('published', 0) !!}
@@ -136,20 +168,47 @@
             </div>
 
             <div class="row">
-                <div class="col-12 form-group">
-                    {!! Form::label('meta_title',trans('labels.backend.courses.fields.meta_title'), ['class' => 'control-label']) !!}
-                    {!! Form::text('meta_title', old('meta_title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_title')]) !!}
+                    <div class="col-6 form-group">
+                        {!! Form::label('meta_title',trans('labels.backend.courses.fields.meta_title'), ['class' => 'control-label']) !!}
+                        {!! Form::text('meta_title', old('meta_title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_title')]) !!}
+                    
+                    </div>
+                    <div class="col-6 form-group">
 
-                </div>
-                <div class="col-12 form-group">
-                    {!! Form::label('meta_description',trans('labels.backend.courses.fields.meta_description'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('meta_description', old('meta_description'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_description')]) !!}
-                </div>
-                <div class="col-12 form-group">
-                    {!! Form::label('meta_keywords',trans('labels.backend.courses.fields.meta_keywords'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('meta_keywords', old('meta_keywords'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_keywords')]) !!}
-                </div>
+                    {!! Form::label('meta_title',trans('labels.backend.courses.fields.meta_title_ar'), ['class' => 'control-label']) !!}
+
+                    {!! Form::text('meta_title_ar', old('meta_title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_title_ar')]) !!}
+                    
+                    </div>
             </div>
+            <div class="row">
+
+                <div class="col-6 form-group">
+                    {!! Form::label('meta_description',trans('labels.backend.courses.fields.meta_description'), ['class' => 'control-label']) !!}
+                   
+                    {!! Form::textarea('meta_description', old('meta_description'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_description')]) !!}
+                    </div>
+                    <div class="col-6 form-group">
+                    {!! Form::label('meta_description_ar',trans('labels.backend.courses.fields.meta_description_ar'), ['class' => 'control-label']) !!}
+
+                    {!! Form::textarea('meta_description_ar', old('meta_description_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_description_ar')]) !!}
+                   
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-6 form-group">
+                    {!! Form::label('meta_keywords',trans('labels.backend.courses.fields.meta_keywords'), ['class' => 'control-label']) !!}
+                    
+                    {!! Form::textarea('meta_keywords', old('meta_keywords'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_keywords')]) !!}
+                    
+                    </div>
+                    <div class="col-6 form-group">
+                    {!! Form::label('meta_keywords',trans('labels.backend.courses.fields.meta_keywords_ar'), ['class' => 'control-label']) !!}
+                    
+                    {!! Form::textarea('meta_keywords_ar', old('meta_keywords_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_keywords_ar')]) !!}
+                   </div>
+                </div>
+            
 
 
 

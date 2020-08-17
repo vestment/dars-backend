@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-@langrtl
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
-@else
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    @endlangrtl
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" {{app()->getLocale() == 'ar' ? 'dir="rtl"': ''}}>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,28 +23,12 @@
         <link rel="stylesheet" href="{{asset('assets/css/progess.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/animate.min.css')}}">
         {{--<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">--}}
-        <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/'.$cssFile) }}">
         <link rel="stylesheet" href="{{asset('assets/css/fontawesome-all.css')}}">
 
         <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
 
-        <link rel="stylesheet" href="{{asset('assets/css/colors/switch.css')}}">
-        <link href="{{asset('assets/css/colors/color-2.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-2">
-        <link href="{{asset('assets/css/colors/color-3.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-3">
-        <link href="{{asset('assets/css/colors/color-4.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-4">
-        <link href="{{asset('assets/css/colors/color-5.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-5">
-        <link href="{{asset('assets/css/colors/color-6.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-6">
-        <link href="{{asset('assets/css/colors/color-7.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-7">
-        <link href="{{asset('assets/css/colors/color-8.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-8">
-        <link href="{{asset('assets/css/colors/color-9.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-9">
+
         <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
         @yield('css')
         @stack('after-styles')
@@ -426,7 +406,7 @@
     <script src="{{asset('assets/js/script.js')}}"></script>
     <script>
         @if((session()->has('show_login')) && (session('show_login') == true))
-        $('#myModal').modal('show');
+        window.location.href = '{{route('login.index')}}';
         @endif
         var font_color = "{{config('font_color')}}"
         setActiveStyleSheet(font_color);

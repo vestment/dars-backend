@@ -187,23 +187,33 @@ return array (
         'category' => 'الفئة',
         'course' => 'دورة',
         'course_image' => 'صورة الدورة',
-        'description' => 'وصف',
+        'description' => 'وصف بالنجليزية',
+        'description_ar' => 'وصف بالعربي',
+
         'featured' => 'متميز',
         'lessons' => 
         array (
           'add' => 'أضف دروس',
           'view' => 'عرض الدروس',
         ),
-        'meta_description' => 'ميتا الوصف',
-        'meta_keywords' => 'كلمات دلالية',
-        'meta_title' => 'عنوان الفوقية',
+        'meta_description' => '  ميتا الوصف بالانجليزية',
+        'meta_description_ar' => '  ميتا الوصف بالعربي',
+
+        'meta_keywords' => 'كلمات دلالية بالانجليزية',
+        'meta_keywords_ar' => 'كلمات دلالية بالعربي',
+
+        'meta_title' => ' عنوان الفوقية بالانجليزية',
+        'meta_title_ar' => ' عنوان الفوقية بالعربي',
+
         'popular' => 'جمع',
         'price' => 'السعر',
         'published' => 'نشرت',
         'sidebar' => 'أضف الشريط الجانبي',
         'start_date' => 'تاريخ البدء',
         'teachers' => 'معلمون',
-        'title' => 'عنوان',
+        'title' => '  عنوان بالانجليزية',
+        'title_ar' => 'عنوان بالعربي',
+
         'trending' => 'الشائع',
         'free' => 'حر',
         'unpublished' => 'غير منشور',
@@ -212,6 +222,8 @@ return array (
 
 
       ),
+      'course_hours' => 'عدد ساعات الكورس ',
+
       'add_categories' => 'إضافة فئات',
       'add_teachers' => 'إضافة المعلمين',
       'category' => 'الفئة',
@@ -227,6 +239,7 @@ return array (
       'test' => 'اختبار',
       'timeline_description' => 'سحب وتغيير تسلسل الدروس / الاختبارات بالطبع',
       'title' => 'الدورات',
+      
       'view' => 'عرض الدورات',
     ),
     'lessons' => 
@@ -1325,6 +1338,53 @@ return array (
       'your_email' => 'بريدك الالكتروني',
       'your_name' => 'اسمك',
     ),
+    'chapters' => 
+    array (
+      'slug_placeholder' => 'Input slug or it will be generated automatically',
+      'fields' => 
+      array (
+        'course' => 'Course',
+        'title' => 'Title',
+        'slug' => 'Slug',
+        'lesson_image' => 'Chapter Image',
+        'short_text' => 'Short Text',
+        'full_text' => 'Full Text',
+        'downloadable_files' => 'Downloadable Files',
+        'free_lesson' => 'Free Chapter',
+        'published' => 'Published',
+        'position' => 'Position',
+        'youtube_videos' => 'YouTube Videos',
+        'add_pdf' => 'Add PDF',
+        'add_video' => 'Add Video',
+        'media_video' => 'Media Video',
+        'media_audio' => 'Media Audio',
+        'media_pdf' => 'Media PDF',
+        'add_audio' => 'Add Audio',
+        'short_text' => 'Short Text in english',
+        'short_text_ar' => 'Short Text in arabic',
+        'title' => 'Title in english',
+        'title_ar' => 'Title in arabic',
+
+        'full_text' => 'Full Text in english',
+        'full_text_ar' => 'Full Text in arabic',
+      ),
+      'max_file_size' => '(max file size 5MB)',
+      'short_description_placeholder' => 'Input short description of Chapter',
+      'select_course' => 'Select Course',
+      'yt_note' => '<b>Instructions to add Video link: </b><br> Go to youtube -> open video -> right click on video and <b>Copy Video URL</b> and paste here.<br> If you want to add multiple videos, then separate them with <b>,</b> (Comma) Sign.',
+      'vimeo_note' => '<b>Instructions to add Video link: </b><br> Go to vimeo -> open video -> right click on video and <b>Copy Video URL</b> and paste here.<br> If you want to add multiple videos, then separate them with <b>,</b> (Comma) Sign.',
+      'title' => 'Chapters',
+      'enter_video_url' => 'Enter video data',
+      'enter_video_embed_code' => 'Enter video embed code',
+      'create' => 'Create Chapter',
+      'edit' => 'Edit Chapter',
+      'view' => 'View Chapters',
+      'video_guide' => '<p class="mb-1"><b>Youtube :</b> Go to Youtube -> Go to video you want to display -> click on share button below video. Copy that links and paste in above text box </p>
+<p class="mb-1"><b>Vimeo :</b> Go to Vimeo -> Go to video you want to display -> click on share button and copy paste video url here </p>
+<p class="mb-1"><b>Upload :</b> Upload <b>mp4</b> file in file input</p>
+<p class="mb-1"><b>Embed :</b> Copy / Paste embed code in above text box</p>',
+      'remove' => 'Remove',
+    ),
     'course' => 
     array (
         'filters' => array(
@@ -1434,7 +1494,7 @@ return array (
       'title' => 'الصفحة الرئيسية',
       'what_they_say_about_us' => 'ماذا يقولون عنا',
       'no_data_available' => 'لا تتوافر بيانات',
-      'Acadimes' =>' الاكادميات',
+      'academies' =>' الاكادميات',
 
 
     ),

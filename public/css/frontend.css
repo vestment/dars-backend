@@ -337,7 +337,7 @@ h6 {
 }
 
 .section-title .subtitle {
-    color: white;
+    color: black;
     letter-spacing: 7px;
     position: relative;
 }
@@ -7144,7 +7144,7 @@ hr {
     z-index: 0;
     transform: scale(2);
     height: 100%;
-    opacity: 0.08;
+    opacity: 0.03;
     overflow: hidden;
     width: 100%;
 }
@@ -7288,4 +7288,7 @@ hr {
     100% {
         transform: rotate(360deg);
     }
+}
+.categ a:hover {
+    color: #fff;
 }
