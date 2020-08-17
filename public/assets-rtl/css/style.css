@@ -298,7 +298,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-title .subtitle {
-    color: white;
+    color: black;
     position: relative;
 }
 
@@ -1954,11 +1954,7 @@ button.alt-menu-btn.float-left {
     visibility: visible;
 }
 
-.owl-nav {
-    left: 0;
-    top: -90px;
-    position: absolute;
-}
+
 
 .owl-nav .owl-prev, .owl-nav .owl-next {
     float: right;
@@ -2893,7 +2889,7 @@ button.alt-menu-btn.float-left {
 }
 
 .course-teacher-section .section-title span {
-    color: #fff;
+    /* color: #fff; */
 }
 
 .course-teacher-section .genius-btn {
@@ -6413,6 +6409,7 @@ padding:11px;
 .teacher-image {
     border-radius: 50%;
     width: 58% !important;
+    margin-right: 50px;
 
 }
 
@@ -6425,6 +6422,7 @@ padding:11px;
     position: relative;
     z-index: 1;
     width: 66%;
+    margin-right: 35px;
 }
 
 .prof-img {
@@ -6450,4 +6448,132 @@ hr {
 }
 .owl-carousel{
     display: block;
+}
+.custom-owl-theme .owl-next i, .custom-owl-theme .owl-prev i {
+    font-size: 2.75rem;
+    color: #D2498B;
+}
+.custom-owl-theme .owl-nav .owl-next {
+    position: absolute;
+    background-color: transparent;
+    right: 0;
+    top: 50%;
+}
+.custom-owl-theme .owl-nav .owl-prev {
+    position: absolute;
+    background-color: transparent;
+    left: 0;
+    top: 50%;
+}
+.owl-dots {
+    text-align: center;
+    margin-top: 30px;
+}
+owl-dots {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.owl-dots .owl-dot {
+    height: 5px;
+    width: 20px;
+    display: inline-block;
+    -webkit-transition: .3s all ease-in-out;
+    transition: .3s all ease-in-out;
+    margin: 0 7px;
+    border-radius: 10px;
+    background-color: #0c0d3f;
+}
+
+.owl-dots .owl-dot.active {
+    width: 40px;
+    background-color: #d34e8e;
+}
+.teacher-img-content .teacher-social-name .teacher-name span {
+    font-weight: 700;
+    color: #fff;
+    font-size: 18px;
+}
+section-title h2 {
+    font-size: 55px;
+    font-weight: 300;
+}
+.text-dark {
+    color: #343a40!important;
+}
+.bg-static {
+
+    background-image: url('/assets/img/banner/scott-graham-5fNmWej4tAA-unsplash.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bg-static1 {
+    background: linear-gradient(to right,
+    rgba(1, 31, 59, 0.6),
+    rgba(118, 15, 73, 0.60)
+    );
+
+}
+
+.bg-static1 img {
+    width: 120px;
+
+}
+.academy {
+    height: 130px;
+    box-shadow: 0 0 3px 2px #343a406b;
+}
+
+.academy img {
+    max-height: 100%;
+}
+.hero-section .nav {
+    display: flex;
+}
+
+.hero-section .nav .nav-item:first-child {
+    border-left: 1px solid hsla(0, 0%, 100%, .22);
+}
+
+.hero-section .nav .nav-item:not(.nav-title) {
+    flex: 0 0 16.333%;
+    min-width: 16.333%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding: 0 1rem;
+}
+
+.hero-section .nav .nav-item {
+    min-height: 150px;
+}
+
+.hero-section .nav .nav-item .text {
+    font-weight: 300;
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    margin-left: 10px;
+}
+
+.hero-section {
+    margin-top: auto;
+    width: 100%;
+    border-top: 1px solid hsla(0, 0%, 100%, .22);
+}
+
+.hero-section .nav-item .icon {
+    padding: 10px;
+}
+
+.hero-section .nav-item .icon:after {
+    content: '';
+    position: absolute;
+    top: 53px;
+    margin-left: 10px;
+    bottom: 0;
+    width: 1px;
+    height: 40%;
+    border-right: 1px solid #cecece;
 }

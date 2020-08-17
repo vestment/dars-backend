@@ -50,13 +50,26 @@
 
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-lg-6 form-group">
+                <div class="col-12 col-lg-12 form-group">
                     {!! Form::label('course_id', trans('labels.backend.chapters.fields.course'), ['class' => 'control-label']) !!}
+                    @if(app()->getLocale() == 'en')
                     {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
+                    @endif
+                    @if(app()->getLocale() == 'ar')
+                    {!! Form::select('course_id', $coursew_ar,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
+                    @endif
                 </div>
+                
+            </div>
+            <div class="row">
+                
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('title', trans('labels.backend.chapters.fields.title').'*', ['class' => 'control-label']) !!}
                     {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => '']) !!}
+                </div>
+                <div class="col-12 col-lg-6 form-group">
+                {!! Form::label('title_ar', trans('labels.backend.chapters.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title_ar'), 'required' => '']) !!}
                 </div>
             </div>
 
@@ -67,26 +80,33 @@
 
                 </div>
                 <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('lesson_image', trans('labels.backend.chapters.fields.lesson_image').' '.trans('labels.backend.chapters.max_file_size'), ['class' => 'control-label']) !!}
-                    {!! Form::file('lesson_image', ['class' => 'form-control' , 'accept' => 'image/jpeg,image/gif,image/png']) !!}
-                    {!! Form::hidden('lesson_image_max_size', 8) !!}
-                    {!! Form::hidden('lesson_image_max_width', 4000) !!}
-                    {!! Form::hidden('lesson_image_max_height', 4000) !!}
-
+                    {!! Form::label('chapter_image', trans('labels.backend.chapters.fields.chapter_image').' '.trans('labels.backend.chapters.max_file_size'), ['class' => 'control-label']) !!}
+                    {!! Form::file('chapter_image', ['class' => 'form-control' , 'accept' => 'image/jpeg,image/gif,image/png']) !!}
+                   
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12 form-group">
+                <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('short_text', trans('labels.backend.chapters.fields.short_text'), ['class' => 'control-label']) !!}
                     {!! Form::textarea('short_text', old('short_text'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.chapters.short_description_placeholder')]) !!}
 
                 </div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('short_text_ar', trans('labels.backend.chapters.fields.short_text_ar'), ['class' => 'control-label']) !!}
+                    {!! Form::textarea('short-text-ar', old('short-text-ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.chapters.short_text_ar')]) !!}
+
+                </div>
             </div>
             <div class="row">
-                <div class="col-12 form-group">
+                <div class="col-12 col-lg-6  form-group">
                     {!! Form::label('full_text', trans('labels.backend.chapters.fields.full_text'), ['class' => 'control-label']) !!}
                     {!! Form::textarea('full_text', old('full_text'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor']) !!}
+
+                </div>
+                <div class="col-12 col-lg-6  form-group">
+                    {!! Form::label('full_text_ar', trans('labels.backend.chapters.fields.full_text_ar'), ['class' => 'control-label']) !!}
+                    {!! Form::textarea('full-text-ar', old('full-text-ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor']) !!}
 
                 </div>
             </div>
