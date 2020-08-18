@@ -271,8 +271,13 @@
                                         @else
                                             <li>
                                                 <div class=" ">
-                                                    <a id="openLoginModal" data-target="#myModal"
-                                                       href="#">@lang('navs.general.login')</a>
+                                                    <a href="{{route('login.index')}}">@lang('navs.general.login')</a>
+                                                    <!-- The Modal -->
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class=" ">
+                                                    <a href="{{route('register.index')}}">@lang('navs.general.signup')</a>
                                                     <!-- The Modal -->
                                                 </div>
                                             </li>

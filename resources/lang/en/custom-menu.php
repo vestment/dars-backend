@@ -3,10 +3,14 @@
   array (
     'ecouncil-for-business' => 'Ecouncil for business',
     'thanoy-aaam' => 'ثانوية عامة',
-  ),
-  'menu' => 
-  array (
+    'blog' => 'Blog',
+    'courses' => 'Courses',
+    'bundles' => 'Bundles',
+    'forums' => 'Forums',
+    'contact' => 'Contact',
     'about-us' => 'About Us',
-    'privacy-policy' => 'Privacy Policy',
+  ),
+  'kkkkkkk' => 
+  array (
   ),
 );

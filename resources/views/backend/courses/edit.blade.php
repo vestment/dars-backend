@@ -21,7 +21,7 @@
 
                     <div class="col-10 form-group">
                         {!! Form::label('teachers',trans('labels.backend.courses.fields.teachers'), ['class' => 'control-label']) !!}
-                        {!! Form::select('teachers[]', $teachers, old('teachers') ? old('teachers') : $course->teachers->pluck('id')->toArray(), ['class' => 'form-control select2', 'multiple' => 'multiple','required' => true]) !!}
+                        {!! Form::select('teachers[]', $allTeachers, old('teachers') ? old('teachers') : $course->teachers->pluck('id')->toArray(), ['class' => 'form-control select2', 'multiple' => 'multiple','required' => true]) !!}
                     </div>
                     <div class="col-2 d-flex form-group flex-column">
                         OR <a target="_blank" class="btn btn-primary mt-auto"
@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-10 form-group">
                     {!! Form::label('category_id',trans('labels.backend.courses.fields.category'), ['class' => 'control-label']) !!}
-                    {!! Form::select('category_id', $categories, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                    {!! Form::select('category_id', $categ_name, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
                 </div>
                 <div class="col-2 d-flex form-group flex-column">
                     OR <a target="_blank" class="btn btn-primary mt-auto"
@@ -178,7 +178,7 @@
                 <div class="row">
                     <div class="col-10 form-group">
                         {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
-                        {!! Form::select('opt_courses[]', $allCourses,old('opt_courses') ? old('opt_courses') : $opt_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                        {!! Form::select('opt_courses[]', $allCourses,old('opt_courses') ? old('opt_courses') : $opt_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                     </div>
                 </div>
             @endif
@@ -189,7 +189,7 @@
                 <div class="row">
                     <div class="col-10 form-group">
                         {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
-                        {!! Form::select('mand_courses[]', $allCourses, old('mand_courses') ? old('mand_courses') : $mand_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                        {!! Form::select('mand_courses[]', $allCourses, old('mand_courses') ? old('mand_courses') : $mand_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                     </div>    
                 </div>
             @endif

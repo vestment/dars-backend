@@ -135,7 +135,7 @@ class AcademyController extends Controller
                 $filename = time() . '-' . $galleryImage->getClientOriginalName();
                 $path = public_path() . '/storage/uploads/academies/' . $academy->id . '/gallery';
                 $galleryImage->move($path, $filename);
-                array_push($galleryImages, asset('storage/uploads/academies/' . $academy->id . '/gallery/' . $filename));
+                array_push($galleryImages, 'storage/uploads/academies/' . $academy->id . '/gallery/' . $filename);
             }
             $gallery = json_encode($galleryImages);
         } else {
@@ -229,7 +229,7 @@ class AcademyController extends Controller
                 $filename = time() . '-' . $newGalleryImage->getClientOriginalName();
                 $path = public_path() . '/storage/uploads/academies/' . $academy->id . '/gallery';
                 $newGalleryImage->move($path, $filename);
-                array_push($galleryImages, asset('storage/uploads/academies/' . $academy->id . '/gallery/' . $filename));
+               array_push($galleryImages, 'storage/uploads/academies/' . $academy->id . '/gallery/' . $filename);
             }
         } else {
             $galleryImages = $academyData->gallery;

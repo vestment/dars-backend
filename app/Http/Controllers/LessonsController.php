@@ -30,7 +30,8 @@ class LessonsController extends Controller
         $completed_lessons = "";
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
-      
+        // dd($course_id);
+// dd($chapters);
         if ($lesson == "") {
             $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->firstOrFail();
             $lesson->full_text = $lesson->description;

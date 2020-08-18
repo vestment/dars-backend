@@ -214,10 +214,7 @@ class TeachersController extends Controller
 
         $teacher = User::findOrFail($id);
         $teacher->update($request->except('email'));
-        if ($request->has('image')) {
-            $teacher->avatar_type = 'storage';
-            $teacher->avatar_location = $request->image->store('/avatars', 'public');
-        }
+        
         $teacher->active = isset($request->active) ? 1 : 0;
         $teacher->save();
 
@@ -242,8 +239,15 @@ class TeachersController extends Controller
 
         ];
         $teacher->teacherProfile->update($data);
-
-
+if ($request->image) {
+            $teacher->avatar_type = 'storage';
+            $file = $request->file('image');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $path = public_path().'/storage/avatars';
+            $file->move($path, $filename);
+            $teacher->avatar_location = 'storage/avatars/' . $filename;
+        }
+$teacher->save();
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
     }
 

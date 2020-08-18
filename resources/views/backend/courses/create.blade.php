@@ -37,7 +37,7 @@
                 <div class="col-10 form-group">
                     {!! Form::label('category_id',trans('labels.backend.courses.fields.category'), ['class' => 'control-label']) !!}
                     @if(app()->getLocale() == 'en')
-                    {!! Form::select('category_id', $categories, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                    {!! Form::select('category_id', $categ_name, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
                     @endif
                     @if(app()->getLocale() == 'ar')
                     {!! Form::select('category_id', $categ_name, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
@@ -218,7 +218,7 @@
                 <div class="row">
                     <div class="col-10 form-group">
                         {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
-                        {!! Form::select('opt_courses[]', $courses, old('optional_courses'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                        {!! Form::select('opt_courses[]', $courses, old('optional_courses'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                     </div>
                 </div>
             @endif
@@ -229,7 +229,7 @@
                 <div class="row">
                     <div class="col-10 form-group">
                         {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
-                        {!! Form::select('mand_courses[]', $courses, old('mandatory_courses'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+                        {!! Form::select('mand_courses[]', $courses, old('mandatory_courses'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                     </div>    
                 </div>
             @endif

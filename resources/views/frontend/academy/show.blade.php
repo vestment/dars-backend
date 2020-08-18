@@ -228,7 +228,7 @@
                         <!-- Grid column -->
                             <div class="mb-3 pics 2">
                                 <img class="img-fluid"
-                                     src="{{$image}}"
+                                     src="{{asset($image)}}"
                                      alt="Image {{$key}}">
                             </div>
                             <!-- Grid column -->
