@@ -138,31 +138,19 @@ class LessonsController extends Controller
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
-        $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
-         $courses_ar = Course::select('title_ar','title', 'id')->get();
-        
-            foreach($courses_ar as $key=>$course_ar){
-               
-                if($course_ar->title_ar){
-                    $coursew_ar[]=$course_ar->title_ar;
-                }
-                if(!$course_ar->title_ar){
-                    $coursew_ar[]=$course_ar->title;
-                }
-
+        $courses = Course::all();
+        $coursew_ar = [];
+            foreach($courses as $course){
+                $coursew_ar[$course->id] = $course->getDataFromColumn('title');
+          
             }
-        $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
-        $chapters_ar = Chapter::select('title_ar','title', 'id')->get();
-            foreach($chapters_ar as $key=>$chapter_ar){
-               
-                if($chapter_ar->title_ar){
-                    $chapterw_ar[]=$chapter_ar->title_ar;
-                }
-                if(!$chapter_ar->title_ar){
-                    $chapterw_ar[]=$chapter_ar->title;
-                }
-
+            $chapters = Chapter::all();
+        $chapterw_ar = [];
+            foreach($chapters as $chapter){
+                $chapterw_ar[$chapter->id] = $chapter->getDataFromColumn('title');
+          
             }
+       
         
 
         
