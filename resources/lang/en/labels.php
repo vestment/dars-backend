@@ -18,7 +18,8 @@ return array (
         'popular' => 'Popular',
         'teachers' => 'Teachers',
         'academies' => 'Academies',
-
+        'hours' => 'Houres',
+        'lectures' => 'Lectures',
         'category' => 'Category',
         'title' => 'Title in english',
         'title_ar' => 'Title in arabic',
@@ -50,7 +51,10 @@ return array (
         'status' => 'Status',
       ),
       'course_hours' => 'course hours   ',
-
+      'courses_to_start' => 'Courses to get you started ',
+      'featured_courses' =>  'Featured Courses',
+      'most_popular' => 'Most Popular',
+      'trending' => 'Trending',
       'add_teachers' => 'Add Teachers',
       'add_academies' => 'Add Academies',
 

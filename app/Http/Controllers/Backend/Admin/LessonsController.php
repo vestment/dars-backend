@@ -139,9 +139,34 @@ class LessonsController extends Controller
             return abort(401);
         }
         $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
-        $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
+         $courses_ar = Course::select('title_ar','title', 'id')->get();
+        
+            foreach($courses_ar as $key=>$course_ar){
+               
+                if($course_ar->title_ar){
+                    $coursew_ar[]=$course_ar->title_ar;
+                }
+                if(!$course_ar->title_ar){
+                    $coursew_ar[]=$course_ar->title;
+                }
 
-        return view('backend.lessons.create', compact('courses','chapters'));
+            }
+        $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
+        $chapters_ar = Chapter::select('title_ar','title', 'id')->get();
+            foreach($chapters_ar as $key=>$chapter_ar){
+               
+                if($chapter_ar->title_ar){
+                    $chapterw_ar[]=$chapter_ar->title_ar;
+                }
+                if(!$chapter_ar->title_ar){
+                    $chapterw_ar[]=$chapter_ar->title;
+                }
+
+            }
+        
+
+        
+        return view('backend.lessons.create', compact('courses','chapters','coursew_ar','chapterw_ar'));
     }
 
     /**
@@ -277,13 +302,36 @@ class LessonsController extends Controller
         }
         $videos = '';
         $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
+        $courses_ar = Course::select('title_ar','title', 'id')->get();
+       
+           foreach($courses_ar as $key=>$course_ar){
+              
+               if($course_ar->title_ar){
+                   $coursew_ar[]=$course_ar->title_ar;
+               }
+               if(!$course_ar->title_ar){
+                   $coursew_ar[]=$course_ar->title;
+               }
 
+           }
+       $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
+       $chapters_ar = Chapter::select('title_ar','title', 'id')->get();
+           foreach($chapters_ar as $key=>$chapter_ar){
+              
+               if($chapter_ar->title_ar){
+                   $chapterw_ar[]=$chapter_ar->title_ar;
+               }
+               if(!$chapter_ar->title_ar){
+                   $chapterw_ar[]=$chapter_ar->title;
+               }
+
+           }
         $lesson = Lesson::with('media')->findOrFail($id);
         if ($lesson->media) {
             $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
         }
 
-        return view('backend.lessons.edit', compact('lesson', 'courses', 'videos'));
+        return view('backend.lessons.edit', compact('lesson', 'courses', 'videos','chapterw_ar','coursew_ar','chapters'));
     }
 
     /**

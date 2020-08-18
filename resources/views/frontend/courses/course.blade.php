@@ -249,6 +249,7 @@
             </div>
             <!-- video modal -->
             <!--Modal: Name-->
+
             <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <!--Content-->
@@ -281,6 +282,8 @@
                                 </div>
                             @endif
                     </div>
+                    @else
+                    <p class="text-center text-white display-4 mx-5 my-5">No Videos available </p>
                     @endif
                 </div>
                 <!-- </div> -->
@@ -929,7 +932,7 @@
 
                     <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
                     </div>
-                    <div class="col-lg-3 col-md-5 col-sm-3">
+                    <div class="col-lg-6 col-md-5 col-sm-3">
                         @php $key++ @endphp
                         <p style="font-size:30px;">{{$teacher->full_name}}</p>
                         <p class="teacher-title">{{$teacherProfile->title}}</p>

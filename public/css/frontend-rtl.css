@@ -6479,10 +6479,10 @@ ul.product-tab li.active:after {
 }
 
 @media screen and (min-width: 1440px) and (max-width: 1900px) {
-    /*.divfixed {*/
-    /*    top: 30%;*/
-    /*    right: 0;*/
-    /*}*/
+    .divfixed {
+        top: 30%;
+        left: 0;
+    }
 
     .academy-logo {
         padding: unset !important;
@@ -6616,8 +6616,10 @@ iframe {
 }
 
 .droplist {
-    background-color: #0C0C3F;
-    color: white;
+    /* background-color: #0C0C3F;
+    color: white; */
+    background-color: white ;
+    color: black;
 
 }
 
@@ -6630,9 +6632,12 @@ iframe {
 }
 
 .btndropdown {
-    background-color: #0C0C3F;
-    border-color: #0C0C3F;
-    color: #fff;
+    /* background-color: #0C0C3F;
+    border-color: #0C0C3F; */
+    background-color: white !important;
+    border-color: white !important;
+    /* color: #fff; */
+    color: black !important;
     text-transform: uppercase;
     font-size: 15px;
     padding: 7px 15px;
@@ -6662,7 +6667,8 @@ iframe {
 .search-course .nws-button,
 .subs-form .nws-button {
     top: 0;
-    right: 0;
+    /* right: 0; */
+    left: 0;
     height: 60px;
     width: 195px;
     line-height: 60px;
@@ -7362,4 +7368,26 @@ hr {
 .dropright .dropdown-toggle::after {
     border-right: .3em solid;
     border-left: none;
+}
+
+.mean-container a.meanmenu-reveal {
+	width: 22px;
+	height: 22px;
+	padding: 13px 13px 11px 13px;
+	position: absolute;
+	top: 22px;
+	/* left: 0px !important; */
+	right: 20px !important;
+
+	cursor: pointer;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 16px;
+	text-indent: -9999em;
+	line-height: 22px;
+	font-size: 1px;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 700;
+	/* border: 1px solid; */
 }

@@ -27,12 +27,12 @@
                 </div>
                 <div class="course-meta my-1 vv">
                                                                         <span class="course-category">
-                                                                            <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
+                                                                            <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->getDataFromColumn('name')}}</a>
                                                                         </span>
                     <span class="course-author"><a href="#">{{ $course->students()->count() }}
                             @lang('labels.frontend.course.students')</a></span>
                     <span class="course-author">
-                                                                                {{ $course->lessons()->count() }} @lang('labels.backend.courses.lessons')
+                                                                                {{ $course->lessons()->count() }} @lang('labels.backend.courses.fields.lessons')
                                                                         </span>
                 </div>
                 <div class="row my-2">
