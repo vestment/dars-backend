@@ -68,7 +68,7 @@
     <!-- Start of Header section
         ============================================= -->
         <header>
-            <div id="main-menu" class="main-menu-container bg-light shadow-lg">
+            <div id="main-menu" class="main-menu-container bg-light ">
                 <div class="main-menu">
                     {{-- <div class="container"> --}}
 
@@ -152,7 +152,7 @@
                                         </li>
                                         <li>
                                             @if(!auth()->check())
-                                                <a class="sign-up"
+                                                <a class="sign-up text-white"
                                                    href="{{ route('register.index') }}">@lang('navs.general.signup')</a>
                                             @endif
                                         </li>
