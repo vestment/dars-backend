@@ -107,8 +107,8 @@ class ChaptersController extends Controller
             ->editColumn('course', function ($q) {
                 return ($q->course) ? $q->course->title : 'N/A';
             })
-            ->editColumn('lesson_image', function ($q) {
-                return ($q->lesson_image != null) ? '<img height="50px" src="' . asset('storage/uploads/' . $q->lesson_image) . '">' : 'N/A';
+            ->editColumn('chapter_image', function ($q) {
+                return ($q->chapter_image != null) ? '<img height="50px" src="' . asset('storage/uploads/' . $q->chapter_image) . '">' : 'N/A';
             })
             ->editColumn('free_lesson', function ($q) {
                 return ($q->free_lesson == 1) ? "Yes" : "No";
@@ -116,7 +116,7 @@ class ChaptersController extends Controller
             ->editColumn('published', function ($q) {
                 return ($q->published == 1) ? "Yes" : "No";
             })
-            ->rawColumns(['lesson_image', 'actions'])
+            ->rawColumns(['chapter_image', 'actions'])
             ->make();
     }
     public function create()
