@@ -263,6 +263,7 @@
 
     <section class="bg-static">
         <div class="row bg-static1 ">
+            <div class="container">
             <div class="col-xl-5 col-sm-6 p-5">
                 <div class="p-5 ">
                     <img src="/img/backend/brand/Council-logo-100px.png" alt="">
@@ -277,6 +278,7 @@
                 <div class="pl-5 pb-5">
                     <button class="btn btn-outline-info ">View Plans</button>
                 </div>
+            </div>
             </div>
         </div>
     </section>

@@ -340,7 +340,7 @@ h6 {
 }
 
 .section-title .subtitle {
-    color: #333333;
+    color: white;
     font-size: 1.5rem;
     position: relative;
 }
@@ -1645,7 +1645,7 @@ button.alt-menu-btn.float-left {
     height: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(to right,
+    background: linear-gradient(to left,
     rgba(0, 0, 0, 0.7),
     rgba(255, 255, 255, 0.0)
     );;
@@ -2235,7 +2235,7 @@ button.alt-menu-btn.float-left {
 
 .about-btn .genius-btn {
     display: inline-block;
-    margin-right: 25px;
+    /* margin-right: 25px; */
 }
 
 .about-btn .genius-btn:hover {
@@ -6094,6 +6094,9 @@ ul.product-tab li.active:after {
     .package {
         height: auto;
     }
+    .bgcolor {
+        padding-bottom: 350px !important;
+    }
 }
 
 
@@ -6297,8 +6300,8 @@ ul.product-tab li.active:after {
     top: 41%;
     -webkit-transform: translateY(-40%);
     transform: translateY(-40%);
-    /* left: 120px; */
-    right:85px;
+    right: 85px;
+    left: 0;
     color: #b0c2d0;
     font-weight: 300;
 }
@@ -6306,12 +6309,15 @@ ul.product-tab li.active:after {
 @media (max-width: 768px) {
     .paragraph1 {
         width: 100%;
-        left: -40px;
-        right: 0;
+        right: -30px;
+        left: 0;
         top: 40%;
     }
 
     @media (max-width: 425px) {
+        .academy-info {
+            top: 38% !important;
+        }
         .paragraph1 {
             top: 38%;
         }
@@ -6321,7 +6327,9 @@ ul.product-tab li.active:after {
         font-size: 20px;
     }
 }
-
+.academy-info {
+    top: 55%;
+}
 .teacherdesc img {
     width: 55px;
     height: 55px;
@@ -6409,7 +6417,7 @@ ul.product-tab li.active:after {
     }
 
     .buttoncart button {
-        width: 24%;
+        width: 30%;
         padding: 2px;
         font-size: 12px;
     }
@@ -6797,15 +6805,16 @@ iframe {
     position: relative;
     z-index: 1;
     width: 66%;
+   
 }
 
 .prof-img {
     position: absolute;
     margin-bottom: 100px;
     z-index: 2;
-    right: -6px;
-    top: 17px;
-    left: 19px;
+    right: 12px;
+    top: 15px;
+    
 }
 
 hr {
@@ -6961,7 +6970,7 @@ hr {
 }
 
 .bg-static1 {
-    background: linear-gradient(to right,
+    background: linear-gradient(to left,
     rgba(1, 31, 59, 0.6),
     rgba(118, 15, 73, 0.60)
     );
