@@ -31,28 +31,47 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('course_id', trans('labels.backend.tests.fields.course'), ['class' => 'control-label']) !!}
-                    {!! Form::select('course_id', $courses, old('course_id'), ['class' => 'form-control select2']) !!}
-
+            <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('course_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
+                    @if(app()->getLocale() == 'en')
+                    {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
+                    @endif
+                    @if(app()->getLocale() == 'ar')
+                    {!! Form::select('course_id', $coursew_ar,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
+                    @endif
                 </div>
                 <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('chapter_id', trans('labels.backend.tests.fields.chapter'), ['class' => 'control-label']) !!}
-                    {!! Form::select('chapter_id', $chapters, old('chapter_id'), ['class' => 'form-control select2']) !!}
+                    {!! Form::label('chapter_id', trans('labels.backend.lessons.fields.chapter'), ['class' => 'control-label']) !!}
+                    @if(app()->getLocale() == 'en')
+                    {!! Form::select('chapter_id', $chapters,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control select2']) !!}
+                    @endif
+                    @if(app()->getLocale() == 'ar')
+                    {!! Form::select('chapter_id', $chapterw_ar,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control select2']) !!}
+                    @endif
 
                 </div>
 
-                <div class="col-12 col-lg-6  form-group">
-                    {!! Form::label('title',trans('labels.backend.tests.fields.title'), ['class' => 'control-label']) !!}
-                    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.title')]) !!}
-
-                </div>
             </div>
+            <div class="row">
+
+<div class="col-12 col-lg-6 form-group">
+    {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
+    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title'), 'required' => '']) !!}
+</div>
+<div class="col-12 col-lg-6 form-group">
+    {!! Form::label('title_ar', trans('labels.backend.lessons.fields.title_ar').'*', ['class' => 'control-label']) !!}
+    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
+</div>
+</div>
 
             <div class="row">
-                <div class="col-12 form-group">
+                <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('description',trans('labels.backend.tests.fields.description'), ['class' => 'control-label']) !!}
                     {!! Form::textarea('description', old('description'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.tests.fields.description')]) !!}
+                </div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('description_ar',trans('labels.backend.tests.fields.description_ar'), ['class' => 'control-label']) !!}
+                    {!! Form::textarea('description_ar', old('description_ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.tests.fields.description_ar')]) !!}
                 </div>
             </div>
             <div class="row">

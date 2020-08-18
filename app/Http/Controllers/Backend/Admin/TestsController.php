@@ -139,12 +139,33 @@ class TestsController extends Controller
 
         $courses_ids = $courses->pluck('id');
         $courses = $courses->pluck('title', 'id')->prepend('Please select', '');
-        // $chapters = $courses->pluck('title', 'id')->prepend('Please select', '');
+        $courses_ar = Course::select('title_ar','title', 'id')->get();
+       
+           foreach($courses_ar as $key=>$course_ar){
+              
+               if($course_ar->title_ar){
+                   $coursew_ar[]=$course_ar->title_ar;
+               }
+               if(!$course_ar->title_ar){
+                   $coursew_ar[]=$course_ar->title;
+               }
 
-        $lessons = \App\Models\Lesson::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
-        $chapters = \App\Models\Chapter::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
+           }
 
-        return view('backend.tests.create', compact('courses', 'lessons','chapters'));
+           $lessons = \App\Models\Lesson::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
+           $chapters = \App\Models\Chapter::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
+           $chapters_ar = \App\Models\Chapter::whereIn('course_id', $courses_ids)->select('title', 'title_ar','id')->get();
+                foreach($chapters_ar as $key=>$chapter_ar){
+                    
+                    if($chapter_ar->title_ar){
+                        $chapterw_ar[]=$chapter_ar->title_ar;
+                    }
+                    if(!$chapter_ar->title_ar){
+                        $chapterw_ar[]=$chapter_ar->title;
+                    }
+
+                }
+                return view('backend.tests.create', compact('courses', 'lessons','chapters','chapterw_ar','coursew_ar'));
     }
 
     /**

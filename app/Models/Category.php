@@ -32,5 +32,10 @@ class Category extends Model
         return $this->hasMany(Faq::class);
     }
 
+    public function getDataFromColumn($col) {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() =='ar' ? 'ar_'.$col : $col] ?? null;
+    }
+
 
 }
