@@ -6297,8 +6297,8 @@ ul.product-tab li.active:after {
     top: 41%;
     -webkit-transform: translateY(-40%);
     transform: translateY(-40%);
-    left: 120px;
-    right: 0;
+    /* left: 120px; */
+    right:85px;
     color: #b0c2d0;
     font-weight: 300;
 }
