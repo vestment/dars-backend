@@ -213,7 +213,7 @@ class CoursesController extends Controller
             $categ_name[] = $categories_ar->ar_name ;
             }
 
-        return view('backend.courses.create', compact('teachers', 'categories','courses'));
+        // return view('backend.courses.create', compact('teachers', 'categories','courses'));
                 if(!$categories_ar->ar_name ){
     
                     $categ_name[] = $categories_ar->name ;
@@ -226,7 +226,7 @@ class CoursesController extends Controller
 
 
 
-        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categories','categ_name'));
+        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categories','categ_name','courses'));
     }
 
     /**
