@@ -205,6 +205,7 @@ class CoursesController extends Controller
         
 
         }
+        
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
         $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id','name')->get();
         foreach($categories_ar as $key=>$categories_ar){
