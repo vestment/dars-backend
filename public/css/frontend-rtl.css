@@ -6269,6 +6269,7 @@ ul.product-tab li.active:after {
 
 .nav-menu {
     padding-top: 25px;
+    margin-left: 15px;
 }
 
 /* ==================================================== first section */
@@ -7390,4 +7391,12 @@ hr {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: 700;
 	/* border: 1px solid; */
+}
+
+
+.navbar-header {
+
+
+    margin-right: 22px;
+
 }
