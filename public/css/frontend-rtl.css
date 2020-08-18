@@ -7332,9 +7332,14 @@ hr {
 .titleofcard {
     text-align: right !important;
 }
+.menu-bg-overlay+.search-form.active {
+    top: 11% !important;
+}
 .search-form.active {
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
     display: block;
-    position: absolute;
+    position: fixed;
     top: 9%;
     left: 0;
     z-index: 2;
