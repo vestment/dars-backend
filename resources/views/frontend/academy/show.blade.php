@@ -4,6 +4,7 @@
 @push('after-styles')
     <link rel="stylesheet" href="../../assets/css/course.css"/>
     <style>
+
         .couse-pagination li.active {
             color: #333333 !important;
             font-weight: 700;
@@ -53,25 +54,14 @@
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
         <div class="blakish-overlay"></div>
         <div class="container">
-            <div class="col m-sm-5 m-5 m-xl-0 paragraph1">
+            <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
                 <div class="m-1">
-                    <p>Explore / Academy / <b class="text-white">{{$academy->full_name}}</b></p>
+                    <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->full_name}}</b></p>
+
                 </div>
                 <div class="p-1">
                     <h2 class="text-white"><b>{{$academy->full_name}}</b></h2>
                 </div>
-
-                <div class="p-1">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-
-                    <span class="text-white">0</span>
-                </div>
-
-
                 <div class="row col-lg-3 flex">
                     @if($academy->academy->facebook_link) <a href="{{$academy->academy->facebook_link}}"
                                                         class="btn btn-sm btn-outline-light mr-1"><i
@@ -124,7 +114,7 @@
         <div class="container ">
             <div class=" mb20 headline pl-3">
                 <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-                <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.Instructors').</span>
+                <h1 class="text-dark font-weight-bolder"><span>@lang('labels.frontend.home.Instructors').</span>
                 </h1>
             </div>
             @if(count($academyTeachers)> 0)
@@ -149,11 +139,11 @@
                                             <h5>{{$teacher->teacher->full_name}}</h5>
                                         </div>
                                         <div class="teacher-title text-muted font-weight-light">
-                                            {{$teacher->title}}
+                                            {{$teacher->getDataFromColumn('title')}}
                                         </div>
                                         <hr>
                                         <div class="teacher-name text-dark  justify-content-center">
-                                            <span>{{$teacher->description}}</span>
+                                            <span>{{$teacher->getDataFromColumn('description')}}</span>
                                         </div>
                                         <ul>
                                             <li><a href="{{'mailto:'.$teacher->teacher->email}}"><i
@@ -183,7 +173,7 @@
             <div class=" mb20 headline pl-3">
                 <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.learn_new_skills')</span>
                 <h1 class="text-dark font-weight-bolder">
-                    <span>@lang('labels.frontend.academy.courses_by_teacher').</span>
+                    <span>@lang('labels.frontend.academy.courses_by_teacher')</span>
                 </h1>
             </div>
             @if(count($courses) > 0)
@@ -191,7 +181,7 @@
                     <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
                             <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
-                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->name}}</button>
+                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
                         @endforeach
                     </div>
                     <div class="col-xl-12 courses-container">
@@ -227,7 +217,7 @@
         <div class="container">
             <div class=" mb20 headline pl-3">
                 <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.learn_new_skills')</span>
-                <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.academy.Gallery').</span>
+                <h1 class="text-dark font-weight-bolder"><span>@lang('labels.frontend.academy.Gallery').</span>
                 </h1>
             </div>
             @if ($academy->academy->gallery != null)
@@ -261,52 +251,6 @@
 
 @push('after-scripts')
     <script>
-        $(document).ready(function () {
-            $(".owl-carousel").owlCarousel({
-                rewind: true,
-                margin: 10,
-                nav: true,
-                navText: ["<i class='fas fa-chevron-left'></i>",
-                    "<i class='fas fa-chevron-right'></i>"],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 1
-                    },
-                    768: {
-                        items: 3
-                    },
-                    991: {
-                        items: 5
-                    }
-                }
-            })
-            $(document).on('change', '#sortBy', function () {
-                if ($(this).val() != "") {
-                    location.href = '{{url()->current()}}?type=' + $(this).val();
-                } else {
-                    location.href = '{{route('courses.all')}}';
-                }
-            })
-
-            @if(request('type') != "")
-            $('#sortBy').find('option[value="' + "{{request('type')}}" + '"]').attr('selected', true);
-            @endif
-            $(function () {
-                var selectedClass = "";
-                $(".filter").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#gallery").fadeTo(100, 0.1);
-                    $("#gallery div").not("." + selectedClass).fadeOut().removeClass('animation');
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn().addClass('animation');
-                        $("#gallery").fadeTo(300, 1);
-                    }, 300);
-                });
-            });
-        });
 
     </script>
 @endpush

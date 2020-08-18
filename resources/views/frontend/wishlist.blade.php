@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 @section('title', trans('labels.frontend.cart.payment_status').' | '.app_name())
 
 @push('after-styles')

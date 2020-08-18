@@ -32,7 +32,7 @@
                     <span class="course-author"><a href="#">{{ $course->students()->count() }}
                             @lang('labels.frontend.course.students')</a></span>
                     <span class="course-author">
-                                                                                {{ $course->lessons()->count() }} @lang('labels.backend.courses.fields.lessons')
+                                                                                {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
                                                                         </span>
                 </div>
                 <div class="row my-2">
@@ -55,11 +55,7 @@
                                 <a class="text-muted teacher-title"
                                    href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                    target="_blank">
-                                    {{$teacherProfile->title}}
-                                </a>
-                                <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                   target="_blank">
-                                    {{$teacher->title}}
+                                    {{$teacherProfile->getDataFromColumn('title')}}
                                 </a>
                             @endforeach
 

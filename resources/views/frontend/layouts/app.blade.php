@@ -68,7 +68,7 @@
     <!-- Start of Header section
         ============================================= -->
         <header>
-            <div id="main-menu" class="main-menu-container">
+            <div id="main-menu" class="main-menu-container bg-light shadow-lg">
                 <div class="main-menu">
                     {{-- <div class="container"> --}}
 
@@ -396,6 +396,7 @@
                 padding: 2,
                 rtl: lang == 'ar' ? true : false,
                 margin: 10,
+                dots:false,
                 nav: true,
                 navText: ["<i class='fas fa-chevron-left'></i>",
                     "<i class='fas fa-chevron-right'></i>"],

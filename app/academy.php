@@ -24,6 +24,11 @@ class academy extends Model
     public function teachers(){
         return $this->hasMany(TeacherProfile::class,'academy_id','user_id');
     }
+//    public function getDataFromColumn($col)
+//    {
+//        // ?? en col is returned if the ar column not found
+//        return $this->attributes[app()->getLocale() == 'ar' ? 'ar_'.$col : $col] ?? $this->attributes[$col];
+//    }
     // public function scopeofAcademy($query)
     // {
     //     if (!Auth::user()->isAdmin()) {

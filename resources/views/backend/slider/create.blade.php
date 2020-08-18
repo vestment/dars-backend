@@ -102,10 +102,10 @@
                 </div>
             </div>
             <div class="row form-group">
-                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_arabic'))->class('col-md-2 form-control-label')->for('hero_text_ar') }}
+                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_arabic'))->class('col-md-2 form-control-label')->for('ar_content[hero_text]') }}
 
                 <div class="col-md-10">
-                    {{ html()->text('hero_text_ar')
+                    {{ html()->text('ar_content[hero_text]')
                         ->class('form-control')
                         ->placeholder(__('labels.backend.hero_slider.fields.hero_text_arabic'))
                         }}
@@ -121,9 +121,9 @@
                 </div><!--col-->
             </div>
             <div class="row form-group">
-                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text_arabic'))->class('col-md-2 form-control-label')->for('sub_text_ar') }}
+                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text_arabic'))->class('col-md-2 form-control-label')->for('ar_content[sub_text]') }}
                 <div class="col-md-10">
-                    {{ html()->text('sub_text_ar')
+                    {{ html()->text('ar_content[sub_text]')
                         ->class('form-control')
                         ->placeholder(__('labels.backend.hero_slider.fields.sub_text_arabic'))
                          }}

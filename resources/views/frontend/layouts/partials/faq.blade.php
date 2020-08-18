@@ -1,7 +1,7 @@
 <section id="faq" class=" shadow-lg p-3 mb-5 rounded bg-light faq-section {{isset($classes) ? $classes : '' }}">
     <div class="container">
         <div class="section-title mb45 headline  ">
-            <span class="subtitle text-uppercase">{{env('APP_NAME')}} @lang('labels.frontend.layouts.partials.faq')</span>
+            <span class="subtitle text-uppercase"> @lang('labels.frontend.layouts.partials.faq')</span>
             <h2>@lang('labels.frontend.layouts.partials.faq_full')</h2>
         </div>
         @if(count($faqs)> 0)
