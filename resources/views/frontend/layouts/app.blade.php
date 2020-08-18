@@ -68,7 +68,7 @@
     <!-- Start of Header section
         ============================================= -->
         <header>
-            <div id="main-menu" class="main-menu-container">
+            <div id="main-menu" class="main-menu-container bg-light shadow-lg">
                 <div class="main-menu">
                     {{-- <div class="container"> --}}
 

@@ -106,6 +106,8 @@ class CoursesController extends Controller
         $chapters = Chapter::where('course_id', $course_id)->get();
         // dd($teacherprofile = TeacherProfile::where('user_id',$user_id)->get('description'));
 
+        $related_courses=Course::where('category_id', $course->category->id)->where('id','!=',$course_id)->take(2)->get();
+
         // dd($chapters);
         $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
         // $chapter_lessons = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
@@ -158,7 +160,7 @@ class CoursesController extends Controller
         }
 
 //dd($course->getDataFromColumn('title'));
-        return view($this->path . '.courses.course', compact('optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view($this->path . '.courses.course', compact('related_courses','optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)
