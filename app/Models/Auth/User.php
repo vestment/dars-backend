@@ -113,7 +113,11 @@ class User extends Authenticatable implements MessageableInterface
     ];
 
 
-
+    public function getDataFromColumn($col)
+    {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() == 'ar' ? 'ar_'.$col : $col] ?? $this->attributes[$col];
+    }
     public function lessons()
     {
         return $this->belongsToMany(Lesson::class, 'lesson_student');

@@ -81,7 +81,7 @@
                         <img style="" class="rounded-circle" src=" {{asset($teacher->avatar_location)}}" alt="">
                         <div class="col-lg-5 col-sm-3 mt-3">
                             <p class="text-white font12">{{$teacher->full_name}}</p>
-                            <p class="text-white font10">{{$teacherProfile->description}}</p>
+                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('description')}}</p>
                         </div>
                 @endforeach
 
@@ -761,7 +761,7 @@
                             </div>
                             <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} hours
+                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} @lang('labels.frontend.course.filters.hours')
 
                             </span>
                                 <span>

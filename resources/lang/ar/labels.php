@@ -215,7 +215,7 @@ return array (
         'title_ar' => 'عنوان بالعربي',
 
         'trending' => 'الشائع',
-        'free' => 'حر',
+        'free' => 'مجاني',
         'unpublished' => 'غير منشور',
         'optional_courses' => 'دورات اختيارية',
         'mandatory_courses' => 'دورات اجبارية',
@@ -999,7 +999,7 @@ return array (
         'title' => 'عنوان',
         'trending' => 'الشائع',
         'courses' => 'الدورات',
-        'free' => 'حر',
+        'free' => 'مجاني',
         'unpublished' => 'غير منشور',
       ),
       'add_categories' => 'إضافة فئات',
@@ -1197,6 +1197,17 @@ return array (
   ),
   'frontend' => 
   array (
+      'academy' =>
+          array (
+              'course_detail' => 'بالطبع التفاصيل',
+              'courses_by_teacher' => 'الدورات <span> حسب المعلم. </span>',
+              'send_now' => 'ارسل الان',
+              'students' => 'الطلاب',
+              'title' => 'معلمون',
+              'courses' => 'الدورات',
+              'views' => 'الدورات',
+              'Gallery' => 'معرض الصور',
+          ),
     'auth' => 
     array (
       'login_box_title' => 'تسجيل الدخول',
@@ -1392,6 +1403,10 @@ return array (
             'price' => 'السعر',
             'rating' => 'التقيم',
             'duration' => 'المدة',
+            'apply' => 'تطبيق',
+            'reset' => 'الغاء',
+            'up' => 'أعلي',
+            'hours' => 'ساعات'
         ),
       'add_review_now' => 'إضافة مراجعة الآن',
       'add_reviews' => 'أضف <span> مراجعات. </span>',
@@ -1460,8 +1475,6 @@ return array (
       'not_attempted' => 'لم تحاول',
       'find_your_bundle' => '<span> ابحث عن </span> الحزمة الخاصة بك',
       'select_category' => 'اختر الفئة',
-
-
       'lessons' => 'دروس',
       'wishlist'=> 'قائمة الرغبات',
       'Share'=>'مشاركة',
@@ -1499,8 +1512,6 @@ return array (
       'what_they_say_about_us' => 'ماذا يقولون عنا',
       'no_data_available' => 'لا تتوافر بيانات',
       'academies' =>' الاكادميات',
-
-
     ),
     'layouts' => 
     array (
@@ -1517,7 +1528,7 @@ return array (
         'email_address' => 'عنوان بريد الكتروني',
         'email_registration' => 'مراسلتنا عبر البريد الإلكتروني للحصول على تسجيل مجاني',
         'faq' => 'التعليمات',
-        'faq_full' => 'بشكل متكرر <span> الأسئلة المتداولة </span>',
+        'faq_full' => ' <span> الأسئلة المتداولة </span>بشكل متكرر',
         'featured_course' => '<span> دورة مميزة </span>',
         'get_in_touch' => 'ابقى على تواصل',
         'hours' => 'ساعات',
@@ -1538,7 +1549,7 @@ return array (
         'students_testimonial' => 'الطلاب <span> شهادة. </span>',
         'subscribe_newsletter' => 'اشترك في النشرة الإخبارية',
         'subscribe_now' => 'إشترك الآن',
-        'trending_courses' => 'الاتجاهات <span> الدورات التدريبية. </span>',
+        'trending_courses' => '<span> الدورات التدريبية </span> الشائعه',
         'view_all_news' => 'عرض جميع الأخبار',
         'view_all_popular_courses' => 'عرض جميع الدورات الشعبية',
         'view_all_trending_courses' => 'عرض جميع الدورات التدريبية',
@@ -1586,15 +1597,14 @@ return array (
     ),
     'teacher' => 
     array (
-      'course_detail' => 'بالطبع التفاصيل',
+      'course_detail' => 'تفاصيل الدورة',
       'courses_by_teacher' => 'الدورات <span> حسب المعلم. </span>',
       'send_now' => 'ارسل الان',
       'students' => 'الطلاب',
       'title' => 'معلمون',
       'courses' => 'الدورات',
       'views' => 'الدورات',
-
-
+      'about_me' => 'معلومات عني'
 
     ),
     'user' => 

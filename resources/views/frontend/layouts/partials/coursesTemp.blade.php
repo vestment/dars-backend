@@ -55,11 +55,7 @@
                                 <a class="text-muted teacher-title"
                                    href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                    target="_blank">
-                                    {{$teacherProfile->title}}
-                                </a>
-                                <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                   target="_blank">
-                                    {{$teacher->title}}
+                                    {{$teacherProfile->getDataFromColumn('title')}}
                                 </a>
                             @endforeach
 

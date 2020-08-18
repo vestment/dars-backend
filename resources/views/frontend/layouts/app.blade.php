@@ -396,6 +396,7 @@
                 padding: 2,
                 rtl: lang == 'ar' ? true : false,
                 margin: 10,
+                dots:false,
                 nav: true,
                 navText: ["<i class='fas fa-chevron-left'></i>",
                     "<i class='fas fa-chevron-right'></i>"],

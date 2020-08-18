@@ -34,7 +34,7 @@ class Category extends Model
 
     public function getDataFromColumn($col) {
         // ?? null return if the column not found
-        return $this->attributes[app()->getLocale() =='ar' ? 'ar_'.$col : $col] ?? null;
+        return $this->attributes[app()->getLocale() =='ar' ? 'ar_'.$col : $col] ?? $this->attributes[$col];
     }
 
 
