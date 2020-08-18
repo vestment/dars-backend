@@ -1529,6 +1529,9 @@ return array(
                     'lessons' => 'Lessons',
                     'This_course_includes' => 'This_course_includes:',
                     'related_courses' => 'Related Courses',
+                    'requirements' => 'Requirements',
+                    'hours' => 'hours',
+              
 
 
                 ),

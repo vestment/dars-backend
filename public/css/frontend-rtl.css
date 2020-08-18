@@ -340,7 +340,7 @@ h6 {
 }
 
 .section-title .subtitle {
-    color: #333333;
+    color: white;
     font-size: 1.5rem;
     position: relative;
 }
@@ -1645,7 +1645,7 @@ button.alt-menu-btn.float-left {
     height: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(to right,
+    background: linear-gradient(to left,
     rgba(0, 0, 0, 0.7),
     rgba(255, 255, 255, 0.0)
     );;
@@ -2235,7 +2235,7 @@ button.alt-menu-btn.float-left {
 
 .about-btn .genius-btn {
     display: inline-block;
-    margin-right: 25px;
+    /* margin-right: 25px; */
 }
 
 .about-btn .genius-btn:hover {
@@ -6272,6 +6272,7 @@ ul.product-tab li.active:after {
 
 .nav-menu {
     padding-top: 25px;
+    margin-left: 15px;
 }
 
 /* ==================================================== first section */
@@ -6804,15 +6805,16 @@ iframe {
     position: relative;
     z-index: 1;
     width: 66%;
+   
 }
 
 .prof-img {
     position: absolute;
     margin-bottom: 100px;
     z-index: 2;
-    right: -6px;
-    top: 17px;
-    left: 19px;
+    right: 12px;
+    top: 15px;
+    
 }
 
 hr {
@@ -6968,7 +6970,7 @@ hr {
 }
 
 .bg-static1 {
-    background: linear-gradient(to right,
+    background: linear-gradient(to left,
     rgba(1, 31, 59, 0.6),
     rgba(118, 15, 73, 0.60)
     );
@@ -7397,4 +7399,12 @@ hr {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: 700;
 	/* border: 1px solid; */
+}
+
+
+.navbar-header {
+
+
+    margin-right: 22px;
+
 }

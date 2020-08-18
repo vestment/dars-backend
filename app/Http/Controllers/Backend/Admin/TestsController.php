@@ -139,15 +139,19 @@ class TestsController extends Controller
 
         $courses_ids = $courses->pluck('id');
         $courses = $courses->pluck('title', 'id')->prepend('Please select', '');
-        $courses_ar = Course::select('title_ar','title', 'id')->get();
+        $courses_ar = Course::pluck('title_ar', 'id');
        
            foreach($courses_ar as $key=>$course_ar){
               
-               if($course_ar->title_ar){
-                   $coursew_ar[]=$course_ar->title_ar;
+             
+               if($course_ar->title_ar == null){
+                $courses_ar = Course::pluck('title', 'id');
+
+                   
                }
-               if(!$course_ar->title_ar){
-                   $coursew_ar[]=$course_ar->title;
+               else{
+                $courses_ar = Course::pluck('title_ar', 'id');
+
                }
 
            }
@@ -160,12 +164,12 @@ class TestsController extends Controller
                     if($chapter_ar->title_ar){
                         $chapterw_ar[]=$chapter_ar->title_ar;
                     }
-                    if(!$chapter_ar->title_ar){
+                    if($chapter_ar->title_ar == null){
                         $chapterw_ar[]=$chapter_ar->title;
                     }
 
                 }
-                return view('backend.tests.create', compact('courses', 'lessons','chapters','chapterw_ar','coursew_ar'));
+                return view('backend.tests.create', compact('courses', 'lessons','chapters','chapterw_ar','courses_ar'));
     }
 
     /**

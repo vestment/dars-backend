@@ -337,7 +337,7 @@ h6 {
 }
 
 .section-title .subtitle {
-    color: black;
+    color: white;
     letter-spacing: 7px;
     position: relative;
 }
@@ -7332,6 +7332,7 @@ hr {
 
     /* top: 20px; */
 
-    margin: 0 auto;
+    /* margin: 0 auto; */
+    margin-left: 22px;
 
 }

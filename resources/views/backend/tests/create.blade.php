@@ -37,7 +37,7 @@
                     {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
                     @endif
                     @if(app()->getLocale() == 'ar')
-                    {!! Form::select('course_id', $coursew_ar,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
+                    {!! Form::select('course_id', $courses_ar,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
                     @endif
                 </div>
                 <div class="col-12 col-lg-6 form-group">
