@@ -12,7 +12,7 @@
 
             </div>
             <div class="card-body">
-                <h3 class="card-title titleofcard">{{$course->title}}</h3>
+                <h3 class="card-title titleofcard">{{$course->getDataFromColumn('title')}}</h3>
                 <div class="row">
                     <div class="col-12">
                         <div class="course-rate ul-li">
@@ -27,12 +27,12 @@
                 </div>
                 <div class="course-meta my-1 vv">
                                                                         <span class="course-category">
-                                                                            <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a>
+                                                                            <a href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->getDataFromColumn('name')}}</a>
                                                                         </span>
                     <span class="course-author"><a href="#">{{ $course->students()->count() }}
                             @lang('labels.frontend.course.students')</a></span>
                     <span class="course-author">
-                                                                                {{ $course->lessons()->count() }} @lang('labels.backend.courses.lessons')
+                                                                                {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
                                                                         </span>
                 </div>
                 <div class="row my-2">
@@ -55,11 +55,7 @@
                                 <a class="text-muted teacher-title"
                                    href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                    target="_blank">
-                                    {{$teacherProfile->title}}
-                                </a>
-                                <a href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                   target="_blank">
-                                    {{$teacher->title}}
+                                    {{$teacherProfile->getDataFromColumn('title')}}
                                 </a>
                             @endforeach
 

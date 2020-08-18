@@ -205,6 +205,7 @@ class CoursesController extends Controller
         
 
         }
+        
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
         $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id','name')->get();
         foreach($categories_ar as $key=>$categories_ar){
@@ -213,7 +214,7 @@ class CoursesController extends Controller
             $categ_name[] = $categories_ar->ar_name ;
             }
 
-        return view('backend.courses.create', compact('teachers', 'categories','courses'));
+        // return view('backend.courses.create', compact('teachers', 'categories','courses'));
                 if(!$categories_ar->ar_name ){
     
                     $categ_name[] = $categories_ar->name ;
@@ -226,7 +227,7 @@ class CoursesController extends Controller
 
 
 
-        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categories','categ_name'));
+        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categories','categ_name','courses'));
     }
 
     /**
@@ -347,18 +348,18 @@ class CoursesController extends Controller
      */
     public function edit($id)
     {
+
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
+
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
         $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
-        })->get()->value('ar_first_name', 'ar_last_name','id');
-      
-
+        })->value('ar_first_name', 'ar_last_name','id');
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
 
         $allCourses = Course::pluck('title', 'id');

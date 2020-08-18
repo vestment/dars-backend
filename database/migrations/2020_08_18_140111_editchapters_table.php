@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class EditChapterTable extends Migration
+class EditchaptersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,10 @@ class EditChapterTable extends Migration
     public function up()
     {
         Schema::table('chapters', function (Blueprint $table) {
-            $table->text('title_ar')->nullable();
-            $table->text('short-text-ar')->nullable();
-            $table->text('full-text-ar')->nullable();
+            
+            $table->text('lesson_image')->nullable();
+           
+           
          
         });
     }
@@ -29,10 +30,8 @@ class EditChapterTable extends Migration
     public function down()
     {
         Schema::table('chapters', function (Blueprint $table) {
-
-        $table->dropColumn('title_ar')->nullable();
-        $table->dropColumn('short-text-ar')->nullable();
-        $table->dropColumn('full-text-ar')->nullable();
-    });
+            $table->dropColumn('lesson_image')->nullable();
+           
+        });
     }
 }

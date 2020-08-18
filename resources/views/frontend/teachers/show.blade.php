@@ -77,7 +77,7 @@
                                                 <h5 class="type">{{$teacher_data->type}} </h5>
 
 
-                                                <h2 class="text-white ">{{$teacher->first_name}} <span>{{$teacher->last_name}}</span></h2>
+                                                <h2 class="text-white "><span>{{$teacher->full_name}}</span></h2>
                                                 <span class="text-white bold">{{$teacher->email}}</span>
  
                                                 <div class="address-details ul-li-block my-3">
@@ -131,9 +131,9 @@
     <!-- Start of teacher details area
         ============================================= -->
     <section id="teacher-details" class="teacher-details-area ">
-        <div class="containe ">
-            <h4 class="about">About Me</h4>
-            <p>{{$teacher_data->description}} </p>
+        <div class="container">
+            <h4 class="about">@lang('labels.frontend.teacher.about_me')</h4>
+            <p>{{$teacher_data->getDataFromColumn('description')}} </p>
 
                    
 
@@ -192,12 +192,12 @@
                                                     <div class="best-course-text">
                                                         <div class="course-title mb20 headline relative-position">
                                                             <h3>
-                                                                <a href="{{ route('courses.show', [$item->slug]) }}">{{$item->title}}</a>
+                                                                <a href="{{ route('courses.show', [$item->slug]) }}">{{$item->getDataFromColumn('title')}}</a>
                                                             </h3>
                                                         </div>
                                                         <div class="course-meta">
                                                     <span class="course-category"><a
-                                                                href="#">{{$item->category->name}}</a></span>
+                                                                href="#">{{$item->category->getDataFromColumn('name')}}</a></span>
                                                             <span class="course-author">
                                                         <a href="#">
                                                             {{ $item->students()->count() }}

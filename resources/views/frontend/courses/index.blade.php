@@ -16,10 +16,12 @@
                 <div class=row>
                     <div class="page-breadcrumb-title text-left col-7 col-xl-7 col-md-7 col-lg-7">
                         <h1 class="breadcrumb-head black bold">
-                            <span>@if(isset($category)) {{$category->name}} @else @lang('labels.frontend.course.courses') @endif </span>
+                            <span>@if(isset($category)) {{$category->getDataFromColumn('name')}} @else @lang('labels.frontend.course.courses') @endif </span>
                         </h1>
                         <h3>
-                            Courses to get you started
+                        @lang('labels.backend.courses.courses_to_start')
+                            <!-- Courses to get you started
+                            دورات لتبدأ بها -->
                         </h3>
                     </div>
                     <div class="col-xl-5 col-md-5 col-lg-5 col-5">
@@ -46,12 +48,12 @@
                         <div class="col-xl-12 categories-container border-bottom">
                             @if(count($popular_course) > 0)
                                 <button onclick="showTab($('#popular-course'),$(this))"
-                                        class="tab-button btn active btn-light">Most Popular
+                                        class="tab-button btn active btn-light">@lang('labels.backend.courses.most_popular')
                                 </button>
                             @endif
                             @if(count($trending_courses) > 0)
                                 <button onclick="showTab($('#trending'),$(this))"
-                                        class="tab-button btn btn-light">Trending
+                                        class="tab-button btn btn-light">@lang('labels.backend.courses.trending')
                                 </button>
                             @endif
                         </div>
@@ -111,7 +113,7 @@
                                                     <option value="">@lang('labels.frontend.course.select_category')</option>
                                                     @if(count($categories) > 0)
                                                         @foreach($categories as $category)
-                                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                                            <option value="{{$category->id}}">{{$category->getDataFromColumn('name')}}</option>
 
                                                         @endforeach
                                                     @endif
@@ -259,7 +261,7 @@
             <div class="container" id="featured-courses">
                 <div class="section-title mb20 headline mb-5">
 
-                    <h3 class="text-dark font-weight-bolder "><span>Featured courses</span>
+                    <h3 class="text-dark font-weight-bolder "><span>@lang('labels.backend.courses.featured_courses')</span>
                     </h3>
                 </div>
                 <div class="owl-carousel custom-owl default-owl-theme" data-items="1">
@@ -278,7 +280,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body noborder">
-                                            <h3 class=" mt-3 display-6">{{$course->title}}</h3>
+                                            <h3 class=" mt-3 display-6">{{$course->getDataFromColumn('title')}}</h3>
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="course-rate ul-li">
@@ -297,11 +299,11 @@
                                             </div>
                                             <div class="course-meta my-2">
                                                 <small><i class="far fa-clock"></i> {{ $course->course_hours }}
-                                                    hours |
+                                                @lang('labels.backend.courses.fields.hours') |
                                                 </small>
                                                 <small><i
                                                             class="fab fa-youtube"></i> {{ $course->chapters()->count() }}
-                                                    lecture
+                                                            @lang('labels.backend.courses.fields.lectures')
                                                 </small>
                                             </div>
                                             <div class="row my-3">
@@ -420,81 +422,7 @@
     <!-- End of course section
         ============================================= -->
 
-    <!-- Start of course teacher
-    ============================================= -->
-    <section id="course-teacher" class="course-teacher-section p-5">
-        <div class="">
-            <div class="container ">
-                <div class=" section-title mb20 headline p-5 mb-5">
-                    <span class=" subtitle text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-                    <h2 class="text-dark font-weight-bolder "><span>@lang('labels.frontend.home.Instructors').</span>
-                    </h2>
-                </div>
-                <div class="owl-carousel custom-owl-theme">
-                    @if(count($teachers)> 0)
-                        @foreach($teachers as $key=>$item)
-                            @foreach($teacher_data as $teacher)
-                                @if($item->id == $teacher->user_id)
-                                    <div class="item">
-                                        <div class="text-center ">
-                                            <div class="bg-card">
-                                                <div>
-                                                    <div class="finger-img">
-                                                        <img src="/assets/img/banner/01.png" alt="">
-                                                    </div>
-
-                                                    <div class="prof-img ">
-                                                        @if($item->avatar_location == "")
-                                                            <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
-                                                                        class="teacher-image shadow-lg p-3"
-                                                                        src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                        alt=""></a>
-                                                        @else
-                                                            <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
-                                                                        class="teacher-image shadow-lg p-3"
-                                                                        src="{{asset($item->avatar_location)}}"
-                                                                        alt=""></a>
-                                                        @endif
-
-
-                                                    </div>
-                                                </div>
-                                                <div class="teacher-social-name ul-li-block pt-3">
-                                                    <div class="teacher-name text-dark font-weight-bold">
-                                                        <h5>{{$item->full_name}}</h5>
-                                                    </div>
-                                                    <div class="teacher-title text-muted font-weight-light">
-                                                        {{$teacher->title}}
-                                                    </div>
-                                                    <hr>
-                                                    <div class="teacher-name text-dark  justify-content-center">
-                                                        <span>{{$teacher->description}}</span>
-                                                    </div>
-                                                    <ul>
-                                                        <li><a href="{{'mailto:'.$item->email}}"><i
-                                                                        class="fa fa-envelope"></i></a></li>
-                                                        <li>
-                                                            <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i
-                                                                        class="fa fa-comments"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @endforeach
-                    @endif
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- End of course teacher
-        ============================================= -->
+    @include('frontend.layouts.partials.teachers')
 
 
 
@@ -535,7 +463,7 @@
                                                 <i class="far fa-star fa-sm text-warning"></i>
                                             </li>
                                             <li>
-                                                <p class=" px-2">& Up</p>
+                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
                                             </li>
                                         </ul>
                                     </label>
@@ -561,7 +489,7 @@
                                                 <i class="far fa-star fa-sm text-warning"></i>
                                             </li>
                                             <li>
-                                                <p class=" px-2">& Up</p>
+                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
                                             </li>
                                         </ul>
                                     </label>
@@ -586,7 +514,7 @@
                                                 <i class="far fa-star fa-sm text-warning"></i>
                                             </li>
                                             <li>
-                                                <p class=" px-2">& Up</p>
+                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
                                             </li>
                                         </ul>
                                     </label>
@@ -611,7 +539,7 @@
                                                 <i class="far fa-star fa-sm text-warning"></i>
                                             </li>
                                             <li>
-                                                <p class=" px-2">& Up</p>
+                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
                                             </li>
                                         </ul>
                                     </label>
@@ -630,25 +558,25 @@
                                     <input type="radio" class="form-check-input" id="under2" data-value="0-2"
                                            name="duration">
                                     <label class="form-check-label small font-weight-bold" for="under2">0-2
-                                        Hours</label>
+                                        @lang('labels.frontend.course.filters.hours')</label>
                                 </div>
                                 <div class="form-check pl-0 mb-3">
                                     <input type="radio" class="form-check-input" data-value="3-6" id="3-6"
                                            name="duration">
                                     <label class="form-check-label small font-weight-bold" for="3-6">3-6
-                                        Hours</label>
+                                         @lang('labels.frontend.course.filters.hours')</label>
                                 </div>
                                 <div class="form-check pl-0 mb-3">
                                     <input type="radio" class="form-check-input" data-value="7-16" id="7-16"
                                            name="duration">
                                     <label class="form-check-label small font-weight-bold" for="7-16">7-16
-                                        Hours</label>
+                                         @lang('labels.frontend.course.filters.hours')</label>
                                 </div>
                                 <div class="form-check pl-0 mb-3">
                                     <input type="radio" class="form-check-input" data-value="20-26" id="20-26"
                                            name="duration">
                                     <label class="form-check-label small font-weight-bold" for="20-26">20-26
-                                        Hours</label>
+                                         @lang('labels.frontend.course.filters.hours')</label>
                                 </div>
                             </section>
                             <!-- Section: Price -->
@@ -658,7 +586,7 @@
                                 <h5 class="font-weight-bold mb-3">@lang('labels.frontend.course.filters.price') </h5>
                                 <div class="form-check pl-0 mb-3">
                                     <input type="checkbox" class="form-check-input" id="isFree">
-                                    <label class="form-check-label small font-weight-bold" for="isFree">Free</label>
+                                    <label class="form-check-label small font-weight-bold" for="isFree">@lang('labels.backend.courses.fields.free')</label>
                                 </div>
                                 <input class="price-filter-input" type="range" name="price" id="price" value="0"
                                        step="10"
@@ -684,13 +612,13 @@
                     <div class="col-12 col-lg-9 col-xl-9 col-md-8">
                         <div class="form-group row filters-category">
                             <label class="col-sm-2 col-form-label col-form-label-sm " for="sort"><h3
-                                        class="font-weight-bold text-dark">SORT BY</h3></label>
+                                        class="font-weight-bold text-dark">@lang('labels.frontend.search_result.sort_by')</h3></label>
                             <div class="col">
                                 <select id="sortFilter" class="form-control">
                                     <option selected value="All">All</option>
-                                    <option value="popular">Most Popular</option>
-                                    <option value="trending">Trending</option>
-                                    <option value="featured">Featured</option>
+                                    <option value="popular">@lang('labels.frontend.search_result.popular')</option>
+                                    <option value="trending">@lang('labels.frontend.search_result.trending')</option>
+                                    <option value="featured">@lang('labels.frontend.search_result.featured')</option>
                                 </select>
                             </div>
                         </div>
@@ -722,7 +650,7 @@
 
     <!-- Start of best course
    =============================================  -->
-    @include('frontend.layouts.partials.browse_courses')
+    <!-- @in clude('frontend.layouts.partials.browse_courses') -->
     <!-- End of best course
             ============================================= -->
 
@@ -795,6 +723,8 @@
                 $('#current-price').text($('input[type=range]').val());
                 $('.btn-reset').fadeOut(500);
                 $('.btn-apply').fadeOut(500);
+                $('.filtered-items').fadeOut();
+                $('.all-courses').fadeIn();
             });
             $(document).on('change', '#sortBy', function () {
                 if ($(this).val() != "") {

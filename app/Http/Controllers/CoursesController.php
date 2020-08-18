@@ -106,12 +106,13 @@ class CoursesController extends Controller
         $chapters = Chapter::where('course_id', $course_id)->get();
         // dd($teacherprofile = TeacherProfile::where('user_id',$user_id)->get('description'));
 
+        $related_courses=Course::where('category_id', $course->category->id)->where('id','!=',$course_id)->take(2)->get();
+
         // dd($chapters);
         $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
         // $chapter_lessons = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count();
         $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count();
-
 
 
         if (($course->published == 0) && ($purchased_course == false)) {
@@ -153,13 +154,13 @@ class CoursesController extends Controller
         }
         $mandatory_courses = [];
         $optional_courses = [];
-if ($course->mandatory_courses && $course->optional_courses) {
-        $mandatory_courses = Course::whereIn('id',json_decode($course->mandatory_courses))->get();
-        $optional_courses = Course::whereIn('id',json_decode($course->optional_courses))->get();
-}
+        if ($course->mandatory_courses && $course->optional_courses) {
+            $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
+            $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->get();
+        }
 
-        // $course=(Course::with('teachers.teacherProfile')->find(2));
-        return view($this->path . '.courses.course', compact('optional_courses','mandatory_courses','chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+//dd($course->getDataFromColumn('title'));
+        return view($this->path . '.courses.course', compact('related_courses','optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)
@@ -209,7 +210,7 @@ if ($course->mandatory_courses && $course->optional_courses) {
                 } else {
                     $html .= ' <span> ' . getCurrency(config('app.currency'))['symbol'] . ' ' . $course->price . '</span>';
                 }
-                $html .= '</div></div> <div class="card-body back-im p-3"><h3 class="card-title titleofcard">' . $course->title . '</h3>
+                $html .= '</div></div> <div class="card-body back-im p-3"><h3 class="card-title titleofcard">' . $course->getDataFromColumn('title') . '</h3>
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="course-rate ul-li"><ul>';
@@ -296,7 +297,7 @@ if ($course->mandatory_courses && $course->optional_courses) {
                                                     </div> </div> </div>  </div> </div>';
             }
         } else {
-            $html = '<div class="col-12  d-flex justify-content-center"><div class=""><div class="alert-danger alert"> No courses found </div><img src="'.url('img/frontend/user/lost.svg').'"></div></div>  ';
+            $html = '<div class="col-12  d-flex justify-content-center"><div class=""><div class="alert-danger alert"> No courses found </div><img src="' . url('img/frontend/user/lost.svg') . '"></div></div>  ';
         }
         return $html;
     }
@@ -312,7 +313,7 @@ if ($course->mandatory_courses && $course->optional_courses) {
 
     public function getByCategory(Request $request)
     {
-       
+
         $category = Category::where('slug', '=', $request->category)
             ->where('status', '=', 1)
             ->first();

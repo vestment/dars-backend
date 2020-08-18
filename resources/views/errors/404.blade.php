@@ -1,4 +1,4 @@
-@extends('frontend'.(session()->get('display_type') == "rtl"?"-rtl":"").'.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 @push('after-styles')
     <style>
         .iconss {

@@ -5,7 +5,7 @@
 
                 <div class="bg-image @if($slide->overlay == 1) overlay  @endif"
                      style="background-image: url({{asset('storage/uploads/'.$slide->bg_image)}})"></div>
-                @php $content = json_decode($slide->content) @endphp
+                @php $content = json_decode($slide->getDataFromColumn('content')) @endphp
                 <div class="slider-text">
                     @if(isset($content->widget))
                         @if($content->widget->type == 2)

@@ -44,7 +44,7 @@
                                         <i class=" {{$category->icon}}"></i>
                                     </div>
                                     <div class="">
-                                        <h4>{{$category->name}}</h4>
+                                        <h4>{{$category->getDataFromColumn('name')}}</h4>
                                     </div>
                                 </div>
                             </a>

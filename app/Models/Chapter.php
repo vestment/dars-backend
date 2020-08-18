@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+                 
 class Chapter extends Model
 {
-    protected $fillable = ['title', 'title_ar','slug', 'chapter_image', 'short_text', 'full_text', 'short_text_ar', 'full_text_ar','position', 'downloadable_files', 'free_chapter', 'published', 'course_id'];
+    protected $fillable = ['title', 'title_ar','slug', 'short_text', 'full_text', 'short-text-ar', 'full-text-ar','position', 'downloadable_files', 'free_chapter', 'published', 'course_id'];
     
 
 
@@ -28,7 +28,10 @@ class Chapter extends Model
         return $this->hasmany('App\Models\Lesson');
     
     }
-
+    public function getDataFromColumn($col) {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() =='ar' ? $col.'_ar' : $col] ?? null;
+    }
 
 
 }

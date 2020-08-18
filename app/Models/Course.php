@@ -26,10 +26,9 @@ class Course extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['category_id', 'title', 'slug', 'description', 'price', 'course_image','course_video', 'start_date', 'published', 'free','featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords','knowledge','optional_courses','mandatory_courses'];
+    protected $fillable = ['category_id', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'optional_courses', 'mandatory_courses'];
 
     protected $appends = ['image'];
-
 
     protected static function boot()
     {
@@ -55,11 +54,10 @@ class Course extends Model
 
 
     }
-
     public function getImageAttribute()
     {
         if ($this->course_image != null) {
-            return url('storage/uploads/'.$this->course_image);
+            return url('storage/uploads/' . $this->course_image);
         }
         return NULL;
     }
@@ -119,13 +117,14 @@ class Course extends Model
 
     public function students()
     {
-        return $this->belongsToMany(User::class, 'course_student')->withTimestamps()->withPivot(['rating','wishlist']);
+        return $this->belongsToMany(User::class, 'course_student')->withTimestamps()->withPivot(['rating', 'wishlist']);
     }
 
 
-    public function wishlist(){
+    public function wishlist()
+    {
         return $this->hasMany(Wishlist::class);
-     }
+    }
 
     public function lessons()
     {
@@ -140,8 +139,8 @@ class Course extends Model
     public function scopeOfTeacher($query)
     {
         if (!Auth::user()->isAdmin()) {
-            if(Auth::user()->hasRole('academy')) {
-                $academyTeachersIds= TeacherProfile::where('academy_id', Auth::user()->id)->pluck('user_id');
+            if (Auth::user()->hasRole('academy')) {
+                $academyTeachersIds = TeacherProfile::where('academy_id', Auth::user()->id)->pluck('user_id');
                 return $query->whereHas('teachers', function ($q) use ($academyTeachersIds) {
                     $q->whereIn('user_id', $academyTeachersIds);
                 });
@@ -178,13 +177,19 @@ class Course extends Model
         return $this->hasMany(CourseTimeline::class);
     }
 
-    public function getIsAddedToCart(){
-        if(auth()->check() && (auth()->user()->hasRole('student')) && (\Cart::session(auth()->user()->id)->get( $this->id))){
+    public function getIsAddedToCart()
+    {
+        if (auth()->check() && (auth()->user()->hasRole('student')) && (\Cart::session(auth()->user()->id)->get($this->id))) {
             return true;
         }
         return false;
     }
 
+    public function getDataFromColumn($col)
+    {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() == 'ar' ? $col . '_ar' : $col] ?? $this->attributes[$col];
+    }
 
     public function reviews()
     {
@@ -193,7 +198,7 @@ class Course extends Model
 
     public function progress()
     {
-        $main_chapter_timeline = $this->lessons()->where('published',1)->pluck('id')->merge($this->tests()->pluck('id'));
+        $main_chapter_timeline = $this->lessons()->where('published', 1)->pluck('id')->merge($this->tests()->pluck('id'));
 
         $completed_lessons = auth()->user()->chapters()->where('course_id', $this->id)->pluck('model_id');
 
@@ -243,19 +248,20 @@ class Course extends Model
             ->whereIn('type', $types);
 
     }
-    public function chapters(){
+
+    public function chapters()
+    {
 
         return $this->hasmany('App\Models\Chapter');
-    
+
     }
 
-    public function test(){
+    public function test()
+    {
 
         return $this->belongsto('App\Models\Chapter');
-    
-    }
 
-    
+    }
 
 
 }

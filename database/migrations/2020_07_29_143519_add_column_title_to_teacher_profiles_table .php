@@ -15,7 +15,6 @@ class AddColumnTitleToTeacherProfilesTable extends Migration
     
     {
         Schema::table('teacher_profiles', function (Blueprint $table) {
-            
             $table->text('title');
         });
     }

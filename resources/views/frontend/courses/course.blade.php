@@ -57,10 +57,10 @@
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
                 <div class="m-1">
-                    <p>Explore / {{$course->category->name}} / <b class="text-white">{{$course->title}}</b></p>
+                    <p> @lang('labels.frontend.layouts.partials.explore') / {{$course->category->getDataFromColumn('name')}} / <b class="text-white">{{$course->getDataFromColumn('title')}}</b></p>
                 </div>
                 <div class="p-1">
-                    <h2 class="text-white"><b>{{$course->title}}</b></h2>
+                    <h2 class="text-white"><b>{{$course->getDataFromColumn('title')}}</b></h2>
                 </div>
 
                 <div class="p-1">
@@ -81,7 +81,7 @@
                         <img style="" class="rounded-circle" src=" {{asset($teacher->avatar_location)}}" alt="">
                         <div class="col-lg-5 col-sm-3 mt-3">
                             <p class="text-white font12">{{$teacher->full_name}}</p>
-                            <p class="text-white font10">{{$teacherProfile->description}}</p>
+                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('description')}}</p>
                         </div>
                 @endforeach
 
@@ -155,6 +155,11 @@
                                         <i class="fa fa-arrow-right"></i>
                                     </button>
                                 </a>
+                        @else
+                                    <button class="btn btn-outline-light  addcart" type="submit">
+                                        No lessons available
+                                        <i class="fa fa-arrow-right"></i>
+                                    </button>
                         @endif
                     @endif
 
@@ -222,25 +227,32 @@
                 </div>
             </div>
             <div class="row  coursesec d-block m-3">
-                <h2> Requirements</h2>
+                <h2>@lang('labels.frontend.course.requirements')</h2>
             </div>
-            <div class="row d-block m-3">
+            <div class="row m-3">
                 @if(count($optional_courses) >0 || count($mandatory_courses) >0)
+                <div class="col-lg-6">
+                    <p class="font-weight-bold text-dark">Optional Courses</p>
 
                     @foreach($optional_courses as $opt_course)
-                        <a href="{{ route('courses.show', [$opt_course->slug]) }}"><p><i class="fa fa-angle-down p-2"
+                        <a href="{{ route('courses.show', [$opt_course->slug]) }}"><p><i class="fa fa-angle-right p-2"
                                                                                          aria-hidden="true"></i> {{$opt_course->title}}
                             </p></a>
                     @endforeach
+                </div>
 
+                <div class="col-lg-6">
+                    <p class="font-weight-bold text-dark"> Mandatory Courses</p>
                     @foreach($mandatory_courses as $mand_course)
-                        <a href="{{ route('courses.show', [$mand_course->slug]) }}"><p><i class="fa fa-angle-down p-2"
-                                                                                          aria-hidden="true"></i> {{$mand_course->title}}
-                            </p></a>
+                        <a href="{{ route('courses.show', [$mand_course->slug]) }}"><p><i class="fa fa-angle-right p-2"
+                            aria-hidden="true"></i> {{$mand_course->title}}
+                    </p></a>
                     @endforeach
+                </div>
+
                 <!-- <p > <i class="fa fa-angle-down p-2" aria-hidden="true"></i>
                             Nothing except a positive attitude!</p> -->
-
+                    </ul>
 
                 @else
                     <p><i class="fa fa-angle-down p-2" aria-hidden="true"></i>
@@ -249,6 +261,7 @@
             </div>
             <!-- video modal -->
             <!--Modal: Name-->
+
             <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <!--Content-->
@@ -281,6 +294,8 @@
                                 </div>
                             @endif
                     </div>
+                    @else
+                    <p class="text-center text-white display-4 mx-5 my-5">No Videos available </p>
                     @endif
                 </div>
                 <!-- </div> -->
@@ -341,7 +356,7 @@
                         <span>   {{$appCurrency['symbol'].' '.$course->price}}</span>
                     @endif</h3>
                 <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
-                <p class="smpara"><i class="fa fa-play-circle" aria-hidden="true"></i> {{ $course->course_hours }} hours
+                <p class="smpara"><i class="fa fa-play-circle" aria-hidden="true"></i> {{ $course->course_hours }} @lang('labels.frontend.course.hours')
                 </p>
                 <p class="smpara"><i class="fa fa-file" aria-hidden="true"></i>
                     <span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters')</p>
@@ -429,7 +444,7 @@
             <div class="row smpara d-block m-2">
                 <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->course_hours }} hours</p>
+                    • {{ $course->course_hours }} @lang('labels.frontend.course.hours')</p>
             </div>
 
             @foreach($chapters as $chapter)
@@ -576,37 +591,43 @@
             <div class="row smpara d-block m-2">
                 <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->course_hours }} hours</p>
+                    • {{ $course->course_hours }} @lang('labels.frontend.course.hours')</p>
             </div>
+            @foreach ($related_courses as $course)
+
             <div class="card col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
 
                 <div class="row">
-                    <div class="col-md-6 ">
+                    <div class="col-md-6 pl-0">
                         <div class="best-course-pic relative-position ">
                             <div class="course-list-img-text course-page-sec">
 
-                                <div class="col imgcard">
+                            <div class="col imgcard"
+                                @if($course->course_image != "") 
+                                style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                            </div>
+                                <!-- <div class="col imgcard">
                                 @if($course->course_image != "")
                                     <img src="{{asset('storage/uploads/'.$course->course_image)}}">
                                 @endif
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="card-body" style="border: none">
-                            <h3 class=" font20">{{$course->title}}</h3>
+                            <h3 class=" font20">{{$course->getDataFromColumn('title')}}</h3>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="course-rate ul-li">
                                         <ul>
-                                            @for($r=1; $r<=$course_rating; $r++)
+                                            @for($r=1; $r<=$course->reviews->avg('rating'); $r++)
                                                 <i class="fas fa-star" style="color: yellow; font-size:10px;"></i>
                                             @endfor
-                                            @for($r=1; $r<=5-$course_rating; $r++)
+                                            @for($r=1; $r<=5-$course->reviews->avg('rating'); $r++)
                                                 <i class="fas fa-star" style="font-size:10px;"></i>
                                             @endfor
-                                            <span class="text-white">{{$course_rating}}</span>
+                                            <span class="text-white">{{$course->reviews->avg('rating')}}</span>
 
                                         </ul>
                                     </div>
@@ -614,7 +635,7 @@
                             </div>
                             <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} hours
+                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} @lang('labels.frontend.course.hours')
 
                             </span>
                                 <span>
@@ -708,7 +729,8 @@
 
             </div>
 
-            <div class="card col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
+        @endforeach
+            <!-- <div class="card col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
 
                 <div class="row">
                     <div class="col-md-6 ">
@@ -725,7 +747,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card-body" style="border: none">
-                            <h3 class=" font20">{{$course->title}}</h3>
+                            <h3 class=" font20">{{$course->getDataFromColumn('title')}}</h3>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="course-rate ul-li">
@@ -744,7 +766,7 @@
                             </div>
                             <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} hours
+                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} @lang('labels.frontend.course.filters.hours')
 
                             </span>
                                 <span>
@@ -836,7 +858,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
 
 
         </div>
@@ -929,7 +951,7 @@
 
                     <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
                     </div>
-                    <div class="col-lg-3 col-md-5 col-sm-3">
+                    <div class="col-lg-6 col-md-5 col-sm-3">
                         @php $key++ @endphp
                         <p style="font-size:30px;">{{$teacher->full_name}}</p>
                         <p class="teacher-title">{{$teacherProfile->title}}</p>

@@ -337,7 +337,7 @@ h6 {
 }
 
 .section-title .subtitle {
-    color: black;
+    color: white;
     letter-spacing: 7px;
     position: relative;
 }
@@ -6296,12 +6296,11 @@ ul.product-tab li.active:after {
 .main-menu-container {
     position: fixed;
     width: 100%;
-    /* padding: 25px 0px; */
     -webkit-transition: .3s all ease-in-out;
     transition: .3s all ease-in-out;
     z-index: 9;
-    /* background-color: #0C0C3F; */
     background-color: white;
+    box-shadow: 0px 1px 9px 0px #c1baba;
 
 }
 
@@ -6327,6 +6326,11 @@ ul.product-tab li.active:after {
     background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
     padding-top: 7%;
     padding-bottom: 320px;
+}
+@media (max-width: 425px) {
+    .bgcolor {
+        padding-bottom: 340px;
+    }
 }
 
 .paragraph1 {
@@ -6386,6 +6390,10 @@ ul.product-tab li.active:after {
     /* background-color: violet; */
 }
 
+.imgcard img{
+    max-height: 100%;
+
+}
 
 
 .buttoncart button {
@@ -6644,7 +6652,7 @@ iframe {
 .droplist {
     /* background-color: #0C0C3F;
     color: white; */
-    background-color: white !important;
+    background-color:#f8f9fa !important;
     color: black !important;
 }
 
@@ -6659,8 +6667,8 @@ iframe {
 .btndropdown {
     /* background-color: #0C0C3F;
     border-color: #0C0C3F; */
-    background-color: white !important;
-    border-color:  white !important;
+    background-color: #f8f9fa !important;
+    border-color:  #f8f9fa !important;
     color: black !important;
     text-transform: uppercase;
     font-size: 15px;
@@ -6915,7 +6923,7 @@ hr {
 .search-bar.active .input-text {
     max-width: 100%;
     border: 1px solid #0c0c3f;
-    background: #ffffff;
+    background: #f8f9fa;
     /* transform: translate3d(85px, 0px, 0); */
     height: 40px;
     border-radius: 4px;
@@ -6938,10 +6946,15 @@ hr {
     transition: all 0.4s ease-in-out;
     padding: 10px 10px 10px 20px;
 }
+.menu-bg-overlay+.search-form.active {
+    top: 11% !important;
+}
 .search-form.active {
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
     display: block;
-    position: absolute;
-    top: 13%;
+    position: fixed;
+    top: 9%;
     right: 0;
     z-index: 2;
     background-color: #ffffff;
@@ -7305,4 +7318,24 @@ hr {
 }
 .categ a:hover {
     color: #fff;
+}
+
+
+.navbar-header {
+
+    left: 0 !important;
+    /* left: 120px; */
+
+
+    /* right: 0; */
+
+    /* top: 20px; */
+
+    /* margin: 0 auto; */
+    margin-left: 22px;
+
+}
+
+.btn-secondary:focus {
+    box-shadow: 0 0 0 0.2rem rgb(248, 249, 250) !important;
 }
