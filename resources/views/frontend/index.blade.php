@@ -118,8 +118,8 @@
                         </div>
                         <div class="offset-1 col-lg-7 col-sm-12 text-white">
                             <div class="p-5">
-                                <span class=" pb-3">{{env('APP_NAME')}} @lang('labels.frontend.layouts.partials.OfferCourses')</span>
-                                <h2>@lang('labels.frontend.layouts.partials.packagecourse') <span>{{app_name()}}</span>
+                                <span class=" pb-3"> @lang('labels.frontend.layouts.partials.OfferCourses')</span>
+                                <h2>@lang('labels.frontend.layouts.partials.packagecourse')
                                 </h2>
                             </div>
 

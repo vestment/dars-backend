@@ -436,7 +436,6 @@ h6 {
 }
 
 .about {
-    font-family: Ubuntu;
     font-weight: bold;
     color: black
 }
@@ -472,7 +471,7 @@ h6 {
 }
 
 .nav-menu li a {
-    color: #fff;
+    color: #000;
     text-transform: uppercase;
     font-size: 15px;
     padding: 7px 15px;
@@ -586,7 +585,7 @@ h6 {
 }
 
 .main-menu-container.menu-bg-overlay {
-    background-color: #0C0C3F;
+    background-color: #fff;
     padding: 10px 0px;
 }
 
@@ -2903,14 +2902,14 @@ button.alt-menu-btn.float-left {
 
 .trend-badge-2 {
     top: -18px;
-    left: -50px;
+    right: -40px;
     color: #fff;
     font-size: 12px;
     font-weight: 700;
     position: absolute;
     padding: 30px 35px 5px;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
     background-color: #ff5a00;
     z-index: 3;
 }
@@ -6264,7 +6263,7 @@ ul.product-tab li.active:after {
     -webkit-transition: .3s all ease-in-out;
     transition: .3s all ease-in-out;
     z-index: 9;
-    background-color: #0C0C3F;
+    background-color: #fff;
 
 }
 
@@ -6891,8 +6890,8 @@ hr {
 
 .search-bar.active .input-text {
     max-width: 100%;
-    border: 1px solid #625ca8;
-    background: #0C0C3F;
+    border: 1px solid #333;
+    background: #fff;
     /* transform: translate3d(85px, 0px, 0); */
     height: 40px;
     border-radius: 4px;
@@ -7349,7 +7348,7 @@ hr {
     top: 9%;
     left: 0;
     z-index: 2;
-    background-color: #0c0c3f;
+    background-color: #fff;
     margin-left: 6rem;
     padding: 10px;
     border-radius: 2px;
@@ -7358,7 +7357,7 @@ hr {
     display: none;
 }
 .search-bar input::-webkit-input-placeholder {
-    color: #fff;
+    color: #333;
     font-weight: 200;
 }
 .search-bar input {

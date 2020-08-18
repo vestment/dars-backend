@@ -1201,6 +1201,17 @@ return array (
   ),
   'frontend' => 
   array (
+      'academy' =>
+          array (
+              'course_detail' => 'بالطبع التفاصيل',
+              'courses_by_teacher' => 'الدورات <span> حسب المعلم. </span>',
+              'send_now' => 'ارسل الان',
+              'students' => 'الطلاب',
+              'title' => 'معلمون',
+              'courses' => 'الدورات',
+              'views' => 'الدورات',
+              'Gallery' => 'معرض الصور',
+          ),
     'auth' => 
     array (
       'login_box_title' => 'تسجيل الدخول',
@@ -1468,8 +1479,6 @@ return array (
       'not_attempted' => 'لم تحاول',
       'find_your_bundle' => '<span> ابحث عن </span> الحزمة الخاصة بك',
       'select_category' => 'اختر الفئة',
-
-
       'lessons' => 'دروس',
       'wishlist'=> 'قائمة الرغبات',
       'Share'=>'مشاركة',
@@ -1503,8 +1512,6 @@ return array (
       'what_they_say_about_us' => 'ماذا يقولون عنا',
       'no_data_available' => 'لا تتوافر بيانات',
       'academies' =>' الاكادميات',
-
-
     ),
     'layouts' => 
     array (
@@ -1590,15 +1597,14 @@ return array (
     ),
     'teacher' => 
     array (
-      'course_detail' => 'بالطبع التفاصيل',
+      'course_detail' => 'تفاصيل الدورة',
       'courses_by_teacher' => 'الدورات <span> حسب المعلم. </span>',
       'send_now' => 'ارسل الان',
       'students' => 'الطلاب',
       'title' => 'معلمون',
       'courses' => 'الدورات',
       'views' => 'الدورات',
-
-
+      'about_me' => 'معلومات عني'
 
     ),
     'user' => 

@@ -81,7 +81,7 @@
                         <img style="" class="rounded-circle" src=" {{asset($teacher->avatar_location)}}" alt="">
                         <div class="col-lg-5 col-sm-3 mt-3">
                             <p class="text-white font12">{{$teacher->full_name}}</p>
-                            <p class="text-white font10">{{$teacherProfile->description}}</p>
+                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('description')}}</p>
                         </div>
                 @endforeach
 
@@ -229,13 +229,13 @@
 
                     @foreach($optional_courses as $opt_course)
                         <a href="{{ route('courses.show', [$opt_course->slug]) }}"><p><i class="fa fa-angle-down p-2"
-                                                                                         aria-hidden="true"></i> {{$opt_course->title}}
+                                                                                         aria-hidden="true"></i> {{$opt_course->getDataFromColumn('title')}}
                             </p></a>
                     @endforeach
 
                     @foreach($mandatory_courses as $mand_course)
                         <a href="{{ route('courses.show', [$mand_course->slug]) }}"><p><i class="fa fa-angle-down p-2"
-                                                                                          aria-hidden="true"></i> {{$mand_course->title}}
+                                                                                          aria-hidden="true"></i> {{$mand_course->getDataFromColumn('title')}}
                             </p></a>
                     @endforeach
                 <!-- <p > <i class="fa fa-angle-down p-2" aria-hidden="true"></i>
@@ -344,7 +344,7 @@
                         <span>   {{$appCurrency['symbol'].' '.$course->price}}</span>
                     @endif</h3>
                 <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
-                <p class="smpara"><i class="fa fa-play-circle" aria-hidden="true"></i> {{ $course->course_hours }} hours
+                <p class="smpara"><i class="fa fa-play-circle" aria-hidden="true"></i> {{ $course->course_hours }} @lang('labels.frontend.course.filters.hours')
                 </p>
                 <p class="smpara"><i class="fa fa-file" aria-hidden="true"></i>
                     <span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters')</p>
@@ -432,7 +432,7 @@
             <div class="row smpara d-block m-2">
                 <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->course_hours }} hours</p>
+                    • {{ $course->course_hours }} @lang('labels.frontend.course.filters.hours')</p>
             </div>
 
             @foreach($chapters as $chapter)
@@ -579,7 +579,7 @@
             <div class="row smpara d-block m-2">
                 <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->course_hours }} hours</p>
+                    • {{ $course->course_hours }} @lang('labels.frontend.course.filters.hours')</p>
             </div>
             <div class="card col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
 
@@ -617,7 +617,7 @@
                             </div>
                             <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} hours
+                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} @lang('labels.frontend.course.filters.hours')
 
                             </span>
                                 <span>
@@ -747,7 +747,7 @@
                             </div>
                             <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} hours
+                            <i class="far fa-clock font12"></i> {{ $course->course_hours }} @lang('labels.frontend.course.filters.hours')
 
                             </span>
                                 <span>

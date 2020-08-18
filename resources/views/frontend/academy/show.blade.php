@@ -112,7 +112,7 @@
         <div class="container ">
             <div class=" mb20 headline pl-3">
                 <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-                <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.home.Instructors').</span>
+                <h1 class="text-dark font-weight-bolder"><span>@lang('labels.frontend.home.Instructors').</span>
                 </h1>
             </div>
             @if(count($academyTeachers)> 0)
@@ -137,11 +137,11 @@
                                             <h5>{{$teacher->teacher->full_name}}</h5>
                                         </div>
                                         <div class="teacher-title text-muted font-weight-light">
-                                            {{$teacher->title}}
+                                            {{$teacher->getDataFromColumn('title')}}
                                         </div>
                                         <hr>
                                         <div class="teacher-name text-dark  justify-content-center">
-                                            <span>{{$teacher->description}}</span>
+                                            <span>{{$teacher->getDataFromColumn('description')}}</span>
                                         </div>
                                         <ul>
                                             <li><a href="{{'mailto:'.$teacher->teacher->email}}"><i
@@ -171,7 +171,7 @@
             <div class=" mb20 headline pl-3">
                 <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.learn_new_skills')</span>
                 <h1 class="text-dark font-weight-bolder">
-                    <span>@lang('labels.frontend.academy.courses_by_teacher').</span>
+                    <span>@lang('labels.frontend.academy.courses_by_teacher')</span>
                 </h1>
             </div>
             @if(count($courses) > 0)
@@ -179,7 +179,7 @@
                     <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
                             <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
-                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->name}}</button>
+                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
                         @endforeach
                     </div>
                     <div class="col-xl-12 courses-container">
@@ -215,7 +215,7 @@
         <div class="container">
             <div class=" mb20 headline pl-3">
                 <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.learn_new_skills')</span>
-                <h1 class="text-dark font-weight-bolder">{{env('APP_NAME')}} <span>@lang('labels.frontend.academy.Gallery').</span>
+                <h1 class="text-dark font-weight-bolder"><span>@lang('labels.frontend.academy.Gallery').</span>
                 </h1>
             </div>
             @if ($academy->academy->gallery != null)

@@ -113,7 +113,7 @@
                                                     <option value="">@lang('labels.frontend.course.select_category')</option>
                                                     @if(count($categories) > 0)
                                                         @foreach($categories as $category)
-                                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                                            <option value="{{$category->id}}">{{$category->getDataFromColumn('name')}}</option>
 
                                                         @endforeach
                                                     @endif

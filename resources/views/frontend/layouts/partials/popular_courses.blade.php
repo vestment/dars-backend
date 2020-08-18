@@ -25,7 +25,7 @@
                     <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
                             <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
-                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->name}}</button>
+                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
                         @endforeach
                     </div>
                     <div class="col-xl-12 courses-container">
