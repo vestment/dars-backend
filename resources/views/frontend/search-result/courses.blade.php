@@ -88,67 +88,17 @@
                             <div id="tab1" class="tab-content-1 pt35">
                                 <div class="best-course-area best-course-v2">
                                     <div class="row">
-                                        @if(count($courses) > 0)
+                                        @if($courses->count() > 0)
+
                                             @foreach($courses as $course)
 
-                                                <div class="col-md-4">
-                                                    <div class="best-course-pic-text relative-position">
-                                                        <div class="best-course-pic relative-position"
-                                                             @if($course->course_image != "")style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
-
-                                                            @if($course->trending == 1)
-                                                                <div class="trend-badge-2 text-center text-uppercase">
-                                                                    <i class="fas fa-bolt"></i>
-                                                                    <span>@lang('labels.frontend.badges.trending')</span>
-                                                                </div>
-                                                            @endif
-                                                            @if($course->free == 1)
-                                                                <div class="trend-badge-3 text-center text-uppercase">
-                                                                    <i class="fas fa-bolt"></i>
-                                                                    <span>@lang('labels.backend.courses.fields.free')</span>
-                                                                </div>
-                                                            @endif
-                                                            <div class="course-price text-center gradient-bg">
-                                                                @if($course->free == 1)
-                                                                    <span> {{trans('labels.backend.courses.fields.free')}}</span>
-                                                                @else
-                                                                    <span>   {{$appCurrency['symbol'].' '.$course->price}}</span>
-                                                                @endif
-                                                            </div>
-                                                            <div class="course-rate ul-li">
-                                                                <ul>
-                                                                    @for($i=1; $i<=(int)$course->rating; $i++)
-                                                                        <li><i class="fas fa-star"></i></li>
-                                                                    @endfor
-                                                                </ul>
-                                                            </div>
-                                                            <div class="course-details-btn">
-                                                                <a class="text-uppercase"
-                                                                   href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.search_result.course_detail')
-                                                                    <i class="fas fa-arrow-right"></i></a>
-                                                            </div>
-                                                            <div class="blakish-overlay"></div>
-                                                        </div>
-                                                        <div class="best-course-text">
-                                                            <div class="course-title mb20 headline relative-position">
-                                                                <h3>
-                                                                    <a href="{{ route('courses.show', [$course->slug]) }}">{{$course->title}}</a>
-                                                                </h3>
-                                                            </div>
-                                                            <div class="course-meta">
-                                                                <span class="course-category"><a
-                                                                            href="{{route('courses.category',['category'=>$course->category->slug])}}">{{$course->category->name}}</a></span>
-                                                                <span class="course-author"><a href="#">{{ $course->students()->count() }}
-                                                                        @lang('labels.frontend.search_result.students')</a></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div class="col-xl-3 col-lg-3 col-md-6 col-12 mb-2">
+                                                    @include('frontend.layouts.partials.coursesTemp')
                                                 </div>
+
                                             @endforeach
                                         @else
-                                            <div class="col-12">
-                                                <h4>@lang('labels.general.no_data_available')</h4>
-                                            </div>
+                                            <h3>@lang('labels.general.no_data_available')</h3>
                                     @endif
 
 

@@ -98,8 +98,8 @@
                                                 <ul>
                                                     @if(count($categories) > 0)
                                                         @foreach($categories as $category)
-                                                            <li><a class="linkdrop" href="{{$category->id}}"><i
-                                                                            class="{{$category->icon}} p-2"></i> {{$category->name}}
+                                                            <li><a class="linkdrop" href="{{route('courses.category',['category'=>$category->slug])}}"><i
+                                                                            class="{{$category->icon}} p-2"></i> {{$category->getDataFromColumn('name')}}
                                                                 </a></li>
                                                         @endforeach
                                                     @endif

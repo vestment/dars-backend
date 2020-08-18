@@ -612,7 +612,7 @@
                     <div class="col-12 col-lg-9 col-xl-9 col-md-8">
                         <div class="form-group row filters-category">
                             <label class="col-sm-2 col-form-label col-form-label-sm " for="sort"><h3
-                                        class="font-weight-bold text-dark">SORT BY</h3></label>
+                                        class="font-weight-bold text-dark">@lang('labels.frontend.search_result.sort_by')</h3></label>
                             <div class="col">
                                 <select id="sortFilter" class="form-control">
                                     <option selected value="All">All</option>

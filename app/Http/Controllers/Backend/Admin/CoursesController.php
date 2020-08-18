@@ -347,18 +347,18 @@ class CoursesController extends Controller
      */
     public function edit($id)
     {
+
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
+
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
         $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
-        })->get()->value('ar_first_name', 'ar_last_name','id');
-      
-
+        })->value('ar_first_name', 'ar_last_name','id');
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
 
         $allCourses = Course::pluck('title', 'id');

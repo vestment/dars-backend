@@ -155,6 +155,11 @@
                                         <i class="fa fa-arrow-right"></i>
                                     </button>
                                 </a>
+                        @else
+                                    <button class="btn btn-outline-light  addcart" type="submit">
+                                        No lessons available
+                                        <i class="fa fa-arrow-right"></i>
+                                    </button>
                         @endif
                     @endif
 
