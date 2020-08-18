@@ -120,8 +120,8 @@
                     {!! Form::textarea('short_text', old('short_text'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.lessons.short_description_placeholder')]) !!}
                 </div>
                 <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('short_text_ar', trans('labels.backend.lessons.fields.short_text_ar'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('short_text_ar', old('short_text_ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.lessons.short_text_ar')]) !!}
+                    {!! Form::label('short-text-ar', trans('labels.backend.lessons.fields.short-text-ar'), ['class' => 'control-label']) !!}
+                    {!! Form::textarea('short-text-ar', old('short-text-ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.lessons.short-text-ar')]) !!}
                 </div>
             </div>
             <div class="row">

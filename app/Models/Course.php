@@ -186,7 +186,7 @@ class Course extends Model
     }
     public function getDataFromColumn($col) {
         // ?? null return if the column not found
-        return $this->attributes[app()->getLocale() =='ar' ? $col.'_ar' : $col] ?? null;
+        return $this->attributes[app()->getLocale() =='ar' ? $col.'_ar' : $col] ?? $this->attributes[$col];
     }
     public function reviews()
     {

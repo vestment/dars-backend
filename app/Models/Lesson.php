@@ -30,7 +30,7 @@ class Lesson extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title','title_ar', 'slug', 'lesson_image', 'short_text', 'full_text', 'short_text_ar', 'full_text_ar', 'position', 'downloadable_files', 'free_lesson', 'published', 'course_id','chapter_id'];
+    protected $fillable = ['title','title_ar', 'slug', 'lesson_image', 'short_text', 'full_text', 'short-text-ar', 'full_text_ar', 'position', 'downloadable_files', 'free_lesson', 'published', 'course_id','chapter_id'];
 
     protected $appends = ['image','lesson_readtime'];
 
