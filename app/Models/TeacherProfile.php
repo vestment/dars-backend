@@ -18,7 +18,11 @@ class TeacherProfile extends Model
         'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description', 'academy_id', 'type', 
         'percentage', 'title', 'testCol','ar_title','ar_description'
     ];
-
+    public function getDataFromColumn($col)
+    {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() == 'ar' ? 'ar_'.$col : $col] ?? $this->attributes[$col];
+    }
     /**
      * Get the teacher profile that owns the user.
      */

@@ -95,29 +95,32 @@
                 </div>
             </div>
             <div class="row form-group">
-                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text'))->class('col-md-2 form-control-label')->for('hero_text') }}
+                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_english'))->class('col-md-2 form-control-label')->for('hero_text') }}
 
                 <div class="col-md-10">
                     {{ html()->text('hero_text')
                         ->class('form-control')
-                        ->placeholder(__('labels.backend.hero_slider.fields.hero_text'))
+                        ->placeholder(__('labels.backend.hero_slider.fields.hero_text_english'))
                         }}
                 </div>
             </div>
             <div class="row form-group">
-                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_arabic'))->class('col-md-2 form-control-label')->for('hero_text_ar') }}
+                {{ html()->label(__('labels.backend.hero_slider.fields.hero_text_arabic'))->class('col-md-2 form-control-label')->for('ar_content[hero_text]') }}
 
                 <div class="col-md-10">
-                    {{ html()->text('hero_text_ar')
+                    {{ html()->text('ar_content[hero_text]')
+                        ->name('ar_content[hero_text]')
+                        ->value(json_decode($slide->ar_content)->hero_text)
                         ->class('form-control')
                         ->placeholder(__('labels.backend.hero_slider.fields.hero_text_arabic'))
                         }}
                 </div>
             </div>
             <div class="row form-group">
-                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text'))->class('col-md-2 form-control-label')->for('sub_text') }}
+                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text'))->class('col-md-2 form-control-label')->for('ar_content[sub_text]') }}
                 <div class="col-md-10">
-                    {{ html()->text('sub_text')
+                    {{ html()->text('ar_content[sub_text]')
+                        ->name('ar_content[sub_text]')
                         ->class('form-control')
                         ->placeholder(__('labels.backend.hero_slider.fields.sub_text'))
                          }}
@@ -194,8 +197,6 @@
             });
 
 
-
-
             $(document).on('change', '#widget', function () {
                 if ($(this).val() == 2) {
                     $('.widget-container').removeClass('d-none');
@@ -207,7 +208,7 @@
             $(document).on('click', '#add-button', function (e) {
                 e.preventDefault()
                 if ($('.button-wrapper').length <= 3) {
-                    var name ='Button';
+                    var name = 'Button';
                     var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + name + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
                         "<div class='row'>" +
                         "<div class='col-lg-4'>" +
@@ -233,7 +234,7 @@
                 }
             })
             var date;
-           @if(($slide->ar_content != "") || ($slide->content != ""))
+            @if(($slide->ar_content != "") || ($slide->content != ""))
             var dataJson_ar = "{{$slide->ar_content}}";
             var dataJson = "{{$slide->content}}";
             dataJson = JSON.parse(dataJson.replace(/&quot;/g, '"'));
@@ -248,46 +249,43 @@
             $('input[name="first_name_ar"]').val(dataJson_ar.first_name_ar);
 
 
-
-
-           
             //Adding widgets
 
-            if(dataJson_ar.widget || dataJson.widget ){
-                if((dataJson_ar.widget.type == 1)|| (dataJson.widget.type == 1)){
+            if (dataJson_ar.widget || dataJson.widget) {
+                if ((dataJson_ar.widget.type == 1) || (dataJson.widget.type == 1)) {
                     $('select[name="widget"] option:eq(1)').prop('selected', true)
                     date = new Date();
 
-                }else{
+                } else {
                     $('select[name="widget"] option:eq(2)').prop('selected', true);
                     $('.widget-container ').removeClass('d-none');
                     date = dataJson_ar.widget.timer;
                 }
 
             }
-           
-            var ar_buttons=[]
+
+            var ar_buttons = []
             var en_buttons = [];
-            $(dataJson_ar.buttons).each(function (key,data) {
-            ar_buttons.push(data.label);
+            $(dataJson_ar.buttons).each(function (key, data) {
+                ar_buttons.push(data.label);
             });
-            $(dataJson.buttons).each(function (key,data) {
-            en_buttons.push(data.label);
+            $(dataJson.buttons).each(function (key, data) {
+                en_buttons.push(data.label);
             });
             //Adding buttons
-            if(dataJson.buttons){
-                $(dataJson.buttons).each(function (key,data) {
+            if (dataJson.buttons) {
+                $(dataJson.buttons).each(function (key, data) {
                     var name = 'Button';
                     var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + name + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
                         "<div class='row'>" +
                         "<div class='col-lg-4'>" +
-                        "<input type='text' value='"+en_buttons[key]+"' required name='button_label' class='form-control' placeholder='Button label in english'>" +
+                        "<input type='text' value='" + en_buttons[key] + "' required name='button_label' class='form-control' placeholder='Button label in english'>" +
                         "</div>" +
                         "<div class='col-lg-4'>" +
-                        "<input type='text' value='"+ar_buttons[key]+"' required name='button_label_ar' class='form-control' placeholder='Button label in arabic'>" +
+                        "<input type='text' value='" + ar_buttons[key] + "' required name='button_label_ar' class='form-control' placeholder='Button label in arabic'>" +
                         "</div>" +
                         "<div class='col-lg-4'>" +
-                        "<input type='text' required name='button_link' value='"+data.link+"' class='form-control' placeholder='Button Link'>" +
+                        "<input type='text' required name='button_link' value='" + data.link + "' class='form-control' placeholder='Button Link'>" +
                         "</div>" +
                         "</div></div>";
 
@@ -298,7 +296,7 @@
 
 
             @endif
-           
+
 
 
 
@@ -306,9 +304,8 @@
 
             $('#timer').datetimepicker({
                 mask: true,
-                value:date
+                value: date
             });
-
 
 
         })

@@ -65,7 +65,7 @@ body {
     line-height: 1.4;
     direction: rtl;
     color: #777777;
-    font-family: "Roboto", sans-serif;
+    font-family: Cairo;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -199,7 +199,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Roboto", sans-serif;
+    font-family: Cairo;
 }
 
 .mb20 {
@@ -341,7 +341,7 @@ h6 {
 
 .section-title .subtitle {
     color: #333333;
-    letter-spacing: 7px;
+    font-size: 1.5rem;
     position: relative;
 }
 
@@ -1424,7 +1424,7 @@ button.alt-menu-btn.float-left {
 }
 
 #slider-item .owl-next {
-    float: right;
+    float: left;
 }
 
 #slider-item .scound-slide {
@@ -6479,10 +6479,10 @@ ul.product-tab li.active:after {
 }
 
 @media screen and (min-width: 1440px) and (max-width: 1900px) {
-    .divfixed {
-        top: 30%;
-        right: 0;
-    }
+    /*.divfixed {*/
+    /*    top: 30%;*/
+    /*    right: 0;*/
+    /*}*/
 
     .academy-logo {
         padding: unset !important;
@@ -7358,4 +7358,8 @@ hr {
 .search-bar input {
     color: #fff;
     font-weight: 200;
+}
+.dropright .dropdown-toggle::after {
+    border-right: .3em solid;
+    border-left: none;
 }

@@ -96,9 +96,10 @@ trait UserAttribute
      */
     public function getFullNameAttribute()
     {
-        return $this->last_name
-            ? $this->first_name.' '.$this->last_name
-            : $this->first_name;
+        if (app()->getLocale() == 'ar' && $this->ar_last_name && $this->ar_first_name) {
+            return $this->ar_last_name ? $this->ar_first_name.' '.$this->ar_last_name : $this->ar_first_name;
+        }
+        return $this->last_name ? $this->first_name.' '.$this->last_name : $this->first_name;
     }
 
     /**

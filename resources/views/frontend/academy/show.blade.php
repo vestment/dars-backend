@@ -60,18 +60,6 @@
                 <div class="p-1">
                     <h2 class="text-white"><b>{{$academy->full_name}}</b></h2>
                 </div>
-
-                <div class="p-1">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-
-                    <span class="text-white">0</span>
-                </div>
-
-
                 <div class="row col-lg-3 flex">
                     @if($academy->academy->facebook_link) <a href="{{$academy->academy->facebook_link}}"
                                                         class="btn btn-sm btn-outline-light mr-1"><i
@@ -261,52 +249,6 @@
 
 @push('after-scripts')
     <script>
-        $(document).ready(function () {
-            $(".owl-carousel").owlCarousel({
-                rewind: true,
-                margin: 10,
-                nav: true,
-                navText: ["<i class='fas fa-chevron-left'></i>",
-                    "<i class='fas fa-chevron-right'></i>"],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 1
-                    },
-                    768: {
-                        items: 3
-                    },
-                    991: {
-                        items: 5
-                    }
-                }
-            })
-            $(document).on('change', '#sortBy', function () {
-                if ($(this).val() != "") {
-                    location.href = '{{url()->current()}}?type=' + $(this).val();
-                } else {
-                    location.href = '{{route('courses.all')}}';
-                }
-            })
-
-            @if(request('type') != "")
-            $('#sortBy').find('option[value="' + "{{request('type')}}" + '"]').attr('selected', true);
-            @endif
-            $(function () {
-                var selectedClass = "";
-                $(".filter").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#gallery").fadeTo(100, 0.1);
-                    $("#gallery div").not("." + selectedClass).fadeOut().removeClass('animation');
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn().addClass('animation');
-                        $("#gallery").fadeTo(300, 1);
-                    }, 300);
-                });
-            });
-        });
 
     </script>
 @endpush

@@ -1442,6 +1442,8 @@ return array (
             'duration' => 'Video Duration',
             'apply' => 'Apply filters',
             'reset' => 'Reset filters',
+            'up' => 'Up',
+            'hours' => 'Hours'
         ),
       'ratings' => 'Ratings',
       'stars' => 'Stars',
