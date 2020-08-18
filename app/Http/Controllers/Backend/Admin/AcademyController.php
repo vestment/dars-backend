@@ -158,7 +158,7 @@ class AcademyController extends Controller
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
             'ar_description' => request()->ar_description,
-
+'adress' => request()->address,
             'logo' => $academy->avatar_location,
             'percentage' => request()->percentage,
             'gallery' => $gallery

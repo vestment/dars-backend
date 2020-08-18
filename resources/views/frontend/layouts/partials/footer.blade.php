@@ -106,13 +106,16 @@
                             <div class="subscribe-form ml-0 footersec">
                                 <h2 >@lang('labels.frontend.layouts.partials.subscribe_newsletter')</h2>
 
-                                <div class="subs-form relative-position">
+                                <div class="row subs-form relative-position">
                                     <form action="{{route('subscribe')}}" method="post">
                                         @csrf
-                                        <input class="email" required name="subs_email" type="email" placeholder="@lang('labels.frontend.layouts.partials.email_address').">
-                                        <div class="nws-button text-center  text-uppercase">
-                                            <button type="submit" value="Submit">@lang('labels.frontend.layouts.partials.subscribe_now')</button>
-                                        </div>
+                                        <div class="col-sm-12 col-12 col-lg-8">
+                                            <input class="email" required name="subs_email" type="email" placeholder="@lang('labels.frontend.layouts.partials.email_address').">
+                                        </div> 
+                                       
+                                            <div class="nws-button text-center  text-uppercase">
+                                                <button type="submit" value="Submit">@lang('labels.frontend.layouts.partials.subscribe_now')</button>
+                                            </div>
                                         @if($errors->has('email'))
                                             <p class="text-danger text-left">{{$errors->first('email')}}</p>
                                         @endif

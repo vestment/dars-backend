@@ -189,9 +189,10 @@ return array (
         'course_image' => 'صورة الدورة',
         'description' => 'وصف بالنجليزية',
         'description_ar' => 'وصف بالعربي',
-
+        'hours' => 'ساعات',
+        'lectures' => 'محاضرات',
         'featured' => 'متميز',
-        'lessons' => 
+        'lessons' => 'الدروس',
         array (
           'add' => 'أضف دروس',
           'view' => 'عرض الدروس',
@@ -223,7 +224,10 @@ return array (
 
       ),
       'course_hours' => 'عدد ساعات الكورس ',
-
+      'courses_to_start' => 'دورات لتبدأ بها',
+      'featured_courses' =>  'دورات مميزة',
+      'trending' => 'الشائع',
+      'most_popular' => 'الأكثر شعبية',
       'add_categories' => 'إضافة فئات',
       'add_teachers' => 'إضافة المعلمين',
       'category' => 'الفئة',

@@ -208,7 +208,7 @@ class CoursesController extends Controller
                 } else {
                     $html .= ' <span> ' . getCurrency(config('app.currency'))['symbol'] . ' ' . $course->price . '</span>';
                 }
-                $html .= '</div></div> <div class="card-body back-im p-3"><h3 class="card-title titleofcard">' . $course->title . '</h3>
+                $html .= '</div></div> <div class="card-body back-im p-3"><h3 class="card-title titleofcard">' . $course->getDataFromColumn('title') . '</h3>
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="course-rate ul-li"><ul>';
