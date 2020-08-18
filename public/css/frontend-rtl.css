@@ -472,7 +472,8 @@ h6 {
 }
 
 .nav-menu li a {
-    color: #fff;
+    /* color: #fff; */
+    color: black;
     text-transform: uppercase;
     font-size: 15px;
     padding: 7px 15px;
@@ -6264,7 +6265,8 @@ ul.product-tab li.active:after {
     -webkit-transition: .3s all ease-in-out;
     transition: .3s all ease-in-out;
     z-index: 9;
-    background-color: #0C0C3F;
+    /* background-color: #0C0C3F; */
+    background-color: white;
 
 }
 
@@ -6468,8 +6470,8 @@ ul.product-tab li.active:after {
 
 @media (max-width: 768px) {
     .divfixed {
-        top: 15%;
-        right: 0;
+        top: 31px%;
+        right: 55%;
     }
 
     .academy-logo {
