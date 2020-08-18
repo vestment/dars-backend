@@ -30,6 +30,8 @@ a.meanmenu-reveal {
 	position: absolute;
 	top: 22px;
 	left: 20px !important;
+	/* right: 20px !important; */
+
 	cursor: pointer;
 	/* color: #ffffff; */
 	background-color: black !important;

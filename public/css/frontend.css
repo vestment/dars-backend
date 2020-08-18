@@ -6328,6 +6328,11 @@ ul.product-tab li.active:after {
     padding-top: 7%;
     padding-bottom: 320px;
 }
+@media (max-width: 425px) {
+    .bgcolor {
+        padding-bottom: 340px;
+    }
+}
 
 .paragraph1 {
     position: absolute;
@@ -6386,6 +6391,10 @@ ul.product-tab li.active:after {
     /* background-color: violet; */
 }
 
+.imgcard img{
+    max-height: 100%;
+
+}
 
 
 .buttoncart button {
@@ -7310,4 +7319,21 @@ hr {
 }
 .categ a:hover {
     color: #fff;
+}
+
+
+.navbar-header {
+
+    left: 0 !important;
+    /* left: 120px; */
+
+
+    /* right: 0; */
+
+    /* top: 20px; */
+
+    margin: 0 auto;
+
+    position: absolute;
+
 }
