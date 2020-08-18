@@ -16,10 +16,12 @@
                 <div class=row>
                     <div class="page-breadcrumb-title text-left col-7 col-xl-7 col-md-7 col-lg-7">
                         <h1 class="breadcrumb-head black bold">
-                            <span>@if(isset($category)) {{$category->name}} @else @lang('labels.frontend.course.courses') @endif </span>
+                            <span>@if(isset($category)) {{$category->getDataFromColumn('name')}} @else @lang('labels.frontend.course.courses') @endif </span>
                         </h1>
                         <h3>
-                            Courses to get you started
+                        @lang('labels.backend.courses.courses_to_start')
+                            <!-- Courses to get you started
+                            دورات لتبدأ بها -->
                         </h3>
                     </div>
                     <div class="col-xl-5 col-md-5 col-lg-5 col-5">
@@ -46,12 +48,12 @@
                         <div class="col-xl-12 categories-container border-bottom">
                             @if(count($popular_course) > 0)
                                 <button onclick="showTab($('#popular-course'),$(this))"
-                                        class="tab-button btn active btn-light">Most Popular
+                                        class="tab-button btn active btn-light">@lang('labels.backend.courses.most_popular')
                                 </button>
                             @endif
                             @if(count($trending_courses) > 0)
                                 <button onclick="showTab($('#trending'),$(this))"
-                                        class="tab-button btn btn-light">Trending
+                                        class="tab-button btn btn-light">@lang('labels.backend.courses.trending')
                                 </button>
                             @endif
                         </div>
@@ -259,7 +261,7 @@
             <div class="container" id="featured-courses">
                 <div class="section-title mb20 headline mb-5">
 
-                    <h3 class="text-dark font-weight-bolder "><span>Featured courses</span>
+                    <h3 class="text-dark font-weight-bolder "><span>@lang('labels.backend.courses.featured_courses')</span>
                     </h3>
                 </div>
                 <div class="owl-carousel custom-owl default-owl-theme" data-items="1">
@@ -278,7 +280,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body noborder">
-                                            <h3 class=" mt-3 display-6">{{$course->title}}</h3>
+                                            <h3 class=" mt-3 display-6">{{$course->getDataFromColumn('title')}}</h3>
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="course-rate ul-li">
@@ -297,11 +299,11 @@
                                             </div>
                                             <div class="course-meta my-2">
                                                 <small><i class="far fa-clock"></i> {{ $course->course_hours }}
-                                                    hours |
+                                                @lang('labels.backend.courses.fields.hours') |
                                                 </small>
                                                 <small><i
                                                             class="fab fa-youtube"></i> {{ $course->chapters()->count() }}
-                                                    lecture
+                                                            @lang('labels.backend.courses.fields.lectures')
                                                 </small>
                                             </div>
                                             <div class="row my-3">
@@ -722,7 +724,7 @@
 
     <!-- Start of best course
    =============================================  -->
-    @include('frontend.layouts.partials.browse_courses')
+    <!-- @in clude('frontend.layouts.partials.browse_courses') -->
     <!-- End of best course
             ============================================= -->
 
