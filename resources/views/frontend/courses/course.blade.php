@@ -57,7 +57,7 @@
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
                 <div class="m-1">
-                    <p>Explore / {{$course->category->name}} / <b class="text-white">{{$course->getDataFromColumn('title')}}</b></p>
+                    <p> @lang('labels.frontend.layouts.partials.explore') / {{$course->category->getDataFromColumn('name')}} / <b class="text-white">{{$course->getDataFromColumn('title')}}</b></p>
                 </div>
                 <div class="p-1">
                     <h2 class="text-white"><b>{{$course->getDataFromColumn('title')}}</b></h2>

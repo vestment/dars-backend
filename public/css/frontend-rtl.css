@@ -6094,6 +6094,9 @@ ul.product-tab li.active:after {
     .package {
         height: auto;
     }
+    .bgcolor {
+        padding-bottom: 350px !important;
+    }
 }
 
 
@@ -6296,8 +6299,8 @@ ul.product-tab li.active:after {
     top: 41%;
     -webkit-transform: translateY(-40%);
     transform: translateY(-40%);
-    left: 120px;
-    right: 0;
+    right: 85px;
+    left: 0;
     color: #b0c2d0;
     font-weight: 300;
 }
@@ -6305,12 +6308,15 @@ ul.product-tab li.active:after {
 @media (max-width: 768px) {
     .paragraph1 {
         width: 100%;
-        left: -40px;
-        right: 0;
+        right: -30px;
+        left: 0;
         top: 40%;
     }
 
     @media (max-width: 425px) {
+        .academy-info {
+            top: 38% !important;
+        }
         .paragraph1 {
             top: 38%;
         }
@@ -6320,7 +6326,9 @@ ul.product-tab li.active:after {
         font-size: 20px;
     }
 }
-
+.academy-info {
+    top: 55%;
+}
 .teacherdesc img {
     width: 55px;
     height: 55px;
@@ -6408,7 +6416,7 @@ ul.product-tab li.active:after {
     }
 
     .buttoncart button {
-        width: 24%;
+        width: 30%;
         padding: 2px;
         font-size: 12px;
     }

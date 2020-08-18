@@ -4,6 +4,7 @@
 @push('after-styles')
     <link rel="stylesheet" href="../../assets/css/course.css"/>
     <style>
+
         .couse-pagination li.active {
             color: #333333 !important;
             font-weight: 700;
@@ -53,9 +54,10 @@
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
         <div class="blakish-overlay"></div>
         <div class="container">
-            <div class="col m-sm-5 m-5 m-xl-0 paragraph1">
+            <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
                 <div class="m-1">
-                    <p>Explore / Academy / <b class="text-white">{{$academy->full_name}}</b></p>
+                    <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->full_name}}</b></p>
+
                 </div>
                 <div class="p-1">
                     <h2 class="text-white"><b>{{$academy->full_name}}</b></h2>

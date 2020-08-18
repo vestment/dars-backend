@@ -1580,7 +1580,7 @@ return array(
                             'faq_full' => 'Frequently<span> Asked Questions</span>',
                             'social_network' => 'Social Network',
                             'follow_us' => 'Follow Us',
-
+                            'explore' => 'Explore',
                             'subscribe_newsletter' => 'Subscribe Newsletter',
                             'subscribe_now' => 'Subscribe Now',
                             'latest_news_blog' => 'Latest <span>News Blog.</span>',

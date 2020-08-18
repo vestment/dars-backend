@@ -1559,6 +1559,7 @@ return array (
         'more_faqs' => 'المزيد من الأسئلة الشائعة',
         'offers' => 'عروض',
         'follow_us'=>'تابعنا',
+          'explore' => 'أستكشف',
       ),
     ),
     'modal' => 
