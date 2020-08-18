@@ -124,28 +124,19 @@ class ChaptersController extends Controller
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
-        $courses = Course::pluck('title', 'id')->prepend('Please select', '');
-       
-        $coursew_ar = Course::pluck('title_ar', 'id')->prepend('Please select', '');
-
-        // $courses_ar = Course::select('title_ar','title', 'id')->get();
-        
-            // foreach($courses_ar as $key=>$course_ar){
-               
-            //     if($course_ar->title_ar){
-            //         $coursew_ar[]=$course_ar->title_ar;
-            //     }
-            //     if(!$course_ar->title_ar){
-            //         $coursew_ar[]=$course_ar->title;
-            //     }
-
-            // }
+        $courses = Course::all();
+        $newCourses = [];
+            foreach($courses as $course){
+                $newCourses[$course->id] = $course->getDataFromColumn('title');
+          
+            }
 
 
-        return view('backend.chapters.create', compact('courses','coursew_ar'));
+        return view('backend.chapters.create', compact('newCourses'));
     }
     public function store(Request $request)
     {
+        // dd($request->all());
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
@@ -255,6 +246,19 @@ class ChaptersController extends Controller
 
         return redirect()->route('admin.chapters.index', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.created'));
     }
+    public function show($id)
+    {
+        if (!Gate::allows('lesson_view')) {
+            return abort(401);
+        }
+        $courses = Course::get()->pluck('title', 'id')->prepend('Please select', '');
 
+        $tests = Test::where('lesson_id', $id)->get();
+
+        $lesson = Chapter::findOrFail($id);
+
+
+        return view('backend.chapters.show', compact('lesson', 'tests', 'courses'));
+    }
 
 }

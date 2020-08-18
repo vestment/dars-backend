@@ -37,7 +37,7 @@
 @section('content')
 
     {!! Form::open(['method' => 'POST', 'route' => ['admin.chapters.store'], 'files' => true,]) !!}
-    {!! Form::hidden('model_id',0,['id'=>'lesson_id']) !!}
+    {!! Form::hidden('model_id',0,['id'=>'chapter_id']) !!}
 
     <div class="card">
         <div class="card-header">
@@ -52,12 +52,9 @@
             <div class="row">
                 <div class="col-12 col-lg-12 form-group">
                     {!! Form::label('course_id', trans('labels.backend.chapters.fields.course'), ['class' => 'control-label']) !!}
-                    @if(app()->getLocale() == 'en')
-                    {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
-                    @endif
-                    @if(app()->getLocale() == 'ar')
-                    {!! Form::select('course_id', $coursew_ar,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
-                    @endif
+                   
+                    {!! Form::select('course_id', $newCourses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
+                  
                 </div>
                 
             </div>
@@ -93,8 +90,8 @@
 
                 </div>
                 <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('short_text_ar', trans('labels.backend.chapters.fields.short_text_ar'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('short-text-ar', old('short-text-ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.chapters.short_text_ar')]) !!}
+                    {!! Form::label('short-text-ar', trans('labels.backend.chapters.fields.short-text-ar'), ['class' => 'control-label']) !!}
+                    {!! Form::textarea('short-text-ar', old('short-text-ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.chapters.short-text-ar')]) !!}
 
                 </div>
             </div>

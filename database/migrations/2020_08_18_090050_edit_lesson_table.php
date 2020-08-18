@@ -33,5 +33,7 @@ class EditLessonTable extends Migration
             $table->dropColumn('title_ar')->nullable();
             $table->dropColumn('short_text_ar')->nullable();
             $table->dropColumn('full_text_ar')->nullable();
-        });    }
+        });  
+    
+    }
 }
