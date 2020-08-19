@@ -345,7 +345,7 @@ class CoursesController extends Controller
         $opt_courses = json_decode($course->optional_courses);
         $mand_courses = json_decode($course->mandatory_courses);
 
-        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name','course','opt_courses','mand_courses','allCourses','teachers_ar', 'categories'));
+        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name','course','opt_courses','mand_courses','allCourses','categories'));
     }
 
     /**
