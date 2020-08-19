@@ -7342,13 +7342,19 @@ hr {
 
 
 
+@media (max-width: 1024px) {
+    .navbar-header{
+        margin-left: 0px;
+    }
+
+    
+}
 
 
-
-/* .navbar-header .navbar-brand{
+.navbar-header .navbar-brand{
     float: right !important;
 
-} */
+}
 
 
 
@@ -7446,13 +7452,6 @@ hr {
         }
 }
 
-@media (max-width: 1024px) {
-    .navbar-header{
-        margin-left: 0px;
-    }
-
-    
-}
 .coursesmob{
     position: absolute;
     top: 0;

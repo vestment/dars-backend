@@ -103,6 +103,7 @@
                             </div>
                             <button type="submit" value="Submit"
                                     class="btn btn-info btn-lg text-white col-12 mt-5">@lang('labels.frontend.login.login')</button>
+
                         </form>
                         <h5 class="mt-5"> @lang('labels.frontend.login.login_with') </h5>
                         <div class="row mt-3">

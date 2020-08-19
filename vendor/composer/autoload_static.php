@@ -1178,7 +1178,7 @@ class ComposerStaticInit0c759c83d1f87cb463811c9e0fe294b7
         'App\\Http\\Controllers\\LanguageController' => __DIR__ . '/../..' . '/app/Http/Controllers/LanguageController.php',
         'App\\Http\\Controllers\\LessonsController' => __DIR__ . '/../..' . '/app/Http/Controllers/LessonsController.php',
         'App\\Http\\Controllers\\SitemapController' => __DIR__ . '/../..' . '/app/Http/Controllers/SitemapController.php',
-        'App\\Http\\Controllers\\Traits\\FileUploadTrait' => __DIR__ . '/../..' . '/app/Http/Traits/FileUploadTrait.php',
+        'App\\Http\\Controllers\\Traits\\FileUploadTrait' => __DIR__ . '/../..' . '/app/Http/Controllers/Traits/FileUploadTrait.php',
         'App\\Http\\Controllers\\Traits\\InvoiceGenerator' => __DIR__ . '/../..' . '/app/Http/Controllers/Traits/InvoiceGenerator.php',
         'App\\Http\\Controllers\\Traits\\MyImportManager' => __DIR__ . '/../..' . '/app/Http/Controllers/Traits/MyImportManager.php',
         'App\\Http\\Controllers\\loginController' => __DIR__ . '/../..' . '/app/Http/Controllers/loginController.php',

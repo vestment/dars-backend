@@ -94,7 +94,12 @@ class LessonsController extends Controller
         return view($this->path . '.courses.lesson', compact('chapters','lesson', 'previous_lesson', 'next_lesson', 'test_result',
             'purchased_course', 'test_exists', 'lessons', 'completed_lessons'));
     }
-
+public function availablityUpdate(Request $request) {
+    $test = Test::where('slug', $request->slug)->firstOrFail();
+    $test->available = 0;
+    $test->save();
+    return $test;
+}
     public function test($lesson_slug, Request $request)
     {
         $test = Test::where('slug', $lesson_slug)->firstOrFail();
