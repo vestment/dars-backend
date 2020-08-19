@@ -107,6 +107,12 @@
                         </div>
                         <button type="submit"
                                 class="btn btn-primary btn-lg text-white col-12 mt-5">@lang('labels.frontend.sign_up.sign_up')</button>
+
+                        <a href="{{ route('frontend.auth.teacher.register') }}" class="btn btn-info btn-lg text-white col-12 mt-5">
+                            @lang('labels.frontend.login.register_as_teacher')
+                        </a>
+
+
                     </form>
                     <div><a href="{{ route('login.index') }}"
                             class="text-dark col-12 d-flex justify-content-center mt-5">@lang('labels.frontend.sign_up.already_have_account')</a>
