@@ -1233,6 +1233,8 @@ return array (
       'sign_up' => 'تسجيل مستخدم جديد',
       'terms_of_use' => 'سياسة اﻻستخدام وسياسة الخصوصيه',
       'Privacy Policy' => 'سياسة خاصة',
+      'register_as_teacher' => 'تسجيل الدخول كمدرس',
+
 
     ),
 
@@ -1570,6 +1572,8 @@ return array (
       'new_user_note' => 'مستخدم جديد؟ سجل هنا',
       'register_now' => 'سجل الان',
       'registration_message' => 'تم التسجيل بنجاح الرجاء تسجيل الدخول',
+      'registration_teacher' => 'تم التسجيل بنجاح. انتظر موافقة المسؤول الخاص بك',
+
     ),
     'passwords' => 
     array (

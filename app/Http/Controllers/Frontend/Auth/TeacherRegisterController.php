@@ -46,6 +46,7 @@ class TeacherRegisterController extends Controller
         ];
         $data = [
             'user_id' => $user->id,
+            'title' => request()->title,
             'facebook_link' => request()->facebook_link,
             'twitter_link' => request()->twitter_link,
             'linkedin_link' => request()->linkedin_link,
@@ -54,7 +55,7 @@ class TeacherRegisterController extends Controller
             'description'       => request()->description,
         ];
         TeacherProfile::create($data);
-        return redirect()->route('frontend.index')->withFlashSuccess(trans('labels.frontend.modal.registration_message'))->with(['openModel' => true]);
+        return redirect()->route('login.index')->withFlashSuccess(trans('labels.frontend.modal.registration_teacher'));
     }
 
 }

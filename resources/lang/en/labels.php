@@ -1309,6 +1309,9 @@ return array(
                     'login_with' => 'login with',
                     'sign_up' => 'SIGN UP',
                     'terms_of_use' => 'Term of use. Privacy policy',
+                    'register_as_teacher' => 'Register as a teacher',
+
+
                 ),
 
             'sign_up' =>
@@ -1617,6 +1620,8 @@ return array(
                     'already_user_note' => 'Already a user? Login Here',
                     'login_now' => 'LogIn Now',
                     'register_now' => 'Register Now',
+                    'registration_teacher' => 'Registration Successful. Wait for your Admin Approval',
+
                 ),
             'search_result' =>
                 array(

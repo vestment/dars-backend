@@ -23,10 +23,11 @@
         <link rel="stylesheet" href="{{asset('assets/css/progess.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/animate.min.css')}}">
         {{--<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">--}}
+        <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
+
         <link rel="stylesheet" href="{{ asset('css/'.$cssFile) }}">
         <link rel="stylesheet" href="{{asset('assets/css/fontawesome-all.css')}}">
 
-        <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
 
 
         <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
@@ -74,18 +75,98 @@
 
 
                         <div class="navbar-default">
-                            <div class="navbar-header logonone float-left">
+                            <div class="navbar-header logonone">
                                 <a class="navbar-brand" href="{{url('/')}}">
                                     <img src="{{asset("storage/logos/".config('logo_b_image'))}}"
                                          alt="{{env('APP_NAME')}}">
                                 </a>
+
+
+                                <nav class="navbar-menu float-right divloginsearch ">
+                                <div class="nav-menu ul-li hoverpink">
+                                    <ul>
+                                        <li>
+
+                                            <a class="offersmob" href="">@lang('navs.general.offers')</a>
+
+                                        </li>
+                                        <li>
+                                            @if(!auth()->check())
+                                                <a class="sign-up text-white signupmob"
+                                                   href="{{ route('register.index') }}">@lang('navs.general.signup')</a>
+                                            @endif
+                                        </li>
+                                        <li>
+                                            <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
+                                                @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
+                                                    <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
+                                                @endif
+                                            </a>
+                                        </li>
+
+                                        @if(auth()->check())
+                                            <li class="menu-item-has-children ul-li-block">
+                                                <a href="#!">{{ $logged_in_user->name }}</a>
+                                                <ul class="sub-menu">
+                                                    @can('view backend')
+                                                        <li>
+                                                            <a href="{{ route('admin.dashboard') }}">@lang('navs.frontend.dashboard')</a>
+                                                        </li>
+                                                    @endcan
+
+                                                    <li>
+                                                        <a href="{{ route('frontend.auth.logout') }}">@lang('navs.general.logout')</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        @else
+                                            <li>
+                                                    <a href="{{ route('login.index') }}">@lang('navs.general.login')</a>
+
+
+                                               
+                                            </li>
+                                        @endif
+
+
+                                        <li>
+                                            <i class="search-icon icon fa fa-search"></i>
+                                        </li>
+
+
+                                        @if(count($locales) > 1)
+                                            <li class="menu-item-has-children ul-li-block">
+                                                <a href="#">
+                                                    <span class="d-md-down-none langmob">@lang('menus.language-picker.language')
+                                                        ({{ strtoupper(app()->getLocale()) }})</span>
+                                                </a>
+                                                <ul class="sub-menu">
+                                                    @foreach($locales as $lang)
+                                                        @if($lang != app()->getLocale())
+                                                            <li>
+                                                                <a href="{{ '/lang/'.$lang }}"
+                                                                   class=""> @lang('menus.language-picker.langs.'.$lang)</a>
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                        @endif
+
+
+                                    </ul>
+
+                                </div>
+                            </nav>
+
+
                             </div>
                             <!-- /.navbar-header -->
 
 
 
                             <!-- Collect the nav links, forms, and other content for toggling -->
-                            <nav class="navbar-menu float-left">
+                            <nav class="navbar-menu coursesmob">
                                 <div class="nav-menu ul-li">
                                     <ul>
                                         <div class="btn-group dropright">
@@ -142,83 +223,7 @@
                             </nav>
 
 
-                            <nav class="navbar-menu float-right divloginsearch">
-                                <div class="nav-menu ul-li hoverpink">
-                                    <ul>
-                                        <li>
-
-                                            <a href="">@lang('navs.general.offers')</a>
-
-                                        </li>
-                                        <li>
-                                            @if(!auth()->check())
-                                                <a class="sign-up text-white"
-                                                   href="{{ route('register.index') }}">@lang('navs.general.signup')</a>
-                                            @endif
-                                        </li>
-                                        <li>
-                                            <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
-                                                @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
-                                                    <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
-                                                @endif
-                                            </a>
-                                        </li>
-
-                                        @if(auth()->check())
-                                            <li class="menu-item-has-children ul-li-block">
-                                                <a href="#!">{{ $logged_in_user->name }}</a>
-                                                <ul class="sub-menu">
-                                                    @can('view backend')
-                                                        <li>
-                                                            <a href="{{ route('admin.dashboard') }}">@lang('navs.frontend.dashboard')</a>
-                                                        </li>
-                                                    @endcan
-
-                                                    <li>
-                                                        <a href="{{ route('frontend.auth.logout') }}">@lang('navs.general.logout')</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        @else
-                                            <li>
-                                                <div class="log-in mt-0">
-                                                    <a href="{{ route('login.index') }}">@lang('navs.general.login')</a>
-
-
-                                                </div>
-                                            </li>
-                                        @endif
-
-
-                                        <li>
-                                            <i class="search-icon icon fa fa-search"></i>
-                                        </li>
-
-
-                                        @if(count($locales) > 1)
-                                            <li class="menu-item-has-children ul-li-block">
-                                                <a href="#">
-                                                    <span class="d-md-down-none">@lang('menus.language-picker.language')
-                                                        ({{ strtoupper(app()->getLocale()) }})</span>
-                                                </a>
-                                                <ul class="sub-menu">
-                                                    @foreach($locales as $lang)
-                                                        @if($lang != app()->getLocale())
-                                                            <li>
-                                                                <a href="{{ '/lang/'.$lang }}"
-                                                                   class=""> @lang('menus.language-picker.langs.'.$lang)</a>
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ul>
-                                            </li>
-                                        @endif
-
-
-                                    </ul>
-
-                                </div>
-                            </nav>
+                        
 
 
                             <div class="mobile-menu">
