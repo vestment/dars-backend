@@ -306,6 +306,8 @@ return array(
                         array(
                             'content' => 'Content',
                             'course' => 'Course',
+                            'test_timer' => 'Test Time by munites',
+
 
                             'slug' => 'Slug',
                             'lesson_image' => 'Lesson Image',

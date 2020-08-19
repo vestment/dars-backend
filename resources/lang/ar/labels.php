@@ -251,6 +251,8 @@ return array (
         'add_pdf' => 'إضافة PDF',
         'add_video' => 'أضف فيديو',
         'course' => 'دورة',
+        'test_timer' => '   مدة الامتحان بالدقايق',
+
         'downloadable_files' => 'ملفات قابلة للتحميل',
         'free_lesson' => 'الدرس المجاني',
         'full_text' => 'نص كامل',

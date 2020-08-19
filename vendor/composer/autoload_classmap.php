@@ -116,7 +116,7 @@ return array(
     'App\\Http\\Controllers\\LanguageController' => $baseDir . '/app/Http/Controllers/LanguageController.php',
     'App\\Http\\Controllers\\LessonsController' => $baseDir . '/app/Http/Controllers/LessonsController.php',
     'App\\Http\\Controllers\\SitemapController' => $baseDir . '/app/Http/Controllers/SitemapController.php',
-    'App\\Http\\Controllers\\Traits\\FileUploadTrait' => $baseDir . '/app/Http/Traits/FileUploadTrait.php',
+    'App\\Http\\Controllers\\Traits\\FileUploadTrait' => $baseDir . '/app/Http/Controllers/Traits/FileUploadTrait.php',
     'App\\Http\\Controllers\\Traits\\InvoiceGenerator' => $baseDir . '/app/Http/Controllers/Traits/InvoiceGenerator.php',
     'App\\Http\\Controllers\\Traits\\MyImportManager' => $baseDir . '/app/Http/Controllers/Traits/MyImportManager.php',
     'App\\Http\\Controllers\\loginController' => $baseDir . '/app/Http/Controllers/loginController.php',
