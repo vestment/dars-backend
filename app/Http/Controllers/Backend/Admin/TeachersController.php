@@ -47,6 +47,73 @@ class TeachersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getacademyTeachers($academy_id)
+    {
+
+        $has_view = false;
+        $has_delete = false;
+        $has_edit = false;
+        $teachers = "";
+
+
+        if (request('show_deleted') == 1) {
+
+            $teachers = User::ofAcademy()->role('teacher')->onlyTrashed()->orderBy('created_at', 'desc')->get();
+        } else {
+            $teachers = User::with('TeacherProfile')->ofAcademy()->role('teacher')->where('academy_id',$academy_id)->orderBy('created_at', 'desc')->get();
+
+        }
+        if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) {
+            $has_view = true;
+            $has_edit = true;
+            $has_delete = true;
+        }
+
+
+        return DataTables::of($teachers)
+            ->addIndexColumn()
+            ->addColumn('actions', function ($q) use ($has_view, $has_edit, $has_delete, $request) {
+                $view = "";
+                $edit = "";
+                $delete = "";
+                if ($request->show_deleted == 1) {
+                    return view('backend.datatable.action-trashed')->with(['route_label' => 'admin.teachers', 'label' => 'teacher', 'value' => $q->id]);
+                }
+
+                if ($has_view) {
+                    $view = view('backend.datatable.action-view')
+                        ->with(['route' => route('admin.teachers.show', ['teacher' => $q->id])])->render();
+                }
+
+                if ($has_edit) {
+                    $edit = view('backend.datatable.action-edit')
+                        ->with(['route' => route('admin.teachers.edit', ['teacher' => $q->id])])
+                        ->render();
+                    $view .= $edit;
+                }
+
+                if ($has_delete) {
+                    $delete = view('backend.datatable.action-delete')
+                        ->with(['route' => route('admin.teachers.destroy', ['teacher' => $q->id])])
+                        ->render();
+                    $view .= $delete;
+                }
+
+                $view .= '<a class="btn btn-blue mb-1" href="' . route('admin.courses.index', ['teacher_id' => $q->id]) . '">' . trans('labels.backend.courses.title') . '</a>';
+
+                return $view;
+
+            })
+            ->editColumn('status', function ($q) {
+                $html = html()->label(html()->checkbox('')->id($q->id)
+                        ->checked(($q->active == 1) ? true : false)->class('switch-input')->attribute('data-id', $q->id)->value(($q->active == 1) ? 1 : 0) . '<span class="switch-label"></span><span class="switch-handle"></span>')->class('switch switch-lg switch-3d switch-primary');
+                return $html;
+                // return ($q->active == 1) ? "Enabled" : "Disabled";
+            })
+            ->rawColumns(['actions', 'image', 'status'])
+            ->make();
+
+    }
     public function getData(Request $request)
     {
         $has_view = false;
@@ -59,7 +126,7 @@ class TeachersController extends Controller
 
             $teachers = User::ofAcademy()->role('teacher')->onlyTrashed()->orderBy('created_at', 'desc')->get();
         } else {
-            $teachers = User::ofAcademy()->role('teacher')->orderBy('created_at', 'desc')->get();
+            $teachers = User::with('TeacherProfile')->ofAcademy()->role('teacher')->orderBy('created_at', 'desc')->get();
 
         }
         if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) {
@@ -171,7 +238,6 @@ class TeachersController extends Controller
             'percentage' => request()->percentage,
             'title' => request()->title,
             'ar_title' => request()->ar_title,
-
             'academy_id' => $academy_id,
         ];
         TeacherProfile::create($data);
@@ -210,7 +276,7 @@ class TeachersController extends Controller
      */
     public function update(UpdateTeachersRequest $request, $id)
     {
-//        $request = $this->saveFiles($request);
+
 
         $teacher = User::findOrFail($id);
         $teacher->update($request->except('email'));
@@ -239,16 +305,16 @@ class TeachersController extends Controller
 
         ];
         $teacher->teacherProfile->update($data);
-if ($request->image) {
-            $teacher->avatar_type = 'storage';
-            $file = $request->file('image');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $path = public_path().'/storage/avatars';
-            $file->move($path, $filename);
-            $teacher->avatar_location = 'storage/avatars/' . $filename;
-        }
-$teacher->save();
-        return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
+            if ($request->image) {
+                        $teacher->avatar_type = 'storage';
+                        $file = $request->file('image');
+                        $filename = time() . '-' . $file->getClientOriginalName();
+                        $path = public_path().'/storage/avatars';
+                        $file->move($path, $filename);
+                        $teacher->avatar_location = 'storage/avatars/' . $filename;
+                    }
+            $teacher->save();
+                    return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
     }
 
 
@@ -260,7 +326,8 @@ $teacher->save();
      */
     public function show($id)
     {
-        $teacher = User::findOrFail($id);
+        $teacher = User::with('teacherProfile')->findOrFail($id);
+        // dd($teacher->teacherProfile);
 
         return view('backend.teachers.show', compact('teacher'));
     }

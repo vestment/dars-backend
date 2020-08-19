@@ -15,12 +15,12 @@ Route::redirect('/', '/user/dashboard', 301);
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('teachers', 'Admin\TeachersController');
 
-
 Route::group(['middleware' => 'role:teacher|administrator'], function () {
     Route::resource('orders', 'Admin\OrderController');
 });
 Route::group(['middleware' => 'role:academy|administrator'], function () {
     Route::resource('teachers', 'Admin\TeachersController');
+    Route::get('teachers/{id}', 'Admin\TeachersController@getacademyTeachers');
     Route::get('get-teachers-data', ['uses' => 'Admin\TeachersController@getData', 'as' => 'teachers.get_data']);
     Route::post('teachers_mass_destroy', ['uses' => 'Admin\TeachersController@massDestroy', 'as' => 'teachers.mass_destroy']);
     Route::post('teachers_restore/{id}', ['uses' => 'Admin\TeachersController@restore', 'as' => 'teachers.restore']);

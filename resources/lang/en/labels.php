@@ -229,6 +229,7 @@ return array(
                                         array(
                                             'overview' =>
                                                 array(
+                                                    'type' => 'Type',
                                                     'avatar' => 'Avatar',
                                                     'confirmed' => 'Confirmed',
                                                     'created_at' => 'Created At',
