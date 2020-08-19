@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models\Auth;
+
+use App\Parents;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Bundle;
@@ -49,7 +51,7 @@ class User extends Authenticatable implements MessageableInterface
         UserScope,
         Uuid,
         Messageable;
-      use HasApiTokens;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -100,7 +102,7 @@ class User extends Authenticatable implements MessageableInterface
      * The dynamic attributes from mutators that should be returned with the user object.
      * @var array
      */
-    protected $appends = ['full_name','image'];
+    protected $appends = ['full_name', 'image'];
 
     /**
      * The attributes that should be cast to native types.
@@ -116,8 +118,9 @@ class User extends Authenticatable implements MessageableInterface
     public function getDataFromColumn($col)
     {
         // ?? null return if the column not found
-        return $this->attributes[app()->getLocale() == 'ar' ? 'ar_'.$col : $col] ?? $this->attributes[$col];
+        return $this->attributes[app()->getLocale() == 'ar' ? 'ar_' . $col : $col] ?? $this->attributes[$col];
     }
+
     public function lessons()
     {
         return $this->belongsToMany(Lesson::class, 'lesson_student');
@@ -125,7 +128,7 @@ class User extends Authenticatable implements MessageableInterface
 
     public function chapters()
     {
-        return $this->hasMany(ChapterStudent::class,'user_id');
+        return $this->hasMany(ChapterStudent::class, 'user_id');
     }
 
     public function courses()
@@ -135,7 +138,7 @@ class User extends Authenticatable implements MessageableInterface
 
     public function courses_active()
     {
-        return $this->belongsToMany(Course::class, 'course_student')->withTimestamps()->withPivot(['rating','wishlist'])->wherePivot('wishlist', 1);
+        return $this->belongsToMany(Course::class, 'course_student')->withTimestamps()->withPivot(['rating', 'wishlist'])->wherePivot('wishlist', 1);
     }
     // public function courses_ac()
     // {
@@ -148,86 +151,95 @@ class User extends Authenticatable implements MessageableInterface
     }
 
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
     }
 
 
-    public function getImageAttribute(){
+    public function getImageAttribute()
+    {
         return $this->picture;
     }
 
 
     //Calc Watch Time
-    public function getWatchTime(){
-        $watch_time = VideoProgress::where('user_id','=',$this->id)->sum('progress');
+    public function getWatchTime()
+    {
+        $watch_time = VideoProgress::where('user_id', '=', $this->id)->sum('progress');
         return $watch_time;
 
     }
 
     //Check Participation Percentage
-    public function getParticipationPercentage(){
-        $videos = Media::featured()->where('status','!=',0)->get();
+    public function getParticipationPercentage()
+    {
+        $videos = Media::featured()->where('status', '!=', 0)->get();
         $count = $videos->count();
         $total_percentage = 0;
-        if($count > 0) {
+        if ($count > 0) {
             foreach ($videos as $video) {
                 $total_percentage = $total_percentage + $video->getProgressPercentage($this->id);
             }
-            $percentage = $total_percentage /$count;
-        }else{
+            $percentage = $total_percentage / $count;
+        } else {
             $percentage = 0;
         }
-        return round($percentage,2);
+        return round($percentage, 2);
     }
 
     //Get Certificates
-    public function certificates(){
+    public function certificates()
+    {
         return $this->hasMany(Certificate::class);
     }
 
-    public function pendingOrders(){
-        $orders = Order::where('status','=',0)
-            ->where('user_id','=',$this->id)
+    public function pendingOrders()
+    {
+        $orders = Order::where('status', '=', 0)
+            ->where('user_id', '=', $this->id)
             ->get();
 
         return $orders;
     }
 
-    public function purchasedCourses(){
-        $orders = Order::where('status','=',1)
-            ->where('user_id','=',$this->id)
+    public function purchasedCourses()
+    {
+        $orders = Order::where('status', '=', 1)
+            ->where('user_id', '=', $this->id)
             ->pluck('id');
-        $courses_id = OrderItem::whereIn('order_id',$orders)
-            ->where('item_type','=',"App\Models\Course")
+        $courses_id = OrderItem::whereIn('order_id', $orders)
+            ->where('item_type', '=', "App\Models\Course")
             ->pluck('item_id');
-        $courses = Course::whereIn('id',$courses_id)
+        $courses = Course::whereIn('id', $courses_id)
             ->get();
         return $courses;
     }
 
-    public function purchasedBundles(){
-        $orders = Order::where('status','=',1)
-            ->where('user_id','=',$this->id)
+    public function purchasedBundles()
+    {
+        $orders = Order::where('status', '=', 1)
+            ->where('user_id', '=', $this->id)
             ->pluck('id');
-        $bundles_id = OrderItem::whereIn('order_id',$orders)
-            ->where('item_type','=',"App\Models\Bundle")
+        $bundles_id = OrderItem::whereIn('order_id', $orders)
+            ->where('item_type', '=', "App\Models\Bundle")
             ->pluck('item_id');
-        $bundles = Bundle::whereIn('id',$bundles_id)
+        $bundles = Bundle::whereIn('id', $bundles_id)
             ->get();
 
         return $bundles;
     }
 
 
-    public function purchases(){
-        $orders = Order::where('status','=',1)
-            ->where('user_id','=',$this->id)
+    public function purchases()
+    {
+        $orders = Order::where('status', '=', 1)
+            ->where('user_id', '=', $this->id)
             ->pluck('id');
-        $courses_id = OrderItem::whereIn('order_id',$orders)
+        $courses_id = OrderItem::whereIn('order_id', $orders)
             ->pluck('item_id');
-        $purchases = Course::where('published','=',1)
-            ->whereIn('id',$courses_id)
+        $purchases = Course::where('published', '=', 1)
+            ->whereIn('id', $courses_id)
             ->get();
         return $purchases;
     }
@@ -235,7 +247,7 @@ class User extends Authenticatable implements MessageableInterface
     public function findForPassport($user)
     {
         $user = $this->where('email', $user)->first();
-        if($user->hasRole('student')){
+        if ($user->hasRole('student')) {
             return $user;
         }
     }
@@ -243,25 +255,30 @@ class User extends Authenticatable implements MessageableInterface
     /**
      * Get the teacher profile that owns the user.
      */
-    public function teacherProfile(){
+    public function teacherProfile()
+    {
         return $this->hasOne(TeacherProfile::class);
     }
-    public function academy(){
+
+    public function academy()
+    {
         return $this->hasOne(academy::class);
     }
 
 
     /**
-    * Get the earning owns the teacher.
-    */
-    public function earnings(){
+     * Get the earning owns the teacher.
+     */
+    public function earnings()
+    {
         return $this->hasMany(Earning::class, 'user_id', 'id');
     }
 
     /**
-    * Get the withdraw owns the teacher.
-    */
-    public function withdraws(){
+     * Get the withdraw owns the teacher.
+     */
+    public function withdraws()
+    {
         return $this->hasMany(Withdraw::class, 'user_id', 'id');
     }
 
@@ -269,7 +286,7 @@ class User extends Authenticatable implements MessageableInterface
     {
         if (!Auth::user()->isAdmin()) {
             return $query->whereHas('TeacherProfile', function ($q) {
-            
+
                 $q->where('academy_id', Auth::user()->id);
             });
         }

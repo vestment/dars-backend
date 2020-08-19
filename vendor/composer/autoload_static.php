@@ -1301,6 +1301,8 @@ class ComposerStaticInit0c759c83d1f87cb463811c9e0fe294b7
         'App\\Notifications\\Frontend\\Auth\\UserNeedsConfirmation' => __DIR__ . '/../..' . '/app/Notifications/Frontend/Auth/UserNeedsConfirmation.php',
         'App\\Notifications\\Frontend\\Auth\\UserNeedsPasswordReset' => __DIR__ . '/../..' . '/app/Notifications/Frontend/Auth/UserNeedsPasswordReset.php',
         'App\\Observers\\User\\UserObserver' => __DIR__ . '/../..' . '/app/Observers/User/UserObserver.php',
+        'App\\ParentStudents' => __DIR__ . '/../..' . '/app/ParentStudents.php',
+        'App\\Parents' => __DIR__ . '/../..' . '/app/Parents.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BladeServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BladeServiceProvider.php',

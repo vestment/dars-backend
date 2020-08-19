@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Review;
 use App\Models\TeacherProfile;
+use App\Parents;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -34,6 +35,8 @@ class DashboardController extends Controller
         $recent_contacts = NULL;
         $purchased_bundles = NULL;
         $bundles_count = null;
+        $students =null;
+        $parents =null;
         if (\Auth::check()) {
 
             $purchased_courses = auth()->user()->purchasedCourses();
@@ -119,8 +122,24 @@ class DashboardController extends Controller
                 $recent_orders = Order::orderBy('created_at', 'desc')->take(10)->get();
                 $recent_contacts = Contact::orderBy('created_at', 'desc')->take(10)->get();
             }
+            elseif (auth()->user()->hasRole('parent')) {
+                $studentsIds = Parents::where('parent_id',auth()->user()->id)->pluck('student_id')->toArray();
+                $students = User::role('student')->whereIn('id',$studentsIds)->with('courses_active')->get();
+                $parentsIds = Parents::whereIn('student_id',$studentsIds)->pluck('parent_id')->toArray();
+                $parents = User::role('parent')->whereIn('id',$parentsIds)->get();
+                $purchased_courses = Course::whereHas('students', function ($query) use ($studentsIds){
+                    $query->whereIn('user_id', $studentsIds);
+                });
+                $recent_reviews = Review::where('reviewable_type', '=', 'App\Models\Course')
+                    ->whereIn('reviewable_id', $purchased_courses->pluck('id'))
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+                $purchased_courses = $purchased_courses->with('students')->get();
+                dd($students);
+            }
         }
 
-        return view('backend.dashboard', compact('purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
+        return view('backend.dashboard', compact('parents','students','purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
     }
 }

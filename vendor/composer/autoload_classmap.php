@@ -239,6 +239,8 @@ return array(
     'App\\Notifications\\Frontend\\Auth\\UserNeedsConfirmation' => $baseDir . '/app/Notifications/Frontend/Auth/UserNeedsConfirmation.php',
     'App\\Notifications\\Frontend\\Auth\\UserNeedsPasswordReset' => $baseDir . '/app/Notifications/Frontend/Auth/UserNeedsPasswordReset.php',
     'App\\Observers\\User\\UserObserver' => $baseDir . '/app/Observers/User/UserObserver.php',
+    'App\\ParentStudents' => $baseDir . '/app/ParentStudents.php',
+    'App\\Parents' => $baseDir . '/app/Parents.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BladeServiceProvider' => $baseDir . '/app/Providers/BladeServiceProvider.php',
