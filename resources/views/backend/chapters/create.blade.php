@@ -103,7 +103,7 @@
                 </div>
                 <div class="col-12 col-lg-6  form-group">
                     {!! Form::label('full_text_ar', trans('labels.backend.chapters.fields.full_text_ar'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('full-text-ar', old('full-text-ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor']) !!}
+                    {!! Form::textarea('full-text-ar', old('full-text-ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor_ar']) !!}
 
                 </div>
             </div>
@@ -148,20 +148,20 @@
 
 
             <div class="row">
-                <div class="col-md-12 form-group">
-                    {!! Form::label('add_video', trans('labels.backend.chapters.fields.add_video'), ['class' => 'control-label']) !!}
+                    <div class="col-md-12 form-group">
+                        {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
 
-                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],null,['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
+                        {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],null,['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
 
-                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.chapters.enter_video_url'),'id'=>'video'  ]) !!}
+                        {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
 
 
-                    {!! Form::file('video_file', ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.chapters.enter_video_url'),'id'=>'video_file'  ]) !!}
+                        {!! Form::file('video_file', ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video_file'  ]) !!}
 
-                    @lang('labels.backend.chapters.video_guide')
+                        @lang('labels.backend.lessons.video_guide')
 
+                    </div>
                 </div>
-            </div>
 
             <div class="row">
 
@@ -191,31 +191,8 @@
     <script type="text/javascript" src="{{asset('/vendor/unisharp/laravel-ckeditor/adapters/jquery.js')}}"></script>
     <script src="{{asset('/vendor/laravel-filemanager/js/lfm.js')}}"></script>
     <script>
-        $('.editor').each(function () {
-
-            CKEDITOR.replace($(this).attr('id'), {
-                filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
-                filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
-                filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
-                filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}',
-                extraPlugins: 'smiley,lineutils,widget,codesnippet,prism,flash',
-            });
-
-        });
-
-        var uploadField = $('input[type="file"]');
-
-        $(document).on('change', 'input[name="chapter_image"]', function () {
-            var $this = $(this);
-            $(this.files).each(function (key, value) {
-                if (value.size > 5000000) {
-                    alert('"' + value.name + '"' + 'exceeds limit of maximum file upload size')
-                    $this.val("");
-                }
-            })
-        });
-
-        $(document).on('change', '#media_type', function () {
+     $('#media_type').on('change', function () {
+            console.log('sadasd')
             if ($(this).val()) {
                 if ($(this).val() != 'upload') {
                     $('#video').removeClass('d-none').attr('required', true)
@@ -229,7 +206,31 @@
                 $('#video').addClass('d-none').attr('required', false)
             }
         })
+      
+        $('.editor').each(function () {
 
+            CKEDITOR.replace($(this).attr('id'), {
+                filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+                filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
+                filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+                filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}',
+                extraPlugins: 'smiley,lineutils,widget,codesnippet,prism,flash',
+            })
+
+        })
+
+        var uploadField = $('input[type="file"]');
+
+        $(document).on('change', 'input[name="chapter_image"]', function () {
+            var $this = $(this);
+            $(this.files).each(function (key, value) {
+                if (value.size > 5000000) {
+                    alert('"' + value.name + '"' + 'exceeds limit of maximum file upload size')
+                    $this.val("");
+                }
+            })
+        });
+       
     </script>
 
 @endpush

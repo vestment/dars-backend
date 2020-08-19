@@ -118,7 +118,7 @@
                 </div>
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('full_text_ar', trans('labels.backend.lessons.fields.full_text_ar'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('full_text_ar', old('full_text_ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor']) !!}
+                    {!! Form::textarea('full_text_ar', old('full_text_ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor_ar']) !!}
 
                 </div>
             </div>
