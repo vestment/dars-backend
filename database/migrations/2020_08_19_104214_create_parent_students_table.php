@@ -19,6 +19,7 @@ class CreateParentStudentsTable extends Migration
                 $table->foreign('parent_id')->references('id')->on('users')->onDelete('cascade');
                 $table->integer('student_id')->unsigned();
                 $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+                $table->integer('status')->default(0);
             });
         }
     }

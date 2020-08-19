@@ -25,6 +25,9 @@
                                     <a href="#password" class="nav-link" aria-controls="password" role="tab" data-toggle="tab">@lang('navs.frontend.user.change_password')</a>
                                 </li>
                             @endif
+                            <li class="nav-item">
+                                <a href="#parent" class="nav-link" aria-controls="parent" role="tab" data-toggle="tab">@lang('labels.frontend.user.profile.manage_parent')</a>
+                            </li>
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade show active pt-3" id="profile" aria-labelledby="profile-tab">
@@ -40,6 +43,9 @@
                                     @include('backend.account.tabs.change-password')
                                 </div><!--tab panel change password-->
                             @endif
+                            <div role="tabpanel" class="tab-pane fade show  pt-3" id="parent" aria-labelledby="parent-tab">
+                                @include('backend.account.tabs.parent')
+                            </div><!--tab panel profile-->
                         </div><!--tab content-->
                     </div><!--tab panel-->
                 </div><!--card body-->

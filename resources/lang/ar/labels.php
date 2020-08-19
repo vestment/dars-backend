@@ -1167,8 +1167,8 @@ return array (
   ),
   'general' => 
   array (
-    'yes' => 'نعم فعلا',
-    'trash' => 'قمامة، يدمر، يهدم',
+    'yes' => 'نعم',
+    'trash' => 'المحذوف',
     'toolbar_btn_groups' => 'شريط الأدوات مع مجموعات الأزرار',
     'toggle_navigation' => 'تبديل الملاحة',
     'sr_no' => 'الأب رقم.',
@@ -1179,7 +1179,7 @@ return array (
     'no' => 'لا',
     'more' => 'أكثر من',
     'actions' => 'أفعال',
-    'active' => 'نشيط',
+    'active' => 'نشط',
     'all' => 'الكل',
     'back' => 'الى الخلف',
     'buttons' => 
@@ -1189,7 +1189,7 @@ return array (
       'update' => 'تحديث',
     ),
     'copyright' => 'حقوق النشر',
-    'create_new' => 'خلق جديد إبداع جديد',
+    'create_new' => 'أنشاء جديد',
     'custom' => 'العادة',
     'delete' => 'حذف',
     'delete_selected' => 'احذف المختار',
@@ -1201,7 +1201,7 @@ return array (
   array (
       'academy' =>
           array (
-              'course_detail' => 'بالطبع التفاصيل',
+              'course_detail' => 'تفاصيل الدورة',
               'courses_by_teacher' => 'الدورات <span> حسب المعلم. </span>',
               'send_now' => 'ارسل الان',
               'students' => 'الطلاب',

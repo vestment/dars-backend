@@ -35,8 +35,8 @@ class DashboardController extends Controller
         $recent_contacts = NULL;
         $purchased_bundles = NULL;
         $bundles_count = null;
-        $students =null;
-        $parents =null;
+        $students = null;
+        $parent = null;
         if (\Auth::check()) {
 
             $purchased_courses = auth()->user()->purchasedCourses();
@@ -121,13 +121,12 @@ class DashboardController extends Controller
                 $courses_count = \App\Models\Course::all()->count() + \App\Models\Bundle::all()->count();
                 $recent_orders = Order::orderBy('created_at', 'desc')->take(10)->get();
                 $recent_contacts = Contact::orderBy('created_at', 'desc')->take(10)->get();
-            }
-            elseif (auth()->user()->hasRole('parent')) {
-                $studentsIds = Parents::where('parent_id',auth()->user()->id)->pluck('student_id')->toArray();
-                $students = User::role('student')->whereIn('id',$studentsIds)->with('courses_active')->get();
-                $parentsIds = Parents::whereIn('student_id',$studentsIds)->pluck('parent_id')->toArray();
-                $parents = User::role('parent')->whereIn('id',$parentsIds)->get();
-                $purchased_courses = Course::whereHas('students', function ($query) use ($studentsIds){
+            } elseif (auth()->user()->hasRole('student')) {
+                $parent = auth()->user()->parents;
+            } elseif (auth()->user()->hasRole('parent')) {
+                $parent = auth()->user();
+                $studentsIds = $parent->students->pluck('id');
+                $purchased_courses = Course::whereHas('students', function ($query) use ($studentsIds) {
                     $query->whereIn('user_id', $studentsIds);
                 });
                 $recent_reviews = Review::where('reviewable_type', '=', 'App\Models\Course')
@@ -135,11 +134,10 @@ class DashboardController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->take(10)
                     ->get();
-                $purchased_courses = $purchased_courses->with('students')->get();
-                dd($students);
+                $purchased_courses = $purchased_courses->with('students')->take(10)->get();
             }
         }
 
-        return view('backend.dashboard', compact('parents','students','purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
+        return view('backend.dashboard', compact('parent', 'purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
     }
 }

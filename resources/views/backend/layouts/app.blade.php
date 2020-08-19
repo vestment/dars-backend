@@ -1,11 +1,5 @@
 <!DOCTYPE html>
-@if(config('app.display_type') == 'rtl' || (session()->has('display_type') && session('display_type') == 'rtl'))
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
-
-    @else
-        <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-        @endif
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" {{app()->getLocale() == 'ar' ? 'dir="rtl"': ''}}>
         {{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">--}}
         {{--@else--}}
         {{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
@@ -52,17 +46,6 @@
 
             @stack('after-styles')
 
-            @if((config('app.display_type') == 'rtl') || (session('display_type') == 'rtl'))
-                <style>
-                    .float-left {
-                        float: right !important;
-                    }
-
-                    .float-right {
-                        float: left !important;
-                    }
-                </style>
-            @endif
 
         </head>
 

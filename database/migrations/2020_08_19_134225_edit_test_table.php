@@ -14,7 +14,8 @@ class EditTestTable extends Migration
     public function up()
     {
         Schema::table('tests', function (Blueprint $table) {
-            
+            $table->text('title_ar')->nullable();
+            $table->text('description_ar')->nullable();
             $table->text('timer')->nullable();
            
            

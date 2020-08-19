@@ -39,6 +39,15 @@ return array (
       'deleted_permanently' => 'The user was deleted permanently.',
       'restored' => 'The user was successfully restored.',
     ),
+      'parent' =>
+          array (
+              'invited' => 'Invitation sent.',
+              'accepted_invite' => 'Invitation Accepted.',
+              'declined_invite' => 'Invitation Declined.',
+              'not_parent' => 'This email is not a parent.',
+              'not_found' => 'This email is not found.',
+              'deleted' => 'Parent removed.',
+          ),
   ),
   'frontend' => 
   array (

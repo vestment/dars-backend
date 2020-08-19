@@ -140,6 +140,15 @@ class User extends Authenticatable implements MessageableInterface
     {
         return $this->belongsToMany(Course::class, 'course_student')->withTimestamps()->withPivot(['rating', 'wishlist'])->wherePivot('wishlist', 1);
     }
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'parent_students','parent_id', 'student_id')->withPivot('status');
+    }
+    public function parents()
+    {
+        // Piviot value is 1 to get the active relations
+        return $this->belongsToMany(User::class, 'parent_students','student_id', 'parent_id')->withPivot('status');
+    }
     // public function courses_ac()
     // {
     //     return $this->belongsToMany(Course::class, 'wishlist')->withTimestamps()->withPivot(['wishlist'])->wherePivot('wishlist', 1);

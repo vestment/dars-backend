@@ -3,7 +3,7 @@
 return array (
   'backend' => 
   array (
-    'general' => 
+    'general' =>
     array (
       'backup_warning' => 'يرجى ملء التفاصيل اللازمة للنسخ الاحتياطي',
       'cancelled' => 'تم الغاء التحديث',
@@ -39,6 +39,15 @@ return array (
       'updated' => 'تم تحديث المستخدم بنجاح.',
       'updated_password' => 'تم تحديث كلمة مرور المستخدم بنجاح.',
     ),
+      'parent' =>
+          array (
+              'invited' => 'تم أرسال الدعوة الي ولي الامر.',
+              'not_parent' => "هذا المستخدم ليس ولي امر.",
+              'not_found' => 'لم يتم العثور علي المستخدم.',
+              'deleted' => 'تم ازالة ولي الامر.',
+              'accepted_invite' => 'تم قبول الدعوة',
+              'declined_invite' =>'تم رفض الدعوة',
+          ),
   ),
   'frontend' => 
   array (

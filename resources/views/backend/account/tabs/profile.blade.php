@@ -6,7 +6,7 @@
         </tr>
         <tr>
             <th>@lang('labels.frontend.user.profile.name')</th>
-            <td>{{ $user->name }}</td>
+            <td>{{ $user->full_name }}</td>
         </tr>
         <tr>
             <th>@lang('labels.frontend.user.profile.email')</th>

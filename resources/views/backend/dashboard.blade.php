@@ -4,6 +4,7 @@
 
 @push('after-styles')
     <style>
+
     :root{
  
 --pink:#D2498B;
@@ -59,11 +60,11 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <div >
-                <div class="my-4">
+            <div class="card">
+                <div class="card-header">
                    <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}!</h1>
                 </div><!--card-header-->
-                <div class="">
+                <div class="card-body">
                     <div class="row">
                         @if(auth()->user()->hasRole('student'))
 
@@ -301,12 +302,38 @@
                                 <div class="col-md-3 col-12 border-right">
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="card text-dark bg-white ">
-                                                <div class="card-body">
-                                                    <h5 class="">@lang('labels.backend.dashboard.students')</h5>
-                                                    <h2 class="">{{count($students)}}</h2>
-                                                </div>
+                                            <div class="d-inline-block form-group w-100">
+                                                <h4 class="mb-0">@lang('labels.backend.students.title') ({{count($parent->students)}})<a
+                                                            class="btn btn-primary float-right"
+                                                            href="{{route('admin.students.index')}}">@lang('labels.backend.dashboard.view_all')</a>
+                                                </h4>
+
                                             </div>
+                                            <table class="table table-responsive-sm table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <td>@lang('labels.backend.sign_up.user_name')</td>
+                                                    <td>@lang('labels.backend.dashboard.email')</td>
+                                                    <td>@lang('labels.backend.general_settings.api_clients.fields.action')</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($parent->students as $student)
+                                                <tr>
+                                                    <td>
+                                                        <a target="_blank"
+                                                           href="{{route('admin.students.show',[$student])}}">{{$student->full_name}}</a>
+                                                    </td>
+                                                    <td>
+                                                        {{$student->email}}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{route('admin.students.edit',[$student])}}" class="btn btn-blue mb-1"><i class="icon-pencil"></i></a></td>
+                                                    {{--                                                    <td>{{$item->created_at->diffforhumans()}}</td>--}}
+                                                </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
 
                                     </div>
@@ -362,7 +389,6 @@
                                             <td>@lang('labels.frontend.course.students')</td>
                                             <td>@lang('labels.backend.courses.title')</td>
                                             <td>@lang('labels.frontend.course.progress')</td>
-                                            <td>@lang('labels.frontend.course.ratings')</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -371,9 +397,9 @@
 
                                                 <tr>
                                                     <td>@foreach($course->students as $student)
-                                                            @if (array_search($student->id,array_column($students, 'id')))
+                                                            @if (array_search($student->id,array_column($parent->students->toArray(), 'id')))
                                                         <a target="_blank"
-                                                           href="{{route('courses.show',$course)}}">{{$student->full_name}}</a>
+                                                           href="{{route('admin.students.show',$student)}}">{{$student->full_name}}</a>
                                                         @endif
                                                         @endforeach
                                                     </td>
@@ -388,13 +414,7 @@
                                                                 {{ $course->progress()  }} %
                                                             </div>
                                                         </div></td>
-                                                    <td> <div class="course-rate ul-li">
-                                                            <ul>
-                                                                @for($i=1; $i<=(int)$course->rating; $i++)
-                                                                    <li><i class="fas fa-star"></i></li>
-                                                                @endfor
-                                                            </ul>
-                                                        </div></td>
+
                                                 </tr>
                                             @endforeach
                                         @else
