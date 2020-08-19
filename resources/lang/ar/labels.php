@@ -251,6 +251,8 @@ return array (
         'add_pdf' => 'إضافة PDF',
         'add_video' => 'أضف فيديو',
         'course' => 'دورة',
+        'test_timer' => '   مدة الامتحان بالدقايق',
+
         'downloadable_files' => 'ملفات قابلة للتحميل',
         'free_lesson' => 'الدرس المجاني',
         'full_text' => 'نص كامل',
@@ -1233,6 +1235,8 @@ return array (
       'sign_up' => 'تسجيل مستخدم جديد',
       'terms_of_use' => 'سياسة اﻻستخدام وسياسة الخصوصيه',
       'Privacy Policy' => 'سياسة خاصة',
+      'register_as_teacher' => 'تسجيل الدخول كمدرس',
+
 
     ),
 
@@ -1570,6 +1574,8 @@ return array (
       'new_user_note' => 'مستخدم جديد؟ سجل هنا',
       'register_now' => 'سجل الان',
       'registration_message' => 'تم التسجيل بنجاح الرجاء تسجيل الدخول',
+      'registration_teacher' => 'تم التسجيل بنجاح. انتظر موافقة المسؤول الخاص بك',
+
     ),
     'passwords' => 
     array (

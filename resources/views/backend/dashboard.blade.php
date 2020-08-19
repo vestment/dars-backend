@@ -61,7 +61,7 @@
         <div class="col">
             <div >
                 <div class="my-4">
-                   <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->name }}!</h1> 
+                   <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}!</h1>
                 </div><!--card-header-->
                 <div class="">
                     <div class="row">
@@ -294,7 +294,119 @@
                                 @endforeach
                     </div>
                     @endif
+                    @elseif(auth()->user()->hasRole('parent'))
 
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-3 col-12 border-right">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card text-dark bg-white ">
+                                                <div class="card-body">
+                                                    <h5 class="">@lang('labels.backend.dashboard.students')</h5>
+                                                    <h2 class="">{{count($students)}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-12 border-right">
+                                    <div class="d-inline-block form-group w-100">
+                                        <h4 class="mb-0">@lang('labels.backend.dashboard.recent_reviews') <a
+                                                    class="btn btn-primary float-right"
+                                                    href="{{route('admin.reviews.index')}}">@lang('labels.backend.dashboard.view_all')</a>
+                                        </h4>
+
+                                    </div>
+                                    <table class="table table-responsive-sm table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>@lang('labels.backend.dashboard.course')</td>
+                                            <td>@lang('labels.backend.dashboard.review')</td>
+                                            <td>@lang('labels.backend.dashboard.time')</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(count($recent_reviews) > 0)
+                                            @foreach($recent_reviews as $item)
+                                                <tr>
+                                                    <td>
+                                                        <a target="_blank"
+                                                           href="{{route('courses.show',[$item->reviewable->slug])}}">{{$item->reviewable->title}}</a>
+                                                    </td>
+                                                    <td>{{$item->content}}</td>
+                                                    {{--                                                    <td>{{$item->created_at->diffforhumans()}}</td>--}}
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="3">@lang('labels.backend.dashboard.no_data')</td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <div class="d-inline-block form-group w-100">
+                                        <h4 class="mb-0">@lang('labels.backend.dashboard.recent_messages') <a
+                                                    class="btn btn-primary float-right"
+                                                    href="{{route('admin.messages')}}">@lang('labels.backend.dashboard.view_all')</a>
+                                        </h4>
+                                    </div>
+
+
+                                    <table class="table table-responsive-sm table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>@lang('labels.frontend.course.students')</td>
+                                            <td>@lang('labels.backend.courses.title')</td>
+                                            <td>@lang('labels.frontend.course.progress')</td>
+                                            <td>@lang('labels.frontend.course.ratings')</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(count($purchased_courses) > 0)
+                                            @foreach($purchased_courses as $course)
+
+                                                <tr>
+                                                    <td>@foreach($course->students as $student)
+                                                            @if (array_search($student->id,array_column($students, 'id')))
+                                                        <a target="_blank"
+                                                           href="{{route('courses.show',$course)}}">{{$student->full_name}}</a>
+                                                        @endif
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        <a target="_blank"
+                                                           href="{{route('courses.show',$course)}}">{{$course->getDataFromColumn('title')}}</a>
+                                                    </td>
+                                                    <td>   <div class="progress my-2">
+                                                            <div class="progress-bar"
+                                                                 style="width:{{$course->progress() }}%">
+                                                                @lang('labels.frontend.course.progress')
+                                                                {{ $course->progress()  }} %
+                                                            </div>
+                                                        </div></td>
+                                                    <td> <div class="course-rate ul-li">
+                                                            <ul>
+                                                                @for($i=1; $i<=(int)$course->rating; $i++)
+                                                                    <li><i class="fas fa-star"></i></li>
+                                                                @endfor
+                                                            </ul>
+                                                        </div></td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="3">@lang('labels.backend.dashboard.no_data')</td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     @elseif(auth()->user()->hasRole('academy'))
                         <div class="col-12">
                             <div class="row">

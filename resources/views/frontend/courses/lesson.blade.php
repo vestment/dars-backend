@@ -4,7 +4,11 @@
     {{--<link rel="stylesheet" href="{{asset('plugins/YouTube-iFrame-API-Wrapper/css/main.css')}}">--}}
     <link rel="stylesheet" href="https://cdn.plyr.io/3.5.3/plyr.css"/>
     <link href="{{asset('plugins/touchpdf-master/jquery.touchPDF.css')}}" rel="stylesheet">
+    <link href="{{asset('Lexxus-jq-timeTo-f2c4b67/timeTo.css')}}" rel="stylesheet">
 
+<script>
+ var lang = '{{app()->getLocale()}}';
+</script>
     <style>
     .main-menu-container.menu-bg-overlay{
         display:none;
@@ -210,17 +214,47 @@
 
 
                         @if ($test_exists)
-                            <div class="course-single-text">
-                                <div class="course-title mt10 headline relative-position">
-                                    <h3>
-                                        <b>@lang('labels.frontend.course.test')
-                                            : {{$lesson->title}}</b>
-                                    </h3>
+                            <div class="course-single-text row">
+                           
+                                <div class="col-6">
+                                    <div class="course-title mt10 headline relative-position">
+                                        <h3>
+                                            <b>@lang('labels.frontend.course.test')
+                                                : {{$lesson->title}}</b>
+                                        </h3>
+                                    </div>
+                                    <div class="course-details-content">
+                                        <p> {!! $lesson->full_text !!} </p>
+                                    </div>
                                 </div>
-                                <div class="course-details-content">
-                                    <p> {!! $lesson->full_text !!} </p>
+                                <div class="col-6"> 
+                                    <div id="countdown" class="timeTo timeTo-white" style="font-family: Verdana, sans-serif;">
+                                        <div class="first" style=""><ul style="left:3px; top:-30px">
+                                        <li>0</li><li>0</li></ul>
+                                        </div>
+                                        <div style="">
+                                        <ul style="left:3px; top:-30px">
+                                        <li>0</li><li>0</li></ul>
+                                        </div>
+                                        <span>:</span>
+                                        <div class="first" style="">
+                                        <ul style="left:3px; top:-30px">
+                                        <li>0</li><li>0</li></ul></div><div style="">
+                                        <ul style="left: 3px; top: -30px;" class="">
+                                        <li>1</li><li>1</li></ul>
+                                        </div>
+                                        <span>:</span>
+                                        <div class="first" style="">
+                                        <ul style="left: 3px; top: -30px;" class=""><li>2</li><li>2</li></ul>
+                                        </div>
+                                        <div style=""><ul style="left: 3px; top: 0px;" class="transition">
+                                        <li>0</li><li>1</li></ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                          
+
                             <hr/>
                             @if (!is_null($test_result))
                                 <div class="alert alert-info">@lang('labels.frontend.course.your_test_score')
@@ -235,9 +269,10 @@
                                         </button>
                                     </form>
                                 @endif
+
                                 @if(count($lesson->questions) > 0  )
                                     <hr>
-
+                                  
                                     @foreach ($lesson->questions as $question)
 
                                         <h4 class="mb-0">{{ $loop->iteration }}
@@ -270,6 +305,17 @@
                             @else
                                 <div class="test-form">
                                     @if(count($lesson->questions) > 0  )
+                                    <script>
+
+var timeout = '{{$lesson->timer}}*60';
+var slug = '{{$lesson->slug}}';
+
+
+
+
+
+
+</script>
                                         <form action="{{ route('lessons.test', [$lesson->slug]) }}" method="post">
                                             {{ csrf_field() }}
                                             @foreach ($lesson->questions as $question)
@@ -477,7 +523,7 @@
                                       @if($item->model && $item->model->published == 1)
                                   
                                       {{--@php $key++; @endphp--}}
-                                <p class="subtitle2">  <a @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                <p class="subtitle2">  <a id="start_test" @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
                                                 {{$item->model->title}}
                                                 @if($item->model_type == 'App\Models\Test')
                                                     <p class="mb-0 text-primary">
@@ -498,6 +544,7 @@
              
             </div>
         </div>
+         
     @endforeach
 
 
@@ -542,7 +589,10 @@
 
 @push('after-scripts')
     {{--<script src="//www.youtube.com/iframe_api"></script>--}}
+    <script src="{{asset('Lexxus-jq-timeTo-f2c4b67/jquery.time-to.min.js')}}"></script>
+
     <script src="{{asset('plugins/sticky-kit/sticky-kit.js')}}"></script>
+
     <script src="https://cdn.plyr.io/3.5.3/plyr.polyfilled.js"></script>
     <script src="{{asset('plugins/touchpdf-master/pdf.compatibility.js')}}"></script>
     <script src="{{asset('plugins/touchpdf-master/pdf.js')}}"></script>
@@ -551,20 +601,41 @@
     <script src="{{asset('plugins/touchpdf-master/jquery.panzoom.js')}}"></script>
     <script src="{{asset('plugins/touchpdf-master/jquery.mousewheel.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-<script>
-
-
-$(document).ready(function() {
-
-    
-        $('.progress-bar').css('width', $lesson->course->progress() );
-})
-    
-       
-
-</script>
 
     <script>
+    $(document).ready(function() {
+        var $countdown = $('#countdown');
+
+ 
+
+        @if(count($lesson->questions) > 0  )
+
+        console.log(timeout);
+        $countdown.show().timeTo(parseInt(timeout));
+        @endif
+
+ $countdown.timeTo(parseInt(timeout),
+   function() {
+     $countdown.hide();
+     $.ajax({
+                url: "{{route('update.test.available')}}",
+                method: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'lesson_slug': slug,
+                },
+                success: function (result) {
+                    console.log(result)
+                }
+            });
+   }
+ );
+
+
+   
+      
+// $('.progress-bar').css('width', $lesson->course->progress() );
+    });
         @if($lesson->mediaPDF)
         $(function () {
             $("#myPDF").pdf({

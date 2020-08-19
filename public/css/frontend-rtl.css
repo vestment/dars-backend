@@ -7389,7 +7389,7 @@ hr {
 	right: 20px !important;
 
 	cursor: pointer;
-	color: #ffffff;
+	color: black;
 	text-decoration: none;
 	font-size: 16px;
 	text-indent: -9999em;
@@ -7404,7 +7404,127 @@ hr {
 
 .navbar-header {
 
-
     margin-right: 22px;
+}
 
+
+@media (max-width: 1024px) {
+    .navbar-header{
+        margin-right: 0px;
+    }
+    
+}
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    /* .navbar-header {
+        margin-right: 57px;
+    } */
+    .navbar-brand img {
+    width: 66px;
+    margin-top: 12px;
+    margin-left: 500px;
+    }
+
+
+    .divloginsearch{
+        /* width: 260px; */
+    }
+    .offersmob {
+        display: none;
+    }
+    .langmob{
+        display: none;
+    }
+    .coursesmob{
+        display: none;
+    }
+
+
+
+    .signupmob{
+        height: 20px !important;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+        font-size: 12px !important;
+    }
+    .nav-menu li a {
+        padding: 1px 9px;
+    }
+
+}
+
+.navbar-brand {
+    float: right !important;
+}
+
+
+
+
+
+@media (max-width: 425px) {
+  
+    .navbar-brand {
+       float: unset !important;
+    }
+
+    .navbar-brand img {
+    width: 66px;
+    margin-top: 12px;
+    margin-left: 155px;
+    
+    }
+
+    .divloginsearch{
+        /* width: 260px; */
+    }
+    .offersmob {
+        display: none;
+    }
+    .langmob{
+        display: none;
+    }
+    .coursesmob{
+        display: none;
+    }
+
+
+
+    .signupmob{
+        height: 20px !important;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+        font-size: 12px !important;
+    }
+    .nav-menu li a {
+        padding: 1px 9px;
+    }
+
+}
+
+
+@media (max-width: 320px) {
+
+    .navbar-brand img {
+        width: 66px;
+        margin-top: 12px;
+        margin-left: 40px;
+        
+        }
+
+        .divloginsearch{
+            margin-right: 0px !important;
+        }
+}
+
+.coursesmob{
+    position: absolute;
+    top: 0;
+    right: 165px;
 }
