@@ -11,3 +11,6 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 *.zip
+.env
+.idea/neon-lms-app.iml
+.idea/workspace.xml
