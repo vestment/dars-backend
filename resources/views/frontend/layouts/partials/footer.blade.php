@@ -52,33 +52,6 @@
                         @endif
 
 
-                            <!-- <div class="col footersec">
-                                <h2>Featured Course</h2>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Et sint dolor dignissimos officiis.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Accusamus libero odio tempore voluptatem laudantium.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
-                            </div>
-                            <div class="col footersec">
-                                <h2>Popular Course</h2>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Et sint dolor dignissimos officiis.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Accusamus libero odio tempore voluptatem laudantium.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
-                            </div>
-                            <div class="col footersec">
-                                <h2>Popular Course</h2>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Et sint dolor dignissimos officiis.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Accusamus libero odio tempore voluptatem laudantium.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Odit iure perspiciatis tempore sed aut.</p>
-                                <p class="size16"><i class="fa fa-chevron-right arrow" aria-hidden="true"></i> Consectetur est est placeat ut voluptas quia.</p>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -105,23 +78,28 @@
                         <div class="col-md-9">
                             <div class="subscribe-form ml-0 footersec">
                                 <h2 >@lang('labels.frontend.layouts.partials.subscribe_newsletter')</h2>
+                                <div class="container">
+                                    <form action="{{route('subscribe')}}" method="post" class=" subs-form">
+                                        <div class="row">
 
-                                <div class="row subs-form relative-position">
-                                    <form action="{{route('subscribe')}}" method="post">
-                                        @csrf
-                                        <div class="col-sm-12 col-12 col-lg-8">
-                                            <input class="email" required name="subs_email" type="email" placeholder="@lang('labels.frontend.layouts.partials.email_address').">
-                                        </div> 
-                                       
-                                            <div class="nws-button text-center  text-uppercase">
-                                                <button type="submit" value="Submit">@lang('labels.frontend.layouts.partials.subscribe_now')</button>
+                                            <div class="col-sm-9">
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="subs_email">Enter your email address</label>
+                                                    <input name="subs_email" id="subs_email" class="form-control h5-email" placeholder="@lang('labels.frontend.layouts.partials.email_address')." type="email" value="">
+                                                </div>
                                             </div>
-                                        @if($errors->has('email'))
-                                            <p class="text-danger text-left">{{$errors->first('email')}}</p>
-                                        @endif
+                                            <div class="col-sm-3 col-md-3">
+                                                <div class="nws-button text-center  text-uppercase">
+                                                    <button type="submit" value="Submit">@lang('labels.frontend.layouts.partials.subscribe_now')</button>
+                                                </div>
+                                            </div>
+                                            @if($errors->has('email'))
+                                                <p class="text-danger text-left">{{$errors->first('email')}}</p>
+                                            @endif
+                                        </div>
                                     </form>
-
                                 </div>
+
                             </div>
                         </div>
                     @endif

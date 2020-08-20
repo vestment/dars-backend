@@ -47,7 +47,7 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
      */
     Route::group(['middleware' => 'guest'], function () {
         // Authentication Routes
-        Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+//        Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
         Route::post('login', [LoginController::class, 'login'])->name('login.post');
 
         // Socialite Routes
@@ -56,8 +56,8 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
 
         // Registration Routes
         if (config('access.registration')) {
-            Route::get('register', [LoginController::class, 'showLoginForm'])->name('register');
-            Route::post('register', [RegisterController::class, 'register'])->name('register.post');
+//            Route::get('sign-up', [LoginController::class, 'showLoginForm'])->name('register');
+            Route::post('sign-up', [RegisterController::class, 'register'])->name('register.post');
         }
 
         // Confirm Account Routes

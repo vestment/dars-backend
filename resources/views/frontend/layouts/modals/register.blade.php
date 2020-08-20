@@ -58,42 +58,59 @@
                 </div>
 
                 <div class="col-md-10 offset-md-1">
-                    <form action="{{route('frontend.auth.register.post')}}"
-                          method="POST" enctype="multipart/form-data">
+                    @if (count($errors) > 0)
+                        @foreach ($errors->all() as $error)
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ $error }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endforeach
+                    @endif
+
+                    @if (session()->has('message'))
+                        <p class="alert alert-success alert-dismissible fade show" role="alert">{{ session('message') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </p>
+                    @endif
+                    <form id="registerForm" action="{{route('frontend.auth.register.post')}}"
+                          method="POST">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1">@lang('labels.frontend.sign_up.first_name')</label>
-                                <input name="first_name" type="text" class="form-control" id="exampleInputEmail1"
+                                <label for="first_name">@lang('labels.frontend.sign_up.first_name')</label>
+                                <input name="first_name" value="{{old('first_name')}}" type="text" class="form-control" id="first_name"
                                        aria-describedby="emailHelp">
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1">@lang('labels.frontend.sign_up.last_name')</label>
-                                <input name="last_name" type="text" class="form-control" id="exampleInputEmail1"
+                                <label for="last_name">@lang('labels.frontend.sign_up.last_name')</label>
+                                <input name="last_name" type="text" value="{{old('last_name')}}" class="form-control" id="last_name"
                                        aria-describedby="emailHelp">
                             </div>
                         </div>
 
+{{--                        <div class="form-group">--}}
+{{--                            <label for="exampleInput">@lang('labels.frontend.sign_up.user_name')</label>--}}
+{{--                            <input type="text" class="form-control" id="exampleInput">--}}
+{{--                        </div>--}}
+
                         <div class="form-group">
-                            <label for="exampleInput">@lang('labels.frontend.sign_up.user_name')</label>
-                            <input type="text" class="form-control" id="exampleInput">
+                            <label for="email">@lang('labels.frontend.sign_up.email')</label>
+                            <input name="email"  value="{{old('email')}}" type="email"  class="form-control" id="email">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInput">@lang('labels.frontend.sign_up.email')</label>
-                            <input name="email" type="email" class="form-control" id="exampleInput">
+                            <label for="password">@lang('labels.frontend.sign_up.password')</label>
+                            <input name="password"  type="password" class="form-control" id="password">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1">@lang('labels.frontend.sign_up.password')</label>
-                            <input name="password" type="password" class="form-control" id="exampleInputPassword1">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">@lang('labels.frontend.sign_up.confirm_password')</label>
+                            <label for="password_confirmation">@lang('labels.frontend.sign_up.confirm_password')</label>
                             <input name="password_confirmation" type="password" class="form-control"
-                                   id="exampleInputPassword1">
+                                   id="password_confirmation">
                         </div>
 
                         <div class="row">
@@ -125,5 +142,6 @@
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>    

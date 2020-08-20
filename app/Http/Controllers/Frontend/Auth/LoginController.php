@@ -79,10 +79,9 @@ class LoginController extends Controller
                     }else{
                         $redirect = 'back';
                     }
-                    return response(['success' => true,'redirect' => $redirect], Response::HTTP_OK);
+                    return response(['success' => true,'redirect' => $redirect,'message'=>'Login success, redirecting...'], Response::HTTP_OK);
                 }else{
                     \Illuminate\Support\Facades\Auth::logout();
-
                     return
                         response([
                             'success' => false,
