@@ -6983,7 +6983,7 @@ hr {
 }
 
 .logonone {
-    margin-left: 6px;
+    /* margin-left: 6px; */
 }
 
 /* @media(max-width :768px){
@@ -7404,13 +7404,13 @@ hr {
 
 .navbar-header {
 
-    margin-right: 22px;
+/* margin-right: 22px; */
 }
 
 
 @media (max-width: 1024px) {
     .navbar-header{
-        margin-right: 0px;
+        /* margin-right: 0px; */
     }
     
 }
@@ -7478,7 +7478,6 @@ hr {
     width: 66px;
     margin-top: 12px;
     margin-left: 155px;
-    
     }
 
     .divloginsearch{
@@ -7488,7 +7487,7 @@ hr {
         display: none;
     }
     .langmob{
-        display: none;
+        display: none !important;
     }
     .coursesmob{
         display: none;
@@ -7512,10 +7511,9 @@ hr {
 @media (max-width: 320px) {
 
     .navbar-brand img {
-        width: 66px;
-        margin-top: 12px;
-        margin-left: 40px;
-        
+        width: 55px;
+        margin-top: 15px;
+        margin-left: 0;
         }
 
         .divloginsearch{
@@ -7527,4 +7525,9 @@ hr {
     position: absolute;
     top: 0;
     right: 165px;
+    transition: .3s all ease-in-out;
+}
+.menu-bg-overlay .coursesmob {
+    top: 10px;
+   
 }

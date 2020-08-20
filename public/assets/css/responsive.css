@@ -253,20 +253,12 @@
 	}
 
 	.navbar-header {
-
-		/* left: 0; */
-		left: 120px;
-
-
-		right: 0;
-
-		/* top: 20px; */
-
-		margin: 0 auto;
-
-		position: absolute;
-
-	}
+left: 0;
+right: 0;
+/* top: 20px; */
+margin: 0 auto;
+position: absolute;
+}
 
 	.log-in {
 
@@ -786,12 +778,10 @@
 	}
 
 	.navbar-header {
-
-		/* width: 180px; */
-		/* left: 85px; */
-		/* right: 80px; */
-
-	}
+/* width: 180px; */
+/* left: 85px; */
+/* right: 80px; */
+}
 
 	.cart-search {
 
