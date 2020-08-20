@@ -2,71 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Auth\User;
 use App\Models\Course;
-use AppWishlist;
-use Auth;
-use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Wishlist;
+use Illuminate\Http\Request;
 
 
 class wishlistController extends Controller
 {
     public function index(Request $request)
     {
-
-        $courses = auth()->user()->courses_ac;
-
-        return view('wishlist', compact('courses'));
+        $courses = auth()->user()->wishList;
+        return view('frontend.wishlist', compact('courses'));
 
     }
 
-//    public function index()
-//    {
-//        $user = Auth::user();
-//        $wishlists = Wishlist::where("user_id", "=", $user->id)->orderby('id', 'desc')->paginate(10);
-//        return view('frontend.wishlist', compact('user', 'wishlists'));
-//    }
+
 //
-//
-//    public function store(Request $request)
-//    {
-//        //Validating title and body field
-//        $this->validate($request, array(
-//            'user_id' => 'required',
-//            'product_id' => 'required',
-//        ));
-//
-//        $wishlist = new Wishlist;
-//
-//        $wishlist->user_id = $request->user_id;
-//        $wishlist->product_id = $request->product_id;
-//
-//
-//        $wishlist->save();
-//
-//        return redirect()->back()->with('flash_message',
-//            'Item, ' . $wishlist->product->title . ' Added to your wishlist.');
-//    }
+    public function store(Request $request)
+    {
+        $courseData = Course::findOrFail($request->course_id);
+        $wishlist = auth()->user()->wishList->where('id', $request->course_id)->first();
+        if ($wishlist) {
+            $wishlist->pivot->wishlist = 1;
+            $wishlist->pivot->save();
+        } else {
+            auth()->user()->wishList()->attach($request->course_id, ['wishlist' => 1]);
+        }
+        if (app()->getLocale() == 'ar') {
+            $msg = 'تم أضافة  ' . $courseData->getDataFromColumn('title') . ' ألي قائمتك المفضلة';
+        } else {
+            $msg = 'Item, ' . $courseData->getDataFromColumn('title') . ' Added to your wishlist.';
+        }
+        return redirect()->route('wishlist.index')->with('success_message',$msg);
+    }
 
 
     public function remove(Request $request)
     {
-
-
-        // dd($request->course);
         $course_id = $request->course;
-        $user_id = auth()->user()->id;
-        $wishlist_id = auth()->user()->courses_ac->where('id', $course_id)->first();
-        //    dd( $wishlist_id);
-        $wishlist_id->update([
-            "pivot_wishlist" => 0
-        ]);
-
-
-        // $courses = auth()->user()->courses_active;
-        // $courses->updateExistingPivot('wishlist' , 0);
-        return redirect(route('wishlist'));
+        $wishlist = auth()->user()->wishList->where('id', $course_id)->first();
+//        $wishlist->pivot->wishlist = 0;
+//        $wishlist->pivot->save();
+        $wishlist->pivot->delete();
+        return redirect()->back()->with(['message'=>'Item removed']);
     }
 }

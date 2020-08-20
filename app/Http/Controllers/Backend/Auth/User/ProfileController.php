@@ -42,6 +42,7 @@ class ProfileController extends Controller
                 $fieldsList[] =  ''.$field->name;
             }
         }
+
         $output = $this->userRepository->update(
             $request->user()->id,
             $request->only('first_name', 'last_name','dob', 'phone', 'gender', 'address', 'city', 'pincode', 'state', 'country', 'avatar_type', 'avatar_location'),

@@ -125,8 +125,8 @@ Route::get('/faqs', 'Frontend\HomeController@getFaqs')->name('faqs');
 
 Route::get('contact', 'Frontend\ContactController@index')->name('contact');
 Route::post('contact/send', 'Frontend\ContactController@send')->name('contact.send');
-
-Route::get('wishlist', 'wishlistController@index')->name('wishlist');
+Route::post('wishlist/add', ['uses' => 'wishlistController@store', 'as' => 'wishlist.add']);
+Route::get('wishlist', 'wishlistController@index')->name('wishlist.index');
 Route::get('wishlist/remove', ['uses' => 'wishlistController@remove', 'as' => 'wishlist.remove']);
 
 Route::get('download', ['uses' => 'Frontend\HomeController@getDownload', 'as' => 'download']);

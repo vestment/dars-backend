@@ -10,7 +10,18 @@
         .course-rate li {
             color: #ffc926 !important;
         }
-
+.breadcrumb {
+    background-color: unset ;
+    margin-top: 3rem;
+}
+        .breadcrumb>li {
+            display: inline-block;
+        }
+        .breadcrumb>li+li:before {
+            padding: 0 5px;
+            color: #ccc;
+            content: "/\00a0";
+        }
         #applyCoupon {
             box-shadow: none !important;
             color: #fff !important;
@@ -44,12 +55,13 @@
         <div class="blakish-overlay" ></div>
         <div class="container">
             <div class="page-breadcrumb-content">
-                    <div class="page-breadcrumb-title">
-                        <p class="text-white pragchechout">
-                            explore/buissniss/chechout
-                        </p>                  
-                    </div>
-                <div class="page-breadcrumb-title">
+                <ol class="breadcrumb">
+                    <li><a href="#">@lang('labels.frontend.layouts.partials.explore')</a></li>
+                    <li><a href="#">@lang('labels.frontend.layouts.partials.business')</a></li>
+                    <li class="active">@lang('labels.frontend.cart.checkout')</li>
+                </ol>
+
+                <div class="page-breadcrumb-title pb-4">
                     <h2 class="breadcrumb-head black bold"><span>@lang('labels.frontend.cart.checkout')</span></h2>
                 </div>
             </div>
@@ -66,8 +78,8 @@
             <div class="row">
                 <div class="col-lg-9 col-md-12">
             <div class="section-title mb45 headline ">
-                <p>Your Shopping Cart</p>    
-                <h2>Complete Your Purchases.</h2>
+                <p>@lang('labels.frontend.cart.your_shopping_cart')</p>
+                <h2>@lang('labels.frontend.cart.complete_your_purchases')</h2>
             </div>
             <div class="checkout-content">
                 @if(session()->has('danger'))
@@ -84,19 +96,20 @@
                             </div>
 
                             <div class="course-list-view table-responsive">
-                                <table class="table">
 
-                                    <thead>
-                                    <tr class="list-head text-uppercase">
-                                        <th>@lang('labels.frontend.cart.course_name')</th>
-                                        <th>@lang('labels.frontend.cart.course_type')</th>
-                                        <th>@lang('labels.frontend.cart.starts')</th>
-                                        <th>@lang('labels.frontend.cart.action')</th>
-                                       
-                                    </tr>
-                                    </thead>
-                                    <tbody>
                                     @if(count($courses) > 0)
+                                    <table class="table">
+
+                                        <thead>
+                                        <tr class="list-head text-uppercase">
+                                            <th>@lang('labels.frontend.cart.course_name')</th>
+                                            <th>@lang('labels.frontend.cart.course_type')</th>
+                                            <th>@lang('labels.frontend.cart.starts')</th>
+                                            <th>@lang('labels.frontend.cart.action')</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
                                         @foreach($courses as $course)
                                             <tr class="position-relative">
 
@@ -140,13 +153,22 @@
                                                     href="{{route('cart.remove',['course'=>$course])}}">remove</a></td>
                                             </tr>
                                         @endforeach
+                                        </tbody>
+                                    </table>
                                     @else
-                                        <tr>
-                                            <td colspan="4">@lang('labels.frontend.cart.empty_cart')</td>
-                                        </tr>
+                                    <div class="text-center">
+                                        <h1><b>@lang('http.204.title')</b></h1>
+
+                                        <h4><b>@lang('http.204.description')</b></h4>
+                                        <p>
+                                            @lang('http.204.description2')
+                                        </p>
+                                        <div>
+                                            <a href="{{url('/')}}"><img src="{{url('img/frontend/user/empty.svg')}}"/></a>
+                                        </div>
+                                    </div>
                                     @endif
-                                    </tbody>
-                                </table>
+
                             </div>
                         </div>
                         @if(count($courses) > 0)
@@ -355,16 +377,16 @@
                                                 @include('frontend.cart.partials.order-stats')
                                             </div>
                                         @else
-                                        <div class="purchase-list mt15 ul-li-block row">
-                                            <div class="col-6">
-                                                <span class="in-total text-uppercase">@lang('labels.frontend.cart.total') </span>
-                                                       
-                                                <span>(0-items)</span>
-                                            </div>
-                                            <div class="col-6">
-                                                <span>{{$appCurrency['symbol']}}0.00</span>
-                                            </div>
-                                            </div> 
+{{--                                        <div class="purchase-list mt15 ul-li-block row">--}}
+{{--                                            <div class="col-6">--}}
+{{--                                                <span class="in-total text-uppercase">@lang('labels.frontend.cart.total') </span>--}}
+{{--                                                       --}}
+{{--                                                <span>(0-items)</span>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="col-6">--}}
+{{--                                                <span>{{$appCurrency['symbol']}}0.00</span>--}}
+{{--                                            </div>--}}
+{{--                                            </div> --}}
         
                                         @endif
                                     </div>
@@ -415,13 +437,13 @@
             </div>
         </div>
         <div class="col-lg-2 bg-right-list">
-            <P>COURSES CATEGORIES</P>
-            <h2 class="black bold">Category</h2>
+            <P>@lang('labels.frontend.layouts.partials.courses_categories')</P>
+            <h2 class="black bold">@lang('labels.frontend.cart.category')</h2>
 
                 <ul class="ul-right">
                         @if(count($categories) > 0)
                         @foreach($categories as $category)
-                        <a href="{{route('courses.category',['category'=>$category->slug])}}"> <li class="li-right"><i class="{{$category->icon}} p-2"></i>{{$category->name}}</li></a>
+                        <a href="{{route('courses.category',['category'=>$category->slug])}}"> <li class="li-right"><i class="{{$category->icon}} p-2"></i>{{$category->getDataFromColumn('name')}}</li></a>
                         @endforeach
                     @endif
                 </ul>

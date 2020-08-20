@@ -1652,6 +1652,7 @@ return array(
                             'social_network' => 'Social Network',
                             'follow_us' => 'Follow Us',
                             'explore' => 'Explore',
+                            'business' => 'Business',
                             'subscribe_newsletter' => 'Subscribe Newsletter',
                             'subscribe_now' => 'Subscribe Now',
                             'latest_news_blog' => 'Latest <span>News Blog.</span>',

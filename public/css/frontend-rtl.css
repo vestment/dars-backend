@@ -5239,7 +5239,6 @@ ul.product-tab li.active:after {
 }
 
 .course-page-section .course-list-view {
-    overflow-x: auto;
     padding: 5px;
 }
 
@@ -5254,11 +5253,12 @@ ul.product-tab li.active:after {
 
 .course-page-section td,
 .course-page-section th {
-    text-align: left;
+    text-align: right;
     padding: 20px 15px;
 }
 
 .course-page-section th {
+    text-align: right;
     font-size: 12px;
     font-weight: 700;
     color: #333333;

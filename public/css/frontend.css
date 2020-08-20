@@ -5276,7 +5276,6 @@ ul.product-tab li.active:after {
 }
 
 .course-page-section .course-list-view {
-    overflow-x: auto;
     padding: 5px;
 }
 
