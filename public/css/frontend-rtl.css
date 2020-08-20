@@ -127,10 +127,10 @@ a:focus {
     text-decoration: none;
 }
 
-img {
+/* img {
     max-width: 100%;
     height: auto;
-}
+} */
 
 section {
     overflow: hidden;
@@ -7402,9 +7402,12 @@ hr {
 }
 
 
-.navbar-header {
-
-
-    margin-right: 22px;
-
+.navbar-brand {
+    display: inline-block;
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    margin-right: 5rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
 }

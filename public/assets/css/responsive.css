@@ -255,15 +255,14 @@
 	.navbar-header {
 
 		/* left: 0; */
-		left: 120px;
+		/* left: 120px;
 
 
-		right: 0;
+		right: 0; */
 
 		/* top: 20px; */
 
-		margin: 0 auto;
-
+		margin-left: 70px !important;
 		position: absolute;
 
 	}
@@ -787,7 +786,7 @@
 
 	.navbar-header {
 
-		/* width: 180px; */
+		width: 180px;
 		left: 85px;
 		/* right: 80px; */
 
