@@ -9,6 +9,14 @@ return array (
     'back' => 'Back To HomePage',
     'description' => ' page not found',
   ),
+    204  =>
+        array (
+            'description2' => ' We didn\'t find any data to display',
+            'title' => 'Well..',
+            'title2' => '204',
+            'back' => 'Back To HomePage',
+            'description' => ' Looks like there is not data here',
+        ),
   503 => 
   array (
     'title' => 'Be right back.',

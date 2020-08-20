@@ -152,10 +152,13 @@ class UserRepository extends BaseRepository
         $user->state = isset($input['state']) ? $input['state'] : NULL;
         $user->country = isset($input['country']) ? $input['country'] : NULL;
         $user->save();
-
         // Upload profile image if necessary
         if ($image) {
-            $user->avatar_location = $image->store('/avatars', 'public');
+            $file = $image;
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $path = public_path() . '/storage/avatars';
+            $file->move($path, $filename);
+            $user->avatar_location = 'storage/avatars/' . $filename;
         } else {
             // No image being passed
             if ($input['avatar_type'] == 'storage') {

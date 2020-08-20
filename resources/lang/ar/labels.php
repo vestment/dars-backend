@@ -1563,6 +1563,7 @@ return array (
         'offers' => 'عروض',
         'follow_us'=>'تابعنا',
           'explore' => 'أستكشف',
+          'business' => 'Business',
       ),
     ),
     'modal' => 

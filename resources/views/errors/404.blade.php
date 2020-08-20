@@ -166,7 +166,7 @@
                             @lang('http.404.description2')
                         </p>
                         <div>
-                            <a href="{{url('/')}}"><img src="{{url('img/frontend/user/404.png')}}"/></a>
+                            <a href="{{url('/')}}"><img src="{{url('img/frontend/user/404.svg')}}"/></a>
                         </div>
                     </div>
                 </div>

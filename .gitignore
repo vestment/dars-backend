@@ -14,3 +14,6 @@ yarn-error.log
 .env
 .idea/neon-lms-app.iml
 .idea/workspace.xml
+.env
+.idea/neon-lms-app.iml
+.idea/workspace.xml
