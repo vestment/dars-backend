@@ -148,7 +148,7 @@
                             @else
                                 <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
                             @endif
-                        @else
+                            @else
 
                             @if($continue_course)
                                 <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
@@ -157,7 +157,7 @@
                                         <i class="fa fa-arrow-right"></i>
                                     </button>
                                 </a>
-                            @else
+                                @else
                                 <button class="btn btn-outline-light  addcart" type="submit">
                                     No lessons available
                                     <i class="fa fa-arrow-right"></i>
@@ -181,7 +181,8 @@
                                 </form>
                             @else
                                 <a href="{{route('wishlist.remove',['course'=>$course])}}"
-                                   class="btn btn-outline-light ml-1"><i class="fa fa-times"></i> Remove</a>
+                                   class="btn btn-outline-light ml-1"><i class="fa fa-times"></i>@lang('labels.frontend.course.remove')
+                                </a>
                             @endif
                         @else
                             <a href="{{route('login.index')}}"

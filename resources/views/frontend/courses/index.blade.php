@@ -272,9 +272,11 @@
                                     <div class="col-md-6 ">
                                         <div class="best-course-pic relative-position ">
                                             <div class="course-list-img-text course-page-sec">
-                                                <div class="course-li-img"
-                                                     @if($course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$course->course_image)}})" @endif >
-                                                </div>
+                                                <a href="{{ route('courses.show', [$course->slug]) }}">
+                                                    <div class="course-li-img"
+                                                        @if($course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$course->course_image)}})" @endif >
+                                                    </div>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
