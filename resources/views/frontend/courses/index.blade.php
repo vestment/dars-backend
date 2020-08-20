@@ -671,6 +671,7 @@
             var maxPrice = $('.price-filter-input').val();
             var isFree = $('#isFree').prop('checked');
             var sortBy = $('#sortFilter').val();
+            var category = '{{$category}}';
             $('.filters-section .btn-apply').on('click', function (e) {
                 e.preventDefault();
                 var rating = $('.rating-filter input:checked').data('value') ? $('.rating-filter input:checked').data('value') : '';
@@ -678,6 +679,7 @@
                 var maxPrice = $('.price-filter-input').val();
                 var isFree = $('#isFree').prop('checked');
                 var sortBy = $('#sortFilter').val();
+                var category = '{{$category}}';
                 $.ajax({
                     url: "{{route('courses.filterCategory')}}",
                     method: "GET",
@@ -686,7 +688,8 @@
                         'duration': duration,
                         'maxPrice': maxPrice,
                         'isFree': isFree,
-                        'type': sortBy
+                        'type': sortBy,
+                        'category':category
                     },
                     beforeSend: function () {
                         $('.all-courses').hide();
