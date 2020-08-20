@@ -601,11 +601,13 @@
                     <div class="col-md-6 pl-0">
                         <div class="best-course-pic relative-position ">
                             <div class="course-list-img-text course-page-sec">
+                                <a href="{{ route('courses.show', [$course->slug]) }}">
 
-                            <div class="col imgcard"
-                                @if($related_course->course_image != "") 
-                                style="background-image: url('{{asset('storage/uploads/'.$related_course->course_image)}}')" @endif>
-                            </div>
+                                    <div class="col imgcard"
+                                        @if($related_course->course_image != "") 
+                                        style="background-image: url('{{asset('storage/uploads/'.$related_course->course_image)}}')" @endif>
+                                    </div>
+                                </a>
                                 <!-- <div class="col imgcard">
                                 @if($related_course->course_image != "")
                                     <img src="{{asset('storage/uploads/'.$related_course->course_image)}}">
