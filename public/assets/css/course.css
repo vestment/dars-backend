@@ -34,9 +34,7 @@ ul.pagination {
 /**/
 .titleofcard {
     text-align: left;
-    /*min-height: 60px;*/
-
-    font: Bold 20px/30px Ubuntu;
+    min-height: 65px;
     letter-spacing: -0.2px;
     color: #000000CC;
     margin-top: -20px;
