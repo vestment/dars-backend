@@ -64,7 +64,7 @@
 
     <div id="app">
     {{--<div id="preloader"></div>--}}
-    @include('frontend.layouts.modals.loginModal')
+{{--    @include('frontend.layouts.modals.loginModal')--}}
 
     <!-- Start of Header section
         ============================================= -->

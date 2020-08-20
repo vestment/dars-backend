@@ -61,7 +61,10 @@ class RegisterController extends Controller
         return view('frontend.auth.register')
             ->withSocialiteLinks((new Socialite)->getSocialLinks());
     }
-
+    public function username()
+    {
+        return config('access.users.username');
+    }
     /**
      * @param RegisterRequest $request
      *
@@ -84,11 +87,16 @@ class RegisterController extends Controller
         if ($validator->passes()) {
             // Store your user in database
             event(new Registered($user = $this->create($request->all())));
-            return response(['success' => true]);
+            $credentials = $request->only($this->username(), 'password');
+            $authSuccess = \Illuminate\Support\Facades\Auth::attempt($credentials);
+            if($authSuccess) {
+                $request->session()->regenerate();
+                return redirect()->back()->with(['message' =>'Account registered successfully']);
+            }
 
         }
 
-        return response(['errors' => $validator->errors()]);
+        return redirect()->back()->with(['errors'=>$validator->errors()]);
     }
 
     /**

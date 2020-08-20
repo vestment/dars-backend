@@ -65,9 +65,15 @@
                         <h6 class="text-muted">@lang('labels.frontend.login.please_login')</h6>
                     </div>
                     <div class="col-md-10 offset-md-1">
-                        <span class="success-response text-success">{{(session()->get('flash_success'))}}</span>
+                        <div class="alert alert-success response-success" style="display: none">
+                            <h5><span class="response-success">{{(session()->get('flash_success'))}}</span></h5>
+                        </div>
+                        <div class="alert alert-danger response-error" style="display: none">
+                            <h5><span class="response-error">{{(session()->get('flash_error'))}}</span></h5>
+                        </div>
+
                         <form id="loginForm" action="{{route('frontend.auth.login.post')}}"
-                              method="POST" enctype="multipart/form-data">
+                              method="POST">
                             @csrf
                             <div class="form-group ">
                                 <label for="exampleInputEmail1">@lang('labels.frontend.login.user_name')</label>
@@ -130,7 +136,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
 
         @endif
         @push('after-scripts')
@@ -161,35 +167,13 @@
                         }
                     });
 
-                    $(document).ready(function () {
-                        $(document).on('click', '.go-login', function () {
-                            $('#register').removeClass('active').addClass('fade')
-                            $('#login').addClass('active').removeClass('fade')
-
-                        });
-                        $(document).on('click', '.go-register', function () {
-                            $('#login').removeClass('active').addClass('fade')
-                            $('#register').addClass('active').removeClass('fade')
-                        });
-
-                        $(document).on('click', '#openLoginModal', function (e) {
-                            $.ajax({
-                                type: "GET",
-                                url: "{{route('frontend.auth.login')}}",
-                                success: function (response) {
-                                    $('#socialLinks').html(response.socialLinks)
-                                    $('#myModal').modal('show');
-                                },
-                            });
-                        });
-
                         $('#loginForm').on('submit', function (e) {
                             e.preventDefault();
 
                             var $this = $(this);
-                            $('.success-response').empty();
-                            $('.error-response').empty();
-
+                            $('.response-success').empty();
+                            $('.response-success').show().html('Checking credentials...');
+                            $('.response-error').hide().empty();
                             $.ajax({
                                 type: $this.attr('method'),
                                 url: $this.attr('action'),
@@ -199,8 +183,9 @@
                                     $('#login-email-error').empty();
                                     $('#login-password-error').empty();
                                     $('#login-captcha-error').empty();
-
+                                    $('.response-error').hide().html('');
                                     if (response.errors) {
+                                        $('.response-success').hide().html('');
                                         if (response.errors.email) {
                                             $('#login-email-error').html(response.errors.email[0]);
                                         }
@@ -220,13 +205,17 @@
                                         } else {
                                             window.location.href = "{{route('admin.dashboard')}}"
                                         }
+                                        $('.response-error').hide().html('');
+                                        $('.response-success').show().html(response.message);
+
                                     }
                                 },
                                 error: function (jqXHR) {
                                     var response = $.parseJSON(jqXHR.responseText);
                                     console.log(jqXHR)
                                     if (response.message) {
-                                        $('#login').find('span.error-response').html(response.message)
+                                        $('.response-success').hide().html('');
+                                        $('.response-error').show().html(response.message);
                                     }
                                 }
                             });
@@ -277,7 +266,6 @@
                                 }
                             });
                         });
-                    });
 
                 });
             </script>
