@@ -1488,6 +1488,8 @@ return array (
       'related_courses' => 'دوزات ذات صلة',
       'requirements' => 'متطلبات',
       'hours' => 'ساعات',
+      'remove' => 'ازالة',
+
 
 
 

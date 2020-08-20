@@ -1484,7 +1484,10 @@ return array(
                     'amount' => 'Amount',
                     'total_payable' => 'Total Payable',
                     'total_price' => 'Total Price',
-                    'pay' => 'Pay'
+                    'pay' => 'Pay',
+                    'price' => 'price',
+
+
 
                 ),
             'contact' =>
@@ -1595,10 +1598,12 @@ return array(
                     'added_to_wishlist' => 'added to wishlist',
                     'Share' => 'Share',
                     'lessons' => 'Lessons',
-                    'This_course_includes' => 'This_course_includes:',
+                    'This_course_includes' => 'This course includes:',
                     'related_courses' => 'Related Courses',
                     'requirements' => 'Requirements',
                     'hours' => 'hours',
+                    'remove' => 'Remove',
+
               
 
 

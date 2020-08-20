@@ -131,7 +131,7 @@
                                             </td>
 
                                             <td>
-                                        <span class="course-category bold-font"><a
+                                                <span class="course-category bold-font"><a
                                                     href="#">@if($course->free == 1)
                                                     <span class="priceLabel">{{trans('labels.backend.bundles.fields.free')}}</span>
                                                 @else
@@ -139,8 +139,53 @@
                                                 @endif</a></span>
                                             </td>
                                             <td>{{($course->start_date != "") ? $course->start_date : 'N/A'}}</td>
+
+
+
+
                                             <td>
-                                                <form action="{{ route('cart.addToCart') }}" method="POST">
+
+
+                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                <button class="btn btn-info  addcart"
+                                        type="submit">@lang('labels.frontend.course.added_to_cart')
+                                </button>
+                            @elseif(!auth()->check())
+                                @if($course->free == 1)
+                                    <a href="{{route('login.index')}}" class="btn btn-info addcart">
+                                        @lang('labels.frontend.course.get_now')
+                                        <i class="fas fa-caret-right"></i>
+                                    </a>
+                                @else
+
+                                    <a href="{{route('login.index')}}" class="btn btn-info addcart"> <i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        @lang('labels.frontend.course.add_to_cart')
+                                    </a>
+                                @endif
+
+                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                        
+
+                                    <form action="{{ route('cart.addToCart') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                        <input type="hidden" name="amount"
+                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                        <button type="submit" class="btn btn-info addcart"><i
+                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                            @lang('labels.frontend.course.add_to_cart')
+                                        </button>
+                                    </form>
+
+                                    @endif
+
+
+                  
+
+
+                                                {{-- <form action="{{ route('cart.addToCart') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                                     <input type="hidden" name="amount"
@@ -149,10 +194,14 @@
                                                             class="genius-btn btn-primary text-center text-white text-uppercase ">
                                                         @lang('labels.frontend.course.add_to_cart') <i
                                                                 class="fa fa-shopping-bag"></i></button>
-                                                </form>
+                                                </form> --}}
+
+
+
+
                                             </td>
                                             <td><a class="te-remove "
-                                                   href="{{route('wishlist.remove',['course'=>$course])}}">remove</a>
+                                                   href="{{route('wishlist.remove',['course'=>$course])}}">@lang('labels.frontend.course.remove')</a>
                                             </td>
                                         </tr>
                                     @endforeach
