@@ -86,16 +86,17 @@
                                 <div class="nav-menu ul-li hoverpink">
                                     <ul>
                                         <li>
-
                                             <a class="offersmob" href="">@lang('navs.general.offers')</a>
-
                                         </li>
+                                        @if(!auth()->check())
                                         <li>
-                                            @if(!auth()->check())
+
                                                 <a class="sign-up text-white signupmob"
                                                    href="{{ route('register.index') }}">@lang('navs.general.signup')</a>
-                                            @endif
+
                                         </li>
+                                        @endif
+                                        @if(auth()->check())
                                         <li>
                                             <a href="{{route('cart.index')}}"><i class="fas fa-shopping-bag"></i>
                                                 @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
@@ -103,10 +104,11 @@
                                                 @endif
                                             </a>
                                         </li>
+                                        @endif
 
                                         @if(auth()->check())
                                             <li class="menu-item-has-children ul-li-block">
-                                                <a href="#!">{{ $logged_in_user->name }}</a>
+                                                <a href="#!">{{ $logged_in_user->getDataFromColumn('first_name') }}</a>
                                                 <ul class="sub-menu">
                                                     @can('view backend')
                                                         <li>
@@ -121,19 +123,12 @@
                                             </li>
                                         @else
                                             <li>
-                                                    <a href="{{ route('login.index') }}">@lang('navs.general.login')</a>
-
-
-                                               
+                                                <a href="{{ route('login.index') }}">@lang('navs.general.login')</a>
                                             </li>
                                         @endif
-
-
                                         <li>
                                             <i class="search-icon icon fa fa-search"></i>
                                         </li>
-
-
                                         @if(count($locales) > 1)
                                             <li class="menu-item-has-children ul-li-block langmob">
                                                 <a href="#">
@@ -221,11 +216,6 @@
                                     </ul>
                                 </div>
                             </nav>
-
-
-                        
-
-
                             <div class="mobile-menu">
                                 <div class="logo">
                                     <a href="{{url('/')}}">
