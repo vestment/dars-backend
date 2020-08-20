@@ -294,6 +294,15 @@
                     </a>
                 </li>
             @endif
+            @if($logged_in_user->hasRole('parent'))
+                <li class="nav-item ">
+                    <a class="nav-link {{ $request->segment(2) == 'students' ? 'active' : '' }}"
+                       href="{{ route('admin.students.index') }}">
+                        <i class="nav-icon icon-user-following"></i>
+                        <span class="title">@lang('labels.backend.students.title')</span>
+                    </a>
+                </li>
+            @endif
             @if ($logged_in_user->hasRole('teacher'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'reviews' ? 'active' : '' }}"

@@ -19,7 +19,7 @@
                         {{ html()->label(__('labels.backend.academies.fields.en_first_name'))->class('col-md-2 form-control-label')->for('en_first_name') }}
 
                         <div class="col-md-10">
-                            {{ html()->text('en_first_name')
+                            {{ html()->text('first_name')
                                 ->class('form-control')
                                 ->placeholder(__('labels.backend.academies.fields.en_first_name'))
                                 ->attribute('maxlength', 191)

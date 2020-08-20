@@ -39,7 +39,6 @@ class StoreTeachersRequest extends FormRequest
             'account_name'        => ['required_if:payment_method,bank'],
             'paypal_email'        => ['required_if:payment_method,paypal'],
             'type'                => [ 'required'],
-            'academy_id'          => 'required',
             'percentage'          =>'required',
 
         ];

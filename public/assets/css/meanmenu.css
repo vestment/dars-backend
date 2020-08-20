@@ -16,11 +16,10 @@ a.meanmenu-reveal {
 /* when under viewport size, .mean-container is added to body */
 .mean-container .mean-bar {
 	float: right;
-	width: 100%;
 	position: relative;
 	padding: 4px 0;
+	z-index: 5;
 	min-height: 70px;
-	z-index: 0;
 }
 
 .mean-container a.meanmenu-reveal {
@@ -48,7 +47,9 @@ a.meanmenu-reveal {
 
 .mean-container a.meanmenu-reveal span {
 	display: block;
+	/* background: #f9f9f9; */
 	background: black;
+
 	height: 3px;
 	margin-top: 3px;
 }

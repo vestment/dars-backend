@@ -194,40 +194,15 @@ class CoursesController extends Controller
         })->select('ar_first_name','ar_last_name' ,'first_name','last_name','id')->get();
 
         foreach($teachers_ar as $key=>$teacher_ar){
-            if($teacher_ar->ar_first_name && $teacher_ar->ar_last_name){
-        $ar_full_name[] = $teacher_ar->ar_first_name ." ". $teacher_ar->ar_last_name;
-            }
-        
-            if(!$teacher_ar->ar_first_name && !$teacher_ar->ar_last_name){
-                $ar_full_name[] = $teacher_ar->first_name ." ". $teacher_ar->last_name;
-            }
-        
-        
-
+        $ar_full_name[$teacher_ar->id] =$teacher_ar->full_name;
         }
-        
-        $categories = Category::where('status', '=', 1)->pluck('name', 'id');
         $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id','name')->get();
         foreach($categories_ar as $key=>$categories_ar){
-            if($categories_ar->ar_name ){
-
-            $categ_name[] = $categories_ar->ar_name ;
-            }
-
-        // return view('backend.courses.create', compact('teachers', 'categories','courses'));
-                if(!$categories_ar->ar_name ){
-    
-                    $categ_name[] = $categories_ar->name ;
-                }
-            
-            
-    
+            $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
             }
 
 
-
-
-        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categories','categ_name','courses'));
+        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categ_name','courses'));
     }
 
     /**
@@ -244,7 +219,6 @@ class CoursesController extends Controller
 
         $request->all();
         $request = $this->saveFiles($request);
-
         $slug = "";
         if (($request->slug == "") || $request->slug == null) {
             $slug = str_slug($request->title);
@@ -355,13 +329,15 @@ class CoursesController extends Controller
 
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
-        })->get()->pluck('name', 'id');
-
-        $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
-            $q->where('role_id', 2);
-        })->value('ar_first_name', 'ar_last_name','id');
-        $categories = Category::where('status', '=', 1)->pluck('name', 'id');
-
+        })->select('ar_first_name','ar_last_name' ,'first_name','last_name','id')->get();
+        $allTeachers = [];
+        foreach($teachers as $key=>$teacher_ar){
+        $allTeachers[$teacher_ar->id] =$teacher_ar->full_name;
+        }
+        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id','name')->get();
+        foreach($categories_ar as $key=>$categories_ar){
+            $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
+            }
         $allCourses = Course::pluck('title', 'id');
 
         $course = Course::findOrFail($id);
@@ -369,7 +345,7 @@ class CoursesController extends Controller
         $opt_courses = json_decode($course->optional_courses);
         $mand_courses = json_decode($course->mandatory_courses);
 
-        return view('backend.courses.edit', compact('course', 'teachers', 'categories','course','opt_courses','mand_courses','allCourses','teachers_ar', 'categories'));
+        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name','course','opt_courses','mand_courses','allCourses','categories'));
     }
 
     /**
@@ -469,13 +445,13 @@ class CoursesController extends Controller
         $course->update($request->all());
         $course->optional_courses = json_encode($request->opt_courses);
         $course->mandatory_courses = json_encode($request->mand_courses);
-
-        if ( count($request->opt_courses) != 0 ||  count($request->mand_courses) != 0  )  {
+        if ($request->opt_courses && $request->mand_courses){
+        if (count($request->opt_courses) != 0 ||  count($request->mand_courses) != 0  )  {
             $course->optional_courses = json_encode($request->opt_courses);
             $course->mandatory_courses = json_encode($request->mand_courses);
                 $course->save();
         }
-
+}
         if (($request->slug == "") || $request->slug == null) {
             $course->slug = str_slug($request->title);
             $course->save();

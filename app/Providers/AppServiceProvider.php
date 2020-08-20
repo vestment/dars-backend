@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Helpers\Frontend\Auth\Socialite;
 use App\Locale;
+use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Config;
 use App\Models\Course;
@@ -139,7 +140,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('global_featured_course','featured_courses'));
         });
 
-        view()->composer(['frontend.*', 'backend.*', 'frontend-rtl.*','vendor.invoices.*'], function ($view) {
+        view()->composer(['frontend.*', 'backend.*', 'errors.*','vendor.invoices.*'], function ($view) {
 
             $cssFile = 'frontend.css';
             if ( app()->getLocale() == 'ar') {
@@ -150,7 +151,8 @@ class AppServiceProvider extends ServiceProvider
             if (Schema::hasTable('locales')) {
                 $locales = Locale::pluck('short_name as locale')->toArray();
             }
-            $view->with(compact('locales','appCurrency','cssFile'));
+            $categories = Category::where('status',1)->get();
+            $view->with(compact('locales','appCurrency','cssFile','categories'));
 
         });
 

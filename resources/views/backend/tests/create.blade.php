@@ -2,6 +2,8 @@
 @section('title', __('labels.backend.tests.title').' | '.app_name())
 
 @push('after-styles')
+<link rel="stylesheet" type="text/css"
+          href="{{asset('plugins/jqueryui-datetimepicker/jquery.datetimepicker.css')}}">
     <style>
         .select2-container--default .select2-selection--single {
             height: 35px;
@@ -30,7 +32,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row">
+            <div class="row"> 
             <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('course_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
                     @if(app()->getLocale() == 'en')
@@ -63,7 +65,18 @@
     {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
 </div>
 </div>
+<div class="row">
+    <div class="col-12 col-lg-6 form-group">
 
+    
+        {!! Form::label('timer', trans('labels.backend.lessons.fields.test_timer').'*', ['class' => 'control-label']) !!}
+        {!! Form::text('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => '']) !!}
+                        
+    
+</div>
+
+
+</div>
             <div class="row">
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('description',trans('labels.backend.tests.fields.description'), ['class' => 'control-label']) !!}
@@ -84,9 +97,12 @@
             </div>
         </div>
     </div>
-
+   
+    
     {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop
+
+
 
 

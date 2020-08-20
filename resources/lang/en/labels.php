@@ -229,6 +229,7 @@ return array(
                                         array(
                                             'overview' =>
                                                 array(
+                                                    'type' => 'Type',
                                                     'avatar' => 'Avatar',
                                                     'confirmed' => 'Confirmed',
                                                     'created_at' => 'Created At',
@@ -306,6 +307,8 @@ return array(
                         array(
                             'content' => 'Content',
                             'course' => 'Course',
+                            'test_timer' => 'Test Time by munites',
+
 
                             'slug' => 'Slug',
                             'lesson_image' => 'Lesson Image',
@@ -880,6 +883,68 @@ return array(
                     'edit' => 'Edit Sponsors',
                     'view' => 'View Sponsors',
                 ),
+            'students' =>
+                array(
+                    'fields' =>
+                        array(
+                            'first_name' => 'First Name',
+                            'en_first_name' => 'English First Name',
+                            'en_last_name' => 'English Last Name',
+                            'last_name' => 'Last Name',
+                            'ar_first_name' => 'Arabic First Name',
+                            'ar_last_name' => 'Arabic Last Name',
+                            'email' => 'Email Address',
+                            'password' => 'Password',
+                            'image' => 'Image',
+                            'status' => 'Status',
+                            'academy' => 'Academy',
+                            'percentage' => 'percentage',
+                            'address' => 'Address',
+                            'en_address' => 'English Address',
+                            'ar_address' => 'Arabic Address',
+                            'city' => 'City',
+                            'en_city' => 'English City',
+                            'ar_city' => 'Arabic City',
+                            'phone' => ' Phone',
+                            'title' => ' Title',
+                            'ar_title' => 'Arabic Title',
+                            'bank_code' => '  Bank Code',
+                        ),
+                    'title' => 'Students',
+                    'create' => 'Create Student',
+                    'edit' => 'Edit Student',
+                    'view' => 'View Student',
+                ),
+            'parent' =>
+                array(
+                    'fields' =>
+                        array(
+                            'first_name' => 'First Name',
+                            'en_first_name' => 'English First Name',
+                            'en_last_name' => 'English Last Name',
+                            'last_name' => 'Last Name',
+                            'ar_first_name' => 'Arabic First Name',
+                            'ar_last_name' => 'Arabic Last Name',
+                            'email' => 'Email Address',
+                            'password' => 'Password',
+                            'image' => 'Image',
+                            'status' => 'Status',
+                            'academy' => 'Academy',
+                            'percentage' => 'percentage',
+                            'address' => 'Address',
+                            'en_address' => 'English Address',
+                            'ar_address' => 'Arabic Address',
+                            'city' => 'City',
+                            'en_city' => 'English City',
+                            'ar_city' => 'Arabic City',
+                            'phone' => ' Phone',
+                            'title' => ' Title',
+                            'ar_title' => 'Arabic Title',
+                            'bank_code' => '  Bank Code',
+                        ),
+                    'title' => 'Parents',
+                    'create' => 'Add Parent',
+                ),
             'teachers' =>
                 array(
                     'fields' =>
@@ -1309,6 +1374,9 @@ return array(
                     'login_with' => 'login with',
                     'sign_up' => 'SIGN UP',
                     'terms_of_use' => 'Term of use. Privacy policy',
+                    'register_as_teacher' => 'Register as a teacher',
+
+
                 ),
 
             'sign_up' =>
@@ -1617,6 +1685,8 @@ return array(
                     'already_user_note' => 'Already a user? Login Here',
                     'login_now' => 'LogIn Now',
                     'register_now' => 'Register Now',
+                    'registration_teacher' => 'Registration Successful. Wait for your Admin Approval',
+
                 ),
             'search_result' =>
                 array(
@@ -1670,6 +1740,7 @@ return array(
                             'first_name' => 'First Name',
                             'last_name' => 'Last Name',
                             'update_information' => 'Update Information',
+                            'manage_parent' => 'Manage Parent',
                         ),
                 ),
             'faq' =>

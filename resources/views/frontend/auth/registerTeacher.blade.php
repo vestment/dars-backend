@@ -1,4 +1,4 @@
-@extends('frontend'.(session()->get('display_type') == "rtl"?"-rtl":"").'.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 
 @section('title', app_name() . ' | ' . __('labels.teacher.teacher_register_box_title'))
 
@@ -57,6 +57,18 @@
                                         {{ html()->text('last_name')
                                             ->class('form-control')
                                             ->placeholder(__('validation.attributes.frontend.last_name'))
+                                            ->attribute('maxlength', 191)
+                                            ->required() }}
+                                    </div><!--form-group-->
+                                </div><!--col-->
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ html()->label(__('validation.attributes.frontend.title'))->for('title') }}
+
+                                        {{ html()->text('title')
+                                            ->class('form-control')
+                                            ->placeholder(__('validation.attributes.frontend.title'))
                                             ->attribute('maxlength', 191)
                                             ->required() }}
                                     </div><!--form-group-->

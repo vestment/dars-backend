@@ -23,14 +23,25 @@
             <div class="row">
                 <div class="col-12">
                     <table class="table ">
+                    @if($teacher->avatar_location == null)
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.avatar')</th>
-                            <td><img src="{{ $teacher->picture }}" class="user-profile-image" /></td>
+                            <td><img src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg" style="width:9%" /></td>
                         </tr>
+                    @else
+                        <tr>
+                            <th>@lang('labels.backend.access.users.tabs.content.overview.avatar')</th>
+                            <td><img src="{{asset($teacher->avatar_location)}}" class="user-profile-image" /></td>
+                        </tr>
+                        @endif
 
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.name')</th>
                             <td>{{ $teacher->name }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('labels.backend.access.users.tabs.content.overview.type')</th>
+                            <td>{{ $teacher->teacherProfile->type }}</td>
                         </tr>
                         
                         <tr>

@@ -15,12 +15,12 @@ Route::redirect('/', '/user/dashboard', 301);
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('teachers', 'Admin\TeachersController');
 
-
 Route::group(['middleware' => 'role:teacher|administrator'], function () {
     Route::resource('orders', 'Admin\OrderController');
 });
 Route::group(['middleware' => 'role:academy|administrator'], function () {
     Route::resource('teachers', 'Admin\TeachersController');
+    Route::get('teachers/{id}', 'Admin\TeachersController@getacademyTeachers');
     Route::get('get-teachers-data', ['uses' => 'Admin\TeachersController@getData', 'as' => 'teachers.get_data']);
     Route::post('teachers_mass_destroy', ['uses' => 'Admin\TeachersController@massDestroy', 'as' => 'teachers.mass_destroy']);
     Route::post('teachers_restore/{id}', ['uses' => 'Admin\TeachersController@restore', 'as' => 'teachers.restore']);
@@ -265,6 +265,8 @@ Route::group(['middleware' => ['auth', 'password_expires']], function () {
     Route::get('account', [AccountController::class, 'index'])->name('account');
     Route::patch('account/{email?}', [UserPasswordController::class, 'update'])->name('account.post');
     Route::patch('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('account', 'Admin\ParentsController@store')->name('parent.store');
+    Route::post('remove-parent', 'Admin\ParentsController@destroy')->name('parent.remove');
 });
 
 
@@ -329,3 +331,12 @@ Route::get('reasons/status/{id}', 'Admin\ReasonController@status')->name('reason
 Route::post('reasons/status', ['uses' => 'Admin\ReasonController@updateStatus', 'as' => 'reasons.status']);
 
 
+// ========= Student Routes ========== //
+Route::resource('students', 'Admin\StudentsController');
+Route::get('get-students-data', ['uses' => 'Admin\StudentsController@getData', 'as' => 'students.get_data']);
+Route::post('students_mass_destroy', ['uses' => 'Admin\StudentsController@massDestroy', 'as' => 'students.mass_destroy']);
+Route::post('students_restore/{id}', ['uses' => 'Admin\StudentsController@restore', 'as' => 'students.restore']);
+Route::delete('students_perma_del/{id}', ['uses' => 'Admin\StudentsController@perma_del', 'as' => 'students.perma_del']);
+Route::post('student/status', ['uses' => 'Admin\StudentsController@updateStatus', 'as' => 'students.status']);
+Route::post('student/accept/{id}', ['uses' => 'Admin\StudentsController@acceptInvite', 'as' => 'students.accept']);
+Route::post('student/decline/{id}', ['uses' => 'Admin\StudentsController@declineInvite', 'as' => 'students.decline']);

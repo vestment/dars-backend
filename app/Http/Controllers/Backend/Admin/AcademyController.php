@@ -122,7 +122,7 @@ class AcademyController extends Controller
             $filename = time() . '-' . $file->getClientOriginalName();
             $path = public_path() . '/storage/uploads/academies/' . $academy->id;
             $file->move($path, $filename);
-//            $academyLogo = asset('storage/uploads/academies/' . $filename);
+       //            $academyLogo = asset('storage/uploads/academies/' . $filename);
             $academy->avatar_location = 'storage/uploads/academies/' . $academy->id . '/' . $filename;
         }
         $academy->active = isset($request->active) ? 1 : 0;
@@ -135,7 +135,7 @@ class AcademyController extends Controller
                 $filename = time() . '-' . $galleryImage->getClientOriginalName();
                 $path = public_path() . '/storage/uploads/academies/' . $academy->id . '/gallery';
                 $galleryImage->move($path, $filename);
-                array_push($galleryImages, asset('storage/uploads/academies/' . $academy->id . '/gallery/' . $filename));
+                array_push($galleryImages, 'storage/uploads/academies/' . $academy->id . '/gallery/' . $filename);
             }
             $gallery = json_encode($galleryImages);
         } else {
@@ -158,7 +158,7 @@ class AcademyController extends Controller
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
             'ar_description' => request()->ar_description,
-'adress' => request()->address,
+            'adress' => request()->address,
             'logo' => $academy->avatar_location,
             'percentage' => request()->percentage,
             'gallery' => $gallery
@@ -217,7 +217,7 @@ class AcademyController extends Controller
             $filename = time() . '-' . $file->getClientOriginalName();
             $path = public_path() . '/storage/avatars';
             $file->move($path, $filename);
-//            $academyLogo = asset('storage/uploads/academies/' . $filename);
+             //         $academyLogo = asset('storage/uploads/academies/' . $filename);
             $academy->avatar_location = 'storage/avatars/' . $filename;
         }
         $academy->active = isset($request->active) ? 1 : 0;
@@ -229,7 +229,7 @@ class AcademyController extends Controller
                 $filename = time() . '-' . $newGalleryImage->getClientOriginalName();
                 $path = public_path() . '/storage/uploads/academies/' . $academy->id . '/gallery';
                 $newGalleryImage->move($path, $filename);
-                array_push($galleryImages, asset('storage/uploads/academies/' . $academy->id . '/gallery/' . $filename));
+               array_push($galleryImages, 'storage/uploads/academies/' . $academy->id . '/gallery/' . $filename);
             }
         } else {
             $galleryImages = $academyData->gallery;

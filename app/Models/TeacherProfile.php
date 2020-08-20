@@ -44,10 +44,16 @@ class TeacherProfile extends Model
     {
         if (!Auth::user()->isAdmin()) {
             return $query->whereHas('academy', function ($q) {
-                $q->where('academy_id', Auth::user()->id);
+                $q->where('user_id', Auth::user()->id);
             });
         }
         return $query;
+
+
+        
     }
+
+
+  
 
 }

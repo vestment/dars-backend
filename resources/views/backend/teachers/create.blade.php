@@ -229,7 +229,7 @@
                                 ->attributes(['maxlength'=> 191,'readonly'=>true])
                                 ->value(auth()->user()->full_name)}}
                             @else
-                                {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false, 'required' => true]) !!}
+                                {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false]) !!}
                             @endif
                         </div>
                     <!-- <div class="col-2 d-flex form-group flex-column">

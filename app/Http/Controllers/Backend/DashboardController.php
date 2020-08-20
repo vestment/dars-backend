@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Review;
 use App\Models\TeacherProfile;
+use App\Parents;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -34,6 +35,8 @@ class DashboardController extends Controller
         $recent_contacts = NULL;
         $purchased_bundles = NULL;
         $bundles_count = null;
+        $students = null;
+        $parent = null;
         if (\Auth::check()) {
 
             $purchased_courses = auth()->user()->purchasedCourses();
@@ -118,9 +121,23 @@ class DashboardController extends Controller
                 $courses_count = \App\Models\Course::all()->count() + \App\Models\Bundle::all()->count();
                 $recent_orders = Order::orderBy('created_at', 'desc')->take(10)->get();
                 $recent_contacts = Contact::orderBy('created_at', 'desc')->take(10)->get();
+            } elseif (auth()->user()->hasRole('student')) {
+                $parent = auth()->user()->parents;
+            } elseif (auth()->user()->hasRole('parent')) {
+                $parent = auth()->user();
+                $studentsIds = $parent->students->pluck('id');
+                $purchased_courses = Course::whereHas('students', function ($query) use ($studentsIds) {
+                    $query->whereIn('user_id', $studentsIds);
+                });
+                $recent_reviews = Review::where('reviewable_type', '=', 'App\Models\Course')
+                    ->whereIn('reviewable_id', $purchased_courses->pluck('id'))
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+                $purchased_courses = $purchased_courses->with('students')->take(10)->get();
             }
         }
 
-        return view('backend.dashboard', compact('purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
+        return view('backend.dashboard', compact('parent', 'purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
     }
 }

@@ -16,6 +16,8 @@ class EditTestTable extends Migration
         Schema::table('tests', function (Blueprint $table) {
             $table->text('title_ar')->nullable();
             $table->text('description_ar')->nullable();
+            $table->text('timer')->nullable();
+           
            
          
         });
@@ -29,8 +31,9 @@ class EditTestTable extends Migration
     public function down()
     {
         Schema::table('tests', function (Blueprint $table) {
-            $table->dropColumn('title_ar')->nullable();
-            $table->dropColumn('description_ar')->nullable();
+            
+            $table->dropColumn('timer')->nullable();
+           
            
          
         });

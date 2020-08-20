@@ -108,6 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('lesson/{slug}/retest', ['uses' => 'LessonsController@retest', 'as' => 'lessons.retest']);
     Route::post('video/progress', 'LessonsController@videoProgress')->name('update.videos.progress');
     Route::post('lesson/progress', 'LessonsController@courseProgress')->name('update.course.progress');
+    Route::post('ajax/request', 'LessonsController@availablityUpdate')->name('update.test.available');
 });
 
 Route::get('/search', [HomeController::class, 'searchCourse'])->name('search');
