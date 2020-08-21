@@ -2,9 +2,9 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-
 class StoreCoursesRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -27,6 +27,7 @@ class StoreCoursesRequest extends FormRequest
             'title' => 'required',
             'category_id' => 'required',
             'start_date' => 'date_format:'.config('app.date_format'),
+            'video_file' => 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4'
         ];
     }
 }

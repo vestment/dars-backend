@@ -80,7 +80,7 @@ class CoursesController extends Controller
             $id = request('cat_id');
             $courses = Course::ofTeacher()
                 ->whereHas('category')
-                ->where('category_id',  $id)->orderBy('created_at', 'desc')->get();
+                ->where('category_id', $id)->orderBy('created_at', 'desc')->get();
         } else {
             $courses = Course::ofTeacher()
                 ->whereHas('category')
@@ -191,18 +191,18 @@ class CoursesController extends Controller
 
         $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
-        })->select('ar_first_name','ar_last_name' ,'first_name','last_name','id')->get();
+        })->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
 
-        foreach($teachers_ar as $key=>$teacher_ar){
-            $ar_full_name[$teacher_ar->id] =$teacher_ar->full_name;
+        foreach ($teachers_ar as $key => $teacher_ar) {
+            $ar_full_name[$teacher_ar->id] = $teacher_ar->full_name;
         }
-        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id','name')->get();
-        foreach($categories_ar as $key=>$categories_ar){
+        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id', 'name')->get();
+        foreach ($categories_ar as $key => $categories_ar) {
             $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
         }
 
 
-        return view('backend.courses.create', compact('teachers','ar_full_name' ,'categ_name','courses'));
+        return view('backend.courses.create', compact('teachers', 'ar_full_name', 'categ_name', 'courses'));
     }
 
     /**
@@ -245,27 +245,43 @@ class CoursesController extends Controller
             $url = '';
             $video_id = '';
             $name = $course->title . ' - video';
+            $media = $course->mediavideo;
+            if ($media == "") {
+                $media = new  Media();
+            }
+            if ($request->media_type != 'upload') {
+                if (($request->media_type == 'youtube') || ($request->media_type == 'vimeo')) {
+                    $video = $request->video;
+                    $url = $video;
+                    $video_id = array_last(explode('/', $request->video));
+                    $size = 0;
 
-            if (($request->media_type == 'youtube') || ($request->media_type == 'vimeo')) {
-                $video = $request->video;
-                $url = $video;
-                $video_id = array_last(explode('/', $request->video));
-                $media = Media::where('url', $video_id)
-                    ->where('type', '=', $request->media_type)
-                    ->where('model_type', '=', 'App\Models\Course')
-                    ->where('model_id', '=', $course->id)
-                    ->first();
-                $size = 0;
+                } else if ($request->media_type == 'embed') {
+                    $url = $request->video;
+                }
+                $media->model_type = $model_type;
+                $media->model_id = $model_id;
+                $media->name = $name;
+                $media->url = $url;
+                $media->type = $request->media_type;
+                $media->file_name = $video_id;
+                $media->size = 0;
+                $media->save();
+            }
 
-            } elseif ($request->media_type == 'upload') {
+            if ($request->media_type == 'upload') {
 
-
-                if ($request->video_file != null) {
+                if ($request->video_file != null){
                     $file = \Illuminate\Support\Facades\Request::file('video_file');
-                    $filename = $file->getClientOriginalName();
+                    $filename = time() . '-' . $file->getClientOriginalName();
+                    $size = $file->getSize() / 1024;
+                    $path = public_path() . '/storage/uploads';
+                    $filename = str_replace(' ','-',$filename);
+                    $file->move($path, $filename);
+                    $url = 'storage/uploads/' . $filename;
 
-                    $media = Media::where('type', '=', 'upload')
-                        ->where('model_type', '=', 'App\Models\Course')
+                    $media = Media::where('type', '=', $request->media_type)
+                        ->where('model_type', '=', 'App\Models\Lesson')
                         ->where('model_id', '=', $course->id)
                         ->first();
 
@@ -275,28 +291,13 @@ class CoursesController extends Controller
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = url('storage/uploads/' . $filename);
+                    $media->url = asset($url);
                     $media->type = $request->media_type;
-                    $media->file_name = $request->video_file;
-                    $media->size = 0;
+                    $media->file_name = $filename;
+                    $media->size = $size;
                     $media->save();
 
                 }
-            } else if ($request->media_type == 'embed') {
-                $url = $request->video;
-                $filename = $course->title . ' - video';
-            }
-
-            if ($media == null) {
-                $media = new Media();
-                $media->model_type = $model_type;
-                $media->model_id = $model_id;
-                $media->name = $name;
-                $media->url = $url;
-                $media->type = $request->media_type;
-                $media->file_name = $video_id;
-                $media->size = 0;
-                $media->save();
             }
         }
 
@@ -313,7 +314,6 @@ class CoursesController extends Controller
         return redirect()->route('admin.courses.index')->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 
-
     /**
      * Show the form for editing Course.
      *
@@ -329,13 +329,13 @@ class CoursesController extends Controller
 
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
-        })->select('ar_first_name','ar_last_name' ,'first_name','last_name','id')->get();
+        })->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
         $allTeachers = [];
-        foreach($teachers as $key=>$teacher_ar){
-            $allTeachers[$teacher_ar->id] =$teacher_ar->full_name;
+        foreach ($teachers as $key => $teacher_ar) {
+            $allTeachers[$teacher_ar->id] = $teacher_ar->full_name;
         }
-        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id','name')->get();
-        foreach($categories_ar as $key=>$categories_ar){
+        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id', 'name')->get();
+        foreach ($categories_ar as $key => $categories_ar) {
             $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
         }
         $allCourses = Course::pluck('title', 'id');
@@ -345,7 +345,7 @@ class CoursesController extends Controller
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
 
-        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name','course','opt_courses','mand_courses','allCourses','categories'));
+        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses'));
     }
 
     /**
@@ -388,7 +388,7 @@ class CoursesController extends Controller
             $media = '';
             $url = '';
             $video_id = '';
-            $name = $course->title . ' - video';
+            $name = (time() * 1000) . $course->title . ' - video';
             $media = $course->mediavideo;
             if ($media == "") {
                 $media = new  Media();
@@ -402,7 +402,6 @@ class CoursesController extends Controller
 
                 } else if ($request->media_type == 'embed') {
                     $url = $request->video;
-                    $filename = $course->title . ' - video';
                 }
                 $media->model_type = $model_type;
                 $media->model_id = $model_id;
@@ -419,7 +418,10 @@ class CoursesController extends Controller
                 if ($request->video_file != null) {
                     $file = \Illuminate\Support\Facades\Request::file('video_file');
                     $filename = $file->getClientOriginalName();
-
+                    $size = $file->getSize() / 1024;
+                    $path = public_path() . '/storage/uploads';
+                    $file->move($path, $filename);
+                    $videoLocation = 'storage/uploads/' . $filename;
                     $media = Media::where('type', '=', $request->media_type)
                         ->where('model_type', '=', 'App\Models\Course')
                         ->where('model_id', '=', $course->id)
@@ -431,10 +433,10 @@ class CoursesController extends Controller
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = url('storage/uploads/' . $filename);
+                    $media->url = asset($videoLocation);
                     $media->type = $request->media_type;
-                    $media->file_name = $request->video_file;
-                    $media->size = 0;
+                    $media->file_name = $filename;
+                    $media->size = $size;
                     $media->save();
 
                 }
@@ -445,8 +447,8 @@ class CoursesController extends Controller
         $course->update($request->all());
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
-        if ($request->opt_courses && $request->mand_courses){
-            if (count($request->opt_courses) != 0 ||  count($request->mand_courses) != 0  )  {
+        if ($request->opt_courses && $request->mand_courses) {
+            if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0) {
                 $course->optional_courses = json_encode($request->opt_courses);
                 $course->mandatory_courses = json_encode($request->mand_courses);
                 $course->save();
@@ -490,7 +492,7 @@ class CoursesController extends Controller
 
         $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
 
-        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline','opt_courses','mand_courses'));
+        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses'));
     }
 
 

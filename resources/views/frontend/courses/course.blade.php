@@ -181,7 +181,7 @@
                                 </form>
                             @else
                                 <a href="{{route('wishlist.remove',['course'=>$course])}}"
-                                   class="btn btn-outline-light ml-1"><i class="fa fa-times"></i>@lang('labels.frontend.course.remove')
+                                   class="btn btn-outline-light ml-1"><i class="fa fa-times"></i> @lang('labels.frontend.course.remove')
                                 </a>
                             @endif
                         @else
