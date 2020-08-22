@@ -204,6 +204,7 @@ Route::post('course-save-sequence', ['uses' => 'Admin\CoursesController@saveSequ
 Route::get('course-publish/{id}', ['uses' => 'Admin\CoursesController@publish', 'as' => 'courses.publish']);
 Route::get('course-content/{course_id}', ['uses' => 'Admin\CoursesController@courseContent', 'as' => 'courses.courseContent']);
 
+Route::post('courses/create', 'Admin\CoursesController@store')->name('courses.createCourse');
 
 
 //===== Bundles Routes =====//

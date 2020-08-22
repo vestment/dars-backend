@@ -36,20 +36,13 @@ class HomeController extends Controller
      * @return \Illuminate\View\View
      */
 
-    private $path;
-
-    public function __construct()
-    {
-        $this->path = 'frontend';
-    }
-
     public function index()
     {
         if (request('page')) {
             $page = Page::where('slug', '=', request('page'))
                 ->where('published', '=', 1)->first();
             if ($page != "") {
-                return view($this->path . '.pages.index', compact('page'));
+                return view('frontend.pages.index', compact('page'));
             }
             abort(404);
         }
@@ -107,13 +100,13 @@ class HomeController extends Controller
 
         $trending = Course::where('trending', '=', 1)->get();
 
-        return view($this->path . '.index', compact('popular_courses','trending','total_bundle','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
+        return view('frontend.index', compact('popular_courses','trending','total_bundle','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
     }
 
     public function getFaqs()
     {
         $faq_categories = Category::has('faqs', '>', 0)->get();
-        return view($this->path . '.faq', compact('faq_categories'));
+        return view('frontend.faq', compact('faq_categories'));
     }
 
     public function subscribe(Request $request)
@@ -203,7 +196,7 @@ class HomeController extends Controller
     {
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $teachers = User::role('teacher')->paginate(12);
-        return view($this->path . '.teachers.index', compact('teachers', 'recent_news'));
+        return view('frontend.teachers.index', compact('teachers', 'recent_news'));
     }
 
     public function showTeacher(Request $request)
@@ -217,7 +210,7 @@ class HomeController extends Controller
         if (count($teacher->courses) > 0) {
             $courses = $teacher->courses()->paginate(12);
         }
-        return view($this->path . '.teachers.show', compact('teacher', 'recent_news', 'courses','teacher_data'));
+        return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses','teacher_data'));
     }
 
     public function getDownload(Request $request)
@@ -302,7 +295,7 @@ class HomeController extends Controller
         $q = $request->q;
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
 
-        return view($this->path . '.search-result.courses', compact('courses', 'q', 'recent_news', 'categories'));
+        return view('frontend.search-result.courses', compact('courses', 'q', 'recent_news', 'categories'));
     }
 
 
@@ -366,7 +359,7 @@ class HomeController extends Controller
         $q = $request->q;
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
 
-        return view($this->path . '.search-result.bundles', compact('bundles', 'q', 'recent_news', 'categories'));
+        return view('frontend.search-result.bundles', compact('bundles', 'q', 'recent_news', 'categories'));
     }
 
     public function searchBlog(Request $request)
@@ -378,7 +371,7 @@ class HomeController extends Controller
 
 
         $q = $request->q;
-        return view($this->path . '.search-result.blogs', compact('blogs', 'q', 'categories', 'popular_tags'));
+        return view('frontend.search-result.blogs', compact('blogs', 'q', 'categories', 'popular_tags'));
     }
 }
 

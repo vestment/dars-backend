@@ -34,8 +34,6 @@ class AppServiceProvider extends ServiceProvider
     ];
 
 
-
-
     /**
      * Bootstrap any application services.
      *
@@ -95,79 +93,71 @@ class AppServiceProvider extends ServiceProvider
         config()->set('invoices.currency', config('app.currency'));
 
 
-
-
         if (Schema::hasTable('sliders')) {
             $slides = Slider::where('status', 1)->orderBy('sequence', 'asc')->get();
             view()->composer('*', function ($view) use ($slides) {
                 $view->with('slides', $slides);
             });
         }
+            view()->composer(['frontend.layouts.*'], function ($view) {
+                $menu_name = NULL;
+                $custom_menus = MenuItems::where('menu', '=', config('nav_menu'))
+                    ->orderBy('sort')
+                    ->get();
+                $menu_name = Menus::find((int)config('nav_menu'));
+                $menu_name = ($menu_name != NULL) ? $menu_name->name : NULL;
+                $custom_menus = menuList($custom_menus);
+                $max_depth = MenuItems::max('depth');
+                $view->with(compact('custom_menus', 'max_depth', 'menu_name'));
+            });
 
-        view()->composer(['frontend.layouts.*', 'frontend-rtl.layouts.*'], function ($view) {
-            $menu_name = NULL;
-            $custom_menus = MenuItems::where('menu', '=', config('nav_menu'))
-                ->orderBy('sort')
-                ->get();
-            $menu_name = Menus::find((int)config('nav_menu'));
-            $menu_name = ($menu_name != NULL) ? $menu_name->name : NULL;
-            $custom_menus = menuList($custom_menus);
-            $max_depth = MenuItems::max('depth');
-            $view->with(compact('custom_menus', 'max_depth','menu_name'));
-        });
+        if (Schema::hasTable('blogs')) {
+            view()->composer(['frontend.layouts.partials.right-sidebar'], function ($view) {
+                $recent_news = Blog::orderBy('created_at', 'desc')->whereHas('category')->take(2)->get();
+                $view->with(compact('recent_news'));
+            });
+        }
+        if (Schema::hasTable('categories') && Schema::hasTable('courses')) {
+            view()->composer(['frontend.*'], function ($view) {
 
-        view()->composer(['frontend.layouts.partials.right-sidebar', 'frontend-rtl.layouts.partials.right-sidebar'], function ($view) {
+                $global_featured_course = Course::withoutGlobalScope('filter')
+                    ->whereHas('category')
+                    ->where('published', '=', 1)
+                    ->where('featured', '=', 1)->where('trending', '=', 1)->first();
 
-
-            $recent_news = Blog::orderBy('created_at', 'desc')->whereHas('category')->take(2)->get();
-
-            $view->with(compact('recent_news'));
-        });
-
-        view()->composer(['frontend.*', 'frontend-rtl.*'], function ($view) {
-
-            $global_featured_course = Course::withoutGlobalScope('filter')
-                ->whereHas('category')
-                ->where('published', '=', 1)
-                ->where('featured', '=', 1)->where('trending', '=', 1)->first();
-
-            $featured_courses = Course::withoutGlobalScope('filter')->where('published', '=', 1)
-                ->whereHas('category')
-                ->where('featured', '=', 1)->take(8)->get();
+                $featured_courses = Course::withoutGlobalScope('filter')->where('published', '=', 1)
+                    ->whereHas('category')
+                    ->where('featured', '=', 1)->take(8)->get();
 
 
+                $view->with(compact('global_featured_course', 'featured_courses'));
+            });
+        }
 
-            $view->with(compact('global_featured_course','featured_courses'));
-        });
-
-        view()->composer(['frontend.*', 'backend.*', 'errors.*','vendor.invoices.*'], function ($view) {
-
+        view()->composer(['frontend.*', 'backend.*', 'errors.*', 'vendor.invoices.*'], function ($view) {
             $cssFile = 'frontend.css';
-            if ( app()->getLocale() == 'ar') {
+            if (app()->getLocale() == 'ar') {
                 $cssFile = 'frontend-rtl.css';
             }
-            $appCurrency = getCurrency(config('app.currency'));
-
+            if (Schema::hasTable('categories')) {
+                $appCurrency = getCurrency(config('app.currency'));
+                $categories = Category::where('status', 1)->get();
+            }
             if (Schema::hasTable('locales')) {
                 $locales = Locale::pluck('short_name as locale')->toArray();
             }
-            $categories = Category::where('status',1)->get();
-            $view->with(compact('locales','appCurrency','cssFile','categories'));
+            $view->with(compact('locales', 'appCurrency', 'cssFile', 'categories'));
 
         });
-
 
         view()->composer(['backend.*'], function ($view) {
-
             $locale_full_name = 'English';
-            $locale =  \App\Locale::where('short_name','=',config('app.locale'))->first();
-            if($locale){
+            $locale = \App\Locale::where('short_name', '=', config('app.locale'))->first();
+            if ($locale) {
                 $locale_full_name = $locale->name;
             }
-
             $view->with(compact('locale_full_name'));
         });
-
 
 
     }

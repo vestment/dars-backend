@@ -31,7 +31,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view($this->path.'.contact');
+        return view('frontend.contact');
     }
 
     /**

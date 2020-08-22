@@ -17,12 +17,6 @@ use App\Models\Chapter;
 class LessonsController extends Controller
 {
 
-    private $path;
-
-    public function __construct()
-    {
-        $this->path = 'frontend';
-    }
 
     public function show($course_id, $lesson_slug)
     {
@@ -91,7 +85,7 @@ class LessonsController extends Controller
             ->pluck('model_id')
             ->toArray();
 
-        return view($this->path . '.courses.lesson', compact('chapters','lesson', 'previous_lesson', 'next_lesson', 'test_result',
+        return view('frontend.courses.lesson', compact('chapters','lesson', 'previous_lesson', 'next_lesson', 'test_result',
             'purchased_course', 'test_exists', 'lessons', 'completed_lessons'));
     }
 public function availablityUpdate(Request $request) {

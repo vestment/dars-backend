@@ -21,12 +21,10 @@ use Omnipay\Omnipay;
 class CartController extends Controller
 {
 
-    private $path;
     private $currency;
 
     public function __construct()
     {
-        $this->path = 'frontend';
         $this->currency = getCurrency(config('app.currency'));
 
 
@@ -52,7 +50,7 @@ class CartController extends Controller
         //Apply Tax
         $taxData = $this->applyTax('total');
         
-        return view($this->path . '.cart.checkout', compact('courses', 'bundles', 'total', 'taxData'));
+        return view('frontend.cart.checkout', compact('courses', 'bundles', 'total', 'taxData'));
     }
 
     public function addToCart(Request $request)
@@ -135,7 +133,7 @@ class CartController extends Controller
         $taxData = $this->applyTax('total');
 
 
-        return view($this->path . '.cart.checkout', compact('courses', 'total', 'taxData'));
+        return view('frontend.cart.checkout', compact('courses', 'total', 'taxData'));
     }
 
     public function clear(Request $request)

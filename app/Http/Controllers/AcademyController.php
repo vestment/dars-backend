@@ -11,12 +11,6 @@ use Illuminate\Http\Request;
 
 class AcademyController extends Controller
 {
-    private $path;
-
-    public function __construct()
-    {
-        $this->path = 'frontend';
-    }
 
     public function show($id)
     {

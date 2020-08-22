@@ -208,9 +208,16 @@
                     {!! Form::textarea('meta_keywords_ar', old('meta_keywords_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_keywords_ar')]) !!}
                    </div>
                 </div>
-            
 
-
+<!--- Input type tags for what you will learn same as teachers and optional courses -->
+{{--                @if (Auth::user()->isAdmin())--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="col-10 form-group">--}}
+{{--                            {!! Form::label('learn',trans('labels.backend.courses.fields.learn'), ['class' => 'control-label']) !!}--}}
+{{--                            {!! Form::select('learn[]', $courses, old('learn'), ['class' => 'form-control select2 js-example-tags', 'multiple' => 'multiple', 'required' => false]) !!}--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                @endif--}}
 
 
 
@@ -245,7 +252,13 @@
         </div>
     </div>
     {!! Form::close() !!}
+{{--    {{ Form::open(array('route'=>['admin.courses.store2'],'method'=>'POST', 'files'=>true )) }}--}}
 
+{{--    {!! Form::file('video_file', ['class' => 'form-control mt-3', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video_file'  ]) !!}--}}
+
+{{--    <input type="submit" value="Import Language CSV ">--}}
+{{--    {{Form::token()}}--}}
+{{--    {{Form::close()}}--}}
 
 @stop
 
@@ -265,6 +278,9 @@
             $(".js-example-placeholder-multiple").select2({
                 placeholder: "{{trans('labels.backend.courses.select_teachers')}}",
             });
+            $(".js-example-tags").select2({
+                tags: true
+            })
         });
 
         var uploadField = $('input[type="file"]');

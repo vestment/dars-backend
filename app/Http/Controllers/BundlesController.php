@@ -11,12 +11,7 @@ use Illuminate\Http\Request;
 
 class BundlesController extends Controller
 {
-    private $path;
 
-    public function __construct()
-    {
-        $this->path = 'frontend';
-    }
 
     public function all()
     {
@@ -47,7 +42,7 @@ class BundlesController extends Controller
             ->where('featured', '=', 1)->take(8)->get();
 
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
-        return view( $this->path.'.bundles.index', compact('bundles', 'purchased_bundles', 'recent_news','featured_courses','categories'));
+        return view( 'frontend.bundles.index', compact('bundles', 'purchased_bundles', 'recent_news','featured_courses','categories'));
     }
 
     public function show($bundle_slug)
@@ -71,7 +66,7 @@ class BundlesController extends Controller
         $courses = $bundle->courses()->orderby('id','asc')->get();
 
 
-        return view( $this->path.'.bundles.show', compact('bundle', 'purchased_bundle', 'recent_news', 'bundle_rating','bundle_rating','courses','total_ratings','is_reviewed'));
+        return view( 'frontend.bundles.show', compact('bundle', 'purchased_bundle', 'recent_news', 'bundle_rating','bundle_rating','courses','total_ratings','is_reviewed'));
     }
 
 
@@ -92,7 +87,7 @@ class BundlesController extends Controller
                 ->where('featured', '=', 1)->take(8)->get();
 
             $courses = $category->courses()->where('published', '=', 1)->paginate(9);
-            return view( $this->path.'.courses.index', compact('courses', 'category', 'recent_news','featured_courses'));
+            return view( 'frontend.courses.index', compact('courses', 'category', 'recent_news','featured_courses'));
         }
         return abort(404);
     }
@@ -129,7 +124,7 @@ class BundlesController extends Controller
                 $total_ratings = $bundle->reviews()->where('rating', '!=', "")->get()->count();
             }
 
-            return view( $this->path.'.bundles.show', compact('bundle', 'purchased_bundle', 'recent_news', 'bundle_rating', 'total_ratings', 'review'));
+            return view( 'frontend.bundles.show', compact('bundle', 'purchased_bundle', 'recent_news', 'bundle_rating', 'total_ratings', 'review'));
         }
         return abort(404);
 

@@ -16,7 +16,7 @@ class EditcategoriesTable extends Migration
         Schema::table('categories', function (Blueprint $table) {
 
          
-            $table->string('ar_name')->nullable();
+
             
         });
     }

@@ -11,13 +11,7 @@ use Illuminate\Http\Request;
 class BlogController extends Controller
 {
 
-    private $path;
-
-    public function __construct()
-    {
-        $this->path = 'frontend';
-    }
-
+   
 
     public function getByCategory(Request $request)
     {
@@ -27,7 +21,7 @@ class BlogController extends Controller
         $categories = Category::has('blogs')->where('status', '=', 1)->paginate(10);
         if ($category != "") {
             $blogs = $category->blogs()->paginate(6);
-            return view($this->path.'.blogs.index', compact('category', 'blogs', 'popular_tags', 'categories'));
+            return view('frontend.blogs.index', compact('category', 'blogs', 'popular_tags', 'categories'));
         }
         return abort(404);
     }
@@ -51,12 +45,12 @@ class BlogController extends Controller
 
             $related_news = $blog->category->blogs()->where('id','!=',$blog->id)->take(2)->get();
 
-            return view($this->path.'.blogs.blog-single', compact('blog','previous','next','popular_tags','categories','related_news'));
+            return view('frontend.blogs.blog-single', compact('blog','previous','next','popular_tags','categories','related_news'));
         }
 
 
         $blogs = Blog::has('category')->OrderBy('created_at','desc')->paginate(6);
-        return view($this->path.'.blogs.index',
+        return view('frontend.blogs.index',
             compact( 'blogs', 'categories', 'popular_tags'));
     }
 
@@ -67,7 +61,7 @@ class BlogController extends Controller
         $categories = Category::has('blogs')->where('status', '=', 1)->paginate(10);
         if ($tag != "") {
             $blogs = $tag->blogs()->paginate(6);
-            return view($this->path.'.blogs.index', compact('tag', 'blogs', 'categories', 'popular_tags'));
+            return view('frontend.blogs.index', compact('tag', 'blogs', 'categories', 'popular_tags'));
         }
         return abort(404);
     }
