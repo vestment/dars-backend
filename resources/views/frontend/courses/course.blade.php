@@ -80,7 +80,7 @@
                         @php
                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                         @endphp
-                        <img style="" class="rounded-circle" src=" {{asset($teacher->avatar_location)}}" alt="">
+                        <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
                         <div class="col-lg-5 col-sm-3 mt-3">
                             <p class="text-white font12">{{$teacher->full_name}}</p>
                             <p class="text-white font10">{{$teacherProfile->getDataFromColumn('description')}}</p>
@@ -148,7 +148,7 @@
                             @else
                                 <h6 class="alert alert-danger alertclass"> @lang('labels.frontend.course.buy_note')</h6>
                             @endif
-                            @else
+                        @else
 
                             @if($continue_course)
                                 <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
@@ -157,7 +157,7 @@
                                         <i class="fa fa-arrow-right"></i>
                                     </button>
                                 </a>
-                                @else
+                            @else
                                 <button class="btn btn-outline-light  addcart" type="submit">
                                     No lessons available
                                     <i class="fa fa-arrow-right"></i>
@@ -181,7 +181,8 @@
                                 </form>
                             @else
                                 <a href="{{route('wishlist.remove',['course'=>$course])}}"
-                                   class="btn btn-outline-light ml-1"><i class="fa fa-times"></i> @lang('labels.frontend.course.remove')
+                                   class="btn btn-outline-light ml-1"><i
+                                            class="fa fa-times"></i> @lang('labels.frontend.course.remove')
                                 </a>
                             @endif
                         @else
@@ -190,13 +191,14 @@
                                         class="fa fa-heart"
                                         aria-hidden="true"></i> @lang('labels.frontend.course.wishlist')</a>
                         @endif
-                        <button type="submit" class="btn btn-outline-light btn-sm ml-1" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share-alt"
-                            aria-hidden="true"></i>
-                           @lang('labels.frontend.course.Share')
+                        <button type="submit" class="btn btn-outline-light btn-sm ml-1" data-toggle="modal"
+                                data-target="#shareModal"><i class="fa fa-share-alt"
+                                                             aria-hidden="true"></i>
+                            @lang('labels.frontend.course.Share')
                         </button>
 
                         <!-- Button trigger modal -->
-  
+
                     </div>
                 </div>
             </div>
@@ -210,30 +212,30 @@
         ============================================= -->
     <section id="course-page" class="course-page-section">
         <div class="container">
-            @if (count(json_decode($course->learned)) > 0)
-            <div class="row col-lg-8 col-sm-12 coursesec d-block m-2">
-                <h2> What you will learn</h2>
-                <div class="row subtitle2">
-                @foreach (json_decode($course->learned) as $key => $learned)
-                        @if ($key < 6)
-                    <div class="col-lg-6 col-sm-12">
-                      
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            {{$learned}}</p>
-                       
+            @if ($course->learned != null && count(json_decode($course->learned)) > 0)
+                <div class="row col-lg-8 col-sm-12 coursesec d-block m-2">
+                    <h2> What you will learn</h2>
+                    <div class="row subtitle2">
+                        @foreach (json_decode($course->learned) as $key => $learned)
+                            @if ($key < 6)
+                                <div class="col-lg-6 col-sm-12">
+
+                                    <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                                        {{$learned}}</p>
+
+                                </div>
+                            @endif
+                            @if ($key > 6)
+                                <div class="col-lg-6 col-sm-12">
+
+                                    <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
+                                        {{$learned}}</p>
+
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
-                        @endif
-                        @if ($key > 6)
-                    <div class="col-lg-6 col-sm-12">
-                      
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            {{$learned}}</p>
-                       
-                    </div>
-                        @endif
-                    @endforeach
                 </div>
-            </div>
             @endif
             <div class="row  coursesec d-block m-3">
                 <h2>@lang('labels.frontend.course.requirements')</h2>
@@ -327,38 +329,6 @@
                 </div>
             </a>
 
-            <!-- Grid row -->
-        {{-- <!-- @if($course->mediaVideo && $course->mediavideo->count() > 0)
-                    <div class="course-single-text">
-                        @if($course->mediavideo != "")
-                            <div class="course-details-content">
-                                <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
-                                    @if($course->mediavideo->type == 'youtube')
-
-
-                                        <div id="player" class="js-player col divpoly embed-responsive embed-responsive-16by9" data-plyr-provider="youtube"
-                                             data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
-
-                                    @elseif($course->mediavideo->type == 'vimeo')
-                                        <div id="player" class="js-player" data-plyr-provider="vimeo"
-                                             data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
-                                    @elseif($course->mediavideo->type == 'upload')
-                                        <video poster="" id="player" class="js-player" playsinline controls>
-                                            <source src="{{$course->mediavideo->url}}" type="video/mp4"/>
-                                        </video>
-                                    @elseif($course->mediavideo->type == 'embed')
-                                        {!! $course->mediavideo->url !!}
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-        @endif --> --}}
-
-        <!-- <div class="col divpoly embed-responsive embed-responsive-16by9">
-                        <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/XHOmBV4js_E" allowfullscreen></iframe>
-                </div> -->
-            {{-- <h3>hello</h3> --}}
             <div class="col mr-3 pricebottom">
                 <h3 class="font49">
                     @if($course->free == 1)
@@ -375,7 +345,7 @@
                 <p class="smpara"><i class="fa fa-download" aria-hidden="true"></i>
 
 
-                {{ $fileCount }} Downloadable files
+                    {{ $fileCount }} Downloadable files
                     <!-- 65 downloadable resources -->
 
                 </p>
@@ -489,7 +459,7 @@
                                                 <p class="subtitle2">
                                                     <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
                                                 @if($item->model->chapter_id == $chapter->id)
-                                                    {{$item->model->title}}  
+                                                    {{$item->model->title}}
                                                 @endif
                                                 @if($item->model_type == 'App\Models\Test')
                                                     <p class="mb-0 text-primary">
@@ -510,7 +480,7 @@
 
         </div>
     </section>
-  
+
 
     <!-- Start of Related Courses section
            ============================================= -->
@@ -726,24 +696,25 @@
                     </div>
                 </div>
             </div>
-            @if($course->progress() == 100)
-            <form action="{{ route('courses.review',['id'=>$course_id]) }}" method="POST">
-                @csrf
-            <div class="row card">
-            <div class="col-12">
-            <h3 class="pt-3">write your review</h3>
-            <div class="p-5">
-            <textarea type="text" class="form-control " name="review"></textarea>
-            </div>
-            <div class="p-5">
-            <button type="submit" class="form-control offset-3 col-6 btn-success" > save </button>
-            </div>
-            </div>
+            @if (auth()->check())
+                @if($course->progress() == 100)
+                    <form action="{{ route('courses.review',['id'=>$course_id]) }}" method="POST">
+                        @csrf
+                        <div class="row card">
+                            <div class="col-12">
+                                <h3 class="pt-3">write your review</h3>
+                                <div class="p-5">
+                                    <textarea type="text" class="form-control " name="review"></textarea>
+                                </div>
+                                <div class="p-5">
+                                    <button type="submit" class="form-control offset-3 col-6 btn-success"> save</button>
+                                </div>
+                            </div>
 
-            </div>
-            </form>
+                        </div>
+                    </form>
+                @endif
             @endif
-
         </div>
 
     </section>
@@ -765,7 +736,7 @@
                 <div class="row" data-id="{{$teacher->id}}">
 
                     <div class="col-lg-1 col-md-2 col-sm-3">
-                        <img style="max-width: 100px" class="rounded-circle" src=" {{asset($teacher->avatar_location)}}"
+                        <img style="max-width: 100px" class="rounded-circle" src="{{$teacher->picture}}"
                              alt="">
 
                     <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
@@ -787,30 +758,30 @@
     <!-- End of Instructor info review section
           ============================================= -->
 
-                                <!-- Modal -->
-                                <div class="modal fade" id="shareModal" role="dialog">
-                                        <div class="modal-dialog">
-                                        
-                                          <!-- Modal content-->
-                                          <div class="modal-content">
-                                              <div class="mo-head">
-                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                  <h2>Share course</h2>
-                                              </div>
-                                              <div class="modal-body">
-                                                      <div class="sharethis-inline-share-buttons"></div>
-                                                      <input class="form-control mt-2" type="text" value="{{url()->current()}}">
-                                              </div>
-                                          </div>
-                                        </div>
-                                      </div>
+    <!-- Modal -->
+    <div class="modal fade" id="shareModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="mo-head">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2>Share course</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="sharethis-inline-share-buttons"></div>
+                    <input class="form-control mt-2" type="text" value="{{url()->current()}}">
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
 @push('after-scripts')
     <script>
         $(document).ready(function () {
-           
+
             $(document).on('change', '#sortBy', function () {
                 if ($(this).val() != "") {
                     location.href = '{{url()->current()}}?type=' + $(this).val();
@@ -828,11 +799,11 @@
                 $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
             });
             $('#myModal').on('shown.bs.modal', function () {
-  $('#myInput').trigger('focus')
-})
+                $('#myInput').trigger('focus')
+            })
         });
         $(window).load(function () {
-    $('.st-btn').css('display','inline-block');
+            $('.st-btn').css('display', 'inline-block');
         });
 
     </script>

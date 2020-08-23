@@ -130,7 +130,7 @@
                                         <div class="prof-img ">
                                             <a href="{{route('teachers.show',['id'=>$teacher->teacher->id])}}"><img
                                                         class="teacher-image shadow-lg p-3"
-                                                        src="{{asset($teacher->teacher->avatar_location)}}"
+                                                        src="{{$teacher->teacher->picture}}"
                                                         alt=""></a>
                                         </div>
                                     </div>

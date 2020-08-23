@@ -58,7 +58,7 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <img src="{{ asset($logged_in_user->avatar_location) }}" class="img-avatar" alt="{{ $logged_in_user->email }}">
+            <img src="{{ $logged_in_user->picture}}" class="img-avatar" alt="{{ $logged_in_user->email }}">
               <span style="right: 0;left: inherit" class="badge d-md-none d-lg-none d-none mob-notification badge-success">!</span>
             <span class="d-md-down-none">{{ $logged_in_user->full_name }}</span>
           </a>

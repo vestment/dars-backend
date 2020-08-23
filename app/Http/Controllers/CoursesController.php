@@ -134,7 +134,13 @@ class CoursesController extends Controller
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
         }
         $lessons = $course->courseTimeline()->orderby('sequence', 'asc');
-        // dd($lessons);
+        $lessonsMedia =  \App\Models\Lesson::where('course_id', $course_id)->get();
+        $fileCount = 0;
+        foreach($lessonsMedia    as $lesson) {
+            $fileCount += count($lesson->downloadableMedia);
+        }
+        // dd($fileCount);
+        $course_hours = Course::where('course_hours', $course_slug);
 
         if (\Auth::check()) {
 
@@ -162,7 +168,7 @@ class CoursesController extends Controller
             $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
         }
 //dd($course->getDataFromColumn('title'));
-        return view($this->path . '.courses.course', compact('related_courses','optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view($this->path . '.courses.course', compact('fileCount','course_hours','related_courses','optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)

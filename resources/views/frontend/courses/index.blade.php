@@ -314,13 +314,13 @@
                                                         {{-- <img src="{{asset($teacher->avatar_location)}}"
                                                              class="rounded-circle teach_img"> --}}
 
-                                                        @if($teacher->avatar_location == "")
+                                                        @if($teacher->picture == "")
                                                             <img class="rounded-circle teach_img"
                                                                  src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
                                                                  alt="">
                                                         @else
                                                             <img class="rounded-circle teach_img"
-                                                                 src="{{asset($teacher->avatar_location)}}"
+                                                                 src="{{$teacher->picture}}"
                                                                  alt="">
                                                         @endif
                                                     @endforeach

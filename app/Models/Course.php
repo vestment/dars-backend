@@ -199,7 +199,6 @@ class Course extends Model
     public function progress()
     {
         $main_chapter_timeline = $this->lessons()->where('published', 1)->pluck('id')->merge($this->tests()->pluck('id'));
-
         $completed_lessons = auth()->user()->chapters()->where('course_id', $this->id)->pluck('model_id');
 
         if ($completed_lessons->count() > 0) {

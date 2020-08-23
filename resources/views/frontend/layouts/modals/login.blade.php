@@ -114,13 +114,13 @@
                         <h5 class="mt-5"> @lang('labels.frontend.login.login_with') </h5>
                         <div class="row mt-3">
                             <div class="col-md-6">
-                                <a href="{{ url('login/facebook') }}"
+                                <a href="{{ route('frontend.auth.social.login',['provider'=> 'facebook']) }}"
                                    class="btn btn-block btn-primary btn-lg text-white"><i
                                             class="fa fa-facebook-f mr-2"></i> @lang('labels.frontend.login.facebook')
                                 </a>
                             </div>
                             <div class="col-md-6 mt-3 mt-md-0">
-                                <a class="btn btn-danger btn-block btn-lg text-white"><i
+                                <a href="{{ route('frontend.auth.social.login',['provider'=> 'google']) }}" class="btn btn-danger btn-block btn-lg text-white"><i
                                             class="fa fa-google mr-2"></i> @lang('labels.frontend.login.google')</a>
                             </div>
                         </div>
@@ -138,137 +138,137 @@
         </div>
     </div>
 
-        @endif
-        @push('after-scripts')
+@endif
+@push('after-scripts')
 
 
 
 
-            <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
-            <script src="{{asset('assets/js/popper.min.js')}}"></script>
-            <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-            <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
-            <script src="{{asset('assets/js/jarallax.js')}}"></script>
-            <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
-            <script src="{{asset('assets/js/lightbox.js')}}"></script>
-            <script src="{{asset('assets/js/jquery.meanmenu.js')}}"></script>
-            <script src="{{asset('assets/js/scrollreveal.min.js')}}"></script>
-            <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
-            <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
-            <script src="{{asset('assets/js/jquery-ui.js')}}"></script>
-            <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
+    <script src="{{asset('assets/js/jarallax.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{asset('assets/js/lightbox.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.meanmenu.js')}}"></script>
+    <script src="{{asset('assets/js/scrollreveal.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
+    <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery-ui.js')}}"></script>
+    <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
 
-            <script src="{{asset('assets/js/switch.js')}}"></script>
-            <script>
-                $(function () {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    <script src="{{asset('assets/js/switch.js')}}"></script>
+    <script>
+        $(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                $('.response-success').empty();
+                $('.response-success').show().html('Checking credentials...');
+                $('.response-error').hide().empty();
+                $.ajax({
+                    type: $this.attr('method'),
+                    url: $this.attr('action'),
+                    data: $this.serializeArray(),
+                    dataType: $this.data('type'),
+                    success: function (response) {
+                        $('#login-email-error').empty();
+                        $('#login-password-error').empty();
+                        $('#login-captcha-error').empty();
+                        $('.response-error').hide().html('');
+                        if (response.errors) {
+                            $('.response-success').hide().html('');
+                            if (response.errors.email) {
+                                $('#login-email-error').html(response.errors.email[0]);
+                            }
+                            if (response.errors.password) {
+                                $('#login-password-error').html(response.errors.password[0]);
+                            }
+
+                            var captcha = "g-recaptcha-response";
+                            if (response.errors[captcha]) {
+                                $('#login-captcha-error').html(response.errors[captcha][0]);
+                            }
                         }
-                    });
+                        if (response.success) {
+                            $('#loginForm')[0].reset();
+                            if (response.redirect == 'back') {
+                                window.location.href = "{{url('/')}}"
+                            } else {
+                                window.location.href = "{{route('admin.dashboard')}}"
+                            }
+                            $('.response-error').hide().html('');
+                            $('.response-success').show().html(response.message);
 
-                        $('#loginForm').on('submit', function (e) {
-                            e.preventDefault();
-
-                            var $this = $(this);
-                            $('.response-success').empty();
-                            $('.response-success').show().html('Checking credentials...');
-                            $('.response-error').hide().empty();
-                            $.ajax({
-                                type: $this.attr('method'),
-                                url: $this.attr('action'),
-                                data: $this.serializeArray(),
-                                dataType: $this.data('type'),
-                                success: function (response) {
-                                    $('#login-email-error').empty();
-                                    $('#login-password-error').empty();
-                                    $('#login-captcha-error').empty();
-                                    $('.response-error').hide().html('');
-                                    if (response.errors) {
-                                        $('.response-success').hide().html('');
-                                        if (response.errors.email) {
-                                            $('#login-email-error').html(response.errors.email[0]);
-                                        }
-                                        if (response.errors.password) {
-                                            $('#login-password-error').html(response.errors.password[0]);
-                                        }
-
-                                        var captcha = "g-recaptcha-response";
-                                        if (response.errors[captcha]) {
-                                            $('#login-captcha-error').html(response.errors[captcha][0]);
-                                        }
-                                    }
-                                    if (response.success) {
-                                        $('#loginForm')[0].reset();
-                                        if (response.redirect == 'back') {
-                                            window.location.href = "{{url('/')}}"
-                                        } else {
-                                            window.location.href = "{{route('admin.dashboard')}}"
-                                        }
-                                        $('.response-error').hide().html('');
-                                        $('.response-success').show().html(response.message);
-
-                                    }
-                                },
-                                error: function (jqXHR) {
-                                    var response = $.parseJSON(jqXHR.responseText);
-                                    console.log(jqXHR)
-                                    if (response.message) {
-                                        $('.response-success').hide().html('');
-                                        $('.response-error').show().html(response.message);
-                                    }
-                                }
-                            });
-                        });
-
-                        $(document).on('submit', '#registerForm', function (e) {
-                            e.preventDefault();
-                            console.log('he')
-                            var $this = $(this);
-
-                            $.ajax({
-                                type: $this.attr('method'),
-                                url: "{{  route('frontend.auth.register.post')}}",
-                                data: $this.serializeArray(),
-                                dataType: $this.data('type'),
-                                success: function (data) {
-                                    $('#first-name-error').empty()
-                                    $('#last-name-error').empty()
-                                    $('#email-error').empty()
-                                    $('#password-error').empty()
-                                    $('#captcha-error').empty()
-                                    if (data.errors) {
-                                        if (data.errors.first_name) {
-                                            $('#first-name-error').html(data.errors.first_name[0]);
-                                        }
-                                        if (data.errors.last_name) {
-                                            $('#last-name-error').html(data.errors.last_name[0]);
-                                        }
-                                        if (data.errors.email) {
-                                            $('#email-error').html(data.errors.email[0]);
-                                        }
-                                        if (data.errors.password) {
-                                            $('#password-error').html(data.errors.password[0]);
-                                        }
-
-                                        var captcha = "g-recaptcha-response";
-                                        if (data.errors[captcha]) {
-                                            $('#captcha-error').html(data.errors[captcha][0]);
-                                        }
-                                    }
-                                    if (data.success) {
-                                        $('#registerForm')[0].reset();
-                                        $('#register').removeClass('active').addClass('fade')
-                                        $('.error-response').empty();
-                                        $('#login').addClass('active').removeClass('fade')
-                                        $('.success-response').empty().html("@lang('labels.frontend.modal.registration_message')");
-                                    }
-                                }
-                            });
-                        });
-
+                        }
+                    },
+                    error: function (jqXHR) {
+                        var response = $.parseJSON(jqXHR.responseText);
+                        console.log(jqXHR)
+                        if (response.message) {
+                            $('.response-success').hide().html('');
+                            $('.response-error').show().html(response.message);
+                        }
+                    }
                 });
-            </script>
+            });
+
+            $(document).on('submit', '#registerForm', function (e) {
+                e.preventDefault();
+                console.log('he')
+                var $this = $(this);
+
+                $.ajax({
+                    type: $this.attr('method'),
+                    url: "{{  route('frontend.auth.register.post')}}",
+                    data: $this.serializeArray(),
+                    dataType: $this.data('type'),
+                    success: function (data) {
+                        $('#first-name-error').empty()
+                        $('#last-name-error').empty()
+                        $('#email-error').empty()
+                        $('#password-error').empty()
+                        $('#captcha-error').empty()
+                        if (data.errors) {
+                            if (data.errors.first_name) {
+                                $('#first-name-error').html(data.errors.first_name[0]);
+                            }
+                            if (data.errors.last_name) {
+                                $('#last-name-error').html(data.errors.last_name[0]);
+                            }
+                            if (data.errors.email) {
+                                $('#email-error').html(data.errors.email[0]);
+                            }
+                            if (data.errors.password) {
+                                $('#password-error').html(data.errors.password[0]);
+                            }
+
+                            var captcha = "g-recaptcha-response";
+                            if (data.errors[captcha]) {
+                                $('#captcha-error').html(data.errors[captcha][0]);
+                            }
+                        }
+                        if (data.success) {
+                            $('#registerForm')[0].reset();
+                            $('#register').removeClass('active').addClass('fade')
+                            $('.error-response').empty();
+                            $('#login').addClass('active').removeClass('fade')
+                            $('.success-response').empty().html("@lang('labels.frontend.modal.registration_message')");
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
 
 
 </body>

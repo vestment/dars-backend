@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Frontend\Auth\LoginController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
-use App\Http\Controllers\Frontend\Auth\SocialLoginController;
 use App\Http\Controllers\Frontend\Auth\ResetPasswordController;
 use App\Http\Controllers\Frontend\Auth\ConfirmAccountController;
 use App\Http\Controllers\Frontend\Auth\ForgotPasswordController;
@@ -50,9 +49,9 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
 //        Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
         Route::post('login', [LoginController::class, 'login'])->name('login.post');
 
-        // Socialite Routes
-        Route::get('login/{provider}', [SocialLoginController::class, 'login'])->name('social.login');
-        Route::get('login/{provider}/callback', [SocialLoginController::class, 'login']);
+        //Socail login
+        Route::get('/redirect/{provider}', 'SocialAccountController@socialLogin')->name('social.login');
+        Route::get('/{provider}/callback', 'SocialAccountController@handleProviderCallback');
 
         // Registration Routes
         if (config('access.registration')) {

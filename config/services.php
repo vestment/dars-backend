@@ -60,8 +60,8 @@ return [
 
     'facebook' => [
         'active'        => env('FACEBOOK_ACTIVE'),
-        'client_id'     => env('FACEBOOK_CLIENT_ID'),
-        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'client_id'     => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
         'redirect'      => env('FACEBOOK_REDIRECT'),
         'scopes'        => [],
         'with'          => [],
@@ -88,10 +88,7 @@ return [
          * Default scopes array also has: 'https://www.googleapis.com/auth/plus.login'
          * https://medium.com/@njovin/fixing-laravel-socialite-s-google-permissions-2b0ef8c18205
          */
-        'scopes' => [
-            'https://www.googleapis.com/auth/plus.me',
-            'https://www.googleapis.com/auth/plus.profile.emails.read.openid',
-        ],
+        'scopes' => [],
 
         'with' => [],
     ],

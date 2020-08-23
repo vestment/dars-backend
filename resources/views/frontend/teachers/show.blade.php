@@ -60,11 +60,11 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="teacher-img text-center" >
-                                        @if($teacher->avatar_location == "")
+                                        @if($teacher->picture == "")
                                                             <img class="teacher-image p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
                                                                  alt="">
                                                         @else
-                                                                <img class="teacher-image p-3" src="{{asset($teacher->avatar_location)}}"
+                                                                <img class="teacher-image p-3" src="{{$teacher->picture}}"
                                                                  alt="">
                                                         @endif
 
