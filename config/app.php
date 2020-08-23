@@ -222,7 +222,7 @@ return [
         Chumper\Zipper\ZipperServiceProvider::class,
         BC\Laravel\DropboxDriver\ServiceProvider::class,
         Mtownsend\ReadTime\Providers\ReadTimeServiceProvider::class,
-
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -230,6 +230,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
+
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
         App\Providers\EventServiceProvider::class,

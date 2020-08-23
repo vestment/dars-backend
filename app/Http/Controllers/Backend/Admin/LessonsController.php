@@ -31,12 +31,17 @@ class LessonsController extends Controller
         if (!Gate::allows('lesson_access')) {
             return abort(401);
         }
-      $courses = Course::has('category')->ofTeacher()->pluck('title', 'id')->prepend('Please select', '');
-      $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
-      $lessons = Lesson::get();
+        $courses = Course::has('category')->ofTeacher()->pluck('title', 'id')->prepend('Please select', '');
+        $allChapters = Chapter::with('course')->get();
+        $chapters = ['Please Select'];
+        foreach ($allChapters as $key => $chapter) {
+            $chapters[$chapter->id] = $chapter->getDataFromColumn('title').' - '.$chapter->course->getDataFromColumn('title');
+        }
+
+        $lessons = Lesson::get();
 
 
-        return view('backend.lessons.index', compact('courses','chapters','lessons'));
+        return view('backend.lessons.index', compact('courses', 'chapters', 'lessons'));
     }
 
     /**
@@ -138,41 +143,25 @@ class LessonsController extends Controller
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
-        $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
-         $courses_ar = Course::select('title_ar','title', 'id')->get();
-        
-            foreach($courses_ar as $key=>$course_ar){
-               
-                if($course_ar->title_ar){
-                    $coursew_ar[]=$course_ar->title_ar;
-                }
-                if(!$course_ar->title_ar){
-                    $coursew_ar[]=$course_ar->title;
-                }
+        $courses = Course::has('category')->ofTeacher()->select('title_ar', 'title', 'id')->get();
+//        $allCourses = [];
+//        foreach ($courses as $key => $course) {
+//            $allCourses[$course->id] = $course->getDataFromColumn('title');
+//        }
+        $chapters = Chapter::with('course')->get();
+        $allChapters = [];
+        foreach ($chapters as $key => $chapter) {
+            $allChapters[$chapter->id] = $chapter->getDataFromColumn('title').' - '.$chapter->course->getDataFromColumn('title');
+        }
 
-            }
-        $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
-        $chapters_ar = Chapter::select('title_ar','title', 'id')->get();
-            foreach($chapters_ar as $key=>$chapter_ar){
-               
-                if($chapter_ar->title_ar){
-                    $chapterw_ar[]=$chapter_ar->title_ar;
-                }
-                if(!$chapter_ar->title_ar){
-                    $chapterw_ar[]=$chapter_ar->title;
-                }
 
-            }
-        
-
-        
-        return view('backend.lessons.create', compact('courses','chapters','coursew_ar','chapterw_ar'));
+        return view('backend.lessons.create', compact('courses', 'chapters', 'allChapters'));
     }
 
     /**
      * Store a newly created Lesson in storage.
      *
-     * @param  \App\Http\Requests\StoreLessonsRequest $request
+     * @param \App\Http\Requests\StoreLessonsRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreLessonsRequest $request)
@@ -184,12 +173,12 @@ class LessonsController extends Controller
         $slug = "";
         if (($request->slug == "") || $request->slug == null) {
             $slug = str_slug($request->title);
-        }else if($request->slug != null){
+        } else if ($request->slug != null) {
             $slug = $request->slug;
         }
 
-        $slug_lesson = Lesson::where('slug','=',$slug)->first();
-        if($slug_lesson != null){
+        $slug_lesson = Lesson::where('slug', '=', $slug)->first();
+        if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
 
@@ -198,8 +187,6 @@ class LessonsController extends Controller
 
         $lesson->slug = $slug;
         $lesson->save();
-
-
 
 
         //Saving  videos
@@ -292,7 +279,7 @@ class LessonsController extends Controller
     /**
      * Show the form for editing Lesson.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -302,43 +289,43 @@ class LessonsController extends Controller
         }
         $videos = '';
         $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
-        $courses_ar = Course::select('title_ar','title', 'id')->get();
-       
-           foreach($courses_ar as $key=>$course_ar){
-              
-               if($course_ar->title_ar){
-                   $coursew_ar[]=$course_ar->title_ar;
-               }
-               if(!$course_ar->title_ar){
-                   $coursew_ar[]=$course_ar->title;
-               }
+        $courses_ar = Course::select('title_ar', 'title', 'id')->get();
 
-           }
-       $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
-       $chapters_ar = Chapter::select('title_ar','title', 'id')->get();
-           foreach($chapters_ar as $key=>$chapter_ar){
-              
-               if($chapter_ar->title_ar){
-                   $chapterw_ar[]=$chapter_ar->title_ar;
-               }
-               if(!$chapter_ar->title_ar){
-                   $chapterw_ar[]=$chapter_ar->title;
-               }
+        foreach ($courses_ar as $key => $course_ar) {
 
-           }
+            if ($course_ar->title_ar) {
+                $coursew_ar[] = $course_ar->title_ar;
+            }
+            if (!$course_ar->title_ar) {
+                $coursew_ar[] = $course_ar->title;
+            }
+
+        }
+        $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
+        $chapters_ar = Chapter::select('title_ar', 'title', 'id')->get();
+        foreach ($chapters_ar as $key => $chapter_ar) {
+
+            if ($chapter_ar->title_ar) {
+                $chapterw_ar[] = $chapter_ar->title_ar;
+            }
+            if (!$chapter_ar->title_ar) {
+                $chapterw_ar[] = $chapter_ar->title;
+            }
+
+        }
         $lesson = Lesson::with('media')->findOrFail($id);
         if ($lesson->media) {
             $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
         }
 
-        return view('backend.lessons.edit', compact('lesson', 'courses', 'videos','chapterw_ar','coursew_ar','chapters'));
+        return view('backend.lessons.edit', compact('lesson', 'courses', 'videos', 'chapterw_ar', 'coursew_ar', 'chapters'));
     }
 
     /**
      * Update Lesson in storage.
      *
-     * @param  \App\Http\Requests\UpdateLessonsRequest $request
-     * @param  int $id
+     * @param \App\Http\Requests\UpdateLessonsRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateLessonsRequest $request, $id)
@@ -350,12 +337,12 @@ class LessonsController extends Controller
         $slug = "";
         if (($request->slug == "") || $request->slug == null) {
             $slug = str_slug($request->title);
-        }else if($request->slug != null){
+        } else if ($request->slug != null) {
             $slug = $request->slug;
         }
 
-        $slug_lesson = Lesson::where('slug','=',$slug)->where('id','!=',$id)->first();
-        if($slug_lesson != null){
+        $slug_lesson = Lesson::where('slug', '=', $slug)->where('id', '!=', $id)->first();
+        if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
 
@@ -429,9 +416,9 @@ class LessonsController extends Controller
                 }
             }
         }
-        if($request->hasFile('add_pdf')){
+        if ($request->hasFile('add_pdf')) {
             $pdf = $lesson->mediaPDF;
-            if($pdf){
+            if ($pdf) {
                 $pdf->delete();
             }
         }
@@ -467,7 +454,7 @@ class LessonsController extends Controller
     /**
      * Display Lesson.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -489,7 +476,7 @@ class LessonsController extends Controller
     /**
      * Remove Lesson from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -527,7 +514,7 @@ class LessonsController extends Controller
     /**
      * Restore Lesson from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
@@ -544,7 +531,7 @@ class LessonsController extends Controller
     /**
      * Permanently delete Lesson from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function perma_del($id)
@@ -554,19 +541,18 @@ class LessonsController extends Controller
         }
         $lesson = Lesson::onlyTrashed()->findOrFail($id);
 
-        if(File::exists(public_path('/storage/uploads/'.$lesson->lesson_image))) {
-            File::delete(public_path('/storage/uploads/'.$lesson->lesson_image));
-            File::delete(public_path('/storage/uploads/thumb/'.$lesson->lesson_image));
+        if (File::exists(public_path('/storage/uploads/' . $lesson->lesson_image))) {
+            File::delete(public_path('/storage/uploads/' . $lesson->lesson_image));
+            File::delete(public_path('/storage/uploads/thumb/' . $lesson->lesson_image));
         }
 
         $timelineStep = CourseTimeline::where('model_id', '=', $id)
             ->where('course_id', '=', $lesson->course->id)->first();
-        if($timelineStep){
+        if ($timelineStep) {
             $timelineStep->delete();
         }
 
         $lesson->forceDelete();
-
 
 
         return back()->withFlashSuccess(trans('alerts.backend.general.deleted'));

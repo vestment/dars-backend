@@ -92,7 +92,7 @@ class CoursesController extends Controller
         $teachers = User::get();
         $popular_course = Course::withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
-        return view($this->path . '.courses.index', compact('teacher_dat', 'teachers', 'popular_course', 'course_rating', 'teacher_data', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
+        return view('frontend.courses.index', compact('teacher_dat', 'teachers', 'popular_course', 'course_rating', 'teacher_data', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
     }
 
     public function show($course_slug)
@@ -348,7 +348,7 @@ class CoursesController extends Controller
             // dd($teacher);
             $cour = Course::with('teachers')->get();
             //  dd($cour);
-            return view($this->path . '.courses.index', compact('courses', 'teachers', 'teacher_data', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
+            return view('frontend.courses.index', compact('courses', 'teachers', 'teacher_data', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
         }
         return abort(404);
     }

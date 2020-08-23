@@ -33,24 +33,10 @@
         </div>
         <div class="card-body">
             <div class="row"> 
-            <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('course_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
-                    @if(app()->getLocale() == 'en')
-                    {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
-                    @endif
-                    @if(app()->getLocale() == 'ar')
-                    {!! Form::select('course_id', $courses_ar,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control select2']) !!}
-                    @endif
-                </div>
-                <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('chapter_id', trans('labels.backend.lessons.fields.chapter'), ['class' => 'control-label']) !!}
-                    @if(app()->getLocale() == 'en')
-                    {!! Form::select('chapter_id', $chapters,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control select2']) !!}
-                    @endif
-                    @if(app()->getLocale() == 'ar')
-                    {!! Form::select('chapter_id', $chapterw_ar,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control select2']) !!}
-                    @endif
 
+                <div class="col-12 col-lg-12 form-group">
+                    {!! Form::label('chapter_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
+                    {!! Form::select('chapter_id', $chapters,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'chapter_id']) !!}
                 </div>
 
             </div>

@@ -53,11 +53,11 @@
    
 </div>
 
-<div class="col-2">
-        <button class="btn bt-pay shadow-none text-center w-100" id="applyCoupon"
-        type="button">
-    @lang('labels.frontend.cart.pay')
-</button>
-</div>
+{{--<div class="col-2">--}}
+{{--        <button class="btn bt-pay shadow-none text-center w-100" id="applyCoupon"--}}
+{{--        type="button">--}}
+{{--    @lang('labels.frontend.cart.pay')--}}
+{{--</button>--}}
+{{--</div>--}}
 <p class="d-none" id="coupon-error"></p>   
 </div>

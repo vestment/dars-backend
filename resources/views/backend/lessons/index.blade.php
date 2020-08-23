@@ -39,12 +39,7 @@
             @endcan
         </div>
         <div class="card-body">
-            <!-- <div class="row">
-                <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('course_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
-                    {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'course_id']) !!}
-                </div>
-            </div> -->
+
             <div class="row">
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('chapter_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
@@ -191,8 +186,10 @@
             $(".js-example-placeholder-single").select2({
                 placeholder: "{{trans('labels.backend.lessons.select_course')}}",
             });
-            $(document).on('change', '#chapter_id', function (e) {
-                var chapter_id = $(this).val();
+            var chapter_id = $('#chapter_id').val();
+            $('#chapter_id').on('change', function (e) {
+                var chapter_id = $('#chapter_id').val();
+                console.log(chapter_id)
                 window.location.href = "{{route('admin.lessons.index')}}" + "?chapter_id=" + chapter_id
             });
         });

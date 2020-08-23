@@ -19,8 +19,8 @@
         <div class="card-body table-responsive">
             <div class="row">
                 <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('course_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
-                    {!! Form::select('course_id', $courses,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'course_id']) !!}
+                    {!! Form::label('course_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
+                    {!! Form::select('course_id', $chapters,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'course_id']) !!}
                 </div>
             </div>
             <div class="d-block">
