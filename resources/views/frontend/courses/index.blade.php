@@ -112,8 +112,8 @@
                                                         class="form-control listing-filter-form select">
                                                     <option value="">@lang('labels.frontend.course.select_category')</option>
                                                     @if(count($categories) > 0)
-                                                        @foreach($categories as $category)
-                                                            <option value="{{$category->id}}">{{$category->getDataFromColumn('name')}}</option>
+                                                        @foreach($categories as $allCategory)
+                                                            <option value="{{$allCategory->id}}">{{$allCategory->getDataFromColumn('name')}}</option>
 
                                                         @endforeach
                                                     @endif
@@ -256,7 +256,6 @@
     @endif
 
     @if(@isset($category))
-
         <section class="course-page-section">
             <div class="container" id="featured-courses">
                 <div class="section-title mb20 headline mb-5">
@@ -423,10 +422,10 @@
     @endif
     <!-- End of course section
         ============================================= -->
-
+        @if(@isset($category))
     @include('frontend.layouts.partials.teachers')
 
-
+    @endif
 
     {{-- start myyy of course section --}}
     @if(@isset($category))
@@ -673,7 +672,7 @@
             var maxPrice = $('.price-filter-input').val();
             var isFree = $('#isFree').prop('checked');
             var sortBy = $('#sortFilter').val();
-            var category = '{{$category}}';
+            var category = '{{$category->id ?? null}}';
             $('.filters-section .btn-apply').on('click', function (e) {
                 e.preventDefault();
                 var rating = $('.rating-filter input:checked').data('value') ? $('.rating-filter input:checked').data('value') : '';
@@ -681,7 +680,7 @@
                 var maxPrice = $('.price-filter-input').val();
                 var isFree = $('#isFree').prop('checked');
                 var sortBy = $('#sortFilter').val();
-                var category = '{{$category}}';
+                var category = '{{$category->id ?? null}}';
                 $.ajax({
                     url: "{{route('courses.filterCategory')}}",
                     method: "GET",

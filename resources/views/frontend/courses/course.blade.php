@@ -146,7 +146,7 @@
                                 @endif
 
                             @else
-                                <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                                <h6 class="alert alert-danger alertclass"> @lang('labels.frontend.course.buy_note')</h6>
                             @endif
                             @else
 
@@ -190,10 +190,13 @@
                                         class="fa fa-heart"
                                         aria-hidden="true"></i> @lang('labels.frontend.course.wishlist')</a>
                         @endif
-                        <button type="submit" class="btn btn-outline-light btn-sm ml-1"><i class="fa fa-share-alt"
-                                                                                           aria-hidden="true"></i>
-                            @lang('labels.frontend.course.Share')
+                        <button type="submit" class="btn btn-outline-light btn-sm ml-1" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share-alt"
+                            aria-hidden="true"></i>
+                           @lang('labels.frontend.course.Share')
                         </button>
+
+                        <!-- Button trigger modal -->
+  
                     </div>
                 </div>
             </div>
@@ -207,43 +210,31 @@
         ============================================= -->
     <section id="course-page" class="course-page-section">
         <div class="container">
+            @if (count(json_decode($course->learned)) > 0)
             <div class="row col-lg-8 col-sm-12 coursesec d-block m-2">
                 <h2> What you will learn</h2>
                 <div class="row subtitle2">
+                @foreach (json_decode($course->learned) as $key => $learned)
+                        @if ($key < 6)
                     <div class="col-lg-6 col-sm-12">
+                      
                         <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Free $99 384 page book version of this course!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Get many customers by using the best networking tool!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Create financial models from scratch (the Professor makes it so easy to understand).</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Understand how macro economics and micro economics works.</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
+                            {{$learned}}</p>
+                       
                     </div>
+                        @endif
+                        @if ($key > 6)
                     <div class="col-lg-6 col-sm-12">
+                      
                         <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Superb reviews!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Get any job the easy way.</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Raise a lot of money quickly.</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Analyze company financials with ease!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Change careers easily.</p>
+                            {{$learned}}</p>
+                       
                     </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
+            @endif
             <div class="row  coursesec d-block m-3">
                 <h2>@lang('labels.frontend.course.requirements')</h2>
             </div>
@@ -384,7 +375,8 @@
                 <p class="smpara"><i class="fa fa-download" aria-hidden="true"></i>
 
 
-                    65 downloadable resources
+                {{ $fileCount }} Downloadable files
+                    <!-- 65 downloadable resources -->
 
                 </p>
                 <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
@@ -497,7 +489,7 @@
                                                 <p class="subtitle2">
                                                     <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
                                                 @if($item->model->chapter_id == $chapter->id)
-                                                    {{$item->model->title}}  {{$item->model->downloadableMedia}}
+                                                    {{$item->model->title}}  
                                                 @endif
                                                 @if($item->model_type == 'App\Models\Test')
                                                     <p class="mb-0 text-primary">
@@ -518,89 +510,7 @@
 
         </div>
     </section>
-    <!-- <section id="course-page" class="course-page-section">
-        <div class="container">
-            <div class="row  coursecontent d-block m-2">
-                {{-- <h2>@lang('labels.frontend.course.course_content') </h2> --}}
-            </div>
-            <div class="row smpara d-block m-2">
-                {{-- <p></i> <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.chapters') • --}}
-    {{-- <span>  {{$course->chapterCount()}} </span>  @lang('labels.frontend.course.lessons') • 8h 0m total length</p> --}}
-            </div>
-            
-            <div class="row m-2 shadow">
-            
-
-                <div class="accordion" id="accordionExample">
-                    <div class="card">
-                        <div class="card-header" id="headingOne">
-                            <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
-                                Chapter 1 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
-                            </button>
-                            </h2>
-                        </div>
-                
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <div class="card-body">
-                                <div class="bordered">
-                                    <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                                    <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="bordered">
-                                    <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                                    <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                                </div>
-                            </div>
-
-                        </div>
-                       
-                    </div>
-
-                    <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Chapter 2 <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
-                        </button>
-                        </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div class="card-body">
-                            <div class="bordered">
-                                <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="bordered">
-                                <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="bordered">
-                                <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="bordered">
-                                <p class="subtitle2"> Adding Value to Customers- Episode 1 </p>
-                                <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!-- End of course content section
-        ============================================= -->
-
+  
 
     <!-- Start of Related Courses section
            ============================================= -->
@@ -816,6 +726,23 @@
                     </div>
                 </div>
             </div>
+            @if($course->progress() == 100)
+            <form action="{{ route('courses.review',['id'=>$course_id]) }}" method="POST">
+                @csrf
+            <div class="row card">
+            <div class="col-12">
+            <h3 class="pt-3">write your review</h3>
+            <div class="p-5">
+            <textarea type="text" class="form-control " name="review"></textarea>
+            </div>
+            <div class="p-5">
+            <button type="submit" class="form-control offset-3 col-6 btn-success" > save </button>
+            </div>
+            </div>
+
+            </div>
+            </form>
+            @endif
 
         </div>
 
@@ -860,12 +787,30 @@
     <!-- End of Instructor info review section
           ============================================= -->
 
+                                <!-- Modal -->
+                                <div class="modal fade" id="shareModal" role="dialog">
+                                        <div class="modal-dialog">
+                                        
+                                          <!-- Modal content-->
+                                          <div class="modal-content">
+                                              <div class="mo-head">
+                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                  <h2>Share course</h2>
+                                              </div>
+                                              <div class="modal-body">
+                                                      <div class="sharethis-inline-share-buttons"></div>
+                                                      <input class="form-control mt-2" type="text" value="{{url()->current()}}">
+                                              </div>
+                                          </div>
+                                        </div>
+                                      </div>
 
 @endsection
 
 @push('after-scripts')
     <script>
         $(document).ready(function () {
+           
             $(document).on('change', '#sortBy', function () {
                 if ($(this).val() != "") {
                     location.href = '{{url()->current()}}?type=' + $(this).val();
@@ -882,6 +827,12 @@
                 // do something...
                 $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
             });
+            $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+        });
+        $(window).load(function () {
+    $('.st-btn').css('display','inline-block');
         });
 
     </script>

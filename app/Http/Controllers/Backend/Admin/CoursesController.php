@@ -188,6 +188,9 @@ class CoursesController extends Controller
         })->get()->pluck('name', 'id');
 
         $courses = Course::pluck('title', 'id');
+        $learned = Course::pluck('learned', 'id');
+
+        $course_hours = Course::pluck('course_hours', 'id');
 
         $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
@@ -202,7 +205,7 @@ class CoursesController extends Controller
         }
 
 
-        return view('backend.courses.create', compact('teachers', 'ar_full_name', 'categ_name', 'courses'));
+        return view('backend.courses.create', compact('teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours'));
     }
 
     /**
@@ -230,10 +233,14 @@ class CoursesController extends Controller
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
+        // dd($request->all());
         $course = Course::create($request->all());
         $course->slug = $slug;
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
+        $course->learned = $request->learned ? json_encode($request->learned) : null;
+
+
         $course->save();
 
         //Saving  videos
@@ -344,8 +351,14 @@ class CoursesController extends Controller
 
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
-
-        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses'));
+        // $allLearned = $course->pluck('learned', 'id');
+        $learned = $course->learned ? json_decode($course->learned) : null;
+        $prevLearned = [];
+        foreach ($learned as $key => $value) {
+        $prevLearned[$value] = $value;
+        }
+    //    dd($allTeachers);
+        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses','prevLearned','learned'));
     }
 
     /**
@@ -443,14 +456,16 @@ class CoursesController extends Controller
             }
         }
 
-
         $course->update($request->all());
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
+        $course->learned = $request->learn ? json_encode($request->learn) : null;
+        
         if ($request->opt_courses && $request->mand_courses) {
-            if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0) {
+            if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0 || count($request->learned) > 0) {
                 $course->optional_courses = json_encode($request->opt_courses);
                 $course->mandatory_courses = json_encode($request->mand_courses);
+                $course->learned = json_encode($request->learned);
                 $course->save();
             }
         }
@@ -488,11 +503,12 @@ class CoursesController extends Controller
         $course = Course::findOrFail($id);
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
+        $learn = $course->learned ? json_decode($course->learned) : null;
 
 
         $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
 
-        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses'));
+        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses','learn'));
     }
 
 

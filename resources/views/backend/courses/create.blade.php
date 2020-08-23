@@ -241,6 +241,14 @@
                 </div>
             @endif
 
+
+                <div class="row">
+                    <div class="col-10 form-group">
+                        {!! Form::label('learned',trans('labels.backend.courses.fields.learned'), ['class' => 'control-label']) !!}
+                        {!! Form::select('learned[]',$learned, old('learned'), ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                    </div>    
+                </div>
+
         
 
             <div class="row">
@@ -251,15 +259,7 @@
             </div>
         </div>
     </div>
-    {!! Form::close() !!}
-{{--    {{ Form::open(array('route'=>['admin.courses.store2'],'method'=>'POST', 'files'=>true )) }}--}}
-
-{{--    {!! Form::file('video_file', ['class' => 'form-control mt-3', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video_file'  ]) !!}--}}
-
-{{--    <input type="submit" value="Import Language CSV ">--}}
-{{--    {{Form::token()}}--}}
-{{--    {{Form::close()}}--}}
-
+   
 @stop
 
 @push('after-scripts')
@@ -278,7 +278,7 @@
             $(".js-example-placeholder-multiple").select2({
                 placeholder: "{{trans('labels.backend.courses.select_teachers')}}",
             });
-            $(".js-example-tags").select2({
+            $(".js-input-tag").select2({
                 tags: true
             })
         });

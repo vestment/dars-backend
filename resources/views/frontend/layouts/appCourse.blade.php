@@ -30,29 +30,10 @@
         <link rel="stylesheet" href="{{asset('assets/css/progess.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/animate.min.css')}}">
         {{--<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">--}}
-        <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/'.$cssFile) }}">
         <link rel="stylesheet" href="{{asset('assets/css/fontawesome-all.css')}}">
 
-        <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
-
-        <link rel="stylesheet" href="{{asset('assets/css/colors/switch.css')}}">
-        <link href="{{asset('assets/css/colors/color-2.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-2">
-        <link href="{{asset('assets/css/colors/color-3.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-3">
-        <link href="{{asset('assets/css/colors/color-4.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-4">
-        <link href="{{asset('assets/css/colors/color-5.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-5">
-        <link href="{{asset('assets/css/colors/color-6.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-6">
-        <link href="{{asset('assets/css/colors/color-7.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-7">
-        <link href="{{asset('assets/css/colors/color-8.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-8">
-        <link href="{{asset('assets/css/colors/color-9.css')}}" rel="alternate stylesheet" type="text/css"
-              title="color-9">
-
+       
         @yield('css')
         @stack('after-styles')
 
@@ -82,8 +63,6 @@
 
     <div id="app">
     {{--<div id="preloader"></div>--}}
-    @include('frontend.layouts.modals.loginModal')
-
 
     <!-- Start of Header section
         ============================================= -->

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnToTestTable extends Migration
+class AddColumnTooTestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddColumnToTestTable extends Migration
     public function up()
     { Schema::table('tests', function (Blueprint $table) {
             
-        $table->text('available')->nullable()->default(1);
+        $table->integer('available')->nullable()->default(1);
        
        
      

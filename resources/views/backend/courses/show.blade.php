@@ -77,6 +77,10 @@
                             <th>@lang('labels.backend.courses.fields.slug')</th>
                             <td>{{ $course->slug }}</td>
                         </tr>
+                             <tr>
+                            <th>@lang('labels.backend.courses.course_hours')</th>
+                            <td>{{ $course->course_hours }}</td>
+                        </tr>
                         <tr>
                             <th>@lang('labels.backend.courses.fields.category')</th>
                             <td>{{ $course->category->name }}</td>
@@ -145,6 +149,15 @@
                             <th>@lang('labels.backend.courses.fields.mandatory_courses')</th>
                             <td>{{$course->mandatory_courses }}</td>
                         </tr>
+                        <tr>
+                       
+
+                            <th>@lang('labels.backend.courses.fields.learned')</th>
+                            <td>
+                            @foreach (json_decode($course->learned) as $learned)
+                           {{$learned }}<br>
+                        @endforeach
+     </td>  </tr>
 
 
 

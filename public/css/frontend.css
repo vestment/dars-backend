@@ -6328,7 +6328,10 @@ ul.product-tab li.active:after {
 }
 @media (max-width: 425px) {
     .bgcolor {
-        padding-bottom: 340px;
+        /* padding-bottom: 340px; */
+        padding-bottom: 400px;
+
+
     }
 }
 
@@ -7463,4 +7466,18 @@ hr {
 }
 .mean-container .mean-bar {
     float: left;
+}
+.alertclass{
+    margin-bottom: 5px !important;
+    padding:10px 2px 10px 2px !important;
+}
+
+.mo-head{
+    background-image: none !important;
+    padding: 12px;
+}
+
+
+.mo-head .close{
+    padding: 12px;
 }

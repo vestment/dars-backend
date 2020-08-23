@@ -343,6 +343,16 @@ class CoursesController extends Controller
             }
             $popular_course = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $categoryTeachers = [];
+            foreach($courses as $course) {
+                foreach ($course->teachers as $teacher) {
+                    // $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
+                    if (!in_array($teacher,$categoryTeachers)){
+                    array_push($categoryTeachers,$teacher);
+                    }
+                }
+            }
+            $teachers = $categoryTeachers;
             $teacher_data = TeacherProfile::get();
             $teachers = User::get();
             // dd($teacher);

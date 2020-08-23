@@ -49,6 +49,10 @@
                     {!! Form::label('slug', trans('labels.backend.courses.fields.slug'), ['class' => 'control-label']) !!}
                     {!! Form::text('slug', old('slug'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.slug_placeholder')]) !!}
                 </div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('course_hours', trans('labels.backend.courses.course_hours'), ['class' => 'control-label']) !!}
+                    {!! Form::text('course_hours', old('course_hours'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.slug_placeholder')]) !!}
+                </div>
 
             </div>
 
@@ -195,6 +199,15 @@
             @endif
 
             <div class="row">
+                    <div class="col-10 form-group">
+                        {!! Form::label('learned',trans('labels.backend.courses.fields.learned'), ['class' => 'control-label']) !!}
+                        {!! Form::select('learn[]', $prevLearned, old('learn') ? old('learn') : $prevLearned, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                    </div>    
+                </div>
+
+
+
+            <div class="row">
                 <div class="col-12  text-center form-group">
                     {!! Form::submit(trans('strings.backend.general.app_update'), ['class' => 'btn btn-danger']) !!}
                 </div>
@@ -221,6 +234,11 @@
             $(".js-example-placeholder-multiple").select2({
                 placeholder: "{{trans('labels.backend.courses.select_teachers')}}",
             });
+            $(".js-input-tag").select2({
+                tags: true,
+            })
+        
+            
         });
         $(document).on('change', 'input[type="file"]', function () {
             var $this = $(this);
