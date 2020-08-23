@@ -168,7 +168,7 @@
 
                         
 
-                                    <form action="{{ route('cart.addToCart') }}" method="POST">
+                                    <form action="{{ route('wishlist.addToCart') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                         <input type="hidden" name="amount"
@@ -200,8 +200,37 @@
 
 
                                             </td>
-                                            <td><a class="te-remove "
-                                                   href="{{route('wishlist.remove',['course'=>$course])}}">@lang('labels.frontend.course.remove')</a>
+
+                                            <td>
+                                                  
+                                                    <div class="container">
+                                                      <h2>Modal Example</h2>
+                                                      <!-- Trigger the modal with a button -->
+                                                      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+                                                    
+                                                      <!-- Modal -->
+                                                      <div class="modal fade modal-xl" id="myModal" role="dialog">
+                                                        <div class="modal-dialog">
+                                                        
+                                                          <!-- Modal content-->
+                                                          <div class="modal-content">
+                                                            <div class="mo-head">
+                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                             
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                    <div class="sharethis-inline-share-buttons"></div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                          </div>
+                                                          
+                                                        </div>
+                                                      </div>
+                                                      
+                                                    </div>
+                                                    
                                             </td>
                                         </tr>
                                     @endforeach

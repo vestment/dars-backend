@@ -14,10 +14,10 @@ class EditTeacherProfileTable extends Migration
     public function up()
     {
         Schema::table('teacher_profiles', function (Blueprint $table) {
-
+            $table->unsignedInteger('academy_id')->nullable();
             $table->string('ar_title')->nullable();
             $table->string('ar_description')->nullable();
-            
+            $table->foreign('academy_id')->references('id')->on('academies');
         });
     }
 
