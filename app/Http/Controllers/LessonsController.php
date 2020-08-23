@@ -23,9 +23,9 @@ class LessonsController extends Controller
         $test_result = "";
         $completed_lessons = "";
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
+
         $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
-        // dd($course_id);
-// dd($chapters);
+      
         if ($lesson == "") {
             $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->firstOrFail();
             $lesson->full_text = $lesson->description;
@@ -84,13 +84,21 @@ class LessonsController extends Controller
             ->get()
             ->pluck('model_id')
             ->toArray();
-
         return view('frontend.courses.lesson', compact('chapters','lesson', 'previous_lesson', 'next_lesson', 'test_result',
             'purchased_course', 'test_exists', 'lessons', 'completed_lessons'));
     }
 public function availablityUpdate(Request $request) {
-    $test = Test::where('slug', $request->slug)->firstOrFail();
+    // return $request;
+    $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
     $test->available = 0;
+    $test->save();
+    return $test;
+}
+public function startTimeUpdate(Request $request) {
+    
+    $test = TestsResult::where('user_id', auth()->user()->id)->where('test_id',$request->id)->firstOrFail();
+    // dd($test);
+    $test->start_time = time();
     $test->save();
     return $test;
 }

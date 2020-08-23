@@ -212,8 +212,10 @@
                     <div class="course-details-item border-bottom-0 mb-0">
                        
 
-
+                    @if ($lesson->available == 1)
                         @if ($test_exists)
+                        
+
                             <div class="course-single-text row">
                            
                                 <div class="col-6">
@@ -307,15 +309,18 @@
                                     @if(count($lesson->questions) > 0  )
                                     <script>
 
-var timeout = '{{$lesson->timer}}*60';
-var slug = '{{$lesson->slug}}';
+                                        var timeoutorg = '{{$lesson->timer}}*60';
+                                        var slug = '{{$lesson->slug}}';
+                                        var id = '{{$lesson->id}}';
+                                        var start = '{{$lesson->start_time}}';
+                                        var endtime =(start+ time())*1000;
+                                        var timecomp = endtime-(start*1000);
+                                        var timeout = timeoutorg - timecomp ;
 
 
 
 
-
-
-</script>
+                                    </script>   
                                         <form action="{{ route('lessons.test', [$lesson->slug]) }}" method="post">
                                             {{ csrf_field() }}
                                             @foreach ($lesson->questions as $question)
@@ -341,6 +346,10 @@ var slug = '{{$lesson->slug}}';
 
                                     @endif
                                 </div>
+                            @endif
+                            @else
+                            <h3>@lang('labels.general.no_data_available')</h3>
+
                             @endif
                             <hr/>
                         @else
@@ -517,20 +526,21 @@ var slug = '{{$lesson->slug}}';
             
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
-                            <div class="bordered">
+                            <div class="bordered" id="start_test">
                             @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
                                       
                                       @if($item->model && $item->model->published == 1)
                                   
                                       {{--@php $key++; @endphp--}}
-                                <p class="subtitle2">  <a id="start_test" @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                <p class="subtitle2"  >  <a  @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                <p class="subtitle2"  >  <a  id="test" @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
                                                 {{$item->model->title}}
                                                 @if($item->model_type == 'App\Models\Test')
-                                                    <p class="mb-0 text-primary">
+                                                    <p class="mb-0 text-primary" >
                                                         - @lang('labels.frontend.course.test')</p>
                                                 @endif
-                                                @if(in_array($item->model->id,$completed_lessons)) <i
-                                                        class="fa text-success float-right fa-check-square"></i> @endif
+                                                @if(in_array($item->model->id,$completed_lessons)) <i  
+                                                class="fa text-success float-right fa-check-square"></i> @endif
                                             </a> </p>
                                 <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
                                 @endif
@@ -557,24 +567,6 @@ var slug = '{{$lesson->slug}}';
 
 
 
-                            <!-- <ul class="course-timeline-list">
-                                @foreach($lesson->course->courseTimeline()->orderBy('sequence')->get() as $key=>$item)
-                                    @if($item->model && $item->model->published == 1)
-                                        {{--@php $key++; @endphp--}}
-                                        <li class="@if($lesson->id == $item->model->id) active @endif ">
-                                            <a @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
-                                                {{$item->model->title}}
-                                                @if($item->model_type == 'App\Models\Test')
-                                                    <p class="mb-0 text-primary">
-                                                        - @lang('labels.frontend.course.test')</p>
-                                                @endif
-                                                @if(in_array($item->model->id,$completed_lessons)) <i
-                                                        class="fa text-success float-right fa-check-square"></i> @endif
-                                            </a>
-                                        </li>
-                                    @endif
-                                @endforeach
-                            </ul> -->
                         </div>
                         
                     </div>
@@ -601,19 +593,36 @@ var slug = '{{$lesson->slug}}';
     <script src="{{asset('plugins/touchpdf-master/jquery.panzoom.js')}}"></script>
     <script src="{{asset('plugins/touchpdf-master/jquery.mousewheel.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    
 
     <script>
-    $(document).ready(function() {
-        var $countdown = $('#countdown');
+    $('#test').click(function(){
+        $.ajax({
+                url: "{{route('update.test.start_time')}}",
+                method: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id,
+                },
+                success: function (result) {
+                    console.log(result)
+                }
+            });
 
- 
+    });
+    @if($lesson->questions != null )
 
         @if(count($lesson->questions) > 0  )
-
-        console.log(timeout);
+    $(document).ready(function() {
+        var $countdown = $('#countdown');
+        if(timeout > 0){
+        
         $countdown.show().timeTo(parseInt(timeout));
-        @endif
 
+        $('#start_test').hide();
+
+        }
+        if(timeout ==0){
  $countdown.timeTo(parseInt(timeout),
    function() {
      $countdown.hide();
@@ -629,13 +638,15 @@ var slug = '{{$lesson->slug}}';
                 }
             });
    }
- );
+ )
+ };
 
+});
+ @endif
+        @endif
 
    
-      
-// $('.progress-bar').css('width', $lesson->course->progress() );
-    });
+ 
         @if($lesson->mediaPDF)
         $(function () {
             $("#myPDF").pdf({
