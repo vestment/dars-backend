@@ -58,7 +58,7 @@
                 {!! config('custom_css')  !!}
             </style>
         @endif
-
+        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f424205cd48e100119985ee&product=inline-share-buttons" async="async"></script>
     </head>
     <body class="{{config('layout_type')}}">
 

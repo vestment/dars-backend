@@ -86,7 +86,8 @@ Route::post('courses/{id}/review', ['uses' => 'CoursesController@addReview', 'as
 Route::get('courses/review/{id}/edit', ['uses' => 'CoursesController@editReview', 'as' => 'courses.review.edit']);
 Route::post('courses/review/{id}/edit', ['uses' => 'CoursesController@updateReview', 'as' => 'courses.review.update']);
 Route::get('courses/review/{id}/delete', ['uses' => 'CoursesController@deleteReview', 'as' => 'courses.review.delete']);
-
+//============offline booking Routes=================//
+Route::get('offlineBooking', 'offlineBookingController@index')->name('offlineBooking.index');
 //============ Academy Routes=================//
 Route::get('academy/{id}', ['uses' => 'AcademyController@show', 'as' => 'academy.show']);
 
@@ -128,7 +129,7 @@ Route::post('contact/send', 'Frontend\ContactController@send')->name('contact.se
 Route::post('wishlist/add', ['uses' => 'wishlistController@store', 'as' => 'wishlist.add']);
 Route::get('wishlist', 'wishlistController@index')->name('wishlist.index');
 Route::get('wishlist/remove', ['uses' => 'wishlistController@remove', 'as' => 'wishlist.remove']);
-
+Route::post('wishlist/addtocart', ['uses' => 'wishlistController@addToCart', 'as' => 'wishlist.addToCart']);
 Route::get('download', ['uses' => 'Frontend\HomeController@getDownload', 'as' => 'download']);
 
 Route::group(['middleware' => 'auth'], function () {

@@ -7464,3 +7464,13 @@ hr {
 .mean-container .mean-bar {
     float: left;
 }
+
+.mo-head{
+    background-image: none !important;
+    padding: 12px;
+}
+}
+
+.mo-head .close{
+    padding: 12px;
+}

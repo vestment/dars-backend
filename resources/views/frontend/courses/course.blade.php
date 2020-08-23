@@ -190,10 +190,13 @@
                                         class="fa fa-heart"
                                         aria-hidden="true"></i> @lang('labels.frontend.course.wishlist')</a>
                         @endif
-                        <button type="submit" class="btn btn-outline-light btn-sm ml-1"><i class="fa fa-share-alt"
-                                                                                           aria-hidden="true"></i>
-                            @lang('labels.frontend.course.Share')
+                        <button type="submit" class="btn btn-outline-light btn-sm ml-1" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share-alt"
+                            aria-hidden="true"></i>
+                           @lang('labels.frontend.course.Share')
                         </button>
+
+                        <!-- Button trigger modal -->
+  
                     </div>
                 </div>
             </div>
@@ -860,12 +863,30 @@
     <!-- End of Instructor info review section
           ============================================= -->
 
+                                <!-- Modal -->
+                                <div class="modal fade" id="shareModal" role="dialog">
+                                        <div class="modal-dialog">
+                                        
+                                          <!-- Modal content-->
+                                          <div class="modal-content">
+                                              <div class="mo-head">
+                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                  <h2>Share course</h2>
+                                              </div>
+                                              <div class="modal-body">
+                                                      <div class="sharethis-inline-share-buttons"></div>
+                                                      <input class="form-control mt-2" type="text" value="{{url()->current()}}">
+                                              </div>
+                                          </div>
+                                        </div>
+                                      </div>
 
 @endsection
 
 @push('after-scripts')
     <script>
         $(document).ready(function () {
+           
             $(document).on('change', '#sortBy', function () {
                 if ($(this).val() != "") {
                     location.href = '{{url()->current()}}?type=' + $(this).val();
@@ -882,6 +903,12 @@
                 // do something...
                 $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
             });
+            $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+        });
+        $(window).load(function () {
+    $('.st-btn').css('display','inline-block');
         });
 
     </script>
