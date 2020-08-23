@@ -146,7 +146,7 @@
                                 @endif
 
                             @else
-                                <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                                <h6 class="alert alert-danger alertclass"> @lang('labels.frontend.course.buy_note')</h6>
                             @endif
                             @else
 
@@ -207,43 +207,31 @@
         ============================================= -->
     <section id="course-page" class="course-page-section">
         <div class="container">
+            @if (count(json_decode($course->learned)) > 0)
             <div class="row col-lg-8 col-sm-12 coursesec d-block m-2">
                 <h2> What you will learn</h2>
                 <div class="row subtitle2">
+                @foreach (json_decode($course->learned) as $key => $learned)
+                        @if ($key < 6)
                     <div class="col-lg-6 col-sm-12">
+                      
                         <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Free $99 384 page book version of this course!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Get many customers by using the best networking tool!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Create financial models from scratch (the Professor makes it so easy to understand).</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Understand how macro economics and micro economics works.</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
+                            {{$learned}}</p>
+                       
                     </div>
+                        @endif
+                        @if ($key > 6)
                     <div class="col-lg-6 col-sm-12">
+                      
                         <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Superb reviews!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Get any job the easy way.</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Raise a lot of money quickly.</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Analyze company financials with ease!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Over 350,000 students in 195 countries!</p>
-                        <p><i class="fa fa-angle-down p-1" aria-hidden="true"></i>
-                            Change careers easily.</p>
+                            {{$learned}}</p>
+                       
                     </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
+            @endif
             <div class="row  coursesec d-block m-3">
                 <h2>@lang('labels.frontend.course.requirements')</h2>
             </div>
@@ -384,7 +372,8 @@
                 <p class="smpara"><i class="fa fa-download" aria-hidden="true"></i>
 
 
-                    65 downloadable resources
+                {{ $fileCount }} Downloadable files
+                    <!-- 65 downloadable resources -->
 
                 </p>
                 <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
@@ -497,7 +486,7 @@
                                                 <p class="subtitle2">
                                                     <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
                                                 @if($item->model->chapter_id == $chapter->id)
-                                                    {{$item->model->title}}  {{$item->model->downloadableMedia}}
+                                                    {{$item->model->title}}  
                                                 @endif
                                                 @if($item->model_type == 'App\Models\Test')
                                                     <p class="mb-0 text-primary">

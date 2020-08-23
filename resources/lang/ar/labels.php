@@ -219,6 +219,8 @@ return array (
         'unpublished' => 'غير منشور',
         'optional_courses' => 'دورات اختيارية',
         'mandatory_courses' => 'دورات اجبارية',
+        'learned' => 'ماذا ستتعلم في هذه الدورة التدريبية ',
+
 
 
       ),

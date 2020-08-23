@@ -42,6 +42,8 @@ return array(
                             'lessons' => 'Lessons',
                             'optional_courses' => 'Optional courses',
                             'mandatory_courses' => 'Mandatory courses',
+                            'learned' => 'What you will learn',
+
 
                             array(
                                 'add' => 'Add Lessons',
