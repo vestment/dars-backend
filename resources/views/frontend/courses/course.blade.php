@@ -698,7 +698,7 @@
             </div>
             @if (auth()->check())
                 @if($course->progress() == 100)
-                    <form action="{{ route('courses.review',['id'=>$course_id]) }}" method="POST">
+                    <form action="{{ route('courses.review',['id'=>$course->id]) }}" method="POST">
                         @csrf
                         <div class="row card">
                             <div class="col-12">

@@ -308,15 +308,23 @@
                                 <div class="test-form">
                                     @if(count($lesson->questions) > 0  )
                                     <script>
-
-                                        var timeoutorg = '{{$lesson->timer}}*60';
                                         var slug = '{{$lesson->slug}}';
                                         var id = '{{$lesson->id}}';
-                                        var start = '{{$lesson->start_time}}';
-                                        var endtime =(start+ time())*1000;
-                                        var timecomp = endtime-(start*1000);
-                                        var timeout = timeoutorg - timecomp ;
+                                        var timeoutorg = parseInt('{{$lesson->timer*60}}');
+                                        var start = parseInt('{{$start_time}}');
+                                         var endtime =parseInt(start+ timeoutorg);
+                                        var now = Date.now() / 1000;
+                                        
+                                        var timecomp = (endtime - now);
+                                        setInterval(() => {
+                                        var endtime =parseInt(start+ timeoutorg);
+                                        var now = Date.now() / 1000;
+                                        var timecomp = (endtime - now);
 
+                                        }, 1000);
+                                        
+                                      
+                                        
 
 
 
@@ -532,11 +540,10 @@
                                       @if($item->model && $item->model->published == 1)
                                   
                                       {{--@php $key++; @endphp--}}
-                                <p class="subtitle2"  >  <a  @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
-                                <p class="subtitle2"  >  <a  id="test" @if(in_array($item->model->id,$completed_lessons))href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                <p class="subtitle2 test" onclick="startTest(this)" @if(in_array($item->model->id,$completed_lessons))data-test-id="{{$item->model->id}}" data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>  <a  id="test" >
                                                 {{$item->model->title}}
                                                 @if($item->model_type == 'App\Models\Test')
-                                                    <p class="mb-0 text-primary" >
+                                                    <p class="mb-0 text-primary test" onclick="startTest(this)" @if(in_array($item->model->id,$completed_lessons))data-test-id="{{$item->model->id}}" data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
                                                         - @lang('labels.frontend.course.test')</p>
                                                 @endif
                                                 @if(in_array($item->model->id,$completed_lessons)) <i  
@@ -596,34 +603,34 @@
     
 
     <script>
-    $('#test').click(function(){
+    function startTest(element) {
         $.ajax({
                 url: "{{route('update.test.start_time')}}",
                 method: "POST",
                 data: {
                     "_token": "{{ csrf_token() }}",
-                    'id': id,
+                    'id': $(element).data('test-id'),
                 },
                 success: function (result) {
-                    console.log(result)
+                    console.log($(element).data('test-id'));
+                  window.location.href = $(element).data('href');
                 }
             });
-
-    });
+    }
     @if($lesson->questions != null )
 
         @if(count($lesson->questions) > 0  )
     $(document).ready(function() {
         var $countdown = $('#countdown');
-        if(timeout > 0){
+        if(timecomp > 0){
         
-        $countdown.show().timeTo(parseInt(timeout));
+        $countdown.show().timeTo(parseInt(timecomp));
 
-        $('#start_test').hide();
+       
 
         }
-        if(timeout ==0){
- $countdown.timeTo(parseInt(timeout),
+        if(timecomp ==0){
+ $countdown.timeTo(parseInt(timecomp),
    function() {
      $countdown.hide();
      $.ajax({
@@ -635,6 +642,7 @@
                 },
                 success: function (result) {
                     console.log(result)
+                    window.location.href="{{route('courses.show', [$lesson->course->slug])}}"
                 }
             });
    }

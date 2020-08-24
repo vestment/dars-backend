@@ -1088,6 +1088,7 @@ return array(
                             'course' => 'Course',
                             'user' => 'User',
                             'content' => 'Content',
+                            'active' => 'Active',
                             'time' => 'Time',
                         ),
                 ),

@@ -29,6 +29,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Auth\Traits\Relationship\UserRelationship;
 use App\Models\Earning;
 use App\Models\TeacherProfile;
+use App\Models\Test;
+
 use App\academy;
 
 use App\Models\Withdraw;
@@ -148,6 +150,10 @@ class User extends Authenticatable implements MessageableInterface
     {
         // Piviot value is 1 to get the active relations
         return $this->belongsToMany(User::class, 'parent_students','student_id', 'parent_id')->withPivot('status');
+    }
+    public function current_test()
+    {
+        return $this->belongsToMany(Test::class, 'tests_users','student_id', 'test_id')->withPivot('start_time');
     }
      public function wishList()
      {
