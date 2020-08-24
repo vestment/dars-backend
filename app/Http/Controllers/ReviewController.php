@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Models\Course;
+
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -27,10 +27,7 @@ class ReviewController extends Controller
     public function getData(Request $request)
     {
         $reviews = "";
-        $courses_id = Course::has('reviews')->pluck('id')->toArray();
-        if (auth()->user()->hasRole('teacher')) {
-            $courses_id = auth()->user()->courses()->has('reviews')->pluck('id')->toArray();
-        }
+        $courses_id = auth()->user()->courses()->has('reviews')->pluck('id')->toArray();
         $reviews = Review::where('reviewable_type','=','App\Models\Course')
             ->whereIn('reviewable_id',$courses_id)
             ->orderBy('created_at', 'desc')
@@ -39,8 +36,8 @@ class ReviewController extends Controller
 
         return DataTables::of($reviews)
             ->addIndexColumn()
-            ->editColumn('time', function ($q) {
-                return $q->created_at;
+            ->editColumn('created_at', function ($q) {
+                return $q->created_at->format('d M, Y | H:i A');
             })
             ->addColumn('course', function ($q) {
                $course_name = $q->reviewable->title;
@@ -50,25 +47,8 @@ class ReviewController extends Controller
             })
             ->addColumn('user',function ($q){
                 return $q->user->full_name;
-            })->editColumn('active', function ($q) {
-                $html = html()->label(html()->checkbox('')->id($q->id)
-                        ->checked(($q->active == 1) ? true : false)->class('switch-input')->attribute('data-id', $q->id)->value(($q->active == 1) ? 1 : 0) . '<span class="switch-label"></span><span class="switch-handle"></span>')->class('switch switch-lg switch-3d switch-primary');
-                return $html;
-                // return ($q->active == 1) ? "Enabled" : "Disabled";
             })
             ->rawColumns(['course'])
             ->make();
-    }
-    /**
-     * Update review status
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     **/
-    public function updateStatus()
-    {
-        $review = Review::find(request('id'));
-        $review->active = $review->active == 1 ? 0 : 1;
-        $review->save();
     }
 }

@@ -51,42 +51,45 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style @if($academy->first_name == '119') bgimage @else bgcolor @endif">
         <div class="blakish-overlay"></div>
-        <div class="container">
-            <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
-                <div class="m-1">
-                    <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->full_name}}</b></p>
+        @if($academy->first_name != '119')
+            <div class="container">
+                <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
+                    <div class="m-1">
+                        <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->full_name}}</b></p>
 
-                </div>
-                <div class="p-1">
-                    <h2 class="text-white"><b>{{$academy->full_name}}</b></h2>
-                </div>
-                <div class="row col-lg-3 flex">
-                    @if($academy->academy->facebook_link) <a href="{{$academy->academy->facebook_link}}"
-                                                        class="btn btn-sm btn-outline-light mr-1"><i
-                                class="fab fa-facebook-f"></i> </a> @endif
-                    @if($academy->academy->twitter_link)<a href="{{$academy->academy->twitter_link}}"
-                                                      class="btn btn-sm btn-outline-light mr-1"><i
-                                class="fab fa-twitter"></i> </a>@endif
-                    @if($academy->academy->linkedin_link)<a href="{{$academy->academy->linkedin_link}}"
-                                                       class=" btn btn-sm btn-outline-light mr-1"><i
-                                class="fab fa-linkedin"></i> </a>@endif
-
-                </div>
-
-                <div class="row mt-5 flex">
-                    <div class="col-lg-2 col-xl-2">
-                        <span class=" text-light font-weight-bold">Phone:</span> <span
-                                class="text-white font-weight-light">{{$academy->phone}}</span>
                     </div>
-                    <div class="col-lg-3 col-xl-4">
-                        <span class=" text-light font-weight-bold">Address:</span> <span
-                                class="text-white font-weight-light">{{$academy->academy->adress}}</span>
+                    <div class="p-1">
+                        <h2 class="text-white"><b>{{$academy->full_name}}</b></h2>
+                    </div>
+                    <div class="row col-lg-3 flex">
+                        @if($academy->academy->facebook_link) <a href="{{$academy->academy->facebook_link}}"
+                                                            class="btn btn-sm btn-outline-light mr-1"><i
+                                    class="fab fa-facebook-f"></i> </a> @endif
+                        @if($academy->academy->twitter_link)<a href="{{$academy->academy->twitter_link}}"
+                                                          class="btn btn-sm btn-outline-light mr-1"><i
+                                    class="fab fa-twitter"></i> </a>@endif
+                        @if($academy->academy->linkedin_link)<a href="{{$academy->academy->linkedin_link}}"
+                                                           class=" btn btn-sm btn-outline-light mr-1"><i
+                                    class="fab fa-linkedin"></i> </a>@endif
+
+                    </div>
+
+                    <div class="row mt-5 flex">
+                        <div class="col-lg-2 col-xl-2">
+                            <span class=" text-light font-weight-bold">Phone:</span> <span
+                                    class="text-white font-weight-light">{{$academy->phone}}</span>
+                        </div>
+                        <div class="col-lg-3 col-xl-4">
+                            <span class=" text-light font-weight-bold">Address:</span> <span
+                                    class="text-white font-weight-light">{{$academy->academy->adress}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
+
     </section>
     <!-- End of breadcrumb section
         ============================================= -->
@@ -97,10 +100,12 @@
     <section id="course-page" class="course-page-section">
         <div class="container">
 
+            @if($academy->first_name != '119')
 
-            <div class="m-5 col-2 d-lg-flex d-lg-flex d-md-flex shadow-lg divfixed">
-                <img class="academy-logo" src="{{asset($academy->academy->logo)}}" alt="{{$academy->full_name}}">
-            </div>
+                <div class="m-5 col-2 d-lg-flex d-lg-flex d-md-flex shadow-lg divfixed">
+                    <img class="academy-logo" src="{{asset($academy->academy->logo)}}" alt="{{$academy->full_name}}">
+                </div>
+            @endif
 
 
         </div>
@@ -110,7 +115,7 @@
     <!-- Start of Teacher section
            ============================================= -->
 
-    <section id="course-teacher" class="course-teacher-section">
+    <section id="course-teacher" class="course-teacher-section mt-5">
         <div class="container ">
             <div class=" mb20 headline pl-3">
                 <span class=" text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>

@@ -3087,7 +3087,9 @@ ul.product-tab li {
 
 .course-teacher-section .section-title {
     margin-bottom: 70px;
+    margin-left: -61px;
 }
+
 
 
 .package {
@@ -6334,6 +6336,16 @@ ul.product-tab li.active:after {
 
     }
 }
+
+.bgimage{
+    background-image:url("../assets/911img/911.jpg");
+    padding-top: 7%;
+    padding-bottom: 320px;
+    transform: translateY(65px);
+
+}
+
+
 
 .paragraph1 {
     position: absolute;

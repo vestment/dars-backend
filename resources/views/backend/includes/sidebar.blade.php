@@ -303,7 +303,7 @@
                     </a>
                 </li>
             @endif
-            @if ($logged_in_user->hasRole('teacher'))
+                @if($logged_in_user->hasRole('teacher') || $logged_in_user->isAdmin())
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'reviews' ? 'active' : '' }}"
                        href="{{ route('admin.reviews.index') }}">

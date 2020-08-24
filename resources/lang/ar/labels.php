@@ -887,6 +887,7 @@ return array (
         'content' => 'يحتوى',
         'course' => 'دورة',
         'time' => 'زمن',
+        'active' => 'نشط',
         'user' => 'المستعمل',
       ),
       'title' => 'التعليقات',
