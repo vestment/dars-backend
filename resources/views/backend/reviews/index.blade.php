@@ -22,6 +22,7 @@
                                 <th>@lang('labels.backend.reviews.fields.course')</th>
                                 <th>@lang('labels.backend.reviews.fields.user')</th>
                                 <th>@lang('labels.backend.reviews.fields.content')</th>
+                                @if(auth()->user()->hasRole('administrator'))<th>@lang('labels.backend.reviews.fields.active')</th>@endif
                                 <th>@lang('labels.backend.reviews.fields.time')</th>
                             </tr>
                             </thead>
@@ -71,6 +72,7 @@
                     {data: "course", name: 'course'},
                     {data: "user", name: 'user'},
                     {data: "content", name: 'content'},
+                    {data: "active", name: 'active'},
                     {data: "created_at", name: "time"},
                 ],
                 language:{
@@ -87,7 +89,20 @@
                     $(row).attr('data-entry-id', data.id);
                 },
             });
-
+            $(document).on('click', '.switch-input', function (e) {
+            var id = $(this).data('id');
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.review.active') }}",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                },
+            }).done(function () {
+                var table = $('#myTable').DataTable();
+                table.ajax.reload();
+            });
+        })
         });
 
     </script>

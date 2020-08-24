@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-
+use App\academy;
 /**
  * Class Course
  *
@@ -26,7 +26,7 @@ class Course extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['category_id','course_hours','learned','title_ar','description_ar','meta_title_ar','meta_description_ar','meta_keywords_ar', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'optional_courses', 'mandatory_courses'];
+    protected $fillable = ['category_id','academy_id','offline','course_hours','learned','title_ar','description_ar','meta_title_ar','meta_description_ar','meta_keywords_ar', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'optional_courses', 'mandatory_courses'];
 
     protected $appends = ['image'];
 
@@ -259,6 +259,12 @@ class Course extends Model
     {
 
         return $this->belongsto('App\Models\Chapter');
+
+    }
+    public function academy()
+    {
+
+        return $this->belongsto('App\academy');
 
     }
 

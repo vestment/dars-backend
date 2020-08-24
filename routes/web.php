@@ -86,6 +86,7 @@ Route::post('courses/review/{id}/edit', ['uses' => 'CoursesController@updateRevi
 Route::get('courses/review/{id}/delete', ['uses' => 'CoursesController@deleteReview', 'as' => 'courses.review.delete']);
 //============offline booking Routes=================//
 Route::get('offlineBooking', 'offlineBookingController@index')->name('offlineBooking.index');
+Route::get('filter/offlineCourses', ['uses' => 'offlineBookingController@filerCoursesByCategory', 'as' => 'offlineCourses.filterCategory']);
 //============ Academy Routes=================//
 Route::get('academy/{id}', ['uses' => 'AcademyController@show', 'as' => 'academy.show']);
 
@@ -108,7 +109,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('video/progress', 'LessonsController@videoProgress')->name('update.videos.progress');
     Route::post('lesson/progress', 'LessonsController@courseProgress')->name('update.course.progress');
     Route::post('ajax/request', 'LessonsController@availablityUpdate')->name('update.test.available');
-    Route::get('ajax/request/time', 'LessonsController@startTimeUpdate')->name('update.test.start_time');
+    Route::post('ajax/request/time', 'LessonsController@startTimeUpdate')->name('update.test.start_time');
 
 });
 
