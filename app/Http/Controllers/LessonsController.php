@@ -84,8 +84,17 @@ class LessonsController extends Controller
             ->get()
             ->pluck('model_id')
             ->toArray();
+            $start_time = time();
+            if(auth()->user()->current_test()->first()) {
+        $pivot = auth()->user()->current_test()->first()->pivot->where('test_id',$lesson->id)->first();
+        // dd($pivot);
+        if ($pivot) {
+            $start_time = $pivot->start_time;
+        }
+    
+    }
         return view('frontend.courses.lesson', compact('chapters','lesson', 'previous_lesson', 'next_lesson', 'test_result',
-            'purchased_course', 'test_exists', 'lessons', 'completed_lessons'));
+            'purchased_course', 'test_exists', 'lessons', 'completed_lessons','start_time'));
     }
 public function availablityUpdate(Request $request) {
     // return $request;
@@ -95,12 +104,11 @@ public function availablityUpdate(Request $request) {
     return $test;
 }
 public function startTimeUpdate(Request $request) {
-    
-    $test = TestsResult::where('user_id', auth()->user()->id)->where('test_id',$request->id)->firstOrFail();
-    // dd($test);
-    $test->start_time = time();
-    $test->save();
-    return $test;
+    $check_prev_entry = auth()->user()->current_test()->where('test_id',$request->id)->first();
+    if (!$check_prev_entry) {
+    auth()->user()->current_test()->attach($request->id,['start_time' => time()]);
+    }
+
 }
     public function test($lesson_slug, Request $request)
     {

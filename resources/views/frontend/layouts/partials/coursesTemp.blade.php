@@ -16,7 +16,7 @@
         <h3 class="card-title titleofcard">{{$course->getDataFromColumn('title')}}</h3>
         <div class="row">
             <div class="col-12">
-                <div class="course-rate ul-li">
+                <div class="course-rate ul-li pb-3">
                     <ul>
                         @for ($i=0; $i<5; ++$i)
                             <li>
@@ -47,17 +47,20 @@
                         @php
                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                         @endphp
+                        @if($key == 1)
                         <a class="text-pink"
                            href="{{route('teachers.show',['id'=>$teacher->id])}}"
                            target="_blank">
-                            {{$teacher->full_name}}@if($key < count($course->teachers ))
-                                , @endif
+                          
+                            {{$teacher->full_name}}
+                               
                         </a>
                         <a class="text-muted teacher-title"
                            href="{{route('teachers.show',['id'=>$teacher->id])}}"
                            target="_blank">
                             {{$teacherProfile->getDataFromColumn('title')}}
                         </a>
+                         @endif
                     @endforeach
 
                 </div>
