@@ -7481,3 +7481,7 @@ hr {
 .mo-head .close{
     padding: 12px;
 }
+
+.arrowDown{
+    float: right;
+}

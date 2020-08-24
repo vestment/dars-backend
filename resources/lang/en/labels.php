@@ -1520,7 +1520,10 @@ return array(
                         'apply' => 'Apply filters',
                         'reset' => 'Reset filters',
                         'up' => 'Up',
-                        'hours' => 'Hours'
+                        'hours' => 'Hours',
+                        'academies'=>'Academies',
+                        'teachers'=>'Teachers',
+                        'categories'=>'categories',
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',

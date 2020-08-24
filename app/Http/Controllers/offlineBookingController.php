@@ -16,44 +16,32 @@ use Cart;
 use App\Models\TeacherProfile;
 use App\Models\Chapter;
 use App\Models\Auth\User;
+use App\academy;
 
 class offlineBookingController extends Controller
 {
     public function index()
     {
-        
-        if (request('type') == 'popular') {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-
-        } else if (request('type') == 'trending') {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
-
-        } else if (request('type') == 'featured') {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
-
-        } else {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->orderBy('id', 'desc')->paginate(9);
+        $courses = Course::withoutGlobalScope('filter')->where('offline', 1)->orderBy('id', 'desc')->paginate(9);
+       
+        $teacher_filtering=[];
+       
+        foreach($courses as $course) {
+            foreach ($course->teachers as $teacher) {
+                // $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
+                if (!in_array($teacher,$teacher_filtering)){
+                array_push($teacher_filtering,$teacher);
+                }
+            }
         }
-        $purchased_courses = NULL;
-        $purchased_bundles = NULL;
-        $categories = Category::where('status', '=', 1)->get();
+        $menna=$teacher_filtering;
 
-        if (\Auth::check()) {
-            $purchased_courses = Course::withoutGlobalScope('filter')->whereHas('students', function ($query) {
-                $query->where('id', \Auth::id());
-            })
-                ->with('lessons')
-                ->orderBy('id', 'desc')
-                ->get();
-        }
+        $academy=Course::with('academy')->withoutGlobalScope('filter')->where('offline', 1)->get();
 
-        $featured_courses = Course::withoutGlobalScope('filter')->where('published', '=', 1)
-            ->where('featured', '=', 1)->take(8)->get();
+dd($academy);
+dd($academy->user_id);
 
-        $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
 
-        $chapters = Course::with('chapters')->get();
-        //  dd($chapters);
         foreach ($courses as $course) {
             foreach ($course->teachers as $teacher) {
                 $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
@@ -61,54 +49,27 @@ class offlineBookingController extends Controller
 
         }
 
-        $course_rating = 0; // Default value
-        $course_lessons = null; // Not Used but exported in the return
-        if ($course->reviews->count() > 0) {
-            $course_rating = $course->reviews->avg('rating');
-            $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
-        }
+       
         $teacher_dat = TeacherProfile::get();
         $teachers = User::get();
-        $popular_course = Course::withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-// dd($courses);
-        return view('frontend.offlineBookingCourse', compact( 'courses','teacher_dat', 'teachers', 'popular_course', 'course_rating', 'teacher_data', 'chapters', 'course_lessons', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
+
+        return view('frontend.offlineBookingCourse', compact( 'courses','teacher_dat', 'teachers', 'teacher_data','menna'));
 
     }
 
     public function filerCoursesByCategory(Request $request)
     {
         $courses = [];
-        $category = Category::where('slug', '=', $request->category)
-            ->where('status', '=', 1)
-            ->first();
-        if ($request->type == 'popular') {
-            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1);
-        } else if ($request->type == 'trending') {
-            $courses = $category->courses()->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('trending', '=', 1);
-        } else if ($request->type == 'featured') {
-            $courses = $category->courses()->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('featured', '=', 1);
-        } elseif ($request->type == 'All') {
-            $courses = $category->courses()->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1);
-        }
+        $courses = Course::withoutGlobalScope('filter')->where('offline', 1);
+
+
+
         if (intval($request->maxPrice) && $request->maxPrice != 0) {
             $courses = $courses->where('price', '<=', intval($request->maxPrice));
-
         }   
+
         if ($request->isFree != 'false') {
             $courses = $courses->where('free', 1);
-        }
-        if ($request->duration) {
-
-            $cond .= ' + duration';
-        }
-        if (intval($request->rating) && $request->rating != 'NaN') {
-            $coursesIds = [];
-            foreach ($courses->orderBy('id', 'desc')->paginate(8)->items() as $course) {
-                if ($course->reviews->avg('rating') >= intval($request->rating) && $course->reviews->avg('rating') != 0) {
-                    array_push($coursesIds, $course->id);
-                }
-            }
-            $courses = $courses->whereIn('id', $coursesIds);
         }
         $courses = $courses->orderBy('id', 'desc')->paginate(8);
         $html = '';

@@ -442,9 +442,12 @@
 
                             <!-- Section: Average -->
                             <section class="p-3 pb-0 border-bottom rating-filter">
-
-                                <h5 class="font-weight-bold mb-3">@lang('labels.frontend.course.filters.rating') </h5>
-                                <div class="form-group form-check">
+                               
+                                <h5 class="font-weight-bold mb-3 " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">@lang('labels.frontend.course.filters.rating') <i class="fas fa-chevron-down arrowDown"></i></h5>
+                               
+                                <div class="collapse" id="collapseExample">
+                                
+                                <div class="form-group form-check" >
                                     <input name="rate" type="radio" data-value="4" class="form-check-input" id="4+">
                                     <label class="form-check-label" for="4+">
                                         <ul class="small rating-list">
@@ -546,15 +549,16 @@
                                     </label>
                                 </div>
 
-
+                          
+                        </div>
                             </section>
                             <!-- Section: Average -->
 
                             <!-- Section: Price -->
                             <section class="p-3 pb-0 border-bottom duration-filter">
 
-                                <h5 class="font-weight-bold mb-3">@lang('labels.frontend.course.filters.duration') </h5>
-
+                                <h5 class="font-weight-bold mb-3"  data-toggle="collapse" href="#collapseExampl" role="button" aria-expanded="false" aria-controls="collapseExampl">@lang('labels.frontend.course.filters.duration')  <i class="fas fa-chevron-down arrowDown"></i></h5>
+                                <div class="collapse" id="collapseExampl">
                                 <div class="form-check pl-0 mb-3">
                                     <input type="radio" class="form-check-input" id="under2" data-value="0-2"
                                            name="duration">
@@ -579,12 +583,14 @@
                                     <label class="form-check-label small font-weight-bold" for="20-26">20-26
                                          @lang('labels.frontend.course.filters.hours')</label>
                                 </div>
+                            </div>
                             </section>
                             <!-- Section: Price -->
 
                             <!-- Section: Price  -->
                             <section class="pb-0 p-3 border-bottom price-filter">
-                                <h5 class="font-weight-bold mb-3">@lang('labels.frontend.course.filters.price') </h5>
+                                <h5 class="font-weight-bold mb-3" data-toggle="collapse" href="#collapseExamp" role="button" aria-expanded="false" aria-controls="collapseExamp">@lang('labels.frontend.course.filters.price')  <i class="fas fa-chevron-down arrowDown"></i></h5>
+                                <div class="collapse" id="collapseExamp">
                                 <div class="form-check pl-0 mb-3">
                                     <input type="checkbox" class="form-check-input" id="isFree">
                                     <label class="form-check-label small font-weight-bold" for="isFree">@lang('labels.backend.courses.fields.free')</label>
@@ -595,6 +601,7 @@
                                        max="10000">
                                 <span class="text-muted font-weight-light float-right"><span id="current-price">0</span>  EGP</span>
                                 {{--                                <span class="text-muted font-weight-light float-right">10000 EGP</span>--}}
+                                </div>
                             </section>
                             <!-- Section: Price -->
                             <section class="filters-controler">
