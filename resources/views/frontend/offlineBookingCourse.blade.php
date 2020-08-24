@@ -36,11 +36,11 @@
     <!-- End of breadcrumb section
         ============================================= -->
     {{-- start myyy of course section --}}
-    @if(@isset($category))
+   
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    {{-- <div class="col-12 col-lg-2 col-xl-2 col-md-4 filters-section">
+                    <div class="col-12 col-lg-2 col-xl-2 col-md-4 filters-section">
                         <button type="button"
                                 class="btn btn-block btn-primary btn-toggler mb-xl-0 mb-lg-0 mb-3">@lang('labels.frontend.course.filters.filters')
                             <i class="fas fa-filter"></i></button>
@@ -217,7 +217,7 @@
                             </section>
                         </section>
                         <!-- Section: Filters -->
-                    </div> --}}
+                    </div> 
                     <div class="col-12 col-lg-9 col-xl-9 col-md-8">
                         <div class="form-group row filters-category">
                             <label class="col-sm-2 col-form-label col-form-label-sm " for="sort"><h3
@@ -252,7 +252,7 @@
                 </div>
             </div>
         </section>
-    @endif
+
     {{-- end myyy of course section --}}
     <!-- End of course section
         ============================================= -->
