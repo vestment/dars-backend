@@ -309,11 +309,6 @@
                                             </div>
                                             <div class="row my-3">
                                                 <div class="col-xl-2 col-3">
-                                                    @foreach($course->teachers as $key=>$teacher)
-                                                        @php $key++ @endphp
-                                                        {{-- <img src="{{asset($teacher->avatar_location)}}"
-                                                             class="rounded-circle teach_img"> --}}
-
                                                         @if($teacher->picture == "")
                                                             <img class="rounded-circle teach_img"
                                                                  src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
@@ -323,31 +318,20 @@
                                                                  src="{{$teacher->picture}}"
                                                                  alt="">
                                                         @endif
-                                                    @endforeach
                                                 </div>
                                                 <div class="col-9">
                                                     <div class="row pt-2">
-                                                        @foreach($course->teachers as $key=>$teacher)
-                                                            @php
-                                                                $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
-                                                            @endphp
-                                                            @php $key++ @endphp
-
                                                             <a class="col-12"
                                                                href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                                                target="_blank">
-                                                                {{$teacher->full_name}}@if($key < count($course->teachers ))
-                                                                    , @endif
+                                                                {{$teacher->full_name}}
                                                             </a>
-                                                        @endforeach
-                                                        @foreach($course->teachers as $key=>$teacher)
-                                                            @php $key++ @endphp
+
                                                             <a class="col-12"
                                                                href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                                                target="_blank">
                                                                 {{$teacherProfile->description}}
                                                             </a>
-                                                        @endforeach
                                                     </div>
                                                 </div>
                                             </div>

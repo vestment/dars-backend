@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\academy;
 use App\Models\Blog;
 use App\Models\Bundle;
 use App\Models\Category;
@@ -88,11 +89,12 @@ class CoursesController extends Controller
             $course_rating = $course->reviews->avg('rating');
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
         }
-        $teacher_dat = TeacherProfile::get();
-        $teachers = User::get();
-        $popular_course = Course::withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-
-        return view('frontend.courses.index', compact('teacher_dat', 'teachers', 'popular_course', 'course_rating', 'teacher_data', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
+//        $teacher_dat = TeacherProfile::get();
+//        $teachers = User::get();
+        $teacher = $course->teachers()->first();
+        $teacherProfile = TeacherProfile::where('user_id', $teacher->id)->first();
+        $popular_course = Course::withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+        return view('frontend.courses.index', compact('teacherProfile', 'teacher', 'popular_course', 'course_rating', 'teacher_data', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
     }
 
     public function show($course_slug)
@@ -106,7 +108,7 @@ class CoursesController extends Controller
         $chapters = Chapter::where('course_id', $course_id)->get();
         // dd($teacherprofile = TeacherProfile::where('user_id',$user_id)->get('description'));
 
-        $related_courses=Course::where('category_id', $course->category->id)->where('id','!=',$course_id)->take(2)->get();
+        $related_courses = Course::where('category_id', $course->category->id)->where('id', '!=', $course_id)->take(2)->get();
 
         // dd($chapters);
         $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
@@ -134,9 +136,9 @@ class CoursesController extends Controller
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
         }
         $lessons = $course->courseTimeline()->orderby('sequence', 'asc');
-        $lessonsMedia =  \App\Models\Lesson::where('course_id', $course_id)->get();
+        $lessonsMedia = \App\Models\Lesson::where('course_id', $course_id)->get();
         $fileCount = 0;
-        foreach($lessonsMedia    as $lesson) {
+        foreach ($lessonsMedia as $lesson) {
             $fileCount += count($lesson->downloadableMedia);
         }
         // dd($fileCount);
@@ -160,15 +162,15 @@ class CoursesController extends Controller
         }
         $mandatory_courses = [];
         $optional_courses = [];
-        
-        if ( $course->optional_courses) {
+
+        if ($course->optional_courses) {
             $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->get();
         }
- if ($course->mandatory_courses) {
+        if ($course->mandatory_courses) {
             $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
         }
 //dd($course->getDataFromColumn('title'));
-        return view('frontend.courses.course', compact('fileCount','course_hours','related_courses','optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view('frontend.courses.course', compact('fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)
@@ -178,13 +180,13 @@ class CoursesController extends Controller
             ->where('status', '=', 1)
             ->first();
         if ($request->type == 'popular') {
-            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1);
+            $courses = Course::where('category_id', $request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1);
         } else if ($request->type == 'trending') {
-            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('trending', '=', 1);
+            $courses = Course::where('category_id', $request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('trending', '=', 1);
         } else if ($request->type == 'featured') {
-            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('featured', '=', 1);
+            $courses = Course::where('category_id', $request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('featured', '=', 1);
         } elseif ($request->type == 'All') {
-            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1);
+            $courses = Course::where('category_id', $request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1);
         }
         if (intval($request->maxPrice) && $request->maxPrice != 0) {
             $courses = $courses->where('price', '<=', intval($request->maxPrice));
@@ -207,6 +209,7 @@ class CoursesController extends Controller
             $courses = $courses->whereIn('id', $coursesIds);
         }
         $courses = $courses->orderBy('id', 'desc')->paginate(8);
+
         $html = '';
         if (count($courses->items()) > 0) {
             foreach ($courses->items() as $course) {
@@ -241,29 +244,27 @@ class CoursesController extends Controller
 
                 $html .= '<div class="row my-2"> <div class="col-4">';
                 foreach ($course->teachers as $key => $teacher) {
-                    if ($teacher->avatar_location == "") {
-                        $html .= '<img class="rounded-circle teach_img"
-                                                                     src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                     alt="">';
+                    if ($teacher->picture == "") {
+                        $html .= '<img class="rounded-circle teach_img" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg" alt="">';
                     } else {
-                        $html .= '<img class="rounded-circle teach_img"
-                                                                     src="' . asset($teacher->avatar_location) . '"
-                                                                     alt="">';
+                        $html .= '<img class="rounded-circle teach_img" src="' . asset($teacher->picture) . '" alt="">';
                     }
                 }
                 $html .= '</div><div class="col-8">
                                                         <div class="row">';
                 foreach ($course->teachers as $key => $teacher) {
-                    $teacherData = TeacherProfile::where('user_id', $teacher->id)->first();
-                    $html .= '<a class="col-12"
-                                                                   href="' . route('teachers.show', ['id' => $teacher->id]) . '"
-                                                                   target="_blank">
-                                                                    ' . $teacher->full_name . '
-                                                                </a><a class="col-12"
-                                                                   href="' . route('teachers.show', ['id' => $teacher->id]) . '"
-                                                                   target="_blank">
-                                                                      ' . $teacherData->description . '
-                                                                </a>';
+                    if ($teacher->hasRole('teacher')) {
+                        $teacherData = TeacherProfile::where('user_id', $teacher->id)->first();
+                       $html .= '<a class="text-pink" href="' . route('teachers.show', ['id' => $teacher->id]) . '" target="_blank">
+                            ' . $teacher->full_name . '
+                        </a><span class="text-muted teacher-title">
+                              ' . $teacherData->getDataFromColumn('title') . '
+                        </span>';
+                    } elseif ($teacher->hasRole('academy')) {
+                        $html .= '<a class="text-pink" href="' . route('academy.show', ['id' => $teacher->id]) . '" target="_blank">
+                            ' . $teacher->full_name . '
+                        </a>';
+                    }
                 }
 
 
@@ -350,21 +351,23 @@ class CoursesController extends Controller
             $popular_course = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
             $trending_courses = $category->courses()->withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
             $categoryTeachers = [];
-            foreach($courses as $course) {
+            foreach ($courses as $course) {
                 foreach ($course->teachers as $teacher) {
                     // $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
-                    if (!in_array($teacher,$categoryTeachers)){
-                    array_push($categoryTeachers,$teacher);
+                    if (!in_array($teacher, $categoryTeachers)) {
+                        array_push($categoryTeachers, $teacher);
                     }
                 }
             }
             $teachers = $categoryTeachers;
-            $teacher_data = TeacherProfile::get();
-            $teachers = User::get();
+//            $teacher_data = TeacherProfile::get();
+//            $teachers = User::get();
+            $teacher = $course->teachers()->first();
+            $teacherProfile = TeacherProfile::where('user_id', $teacher->id)->first();
             // dd($teacher);
             $cour = Course::with('teachers')->get();
             //  dd($cour);
-            return view('frontend.courses.index', compact('courses', 'teachers', 'teacher_data', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
+            return view('frontend.courses.index', compact('courses', 'teacher', 'teachers', 'teacherProfile', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
         }
         return abort(404);
     }
@@ -424,7 +427,7 @@ class CoursesController extends Controller
                 }
 
             }
-            return view($this->path . '.courses.course', compact('course', 'purchased_course', 'recent_news', 'completed_lessons', 'continue_course', 'course_rating', 'total_ratings', 'lessons', 'review'));
+            return view('frontend.courses.course', compact('course', 'purchased_course', 'recent_news', 'completed_lessons', 'continue_course', 'course_rating', 'total_ratings', 'lessons', 'review'));
         }
         return abort(404);
 

@@ -7570,6 +7570,7 @@ hr {
 
 .bgimage {
     background-image: url("../assets/911img/911.jpg");
+    background-size: contain;
     padding-top: 7%;
     padding-bottom: 320px;
     transform: translateY(65px);

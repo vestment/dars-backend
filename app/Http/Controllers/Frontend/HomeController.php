@@ -48,26 +48,19 @@ class HomeController extends Controller
         }
         $type = config('theme_layout');
         $sections = Config::where('key', '=', 'layout_' . $type)->first();
-        if($sections){
-        $sections = json_decode($sections->value);
+        if ($sections) {
+            $sections = json_decode($sections->value);
         }
-
-        $popular_courses = Course::withoutGlobalScope('filter')
+        $courses = Course::withoutGlobalScope('filter')
             ->whereHas('category')
-            ->where('published', '=', 1)
-            ->where('popular', '=', 1)->take(6)->get();
-
-        $featured_courses = Course::withoutGlobalScope('filter')->where('published', '=', 1)
-            ->whereHas('category')
-            ->where('featured', '=', 1)->take(8)->get();
-
+            ->with(['teachers', 'reviews'])
+            ->where('published', '=', 1);
+        $popular_courses = $courses->where('popular', '=', 1)->take(6)->get();
+        $featured_courses = $courses->where('featured', '=', 1)->take(8)->get();
+        $trending_courses = $courses->where('trending', '=', 1)->take(2)->get();
         $course_categories = Category::with('courses')->where('icon', '!=', "")->take(12)->get();
-        
 
-        $trending_courses = Course::withoutGlobalScope('filter')
-            ->whereHas('category')
-            ->where('published', '=', 1)
-            ->where('trending', '=', 1)->take(2)->get();
+
 
         $teachers = User::role('teacher')->with('courses')->where('active', '=', 1)->take(7)->get();
 
@@ -98,9 +91,9 @@ class HomeController extends Controller
         $teacher_data = TeacherProfile::get();
         $acadimies = User::role('academy')->with('academy')->where('active', '=', 1)->take(7)->get();
 
-        $trending = Course::where('trending', '=', 1)->get();
+        $trending = Course::where('trending', '=', 1)->with(['teachers', 'reviews'])->get();
 
-        return view('frontend.index', compact('popular_courses','trending','total_bundle','acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data','total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections','categories'));
+        return view('frontend.index', compact('popular_courses', 'trending', 'total_bundle', 'acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data', 'total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections', 'categories'));
     }
 
     public function getFaqs()
@@ -184,7 +177,7 @@ class HomeController extends Controller
                 session()->flash('alert', "Something went wrong, Please try again Later");
                 return back();
             }
-        }else{
+        } else {
             session()->flash('alert', "Please configure Newsletter from Admin");
             return back();
         }
@@ -210,7 +203,7 @@ class HomeController extends Controller
         if (count($teacher->courses) > 0) {
             $courses = $teacher->courses()->paginate(12);
         }
-        return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses','teacher_data'));
+        return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses', 'teacher_data'));
     }
 
     public function getDownload(Request $request)
@@ -251,7 +244,7 @@ class HomeController extends Controller
 
         if ($request->category != null) {
             $category = Category::find((int)$request->category);
-            if($category){
+            if ($category) {
                 $ids = $category->courses->pluck('id')->toArray();
                 $types = ['popular', 'trending', 'featured'];
                 if ($category) {

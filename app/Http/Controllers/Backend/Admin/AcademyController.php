@@ -210,15 +210,16 @@ class AcademyController extends Controller
 
         $academy = User::findOrFail($id);
         $academy->update($request->except('email'));
-        $academyData = academy::where('user_id', $id)->get()[0];
+       $academyData = academy::where('user_id', $id)->first();
         if ($request->file('image')) {
             $academy->avatar_type = 'storage';
             $file = $request->file('image');
             $filename = time() . '-' . $file->getClientOriginalName();
-            $path = public_path() . '/storage/avatars';
+            $path = public_path() . '/storage/uploads/academies/' . $academy->id;
             $file->move($path, $filename);
-             //         $academyLogo = asset('storage/uploads/academies/' . $filename);
-            $academy->avatar_location = 'storage/avatars/' . $filename;
+            //            $academyLogo = asset('storage/uploads/academies/' . $filename);
+            $academy->avatar_location = 'storage/uploads/academies/' . $academy->id . '/' . $filename;
+            $academyData->logo = 'storage/uploads/academies/' . $academy->id . '/' . $filename;
         }
         $academy->active = isset($request->active) ? 1 : 0;
         $academy->save();
