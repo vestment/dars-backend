@@ -178,13 +178,13 @@ class CoursesController extends Controller
             ->where('status', '=', 1)
             ->first();
         if ($request->type == 'popular') {
-            $courses = $category->courses()->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1);
+            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1);
         } else if ($request->type == 'trending') {
-            $courses = $category->courses()->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('trending', '=', 1);
+            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('trending', '=', 1);
         } else if ($request->type == 'featured') {
-            $courses = $category->courses()->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('featured', '=', 1);
+            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('featured', '=', 1);
         } elseif ($request->type == 'All') {
-            $courses = $category->courses()->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1);
+            $courses = Course::where('category_id',$request->category)->withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1);
         }
         if (intval($request->maxPrice) && $request->maxPrice != 0) {
             $courses = $courses->where('price', '<=', intval($request->maxPrice));

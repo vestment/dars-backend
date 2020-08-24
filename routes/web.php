@@ -85,7 +85,7 @@ Route::get('courses/review/{id}/edit', ['uses' => 'CoursesController@editReview'
 Route::post('courses/review/{id}/edit', ['uses' => 'CoursesController@updateReview', 'as' => 'courses.review.update']);
 Route::get('courses/review/{id}/delete', ['uses' => 'CoursesController@deleteReview', 'as' => 'courses.review.delete']);
 //============offline booking Routes=================//
-Route::get('offlineBooking', 'offlineBookingController@index')->name('offlineBooking.index');
+Route::get('offlineBooking', 'offlineBookingController@filerCoursesByCategory')->name('offlineBooking.index');
 //============ Academy Routes=================//
 Route::get('academy/{id}', ['uses' => 'AcademyController@show', 'as' => 'academy.show']);
 
