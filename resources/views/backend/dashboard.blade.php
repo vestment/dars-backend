@@ -703,7 +703,7 @@
                                     @foreach($recent_orders as $item)
                                         <tr>
                                             <td>
-                                                {{$item->user->full_name}}
+                                                {{$item->user ? $item->user->full_name : html_entity_decode("<span class='text-danger'>error showing user data</span>")}}
                                             </td>
                                             <td>{{$item->amount.' '.$appCurrency['symbol']}}</td>
                                             <td>{{$item->created_at->diffforhumans()}}</td>

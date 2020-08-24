@@ -168,7 +168,7 @@ class CoursesController extends Controller
             $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
         }
 //dd($course->getDataFromColumn('title'));
-        return view($this->path . '.courses.course', compact('fileCount','course_hours','related_courses','optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view('frontend.courses.course', compact('fileCount','course_hours','related_courses','optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)

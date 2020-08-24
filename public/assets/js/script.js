@@ -134,7 +134,7 @@ Author:         HTMLMATE Team
                     responsiveClass: true,
                     nav: true,
                     loop: true,
-                    dots: true,
+                    dots: false,
                     rtl: lang == 'ar' ? true : false,
                     autoplay: false,
                     navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],

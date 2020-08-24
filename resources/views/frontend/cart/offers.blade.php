@@ -68,17 +68,35 @@
             }
 
         }
+        .breadcrumb {
+            background-color: unset ;
+            margin-top: 3rem;
+        }
+        .breadcrumb>li {
+            display: inline-block;
+        }
+        .breadcrumb>li+li:before {
+            padding: 0 5px;
+            color: #ccc;
+            content: "/\00a0";
+        }
     </style>
 @endpush
 @section('content')
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
-        <div class="blakish-overlay"></div>
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header-ch">
+        <div class="blakish-overlay" ></div>
         <div class="container">
-            <div class="page-breadcrumb-content text-center">
-                <div class="page-breadcrumb-title">
-                    <h2 class="breadcrumb-head black bold"><span>@lang('labels.frontend.offers.title')</span></h2>
+            <div class="page-breadcrumb-content">
+                <ol class="breadcrumb">
+                    <li><a href="#">@lang('labels.frontend.layouts.partials.explore')</a></li>
+                    <li><a href="#">@lang('labels.frontend.layouts.partials.business')</a></li>
+                    <li class="active">@lang('labels.frontend.cart.offers')</li>
+                </ol>
+
+                <div class="page-breadcrumb-title pb-4">
+                    <h2 class="breadcrumb-head black bold"><span>@lang('labels.frontend.cart.offers')</span></h2>
                 </div>
             </div>
         </div>
