@@ -16,6 +16,13 @@
 
 
             <!--=======================Custom menus===============================-->
+            <li class="nav-item ">
+                    <a class="nav-link {{ $request->segment(2) == 'teachers' ? 'active' : '' }}"
+                       href="{{ route('admin.courses.create') }}">
+                        <i class="nav-icon icon-directions"></i>
+                        <span class="title">@lang('menus.backend.sidebar.courses.title')</span>
+                    </a>
+                </li>
             @can('order_access')
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'orders' ? 'active' : '' }}"

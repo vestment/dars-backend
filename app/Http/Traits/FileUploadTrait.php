@@ -23,6 +23,7 @@ trait FileUploadTrait
         $finalRequest = $request;
 
         foreach ($request->all() as $key => $value) {
+            if ($key != 'video_file') {
             if ($request->hasFile($key)) {
                 if ($request->has($key . '_max_width') && $request->has($key . '_max_height')) {
                     // Check file width
@@ -62,6 +63,7 @@ trait FileUploadTrait
                 }
             }
         }
+    }
         return $finalRequest;
     }
 

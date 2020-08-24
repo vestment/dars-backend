@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnCourseHoursToCoursesTable extends Migration
+class AddDurationToMedia extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddColumnCourseHoursToCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::table('courses', function (Blueprint $table) {
-            // $table->integer('course_hours')->nullable();
+        Schema::table('media', function (Blueprint $table) {
+             $table->integer('duration')->nullable();
+            
         });
     }
 
@@ -25,8 +26,8 @@ class AddColumnCourseHoursToCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::table('courses', function (Blueprint $table) {
-            // $table->dropColumn('course_hours');
+        Schema::table('media', function (Blueprint $table) {
+            $table->dropColumn('duration');
         });
     }
 }

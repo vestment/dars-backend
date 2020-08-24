@@ -121,7 +121,7 @@ trait FileUploadTrait
                                 'size' => $size,
                             ]);
                             $finalRequest = new Request(array_merge($finalRequest->all(), [$key => $filename]));
-                        } elseif ($key == 'add_audio') {
+                           } elseif ($key == 'add_audio') {
                             $file = $request->file($key);
 
                             $extension = array_last(explode('.', $request->file($key)->getClientOriginalName()));
@@ -140,7 +140,7 @@ trait FileUploadTrait
                                 'size' => $size,
                             ]);
                             $finalRequest = new Request(array_merge($finalRequest->all(), [$key => $filename]));
-                        } else {
+                            } else {
                             $extension = array_last(explode('.', $request->file($key)->getClientOriginalName()));
                             $name = array_first(explode('.', $request->file($key)->getClientOriginalName()));
                             $filename = time() . '-' . str_slug($name) . '.' . $extension;

@@ -53,6 +53,8 @@ return array(
                             'status' => 'Status',
                         ),
                     'course_hours' => 'course hours   ',
+                    'duration' => 'Video Duration',
+                     'video_format' => '00:00:00',
                     'courses_to_start' => 'Courses to get you started ',
                     'featured_courses' => 'Featured Courses',
                     'most_popular' => 'Most Popular',
@@ -64,6 +66,8 @@ return array(
                     'slug_placeholder' => 'Input slug or it will be generated automatically',
                     'select_category' => 'Select Category',
                     'select_academies' => 'Select Academies',
+                    'select_teachers' => 'Select Teachers',
+
                     'test' => 'Test',
                     'lesson' => 'Lesson',
                     'lessons' => 'Lessons',
@@ -79,7 +83,8 @@ return array(
             'chapters' =>
                 array(
 
-                    'title' => 'Chapters'
+                    'title' => 'Chapters',
+                    'chapter_image' => 'Chapter Image'
                 ),
             'tests' =>
                 array(
@@ -92,6 +97,7 @@ return array(
                             'description' => 'Description',
                             'published' => 'Published',
                             'questions' => 'Questions',
+                           
                         ),
                     'create' => 'Create Test',
                     'edit' => 'Edit Test',
@@ -346,10 +352,10 @@ return array(
                     'edit' => 'Edit Lesson',
                     'view' => 'View Lessons',
                     'video_guide' => '<p class="mb-1"><b>Youtube :</b> Go to Youtube -> Go to video you want to display -> click on share button below video. Copy that links and paste in above text box </p>
-<p class="mb-1"><b>Vimeo :</b> Go to Vimeo -> Go to video you want to display -> click on share button and copy paste video url here </p>
-<p class="mb-1"><b>Upload :</b> Upload <b>mp4</b> file in file input</p>
-<p class="mb-1"><b>Embed :</b> Copy / Paste embed code in above text box</p>',
-                    'remove' => 'Remove',
+                    <p class="mb-1"><b>Vimeo :</b> Go to Vimeo -> Go to video you want to display -> click on share button and copy paste video url here </p>
+                    <p class="mb-1"><b>Upload :</b> Upload <b>mp4</b> file in file input</p>
+                    <p class="mb-1"><b>Embed :</b> Copy / Paste embed code in above text box</p>',
+                                        'remove' => 'Remove',
                 ),
             'chapters' =>
                 array(
@@ -377,7 +383,7 @@ return array(
                             'short_text_ar' => 'Short Text in arabic',
                             'title' => 'Title in english',
                             'title_ar' => 'Title in arabic',
-
+                            'chapter_image' => 'Chapter Image',
                             'full_text' => 'Full Text in english',
                             'full_text_ar' => 'Full Text in arabic',
                         ),

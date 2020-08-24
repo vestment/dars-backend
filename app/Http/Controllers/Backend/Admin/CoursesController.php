@@ -9,7 +9,7 @@ use App\Models\Chapter;
 use App\Models\CourseTimeline;
 use App\Models\Media;
 use App\Models\Courses;
-
+use getID3;
 use function foo\func;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -273,6 +273,7 @@ class CoursesController extends Controller
                 $media->type = $request->media_type;
                 $media->file_name = $video_id;
                 $media->size = 0;
+                $media->duration  = $request->duration;
                 $media->save();
             }
 
@@ -286,6 +287,12 @@ class CoursesController extends Controller
                     $filename = str_replace(' ','-',$filename);
                     $file->move($path, $filename);
                     $url = 'storage/uploads/' . $filename;
+                    $getID3 = new getID3;
+                    $video_file = $getID3->analyze($url);
+                    // Get the duration in string, e.g.: 4:37 (minutes:seconds)
+                    $duration_string = $video_file['playtime_string'];
+                    // Get the duration in seconds, e.g.: 277 (seconds)
+                    $duration_seconds = $video_file['playtime_seconds'];
 
                     $media = Media::where('type', '=', $request->media_type)
                         ->where('model_type', '=', 'App\Models\Lesson')
@@ -302,9 +309,11 @@ class CoursesController extends Controller
                     $media->type = $request->media_type;
                     $media->file_name = $filename;
                     $media->size = $size;
+                    $media->duration = $duration_string;
                     $media->save();
 
                 }
+
             }
         }
 
@@ -354,9 +363,11 @@ class CoursesController extends Controller
         // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
         $prevLearned = [];
+        if($learned != null){
         foreach ($learned as $key => $value) {
         $prevLearned[$value] = $value;
         }
+    }
     //    dd($allTeachers);
         return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses','prevLearned','learned'));
     }
