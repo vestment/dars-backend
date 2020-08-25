@@ -136,7 +136,7 @@ class ChaptersController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request->all());
+      
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
@@ -244,7 +244,7 @@ class ChaptersController extends Controller
             $timeline->save();
         }
 
-        return redirect()->route('admin.chapters.index', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.created'));
+        return redirect()->route('admin.courses.edit', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.created'));
     }
     public function show($id)
     {

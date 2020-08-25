@@ -196,6 +196,8 @@ Route::delete('categories_perma_del/{id}', ['uses' => 'Admin\CategoriesControlle
 
 //===== Courses Routes =====//
 Route::resource('courses', 'Admin\CoursesController');
+Route::get('editcontent', ['uses' => 'Admin\CoursesController@editcontent', 'as' => 'courses.editcontent']);
+
 Route::get('get-courses-data', ['uses' => 'Admin\CoursesController@getData', 'as' => 'courses.get_data']);
 Route::post('courses_mass_destroy', ['uses' => 'Admin\CoursesController@massDestroy', 'as' => 'courses.mass_destroy']);
 Route::post('courses_restore/{id}', ['uses' => 'Admin\CoursesController@restore', 'as' => 'courses.restore']);
