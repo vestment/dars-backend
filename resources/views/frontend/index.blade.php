@@ -103,7 +103,7 @@
                                     <div>
                                         <div class="text-white tex">
                                             <h3 class="pb-4">Bundle Course</h3>
-                                            <h2 class="pb-5 textbold">World-class learning for anyone, anywhere</h2>
+                                            <h4 class="pb-5 textbold">World-class learning for anyone, anywhere</h4>
                                         </div>
                                         <div class=" text-center btn-p">
                                             <button class=" btn btn-outline-info">view plans</button>
@@ -119,8 +119,8 @@
                         <div class="offset-1 col-lg-7 col-sm-12 text-white">
                             <div class="p-5">
                                 <span class=" pb-3"> @lang('labels.frontend.layouts.partials.OfferCourses')</span>
-                                <h2>@lang('labels.frontend.layouts.partials.packagecourse')
-                                </h2>
+                                <h4 >@lang('labels.frontend.layouts.partials.packagecourse')
+                                </h4>
                             </div>
 
                             @if($total_bundle->count() > 0)
@@ -291,7 +291,7 @@
             <section id="sponsor" class="sponsor-section">
                 <div class="container">
                     <div class="section-title-2 mb65 headline text-left ">
-                        <h2>{{env('APP_NAME')}} <span>@lang('labels.frontend.layouts.partials.sponsors')</span></h2>
+                        <h4 class="title">{{env('APP_NAME')}} <span>@lang('labels.frontend.layouts.partials.sponsors')</span></h4>
                     </div>
 
                     <div class="sponsor-item sponsor-1 text-center">
@@ -343,8 +343,8 @@
             <div class="container ">
                 <div class="section-title headline mb-5">
                     <span class=" subtitle text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-                    <h1 class="text-dark font-weight-bolder "><span>@lang('labels.frontend.home.academies').</span>
-                    </h1>
+                    <h4 class="text-dark font-weight-bolder title "><span>@lang('labels.frontend.home.academies').</span>
+                    </h4>
                 </div>
 
                 @if(count($acadimies)> 0)

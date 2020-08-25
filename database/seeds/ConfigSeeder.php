@@ -89,7 +89,7 @@ class ConfigSeeder extends Seeder
             'footer_data' => $footer_data,
             'app__locale' => 'en',
             'app__display_type' => 'ltr',
-            'app__currency' => 'USD',
+            'app__currency' => 'US',
             'lesson_timer' => 0,
             'show_offers' => 1,
             'access.captcha.registration' => 0,

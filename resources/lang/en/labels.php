@@ -18,7 +18,7 @@ return array(
                             'popular' => 'Popular',
                             'teachers' => 'Teachers',
                             'academies' => 'Academies',
-                            'hours' => 'Houres',
+                            'hours' => 'Hours',
                             'lectures' => 'Lectures',
                             'category' => 'Category',
                             'title' => 'Title in english',
@@ -1542,6 +1542,9 @@ return array(
                     'start_now' => 'Start Course',
                     'enrolled' => 'Enrolled',
                     'chapters' => 'Chapters',
+                    'course_hours' => 'hours',
+                    'instructor' => 'instructor',
+
 
                     'category' => 'Category',
                     'author' => 'Author',
@@ -1649,6 +1652,10 @@ return array(
                     'partials' =>
                         array(
                             'OfferCourses' => 'Offer Courses',
+                            'view_more' => 'view more ',
+                            'subtext'=>"The world's largest selection of courses",
+                            'paragh'=>"Choose from 100,000 online video courses with new additions published every month",
+
                             'email_address' => 'Email Address',
                             'email_registration' => 'Email Us For Free Registration',
                             'call_us_registration' => 'Call Us For Free Registration',

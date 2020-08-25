@@ -1,9 +1,9 @@
 <section id="latest-area" class="">
     <div class="container-fluid">
         <div class="section-title  text-dark p-5">
-            <p class="subtitle font-weight-lighter">The world's largest selection of courses</p>
-            <h2 class="font-weight-bolder">@lang('labels.frontend.layouts.partials.trending_courses')</h2>
-            <p>Choose from 100,000 online video courses with new additions published every month</p>
+            <span class="subtitle text-uppercase ">@lang('labels.frontend.layouts.partials.subtext')</span>
+            <h4 class="font-weight-bolder title">@lang('labels.frontend.layouts.partials.trending_courses')</h4>
+            <p class="pl-4">@lang('labels.frontend.layouts.partials.paragh')</p>
         </div>
         <div class="owl-carousel default-owl-theme p-3">
             @if($trending->count() > 0)
