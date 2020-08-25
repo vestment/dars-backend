@@ -297,8 +297,8 @@
                                             <div id="player" class="js-player" data-plyr-provider="vimeo"
                                                  data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
                                         @elseif($course->mediavideo->type == 'upload')
-                                            <video poster="" id="player" class="js-player" playsinline controls>
-                                                <source src="{{$course->mediavideo->url}}" type="video/mp4"/>
+                                            <video poster="" style="width: 100%" id="player" class="js-player" playsinline controls>
+                                                <source src="{{route('videos.stream',['course'=>$course])}}" type="video/mp4"/>
                                             </video>
                                         @elseif($course->mediavideo->type == 'embed')
                                             {!! $course->mediavideo->url !!}
@@ -639,20 +639,6 @@
     <!-- End of Related Courses section
         ============================================= -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- Start of course review section
         ============================================= -->
     <section id="course-page" class="course-page-section">
@@ -779,6 +765,7 @@
 @endsection
 
 @push('after-scripts')
+
     <script>
         $(document).ready(function () {
 

@@ -203,8 +203,10 @@ Route::delete('courses_perma_del/{id}', ['uses' => 'Admin\CoursesController@perm
 Route::post('course-save-sequence', ['uses' => 'Admin\CoursesController@saveSequence', 'as' => 'courses.saveSequence']);
 Route::get('course-publish/{id}', ['uses' => 'Admin\CoursesController@publish', 'as' => 'courses.publish']);
 Route::get('course-content/{course_id}', ['uses' => 'Admin\CoursesController@courseContent', 'as' => 'courses.courseContent']);
-
 Route::post('courses/create', 'Admin\CoursesController@store')->name('courses.createCourse');
+Route::resource('video-bank', 'Admin\VideoBankController');
+Route::get('get-videos-data', ['uses' => 'Admin\VideoBankController@getData', 'as' => 'videos.get_data']);
+Route::post('videos_mass_destroy', ['uses' => 'Admin\VideoBankController@massDestroy', 'as' => 'videos.mass_destroy']);
 
 
 //===== Bundles Routes =====//

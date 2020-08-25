@@ -134,6 +134,7 @@ Route::post('wishlist/addtocart', ['uses' => 'wishlistController@addToCart', 'as
 Route::get('download', ['uses' => 'Frontend\HomeController@getDownload', 'as' => 'download']);
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('stream/{course}', ['uses' => 'StreamController@stream', 'as' => 'videos.stream']);
     Route::post('cart/checkout', ['uses' => 'CartController@checkout', 'as' => 'cart.checkout']);
     Route::post('cart/add', ['uses' => 'CartController@addToCart', 'as' => 'cart.addToCart']);
     Route::get('cart', ['uses' => 'CartController@index', 'as' => 'cart.index']);

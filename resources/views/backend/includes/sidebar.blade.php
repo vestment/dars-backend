@@ -23,6 +23,13 @@
                         <span class="title">@lang('menus.backend.sidebar.courses.title')</span>
                     </a>
                 </li>
+            <li class="nav-item ">
+                <a class="nav-link {{ $request->segment(2) == 'video-bank' ? 'active' : '' }}"
+                   href="{{ route('admin.video-bank.index') }}">
+                    <i class="nav-icon fa fa-file-video-o"></i>
+                    <span class="title">@lang('labels.backend.videos.title')</span>
+                </a>
+            </li>
             @can('order_access')
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'orders' ? 'active' : '' }}"

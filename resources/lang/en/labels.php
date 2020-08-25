@@ -3,6 +3,23 @@
 return array(
     'backend' =>
         array(
+            'videos' => array(
+                'title' => 'Videos',
+                'fields' =>
+                    array(
+                        'type' => 'Type',
+                        'related' => 'Related',
+                        'video_name' => 'Name',
+                        'url' => 'URL',
+                        'upload_type' => 'Video Type',
+                        'file_name' => 'File Name',
+                        'duration' => 'Duration',
+                        'videos_input' => 'Videos',
+                    ),
+                'create' => 'Create Video',
+                'edit' => 'Edit Video',
+                'view' => 'View Videos',
+            ),
             'courses' =>
                 array(
                     'content' => 'Content',
@@ -54,7 +71,7 @@ return array(
                         ),
                     'course_hours' => 'course hours   ',
                     'duration' => 'Video Duration',
-                     'video_format' => '00:00:00',
+                    'video_format' => '00:00:00',
                     'courses_to_start' => 'Courses to get you started ',
                     'featured_courses' => 'Featured Courses',
                     'most_popular' => 'Most Popular',
@@ -97,7 +114,7 @@ return array(
                             'description' => 'Description',
                             'published' => 'Published',
                             'questions' => 'Questions',
-                           
+
                         ),
                     'create' => 'Create Test',
                     'edit' => 'Edit Test',
@@ -355,7 +372,7 @@ return array(
                     <p class="mb-1"><b>Vimeo :</b> Go to Vimeo -> Go to video you want to display -> click on share button and copy paste video url here </p>
                     <p class="mb-1"><b>Upload :</b> Upload <b>mp4</b> file in file input</p>
                     <p class="mb-1"><b>Embed :</b> Copy / Paste embed code in above text box</p>',
-                                        'remove' => 'Remove',
+                    'remove' => 'Remove',
                 ),
             'chapters' =>
                 array(
@@ -1497,7 +1514,6 @@ return array(
                     'price' => 'price',
 
 
-
                 ),
             'contact' =>
                 array(
@@ -1528,9 +1544,9 @@ return array(
                         'reset' => 'Reset filters',
                         'up' => 'Up',
                         'hours' => 'Hours',
-                        'academies'=>'Academies',
-                        'teachers'=>'Teachers',
-                        'categories'=>'categories',
+                        'academies' => 'Academies',
+                        'teachers' => 'Teachers',
+                        'categories' => 'categories',
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',
@@ -1615,8 +1631,6 @@ return array(
                     'requirements' => 'Requirements',
                     'hours' => 'hours',
                     'remove' => 'Remove',
-
-              
 
 
                 ),
