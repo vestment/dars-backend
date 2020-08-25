@@ -180,9 +180,17 @@ class CoursesController extends Controller
      */
     public function create()
     {
+
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
+
+        $allAcademies = User::role('academy')->with('academy')->get();
+        $academies = [];
+foreach ($allAcademies as $academy) {
+    $academies[$academy->academy->id] = $academy->full_name;
+}
+        
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
@@ -205,7 +213,7 @@ class CoursesController extends Controller
         }
 
 
-        return view('backend.courses.create', compact('teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours'));
+        return view('backend.courses.create', compact('teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours','academies'));
     }
 
     /**

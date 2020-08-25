@@ -176,12 +176,34 @@
                                         {!! Form::checkbox('free', 1, false, []) !!}
                                         {!! Form::label('free',  trans('labels.backend.courses.fields.free'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
-
+                                    <div class="checkbox d-inline mr-3">
+                                            {!! Form::hidden('offline', 0) !!}
+                                            {!! Form::checkbox('offline', 1, false, []) !!}
+                                            {!! Form::label('offline',  trans('labels.backend.courses.fields.offline_courses'), ['class' => 'checkbox control-label font-weight-bold','id'=>'offline']) !!}
+                                    </div>
 
                                 </div>
 
                             </div>
 
+                            <div class="row academy">
+                                    <div class="col-10 form-group">
+                                        {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                                        @if (auth()->user()->hasRole('academy'))
+                                            {{ html()->text('academy_id')
+                                            ->class('form-control')
+                                            ->placeholder(auth()->user()->full_name)
+                                            ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                            ->value(auth()->user()->full_name)}}
+                                        @else
+                                            {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false]) !!}
+                                        @endif
+                                    </div>
+                                <!-- <div class="col-2 d-flex form-group flex-column">
+                                    OR <a target="_blank" class="btn btn-primary mt-auto"
+                                          href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
+                                </div> -->
+                                </div>
                             <div class="row">
                                     <div class="col-6 form-group">
                                         {!! Form::label('meta_title',trans('labels.backend.courses.fields.meta_title'), ['class' => 'control-label']) !!}
@@ -505,6 +527,19 @@
 
 @push('after-scripts')
     <script>
+        @if(old('offline') && old('offline') == '0')
+        $('.academy').hide();
+        @elseif(old('offline')&& old('offline')  == '1')
+        $('.academy').show();
+        @endif
+        $(document).on('change', '#offline', function () {
+            if ($(this).val() === '0') {
+                $('.academy').hide();
+            } else {
+                $('.academy').show();
+            }
+        });
+    
 
         $(document).ready(function () {
             $('#start_date').datepicker({

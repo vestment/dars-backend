@@ -636,6 +636,11 @@
             </div>
         </section>
     @endif
+
+
+   
+          
+
     {{-- end myyy of course section --}}
     <!-- End of course section
         ============================================= -->

@@ -417,6 +417,19 @@ h6 {
     /* padding-bottom: 515px; */
 
 }
+.bg-header-offline {
+    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+   height: 260px;
+    color: white;
+    margin-bottom: 88px;
+    /* padding-bottom: 515px; */
+
+}
+.bg-header-offline .container-fluid .page-breadcrumb-content{
+padding-top: 5rem;
+}
+
+
 .bg-header-cat {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
   padding-top: 10%;
@@ -7503,4 +7516,16 @@ hr {
 .menu-bg-overlay .menu-item-has-children:hover .sub-menu
 {
     transform: scaleY(1) translateY(33px);
+}
+
+.checkinput{
+    background-color: white;
+    border: none;
+    padding: 0;
+    padding-right: 10px
+}
+
+.head-coll{
+    cursor: pointer;
+
 }
