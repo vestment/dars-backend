@@ -130,7 +130,7 @@ class VideoBankController extends Controller
                 $media->model_type = '';
                 $media->model_id = null;
                 $media->name = 'Un selected - video';
-                $media->url = asset($url);
+                $media->url = $url;
                 $media->type = 'upload';
                 $media->file_name = $filename;
                 $media->size = $size;

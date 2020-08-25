@@ -85,7 +85,7 @@ class LoginController extends Controller
                     return
                         response([
                             'success' => false,
-                            'message' => 'Login failed. Account is not active'
+                            'message' => 'Login failed. Incorrect credentials'
                         ], Response::HTTP_FORBIDDEN);
                 }
             }else{

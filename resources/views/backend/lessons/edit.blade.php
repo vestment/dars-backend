@@ -35,7 +35,7 @@
 @endpush
 @section('content')
     {!! Form::model($lesson, ['method' => 'PUT', 'route' => ['admin.lessons.update', $lesson->id], 'files' => true,]) !!}
-
+    {!! Form::hidden('course_id',$lesson->course_id,['id'=>'lesson_id']) !!}
     <div class="card">
         <div class="card-header">
             <h3 class="page-title float-left mb-0">@lang('labels.backend.lessons.edit')</h3>
@@ -46,24 +46,9 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('course_id', trans('labels.backend.lessons.fields.course'), ['class' => 'control-label']) !!}
-                    @if(app()->getLocale() == 'en')
-                    {!! Form::select('course_id', $courses, old('course_id'), ['class' => 'form-control select2']) !!}
-                    @endif
-                    @if(app()->getLocale() == 'ar')
-                    {!! Form::select('course_id', $coursew_ar, old('course_id'), ['class' => 'form-control select2']) !!}
-                    @endif
-                    
-                </div>
-                <div class="col-12 col-lg-6 form-group">
+                <div class="col-12 col-lg-12 form-group">
                     {!! Form::label('chapter_id', trans('labels.backend.lessons.fields.chapter'), ['class' => 'control-label']) !!}
-                    @if(app()->getLocale() == 'en')
                     {!! Form::select('chapter_id', $chapters, old('chapter_id'), ['class' => 'form-control select2']) !!}
-                    @endif
-                    @if(app()->getLocale() == 'ar')
-                    {!! Form::select('chapter_id', $chapterw_ar, old('chapter_id'), ['class' => 'form-control select2']) !!}
-                    @endif
 
                 </div>
                 </div>
@@ -131,7 +116,7 @@
                 </div>
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('full_text_ar', trans('labels.backend.lessons.fields.full_text_ar'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('full_text_ar', old('full_text_ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor']) !!}
+                    {!! Form::textarea('full_text_ar', old('full_text_ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor_ar']) !!}
                 </div>
             </div>
             <div class="row">
@@ -216,25 +201,27 @@
             <div class="row">
                 <div class="col-md-12 form-group">
                     {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
-                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($lesson->mediavideo) ? $lesson->mediavideo->type : null,['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
 
+                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($lesson->mediavideo && $lesson->mediavideo->type) ? $lesson->mediavideo->type : '',['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
 
-                    {!! Form::text('video', ($lesson->mediavideo) ? $lesson->mediavideo->url : null, ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
+                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
 
-                    {!! Form::file('video_file', ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video_file','accept' =>'video/mp4'  ]) !!}
+                    {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
+
                     <input type="hidden" name="old_video_file"
-                           value="{{($lesson->mediavideo && $lesson->mediavideo->type == 'upload') ? $lesson->mediavideo->url  : ""}}">
+                           value="{{($lesson->mediavideo && $lesson->mediavideo->type == 'upload') ? $lesson->mediavideo->id  : ""}}">
 
 
                     @if($lesson->mediavideo && ($lesson->mediavideo->type == 'upload'))
                         <video width="300" class="mt-2 d-none video-player" controls>
-                            <source src="{{($lesson->mediavideo && $lesson->mediavideo->type == 'upload') ? $lesson->mediavideo->url  : ""}}"
+                            <source src="{{($lesson->mediavideo && $lesson->mediavideo->type == 'upload') ? asset($lesson->mediavideo->url)  : ""}}"
                                     type="video/mp4">
                             Your browser does not support HTML5 video.
                         </video>
                     @endif
 
                     @lang('labels.backend.lessons.video_guide')
+
                 </div>
             </div>
             <div class="row">

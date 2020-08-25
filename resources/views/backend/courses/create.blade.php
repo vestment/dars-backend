@@ -118,26 +118,7 @@
 
                                 </div>
                             </div>
-                                <div class="row">
-                                    <div class="col-md-12 form-group">
-                                        {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
 
-                                        {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],null,['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
-
-                                        {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
-
-
-                                        {!! Form::file('video_file', ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video_file'  ]) !!}
-
-                                        @lang('labels.backend.lessons.video_guide')
-
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-6 form-group d-none" id="duration">
-                                    {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
-                                    {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format')]) !!}
-
-                                </div>
 
                             <div class="row">
                                 <div class="col-12 form-group">
@@ -306,36 +287,7 @@
             })
         });
 
-        var uploadField = $('input[type="file"]');
 
-        $(document).on('change', 'input[type="file"]', function () {
-            var $this = $(this);
-            $(this.files).each(function (key, value) {
-                if (value.size > 5000000) {
-                    alert('"' + value.name + '"' + 'exceeds limit of maximum file upload size')
-                    $this.val("");
-                }
-            })
-        })
-
-
-        $(document).on('change', '#media_type', function () {
-            if ($(this).val()) {
-                if ($(this).val() != 'upload') {
-                    $('#video').removeClass('d-none').attr('required', true)
-                    $('#video_file').addClass('d-none').attr('required', false)
-                    $('#duration').removeClass('d-none').attr('required', true)
-                } else if ($(this).val() == 'upload') {
-                    $('#video').addClass('d-none').attr('required', false)
-                    $('#video_file').removeClass('d-none').attr('required', true)
-                 
-
-                }
-            } else {
-                $('#video_file').addClass('d-none').attr('required', false)
-                $('#video').addClass('d-none').attr('required', false)
-            }
-        })
         $(document).ready(function() {
 var max_fields_limit = 8; //set limit for maximum input fields
 var x = 1; //initialize counter for text box

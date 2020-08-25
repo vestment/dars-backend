@@ -195,9 +195,7 @@ class CoursesController extends Controller
 
         $courses = Course::pluck('title', 'id');
         $learned = Course::pluck('learned', 'id');
-
         $course_hours = Course::pluck('course_hours', 'id');
-
         $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
@@ -210,8 +208,7 @@ class CoursesController extends Controller
             $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
         }
 
-
-        return view('backend.courses.create', compact('teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours'));
+        return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours'));
     }
 
     /**

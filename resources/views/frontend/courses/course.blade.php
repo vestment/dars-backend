@@ -2,6 +2,8 @@
 @section('title', trans('labels.frontend.course.courses').' | '. app_name() )
 
 @push('after-styles')
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
+
     <style>
         .couse-pagination li.active {
             color: #333333 !important;
@@ -275,45 +277,7 @@
             <!-- video modal -->
             <!--Modal: Name-->
 
-            <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <!--Content-->
-                    <!-- <div class="modal-content"> -->
-                    <!--Body-->
-                    <div class="modal-body mb-0 p-0 mt-5">
-                    @if($course->mediaVideo && $course->mediavideo->count() > 0)
-                        <!-- <div class="course-single-text"> -->
-                            @if($course->mediavideo != "")
-                                <div class="course-details-content">
-                                    <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
-                                        @if($course->mediavideo->type == 'youtube')
 
-
-                                            <div id="player" class="js-player embed-responsive embed-responsive-16by9"
-                                                 data-plyr-provider="youtube"
-                                                 data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
-
-                                        @elseif($course->mediavideo->type == 'vimeo')
-                                            <div id="player" class="js-player" data-plyr-provider="vimeo"
-                                                 data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
-                                        @elseif($course->mediavideo->type == 'upload')
-                                            <video poster="" style="width: 100%" id="player" class="js-player" playsinline controls>
-                                                <source src="{{route('videos.stream',['course'=>$course])}}" type="video/mp4"/>
-                                            </video>
-                                        @elseif($course->mediavideo->type == 'embed')
-                                            {!! $course->mediavideo->url !!}
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
-                    </div>
-                    @else
-                        <p class="text-center text-white display-4 mx-5 my-5">No Videos available </p>
-                    @endif
-                </div>
-                <!-- </div> -->
-                <!--/.Content-->
-            </div>
         </div>
         <!--Modal: Name-->
 
@@ -684,110 +648,111 @@
             </div>
 
             @if ($purchased_course)
-            @if (auth()->check())
-                @if($course->progress() >= 0)
-                @if($is_reviewed == false)
-                                    <div class="reply-comment-box">
-                                        <div class="review-option">
-                                            <div class="section-title-2  headline text-left float-left">
-                                                <h2>@lang('labels.frontend.course.add_reviews')</h2>
-                                            </div>
-                                            <div class="review-stars-item float-right mt15">
-                                                <span>@lang('labels.frontend.course.your_rating'): </span>
-                                                <div class="rating">
-                                                    <label>
-                                                        <input type="radio" name="stars" value="1"/>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="stars" value="2"/>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="stars" value="3"/>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="stars" value="4"/>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="stars" value="5"/>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                        <span class="icon"><i class="fas fa-star"></i></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="teacher-faq-form">
-                                            
-                                            <form method="POST"
-                                                  action="{{ route('courses.review',['id'=>$course->id]) }}"
-                                                  data-lead="Residential">
-                                                @csrf
-                                                <input type="hidden" name="rating" id="rating">
-                                                <label for="review">@lang('labels.frontend.course.message')</label>
-                                                <textarea name="review" class="mb-2" id="review" rows="2"
-                                                          cols="20"></textarea>
-                                                <span class="help-block text-danger">{{ $errors->first('review', ':message') }}</span>
-                                                <div class="nws-button text-center  gradient-bg text-uppercase">
-                                                    <button type="submit"
-                                                            value="Submit">@lang('labels.frontend.course.add_review_now')
-                                                    </button>
-                                                </div>
-                                            </form>
+                @if (auth()->check())
+                    @if($course->progress() >= 0)
+                        @if($is_reviewed == false)
+                            <div class="reply-comment-box">
+                                <div class="review-option">
+                                    <div class="section-title-2  headline text-left float-left">
+                                        <h2>@lang('labels.frontend.course.add_reviews')</h2>
+                                    </div>
+                                    <div class="review-stars-item float-right mt15">
+                                        <span>@lang('labels.frontend.course.your_rating'): </span>
+                                        <div class="rating">
+                                            <label>
+                                                <input type="radio" name="stars" value="1"/>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="2"/>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="3"/>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="4"/>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="5"/>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                                <span class="icon"><i class="fas fa-star"></i></span>
+                                            </label>
                                         </div>
                                     </div>
-                                    @else
-                                        <div class="alert alert-info"> you have already reviewed this course</div>
-                                    @endif
+                                </div>
+                                <div class="teacher-faq-form">
+
+                                    <form method="POST"
+                                          action="{{ route('courses.review',['id'=>$course->id]) }}"
+                                          data-lead="Residential">
+                                        @csrf
+                                        <input type="hidden" name="rating" id="rating">
+                                        <label for="review">@lang('labels.frontend.course.message')</label>
+                                        <textarea name="review" class="mb-2" id="review" rows="2"
+                                                  cols="20"></textarea>
+                                        <span class="help-block text-danger">{{ $errors->first('review', ':message') }}</span>
+                                        <div class="nws-button text-center  gradient-bg text-uppercase">
+                                            <button type="submit"
+                                                    value="Submit">@lang('labels.frontend.course.add_review_now')
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        @else
+                            <div class="alert alert-info"> you have already reviewed this course</div>
+                        @endif
+                    @endif
                 @endif
-                @endif
 
 
 
-            @foreach($course_review as $key=>$review)
-                <div class="row" data-id="{{$teacher->id}}">
-                    <div class="row col-lg-3">
-                        <div class="col-lg-1 col-md-2 col-sm-3">
-                            <img style="max-width:50px;height:50px" class="rounded-circle" src="{{$teacher->picture}}"
-                                alt="">
-                        </div>
-                        <div class="col-lg-5 col-md-5 col-sm-3 ml-5 mt-2">
+                @foreach($course_review as $key=>$review)
+                    <div class="row" data-id="{{$teacher->id}}">
+                        <div class="row col-lg-3">
+                            <div class="col-lg-1 col-md-2 col-sm-3">
+                                <img style="max-width:50px;height:50px" class="rounded-circle"
+                                     src="{{$teacher->picture}}"
+                                     alt="">
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-3 ml-5 mt-2">
                                 <span>{{$review->user->full_name}}</span>
                                 <div class="ul-li">
                                     <ul>
                                         @for ($i=0; $i<5; ++$i)
-                                            <li> <i class="fa{{($review->rating<=$i?'r':'s')}} fa-star{{($review->rating==$i+.5?'-half-alt':'')}} text-warning"
-                                            aria-hidden="true"></i></li>
+                                            <li>
+                                                <i class="fa{{($review->rating<=$i?'r':'s')}} fa-star{{($review->rating==$i+.5?'-half-alt':'')}} text-warning"
+                                                   aria-hidden="true"></i></li>
                                         @endfor
                                     </ul>
                                 </div>
                                 <div class="col-lg-3 col-md-5 col-sm-3 mt-4" style="padding-left: 0px">
-                      <p>{{$review->content}}</p>
-                  </div>
-                        </div>
+                                    <p>{{$review->content}}</p>
+                                </div>
+                            </div>
 
                         <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
-                    </div>
-              
-                </div>
-                <div class="row col-6">
-                  
-               
-              </div>
-            @endforeach
-    @endif
+                        </div>
 
+                    </div>
+                    <div class="row col-6">
+
+
+                    </div>
+                @endforeach
+            @endif
 
 
         </div>
@@ -850,12 +815,51 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <!--Content-->
+            <div class="modal-content border-0 bg-transparent">
+                <!--Body-->
+                <div class="modal-body mb-0 p-0 mt-5">
+                @if($course->mediaVideo && $course->mediavideo->count() > 0)
+                    <!-- <div class="course-single-text"> -->
+                        @if($course->mediavideo != "")
 
+                            <div class="video-container mb-5" data-id="{{$course->mediavideo->id}}">
+                                @if($course->mediavideo->type == 'youtube')
+                                    <div id="player"
+                                         class="js-player plyr__video-embed embed-responsive embed-responsive-16by9"
+                                         data-plyr-provider="{{$course->mediavideo->type}}"
+                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                @elseif($course->mediavideo->type == 'vimeo')
+                                    <div id="player" class="js-player plyr__video-embed" data-plyr-provider="{{$course->mediavideo->type}}"
+                                         data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
+                                @elseif($course->mediavideo->type == 'upload')
+                                    <video data-provider="{{$course->mediavideo->type}}" style="width: 100%" id="player" class="js-player" playsinline
+                                           controls>
+                                        <source src="{{route('videos.stream',['course'=>$course])}}" type="video/mp4"/>
+                                    </video>
+                                @elseif($course->mediavideo->type == 'embed')
+                                    {!! $course->mediavideo->url !!}
+                                @endif
+                            </div>
+                        @endif
+                </div>
+                @else
+                    <p class="text-center text-white display-4 mx-5 my-5">No Videos available </p>
+                @endif
+            </div>
+        </div>
+        <!-- </div> -->
+        <!--/.Content-->
+    </div>
 @endsection
 
 @push('after-scripts')
+    <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
 
     <script>
+        const player = new Plyr('#player');
         $(document).ready(function () {
 
             $(document).on('change', '#sortBy', function () {
@@ -884,7 +888,7 @@
 
     </script>
 
-<script>
+    <script>
 
         $(document).on('change', 'input[name="stars"]', function () {
             $('#rating').val($(this).val());
