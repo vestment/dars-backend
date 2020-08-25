@@ -1413,8 +1413,11 @@ return array (
             'apply' => 'تطبيق',
             'reset' => 'الغاء',
             'up' => 'أعلي',
-            'hours' => 'ساعات'
+            'hours' => 'ساعات',
+
         ),
+        'course_hours' => 'عدد ساعات الكورس ',
+
       'add_review_now' => 'إضافة مراجعة الآن',
       'add_reviews' => 'أضف <span> مراجعات. </span>',
       'add_to_cart' => 'أضف إلى السلة',
@@ -1525,6 +1528,10 @@ return array (
     array (
       'partials' => 
       array (
+        'view_more' => 'اعرض المزيد ',
+        'subtext'=>"اكبر مجموعة من الكورسات",
+        'paragh'=>"اختر من 100,000 فيديو ينشر كل شهر",
+
         'OfferCourses' => 'الدورات المخفضة',
         'browse_course_by_category' => 'استعرض الدورات <span> حسب الفئة. </span>',
         'browse_featured_course' => 'استعرض <span> الدورة التدريبية المميزة. </span>',

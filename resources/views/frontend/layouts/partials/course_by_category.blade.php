@@ -31,7 +31,7 @@
     <div class="container">
         <div class="section-title mb45 headline ">
             <span class="subtitle text-uppercase">@lang('labels.frontend.layouts.partials.courses_categories')</span>
-            <h2>@lang('labels.frontend.layouts.partials.browse_course_by_category')</h2>
+            <h4 class="title">@lang('labels.frontend.layouts.partials.browse_course_by_category')</h>
         </div>
         @if($course_categories)
             <div class="category-item">

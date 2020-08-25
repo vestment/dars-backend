@@ -49,6 +49,12 @@ class CoursesController extends Controller
         return view('backend.courses.index', compact('courses'));
     }
 
+    public function editcontent()
+    {
+
+        return view('backend.courses.editcontent');
+    }
+
     /**
      * Display a listing of Courses via ajax DataTable.
      *
@@ -335,7 +341,7 @@ foreach ($allAcademies as $academy) {
         $teachers = \Auth::user()->isAdmin() ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
         $course->teachers()->sync($teachers);
 
-        return redirect()->route('admin.courses.index')->withFlashSuccess(trans('alerts.backend.general.created'));
+        return redirect()->route('admin.courses.edit', ['course' => $course->id])->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 
     /**
@@ -375,9 +381,22 @@ foreach ($allAcademies as $academy) {
         foreach ($learned as $key => $value) {
         $prevLearned[$value] = $value;
         }
-    }
-    //    dd($allTeachers);
-        return view('backend.courses.edit', compact('course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses','prevLearned','learned'));
+       }
+
+        $timeline = CourseTimeline::where('course_id', $id)->get();
+        foreach ($timeline as $item) {
+            $content[]= $item->model_type::where('id', '=', $item->model_id)->get();
+
+        }
+    
+        foreach ($content as $key => $item) {
+        
+            foreach ($item as $j => $item) {
+                $chapterContent[] = $content[$key][$j];
+            }
+
+      }
+        return view('backend.courses.edit', compact('chapterContent','timeline','course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses','prevLearned','learned'));
     }
 
     /**

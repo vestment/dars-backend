@@ -20,7 +20,8 @@
                 <div class="col-12">
                     <div class="section-title mb20 headline text-left ">
                         <span class="subtitle text-uppercase">@lang('labels.frontend.layouts.partials.learn_new_skills')</span>
-                        <h2>@lang('labels.frontend.layouts.partials.popular_courses')</h2>
+                        <h4 class="title">@lang('labels.frontend.layouts.partials.popular_courses')<a class="view-more" href="{{route('courses.all')}}">@lang('labels.frontend.layouts.partials.view_more') </a> </h4>
+
                     </div>
                     <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
