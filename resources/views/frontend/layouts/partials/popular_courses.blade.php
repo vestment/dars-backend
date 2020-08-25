@@ -38,7 +38,7 @@
                                     ?>
                                     @if($popular_courses->count() > 0)
 
-                                        @foreach($courses as $course)
+                                        @foreach($popular_courses as $course)
 
                                             <div class="item">
 

@@ -242,7 +242,7 @@
             </div>
             <div class="row m-3">
                 @if(count($optional_courses) >0 || count($mandatory_courses) >0)
-                    <div class="col-lg-6">
+                    <div class="col-lg-3">
                         <p class="font-weight-bold text-dark">Optional Courses</p>
 
                         @foreach($optional_courses as $opt_course)
@@ -253,7 +253,7 @@
                         @endforeach
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-3">
                         <p class="font-weight-bold text-dark"> Mandatory Courses</p>
                         @foreach($mandatory_courses as $mand_course)
                             <a href="{{ route('courses.show', [$mand_course->slug]) }}"><p><i
@@ -707,7 +707,7 @@
                                     <textarea type="text" class="form-control " name="review"></textarea>
                                 </div>
                                 <div class="p-5">
-                                    <button type="submit" class="form-control offset-3 col-6 btn-success"> save</button>
+                                    <button type="submit" class="form-control btn offset-3 col-6 btn-success"> save</button>
                                 </div>
                             </div>
 
@@ -760,7 +760,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="shareModal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
 
             <!-- Modal content-->
             <div class="modal-content">

@@ -516,26 +516,18 @@ h6 {
     position: relative;
     border-radius: 4px;
     font-family: cairo;
+    cursor: pointer;
 }
 
-.nav-menu li a:after {
-    position: absolute;
-    content: '';
-    height: 100%;
-    width: 100%;
+.nav-menu li a:hover {
+
     background: #17d0cf;
     background: -webkit-gradient(left top, right top, color-stop(0%, #4eb3bf), color-stop(51%, #17d0cf), color-stop(100%, #4eb3bf));
     background: -webkit-gradient(linear, left top, right top, from(#01a6fd), color-stop(51%, #17d0cf), to(#01a6fd));
     background: linear-gradient(to right, #01a6fd 0%, #17d0cf 51%, #01a6fd 100%);
-    background-size: 200% auto;
-    left: 0;
-    top: 0;
     -webkit-transition: .3s all ease-in-out;
     transition: .3s all ease-in-out;
     border-radius: 4px;
-    z-index: -1;
-    opacity: 0;
-    visibility: hidden;
 }
 
 .nav-menu li a.submenu:after {
@@ -1127,6 +1119,7 @@ h6 {
 
 .sub-menu li a:hover {
     color: #17d0cf !important;
+    background:unset;
 }
 
 .sub-menu li:last-child {
@@ -6339,10 +6332,10 @@ ul.product-tab li.active:after {
 
 .bgimage{
     background-image:url("../assets/911img/911.jpg");
+    background-size: contain;
     padding-top: 7%;
     padding-bottom: 320px;
     transform: translateY(65px);
-
 }
 
 
@@ -6394,6 +6387,7 @@ ul.product-tab li.active:after {
 }
 .btnWishList{
     background-color: #D2498B;
+    color: #fff;
 }
 
 .imgcard {
@@ -7496,4 +7490,17 @@ hr {
 
 .arrowDown{
     float: right;
+}
+.img-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+.main-menu-container .menu-item-has-children:hover .sub-menu
+{
+    transform: scaleY(1) translateY(23px);
+}
+.menu-bg-overlay .menu-item-has-children:hover .sub-menu
+{
+    transform: scaleY(1) translateY(33px);
 }

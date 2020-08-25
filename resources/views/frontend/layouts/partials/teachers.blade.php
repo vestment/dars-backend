@@ -12,8 +12,10 @@
             <div class="owl-carousel custom-owl-theme">
                 @if(count($teachers)> 0)
                     @foreach($teachers as $key=>$item)
-                        @foreach($teacher_data as $teacher)
-                            @if($item->id == $teacher->user_id)
+                        @php
+                            $teacherProfile = \App\Models\TeacherProfile::where('user_id',$item->id)->first();
+                        @endphp
+                        @if ($teacherProfile)
                                 <div class="item">
                                     <div class="text-center ">
                                         <div class="bg-card">
@@ -43,11 +45,11 @@
                                                     <h5>{{$item->full_name}}</h5>
                                                 </div>
                                                 <div class="teacher-title text-muted font-weight-light">
-                                                    {{$teacher->getDataFromColumn('title')}}
+                                                    {{$teacherProfile->getDataFromColumn('title')}}
                                                 </div>
                                                 <hr>
                                                 <div class="teacher-name text-dark  justify-content-center">
-                                                    <span>{{$teacher->getDataFromColumn('description')}}</span>
+                                                    <span>{{$teacherProfile->getDataFromColumn('description')}}</span>
                                                 </div>
                                                 <ul>
                                                     <li><a href="{{'mailto:'.$item->email}}"><i
@@ -61,8 +63,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                        @endforeach
+                                @endif
                     @endforeach
                 @endif
             </div>

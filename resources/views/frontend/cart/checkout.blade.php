@@ -438,7 +438,7 @@
         </div>
         <div class="col-lg-2 bg-right-list">
             <P>@lang('labels.frontend.layouts.partials.courses_categories')</P>
-            <h2 class="black bold">@lang('labels.frontend.cart.category')</h2>
+            <h2 class="black bold">@lang('labels.frontend.course.category')</h2>
 
                 <ul class="ul-right">
                         @if(count($categories) > 0)

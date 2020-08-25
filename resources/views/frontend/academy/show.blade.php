@@ -51,9 +51,9 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style @if($academy->first_name == '119') bgimage @else bgcolor @endif">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style @if($academy->id == 29) bgimage @else bgcolor @endif">
         <div class="blakish-overlay"></div>
-        @if($academy->first_name != '119')
+        @if($academy->id != 29)
             <div class="container">
                 <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
                     <div class="m-1">
@@ -100,7 +100,7 @@
     <section id="course-page" class="course-page-section">
         <div class="container">
 
-            @if($academy->first_name != '119')
+            @if($academy->id != 29)
 
                 <div class="m-5 col-2 d-lg-flex d-lg-flex d-md-flex shadow-lg divfixed">
                     <img class="academy-logo" src="{{asset($academy->academy->logo)}}" alt="{{$academy->full_name}}">
@@ -225,7 +225,7 @@
                 <h1 class="text-dark font-weight-bolder"><span>@lang('labels.frontend.academy.Gallery').</span>
                 </h1>
             </div>
-            @if ($academy->academy->gallery != null)
+            @if ($academy->academy->gallery != null && $academy->academy->gallery != 'null')
                 <div class="col-md-12">
                     <div class="gallery">
 

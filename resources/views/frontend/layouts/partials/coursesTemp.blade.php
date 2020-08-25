@@ -31,40 +31,67 @@
         </div>
         <div class="course-meta my-1 vv">
             <span class="course-category text-dark"><a href="#">{{ $course->students()->count() }}
-                            @lang('labels.frontend.course.students')</a></span>
+                    @lang('labels.frontend.course.students')</a></span>
             <span class="course-author">
                     {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
             </span>
         </div>
-        <div class="row my-2">
-            <div class="col-3">
-                <img src="../../assets/img/course/c-3.jpg"
-                     class="rounded-circle">
-            </div>
-            <div class="col-9">
-                <div class="row">
-                    @foreach($course->teachers as $key=>$teacher)
-                        @php
-                            $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
-                        @endphp
-                        @if($key == 1)
-                        <a class="text-pink"
-                           href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                           target="_blank">
-                          
-                            {{$teacher->full_name}}
-                               
-                        </a>
-                        <a class="text-muted teacher-title"
-                           href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                           target="_blank">
-                            {{$teacherProfile->getDataFromColumn('title')}}
-                        </a>
-                         @endif
-                    @endforeach
+        <div class="row my-2" data-teachers="{{count($course->teachers)}}">
+            @foreach($course->teachers as $key=>$teacher)
+                @if($key == 0)
+                    @if ($teacher->hasRole('teacher'))
+                        <div class="col-3" data-role="{{$teacher->hasRole('teacher')}}">
+                            <img src="{{$teacher->picture}}"
+                                 class="rounded-circle">
+                        </div>
+                        <div class="col-9">
+                            <div class="row">
 
-                </div>
-            </div>
+                                @php
+                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                                @endphp
+                                @if ($teacherProfile)
+                                    <a class="text-pink"
+                                       href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                       target="_blank">
+
+                                        {{$teacher->full_name}}
+
+                                    </a>
+                                    <span class="text-muted teacher-title">
+                                    {{$teacherProfile->getDataFromColumn('title')}}
+                                     </span>
+                                @endif
+                            </div>
+                        </div>
+                    @elseif ($teacher->hasRole('academy'))
+                        @php
+                            $academyProfile = \App\academy::where('user_id',$teacher->id)->first();
+                        @endphp
+                        @if ($academyProfile)
+                            <div class="col-3" data-role="{{$teacher->hasRole('teacher')}}">
+                                <img src="{{asset($academyProfile->logo)}}"
+                                     class="rounded-circle">
+                            </div>
+                            <div class="col-9">
+                                <div class="row">
+
+
+                                    <a class="text-pink"
+                                       href="{{route('academy.show',['id'=>$teacher->id])}}"
+                                       target="_blank">
+
+                                        {{$teacher->full_name}}
+
+                                    </a>
+                                    
+
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+                @endif
+            @endforeach
         </div>
         <div class="row">
             <div class="col-xl-10 col-9">
