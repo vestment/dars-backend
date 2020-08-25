@@ -338,8 +338,10 @@ h6 {
 
 .section-title .subtitle {
     color: black;
-    letter-spacing: 7px;
+   margin-left: 19px;
     position: relative;
+    font-weight: 300; 
+
 }
 
 
@@ -2031,7 +2033,7 @@ button.alt-menu-btn.float-left {
 }
 
 .popular-course-section .section-title .subtitle {
-    margin-left: 42px;
+    margin-left: 19px;
 }
 
 .course-meta {
@@ -7214,7 +7216,9 @@ hr {
 .academy img {
     max-height: 100%;
 }
-
+.btn-light{
+    background-color:#CECECE !important ;
+}
 .best-course-pic-text .card-body .btn {
     z-index: 1;
     color: #fff !important;
@@ -7231,9 +7235,23 @@ hr {
     z-index: 0;
     transform: scale(2);
     height: 100%;
-    opacity: 0.03;
+    opacity: 0.05;
     overflow: hidden;
     width: 100%;
+}
+.title{
+    font-size: 40px;
+    color: black;
+    margin-left: 19px !important;
+    font-weight: bolder;
+    margin-top: .5% !important;
+
+}
+.view-more{
+    font-size: 15px;
+    color: #52ade1;
+    font-weight: 400;
+
 }
 
 .hero-section .nav {
@@ -7321,7 +7339,7 @@ hr {
     display: none;
 }
 .teacher-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     width: 100%;
 }
 .academy-logo {

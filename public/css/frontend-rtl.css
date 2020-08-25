@@ -334,18 +334,21 @@ h6 {
     margin-left: 5px;
     color: #01a6fd;
 }
+.btn-light {
+    background-color: #CECECE !important;
+}
 
 .bold-font {
     font-weight: 700;
 }
 
 .section-title .subtitle {
-    color: white;
-    font-size: 1.5rem;
+    color: black;
+   margin-left: 19px;
     position: relative;
+    font-weight: 300; 
+
 }
-
-
 .section-title .subtitle:after {
     right: -28px;
     left: inherit;
@@ -2025,7 +2028,12 @@ button.alt-menu-btn.float-left {
     border-radius: 3px;
     background-color: #f7f7f7;
 }
+.view-more{
+    font-size: 15px;
+    color: #52ade1;
+    font-weight: 400;
 
+}
 .course-price {
     top: 20px;
     left: 20px;
@@ -6951,7 +6959,17 @@ hr {
     padding-top: 200px;
     padding-left: 70px;
 
+
 }
+.title{
+    font-size: 35px;
+    color: black;
+    margin-left: 19px !important;
+    font-weight: bolder;
+    margin-top: .5% !important;
+
+}
+
 
 .bg-grd {
     background-image: linear-gradient(to right, #326f92, #625CA8, #D2498B);

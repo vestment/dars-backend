@@ -16,7 +16,7 @@
         <h3 class="card-title titleofcard">{{$course->getDataFromColumn('title')}}</h3>
         <div class="row">
             <div class="col-12">
-                <div class="course-rate ul-li pb-3">
+                <div class="course-rate ul-li pb-1">
                     <ul>
                         @for ($i=0; $i<5; ++$i)
                             <li>
@@ -30,13 +30,15 @@
             </div>
         </div>
         <div class="course-meta my-1 vv">
-            <span class="course-category text-dark"><a href="#">{{ $course->students()->count() }}
-                    @lang('labels.frontend.course.students')</a></span>
+            <span class="course-category text-dark pl-3"><i class="far fa-clock"></i> <a href="#">{{ $course->course_hours}}
+                    @lang('labels.frontend.course.course_hours')  </a></span>
+                    <span calss="dash"> | </span>
             <span class="course-author">
-                    {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
+            <i class="far fa-play-circle"></i> {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
             </span>
         </div>
-        <div class="row my-2" data-teachers="{{count($course->teachers)}}">
+      
+        <div class="row  tech-height">
             @foreach($course->teachers as $key=>$teacher)
                 @if($key == 0)
                     @if ($teacher->hasRole('teacher'))
@@ -45,16 +47,16 @@
                                  class="rounded-circle">
                         </div>
                         <div class="col-9">
-                            <div class="row">
+                            <div class="row pt-2">
 
                                 @php
                                     $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                                 @endphp
                                 @if ($teacherProfile)
-                                    <a class="text-pink"
+                                    <a class="text-pink tech-font"
                                        href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                        target="_blank">
-
+                                       @lang('labels.frontend.course.instructor') : 
                                         {{$teacher->full_name}}
 
                                     </a>

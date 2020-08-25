@@ -2,7 +2,7 @@
     <div class="container">
         <div class="section-title mb45 headline  ">
             <span class="subtitle text-uppercase"> @lang('labels.frontend.layouts.partials.faq')</span>
-            <h2>@lang('labels.frontend.layouts.partials.faq_full')</h2>
+            <h4 class="title">@lang('labels.frontend.layouts.partials.faq_full')</h4>
         </div>
         @if(count($faqs)> 0)
 

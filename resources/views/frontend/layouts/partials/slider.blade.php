@@ -49,7 +49,7 @@
                         @endif
                         @if($content->sub_text)
                             <div class="layer-1-1 pt-5">
-                                <span class="subtitle text-uppercase">{{$content->sub_text}}</span>
+                                <span class="text-white text-uppercase">{{$content->sub_text}}</span>
                             </div>
                         @endif
 
