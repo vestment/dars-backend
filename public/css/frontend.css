@@ -409,6 +409,57 @@ h6 {
     padding-top: 7%;
     padding-bottom: 315px;
 }
+.bg-business{
+        background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+        padding-top: 7%;
+    
+}
+
+@media (max-width: 425px) {
+    .bg-business{
+        background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+        padding-top: 7%;
+        padding-bottom: 110px;
+
+    }
+}
+
+@media (max-width: 1024px) {
+    .bg-business{
+        background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+        padding-top: 7%;
+        padding-bottom: 110px;
+
+    }
+}
+
+
+@media (max-width: 425px) {
+    .textbusiness {
+        top: 70px;
+
+    }
+}
+
+@media (max-width: 1024px) {
+    .textbusiness {
+        top: 70px;
+
+    }
+}
+
+
+@media (max-width: 425px) {
+    .texthbusiness {
+        font-size: 40px;    }
+}
+@media (max-width: 1024px) {
+    .texthbusiness {
+        font-size: 40px;    }
+}
+
+
+
 
 .bg-header-ch {
     background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);

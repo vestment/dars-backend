@@ -10,6 +10,9 @@ use App\Http\Controllers\Frontend\HomeController;
 
 Route::get('sign-in', 'loginController@index')->name('login.index');
 Route::get('sign-up', 'loginController@registerIndex')->name('register.index');
+Route::get('business',function () {
+    return view('frontend.business');
+    })->name('business');
 
 
 // Switch between the included languages
