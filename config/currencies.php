@@ -132,12 +132,7 @@ return [
         'name' => 'Thai baht',
         'country' => 'Thailand'
     ]
-    [
-        'short_code' => 'EGP',
-        'symbol' => 'EGP',
-        'name' => 'Egypt',
-        'country' => 'Egypt'
-    ]
+    
 
 
 ];

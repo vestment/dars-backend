@@ -645,7 +645,7 @@
                   <td>
                      {{$item->user ? $item->user->full_name : html_entity_decode("<span class='text-danger'>error showing user data</span>")}}
                   </td>
-                  <td>{{$item->amount}} EGP</td>
+                  <td>{{$item->amount.' '.$appCurrency['symbol']}}</td>
                   <td>{{$item->created_at->diffforhumans()}}</td>
                   <td><a class="btn btn-sm btn-primary"
                      href="{{route('admin.orders.show', $item->id)}}" target="_blank"><i

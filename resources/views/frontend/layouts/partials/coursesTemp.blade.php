@@ -6,7 +6,7 @@
                 @if($course->free == 1)
                     <span>{{trans('labels.backend.courses.fields.free')}}</span>
                 @else
-                    <span> EGP {{ $course->price}}</span>
+                    <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
                 @endif
             </div>
 
