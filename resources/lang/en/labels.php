@@ -998,6 +998,7 @@ return array(
                             'title' => ' Title',
                             'ar_title' => 'Arabic Title',
                             'bank_code' => '  Bank Code',
+                            'Booking_Date&Time'=>'Booking Date&Time'
                         ),
                     'title' => 'Teachers',
                     'create' => 'Create Teacher',

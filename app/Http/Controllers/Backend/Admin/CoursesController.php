@@ -217,12 +217,13 @@ foreach ($allAcademies as $academy) {
         }
 
 
-        return view('backend.courses.create', compact('teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours','academies'));
         $videos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
+        
         if (count($videos) == 0) {
             $videos = ['' => 'No videos available'];
         }
-        return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours'));
+
+        return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours','academies'));
     }
 
     /**
