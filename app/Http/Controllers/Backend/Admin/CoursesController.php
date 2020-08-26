@@ -189,7 +189,7 @@ class CoursesController extends Controller
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
-          = \App\Models\Auth\User::whereHas('roles', function ($q) {
+        $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
