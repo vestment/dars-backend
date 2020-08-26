@@ -88,7 +88,7 @@
                             <td>
                                 @if($lesson->mediaVideo !=  null )
                                         <p class="form-group">
-                                           <a href="{{$lesson->mediaVideo->url}}" target="_blank">{{$lesson->mediaVideo->url}}</a>
+                                           <a href="{{asset($lesson->mediaVideo->url)}}" target="_blank">{{$lesson->mediaVideo->url}}</a>
                                         </p>
                                 @else
                                     <p>No Videos</p>

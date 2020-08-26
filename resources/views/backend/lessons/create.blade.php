@@ -37,7 +37,7 @@
 @section('content')
 
     {!! Form::open(['method' => 'POST', 'route' => ['admin.lessons.store'], 'files' => true,]) !!}
-    {!! Form::hidden('model_id',0,['id'=>'lesson_id']) !!}
+    {!! Form::hidden('course_id',$course_id,['id'=>'lesson_id']) !!}
 
     <div class="card">
         <div class="card-header">
@@ -56,8 +56,8 @@
 
 
                 </div>
-                </div>
-                <div class="row">
+            </div>
+            <div class="row">
 
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
@@ -157,12 +157,16 @@
 
                     {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
 
+                        {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
 
-                    {!! Form::file('video_file', ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video_file'  ]) !!}
-
-                    @lang('labels.backend.lessons.video_guide')
+                        @lang('labels.backend.lessons.video_guide')
 
                 </div>
+            </div>
+            <div class="col-12 col-lg-6 form-group d-none" id="duration">
+                {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
+                {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format')]) !!}
+
             </div>
 
             <div class="row">
@@ -207,24 +211,25 @@
 
         var uploadField = $('input[type="file"]');
 
-        $(document).on('change', 'input[name="lesson_image"]', function () {
+        $(document).on('change', 'input[type="file"]', function () {
             var $this = $(this);
             $(this.files).each(function (key, value) {
-                if (value.size > 5000000) {
-                    alert('"' + value.name + '"' + 'exceeds limit of maximum file upload size')
-                    $this.val("");
-                }
+                console.log(value.size);
             })
-        });
+        })
+
 
         $(document).on('change', '#media_type', function () {
             if ($(this).val()) {
                 if ($(this).val() != 'upload') {
                     $('#video').removeClass('d-none').attr('required', true)
                     $('#video_file').addClass('d-none').attr('required', false)
+                    $('#duration').removeClass('d-none').attr('required', true)
                 } else if ($(this).val() == 'upload') {
                     $('#video').addClass('d-none').attr('required', false)
                     $('#video_file').removeClass('d-none').attr('required', true)
+
+
                 }
             } else {
                 $('#video_file').addClass('d-none').attr('required', false)

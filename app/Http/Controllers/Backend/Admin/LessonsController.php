@@ -35,7 +35,7 @@ class LessonsController extends Controller
         $allChapters = Chapter::with('course')->get();
         $chapters = ['Please Select'];
         foreach ($allChapters as $key => $chapter) {
-            $chapters[$chapter->id] = $chapter->getDataFromColumn('title').' - '.$chapter->course->getDataFromColumn('title');
+            $chapters[$chapter->id] = $chapter->getDataFromColumn('title') . ' - ' . $chapter->course->getDataFromColumn('title');
         }
 
         $lessons = Lesson::get();
@@ -143,6 +143,9 @@ class LessonsController extends Controller
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
+        if (request()->chapter_id) {
+            $course_id = Chapter::findOrFail(request()->chapter_id)->with('course')->first()->course_id;
+        }
         $courses = Course::has('category')->ofTeacher()->select('title_ar', 'title', 'id')->get();
 //        $allCourses = [];
 //        foreach ($courses as $key => $course) {
@@ -150,12 +153,13 @@ class LessonsController extends Controller
 //        }
         $chapters = Chapter::with('course')->get();
         $allChapters = [];
+        $videos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
         foreach ($chapters as $key => $chapter) {
-            $allChapters[$chapter->id] = $chapter->getDataFromColumn('title').' - '.$chapter->course->getDataFromColumn('title');
+            $allChapters[$chapter->id] = $chapter->getDataFromColumn('title') . ' - ' . $chapter->course->getDataFromColumn('title');
         }
 
 
-        return view('backend.lessons.create', compact('courses', 'chapters', 'allChapters'));
+        return view('backend.lessons.create', compact('videos', 'courses','course_id', 'chapters', 'allChapters'));
     }
 
     /**
@@ -211,20 +215,14 @@ class LessonsController extends Controller
                 $size = 0;
 
             } elseif ($request->media_type == 'upload') {
-                if (\Illuminate\Support\Facades\Request::hasFile('video_file')) {
-                    $file = \Illuminate\Support\Facades\Request::file('video_file');
-                    $filename = time() . '-' . $file->getClientOriginalName();
-                    $size = $file->getSize() / 1024;
-                    $path = public_path() . '/storage/uploads/';
-                    $file->move($path, $filename);
-
-                    $video_id = $filename;
-                    $url = asset('storage/uploads/' . $filename);
-
-                    $media = Media::where('type', '=', $request->media_type)
-                        ->where('model_type', '=', 'App\Models\Lesson')
-                        ->where('model_id', '=', $lesson->id)
-                        ->first();
+                if ($request->video) {
+                    $media = Media::findOrFail($request->video)->first();
+                    $media->model_type = $model_type;
+                    $media->model_id = $model_id;
+                    $media->name = $name;
+                    $media->save();
+                } else {
+                    redirect()->back()->withFlashDanger('Please select a video from the list');
                 }
             } else if ($request->media_type == 'embed') {
                 $url = $request->video;
@@ -287,38 +285,25 @@ class LessonsController extends Controller
         if (!Gate::allows('lesson_edit')) {
             return abort(401);
         }
-        $videos = '';
-        $courses = Course::has('category')->ofTeacher()->get()->pluck('title', 'id')->prepend('Please select', '');
-        $courses_ar = Course::select('title_ar', 'title', 'id')->get();
-
-        foreach ($courses_ar as $key => $course_ar) {
-
-            if ($course_ar->title_ar) {
-                $coursew_ar[] = $course_ar->title_ar;
-            }
-            if (!$course_ar->title_ar) {
-                $coursew_ar[] = $course_ar->title;
-            }
-
+        $videos = [];
+        $allCourses = Course::has('category')->select('title_ar', 'id', 'title')->get();
+        $courses = [];
+        foreach ($allCourses as $key => $course) {
+            $courses[$course->id] = $course->getDataFromColumn('title');
         }
-        $chapters = Chapter::pluck('title', 'id')->prepend('Please select', '');
-        $chapters_ar = Chapter::select('title_ar', 'title', 'id')->get();
-        foreach ($chapters_ar as $key => $chapter_ar) {
-
-            if ($chapter_ar->title_ar) {
-                $chapterw_ar[] = $chapter_ar->title_ar;
-            }
-            if (!$chapter_ar->title_ar) {
-                $chapterw_ar[] = $chapter_ar->title;
-            }
-
+        $allchapters = Chapter::select('title_ar', 'id', 'title')->get();
+        $chapters = [];
+        foreach ($allchapters as $key => $chapter) {
+            $chapters[$chapter->id] = $chapter->getDataFromColumn('title');
         }
         $lesson = Lesson::with('media')->findOrFail($id);
-        if ($lesson->media) {
-            $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
-        }
+        $videos = Media::where('type', 'upload')->whereIn('model_type', [Lesson::class,''])->pluck('file_name', 'id');
 
-        return view('backend.lessons.edit', compact('lesson', 'courses', 'videos', 'chapterw_ar', 'coursew_ar', 'chapters'));
+//        if ($lesson->media) {
+//            $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
+//        }
+
+        return view('backend.lessons.edit', compact('lesson', 'courses', 'videos', 'chapters'));
     }
 
     /**
@@ -386,33 +371,20 @@ class LessonsController extends Controller
             }
 
             if ($request->media_type == 'upload') {
-                if (\Illuminate\Support\Facades\Request::hasFile('video_file')) {
-                    $file = \Illuminate\Support\Facades\Request::file('video_file');
-                    $filename = time() . '-' . $file->getClientOriginalName();
-                    $size = $file->getSize() / 1024;
-                    $path = public_path() . '/storage/uploads/';
-                    $file->move($path, $filename);
-
-                    $video_id = $filename;
-                    $url = asset('storage/uploads/' . $filename);
-
-                    $media = Media::where('type', '=', $request->media_type)
-                        ->where('model_type', '=', 'App\Models\Lesson')
-                        ->where('model_id', '=', $lesson->id)
-                        ->first();
-
-                    if ($media == null) {
-                        $media = new Media();
-                    }
+                if ($request->video) {
+                    $media = Media::findOrFail(intval($request->video))->first();
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = $url;
-                    $media->type = $request->media_type;
-                    $media->file_name = $video_id;
-                    $media->size = 0;
                     $media->save();
 
+                    $oldMedia = Media::findOrFail(intval($request->old_video_file))->first();
+                    $oldMedia->model_type = '';
+                    $oldMedia->model_id = null;
+                    $oldMedia->name = 'Un selected - video';
+                    $oldMedia->save();
+                } else {
+                    redirect()->back()->withFlashDanger('Please select a video from the list');
                 }
             }
         }

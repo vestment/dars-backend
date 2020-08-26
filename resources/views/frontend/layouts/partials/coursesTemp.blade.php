@@ -38,7 +38,7 @@
             </span>
         </div>
       
-        <div class="row  tech-height" data-teachers="{{count($course->teachers)}}">
+        <div class="row  tech-height">
             @foreach($course->teachers as $key=>$teacher)
                 @if($key == 0)
                     @if ($teacher->hasRole('teacher'))

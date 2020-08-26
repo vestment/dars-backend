@@ -77,7 +77,7 @@
                             <th>@lang('labels.backend.courses.fields.slug')</th>
                             <td>{{ $course->slug }}</td>
                         </tr>
-                             <tr>
+                        <tr>
                             <th>@lang('labels.backend.courses.course_hours')</th>
                             <td>{{ $course->course_hours }}</td>
                         </tr>
@@ -106,6 +106,7 @@
                             <td>
                                 @if($course->mediaVideo !=  null )
                                     <p class="form-group mb-0">
+                                    <!- -->
                                         <a href="{{$course->mediaVideo->url}}"
                                            target="_blank">{{$course->mediaVideo->url}}</a>
                                     </p>
@@ -137,9 +138,6 @@
                         </tr>
 
 
-
-
-
                         <tr>
                             <th>@lang('labels.backend.courses.fields.optional_courses')</th>
                             <td>{{$course->optional_courses}}</td>
@@ -149,22 +147,23 @@
                             <th>@lang('labels.backend.courses.fields.mandatory_courses')</th>
                             <td>{{$course->mandatory_courses }}</td>
                         </tr>
-                        <tr>
-                       
+                        @if($course->learned)
+                            <tr>
 
-                            <th>@lang('labels.backend.courses.fields.learned')</th>
-                            <td>
-                            @foreach (json_decode($course->learned) as $learned)
-                           {{$learned }}<br>
-                        @endforeach
-     </td>  </tr>
 
+                                <th>@lang('labels.backend.courses.fields.learned')</th>
+                                <td>
+                                    @foreach (json_decode($course->learned) as $learned)
+                                        {{$learned }}<br>
+                                    @endforeach
+                                </td>
+                            </tr>
+                        @endif
 
 
                     </table>
                 </div>
             </div><!-- Nav tabs -->
-
             @if(count($courseTimeline) > 0)
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-12  ">
@@ -180,17 +179,17 @@
                                     <li>
                                         <span data-id="{{$item->id}}" data-sequence="{{$item->sequence}}">
                                     @if($item->model_type == 'App\Models\Test')
-                                        <p class="d-inline-block mb-0 btn btn-primary">
+                                                <p class="d-inline-block mb-0 btn btn-primary">
                                             @lang('labels.backend.courses.test')
                                          </p>
-                                    @elseif($item->model_type == 'App\Models\Lesson')
-                                      <p class="d-inline-block mb-0 btn btn-success">
+                                            @elseif($item->model_type == 'App\Models\Lesson')
+                                                <p class="d-inline-block mb-0 btn btn-success">
                                         @lang('labels.backend.courses.lesson')
                                      </p>
-                                     @endif
-                                    @if($item->model)
-                                    <p class="title d-inline ml-2">{{$item->model->title}}</p>
-                                    @endif
+                                            @endif
+                                            @if($item->model)
+                                                <p class="title d-inline ml-2">{{$item->model->title}}</p>
+                                            @endif
                                      </span>
 
                                     </li>

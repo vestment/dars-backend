@@ -39,5 +39,4 @@ class Media extends Model
         }
         return round($percentage,2);
     }
-
 }

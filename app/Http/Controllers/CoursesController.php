@@ -122,18 +122,17 @@ class CoursesController extends Controller
         }
         $course_rating = 0;
         $total_ratings = 0;
+        $course_review=[];
         $completed_lessons = "";
         $is_reviewed = false;
-        // return Course::class;
-        // dd($course->reviews()->where('reviewable_id',$is_reviewed));
-
-
         if (auth()->check() && $course->reviews()->where('user_id', '=', auth()->user()->id)->first()) {
             $is_reviewed = true;
         }
         if ($course->reviews->count() > 0) {
             $course_rating = $course->reviews->avg('rating');
-            $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
+            $course_review = $course->reviews()->where('active',1)->get();
+
+            $total_ratings = $course->reviews()->where('rating', '!=', "")->where('active',1)->get()->count();
         }
         $lessons = $course->courseTimeline()->orderby('sequence', 'asc');
         $lessonsMedia = \App\Models\Lesson::where('course_id', $course_id)->get();
@@ -156,6 +155,7 @@ class CoursesController extends Controller
             if ($continue_course == null) {
                 $continue_course = $course->courseTimeline()
                     ->whereIn('model_id', $course_lessons)
+                    ->where('model_type',Lesson::class)
                     ->orderby('sequence', 'asc')->first();
             }
 
@@ -170,7 +170,7 @@ class CoursesController extends Controller
             $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
         }
 //dd($course->getDataFromColumn('title'));
-        return view('frontend.courses.course', compact('fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view('frontend.courses.course', compact('course_review','fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)
@@ -399,6 +399,7 @@ class CoursesController extends Controller
         $review->reviewable_type = Course::class;
         $review->rating = $request->rating;
         $review->content = $request->review;
+        $review->active = 0;
         $review->save();
 
         return back();
