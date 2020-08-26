@@ -223,6 +223,8 @@ Route::get('bundle-publish/{id}', ['uses' => 'Admin\BundlesController@publish', 
 
 //===== Lessons Routes =====//
 Route::resource('lessons', 'Admin\LessonsController');
+Route::post('storelessons', ['uses' => 'Admin\LessonsController@store', 'as' => 'lessons.storelessons']);
+
 Route::get('get-lessons-data', ['uses' => 'Admin\LessonsController@getData', 'as' => 'lessons.get_data']);
 Route::post('lessons_mass_destroy', ['uses' => 'Admin\LessonsController@massDestroy', 'as' => 'lessons.mass_destroy']);
 Route::post('lessons_restore/{id}', ['uses' => 'Admin\LessonsController@restore', 'as' => 'lessons.restore']);

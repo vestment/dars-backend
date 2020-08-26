@@ -1,6 +1,8 @@
 @extends('backend.layouts.app')
 @section('title', __('labels.backend.courses.title').' | '.app_name())
 <link rel="stylesheet" type="text/css" href="{{asset('plugins/amigo-sorter/css/theme-default.css')}}">
+<link href="{{asset('vendor/harimayco-menu/style.css')}}" rel="stylesheet">
+
     <style>
         ul.sorter > span {
             display: inline-block;
@@ -41,17 +43,17 @@
       <button  type="button" class="btn btn-primary mt-4" data-toggle="modal" data-target="#exampleModal">
       Create Chapter
 </button>
-<div class="card " id="togglecard" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+
+
+
+
+     
+   
   </div>
 </div>
-    </div>
-  </div>
+
+
+   
   <div class="col-9">
     <div class="tab-content" id="v-pills-tabContent">
       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
@@ -278,53 +280,239 @@
       
       <div class="title my-3 mx-5">   
              <h1 class="page-title d-inline mb-5">@lang('labels.backend.courses.content')</h1>
-</div>
-    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="">
-           
+     </div>
+    
+    @if(count($chapterContent) > 0)
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+
+        <div class="card-body">
+            <?php
+            $currentUrl = url()->current();
+            if (config('nav_menu') != 0) {
+                $nav_menu = \Harimayco\Menu\Models\Menus::findOrFail(config('nav_menu'));
+            }
+
+
+            ?>
+          
+            <div id="hwpwrap">
+                <div class="custom-wp-admin wp-admin wp-core-ui js   menu-max-depth-0 nav-menus-php auto-fold admin-bar">
+                    <div id="wpwrap">
+                        <div id="wpcontent">
+                            <div id="wpbody">
+                                <div id="wpbody-content">
+                                    <div class="wrap">
+                                        <div id="nav-menus-frame" class="row">
+                                            
+                                            <div class="col-lg-9 col-12" id="menu-management-liquid">
+                                                <div id="menu-management">
+                                                    <form id="update-nav-menu" action="" method="post"
+                                                          enctype="multipart/form-data">
+                                                        <div class="menu-edit ">
+                                                          
+                                                            <div id="post-body">
+                                                                <div id="post-body-content">
+
+                                                                    <ul class="menu ui-sortable" id="menu-to-edit">
+                                                                    @foreach($chapterContent as $item)
+                                                                        @foreach ($timeline as  $singleTimeline)
+                                                                        @if($singleTimeline->model_id == $item->id)
+                                                                                <li id="menu-item-{{$item->id}}" 
+                                                                                    class="menu-item @if($singleTimeline->model_type == 'App\Models\Chapter') menu-item-depth-0 @else menu-item-depth-1 @endif menu-item-page menu-item-edit-inactive pending"
+                                                                                    style="display: list-item;">
+                                                                                    <dl class="menu-item-bar">
+                                                                                        <dt class="menu-item-handle col-12 col-lg-7">
+                                                                                    <span class="item-title"> <span
+                                                                                            class="menu-item-title"> <span
+                                                                                                id="menutitletemp_{{$item->id}}">{{$item->title}} {{$singleTimeline->sequence}}</span> 
+                                                                                            <span class="item-controls">  <span
+                                                                                                        class="item-order hide-if-js">
+                                                                                                             </span> <a
+                                                                                                        class="item-edit"
+                                                                                                        id="edit-{{$item->id}}"
+                                                                                                        title=" "
+                                                                                                        href="{{ url()->current() }}?edit-menu-item=#menu-item-settings-{{$item->id}}"> </a> </span>
+                                                                                        </dt>
+                                                                                    </dl>
+
+                                                                                    <div class="menu-item-settings col-12 col-lg-7"
+                                                                                         id="menu-item-settings-{{$item->id}}">
+
+
+
+
+
+
+
+                                                                                        <div class="row">
+                                                                                            <div class="col-12">
+                                                                                               @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                            <button onclick="$('#chapter_id_lesson').val({{$item->id}});" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
+                                                                                               Create Lesson
+                                                                                            </button>
+                                                                                            @endif
+                                                                                            </div>
+
+                                                                                          
+                                                                                        </div>
+
+                    
+                                                                                    </div>
+
+                                                                                    <ul class="menu-item-transport"></ul>
+                                                                                </li>
+
+
+                                                                                @endif
+
+                                                                    @endforeach
+                                                                    @endforeach  
+
+                                                                    </ul>
+
+                                                                </div>
+                                                            </div>
+                                                          
+                                                        </div>
+                                                    </form>
+
+                                                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Create Lesson</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       {!! Form::open(['method' => 'POST', 'route' => ['admin.lessons.store'], 'files' => true,]) !!}
+      {!! Form::hidden('chapter_id',$item->id,['id'=>'chapter_id_lesson']) !!}
+      {!! Form::hidden('course_id',$course->id)!!}
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="page-title float-left mb-0">@lang('labels.backend.lessons.create')</h3>
+            <div class="float-right">
+               
+            </div>
         </div>
+
         <div class="card-body">
            
-             <div class="card-body">
-            @if(count($chapterContent) > 0)
-                <div class="row justify-content-center">
-                    <div class="col-6  ">
-                        <!-- <h4 class="">@lang('labels.backend.hero_slider.sequence_note')</h4> -->
-                        <ul class="sorter d-inline-block">
-                            @foreach($chapterContent as $item)
-                            @foreach ($timeline as  $singleTimeline)
-                            @if($singleTimeline->model_id == $item->id)
-                                <li class="@if ($singleTimeline->model_type != 'App\Models\Chapter') margin_left @endif"  >
-                            <span data-id="{{$item->id}}" data-sequence="{{$singleTimeline->sequence}}">
+            <div class="row">
 
-                                <p  class="title d-inline ml-2">{{$item->title}} {{$singleTimeline->sequence}}</p>
-                           </span>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
+                    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title'), 'required' => '']) !!}
+                </div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('title_ar', trans('labels.backend.lessons.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
+                </div>
+            </div>
 
-                                </li>
-                                @endif
-
-                            @endforeach
-                            @endforeach
-
-                        </ul>
-                        <a href="{{ route('admin.courses.index') }}"
-                           class="btn btn-default border float-left">@lang('strings.backend.general.app_back_to_list')</a>
-
-                        <a href="#" id="save_timeline"
-                           class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
-
+            <div class="row">
+                <div class="col-12 form-group">
+                    {!! Form::label('downloadable_files', trans('labels.backend.lessons.fields.downloadable_files').' '.trans('labels.backend.lessons.max_file_size'), ['class' => 'control-label']) !!}
+                    {!! Form::file('downloadable_files[]', [
+                        'multiple',
+                        'class' => 'form-control file-upload',
+                        'id' => 'downloadable_files',
+                        'accept' => "image/jpeg,image/gif,image/png,application/msword,audio/mpeg,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/pdf,video/mp4"
+                        ]) !!}
+                    <div class="photo-block">
+                        <div class="files-list"></div>
                     </div>
 
                 </div>
-            @endif
-        </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    {!! Form::label('pdf_files', trans('labels.backend.lessons.fields.add_pdf'), ['class' => 'control-label']) !!}
+                    {!! Form::file('add_pdf', [
+                        'class' => 'form-control file-upload',
+                         'id' => 'add_pdf',
+                        'accept' => "application/pdf"
 
+                        ]) !!}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    {!! Form::label('audio_files', trans('labels.backend.lessons.fields.add_audio'), ['class' => 'control-label']) !!}
+                    {!! Form::file('add_audio', [
+                        'class' => 'form-control file-upload',
+                         'id' => 'add_audio',
+                        'accept' => "audio/mpeg3"
+
+                        ]) !!}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
+
+                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],null,['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
+
+                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
+
+                       
+
+                        @lang('labels.backend.lessons.video_guide')
+
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 form-group d-none" id="duration">
+                {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
+                {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format')]) !!}
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-12 col-lg-3 form-group">
+                    <div class="checkbox">
+                        {!! Form::hidden('published', 0) !!}
+                        {!! Form::checkbox('published', 1, false, []) !!}
+                        {!! Form::label('published', trans('labels.backend.lessons.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                    </div>
+                </div>
+                <div class="col-12  text-left form-group">
+                    {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {!! Form::close() !!}
+      </div>
+     
+    </div>
+  </div>
+</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
       
       
-      
-      
+    @endif
       </div>
       <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
 
@@ -484,15 +672,15 @@
 
             
         });
-        $(document).on('change', 'input[type="file"]', function () {
-            var $this = $(this);
-            $(this.files).each(function (key, value) {
-                if (value.size > 50000000) {
-                    alert('"' + value.name + '"' + 'exceeds limit of maximum file upload size')
-                    $this.val("");
-                }
-            })
-        });
+        // $(document).on('change', 'input[type="file"]', function () {
+        //     var $this = $(this);
+        //     $(this.files).each(function (key, value) {
+        //         if (value.size > 50000000) {
+        //             alert('"' + value.name + '"' + 'exceeds limit of maximum file upload size')
+        //             $this.val("");
+        //         }
+        //     })
+        // });
 
         $(document).ready(function () {
             $(document).on('click', '.delete', function (e) {
@@ -558,16 +746,9 @@
 
 
     </script>
-    <script src="{{asset('plugins/amigo-sorter/js/amigo-sorter.min.js')}}"></script>
 
 <script>
 
-    $('ul.sorter').amigoSorter({
-        li_helper: "li_helper",
-        li_empty: "empty",
-        onTouchStart: function() { console.log('sdffsdsdfsdf');
-        document.getElementById("togglecard").style.display = "none";},
-    });
     $(document).on('click', '#save_timeline', function (e) {
         e.preventDefault();
         var list = [];
@@ -606,5 +787,78 @@
 </script>
 
 
+{!! Menu::scripts() !!}
+    <script src="{{url('/plugins/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js')}}"></script>
+    <script type="text/javascript">
+        $('#menu_icon').iconpicker({});
 
+        $(document).ready(function () {
+            $(document).on('click', '.btn-add', function (e) {
+                e.preventDefault();
+
+                var tableFields = $('.table-fields'),
+                    currentEntry = $(this).parents('.entry:first'),
+                    newEntry = $(currentEntry.clone()).appendTo(tableFields);
+
+                newEntry.find('input').val('');
+                tableFields.find('.entry:not(:last) .btn-add')
+                    .removeClass('btn-add').addClass('btn-remove')
+                    .removeClass('btn-success').addClass('btn-danger')
+                    .html('<span class="fa fa-minus"></span>');
+            }).on('click', '.btn-remove', function (e) {
+                $(this).parents('.entry:first').remove();
+
+                e.preventDefault();
+                return false;
+            });
+
+        });
+    </script>
+
+<script src="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/vendor/unisharp/laravel-ckeditor/adapters/jquery.js')}}"></script>
+    <script src="{{asset('/vendor/laravel-filemanager/js/lfm.js')}}"></script>
+    <script>
+        $('.editor').each(function () {
+
+            CKEDITOR.replace($(this).attr('id'), {
+                filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+                filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
+                filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+                filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}',
+                extraPlugins: 'smiley,lineutils,widget,codesnippet,prism,flash',
+            });
+
+        });
+
+        var uploadField = $('input[type="file"]');
+
+        $(document).on('change', 'input[type="file"]', function () {
+            var $this = $(this);
+            $(this.files).each(function (key, value) {
+                console.log(value.size);
+            })
+        })
+
+
+        $(document).on('change', '#media_type', function () {
+            if ($(this).val()) {
+                if ($(this).val() != 'upload') {
+                    $('#video').removeClass('d-none').attr('required', true)
+                    $('#video_file').addClass('d-none').attr('required', false)
+                    $('#duration').removeClass('d-none').attr('required', true)
+                } else if ($(this).val() == 'upload') {
+                    $('#video').addClass('d-none').attr('required', false)
+                    $('#video_file').removeClass('d-none').attr('required', true)
+
+
+                }
+            } else {
+                $('#video_file').addClass('d-none').attr('required', false)
+                $('#video').addClass('d-none').attr('required', false)
+            }
+        })
+
+    </script>
 @endpush

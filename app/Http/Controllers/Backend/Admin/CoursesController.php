@@ -189,7 +189,7 @@ class CoursesController extends Controller
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
-          = \App\Models\Auth\User::whereHas('roles', function ($q) {
+         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
@@ -351,6 +351,8 @@ class CoursesController extends Controller
        }
 
         $timeline = CourseTimeline::where('course_id', $id)->get();
+        // dd($timeline->isEmpty());
+        if(! $timeline->isEmpty()){
         foreach ($timeline as $item) {
             $content[]= $item->model_type::where('id', '=', $item->model_id)->get();
 
@@ -363,6 +365,13 @@ class CoursesController extends Controller
             }
 
       }
+    }
+else{
+    $chapterContent=[];
+    $timeline=[];
+}
+
+   
         return view('backend.courses.edit', compact('chapterContent','timeline','course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses','prevLearned','learned'));
     }
 

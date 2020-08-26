@@ -170,6 +170,8 @@ class LessonsController extends Controller
      */
     public function store(StoreLessonsRequest $request)
     {
+      
+        
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
@@ -249,9 +251,19 @@ class LessonsController extends Controller
             $lesson->save();
         }
 
+
+
+
+// dd($request->all());
+
+// $chapterSeq = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
+
         $sequence = 1;
         if (count($lesson->course->courseTimeline) > 0) {
-            $sequence = $lesson->course->courseTimeline->max('sequence');
+
+            // $sequence = $lesson->course->courseTimeline->max('sequence');
+            $sequence = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
+
             $sequence = $sequence + 1;
         }
 
@@ -270,7 +282,7 @@ class LessonsController extends Controller
             $timeline->save();
         }
 
-        return redirect()->route('admin.lessons.index', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.created'));
+        return redirect()->route('admin.courses.edit', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.created'));
     }
 
 
@@ -299,9 +311,9 @@ class LessonsController extends Controller
         $lesson = Lesson::with('media')->findOrFail($id);
         $videos = Media::where('type', 'upload')->whereIn('model_type', [Lesson::class,''])->pluck('file_name', 'id');
 
-//        if ($lesson->media) {
-//            $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
-//        }
+                //        if ($lesson->media) {
+                //            $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
+                //        }
 
         return view('backend.lessons.edit', compact('lesson', 'courses', 'videos', 'chapters'));
     }

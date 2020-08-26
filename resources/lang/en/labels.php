@@ -112,6 +112,7 @@ return array(
                             'lesson' => 'Lesson',
                             'title' => 'Title',
                             'description' => 'Description',
+                            'description_ar' => 'Description In Arabic',
                             'published' => 'Published',
                             'questions' => 'Questions',
 

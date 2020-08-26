@@ -226,7 +226,8 @@ class ChaptersController extends Controller
 
         $sequence = 1;
         if (count($chapter->course->courseTimeline) > 0) {
-            $sequence = $chapter->course->courseTimeline->max('sequence');
+            $sequence = CourseTimeline::where('course_id',$request->course_id)->where('model_type',Lesson::class)->orderBy('id', 'desc')->value('sequence');
+         
             $sequence = $sequence + 1;
         }
 
@@ -261,4 +262,5 @@ class ChaptersController extends Controller
         return view('backend.chapters.show', compact('lesson', 'tests', 'courses'));
     }
 
+   
 }
