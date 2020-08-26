@@ -16,6 +16,7 @@
 
 
             <!--=======================Custom menus===============================-->
+            @if ($logged_in_user->isAdmin() || $logged_in_user->hasRole('academy') || $logged_in_user->hasRole('teacher'))
             <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'teachers' ? 'active' : '' }}"
                        href="{{ route('admin.courses.create') }}">
@@ -23,6 +24,7 @@
                         <span class="title">@lang('menus.backend.sidebar.courses.title')</span>
                     </a>
                 </li>
+
             <li class="nav-item ">
                 <a class="nav-link {{ $request->segment(2) == 'video-bank' ? 'active' : '' }}"
                    href="{{ route('admin.video-bank.index') }}">
@@ -30,6 +32,7 @@
                     <span class="title">@lang('labels.backend.videos.title')</span>
                 </a>
             </li>
+            @endif
             @can('order_access')
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'orders' ? 'active' : '' }}"

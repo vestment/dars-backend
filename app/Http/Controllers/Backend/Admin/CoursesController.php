@@ -189,7 +189,7 @@ class CoursesController extends Controller
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
-        $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
+          = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
@@ -207,7 +207,10 @@ class CoursesController extends Controller
         foreach ($categories_ar as $key => $categories_ar) {
             $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
         }
-
+        $videos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
+        if (count($videos) == 0) {
+            $videos = ['' => 'No videos available'];
+        }
         return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours'));
     }
 
@@ -282,39 +285,14 @@ class CoursesController extends Controller
 
             if ($request->media_type == 'upload') {
 
-                if ($request->video_file != null){
-                    $file = \Illuminate\Support\Facades\Request::file('video_file');
-                    $filename = time() . '-' . $file->getClientOriginalName();
-                    $size = $file->getSize() / 1024;
-                    $path = public_path() . '/storage/uploads';
-                    $filename = str_replace(' ','-',$filename);
-                    $file->move($path, $filename);
-                    $url = 'storage/uploads/' . $filename;
-                    $getID3 = new getID3;
-                    $video_file = $getID3->analyze($url);
-                    // Get the duration in string, e.g.: 4:37 (minutes:seconds)
-                    $duration_string = $video_file['playtime_string'];
-                    // Get the duration in seconds, e.g.: 277 (seconds)
-                    $duration_seconds = $video_file['playtime_seconds'];
-
-                    $media = Media::where('type', '=', $request->media_type)
-                        ->where('model_type', '=', 'App\Models\Lesson')
-                        ->where('model_id', '=', $course->id)
-                        ->first();
-
-                    if ($media == null) {
-                        $media = new Media();
-                    }
+                if ($request->video) {
+                    $media = Media::findOrFail($request->video)->first();
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = asset($url);
-                    $media->type = $request->media_type;
-                    $media->file_name = $filename;
-                    $media->size = $size;
-                    $media->duration = $duration_string;
                     $media->save();
-
+                } else {
+                    redirect()->back()->withFlashDanger('Please select a video from the list');
                 }
 
             }
