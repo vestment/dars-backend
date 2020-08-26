@@ -4,7 +4,7 @@ return array(
     'backend' =>
         array(
             'videos' => array(
-                'title' => 'Videos',
+                'title' => 'Video Bank',
                 'fields' =>
                     array(
                         'type' => 'Type',
@@ -35,6 +35,8 @@ return array(
                             'popular' => 'Popular',
                             'teachers' => 'Teachers',
                             'academies' => 'Academies',
+                            'offline_courses'=>'Offline Courses',
+                            'hours' => 'Houres',
                             'hours' => 'Hours',
                             'lectures' => 'Lectures',
                             'category' => 'Category',
@@ -202,6 +204,10 @@ return array(
                             'status' => 'Status',
                             'created' => 'Created',
                             'created_at' => 'Created On',
+                            'title_ar' => 'Title in arabic',
+                            'content_ar' => 'content_ar',
+
+
                         ),
                     'max_file_size' => '(max file size 10MB)',
                     'title' => 'Pages',
@@ -997,6 +1003,7 @@ return array(
                             'title' => ' Title',
                             'ar_title' => 'Arabic Title',
                             'bank_code' => '  Bank Code',
+                            'Booking_Date&Time'=>'Booking Date&Time'
                         ),
                     'title' => 'Teachers',
                     'create' => 'Create Teacher',
@@ -1545,9 +1552,12 @@ return array(
                         'reset' => 'Reset filters',
                         'up' => 'Up',
                         'hours' => 'Hours',
-                        'academies' => 'Academies',
-                        'teachers' => 'Teachers',
-                        'categories' => 'categories',
+                        'academies'=>'Academies',
+                        'teachers'=>'Teachers',
+                        'categories'=>'categories',
+                        'offline_booking_course'=>'Offline_Booking_Course'
+                        
+                        
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',
@@ -1635,6 +1645,13 @@ return array(
                     'requirements' => 'Requirements',
                     'hours' => 'hours',
                     'remove' => 'Remove',
+                    'booknow' => 'Book Now',
+                    'availiable_seats' => 'Availiable Seats',
+                    'location_academy' => 'Location:',
+                    'business' => 'JOIN THE SKILLS REVOLUTION',
+                    'mailbusiness' => 'For a price quotation, reach us at info@ecouncilacademy.com',
+                    'knowledge' => 'What You will learn',
+
 
 
                 ),

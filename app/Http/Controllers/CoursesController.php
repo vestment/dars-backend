@@ -89,12 +89,10 @@ class CoursesController extends Controller
             $course_rating = $course->reviews->avg('rating');
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
         }
-//        $teacher_dat = TeacherProfile::get();
-//        $teachers = User::get();
-        $teacher = $course->teachers()->first();
-        $teacherProfile = TeacherProfile::where('user_id', $teacher->id)->first();
+        $teacher_dat = TeacherProfile::get();
+        $teachers = User::get();
         $popular_course = Course::withoutGlobalScope('filter')->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-        return view('frontend.courses.index', compact('teacherProfile', 'teacher', 'popular_course', 'course_rating', 'teacher_data', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
+        return view('frontend.courses.index', compact('teacher_dat', 'teachers', 'popular_course', 'course_rating', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
     }
 
     public function show($course_slug)
@@ -103,7 +101,7 @@ class CoursesController extends Controller
         $course_id = Course::where('slug', $course_slug)->value('id');
         // dd($course_id);
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
-        $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with(['publishedLessons', 'reviews'])->firstOrFail();
+        $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with(['publishedLessons','academy', 'reviews'])->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
         $chapters = Chapter::where('course_id', $course_id)->get();
         // dd($teacherprofile = TeacherProfile::where('user_id',$user_id)->get('description'));
@@ -115,7 +113,7 @@ class CoursesController extends Controller
         // $chapter_lessons = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count();
         $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count();
-
+        $academy = $course->academy->with('user')->first()->user;
 
         if (($course->published == 0) && ($purchased_course == false)) {
             abort(404);
@@ -135,12 +133,11 @@ class CoursesController extends Controller
             $total_ratings = $course->reviews()->where('rating', '!=', "")->where('active',1)->get()->count();
         }
         $lessons = $course->courseTimeline()->orderby('sequence', 'asc');
-        $lessonsMedia = \App\Models\Lesson::where('course_id', $course_id)->get();
+        $lessonsMedia = Lesson::where('course_id', $course_id)->get();
         $fileCount = 0;
         foreach ($lessonsMedia as $lesson) {
             $fileCount += count($lesson->downloadableMedia);
         }
-        // dd($fileCount);
         $course_hours = Course::where('course_hours', $course_slug);
 
         if (\Auth::check()) {
@@ -155,7 +152,7 @@ class CoursesController extends Controller
             if ($continue_course == null) {
                 $continue_course = $course->courseTimeline()
                     ->whereIn('model_id', $course_lessons)
-                    ->where('model_type',Lesson::class)
+                    ->where('model_type', Lesson::class)
                     ->orderby('sequence', 'asc')->first();
             }
 
@@ -170,7 +167,7 @@ class CoursesController extends Controller
             $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
         }
 //dd($course->getDataFromColumn('title'));
-        return view('frontend.courses.course', compact('course_review','fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view('frontend.courses.course', compact('academy','course_review','fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)

@@ -24,6 +24,13 @@ class academy extends Model
     public function teachers(){
         return $this->hasMany(TeacherProfile::class,'academy_id','user_id');
     }
+    public function courses(){
+        return $this->hasMany('App\Models\Course');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }
 //    public function getDataFromColumn($col)
 //    {
 //        // ?? en col is returned if the ar column not found

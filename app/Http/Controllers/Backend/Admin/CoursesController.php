@@ -189,7 +189,14 @@ class CoursesController extends Controller
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
-         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
+
+        $allAcademies = User::role('academy')->with('academy')->get();
+        $academies = [];
+foreach ($allAcademies as $academy) {
+    $academies[$academy->academy->id] = $academy->full_name;
+}
+
+        $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
@@ -207,11 +214,15 @@ class CoursesController extends Controller
         foreach ($categories_ar as $key => $categories_ar) {
             $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
         }
+
+
         $videos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
+
         if (count($videos) == 0) {
             $videos = ['' => 'No videos available'];
         }
-        return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours'));
+
+        return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours','academies'));
     }
 
     /**

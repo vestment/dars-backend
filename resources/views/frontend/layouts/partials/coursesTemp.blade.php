@@ -48,22 +48,26 @@
                         </div>
                         <div class="col-9">
                             <div class="row pt-2">
+                                @foreach($course->teachers as $key=>$teacher)
+                                    @php
+                                        $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                                    @endphp
+                                    @if($key == 0)
+                                        <a class="text-pink"
+                                           href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                           target="_blank">
 
-                                @php
-                                    $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
-                                @endphp
-                                @if ($teacherProfile)
-                                    <a class="text-pink tech-font"
-                                       href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                       target="_blank">
-                                       @lang('labels.frontend.course.instructor') : 
-                                        {{$teacher->full_name}}
+                                            {{$teacher->full_name}}
 
-                                    </a>
-                                    <span class="text-muted teacher-title">
-                                    {{$teacherProfile->getDataFromColumn('title')}}
-                                     </span>
-                                @endif
+                                        </a>
+                                        <a class="text-muted teacher-title"
+                                           href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                           target="_blank">
+                                            {{$teacherProfile->getDataFromColumn('title')}}
+                                        </a>
+                                    @endif
+                                @endforeach
+
                             </div>
                         </div>
                     @elseif ($teacher->hasRole('academy'))

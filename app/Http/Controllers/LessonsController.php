@@ -22,102 +22,115 @@ class LessonsController extends Controller
     {
         $test_result = "";
         $completed_lessons = "";
+
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
-
-        $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
-      
-        if ($lesson == "") {
-            $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->firstOrFail();
-            $lesson->full_text = $lesson->description;
-
-            $test_result = NULL;
-            if ($lesson) {
-                $test_result = TestsResult::where('test_id', $lesson->id)
-                    ->where('user_id', \Auth::id())
-                    ->first();
-            }
-        }
-
-        if ((int)config('lesson_timer') == 0) {
-            if ($lesson->chapterStudents()->where('user_id', \Auth::id())->count() == 0) {
-                $lesson->chapterStudents()->create([
-                    'model_type' => get_class($lesson),
-                    'model_id' => $lesson->id,
-                    'user_id' => auth()->user()->id,
-                    'course_id' => $lesson->course->id
-                ]);
-            }
-        }
-
-        $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
-        $course_tests = ($lesson->course->tests ) ? $lesson->course->tests->pluck('id')->toArray() : [];
-        $course_lessons = array_merge($course_lessons,$course_tests);
-
-        $previous_lesson = $lesson->course->courseTimeline()
-            ->where('sequence', '<', $lesson->courseTimeline->sequence)
-            ->whereIn('model_id',$course_lessons)
-            ->orderBy('sequence', 'desc')
-            ->first();
-
-        $next_lesson = $lesson->course->courseTimeline()
-            ->whereIn('model_id',$course_lessons)
-            ->where('sequence', '>', $lesson->courseTimeline->sequence)
-            ->orderBy('sequence', 'asc')
-            ->first();
-
-        $lessons = $lesson->course->courseTimeline()
-            ->whereIn('model_id',$course_lessons)
-            ->orderby('sequence', 'asc')
-            ->get();
-
-
-
         $purchased_course = $lesson->course->students()->where('user_id', \Auth::id())->count() > 0;
-        $test_exists = FALSE;
+        if ($purchased_course) {
+            $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
 
-        if (get_class($lesson) == 'App\Models\Test') {
-            $test_exists = TRUE;
-        }
 
-        $completed_lessons = \Auth::user()->chapters()
-            ->where('course_id', $lesson->course->id)
-            ->get()
-            ->pluck('model_id')
-            ->toArray();
+            if ($lesson == "") {
+                $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->firstOrFail();
+                $lesson->full_text = $lesson->description;
+
+                $test_result = NULL;
+                if ($lesson) {
+                    $test_result = TestsResult::where('test_id', $lesson->id)
+                        ->where('user_id', \Auth::id())
+                        ->first();
+                }
+            }
+
+            if ((int)config('lesson_timer') == 0) {
+                if ($lesson->chapterStudents()->where('user_id', \Auth::id())->count() == 0) {
+                    $lesson->chapterStudents()->create([
+                        'model_type' => get_class($lesson),
+                        'model_id' => $lesson->id,
+                        'user_id' => auth()->user()->id,
+                        'course_id' => $lesson->course->id
+                    ]);
+                }
+            }
+
+            $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
+            $course_tests = ($lesson->course->tests) ? $lesson->course->tests->pluck('id')->toArray() : [];
+            $course_lessons = array_merge($course_lessons, $course_tests);
+
+            $previous_lesson = $lesson->course->courseTimeline()
+                ->where('sequence', '<', $lesson->courseTimeline->sequence)
+                ->whereIn('model_id', $course_lessons)
+                ->where('model_type', Lesson::class)
+                ->orderBy('sequence', 'desc')
+                ->first();
+
+            $next_lesson = $lesson->course->courseTimeline()
+                ->whereIn('model_id', $course_lessons)
+                ->where('sequence', '>', $lesson->courseTimeline->sequence)
+                ->where('model_type', Lesson::class)
+                ->orderBy('sequence', 'asc')
+                ->first();
+
+            $lessons = $lesson->course->courseTimeline()
+                ->whereIn('model_id', $course_lessons)
+                ->where('model_type', Lesson::class)
+                ->orderby('sequence', 'asc')
+                ->get();
+
+
+            $test_exists = FALSE;
+
+            if (get_class($lesson) == 'App\Models\Test') {
+                $test_exists = TRUE;
+            }
+
+            $completed_lessons = \Auth::user()->chapters()
+                ->where('course_id', $lesson->course->id)
+                ->get()
+                ->pluck('model_id')
+                ->toArray();
             $start_time = time();
-            if(auth()->user()->current_test()->first()) {
-        $pivot = auth()->user()->current_test()->first()->pivot->where('test_id',$lesson->id)->first();
-        // dd($pivot);
-        if ($pivot) {
-            $start_time = $pivot->start_time;
+            if (auth()->user()->current_test()->first()) {
+                $pivot = auth()->user()->current_test()->first()->pivot->where('test_id', $lesson->id)->first();
+                // dd($pivot);
+                if ($pivot) {
+                    $start_time = $pivot->start_time;
+                }
+
+            }
+            return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'test_result',
+                'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time'));
+        } else {
+            return abort(403);
+//            return redirect()->back()->withFlashDanger(__('labels.frontend.cart.complete_your_purchases'));
         }
-    
-    }
-        return view('frontend.courses.lesson', compact('chapters','lesson', 'previous_lesson', 'next_lesson', 'test_result',
-            'purchased_course', 'test_exists', 'lessons', 'completed_lessons','start_time'));
-    }
-public function availablityUpdate(Request $request) {
-    // return $request;
-    $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
-    $test->available = 0;
-    $test->save();
-    return $test;
-}
-public function startTimeUpdate(Request $request) {
-    $check_prev_entry = auth()->user()->current_test()->where('test_id',$request->id)->first();
-    if (!$check_prev_entry) {
-    auth()->user()->current_test()->attach($request->id,['start_time' => time()]);
     }
 
-}
+    public function availablityUpdate(Request $request)
+    {
+        // return $request;
+        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
+        $test->available = 0;
+        $test->save();
+        return $test;
+    }
+
+    public function startTimeUpdate(Request $request)
+    {
+        $check_prev_entry = auth()->user()->current_test()->where('test_id', $request->id)->first();
+        if (!$check_prev_entry) {
+            auth()->user()->current_test()->attach($request->id, ['start_time' => time()]);
+        }
+
+    }
+
     public function test($lesson_slug, Request $request)
     {
         $test = Test::where('slug', $lesson_slug)->firstOrFail();
         $answers = [];
         $test_score = 0;
-        if(!$request->get('questions')){
+        if (!$request->get('questions')) {
 
-            return back()->with(['flash_warning'=>'No options selected']);
+            return back()->with(['flash_warning' => 'No options selected']);
         }
         foreach ($request->get('questions') as $question_id => $answer_id) {
             $question = Question::find($question_id);
@@ -130,7 +143,7 @@ public function startTimeUpdate(Request $request) {
                 'correct' => $correct
             ];
             if ($correct) {
-                if($question->score) {
+                if ($question->score) {
                     $test_score += $question->score;
                 }
             }
@@ -158,7 +171,7 @@ public function startTimeUpdate(Request $request) {
         }
 
 
-        return back()->with(['message'=>'Test score: ' . $test_score,'result'=>$test_result]);
+        return back()->with(['message' => 'Test score: ' . $test_score, 'result' => $test_result]);
     }
 
     public function retest(Request $request)

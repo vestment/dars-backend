@@ -33,8 +33,18 @@ class VideoBankController extends Controller
         $has_edit = false;
         $videos = "";
 
-        $videos = Media::where('type', 'upload')->orderBy('created_at', 'desc')->get();
-
+        $videos = Media::where('type', 'upload');
+        if (auth()->user()->hasRole('teacher')) {
+            $videos = $videos->where('user_id',auth()->user()->id);
+        }
+        if (auth()->user()->hasRole('academy')) {
+            $teachers = auth()->user()->academy->with('teachers')->first()->teachers()->pluck('user_id');
+            $teachers[auth()->user()->id] = auth()->user()->id;
+//            dd($teachers);
+            $videos = $videos->whereIn('user_id',$teachers);
+        }
+        $videos = $videos->with('uploader')->orderBy('created_at', 'desc')->get();
+//        dd($videos);
         if (auth()->user()->isAdmin() || auth()->user()->hasRole('teacher') || auth()->user()->hasRole('academy')) {
             $has_view = true;
             $has_edit = true;
@@ -82,7 +92,10 @@ class VideoBankController extends Controller
 
                 return $course_name;
             })
-            ->rawColumns(['actions'])
+            ->editColumn('url', function ($q) {
+                return '<a href="'.asset($q->url).'">'.$q->file_name.' </a><p>Uploaded by '.$q->uploader->full_name.'</p> ';
+            })
+            ->rawColumns(['actions','url'])
             ->make();
     }
 
@@ -106,40 +119,46 @@ class VideoBankController extends Controller
      */
     public function store(Request $request)
     {
-        foreach ($request->file('video_file') as $file) {
-            $allowedType = ['video/mp4', 'video/avi', 'video/mkv'];
-            if (!in_array($file->getClientMimeType(), $allowedType)) {
-                return redirect()
-                    ->back()
-                    ->withFlashDanger('Uploaded file must be a video');
-            } else {
+        if ($request->file('video_file')) {
+            foreach ($request->file('video_file') as $file) {
+                $allowedType = ['video/mp4', 'video/avi', 'video/mkv'];
+                if (!in_array($file->getClientMimeType(), $allowedType)) {
+                    return redirect()
+                        ->back()
+                        ->withFlashDanger('Uploaded file must be a video');
+                } else {
 
-                $filename = time() . '-' . $file->getClientOriginalName();
-                $size = $file->getSize() / 1024;
-                $path = public_path() . '/storage/uploads';
-                $filename = str_replace(' ', '-', $filename);
-                $file->move($path, $filename);
-                $url = 'storage/uploads/' . $filename;
-                $getID3 = new getID3();
-                $video_file = $getID3->analyze($url);
-                // Get the duration in string, e.g.: 4:37 (minutes:seconds)
-                $duration_string = $video_file['playtime_string'];
-                // Get the duration in seconds, e.g.: 277 (seconds)
-                $duration_seconds = $video_file['playtime_seconds'];
-                $media = new Media();
-                $media->model_type = '';
-                $media->model_id = null;
-                $media->name = 'Un selected - video';
-                $media->url = $url;
-                $media->type = 'upload';
-                $media->file_name = $filename;
-                $media->size = $size;
-                $media->duration = $duration_string;
-                $media->save();
+                    $filename = time() . '-' . $file->getClientOriginalName();
+                    $size = $file->getSize() / 1024;
+                    $path = public_path() . '/storage/uploads';
+                    $filename = str_replace(' ', '-', $filename);
+                    $file->move($path, $filename);
+                    $url = 'storage/uploads/' . $filename;
+                    $getID3 = new getID3();
+                    $video_file = $getID3->analyze($url);
+                    // Get the duration in string, e.g.: 4:37 (minutes:seconds)
+                    $duration_string = $video_file['playtime_string'];
+                    // Get the duration in seconds, e.g.: 277 (seconds)
+                    $duration_seconds = $video_file['playtime_seconds'];
+                    $media = new Media();
+                    $media->model_type = '';
+                    $media->model_id = null;
+                    $media->name = 'Un selected - video';
+                    $media->url = $url;
+                    $media->user_id = auth()->user()->id;
+                    $media->type = 'upload';
+                    $media->file_name = $filename;
+                    $media->size = $size;
+                    $media->duration = round($duration_seconds);
+                    $media->save();
+                }
             }
-        }
-        return redirect()->route('admin.video-bank.index')->withFlashSuccess(trans('alerts.backend.general.created'));
+//            return redirect()->route('admin.video-bank.index')->withFlashSuccess(trans('alerts.backend.general.created'));
+            return response()->json(['status' => 'success', 'message' => __('alerts.backend.general.created')]);
+        } else {
+            return response()->json(['status' => 'error', 'message' => __('alerts.backend.general.error')]);
 
+        }
 
     }
 

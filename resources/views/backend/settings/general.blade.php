@@ -706,12 +706,12 @@
                                 {{ html()->label(__('labels.backend.general_settings.payment_settings.select_currency'))->class('col-md-3 form-control-label')}}
                                 <div class="col-md-9">
                                     <select class="form-control" id="app__currency" name="app__currency">
-                                        @foreach(config('currencies') as $currency)
-                                            <option @if(config('app.currency') == $currency['short_code']) selected
-                                                    @endif value="{{$currency['short_code']}}">
-                                                {{$currency['symbol'].' - '.$currency['name']}}
+                                        
+                                            <option selected
+                                                value="EGP">
+                                                EGP
                                             </option>
-                                        @endforeach
+                                        
                                     </select>
                                 </div>
                             </div>

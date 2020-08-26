@@ -140,7 +140,7 @@ class AppServiceProvider extends ServiceProvider
                 $cssFile = 'frontend-rtl.css';
             }
             if (Schema::hasTable('categories')) {
-                $appCurrency = getCurrency(config('app.currency'));
+                $appCurrency['symbol'] = app()->getLocale() == 'ar' ? 'ج م': 'EGP';
                 $categories = Category::where('status', 1)->get();
             }
             if (Schema::hasTable('locales')) {

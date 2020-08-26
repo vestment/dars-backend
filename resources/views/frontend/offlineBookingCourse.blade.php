@@ -9,30 +9,21 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position pb-5 backgroud-style bg-header-cat">
-        <div class="blakish-overlay"></div>
-        <div class="container">
-            <div class="page-breadcrumb-content text-center">
-                <div class=row>
-                    <div class="page-breadcrumb-title text-left col-7 col-xl-7 col-md-7 col-lg-7">
-                        <h1 class="breadcrumb-head black bold">
-                            <span>@if(isset($category)) {{$category->getDataFromColumn('name')}} @else @lang('labels.frontend.course.courses') @endif </span>
-                        </h1>
-                        <h3>
-                        @lang('labels.backend.courses.courses_to_start')
-                            <!-- Courses to get you started
-                            دورات لتبدأ بها -->
-                        </h3>
+        <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bg-header-offline">
+                <div class="blakish-overlay" ></div>
+                <div class="container-fluid">
+                    <div class="page-breadcrumb-content">
+                            <div class="page-breadcrumb-title">
+                                <p class="text-white pragchechout p-1">
+                                   <span style="opacity: 0.3"> EXPLORE </span> / Offline Booking Course
+                                </p>                  
+                            </div>
+                        <div class="page-breadcrumb-title">
+                            <h2 class="breadcrumb-head black bold p-1"><span>Offline Booking Course</h2>
+                        </div>
                     </div>
-                    <div class="col-xl-5 col-md-5 col-lg-5 col-5">
-                        <img class="breadcrumb-image" src="/assets/img/Learn Online.svg">
-
-                    </div>
-
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
     <!-- End of breadcrumb section
         ============================================= -->
     {{-- start myyy of course section --}}
@@ -49,46 +40,49 @@
                         <section class="p-2 filters-side-bar">
 
                             <!-- Section: Average -->
-                            <section class="p-3 pb-0 border-bottom rating-filter">
+                            <section class="p-3 pb-0 border-bottom academies-filter">
                                
-                                <h5 class="font-weight-bold mb-3 " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">@lang('labels.frontend.course.filters.academies') <i class="fas fa-chevron-down arrowDown"></i></h5>
+                                <h5 class="font-weight-bold mb-3 head-coll" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">@lang('labels.frontend.course.filters.academies') <i class="fas fa-chevron-down arrowDown"></i></h5>
                                
                                 <div class="collapse" id="collapseExample">
-                                        @if(count($menna) > 0)
-                                        @foreach($menna as $teach)
+                                        @if(count($ac_filter) > 0)
+                                        @foreach($ac_filter as $academy)
+                                        
                                     <div class="input-group mb-3">
                                     
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text">
+                                            <div class="input-group-text checkinput">
 
-                                                <input type="checkbox" aria-label="Checkbox for following text input">
+                                                <input value="{{$academy->assoc_id}}" type="checkbox" aria-label="Checkbox for following text input" >
                                             </div>
                                         </div>
                                                 <label class="form-check-label small font-weight-bold d-block" >
-                                                       {{$teach->first_name}}
+                                                       {{$academy->full_name}}
                                                     </label>
                                     
                                     </div>
 
                                     @endforeach
-                                    @endif
+
+                                   @else
+                                <h3>@lang('labels.general.no_data_available')</h3>
+                            @endif
                                 </div>
                             </section>
                             <!-- Section: Average -->
 
                             <!-- Section: Price -->
-                            <section class="p-3 pb-0 border-bottom duration-filter">
+                            <section class="p-3 pb-0 border-bottom teachers-filter">
 
-                                <h5 class="font-weight-bold mb-3"  data-toggle="collapse" href="#collapseExampl" role="button" aria-expanded="false" aria-controls="collapseExampl">@lang('labels.frontend.course.filters.teachers')  <i class="fas fa-chevron-down arrowDown"></i></h5>
+                                <h5 class="font-weight-bold mb-3 head-coll"  data-toggle="collapse" href="#collapseExampl" role="button" aria-expanded="false" aria-controls="collapseExampl">@lang('labels.frontend.course.filters.teachers')  <i class="fas fa-chevron-down arrowDown"></i></h5>
                                 <div class="collapse" id="collapseExampl">
-                                        @if(count($menna) > 0)
-                                        @foreach($menna as $teach)
+                                        @if(count($teach_filtering) > 0)
+                                        @foreach($teach_filtering as $teach)
                                     <div class="input-group mb-3">
                                     
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text">
-
-                                                <input type="checkbox" aria-label="Checkbox for following text input">
+                                            <div class="input-group-text checkinput">
+                                                <input value="{{$teach->id}}" type="checkbox" aria-label="Checkbox for following text input">
                                             </div>
                                         </div>
                                                 <label class="form-check-label small font-weight-bold d-block" >
@@ -98,30 +92,44 @@
                                     </div>
 
                                     @endforeach
+                                    @else
+                                    <h3>@lang('labels.general.no_data_available')</h3>
+                                
                                     @endif
                                 </div>
                             </section>
                             <!-- Section: Price -->
                             <!-- Section: categories  -->
-                            <section class="pb-0 p-3 border-bottom price-filter">
-                                    <h5 class="font-weight-bold mb-3" data-toggle="collapse" href="#collapseExamp" role="button" aria-expanded="false" aria-controls="collapseExamp">@lang('labels.frontend.course.filters.categories')  <i class="fas fa-chevron-down arrowDown"></i></h5>
-                                    <div class="collapse" id="collapseExamp">
-                                    <div class="form-check pl-0 mb-3">
-                                        <input type="checkbox" class="form-check-input" id="isFree">
-                                        <label class="form-check-label small font-weight-bold" for="isFree">@lang('labels.backend.courses.fields.free')</label>
+                            <section class="pb-0 p-3 border-bottom categories-filter">
+                                    <h5 class="font-weight-bold mb-3 head-coll" data-toggle="collapse" href="#collapseExam" role="button" aria-expanded="false" aria-controls="collapseExam">@lang('labels.frontend.course.filters.categories')  <i class="fas fa-chevron-down arrowDown"></i></h5>
+                                    <div class="collapse" id="collapseExam">
+                                        @if(count($cate_filter) > 0)
+                                        @foreach($cate_filter as $category)
+                                    <div class="input-group mb-3">
+                                    
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text checkinput">
+
+                                                <input value="{{$category->id}}" type="checkbox" aria-label="Checkbox for following text input">
+                                            </div>
+                                        </div>
+                                                <label class="form-check-label small font-weight-bold d-block" >
+                                                       {{$category->name}}
+                                                    </label>
+                                    
                                     </div>
-                                    <input class="price-filter-input" type="range" name="price" id="price" value="0"
-                                        step="10"
-                                        min="0"
-                                        max="10000">
-                                    <span class="text-muted font-weight-light float-right"><span id="current-price">0</span>  EGP</span>
-                                    {{--                                <span class="text-muted font-weight-light float-right">10000 EGP</span>--}}
-                                    </div>
+
+                                    @endforeach
+                                    @else
+                                    <h3>@lang('labels.general.no_data_available')</h3>
+                              
+                                    @endif
+                                </div>
                                 </section>
                                 <!-- Section: categories -->
                             <!-- Section: Price  -->
                             <section class="pb-0 p-3 border-bottom price-filter">
-                                <h5 class="font-weight-bold mb-3" data-toggle="collapse" href="#collapseExamp" role="button" aria-expanded="false" aria-controls="collapseExamp">@lang('labels.frontend.course.filters.price')  <i class="fas fa-chevron-down arrowDown"></i></h5>
+                                <h5 class="font-weight-bold mb-3 head-coll" data-toggle="collapse" href="#collapseExamp" role="button" aria-expanded="false" aria-controls="collapseExamp">@lang('labels.frontend.course.filters.price')  <i class="fas fa-chevron-down arrowDown"></i></h5>
                                 <div class="collapse" id="collapseExamp">
                                 <div class="form-check pl-0 mb-3">
                                     <input type="checkbox" class="form-check-input" id="isFree">
@@ -150,7 +158,7 @@
                         <!-- Section: Filters -->
                     </div>
                     <div class="col-12 col-lg-9 col-xl-9 col-md-8">
-                        <div class="form-group row filters-category">
+                        {{-- <div class="form-group row filters-category">
                             <label class="col-sm-2 col-form-label col-form-label-sm " for="sort"><h3
                                         class="font-weight-bold text-dark">@lang('labels.frontend.search_result.sort_by')</h3></label>
                             <div class="col">
@@ -161,7 +169,7 @@
                                     <option value="featured">@lang('labels.frontend.search_result.featured')</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row all-courses">
                             @if($courses->count() > 0)
 
@@ -206,30 +214,50 @@
                     $('.filters-category').toggle(500);
                 });
             }
-            var rating = $('.rating-filter input:checked').data('value');
-            var duration = $('.duration-filter input:checked').data('value');
+            var categories = [];
+            $('.categories-filter input').on('click',function() {
+                if (!categories[$(this).val()]) {
+                    categories.push($(this).val())
+                }
+                
+            });
+            var teachers = [];
+            $('.teachers-filter input').on('click',function() {
+                if (!teachers[$(this).val()]) {
+                    teachers.push($(this).val())
+                }
+                
+            });
+
+            var academies = [];
+            $('.academies-filter input').on('click',function() {
+                if (!academies[$(this).val()]) {
+                    academies.push($(this).val())
+                }
+                
+            });
+           
             var maxPrice = $('.price-filter-input').val();
             var isFree = $('#isFree').prop('checked');
             var sortBy = $('#sortFilter').val();
             var category = '{{$category->id ?? null}}';
-            $('.filters-section .btn-apply').on('click', function (e) {
-                e.preventDefault();
-                var rating = $('.rating-filter input:checked').data('value') ? $('.rating-filter input:checked').data('value') : '';
-                var duration = $('.duration-filter input:checked').data('value');
+            $('.filters-section .btn-apply').on('click', function () {
+                
                 var maxPrice = $('.price-filter-input').val();
                 var isFree = $('#isFree').prop('checked');
                 var sortBy = $('#sortFilter').val();
                 var category = '{{$category->id ?? null}}';
+               
                 $.ajax({
                     url: "{{route('offlineCourses.filterCategory')}}",
                     method: "GET",
                     data: {
-                        'rating': rating,
-                        'duration': duration,
+                        'academies':academies,
+                        'teachers':teachers,
                         'maxPrice': maxPrice,
                         'isFree': isFree,
                         'type': sortBy,
-                        'category':category
+                        'categories':categories
                     },
                     beforeSend: function () {
                         $('.all-courses').hide();
@@ -249,7 +277,7 @@
                 $('#current-price').text($('input[type=range]').val())
             });
             $('.filters-section input , #sortFilter').on('click', function () {
-                if (rating || duration || maxPrice !== '0' || isFree || sortBy) {
+                if (academies || teachers || categories || maxPrice !== '0' || isFree || sortBy) {
                     $('.btn-apply').show();
                     $('.btn-reset').show();
                 } else {

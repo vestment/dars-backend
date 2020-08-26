@@ -5,7 +5,7 @@
         <div class="container ">
             <div class=" section-title mb20 headline p-5 mb-5">
                 <span class=" subtitle text-uppercase font-weight-lighter">@lang('labels.frontend.home.our_professionals')</span>
-                <h4 class="text-dark font-weight-bolder instructresp title"><span>@lang('labels.frontend.home.Instructors').<span>
+                <h4 class="text-dark font-weight-bolder instructresp title"><span>@lang('labels.frontend.home.Instructors') <a class="view-more" href="{{route('teachers.index')}}">@lang('labels.frontend.layouts.partials.view_more') </a><span>
                 </h4>
             </div>
 
@@ -67,7 +67,7 @@
                     @endforeach
                 @endif
             </div>
-
+           
         </div>
     </div>
 </section>

@@ -470,6 +470,19 @@ h6 {
     /* padding-bottom: 515px; */
 
 }
+.bg-header-offline {
+    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+   height: 260px;
+    color: white;
+    margin-bottom: 88px;
+    /* padding-bottom: 515px; */
+
+}
+.bg-header-offline .container-fluid .page-breadcrumb-content{
+padding-top: 5rem;
+}
+
+
 .bg-header-cat {
   background-image: linear-gradient(to right, #52ADE1,#625CA8,#D2498B);
   padding-top: 10%;
@@ -6377,7 +6390,7 @@ ul.product-tab li.active:after {
 @media (max-width: 425px) {
     .bgcolor {
         /* padding-bottom: 340px; */
-        padding-bottom: 400px;
+        padding-bottom: 430px;
 
 
     }
@@ -6457,12 +6470,12 @@ ul.product-tab li.active:after {
 }
 
 
-.buttoncart button {
+/* .buttoncart button {
     opacity: 0.9;
     padding: 10px;
     font-size: 15px;
     height: 39px;
-}
+} */
 
 .addcart {
     opacity: 0.9 !important;
@@ -6480,7 +6493,7 @@ ul.product-tab li.active:after {
     background-color: #01a6fd;
     border-color: #01a6fd;
 }
-@media (max-width: 425px) {
+/* @media (max-width: 425px) {
     .addcart {
         width: 100px !important;
         padding: 8px !important;
@@ -6493,23 +6506,29 @@ ul.product-tab li.active:after {
         font-size: 13px;
     }
 
-}
+} */
 
 @media (max-width: 425px) {
     .addcart {
         width: 100px !important;
         padding: 6px !important;
-        font-size: 13px !important;
+        font-size: 15px !important;
     }
 
-    .buttoncart button {
-        width: 24%;
+    .buttoncart .sharebutton {
+        width: 26%;
         padding: 2px;
         font-size: 12px;
     }
 }
 
-
+@media (max-width: 425px) {
+.btnbook{
+    width: 100%;
+    margin-left: 0px !important;
+    margin-top: 5px;
+}
+}
 /* ================================================ second section */
 .course-page-section {
     padding: 40px 0px 0px;
@@ -7248,7 +7267,7 @@ hr {
 
 }
 .view-more{
-    font-size: 15px;
+    font-size: 20px;
     color: #52ade1;
     font-weight: 400;
 
@@ -7572,4 +7591,16 @@ hr {
 .menu-bg-overlay .menu-item-has-children:hover .sub-menu
 {
     transform: scaleY(1) translateY(33px);
+}
+
+.checkinput{
+    background-color: white;
+    border: none;
+    padding: 0;
+    padding-right: 10px
+}
+
+.head-coll{
+    cursor: pointer;
+
 }
