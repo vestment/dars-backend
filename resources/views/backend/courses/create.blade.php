@@ -32,12 +32,8 @@
                                 <div class="row">
                                     <div class="col-10 form-group">
                                         {!! Form::label('teachers',trans('labels.backend.courses.fields.teachers'), ['class' => 'control-label']) !!}
-                                        @if(app()->getLocale() == 'en')
-                                        {!! Form::select('teachers[]', $teachers, old('teachers'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
-                                        @endif
-                                        @if(app()->getLocale() == 'ar')
-                                        {!! Form::select('ar_full_name[]', $ar_full_name, old('ar_full_name'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
-                                        @endif
+                                        {!! Form::select('teachers[]', $ar_full_name, old('teachers'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+
                                     </div>
                                     <div class="col-2 d-flex form-group flex-column">
                                         OR <a target="_blank" class="btn btn-primary mt-auto"

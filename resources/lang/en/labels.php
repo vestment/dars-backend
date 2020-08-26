@@ -4,7 +4,7 @@ return array(
     'backend' =>
         array(
             'videos' => array(
-                'title' => 'Videos',
+                'title' => 'Video Bank',
                 'fields' =>
                     array(
                         'type' => 'Type',

@@ -401,10 +401,10 @@
                                         {{ $chapter->title}} <i class="fa fa-angle-down float-right"
                                                                 aria-hidden="true"></i>
                                     </button>
-                                    @if($course->trending == 1)
-                                        <span class="trend-badge text-uppercase bold-font"><i
-                                                    class="fas fa-bolt"></i> @lang('labels.frontend.badges.trending')</span>
-                                    @endif
+                                    {{--                                    @if($course->trending == 1)--}}
+                                    {{--                                        <span class="trend-badge text-uppercase bold-font"><i--}}
+                                    {{--                                                    class="fas fa-bolt"></i> @lang('labels.frontend.badges.trending')</span>--}}
+                                    {{--                                    @endif--}}
                                 </h2>
                             </div>
 
@@ -412,23 +412,22 @@
                                  data-parent="#accordionExample">
                                 <div class="card-body">
                                     @foreach($lessons->get() as $key=>$item)
-                                        @php $key++; @endphp
-                                        <div class="bordered">
-                                            @if($item->model && $item->model->published == 1)
-                                                <p class="subtitle2">
-                                                    <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
-                                                @if($item->model->chapter_id == $chapter->id)
-                                                    {{$item->model->title}}
-                                                @endif
-                                                @if($item->model_type == 'App\Models\Test')
-                                                    <p class="mb-0 text-primary">
-                                                        - @lang('labels.frontend.course.test')</p>
-                                                    @endif
-                                                    </a>
-                                                    </p>
-                                                    <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
-                                                @endif
-                                        </div>
+                                        @if($item->model && $item->model->published == 1)
+                                            @if($item->model->chapter_id == $chapter->id)
+                                                <div class="bordered border-bottom">
+                                                    <p class="subtitle2">
+                                                        <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
+                                                            <i class="fas fa-play-circle"></i> Video File {{$key}}
+                                                            - {{$item->model->title}}
+                                                    @if($item->model_type == 'App\Models\Test')
+                                                        <p class="mb-0 text-primary">
+                                                            - @lang('labels.frontend.course.test')</p>
+                                                        @endif
+                                                        </a>
+                                                        </p>
+                                                </div>
+                                            @endif
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -827,10 +826,12 @@
                                          data-plyr-provider="{{$course->mediavideo->type}}"
                                          data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
                                 @elseif($course->mediavideo->type == 'vimeo')
-                                    <div id="player" class="js-player plyr__video-embed" data-plyr-provider="{{$course->mediavideo->type}}"
+                                    <div id="player" class="js-player plyr__video-embed"
+                                         data-plyr-provider="{{$course->mediavideo->type}}"
                                          data-plyr-embed-id="{{$course->mediavideo->file_name}}"></div>
                                 @elseif($course->mediavideo->type == 'upload')
-                                    <video data-provider="{{$course->mediavideo->type}}" style="width: 100%" id="player" class="js-player" playsinline
+                                    <video data-provider="{{$course->mediavideo->type}}" style="width: 100%" id="player"
+                                           class="js-player" playsinline
                                            controls>
                                         <source src="{{route('videos.stream',['course'=>$course])}}" type="video/mp4"/>
                                     </video>
@@ -888,7 +889,7 @@
         $(document).on('change', 'input[name="stars"]', function () {
             $('#rating').val($(this).val());
         })
-                @if(isset($review))
+        @if(isset($review))
         var rating = "{{$review->rating}}";
         $('input[value="' + rating + '"]').prop("checked", true);
         $('#rating').val(rating);

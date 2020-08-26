@@ -39,4 +39,7 @@ class Media extends Model
         }
         return round($percentage,2);
     }
+    public function uploader() {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }
