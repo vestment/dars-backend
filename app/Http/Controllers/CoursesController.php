@@ -155,6 +155,7 @@ class CoursesController extends Controller
             if ($continue_course == null) {
                 $continue_course = $course->courseTimeline()
                     ->whereIn('model_id', $course_lessons)
+                    ->where('model_type',Lesson::class)
                     ->orderby('sequence', 'asc')->first();
             }
 

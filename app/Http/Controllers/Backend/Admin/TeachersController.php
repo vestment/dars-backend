@@ -57,19 +57,15 @@ class TeachersController extends Controller
 
 
         if (request('show_deleted') == 1) {
-
             $teachers = User::ofAcademy()->role('teacher')->onlyTrashed()->orderBy('created_at', 'desc')->get();
         } else {
             $teachers = User::with('TeacherProfile')->ofAcademy()->role('teacher')->where('academy_id',$academy_id)->orderBy('created_at', 'desc')->get();
-
         }
         if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) {
             $has_view = true;
             $has_edit = true;
             $has_delete = true;
         }
-
-
         return DataTables::of($teachers)
             ->addIndexColumn()
             ->addColumn('actions', function ($q) use ($has_view, $has_edit, $has_delete, $request) {

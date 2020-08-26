@@ -35,6 +35,8 @@ return array(
                             'popular' => 'Popular',
                             'teachers' => 'Teachers',
                             'academies' => 'Academies',
+                            'offline_courses'=>'Offline Courses',
+                            'hours' => 'Houres',
                             'hours' => 'Hours',
                             'lectures' => 'Lectures',
                             'category' => 'Category',
@@ -1548,9 +1550,12 @@ return array(
                         'reset' => 'Reset filters',
                         'up' => 'Up',
                         'hours' => 'Hours',
-                        'academies' => 'Academies',
-                        'teachers' => 'Teachers',
-                        'categories' => 'categories',
+                        'academies'=>'Academies',
+                        'teachers'=>'Teachers',
+                        'categories'=>'categories',
+                        'offline_booking_course'=>'Offline_Booking_Course'
+                        
+                        
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',

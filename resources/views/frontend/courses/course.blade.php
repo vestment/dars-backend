@@ -112,13 +112,8 @@
                             <p class="text-white font12">{{$teacher->full_name}}</p>
                             <p class="text-white font10">{{$teacherProfile->getDataFromColumn('description')}}</p>
                         </div>
-                @endforeach
+                    @endforeach
 
-                <!-- @foreach($course->teachers as $key=>$teacher)
-                    <img style="border-radius: 50%"  src=" {{asset($teacher->picture)}}" alt="">
-                            @php $key++ @endphp
-                            <p class="text-white mt-4 ml-2">   {{$teacher->full_name}}</p>@if($key < count($course->teachers )), @endif
-                @endforeach -->
 
                 </div>
 
@@ -412,7 +407,7 @@
 
     <!-- Start of course content section
         ============================================= -->
-    <section id="course-page" class="course-page-section">
+    <section id="course-chapters" class="course-page-section">
         <div class="container">
             <div class="row  coursecontent d-block m-2">
                 <h2>@lang('labels.frontend.course.course_content') </h2>
@@ -477,7 +472,7 @@
 
     <!-- Start of Related Courses section
            ============================================= -->
-    <section id="course-page" class="course-page-section">
+    <section id="related-courses" class="course-page-section">
         <div class="container">
             <div class="row  coursecontent d-block m-2">
                 <h2>@lang('labels.frontend.course.related_courses') </h2>
@@ -634,7 +629,7 @@
 
     <!-- Start of course review section
         ============================================= -->
-    <section id="course-page" class="course-page-section">
+    <section id="course-review" class="course-page-section">
         <div class="container">
             <div class="course-review">
                 <div class="section-title-2 mb20 headline text-left">
@@ -792,7 +787,7 @@
 
     <!-- Start of Instructor info review section
         ============================================= -->
-    <section id="course-page" class="course-page-section">
+    <section id="course-teachers" class="course-page-section">
         <div class="container">
             <div class="row  coursecontent d-block m-2 pb-2">
                 <h2> @lang('labels.frontend.course.instructors') </h2>
