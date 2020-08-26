@@ -27,7 +27,6 @@ class StoreCoursesRequest extends FormRequest
             'title' => 'required',
             'category_id' => 'required',
             'start_date' => 'date_format:'.config('app.date_format'),
-            'video_file' => 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4'
         ];
     }
 }

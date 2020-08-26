@@ -32,20 +32,25 @@ use Newsletter;
  */
 class HomeController extends Controller
 {
-    public $hidden_data = [];
+    public $hidden_data = [
+        'courses' => [],
+        'teachers' => []
+    ];
     public function __construct()
     {
         $academy_911 = 29;
         $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
-        $academyTeachersIds = $academy->teachers()->pluck('user_id');
-        $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
-            $query->whereIn('user_id', $academyTeachersIds);
-        })->pluck('id');
-        $categories = array_unique($coursesIds->pluck('category_id')->toArray());
-        $this->hidden_data = [
-            'courses' => $coursesIds,
-            'teachers' => $academyTeachersIds
-        ];
+        if ($academy) {
+            $academyTeachersIds = $academy->teachers()->pluck('user_id');
+            $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+                $query->whereIn('user_id', $academyTeachersIds);
+            })->pluck('id');
+            $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+            $this->hidden_data = [
+                'courses' => $coursesIds,
+                'teachers' => $academyTeachersIds
+            ];
+        }
     }
 
     /**

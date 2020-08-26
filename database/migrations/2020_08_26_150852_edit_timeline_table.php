@@ -15,8 +15,6 @@ class EditTimelineTable extends Migration
     {
         Schema::table('course_timeline', function (Blueprint $table) {
             $table->integer('parent_seq')->nullable();
-           
-
         });
     }
 

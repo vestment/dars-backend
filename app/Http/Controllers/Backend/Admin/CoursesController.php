@@ -9,8 +9,6 @@ use App\Models\Chapter;
 use App\Models\CourseTimeline;
 use App\Models\Media;
 use App\Models\Courses;
-use getID3;
-use function foo\func;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -192,16 +190,24 @@ class CoursesController extends Controller
 
         $allAcademies = User::role('academy')->with('academy')->get();
         $academies = [];
-foreach ($allAcademies as $academy) {
-    $academies[$academy->academy->id] = $academy->full_name;
-}
-
+        foreach ($allAcademies as $academy) {
+            $academies[$academy->academy->id] = $academy->full_name;
+        }
+        $learned = [];
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
 
         $courses = Course::pluck('title', 'id');
-        $learned = Course::pluck('learned', 'id');
+        $coursesRaw = Course::all();
+
+        foreach ($coursesRaw as $course) {
+            if ($course->learned) {
+                foreach (json_decode($course->learned) as $learnItem) {
+                    $learned[$learnItem] = $learnItem;
+                }
+            }
+        }
         $course_hours = Course::pluck('course_hours', 'id');
         $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
@@ -238,6 +244,7 @@ foreach ($allAcademies as $academy) {
         }
 
         $request->all();
+
         $request = $this->saveFiles($request);
         $slug = "";
         if (($request->slug == "") || $request->slug == null) {
@@ -250,7 +257,6 @@ foreach ($allAcademies as $academy) {
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-        // dd($request->all());
         $course = Course::create($request->all());
         $course->slug = $slug;
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
@@ -290,6 +296,7 @@ foreach ($allAcademies as $academy) {
                 $media->type = $request->media_type;
                 $media->file_name = $video_id;
                 $media->size = 0;
+                $media->user_id = auth()->user()->id;
                 $media->duration  = $request->duration;
                 $media->save();
             }
@@ -355,35 +362,38 @@ foreach ($allAcademies as $academy) {
         // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
         $prevLearned = [];
-        if($learned != null){
-        foreach ($learned as $key => $value) {
-        $prevLearned[$value] = $value;
+        if ($learned != null) {
+            foreach ($learned as $key => $value) {
+                $prevLearned[$value] = $value;
+            }
         }
-       }
 
         $timeline = CourseTimeline::where('course_id', $id)->get();
         // dd($timeline->isEmpty());
-        if(! $timeline->isEmpty()){
-        foreach ($timeline as $item) {
-            $content[]= $item->model_type::where('id', '=', $item->model_id)->get();
+        if (!$timeline->isEmpty()) {
+            foreach ($timeline as $item) {
+                $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
 
-        }
-    
-        foreach ($content as $key => $item) {
-        
-            foreach ($item as $j => $item) {
-                $chapterContent[] = $content[$key][$j];
             }
 
-      }
-    }
-else{
-    $chapterContent=[];
-    $timeline=[];
-}
+            foreach ($content as $key => $item) {
 
-   
-        return view('backend.courses.edit', compact('chapterContent','timeline','course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses','prevLearned','learned'));
+                foreach ($item as $j => $item) {
+                    $chapterContent[] = $content[$key][$j];
+                }
+
+            }
+        } else {
+            $chapterContent = [];
+            $timeline = [];
+        }
+
+        $videos = Media::where('type', 'upload')->whereIn('model_id', [$id,null])->pluck('file_name', 'id');
+
+        if (count($videos) == 0) {
+            $videos = ['' => 'No videos available'];
+        }
+        return view('backend.courses.edit', compact('chapterContent', 'videos','timeline', 'course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned'));
     }
 
     /**
@@ -447,37 +457,23 @@ else{
                 $media->url = $url;
                 $media->type = $request->media_type;
                 $media->file_name = $video_id;
+                $media->user_id = auth()->user()->id;
                 $media->size = 0;
                 $media->save();
             }
 
             if ($request->media_type == 'upload') {
 
-                if ($request->video_file != null) {
-                    $file = \Illuminate\Support\Facades\Request::file('video_file');
-                    $filename = $file->getClientOriginalName();
-                    $size = $file->getSize() / 1024;
-                    $path = public_path() . '/storage/uploads';
-                    $file->move($path, $filename);
-                    $videoLocation = 'storage/uploads/' . $filename;
-                    $media = Media::where('type', '=', $request->media_type)
-                        ->where('model_type', '=', 'App\Models\Course')
-                        ->where('model_id', '=', $course->id)
-                        ->first();
-
-                    if ($media == null) {
-                        $media = new Media();
-                    }
+                if ($request->video) {
+                    $media = Media::findOrFail($request->video)->first();
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
-                    $media->url = asset($videoLocation);
-                    $media->type = $request->media_type;
-                    $media->file_name = $filename;
-                    $media->size = $size;
                     $media->save();
-
+                } else {
+                    redirect()->back()->withFlashDanger('Please select a video from the list');
                 }
+
             }
         }
 
@@ -485,7 +481,7 @@ else{
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
         $course->learned = $request->learn ? json_encode($request->learn) : null;
-        
+
         if ($request->opt_courses && $request->mand_courses) {
             if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0 || count($request->learned) > 0) {
                 $course->optional_courses = json_encode($request->opt_courses);

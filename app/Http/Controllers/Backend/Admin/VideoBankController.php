@@ -124,6 +124,7 @@ class VideoBankController extends Controller
     public function store(Request $request)
     {
         if ($request->file('video_file')) {
+            ini_set('memory_limit','-1');
             foreach ($request->file('video_file') as $file) {
                 $allowedType = ['video/mp4', 'video/avi', 'video/mkv'];
                 if (!in_array($file->getClientMimeType(), $allowedType)) {

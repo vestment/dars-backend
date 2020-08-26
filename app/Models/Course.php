@@ -29,7 +29,9 @@ class Course extends Model
     protected $fillable = ['category_id','academy_id','offline','course_hours','learned','title_ar','description_ar','meta_title_ar','meta_description_ar','meta_keywords_ar', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'optional_courses', 'mandatory_courses'];
 
     protected $appends = ['image'];
-
+    protected $casts = [
+        'learned' => 'array',
+    ];
     protected static function boot()
     {
         parent::boot();

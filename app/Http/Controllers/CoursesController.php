@@ -24,21 +24,25 @@ class CoursesController extends Controller
 
     private $path;
 
-    public $hidden_data = [];
-
+    public $hidden_data = [
+        'courses' => [],
+        'teachers' => []
+    ];
     public function __construct()
     {
         $academy_911 = 29;
         $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
-        $academyTeachersIds = $academy->teachers()->pluck('user_id');
-        $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
-            $query->whereIn('user_id', $academyTeachersIds);
-        })->pluck('id');
-        $categories = array_unique($coursesIds->pluck('category_id')->toArray());
-        $this->hidden_data = [
-            'courses' => $coursesIds,
-            'teachers' => $academyTeachersIds
-        ];
+        if ($academy) {
+            $academyTeachersIds = $academy->teachers()->pluck('user_id');
+            $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+                $query->whereIn('user_id', $academyTeachersIds);
+            })->pluck('id');
+            $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+            $this->hidden_data = [
+                'courses' => $coursesIds,
+                'teachers' => $academyTeachersIds
+            ];
+        }
     }
 
     public function all()
@@ -70,6 +74,7 @@ class CoursesController extends Controller
 
         $featured_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', '=', 1)
             ->where('featured', '=', 1)->take(8)->get();
+        $trending_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
 
@@ -91,7 +96,7 @@ class CoursesController extends Controller
         $teacher_dat = TeacherProfile::get();
         $teachers = User::get();
         $popular_course = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-        return view('frontend.courses.index', compact('teacher_dat', 'teachers', 'popular_course', 'course_rating', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
+        return view('frontend.courses.index', compact('teacher_dat', 'trending_courses','teachers', 'popular_course', 'course_rating', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
     }
 
     public function show($course_slug)
