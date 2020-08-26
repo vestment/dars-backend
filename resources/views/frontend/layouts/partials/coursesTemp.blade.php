@@ -1,7 +1,7 @@
 <div class="best-course-pic-text relative-position" data-ref="partials">
     <a href="{{ route('courses.show', [$course->slug]) }}">
         <div class="best-course-pic piclip relative-position"
-             @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+             @if($course->image != "") style="background-image: url('{{$course->image}}')" @endif>
             <div class="course-price text-center gradient-bg">
                 @if($course->free == 1)
                     <span>{{trans('labels.backend.courses.fields.free')}}</span>

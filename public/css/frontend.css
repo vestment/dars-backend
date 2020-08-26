@@ -6565,7 +6565,8 @@ ul.product-tab li.active:after {
     right: 80px;
     color: black;
     box-shadow: 5px 5px 5px #888888;
-
+    overflow: hidden;
+width: 416px;
     background-color: white;
     z-index: 1;
 }
@@ -7243,7 +7244,7 @@ hr {
     color: #fff !important;
 }
 
-.best-course-pic-text:before {
+.best-course-pic-text:before,.divfixed:before {
     background-image: url(../../images/MIX-SLP8.svg);
     background-position: center;
     -webkit-filter: grayscale(100%);

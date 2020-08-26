@@ -10,7 +10,7 @@
                     @foreach($featured_courses as $item)
                         <div class="col-md-3">
                             <div class="best-course-pic-text relative-position ">
-                                <div class="best-course-pic relative-position" @if($item->course_image != "")  style="background-image: url({{asset('storage/uploads/'.$item->course_image)}})" @endif>
+                                <div class="best-course-pic relative-position" @if($item->course_image != "")  style="background-image: url({{$item->course_image}})" @endif>
 
                                     @if($item->trending == 1)
                                         <div class="trend-badge-2 text-center text-uppercase">

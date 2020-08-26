@@ -25,18 +25,18 @@
                     </div>
                     <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
+                            @if ($category->id != 2)
                             <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
                                     class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
+                            @endif
                         @endforeach
                     </div>
                     <div class="col-xl-12 courses-container">
                         @foreach($categories as $key=>$category)
+                           @if ($category->id != 2)
                             <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
                                  id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
                                 <div class="owl-carousel default-owl-theme p-3 " data-items="5">
-                                    <?php
-                                    $courses = App\Models\Course::where('category_id', $category->id)->orderBy('created_at', 'desc')->get();
-                                    ?>
                                     @if($popular_courses->count() > 0)
 
                                         @foreach($popular_courses as $course)
@@ -56,6 +56,7 @@
 
                                 </div>
                             </div>
+                            @endif
                         @endforeach
                     </div>
 

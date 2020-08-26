@@ -57,9 +57,13 @@ class Course extends Model
     public function getImageAttribute()
     {
         if ($this->course_image != null) {
-            return url('storage/uploads/' . $this->course_image);
+            if(file_exists('storage/uploads/' . $this->course_image)) {
+                return url('storage/uploads/' . $this->course_image);
+            } else {
+                return url('storage/uploads/default_course_image.jpg');
+            }
         }
-        return NULL;
+        return url('storage/uploads/default_course_image.jpg');
     }
 
     public function getPriceAttribute()

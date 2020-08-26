@@ -93,7 +93,11 @@ class VideoBankController extends Controller
                 return $course_name;
             })
             ->editColumn('url', function ($q) {
-                return '<a href="'.asset($q->url).'">'.$q->file_name.' </a><p>Uploaded by '.$q->uploader->full_name.'</p> ';
+                $url = '<a href="'.asset($q->url).'">'.$q->file_name.' </a>';
+                if ($q->uploader) {
+                    $url .= '<p>Uploaded by '.$q->uploader->full_name.'</p> ';
+                }
+                return $url;
             })
             ->rawColumns(['actions','url'])
             ->make();

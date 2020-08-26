@@ -176,7 +176,7 @@
                                         <div class="featured-course">
                                             <div class="best-course-pic-text relative-position pt-0">
                                                 <div class="best-course-pic relative-position "
-                                                     @if($global_featured_course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$global_featured_course->course_image)}})" @endif>
+                                                     @if($global_featured_course->image != "") style="background-image: url({{$global_featured_course->image}})" @endif>
 
                                                     @if($global_featured_course->trending == 1)
                                                         <div class="trend-badge-2 text-center text-uppercase">
@@ -273,7 +273,7 @@
                                             <div class="course-list-img-text course-page-sec">
                                                 <a href="{{ route('courses.show', [$course->slug]) }}">
                                                     <div class="course-li-img"
-                                                        @if($course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$course->course_image)}})" @endif >
+                                                        @if($course->image != "") style="background-image: url({{$course->image}})" @endif >
                                                     </div>
                                                 </a>
                                             </div>
@@ -307,33 +307,66 @@
                                                             @lang('labels.backend.courses.fields.lectures')
                                                 </small>
                                             </div>
-                                            <div class="row my-3">
-                                                <div class="col-xl-2 col-3">
-                                                        @if($teacher->picture == "")
-                                                            <img class="rounded-circle teach_img"
-                                                                 src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                 alt="">
-                                                        @else
-                                                            <img class="rounded-circle teach_img"
-                                                                 src="{{$teacher->picture}}"
-                                                                 alt="">
-                                                        @endif
-                                                </div>
-                                                <div class="col-9">
-                                                    <div class="row pt-2">
-                                                            <a class="col-12"
-                                                               href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                               target="_blank">
-                                                                {{$teacher->full_name}}
-                                                            </a>
+                                            <div class="row  tech-height">
+                                                @foreach($course->teachers as $key=>$teacher)
+                                                    @if($key == 0)
+                                                        @if ($teacher->hasRole('teacher'))
+                                                            <div class="col-3" data-role="{{$teacher->hasRole('teacher')}}">
+                                                                <img src="{{$teacher->picture}}"
+                                                                     class="rounded-circle">
+                                                            </div>
+                                                            <div class="col-9">
+                                                                <div class="row pt-2">
+                                                                    @foreach($course->teachers as $key=>$teacher)
+                                                                        @php
+                                                                            $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                                                                        @endphp
+                                                                        @if($key == 0)
+                                                                            <a class="text-pink"
+                                                                               href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                                                               target="_blank">
 
-                                                            <a class="col-12"
-                                                               href="{{route('teachers.show',['id'=>$teacher->id])}}"
-                                                               target="_blank">
-                                                                {{$teacherProfile->description}}
-                                                            </a>
-                                                    </div>
-                                                </div>
+                                                                                {{$teacher->full_name}}
+
+                                                                            </a>
+                                                                            <a class="text-muted teacher-title"
+                                                                               href="{{route('teachers.show',['id'=>$teacher->id])}}"
+                                                                               target="_blank">
+                                                                                {{$teacherProfile->getDataFromColumn('title')}}
+                                                                            </a>
+                                                                        @endif
+                                                                    @endforeach
+
+                                                                </div>
+                                                            </div>
+                                                        @elseif ($teacher->hasRole('academy'))
+                                                            @php
+                                                                $academyProfile = \App\academy::where('user_id',$teacher->id)->first();
+                                                            @endphp
+                                                            @if ($academyProfile)
+                                                                <div class="col-3" data-role="{{$teacher->hasRole('teacher')}}">
+                                                                    <img src="{{asset($academyProfile->logo)}}"
+                                                                         class="rounded-circle">
+                                                                </div>
+                                                                <div class="col-9">
+                                                                    <div class="row">
+
+
+                                                                        <a class="text-pink"
+                                                                           href="{{route('academy.show',['id'=>$teacher->id])}}"
+                                                                           target="_blank">
+
+                                                                            {{$teacher->full_name}}
+
+                                                                        </a>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+                                                    @endif
+                                                @endforeach
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-5 col-9">

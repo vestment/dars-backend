@@ -25,7 +25,7 @@
                     @if($student->avatar_location == null)
                         <img src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg" style="width:9%"/>
                     @else
-                        <img src="{{asset($student->avatar_location)}}" class="img-rounded user-profile-image p-2"/>
+                        <img src="{{asset($student->avatar_location)}}"  height="100px" class="img-rounded user-profile-image p-2"/>
                     @endif
                 </div>
                 <div class="col-6">

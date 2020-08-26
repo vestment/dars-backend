@@ -38,6 +38,7 @@ return array (
       'social_deleted' => 'Social Account Successfully Removed',
       'deleted_permanently' => 'The user was deleted permanently.',
       'restored' => 'The user was successfully restored.',
+      'not_allowed' => 'This action is not allowed for this user.',
     ),
       'parent' =>
           array (

@@ -134,10 +134,14 @@ class UsersController extends Controller
         if (!Gate::allows('user_delete')) {
             return abort(401);
         }
-        $user = User::findOrFail($id);
-        $user->delete();
+        if ($id != 29) {
+            $user = User::findOrFail($id);
+            $user->delete();
+            return redirect()->route('admin.users.index');
+        } else {
+            return redirect()->route('admin.users.index')->withFlashWarning(trans('alerts.backend.users.not_allowed'));
 
-        return redirect()->route('admin.users.index');
+        }
     }
 
     /**

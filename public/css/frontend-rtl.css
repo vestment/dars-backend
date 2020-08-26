@@ -334,6 +334,7 @@ h6 {
     margin-left: 5px;
     color: #01a6fd;
 }
+
 .btn-light {
     background-color: #CECECE !important;
 }
@@ -344,11 +345,12 @@ h6 {
 
 .section-title .subtitle {
     color: black;
-   margin-left: 19px;
+    margin-left: 19px;
     position: relative;
-    font-weight: 300; 
+    font-weight: 300;
 
 }
+
 .section-title .subtitle:after {
     right: -28px;
     left: inherit;
@@ -2028,12 +2030,14 @@ button.alt-menu-btn.float-left {
     border-radius: 3px;
     background-color: #f7f7f7;
 }
-.view-more{
+
+.view-more {
     font-size: 15px;
     color: #52ade1;
     font-weight: 400;
 
 }
+
 .course-price {
     top: 20px;
     left: 20px;
@@ -6102,31 +6106,29 @@ ul.product-tab li.active:after {
 }
 
 
-
-.bg-business{
+.bg-business {
     background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
     padding-top: 7%;
 
 }
 
 @media (max-width: 425px) {
-.bg-business{
-    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
-    padding-top: 7%;
-    padding-bottom: 110px;
+    .bg-business {
+        background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+        padding-top: 7%;
+        padding-bottom: 110px;
 
-}
+    }
 }
 
 @media (max-width: 1024px) {
-.bg-business{
-    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
-    padding-top: 7%;
-    padding-bottom: 110px;
+    .bg-business {
+        background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+        padding-top: 7%;
+        padding-bottom: 110px;
 
+    }
 }
-}
-
 
 
 .copy-right-menu {
@@ -6498,8 +6500,9 @@ ul.product-tab li.active:after {
     left: 80px;
     color: black;
     box-shadow: 5px 5px 5px #888888;
-
+    overflow: hidden;
     background-color: white;
+    width: 416px;
     z-index: 1;
 }
 
@@ -6988,7 +6991,8 @@ hr {
 
 
 }
-.title{
+
+.title {
     font-size: 35px;
     color: black;
     margin-left: 19px !important;
@@ -7167,7 +7171,7 @@ hr {
     color: #fff !important;
 }
 
-.best-course-pic-text:before {
+.best-course-pic-text:before, .divfixed:before {
     background-image: url(../../images/MIX-SLP8.svg);
     background-position: center;
     -webkit-filter: grayscale(100%);

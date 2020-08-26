@@ -169,7 +169,7 @@
                   <div class="best-course-pic-text relative-position p-0" data-ref="partials">
                      <a href="{{ route('courses.show', [$item->slug]) }}">
                      <div class="best-course-pic piclip relative-position"
-                         @if($item->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$item->course_image)}}')" @endif>
+                         @if($item->image != "") style="background-image: url('{{$item->image}}')" @endif>
                      </div>
                     </a>
                         <div class="card-body">

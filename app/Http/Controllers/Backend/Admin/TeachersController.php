@@ -322,8 +322,7 @@ class TeachersController extends Controller
      */
     public function show($id)
     {
-        $teacher = User::with('teacherProfile')->findOrFail($id);
-        // dd($teacher->teacherProfile);
+        $teacher = User::role('teacher')->with('teacherProfile')->findOrFail($id);
 
         return view('backend.teachers.show', compact('teacher'));
     }

@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-12">
                     <table class="table ">
-                    @if($teacher->avatar_location == null)
+                    @if($teacher->picture == null)
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.avatar')</th>
                             <td><img src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg" style="width:9%" /></td>
@@ -31,13 +31,13 @@
                     @else
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.avatar')</th>
-                            <td><img src="{{asset($teacher->avatar_location)}}" class="user-profile-image" /></td>
+                            <td><img src="{{asset($teacher->picture)}}" height="100px" class="img-rounded user-profile-image p-2" /></td>
                         </tr>
                         @endif
 
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.name')</th>
-                            <td>{{ $teacher->name }}</td>
+                            <td>{{ $teacher->full_name }}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.type')</th>
@@ -46,7 +46,7 @@
                         
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.city')</th>
-                            <td>{{ $teacher->city }}</td>
+                            <td>{{ $teacher->getDataFromColumn('city') }}</td>
                         </tr>
 
                         <tr>
@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.address')</th>
-                            <td>{{ $teacher->address }}</td>
+                            <td>{{ $teacher->getDataFromColumn('address') }}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.phone')</th>

@@ -48,6 +48,7 @@
             margin-bottom: 20px;
             padding: 10px;
         }
+
     </style>
 @endpush
 @section('content')
@@ -66,40 +67,26 @@
                 <div class="p-1">
                     <h2 class="text-white"><b>{{$course->getDataFromColumn('title')}}</b></h2>
                 </div>
-
-
-
-
-
-
                 <div class="row">
+                    <div class="ml-4">
+                        @for ($i=0; $i<5; ++$i)
+                            <i class="fa{{($course_rating<=$i?'r':'s')}} fa-star{{($course_rating==$i+.5?'-half-alt':'')}} text-warning"
+                               aria-hidden="true"></i>
+                        @endfor
 
-
-
-                        <div class="ml-4">
-                            @for ($i=0; $i<5; ++$i)
-                                <i class="fa{{($course_rating<=$i?'r':'s')}} fa-star{{($course_rating==$i+.5?'-half-alt':'')}} text-warning"
-                                aria-hidden="true"></i>
-                            @endfor
-
-                            <span class="text-white">{{$course_rating}}</span>
+                        <span class="text-white">{{$course_rating}}</span>
+                    </div>
+                    @if($course->offline)
+                        <div class="ml-4 mt-1 text-white" data-offline="{{$course->offline}}">
+                            <i class="fas fa-chair"></i> @lang('labels.frontend.course.availiable_seats')
+                            (25/100)
                         </div>
 
                         <div class="ml-4 mt-1 text-white">
-                        <i class="fas fa-chair"></i> @lang('labels.frontend.course.availiable_seats')
- (25/100)
+                            <i class="fas fa-map-marker-alt"></i> @lang('labels.frontend.course.location_academy') {{ $academy->full_name ?? null}}
                         </div>
-
-                        <div class="ml-4 mt-1 text-white">
-                        <i class="fas fa-map-marker-alt"></i>  @lang('labels.frontend.course.location_academy') {{$academy->full_name}}
-                        </div>
-
-
+                    @endif
                 </div>
-
-
-
-
 
 
                 <div class="row col-lg-5 col-sm-9 flex teacherdesc mt-2">
@@ -218,12 +205,12 @@
                                                              aria-hidden="true"></i>
                             @lang('labels.frontend.course.Share')
                         </button>
-
-                        <button type="submit" class="btn btn-outline-light ml-1 btnbook btn-sm-block">
-                            <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')
-                        </button>
-
-                        <!-- Button trigger modal -->
+                        @if($course->offline)
+                            <button type="submit" class="btn btn-outline-light ml-1 btnbook btn-sm-block">
+                                <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')
+                            </button>
+                    @endif
+                    <!-- Button trigger modal -->
 
                     </div>
                 </div>
@@ -310,8 +297,8 @@
             <!-- Grid row -->
             <a>
                 <div class="col divpoly justify-content-center d-flex" data-toggle="modal" data-target="#modal1"
-                     @if($course->course_image != "")
-                     style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                     @if($course->Image != "")
+                     style="background-image: url('{{$course->Image}}')" @endif>
                     <i class="far fa-play-circle iconimage"></i>
 
                 </div>
@@ -483,7 +470,7 @@
             </div>
             @foreach ($related_courses as $related_course)
 
-                <div class="card col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
+                <div class="card col-12 col-md-12 col-lg-6 col-xl-6 mb-2">
 
                     <div class="row">
                         <div class="col-md-6 pl-0">
@@ -491,14 +478,9 @@
                                 <div class="course-list-img-text course-page-sec">
 
                                     <div class="col imgcard"
-                                         @if($related_course->course_image != "")
-                                         style="background-image: url('{{asset('storage/uploads/'.$related_course->course_image)}}')" @endif>
+                                         @if($related_course->image != "")
+                                         style="background-image: url('{{$related_course->image}}')" @endif>
                                     </div>
-                                <!-- <div class="col imgcard">
-                                @if($related_course->course_image != "")
-                                    <img src="{{asset('storage/uploads/'.$related_course->course_image)}}">
-                                @endif
-                                        </div> -->
                                 </div>
                             </div>
                         </div>
@@ -541,7 +523,7 @@
                                         @php $key++ @endphp
                                         <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
                                         @php $key++ @endphp
-                                        <div class="col-lg-9 col-sm-3 mt-3">
+                                        <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
                                             <p class="font12">{{$teacher->full_name}}</p>
                                             <p class="font10">{{$teacherProfile->description}}</p>
                                         </div>
@@ -869,15 +851,17 @@
                                 @endif
                             </div>
                         @endif
-                </div>
+
                 @else
                     <p class="text-center text-white display-4 mx-5 my-5">No Videos available </p>
                 @endif
             </div>
         </div>
+        </div>
         <!-- </div> -->
         <!--/.Content-->
     </div>
+
 @endsection
 
 @push('after-scripts')
@@ -918,7 +902,7 @@
         $(document).on('change', 'input[name="stars"]', function () {
             $('#rating').val($(this).val());
         })
-        @if(isset($review))
+                @if(isset($review))
         var rating = "{{$review->rating}}";
         $('input[value="' + rating + '"]').prop("checked", true);
         $('#rating').val(rating);

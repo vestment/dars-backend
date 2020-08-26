@@ -73,7 +73,7 @@
                         @php
                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$item->id)->first();
                         @endphp
-                        @if ($teacherProfile)
+                        @if ($teacherProfile && $teacherProfile->academy_id != $academy_911)
                                 <div class="item">
                                     <div class="text-center ">
                                         <div class="bg-card">

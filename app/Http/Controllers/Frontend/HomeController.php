@@ -32,6 +32,22 @@ use Newsletter;
  */
 class HomeController extends Controller
 {
+    public $hidden_data = [];
+    public function __construct()
+    {
+        $academy_911 = 29;
+        $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
+        $academyTeachersIds = $academy->teachers()->pluck('user_id');
+        $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+            $query->whereIn('user_id', $academyTeachersIds);
+        })->pluck('id');
+        $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+        $this->hidden_data = [
+            'courses' => $coursesIds,
+            'teachers' => $academyTeachersIds
+        ];
+    }
+
     /**
      * @return \Illuminate\View\View
      */
@@ -53,6 +69,7 @@ class HomeController extends Controller
         }
         $courses = Course::withoutGlobalScope('filter')
             ->whereHas('category')
+            ->whereNotIn('id',$this->hidden_data['courses'])
             ->with(['teachers', 'reviews'])
             ->where('published', '=', 1);
         $popular_courses = $courses->where('popular', '=', 1)->take(6)->get();
@@ -61,8 +78,7 @@ class HomeController extends Controller
         $course_categories = Category::with('courses')->where('icon', '!=', "")->take(12)->get();
 
 
-
-        $teachers = User::role('teacher')->with('courses')->where('active', '=', 1)->take(7)->get();
+        $teachers = User::role('teacher')->whereNotIn('id',$this->hidden_data['teachers'])->with('courses')->where('active', '=', 1)->take(7)->get();
 
         $sponsors = Sponsor::where('status', '=', 1)->get();
 
@@ -91,7 +107,7 @@ class HomeController extends Controller
         $teacher_data = TeacherProfile::get();
         $acadimies = User::role('academy')->with('academy')->where('active', '=', 1)->take(7)->get();
 
-        $trending = Course::where('trending', '=', 1)->with(['teachers', 'reviews'])->get();
+        $trending = Course::where('trending', '=', 1)->whereNotIn('id',$this->hidden_data['courses'])->with(['teachers', 'reviews'])->get();
 
         return view('frontend.index', compact('popular_courses', 'trending', 'total_bundle', 'acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data', 'total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections', 'categories'));
     }
@@ -188,7 +204,7 @@ class HomeController extends Controller
     public function getTeachers()
     {
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
-        $teachers = User::role('teacher')->paginate(12);
+        $teachers = User::role('teacher')->whereNotIn('id',$this->hidden_data['teachers'])->paginate(12);
         return view('frontend.teachers.index', compact('teachers', 'recent_news'));
     }
 
@@ -196,12 +212,11 @@ class HomeController extends Controller
     {
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $teacher = User::role('teacher')->where('id', '=', $request->id)->first();
-        $teacher_data = TeacherProfile::where('user_id', '=', $request->id)->first();
-
+        $teacher_data = TeacherProfile::where('user_id', '=', $request->id)->where('academy_id', 0)->first();
 
         $courses = $teacher->courses;
         if (count($teacher->courses) > 0) {
-            $courses = $teacher->courses()->paginate(12);
+            $courses = $teacher->courses()->whereNotIn('id',$this->hidden_data['courses'])->paginate(12);
         }
         return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses', 'teacher_data'));
     }
@@ -229,16 +244,16 @@ class HomeController extends Controller
     {
 
         if (request('type') == 'popular') {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(12);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id',$this->hidden_data['courses'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(12);
 
         } else if (request('type') == 'trending') {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(12);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id',$this->hidden_data['courses'])->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(12);
 
         } else if (request('type') == 'featured') {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(12);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id',$this->hidden_data['courses'])->where('published', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(12);
 
         } else {
-            $courses = Course::withoutGlobalScope('filter')->where('published', 1)->orderBy('id', 'desc')->paginate(12);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id',$this->hidden_data['courses'])->where('published', 1)->orderBy('id', 'desc')->paginate(12);
         }
 
 
@@ -267,6 +282,7 @@ class HomeController extends Controller
                             })
                             ->where('published', '=', 1)
                             ->whereIn('id', $ids)
+                            ->whereNotIn('id',$this->hidden_data['courses'])
                             ->paginate(12);
                     }
 
@@ -278,6 +294,7 @@ class HomeController extends Controller
             $courses = Course::where('title', 'LIKE', '%' . $request->q . '%')
                 ->orWhere('description', 'LIKE', '%' . $request->q . '%')
                 ->where('published', '=', 1)
+                ->whereNotIn('id',$this->hidden_data['courses'])
                 ->paginate(12);
 
         }

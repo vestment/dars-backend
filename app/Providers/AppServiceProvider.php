@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
+use App\academy;
 use App\Helpers\Frontend\Auth\Socialite;
 use App\Locale;
+use App\Models\Auth\User;
 use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Config;
 use App\Models\Course;
 use App\Models\Slider;
+use App\Models\TeacherProfile;
 use Barryvdh\TranslationManager\Manager;
 use Barryvdh\TranslationManager\Models\Translation;
 use Carbon\Carbon;
@@ -139,6 +142,25 @@ class AppServiceProvider extends ServiceProvider
             if (app()->getLocale() == 'ar') {
                 $cssFile = 'frontend-rtl.css';
             }
+            $hidden_data = [
+                'courses' => [],
+                'teachers' => []
+            ];
+            if (Schema::hasTable('academies')) {
+                $academy_911 = 29;
+                $academy = academy::where('user_id',$academy_911)->with(['user','courses','teachers'])->first();
+                if ($academy) {
+                    $academyTeachersIds = $academy->teachers()->pluck('user_id');
+                    $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+                        $query->whereIn('user_id', $academyTeachersIds);
+                    })->pluck('id');
+                    $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+                    $hidden_data = [
+                        'courses' => $coursesIds,
+                        'teachers' => $academyTeachersIds
+                    ];
+                }
+            }
             if (Schema::hasTable('categories')) {
                 $appCurrency['symbol'] = app()->getLocale() == 'ar' ? 'ج م': 'EGP';
                 $categories = Category::where('status', 1)->get();
@@ -146,7 +168,7 @@ class AppServiceProvider extends ServiceProvider
             if (Schema::hasTable('locales')) {
                 $locales = Locale::pluck('short_name as locale')->toArray();
             }
-            $view->with(compact('locales', 'appCurrency', 'cssFile', 'categories'));
+            $view->with(compact('locales', 'appCurrency','hidden_data', 'academy_911','cssFile', 'categories'));
 
         });
 

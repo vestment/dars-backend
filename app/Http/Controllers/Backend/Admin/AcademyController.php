@@ -178,9 +178,7 @@ class AcademyController extends Controller
      */
     public function show($id)
     {
-        $academy = User::findOrFail($id);
-
-
+        $academy = User::role('academy')->with('academy')->findOrFail($id);
         return view('backend.academies.show', compact('academy'));
     }
 
@@ -268,14 +266,14 @@ class AcademyController extends Controller
      */
     public function destroy($id)
     {
-        $teacher = User::findOrFail($id);
+        if ($id != 29) {
+            $acadmey = User::findOrFail($id);
+            // return redirect()->route('admin.teachers.index')->withFlashDanger(trans('alerts.backend.general.teacher_delete_warning'));
+            $acadmey->delete();
+            return redirect()->route('admin.academies.index')->withFlashSuccess(trans('alerts.backend.general.deleted'));
+        } else {
+            return redirect()->route('admin.academies.index')->withFlashWarning(trans('alerts.backend.users.not_allowed'));
 
-
-        // return redirect()->route('admin.teachers.index')->withFlashDanger(trans('alerts.backend.general.teacher_delete_warning'));
-
-        $teacher->delete();
-
-
-        return redirect()->route('admin.academies.index')->withFlashSuccess(trans('alerts.backend.general.deleted'));
+        }
     }
 }

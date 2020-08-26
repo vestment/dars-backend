@@ -2,11 +2,11 @@
 
 @section('title', __('labels.backend.academies.title').' | '.app_name())
 @push('after-styles')
-<style>
-    table th {
-        width: 20%;
-    }
-</style>
+    <style>
+        table th {
+            width: 20%;
+        }
+    </style>
 @endpush
 @section('content')
 
@@ -25,20 +25,21 @@
                     <table class="table table-bordered table-striped">
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.avatar')</th>
-                            <td><img src="{{ $academy->picture }}" class="user-profile-image" /></td>
+                            <td><img src="{{ $academy->picture }}" height="100px"
+                                     class="img-rounded user-profile-image p-2"/></td>
                         </tr>
 
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.name')</th>
-                            <td>{{ $academy->name }}</td>
+                            <td>{{ $academy->full_name }}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.city')</th>
-                            <td>{{ $academy->city }}</td>
+                            <td>{{ $academy->getDataFromColumn('city') }}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.address')</th>
-                            <td>{{ $academy->address }}</td>
+                            <td>{{ $academy->getDataFromColumn('address') }}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.backend.access.users.tabs.content.overview.phone')</th>
@@ -53,49 +54,46 @@
                             <th>@lang('labels.backend.access.users.tabs.content.overview.status')</th>
                             <td>{!! $academy->status_label !!}</td>
                         </tr>
-                        <tr>
-                            <th>@lang('labels.backend.general_settings.user_registration_settings.fields.gender')</th>
-                            <td>{!! $academy->gender !!}</td>
-                        </tr>
-                        <!-- @php
-                            $teacherProfile = $academy->teacherProfile?:'';
-                            $payment_details = $academy->teacherProfile?json_decode($academy->teacherProfile->payment_details):new stdClass();
-                        @endphp -->
+
+                    <!-- @php
+                        $academyProfile = $academy->academy?:'';
+                        $payment_details = $academy->academy?json_decode($academy->academy->payment_details):new stdClass();
+                    @endphp -->
                         <tr>
                             <th>@lang('labels.academy.facebook_link')</th>
-                            <td>{!! $academy->facebook_link !!}</td>
+                            <td>{!! $academyProfile->facebook_link !!}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.academy.twitter_link')</th>
-                            <td>{!! $academy->twitter_link !!}</td>
+                            <td>{!! $academyProfile->twitter_link !!}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.academy.linkedin_link')</th>
-                            <td>{!! $academy->linkedin_link !!}</td>
+                            <td>{!! $academyProfile->linkedin_link !!}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.academy.payment_details')</th>
-                            <td>{!! $academy->payment_method !!}</td>
+                            <td>{!! $academyProfile->payment_method !!}</td>
                         </tr>
                         @if($academy->payment_method == 'bank')
-                        <tr>
-                            <th>@lang('labels.academy.bank_details.name')</th>
-                            <td>{!! $payment_details->bank_name !!}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('labels.academy.bank_details.bank_code')</th>
-                            <td>{!! $payment_details->ifsc_code !!}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('labels.academy.bank_details.account')</th>
-                            <td>{!! $payment_details->account_number !!}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('labels.academy.bank_details.holder_name')</th>
-                            <td>{!! $payment_details->account_name !!}</td>
-                        </tr>
+                            <tr>
+                                <th>@lang('labels.academy.bank_details.name')</th>
+                                <td>{!! $payment_details->bank_name !!}</td>
+                            </tr>
+                            <tr>
+                                <th>@lang('labels.academy.bank_details.bank_code')</th>
+                                <td>{!! $payment_details->ifsc_code !!}</td>
+                            </tr>
+                            <tr>
+                                <th>@lang('labels.academy.bank_details.account')</th>
+                                <td>{!! $payment_details->account_number !!}</td>
+                            </tr>
+                            <tr>
+                                <th>@lang('labels.academy.bank_details.holder_name')</th>
+                                <td>{!! $payment_details->account_name !!}</td>
+                            </tr>
                         @else
-                       
+
                         @endif
                     </table>
                 </div>
