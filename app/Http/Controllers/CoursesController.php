@@ -103,7 +103,7 @@ class CoursesController extends Controller
         $course_id = Course::where('slug', $course_slug)->value('id');
         // dd($course_id);
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
-        $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with(['publishedLessons', 'reviews'])->firstOrFail();
+        $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with(['publishedLessons','academy', 'reviews'])->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
         $chapters = Chapter::where('course_id', $course_id)->get();
         // dd($teacherprofile = TeacherProfile::where('user_id',$user_id)->get('description'));
@@ -115,7 +115,7 @@ class CoursesController extends Controller
         // $chapter_lessons = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count();
         $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count();
-
+        $academy = $course->academy->with('user')->first()->user;
 
         if (($course->published == 0) && ($purchased_course == false)) {
             abort(404);
@@ -169,7 +169,7 @@ class CoursesController extends Controller
             $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
         }
 //dd($course->getDataFromColumn('title'));
-        return view('frontend.courses.course', compact('course_review','fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view('frontend.courses.course', compact('academy','course_review','fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
     }
 
     public function filerCoursesByCategory(Request $request)

@@ -201,6 +201,10 @@ return array(
                             'status' => 'Status',
                             'created' => 'Created',
                             'created_at' => 'Created On',
+                            'title_ar' => 'Title in arabic',
+                            'content_ar' => 'content_ar',
+
+
                         ),
                     'max_file_size' => '(max file size 10MB)',
                     'title' => 'Pages',
@@ -1634,6 +1638,13 @@ return array(
                     'requirements' => 'Requirements',
                     'hours' => 'hours',
                     'remove' => 'Remove',
+                    'booknow' => 'Book Now',
+                    'availiable_seats' => 'Availiable Seats',
+                    'location_academy' => 'Location:',
+                    'business' => 'JOIN THE SKILLS REVOLUTION',
+                    'mailbusiness' => 'For a price quotation, reach us at info@ecouncilacademy.com',
+                    'knowledge' => 'What You will learn',
+
 
 
                 ),
