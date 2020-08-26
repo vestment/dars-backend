@@ -2,8 +2,8 @@
 
 return [
     [
-        'short_code' => 'USD',
-        'symbol' => '$',
+        'short_code' => 'EGP',
+        'symbol' => 'EGP',
         'name' => 'United States dollar',
         'country' => 'United States'
     ],
@@ -131,6 +131,12 @@ return [
         'symbol' => '฿',
         'name' => 'Thai baht',
         'country' => 'Thailand'
+    ]
+    [
+        'short_code' => 'EGP',
+        'symbol' => 'EGP',
+        'name' => 'Egypt',
+        'country' => 'Egypt'
     ]
 
 
