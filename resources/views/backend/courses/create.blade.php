@@ -49,12 +49,8 @@
                             <div class="row">
                                 <div class="col-10 form-group">
                                     {!! Form::label('category_id',trans('labels.backend.courses.fields.category'), ['class' => 'control-label']) !!}
-                                    @if(app()->getLocale() == 'en')
                                     {!! Form::select('category_id', $categ_name, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
-                                    @endif
-                                    @if(app()->getLocale() == 'ar')
-                                    {!! Form::select('category_id', $categ_name, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
-                                    @endif
+
 
                                 </div>
                                 <div class="col-2 d-flex form-group flex-column">
@@ -156,12 +152,51 @@
                                         {!! Form::checkbox('free', 1, false, []) !!}
                                         {!! Form::label('free',  trans('labels.backend.courses.fields.free'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
-
+                                    <div class="checkbox d-inline mr-3">
+                                            {!! Form::hidden('offline', 0) !!}
+                                            {!! Form::checkbox('offline', 1, false, []) !!}
+                                            {!! Form::label('offline',  trans('labels.backend.courses.fields.offline_courses'), ['class' => 'checkbox control-label font-weight-bold','id'=>'offline']) !!}
+                                    </div>
 
                                 </div>
 
                             </div>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
 
+                                        {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],null,['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
+
+                                        {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
+
+                                        {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
+
+                                        @lang('labels.backend.lessons.video_guide')
+
+                            <div class="row academy">
+                                    <div class="col-10 form-group">
+                                        {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                                        @if (auth()->user()->hasRole('academy'))
+                                            {{ html()->text('academy_id')
+                                            ->class('form-control')
+                                            ->placeholder(auth()->user()->full_name)
+                                            ->attributes(['maxlength'=> 191,'readonly'=>true])
+                                            ->value(auth()->user()->full_name)}}
+                                        @else
+                                            {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false]) !!}
+                                        @endif
+                                    </div>
+                                <!-- <div class="col-2 d-flex form-group flex-column">
+                                    OR <a target="_blank" class="btn btn-primary mt-auto"
+                                          href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
+                                </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 form-group d-none" id="duration">
+                                    {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
+                                    {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format')]) !!}
+
+                                </div>
                             <div class="row">
                                     <div class="col-6 form-group">
                                         {!! Form::label('meta_title',trans('labels.backend.courses.fields.meta_title'), ['class' => 'control-label']) !!}
@@ -204,15 +239,6 @@
                                 </div>
                                 </div>
 
-                    <!--- Input type tags for what you will learn same as teachers and optional courses -->
-                    {{--                @if (Auth::user()->isAdmin())--}}
-                    {{--                    <div class="row">--}}
-                    {{--                        <div class="col-10 form-group">--}}
-                    {{--                            {!! Form::label('learn',trans('labels.backend.courses.fields.learn'), ['class' => 'control-label']) !!}--}}
-                    {{--                            {!! Form::select('learn[]', $courses, old('learn'), ['class' => 'form-control select2 js-example-tags', 'multiple' => 'multiple', 'required' => false]) !!}--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
-                    {{--                @endif--}}
 
 
 
@@ -220,7 +246,7 @@
                                 <div class="row">
                                     <div class="col-10 form-group">
                                         {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('opt_courses[]', $courses, old('optional_courses'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
+                                        {!! Form::select('opt_courses[]', $courses, old('optional_courses'), ['class' => 'form-control opt_courses select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                     </div>
                                 </div>
                             @endif
@@ -231,7 +257,7 @@
                                 <div class="row">
                                     <div class="col-10 form-group">
                                         {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('mand_courses[]', $courses, old('mandatory_courses'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
+                                        {!! Form::select('mand_courses[]', $courses, old('mandatory_courses'), ['class' => 'form-control mand_courses select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                     </div>    
                                 </div>
                             @endif
@@ -240,7 +266,7 @@
                                 <div class="row">
                                     <div class="col-10 form-group">
                                         {!! Form::label('learned',trans('labels.backend.courses.fields.learned'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('learned[]',$learned, old('learned'), ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                                        {!! Form::select('learned[]',$learned, old('learned'), ['class' => 'form-control learned_courses select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
                                     </div>    
                                 </div>
 
@@ -268,6 +294,19 @@
 
 @push('after-scripts')
     <script>
+        @if(old('offline') && old('offline') == '0')
+        $('.academy').hide();
+        @elseif(old('offline')&& old('offline')  == '1')
+        $('.academy').show();
+        @endif
+        $(document).on('change', '#offline', function () {
+            if ($(this).val() === '0') {
+                $('.academy').hide();
+            } else {
+                $('.academy').show();
+            }
+        });
+    
 
         $(document).ready(function () {
             $('#start_date').datepicker({
@@ -286,7 +325,33 @@
                 tags: true
             })
         });
+        var uploadField = $('input[type="file"]');
 
+        $(document).on('change', 'input[type="file"]', function () {
+            var $this = $(this);
+            $(this.files).each(function (key, value) {
+                console.log(value.size);
+            })
+        })
+
+
+        $(document).on('change', '#media_type', function () {
+            if ($(this).val()) {
+                if ($(this).val() != 'upload') {
+                    $('#video').removeClass('d-none').attr('required', true)
+                    $('#video_file').addClass('d-none').attr('required', false)
+                    $('#duration').removeClass('d-none').attr('required', true)
+                } else if ($(this).val() == 'upload') {
+                    $('#video').addClass('d-none').attr('required', false)
+                    $('#video_file').removeClass('d-none').attr('required', true)
+                    $('#duration').addClass('d-none').attr('required', false)
+
+                }
+            } else {
+                $('#video_file').addClass('d-none').attr('required', false)
+                $('#video').addClass('d-none').attr('required', false)
+            }
+        })
 
         $(document).ready(function() {
 var max_fields_limit = 8; //set limit for maximum input fields
