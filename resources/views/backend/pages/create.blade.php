@@ -53,6 +53,14 @@
             </div>
 
             <div class="row">
+                <div class="col-12 form-group">
+                    {!! Form::label('title_ar', trans('labels.backend.pages.fields.title_ar'), ['class' => 'control-label']) !!}
+                    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.pages.fields.title_ar'), ]) !!}
+                </div>
+
+            </div>
+
+            <div class="row">
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('slug',trans('labels.backend.pages.fields.slug'), ['class' => 'control-label']) !!}
                     {!! Form::text('slug', old('slug'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.slug_placeholder')]) !!}
@@ -74,6 +82,17 @@
 
                 </div>
             </div>
+
+
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    {!! Form::label('content_ar', trans('labels.backend.pages.fields.content_ar'), ['class' => 'control-label']) !!}
+                    {!! Form::textarea('content_ar', old('content_ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor_ar']) !!}
+
+                </div>
+            </div>
+
 
             <div class="row">
                 <div class="col-12 form-group">

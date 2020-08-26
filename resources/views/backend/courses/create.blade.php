@@ -1,7 +1,26 @@
 
 @extends('backend.layouts.app')
 @section('title', __('labels.backend.courses.title').' | '.app_name())
+@push('after-styles')
+    <style>
+        .form-control-label {
+            line-height: 35px;
+        }
+        .remove{
+            float: right;
+            color: red;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .error{
+            color: red;
+        }
 
+    </style>
+
+    <link rel="stylesheet" type="text/css"
+          href="{{asset('plugins/jqueryui-datetimepicker/jquery.datetimepicker.css')}}">
+@endpush
 @section('content')
 
 <div class="row">
@@ -148,10 +167,51 @@
                                         {!! Form::checkbox('free', 1, false, []) !!}
                                         {!! Form::label('free',  trans('labels.backend.courses.fields.free'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
-
+                                    <div class="checkbox d-inline mr-3">
+                                            {!! Form::hidden('offline', 0) !!}
+                                            {!! Form::checkbox('offline', 1 , false, ['id'=>'offline']) !!}
+                                            {!! Form::label('offline',  trans('labels.backend.courses.fields.offline_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                                    </div>
 
                                 </div>
 
+                            </div>
+                            <div class="academy d-none">
+                            <div class="row ">
+                                <div class="col-12 form-group">
+                                    {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                                   
+                                        {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control d-none select2 js-example-placeholder-multiple', 'id'=>'selected-academy','multiple' => false]) !!}
+    
+                                </div>
+                                <div class="row form-group">
+                                        {{ html()->label(__('labels.backend.teachers.fields.Booking_Date&Time'))->class('col-md-2 col-2 form-control-label')->for('buttons') }}
+                                        <div class="col-2">
+                                            <button type="button" id="add-button" class="btn-block btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>
+                                        </div>
+                        
+                        
+                                        <div class="col-md-8 col-8">
+                                            {{--{{ html()->input('number','buttons')--}}
+                                                   {{--->class('form-control')--}}
+                                                   {{--->placeholder(__('labels.backend.hero_slider.fields.buttons.placeholder'))--}}
+                                                   {{--->attributes(['max'=>4,'pattern'=>'[0-9]','min'=>1])--}}
+                                                 {{--->id('buttons')--}}
+                                                  {{--}}--}}
+                                            <p class="help-text mb-0 font-italic">{!!  __('labels.backend.hero_slider.fields.buttons.note')!!}</p>
+                                        </div><!--col-->
+                                        <div class="col-12 col-md-10 ml-auto button-container mt-2">
+                        
+                                        </div>
+                        
+                                    </div>
+
+                               
+                            </div>
+                                <!-- <div class="col-2 d-flex form-group flex-column">
+                                    OR <a target="_blank" class="btn btn-primary mt-auto"
+                                        href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
+                                </div> -->
                             </div>
                                 <div class="row">
                                     <div class="col-md-12 form-group">
@@ -165,8 +225,7 @@
 
                                         @lang('labels.backend.lessons.video_guide')
 
-                                    </div>
-                                </div>
+                            
                                 <div class="col-12 col-lg-6 form-group d-none" id="duration">
                                     {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
                                     {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format')]) !!}
@@ -264,18 +323,37 @@
     </div>
   </div>
 
+@php
+ 
+$a = 0; 
 
+@endphp
 @stop
 
 @push('after-scripts')
     <script>
-
-        $(document).ready(function () {
+      
+        $(document).ready(function () { 
+            $('#offline').on('change', function () {
+            if ($('#offline').prop('checked')) {
+                $('.academy').removeClass('d-none');
+                $('#selected-academy').next('span').show();
+            } else {
+                $('.academy').addClass('d-none');
+                $('#selected-academy').next('span').hide();
+            }
+            });
             $('#start_date').datepicker({
                 autoclose: true,
                 dateFormat: "{{ config('app.date_format_js') }}"
             });
-
+    
+            $('#datetimepicker1').datepicker({
+                autoclose: true,
+                multidate: 5,
+    closeOnDateSelect: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
+            });
             $(".js-example-placeholder-single").select2({
                 placeholder: "{{trans('labels.backend.courses.select_category')}}",
             });
@@ -330,6 +408,73 @@ e.preventDefault(); $(this).parent('div').remove(); x--;
 })
 });
 
+
+$(document).on('click','#add-button',function (e) {
+                e.preventDefault()
+               
+                
+                    var name = 'Booking Date&Time';
+                    var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
+                    "<div class='row'>" +
+                        "<div class='col-lg-4'>" +
+                         "<label for='start_dat' class='control-label'>Start Date (yyyy-mm-dd)</label>"+
+                        "<input class='form-control date-input dat' pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' name='start_dat' type='text'>" +
+                    
+                        
+                        "</div>"+
+                        "<div class='col-3'>" +
+                            "<button type='button' id='add-but' class='btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
+                        "</div>" +
+                        "</div>"+
+                        "</div>";
+
+                    $('.button-container').append(html);
+                
+                
+                $('.date-input').datepicker({
+                autoclose: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
+            
+            });
+            });
+
+            $(document).on('click','.remove',function () {
+                if(confirm('Are you sure want to remove button?')){
+                    $(this).parents('.button-wrapper').remove();
+                    $('#buttons').val($('.button-wrapper').length)
+                }
+             });
+
+
+
+$(document).on('click','#add-but',function (e) {
+                e.preventDefault()
+               
+                    var name = 'Booking Date&Time';
+                    var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
+                    "<div class='row'>" +
+                        "<div class='col-lg-4'>" +
+                        "<input class='form-control dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' name='start_dat' type='time'>" +
+                        
+                        "</div>"+
+                        "</div>"+
+                        "</div>";
+
+                    $('.button-container').append(html);
+               
+                $('.date-input').datepicker({
+                autoclose: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
+            
+            });
+            });
+
+            $(document).on('click','.remove',function () {
+                if(confirm('Are you sure want to remove button?')){
+                    $(this).parents('.button-wrapper').remove();
+                    $('#buttons').val($('.button-wrapper').length)
+                }
+             });
     </script>
 
 @endpush

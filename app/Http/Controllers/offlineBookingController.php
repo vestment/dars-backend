@@ -22,10 +22,9 @@ class offlineBookingController extends Controller
 {
     public function index()
     {
-        $courses = Course::withoutGlobalScope('filter')->where('offline', 1)->orderBy('id', 'desc')->paginate(9);
-       
+        $courses = Course::with(['academy','category'])->withoutGlobalScope('filter')->where('offline', 1)->orderBy('id', 'desc')->get();
+   
         $teacher_filtering=[];
-       
         foreach($courses as $course) {
             foreach ($course->teachers as $teacher) {
                 // $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
@@ -34,12 +33,30 @@ class offlineBookingController extends Controller
                 }
             }
         }
-        $menna=$teacher_filtering;
+        $teach_filtering=$teacher_filtering;
 
-        $academy=Course::with('academy')->withoutGlobalScope('filter')->where('offline', 1)->get();
 
-dd($academy);
-dd($academy->user_id);
+        $academy_filter=[];
+        foreach($courses as $course) {
+           $academy = $course->academy->with('user')->first();
+                $academy->user->assoc_id = $course->academy_id;
+                if (!in_array($academy->user,$academy_filter)){
+                array_push($academy_filter,$academy->user);
+                }
+        }
+        $ac_filter= $academy_filter;
+        
+
+        $category_filter=[];
+        foreach($courses as $course) {
+           $category = $course->category;
+                
+                if (!in_array($category,$category_filter)){
+                array_push($category_filter,$category);
+                }
+        }
+        $cate_filter= $category_filter;
+
 
 
         foreach ($courses as $course) {
@@ -53,16 +70,29 @@ dd($academy->user_id);
         $teacher_dat = TeacherProfile::get();
         $teachers = User::get();
 
-        return view('frontend.offlineBookingCourse', compact( 'courses','teacher_dat', 'teachers', 'teacher_data','menna'));
+        return view('frontend.offlineBookingCourse', compact( 'courses','ac_filter','teacher_dat', 'teachers', 'teacher_data','teach_filtering','cate_filter'));
 
     }
 
     public function filerCoursesByCategory(Request $request)
     {
         $courses = [];
-        $courses = Course::withoutGlobalScope('filter')->where('offline', 1);
+        $courses = Course::with(['academy','category'])->withoutGlobalScope('filter')->where('offline', 1);
+       
+        if ($request->categories) {
+            $courses = $courses->whereIn('category_id', $request->categories);
+        }
 
-
+        if ($request->academies) {
+            $courses = $courses->whereIn('academy_id', $request->academies);
+        }
+        
+        if ($request->teachers) {
+            $teachersIds = $request->teachers;
+            $courses = $courses->whereHas('teachers', function ($query) use ($teachersIds) {
+            $query->whereIn('user_id', $teachersIds);
+        });
+        }
 
         if (intval($request->maxPrice) && $request->maxPrice != 0) {
             $courses = $courses->where('price', '<=', intval($request->maxPrice));

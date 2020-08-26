@@ -189,6 +189,13 @@ class CoursesController extends Controller
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
+
+        $allAcademies = User::role('academy')->with('academy')->get();
+        $academies = [];
+foreach ($allAcademies as $academy) {
+    $academies[$academy->academy->id] = $academy->full_name;
+}
+
         $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
             $q->where('role_id', 2);
         })->get()->pluck('name', 'id');
@@ -207,11 +214,15 @@ class CoursesController extends Controller
         foreach ($categories_ar as $key => $categories_ar) {
             $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
         }
+
+
         $videos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
+
         if (count($videos) == 0) {
             $videos = ['' => 'No videos available'];
         }
-        return view('backend.courses.create', compact('videos', 'teachers', 'ar_full_name', 'categ_name', 'courses', 'learned', 'course_hours'));
+
+        return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours','academies'));
     }
 
     /**
@@ -279,7 +290,7 @@ class CoursesController extends Controller
                 $media->type = $request->media_type;
                 $media->file_name = $video_id;
                 $media->size = 0;
-                $media->duration = $request->duration;
+                $media->duration  = $request->duration;
                 $media->save();
             }
 
@@ -344,31 +355,26 @@ class CoursesController extends Controller
         // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
         $prevLearned = [];
-        if ($learned != null) {
-            foreach ($learned as $key => $value) {
-                $prevLearned[$value] = $value;
-            }
+        if($learned != null){
+        foreach ($learned as $key => $value) {
+        $prevLearned[$value] = $value;
         }
-        $content = [];
-        $chapterContent = [];
+       }
+
         $timeline = CourseTimeline::where('course_id', $id)->get();
         foreach ($timeline as $item) {
-            $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
+            $content[]= $item->model_type::where('id', '=', $item->model_id)->get();
 
         }
-
+    
         foreach ($content as $key => $item) {
-
+        
             foreach ($item as $j => $item) {
                 $chapterContent[] = $content[$key][$j];
             }
 
-        }
-        $videos = Media::where('type', 'upload')->where('model_id', [$id,null])->pluck('file_name', 'id');
-        if (count($videos) == 0) {
-            $videos = ['' => 'No videos available'];
-        }
-        return view('backend.courses.edit', compact('videos','chapterContent', 'timeline', 'course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned'));
+      }
+        return view('backend.courses.edit', compact('chapterContent','timeline','course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses','prevLearned','learned'));
     }
 
     /**
@@ -411,7 +417,7 @@ class CoursesController extends Controller
             $media = '';
             $url = '';
             $video_id = '';
-            $name = $course->title . ' - video';
+            $name = (time() * 1000) . $course->title . ' - video';
             $media = $course->mediavideo;
             if ($media == "") {
                 $media = new  Media();
@@ -438,16 +444,31 @@ class CoursesController extends Controller
 
             if ($request->media_type == 'upload') {
 
-                if ($request->video) {
-                    $media = Media::findOrFail($request->video)->first();
+                if ($request->video_file != null) {
+                    $file = \Illuminate\Support\Facades\Request::file('video_file');
+                    $filename = $file->getClientOriginalName();
+                    $size = $file->getSize() / 1024;
+                    $path = public_path() . '/storage/uploads';
+                    $file->move($path, $filename);
+                    $videoLocation = 'storage/uploads/' . $filename;
+                    $media = Media::where('type', '=', $request->media_type)
+                        ->where('model_type', '=', 'App\Models\Course')
+                        ->where('model_id', '=', $course->id)
+                        ->first();
+
+                    if ($media == null) {
+                        $media = new Media();
+                    }
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
+                    $media->url = asset($videoLocation);
+                    $media->type = $request->media_type;
+                    $media->file_name = $filename;
+                    $media->size = $size;
                     $media->save();
-                } else {
-                    redirect()->back()->withFlashDanger('Please select a video from the list');
-                }
 
+                }
             }
         }
 
@@ -455,7 +476,7 @@ class CoursesController extends Controller
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
         $course->learned = $request->learn ? json_encode($request->learn) : null;
-
+        
         if ($request->opt_courses && $request->mand_courses) {
             if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0 || count($request->learned) > 0) {
                 $course->optional_courses = json_encode($request->opt_courses);
@@ -503,7 +524,7 @@ class CoursesController extends Controller
 
         $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
 
-        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses', 'learn'));
+        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses','learn'));
     }
 
 

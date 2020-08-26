@@ -39,7 +39,10 @@
         <div class="container">
             <div class="row col-lg-6 col-sm-6 textbusiness">
                     <h1 class="text-white display-3 texthbusiness">
-                    JOIN THE <span class="display-4 texthbusiness"> SKILLS </span> REVOLUTION
+                    <!-- JOIN THE <span class="display-4 texthbusiness"> SKILLS </span> REVOLUTION -->
+
+                    @lang('labels.frontend.course.business')
+                        </button>
                     </h1>
             </div>
         </div>
@@ -50,7 +53,13 @@
 
 <section id="course-page" class="course-page-section m-5">
     <div class="container text-center">
-    <h2 class="hbusiness">For a price quotation, reach us at ecouncilacademy.com</h2>
+    <h2 class="hbusiness">
+        <!-- For a price quotation, reach us at ecouncilacademy.com -->
+        @lang('labels.frontend.course.mailbusiness')
+
+    </h2>
+
+
 
 
     </div>
