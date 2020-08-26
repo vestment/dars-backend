@@ -220,6 +220,8 @@ return array (
         'optional_courses' => 'دورات اختيارية',
         'mandatory_courses' => 'دورات اجبارية',
         'learned' => 'ماذا ستتعلم في هذه الدورة التدريبية ',
+        'knowledge' => 'ماذا ستتعلم في هذه الدورة',
+
 
 
 
@@ -343,6 +345,10 @@ return array (
         'meta_title' => 'عنوان الفوقية',
         'published' => 'نشرت',
         'title' => 'عنوان',
+        'title_ar' => ' عنوان بالعربية',
+        'content_ar' => 'يحتوي بالعربية',
+
+
       ),
       'create' => 'إنشاء صفحة',
       'edit' => 'تعديل الصفحة',
@@ -1495,10 +1501,14 @@ return array (
       'requirements' => 'متطلبات',
       'hours' => 'ساعات',
       'remove' => 'ازالة',
+      'booknow' => 'احجز الان',
+      'availiable_seats' => 'الاماكن المناحة',
+      'location_academy' => 'الموقع :',
+      'business' => 'انضم إلى ثورة المهارات',
+      'mailbusiness' => 'للحصول على عرض أسعار ، اتصل بنا علي info@ecouncilacademy.com',
+      'knowledge' => 'ماذا ستتعلم في هذه الدورة',
 
-
-
-
+      
     ),
     'faq' => 
     array (

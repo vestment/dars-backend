@@ -27,8 +27,9 @@ class academy extends Model
     public function courses(){
         return $this->hasMany('App\Models\Course');
     }
-    public function user() {
-        return $this->belongsTo(User::Class);
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
     }
 //    public function getDataFromColumn($col)
 //    {

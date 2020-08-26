@@ -25,7 +25,20 @@
         ul.pagination{
             display: inline;
             text-align: center;
-        }
+		}
+		.finger-img {
+    position: relative;
+    z-index: 1;
+    width: 84%;
+}
+		.prof-img {
+    position: absolute;
+    margin-bottom: 100px;
+    z-index: 2;
+    right: -6px;
+    top: 24px;
+    left: -38px;
+}
     </style>
 @endpush
 @section('content')
@@ -55,38 +68,62 @@
 					<div class="col-md-9">
 						<div class="teachers-archive">
 							<div class="row">
-                                @if(count($teachers) > 0)
-                                @foreach($teachers as $item)
-								<div class="col-md-4 col-sm-6">
-									<div class="teacher-pic-content">
-										<div class="teacher-img-content relative-position">
-											<img src="{{$item->picture}}" alt="">
-											<div class="teacher-hover-item">
-												<div class="teacher-social-name ul-li-block">
-													<ul>
-                                                        <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-                                                        <li><a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i class="fa fa-comments"></i></a></li>
-													</ul>
-												</div>
-												{{--<div class="teacher-text">--}}
-													{{--Lorem ipsum dolor  consectuer adipiscing elit, nonummy nibh euismod tincidunt.--}}
-												{{--</div>--}}
-											</div>
-											<div class="teacher-next text-center">
-												<a href="{{route('teachers.show',['id'=>$item->id])}}"><i class="text-gradiant fas fa-arrow-right"></i></a>
-											</div>
-										</div>
-										<div class="teacher-name-designation">
-											<span class="teacher-name">{{$item->full_name}}</span>
-											{{--<span class="teacher-designation">Mobile Apps</span>--}}
-										</div>
-									</div>
-								</div>
-                                @endforeach
-                                @else
-                                    <h4>@lang('lables.general.no_data_available')</h4>
-                                @endif
+							@if(count($teachers)> 0)
+                    @foreach($teachers as $key=>$item)
+                        @php
+                            $teacherProfile = \App\Models\TeacherProfile::where('user_id',$item->id)->first();
+                        @endphp
+                        @if ($teacherProfile)
+                                <div class="item">
+                                    <div class="text-center ">
+                                        <div class="bg-card">
+                                            <div>
+                                                <div class="finger-img">
+                                                    <img src="/assets/img/banner/01.png" alt="">
+                                                </div>
 
+                                                <div class="prof-img ">
+                                                    @if($item->picture == "")
+                                                        <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
+                                                                    class="teacher-image shadow-lg p-3"
+                                                                    src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
+                                                                    alt=""></a>
+                                                    @else
+                                                        <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
+                                                                    class="teacher-image shadow-lg p-3"
+                                                                    src="{{$item->picture}}"
+                                                                    alt=""></a>
+                                                    @endif
+
+
+                                                </div>
+                                            </div>
+                                            <div class="teacher-social-name ul-li-block pt-3">
+                                                <div class="teacher-name text-dark font-weight-bold">
+                                                    <h5>{{$item->full_name}}</h5>
+                                                </div>
+                                                <div class="teacher-title text-muted font-weight-light">
+                                                    {{$teacherProfile->getDataFromColumn('title')}}
+                                                </div>
+                                                <hr>
+                                                <div class="teacher-name text-dark  justify-content-center">
+                                                    <span>{{$teacherProfile->getDataFromColumn('description')}}</span>
+                                                </div>
+                                                <ul>
+                                                    <li><a href="{{'mailto:'.$item->email}}"><i
+                                                                    class="fa fa-envelope"></i></a></li>
+                                                    <li>
+                                                        <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i
+                                                                    class="fa fa-comments"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                    @endforeach
+                @endif
 
 							</div>
 							<div class="couse-pagination text-center ul-li">

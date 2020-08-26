@@ -6102,6 +6102,33 @@ ul.product-tab li.active:after {
 }
 
 
+
+.bg-business{
+    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+    padding-top: 7%;
+
+}
+
+@media (max-width: 425px) {
+.bg-business{
+    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+    padding-top: 7%;
+    padding-bottom: 110px;
+
+}
+}
+
+@media (max-width: 1024px) {
+.bg-business{
+    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+    padding-top: 7%;
+    padding-bottom: 110px;
+
+}
+}
+
+
+
 .copy-right-menu {
     padding: 30px 0px;
     border-top: 1px solid #ddd6d6;
