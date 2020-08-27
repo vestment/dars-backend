@@ -242,16 +242,8 @@ class CoursesController extends Controller
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
-
-        $request->all();
-
         $request = $this->saveFiles($request);
-        $slug = "";
-        if (($request->slug == "") || $request->slug == null) {
-            $slug = str_slug($request->title);
-        } else if ($request->slug != null) {
-            $slug = $request->slug;
-        }
+        $slug = str_slug($request->title,'_');
 
         $slug_lesson = Course::where('slug', '=', $slug)->first();
         if ($slug_lesson != null) {
@@ -410,12 +402,7 @@ class CoursesController extends Controller
         }
         $course = Course::findOrFail($id);
 
-        $slug = "";
-        if (($request->slug == "") || $request->slug == null) {
-            $slug = str_slug($request->title);
-        } else if ($request->slug != null) {
-            $slug = $request->slug;
-        }
+        $slug = str_slug($request->title);
 
         $slug_lesson = Course::where('slug', '=', $slug)->where('id', '!=', $course->id)->first();
         if ($slug_lesson != null) {
@@ -436,7 +423,7 @@ class CoursesController extends Controller
             $media = '';
             $url = '';
             $video_id = '';
-            $name = (time() * 1000) . $course->title . ' - video';
+            $name = $course->title . ' - video';
             $media = $course->mediavideo;
             if ($media == "") {
                 $media = new  Media();
@@ -618,6 +605,8 @@ class CoursesController extends Controller
      */
     public function saveSequence(Request $request)
     {
+
+        dd($request->all());
 
 
         if (!Gate::allows('course_edit')) {
