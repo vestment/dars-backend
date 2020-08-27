@@ -408,7 +408,7 @@ $(document).on('click','#add-button',function (e) {
                         "<div class='col-6'>" +
                             "<button type='button' onclick=\"addInputTime(this)\" class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
                         "</div>" +
-                        "</div>"+
+                        "</div><div id='timepicker'></div>"+
                         "</div>";
 
                     $('.button-container').append(html);
@@ -421,27 +421,21 @@ $(document).on('click','#add-button',function (e) {
             });
             });
 
-            $(document).on('click','.remove',function () {
-                if(confirm('Are you sure want to remove button?')){
-                    $(this).parents('.button-wrapper').remove();
-                    $('#buttons').val($('.button-wrapper').length)
-                }
-             });
-
+         
 
 
              function addInputTime (elemt) {
-                console.log($(elemt).parents().find('.button-wrapper'))
+                console.log($(elemt).parents())
                     var name = 'Booking Date&Time';
                     var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
                     "<div class='row mt-3'>" +
                         "<div class='col-lg-6'>" +
-                        "<input class='form-control dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' name='start_dat' type='time'>" +
+                        "<input class='form-control date-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' name='start_dat' type='time'>" +
                         "</div>"+
                         "</div>"+
                         "</div>";
                     // $(this).parent('.button-container')
-                    $(elemt).parent().find('.button-wrapper').append(html);
+                    $(elemt).parent().parent().next('#timepicker').append(html);
                
                 $('.date-input').datepicker({
                 autoclose: true,

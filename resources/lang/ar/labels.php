@@ -1420,6 +1420,9 @@ return array (
             'reset' => 'الغاء',
             'up' => 'أعلي',
             'hours' => 'ساعات',
+            'academies'=>'اكادميه',
+            'teachers'=>'المعلمين',
+            'categories'=>'الفئات',
 
         ),
         'course_hours' => 'عدد ساعات الكورس ',
@@ -1508,7 +1511,8 @@ return array (
       'mailbusiness' => 'للحصول على عرض أسعار ، اتصل بنا علي info@ecouncilacademy.com',
       'knowledge' => 'ماذا ستتعلم في هذه الدورة',
 
-      
+      'offline_booking_course'=>'حجز كورسات في اكادميه',
+      'explore'=>'أستكشف',
     ),
     'faq' => 
     array (
