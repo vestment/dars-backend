@@ -204,7 +204,7 @@
 
                                         {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
 
-                                        {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
+                                        {!! Form::select('video_file', $videos, old('video_file'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
 
                                         @lang('labels.backend.lessons.video_guide')
 

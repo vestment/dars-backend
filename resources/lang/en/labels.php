@@ -1681,6 +1681,24 @@ return array(
                 array(
                     'partials' =>
                         array(
+                            'Bundle Course' => 'Bundle Course',
+                            'view_plans' => 'view plans',
+                            'Offline Booking Center' => 'Offline Booking Center',
+                            'Offline Booking' => 'we see first-hand every day how technology makes the impossible, possible. It’s why
+                            Pluralsight One exists: To advance our mission of democratizing technology skills,
+                            challenging
+                            assumptions about solutions and create significant, lasting social impact',
+
+                            'World-class learning for anyone, anywhere' => 'World-class learning for anyone, anywhere',
+
+                            'Expert_Teachers' => 'Expert Teachers',
+                            'Learn_Anywhere' => 'Learn_Anywhere',
+                            'Earn a certificate or degree' => 'Earn a certificate or degree',
+                            'Learn the latest skills' => 'Learn the latest skills',
+                            'Booking center online or offline' => 'Booking center online or offline',
+
+
+
                             'OfferCourses' => 'Offer Courses',
                             'view_more' => 'view more ',
                             'subtext'=>"The world's largest selection of courses",
