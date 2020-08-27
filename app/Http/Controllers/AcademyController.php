@@ -25,7 +25,7 @@ class AcademyController extends Controller
         // Courses associated with academy teachers
         $coursesCollection = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
             $query->whereIn('user_id', $academyTeachersIds);
-        })->with('category');
+        })->with('category')->where('published',1);
         $courses = $coursesCollection->get();
         // Categories associated with academy courses
         $categories = array_unique($coursesCollection->pluck('category_id')->toArray());

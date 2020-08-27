@@ -40,10 +40,10 @@ trait UserMethod
                 return gravatar()->get($this->email, ['size' => $size]);
 
             case 'storage':
-                if(file_exists('storage/avatars/' . $this->avatar_location)) {
+                if(file_exists($this->avatar_location)) {
                     return asset($this->avatar_location);
                 } else {
-                    return asset('storage/avatars/default_avatar_image.jpg');
+                    return asset('assets/img/default_avatar_image.jpg');
                 }
         }
 

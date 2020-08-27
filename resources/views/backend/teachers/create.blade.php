@@ -173,7 +173,7 @@
                         {{ html()->label(__('labels.teacher.facebook_link'))->class('col-md-2 form-control-label')->for('facebook_link') }}
 
                         <div class="col-md-10">
-                            {{ html()->text('facebook_link')
+                            {{ html()->input('url','facebook_link')
                                             ->class('form-control')
                                             ->placeholder(__('labels.teacher.facebook_link')) }}
                         </div><!--col-->
@@ -183,7 +183,7 @@
                         {{ html()->label(__('labels.teacher.twitter_link'))->class('col-md-2 form-control-label')->for('twitter_link') }}
 
                         <div class="col-md-10">
-                            {{ html()->text('twitter_link')
+                            {{ html()->input('url','twitter_link')
                                             ->class('form-control')
                                             ->placeholder(__('labels.teacher.twitter_link')) }}
 
@@ -194,7 +194,7 @@
                         {{ html()->label(__('labels.teacher.linkedin_link'))->class('col-md-2 form-control-label')->for('linkedin_link') }}
 
                         <div class="col-md-10">
-                            {{ html()->text('linkedin_link')
+                            {{ html()->input('url','linkedin_link')
                                             ->class('form-control')
                                             ->placeholder(__('labels.teacher.linkedin_link')) }}
                         </div><!--col-->
@@ -290,7 +290,7 @@
                         {{ html()->label(__('labels.backend.teachers.fields.percentage'))->class('col-md-2 form-control-label')->for('percentage') }}
 
                         <div class="col-md-10">
-                            {{ html()->text('percentage')
+                            {{ html()->input('number','percentage')
                                 ->class('form-control')
                                 ->placeholder(__('labels.backend.teachers.fields.percentage'))
                                 ->attribute('maxlength', 191)
@@ -302,7 +302,7 @@
                         <div class="form-group row">
                             {{ html()->label(__('labels.teacher.paypal_email'))->class('col-md-2 form-control-label')->for('paypal_email') }}
                             <div class="col-md-10">
-                                {{ html()->text('paypal_email')
+                                {{ html()->input('email','paypal_email')
                                         ->class('form-control')
                                         ->placeholder(__('labels.teacher.paypal_email')) }}
                             </div><!--col-->

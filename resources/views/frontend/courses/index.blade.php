@@ -53,7 +53,7 @@
                             @endif
                             @if(count($trending_courses) > 0)
                                 <button onclick="showTab($('#trending'),$(this))"
-                                        class="tab-button btn btn-light">@lang('labels.backend.courses.trending')
+                                        class="tab-button @if (count($popular_course) == 0)active @endif btn btn-light">@lang('labels.backend.courses.trending')
                                 </button>
                             @endif
                         </div>
