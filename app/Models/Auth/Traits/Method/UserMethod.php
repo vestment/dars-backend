@@ -43,7 +43,7 @@ trait UserMethod
                 if(file_exists($this->avatar_location)) {
                     return asset($this->avatar_location);
                 } else {
-                    return asset('assets/img/default_avatar_image.jpg');
+                    return asset('assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg');
                 }
         }
 

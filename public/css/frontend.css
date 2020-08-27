@@ -100,7 +100,6 @@ body {
 .ul-li-block ul li {
     list-style: none;
     display: inline;
-    margin-left: 5%;
 }
 
 div#preloader {
@@ -494,6 +493,7 @@ padding-top: 5rem;
   color: #eeeeee;
   font-family: Open Sans;
   font-weight: lighter;
+  font-size: 16px;
 }
 .about{
   font-family: Ubuntu;

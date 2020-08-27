@@ -25,17 +25,12 @@
                                                 </div>
 
                                                 <div class="prof-img ">
-                                                    @if($item->picture == "")
-                                                        <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
-                                                                    class="teacher-image shadow-lg p-3"
-                                                                    src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                    alt=""></a>
-                                                    @else
+                                                  
                                                         <a href="{{route('teachers.show',['id'=>$item->id])}}"><img
                                                                     class="teacher-image shadow-lg p-3"
                                                                     src="{{$item->picture}}"
                                                                     alt=""></a>
-                                                    @endif
+                                              
 
 
                                                 </div>
