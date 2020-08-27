@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnUserIdToMedia extends Migration
+class AddColoumnDate extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class AddColumnUserIdToMedia extends Migration
      */
     public function up()
     {
-        Schema::table('media', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+      
+        Schema::table('courses', function (Blueprint $table) {
+            $table->integer('seats')->default(0)->nullable();
+            $table->json('date')->nullable();
+
         });
     }
 
@@ -26,8 +28,9 @@ class AddColumnUserIdToMedia extends Migration
      */
     public function down()
     {
-        Schema::table('media', function (Blueprint $table) {
-            //
+        Schema::table('courses', function (Blueprint $table) {
+            $table->dropColumn('seats');
+            $table->dropColumn('date');
         });
     }
 }
