@@ -152,7 +152,7 @@
 
                                     {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
 
-                                    {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
+                                    {!! Form::select('video_file', $videos, old('video_file'), ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
 
                                     <input type="hidden" name="old_video_file"
                                            value="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? $course->mediavideo->id  : ""}}">

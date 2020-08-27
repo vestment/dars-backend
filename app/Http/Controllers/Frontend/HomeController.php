@@ -38,14 +38,16 @@ class HomeController extends Controller
     ];
     public function __construct()
     {
-        $academy_911 = 29;
+        $academy_911 = 5;
         $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
+
         if ($academy) {
             $academyTeachersIds = $academy->teachers()->pluck('user_id');
             $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
                 $query->whereIn('user_id', $academyTeachersIds);
             })->pluck('id');
             $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+            dd($coursesIds);
             $this->hidden_data = [
                 'courses' => $coursesIds,
                 'teachers' => $academyTeachersIds
@@ -221,7 +223,7 @@ class HomeController extends Controller
         $academy = User::role('academy')->where('id', '=', $teacher_data->academy_id)->first();
         $courses = [];
         if (count($teacher->courses) > 0) {
-            $courses = $teacher->courses()->whereNotIn('id',$this->hidden_data['courses'])->paginate(12);
+            $courses = $teacher->courses()->paginate(12);
         }
         return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses', 'teacher_data','academy'));
     }

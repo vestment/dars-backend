@@ -315,7 +315,7 @@ class CoursesController extends Controller
         }
 
 
-        $teachers = \Auth::user()->isAdmin() ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
+        $teachers = (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
         $course->teachers()->sync($teachers);
 
         return redirect()->route('admin.courses.edit', ['course' => $course->id])->withFlashSuccess(trans('alerts.backend.general.created'));
@@ -485,7 +485,7 @@ class CoursesController extends Controller
             $course->save();
         }
 
-        $teachers = \Auth::user()->isAdmin() ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
+        $teachers = (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) ? array_filter((array)$request->input('teachers')) : [auth()->user()->id];
         $course->teachers()->sync($teachers);
 
         return redirect()->route('admin.courses.index')->withFlashSuccess(trans('alerts.backend.general.updated'));

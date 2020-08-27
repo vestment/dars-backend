@@ -181,6 +181,26 @@
                     <span>@lang('labels.frontend.academy.courses_by_teacher')</span>
                 </h1>
             </div>
+            @if ($academy->id == 29)
+                @if(count($courses) > 0)
+
+                                    <div class="owl-carousel default-owl-theme p-3 ">
+                                        @foreach($courses as $course)
+                                                <div class="item">
+                                                    <div class="">
+                                                        @include('frontend.layouts.partials.coursesTemp')
+                                                    </div>
+                                                </div>
+
+                                        @endforeach
+                                    </div>
+                @else
+                    <div class="alert alert-dark">
+                        <span>@lang('labels.general.no_data_available')</span>
+                    </div>
+                @endif
+            @else
+
             @if(count($courses) > 0)
                 <div class="col-md-12">
                     <div class="col-xl-12 categories-container border-bottom">
@@ -214,6 +234,7 @@
                     <span>@lang('labels.general.no_data_available')</span>
                 </div>
             @endif
+                @endif
         </div>
     </section>
 
