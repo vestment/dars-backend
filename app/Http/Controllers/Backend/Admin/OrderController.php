@@ -113,6 +113,11 @@ class OrderController extends Controller
         $order->status = 1;
         $order->save();
 
+
+        $order_item = OrderItem::where('order_id',$order->id)->value('item_id');
+        $seats_no = Courses::where($order_item,'id')->value('seats');
+        $seats_no = $seats_no-1;
+
         (new EarningHelper)->insert($order);
 
         //Generating Invoice

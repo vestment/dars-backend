@@ -153,9 +153,9 @@
 
                                     {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
 
-                                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
+                                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
 
-                                    {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
+                                    {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
 
                                     <input type="hidden" name="old_video_file"
                                            value="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? $course->mediavideo->id  : ""}}">
@@ -316,7 +316,7 @@
                                                                                                     @if($singleTimeline->model_id == $item->id)
                                                                                                         @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                             @php
-                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('chapter_id',$singleTimeline->model_id)->get();
+                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
                                                                                                             @endphp
                                                                                                             <li id="menu-item-{{$item->id}}"
                                                                                                                 data-type="{{$singleTimeline->model_type}}"
@@ -353,7 +353,7 @@
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                <ul class="menu-item-transport">
+                                                                                                                <ul class="menu-item-transport sort_seq">
                                                                                                                     @foreach($lessons as $lesson)
                                                                                                                         @php
                                                                                                                             $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
@@ -374,6 +374,8 @@
                                                                                                                         </li>
                                                                                                                     @endforeach
                                                                                                                 </ul>
+
+                                                                                                               
                                                                                                             </li>
                                                                                                         @endif
                                                                                                     @endif
@@ -382,6 +384,10 @@
                                                                                             @endforeach
 
                                                                                         </ul>
+
+                                                                                        <a href="#" id="save_timeline"
+                                                                                               class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
+
 
                                                                                     </div>
                                                                                 </div>
@@ -474,19 +480,31 @@
 
 
                                                                                                 <div class="row">
-                                                                                                    <div class="col-md-12 form-group">
-                                                                                                        {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
+                                <div class="col-md-12 form-group">
+                                    {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
 
-                                                                                                        {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],null,['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
+                                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
 
-                                                                                                        {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
+                                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
+
+                                    {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
+
+                                    <input type="hidden" name="old_video_file"
+                                           value="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? $course->mediavideo->id  : ""}}">
 
 
+                                    @if($course->mediavideo && ($course->mediavideo->type == 'upload'))
+                                        <video width="300" class="mt-2 d-none video-player" controls>
+                                            <source src="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? asset($course->mediavideo->url)  : ""}}"
+                                                    type="video/mp4">
+                                            Your browser does not support HTML5 video.
+                                        </video>
+                                    @endif
 
-                                                                                                        @lang('labels.backend.lessons.video_guide')
+                                    @lang('labels.backend.lessons.video_guide')
 
-                                                                                                    </div>
-                                                                                                </div>
+                                </div>
+                            </div>
                                                                                                 <div class="col-12 col-lg-6 form-group d-none"
                                                                                                      id="duration">
                                                                                                     {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
@@ -646,18 +664,18 @@
         $(document).on('change', '#media_type', function () {
             if ($(this).val()) {
                 if ($(this).val() != 'upload') {
-                    $('#video').removeClass('d-none').attr('required', true)
-                    $('#video_file').addClass('d-none').attr('required', false)
+                    $('.video').removeClass('d-none').attr('required', true)
+                    $('.video_file').addClass('d-none').attr('required', false)
                     $('#duration').removeClass('d-none').attr('required', true)
                 } else if ($(this).val() == 'upload') {
-                    $('#video').addClass('d-none').attr('required', false)
-                    $('#video_file').removeClass('d-none').attr('required', true)
+                    $('.video').addClass('d-none').attr('required', false)
+                    $('.video_file').removeClass('d-none').attr('required', true)
 
 
                 }
             } else {
-                $('#video_file').addClass('d-none').attr('required', false)
-                $('#video').addClass('d-none').attr('required', false)
+                $('.video_file').addClass('d-none').attr('required', false)
+                $('.video').addClass('d-none').attr('required', false)
             }
         })
         $(document).ready(function () {
@@ -720,8 +738,8 @@
                         function (data, status) {
                             if (data.success) {
                                 parent.remove();
-                                $('#video').val('').addClass('d-none').attr('required', false);
-                                $('#video_file').attr('required', false);
+                                $('.video').val('').addClass('d-none').attr('required', false);
+                                $('.video_file').attr('required', false);
                                 $('#media_type').val('');
                                 @if($course->mediavideo && $course->mediavideo->type ==  'upload')
                                 $('.video-player').addClass('d-none');
@@ -740,34 +758,34 @@
 
         @if($course->mediavideo)
         @if($course->mediavideo->type !=  'upload')
-        $('#video').removeClass('d-none').attr('required', true);
-        $('#video_file').addClass('d-none').attr('required', false);
+        $('.video').removeClass('d-none').attr('required', true);
+        $('.video_file').addClass('d-none').attr('required', false);
         $('.video-player').addClass('d-none');
         @elseif($course->mediavideo->type == 'upload')
-        $('#video').addClass('d-none').attr('required', false);
-        $('#video_file').removeClass('d-none').attr('required', false);
+        $('.video').addClass('d-none').attr('required', false);
+        $('.video_file').removeClass('d-none').attr('required', false);
         $('.video-player').removeClass('d-none');
         @else
         $('.video-player').addClass('d-none');
-        $('#video_file').addClass('d-none').attr('required', false);
-        $('#video').addClass('d-none').attr('required', false);
+        $('.video_file').addClass('d-none').attr('required', false);
+        $('.video').addClass('d-none').attr('required', false);
         @endif
         @endif
 
         $(document).on('change', '#media_type', function () {
             if ($(this).val()) {
                 if ($(this).val() != 'upload') {
-                    $('#video').removeClass('d-none').attr('required', true);
-                    $('#video_file').addClass('d-none').attr('required', false);
+                    $('.video').removeClass('d-none').attr('required', true);
+                    $('.video_file').addClass('d-none').attr('required', false);
                     $('.video-player').addClass('d-none')
                 } else if ($(this).val() == 'upload') {
-                    $('#video').addClass('d-none').attr('required', false);
-                    $('#video_file').removeClass('d-none').attr('required', true);
+                    $('.video').addClass('d-none').attr('required', false);
+                    $('.video_file').removeClass('d-none').attr('required', true);
                     $('.video-player').removeClass('d-none')
                 }
             } else {
-                $('#video_file').addClass('d-none').attr('required', false);
-                $('#video').addClass('d-none').attr('required', false)
+                $('.video_file').addClass('d-none').attr('required', false);
+                $('.video').addClass('d-none').attr('required', false)
             }
         })
 
@@ -779,7 +797,7 @@
         $(document).on('click', '#save_timeline', function (e) {
             e.preventDefault();
             var list = [];
-            $('ul.sorter li').each(function (key, value) {
+            $('.sort_seq li').each(function (key, value) {
                 key++;
                 var val = $(value).find('span').data('id');
                 list.push({id: val, sequence: key});
@@ -872,20 +890,24 @@
         $(document).on('change', '#media_type', function () {
             if ($(this).val()) {
                 if ($(this).val() != 'upload') {
-                    $('#video').removeClass('d-none').attr('required', true)
-                    $('#video_file').addClass('d-none').attr('required', false)
+                    $('.video').removeClass('d-none').attr('required', true)
+                    $('.video_file').addClass('d-none').attr('required', false)
                     $('#duration').removeClass('d-none').attr('required', true)
                 } else if ($(this).val() == 'upload') {
-                    $('#video').addClass('d-none').attr('required', false)
-                    $('#video_file').removeClass('d-none').attr('required', true)
+                    $('.video').addClass('d-none').attr('required', false)
+                    $('.video_file').removeClass('d-none').attr('required', true)
+                    $('#duration').addClass('d-none').attr('required', true)
 
 
                 }
             } else {
-                $('#video_file').addClass('d-none').attr('required', false)
-                $('#video').addClass('d-none').attr('required', false)
+                $('.video_file').addClass('d-none').attr('required', false)
+                $('.video').addClass('d-none').attr('required', false)
             }
         })
+
+
+        
 
     </script>
 @endpush

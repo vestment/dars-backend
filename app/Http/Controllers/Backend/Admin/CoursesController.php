@@ -619,6 +619,8 @@ class CoursesController extends Controller
     public function saveSequence(Request $request)
     {
 
+        dd($request->all());
+
 
         if (!Gate::allows('course_edit')) {
             return abort(401);
