@@ -260,7 +260,6 @@
         <!-- End Course category
             ============================================= -->
     @endif
-
     <section class="bg-static">
         <div class="row bg-static1 ">
             <div class="container">
@@ -276,7 +275,9 @@
                         assumptions about solutions and create significant, lasting social impact.</p>
                 </div>
                 <div class="pl-5 pb-5">
-                    <button class="btn btn-outline-info ">View Plans</button>
+                        <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
+                            View Plans
+                        </a>
                 </div>
             </div>
             </div>
