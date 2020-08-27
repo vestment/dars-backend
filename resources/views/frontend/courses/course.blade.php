@@ -3,7 +3,10 @@
 
 @push('after-styles')
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
-
+    <link rel="stylesheet" href="{{asset('css/datepicker.css')}}">
+    <link rel="stylesheet" href="https://fullcalendar.io/js/fullcalendar-3.0.1/fullcalendar.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css">
+    
     <style>
         .couse-pagination li.active {
             color: #333333 !important;
@@ -79,7 +82,7 @@
                     @if($course->offline)
                         <div class="ml-4 mt-1 text-white" data-offline="{{$course->offline}}">
                             <i class="fas fa-chair"></i> @lang('labels.frontend.course.availiable_seats')
-                            (25/100)
+                            ({{$course->seats}}/100)
                         </div>
 
                         <div class="ml-4 mt-1 text-white">
@@ -206,10 +209,10 @@
                             @lang('labels.frontend.course.Share')
                         </button>
                         @if($course->offline)
-                            <button type="submit" class="btn btn-outline-light ml-1 btnbook btn-sm-block">
+                            <button type="submit" id="bookNowButton" data-target="#bookNowModal" data-toggle="modal" class="btn btn-outline-light ml-1 btnbook btn-sm-block">
                                 <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')
                             </button>
-                    @endif
+                        @endif
                     <!-- Button trigger modal -->
 
                     </div>
@@ -327,64 +330,13 @@
                 <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
                 <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
 
-                @if (!$purchased_course)
-                    @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                        <button class="btn btn-info btn-sm btn-block text-white"
-                                type="submit">@lang('labels.frontend.course.added_to_cart')
-                        </button>
-                    @elseif(!auth()->check())
-                        @if($course->free == 1)
-                            <a class="btn btn-info btn-sm btn-block text-white"
-                               href="{{route('login.index')}}">@lang('labels.frontend.course.get_now') <i
-                                        class="fas fa-caret-right"></i></a>
-                        @else
-
-                            <a href="{{route('login.index')}}" class="btn btn-info btn-sm btn-block text-white"> <i
-                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                @lang('labels.frontend.course.add_to_cart')
-                            </a>
-                        @endif
-                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-                        @if($course->free == 1)
-                            <form action="{{ route('cart.getnow') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                <input type="hidden" name="amount"
-                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                <button class="btn btn-info btn-sm btn-block text-white"
-                                        href="#">@lang('labels.frontend.course.get_now') <i
-                                            class="fas fa-caret-right"></i></button>
-                            </form>
-                        @else
-                            <form action="{{ route('cart.addToCart') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                <input type="hidden" name="amount"
-                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                <button type="submit" class="btn btn-info btn-sm btn-block text-white"><i
-                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                    @lang('labels.frontend.course.add_to_cart')
-                                </button>
-                            </form>
-                        @endif
-
-
-                    @else
-                        <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
-                    @endif
-                @else
-
-                    @if($continue_course)
-
-                        <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}"
-                           class="btn btn-info btn-sm btn-block text-white">
-
-                            @lang('labels.frontend.course.continue_course')
-
-                            <i class="fa fa-arrow-right"></i></a>
-                    @endif
-
+              
+                @if($course->offline)
+                    <button type="submit" id="bookNowButton" data-target="#bookNowModal" data-toggle="modal" class="btn btn-info btn-sm btn-block text-white">
+                        <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')
+                    </button>
                 @endif
+       
             </div>
         </div>
     </section>
@@ -862,6 +814,118 @@
         <!--/.Content-->
     </div>
 
+
+
+
+<!-- calender date modal -->
+
+    <div class="modal fade" id="bookNowModal" tabindex="-2" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+            <div class="modal-content row ">
+                <div class="col-lg-6">
+                        <h2 class="modal-title ml-4 mt-4">Select a Date & Time</h2>
+                        <h5 class="modal-title m-4">first select Available day</h5>
+
+                        <div id='calendar' onclick='myFunction()'>
+                            <!-- <div class="modal fade" id="calendar-modal" tabindex="-1" role="dialog"> -->
+                                <!-- <div class="modal-dialog " role="document"> -->
+                                    <!-- <div class="modal-content"> -->
+                                        <!-- <div class="modal-header"> -->
+                                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Create new event</h4> -->
+                                        <!-- </div> -->
+                                        <!--<div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label class="col-xs-4" for="title">Event title</label>
+                                                        <input type="text" name="title" id="title" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label class="col-xs-4" for="starts-at">Starts at</label>
+                                                        <input type="text" name="starts_at" id="starts-at" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label class="col-xs-4" for="ends-at">Ends at</label>
+                                                        <input type="text" name="ends_at" id="ends-at" />
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                             </div>
+                                              </div>
+                                               </div>   
+                                        
+                                        -->
+                                    
+                                    <!-- /.modal-content -->
+
+
+
+                        </div>
+                            <!-- /.modal-dialog -->
+                            <!-- /.modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            @if (!$purchased_course)
+                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                    <button class="btn btn-primary"
+                                            type="submit">@lang('labels.frontend.course.added_to_cart')
+                                    </button>
+                                @elseif(!auth()->check())
+                                        <a href="{{route('login.index')}}" class="btn btn-primary"> <i
+                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                            @lang('labels.frontend.course.add_to_cart')
+                                        </a>
+                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+                                        <form action="{{ route('cart.addToCart') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                            <input type="hidden" name="amount"
+                                                value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                            <button type="submit" class="btn btn-primary"><i
+                                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                                @lang('labels.frontend.course.add_to_cart')
+                                            </button>
+                                        </form>
+                                @else
+                                    <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                                @endif
+                            @endif
+                            <!-- <button type="button" class="btn btn-primary" id="save-event">Save changes</button> -->
+
+                        </div>
+                </div>
+
+                <div class="col-lg-6" id="myDIV">
+                    <h5 class="modal-title m-4">second select available time</h5>
+                    <div class="row ml-1">
+                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
+                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
+                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
+                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
+                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
+                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
+                    </div>
+                </div>
+
+            </div>
+
+         
+
+
+        </div>
+    </div>
+<!-- end of calender date modal -->
+
+
+
+
+
+
 @endsection
 
 @push('after-scripts')
@@ -898,16 +962,104 @@
     </script>
 
     <script>
+    $(document).on('change', 'input[name="stars"]', function () {
+    $('#rating').val($(this).val());
 
-        $(document).on('change', 'input[name="stars"]', function () {
-            $('#rating').val($(this).val());
-        })
-                @if(isset($review))
+    })
+    @if(isset($review))
         var rating = "{{$review->rating}}";
         $('input[value="' + rating + '"]').prop("checked", true);
         $('#rating').val(rating);
-        @endif
+    @endif
     </script>
+
+<script>
+    function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment-with-locales.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.js"></script>
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(document).ready(function() {
+        $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        defaultDate: '2016-09-12',
+        navLinks: true, // can click day/week names to navigate views
+        selectable: true,
+        selectHelper: true,
+        select: function(start, end) {
+            // Display the modal.
+            // You could fill in the start and end fields based on the parameters
+            $('#calendar-modal').modal('show');
+
+        },
+        eventClick: function(event, element) {
+            // Display the modal and set the values to the event values.
+            $('#calendar-modal').modal('show');
+    
+
+        },
+        editable: true,
+        eventLimit: true // allow "more" link when too many events
+
+        });
+
+    // Bind the dates to datetimepicker.
+    // You should pass the options you need
+    $("#starts-at, #ends-at").datetimepicker();
+
+    $('#bookNowButton').on('click',function() {
+        
+    // Whenever the user clicks on the "save" button om the dialog
+    $('#save-event').on('click', function() {
+        var title = $('#title').val();
+        if (title) {
+            var eventData = {
+                title: title,
+                start: $('#starts-at').val(),
+                end: $('#ends-at').val()
+            };
+            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+        }
+        $('#calendar').fullCalendar('unselect');
+
+        // Clear modal inputs
+        $('#calendar-modal').find('input').val('');
+
+        // hide modal
+        $('#calendar-modal').modal('hide');
+        });
+    });
+
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
 
 @endpush
 
