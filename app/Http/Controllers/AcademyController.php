@@ -33,4 +33,28 @@ class AcademyController extends Controller
 
         return view('frontend.academy.show', compact('academy', 'academyTeachers','categories','courses'));
     }
+    public function show911()
+    {
+        $id=5;
+        // Refactored
+        $academy = User::whereHas('academy', function ($query) use ($id) {
+            $query->where('user_id', $id);
+        })->with('academy')->first();
+        dd($academy);
+        // Teachers associated with academy
+        $academyTeachersCollection= TeacherProfile::where('academy_id', $id);
+        $academyTeachers = $academyTeachersCollection->with('teacher')->get();
+        $academyTeachersIds = $academyTeachersCollection->pluck('user_id');
+        // Courses associated with academy teachers
+        $coursesCollection = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+            $query->whereIn('user_id', $academyTeachersIds);
+        })->with('category')->where('published',1);
+        $courses = $coursesCollection->get();
+        // Categories associated with academy courses
+        $categories = Category::where('name','911')->first();
+
+        $courses_911 = Course::where('category_id', $categories->id )->get();
+
+        return view('frontend.academy.911', compact('academy', 'academyTeachers','courses_911','courses'));
+    }
 }

@@ -196,6 +196,7 @@ return array (
           'add' => 'أضف دروس',
           'view' => 'عرض الدروس',
         ),
+        
         'meta_description' => '  ميتا الوصف بالانجليزية',
         'meta_description_ar' => '  ميتا الوصف بالعربي',
 
@@ -204,6 +205,7 @@ return array (
 
         'meta_title' => ' عنوان الفوقية بالانجليزية',
         'meta_title_ar' => ' عنوان الفوقية بالعربي',
+        'featured_courses' => 'الدورات المميزة',
 
         'popular' => 'جمع',
         'price' => 'السعر',
@@ -213,7 +215,7 @@ return array (
         'teachers' => 'معلمون',
         'title' => '  عنوان بالانجليزية',
         'title_ar' => 'عنوان بالعربي',
-
+       
         'trending' => 'الشائع',
         'free' => 'مجاني',
         'unpublished' => 'غير منشور',
@@ -227,6 +229,7 @@ return array (
 
       ),
       'course_hours' => 'عدد ساعات الكورس ',
+      'featured_courses' => 'الدورات المميزة',
 
       'add_categories' => 'إضافة فئات',
       'add_teachers' => 'إضافة المعلمين',
@@ -243,7 +246,7 @@ return array (
       'test' => 'اختبار',
       'timeline_description' => 'سحب وتغيير تسلسل الدروس / الاختبارات بالطبع',
       'title' => 'الدورات',
-      
+      'courses_to_start' => 'دورات لتبدأ بها ',
       'view' => 'عرض الدورات',
     ),
     'lessons' => 
@@ -1421,8 +1424,10 @@ return array (
             'up' => 'أعلي',
             'hours' => 'ساعات',
 
+            
+           
         ),
-        'course_hours' => 'عدد ساعات الكورس ',
+        'course_hours' => 'عدد الساعات ',
 
       'add_review_now' => 'إضافة مراجعة الآن',
       'add_reviews' => 'أضف <span> مراجعات. </span>',
@@ -1471,6 +1476,7 @@ return array (
       'starts' => 'يبدأ',
       'students' => 'الطلاب',
       'submit_results' => 'إرسال النتائج',
+      
       'test' => 'اختبار',
       'title' => 'دورة',
       'trending' => 'الشائع',
@@ -1508,7 +1514,8 @@ return array (
       'mailbusiness' => 'للحصول على عرض أسعار ، اتصل بنا علي info@ecouncilacademy.com',
       'knowledge' => 'ماذا ستتعلم في هذه الدورة',
 
-      
+      'featured_courses' => 'الدورات المميزة',
+
     ),
     'faq' => 
     array (
@@ -1557,8 +1564,6 @@ return array (
         'Learn the latest skills' => '
         تعلم أحدث المهارات',
         'Booking center online or offline' => 'مركز الحجز عبر الإنترنت أو غير متصل',
-
-
 
         'view_more' => 'اعرض المزيد ',
         'subtext'=>"اكبر مجموعة من الكورسات",

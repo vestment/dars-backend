@@ -181,6 +181,7 @@ class AcademyController extends Controller
         $academy = User::role('academy')->with('academy')->findOrFail($id);
         return view('backend.academies.show', compact('academy'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
