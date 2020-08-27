@@ -83,6 +83,7 @@ return array(
 
                     'add_categories' => 'Add Categories',
                     'slug_placeholder' => 'Input slug or it will be generated automatically',
+                    'seats_placeholder' => 'Input seats or it will be generated automatically',
                     'select_category' => 'Select Category',
                     'select_academies' => 'Select Academies',
                     'select_teachers' => 'Select Teachers',
@@ -1003,7 +1004,8 @@ return array(
                             'title' => ' Title',
                             'ar_title' => 'Arabic Title',
                             'bank_code' => '  Bank Code',
-                            'Booking_Date&Time'=>'Booking Date&Time'
+                            'Booking_Date&Time'=>'Booking Date&Time',
+                            'seats'=>'Seats'
                         ),
                     'title' => 'Teachers',
                     'create' => 'Create Teacher',
