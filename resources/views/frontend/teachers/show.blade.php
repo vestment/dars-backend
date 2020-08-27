@@ -41,6 +41,7 @@
         }
         .teacher-img img{
             border-radius: 50%;
+            height: 208px;
         }
         
 
@@ -60,37 +61,47 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="teacher-img text-center" >
-                                        @if($teacher->picture == "")
-                                                            <img class="teacher-image p-3" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg"
-                                                                 alt="">
-                                                        @else
+                                       
                                                                 <img class="teacher-image p-3" src="{{$teacher->picture}}"
                                                                  alt="">
-                                                        @endif
+                                                      
 
                                          
 
                                         </div>
                                     </div>
                                     <div class="col-md-8 pt-5 pl-5">
-                                            <div class="">
-                                                <h5 class="type">{{$teacher_data->type}} </h5>
-
-
+                                            
                                                 <h2 class="text-white "><span>{{$teacher->full_name}}</span></h2>
-                                                <span class="text-white bold">{{$teacher->email}}</span>
- 
+                                                <h5 class="text-white font-weight-lighter "><span>{{$teacher_data->title}}</span></h5>
+
+                                                <div class="">
+                                            @if($teacher_data->type == 'academy')
+                                                <h5 class="type">{{$academy->full_name}}</h5>
+                                            @else
+                                            <h5 class="type">{{$teacher_data->type}}</h5>
+
+                                            @endif
                                                 <div class="address-details ul-li-block my-3">
                                                     <ul class="d-inline w-100 ">
                                                         <li class="d-inline w-100 ">
+                                                        @if($teacher_data->twitter_link == null)
+                                                        @else
                                                         <a href="{{$teacher_data->twitter_link}}"><i class="fab fa-twitter-square"></i></a>
+
+@endif
                                                         </li>
                                                         <li class="d-inline w-100 text-white    ">
+                                                        @if($teacher_data->facebook_link == null)
+                                                        @else
                                                         <a href="{{$teacher_data->facebook_link}}"><i class="fab fa-facebook-square"></i></a>
-                                                            
+                                                            @endif
                                                         </li>
                                                         <li class="d-inline w-100 text-white    ">
+                                                        @if($teacher_data->linkedin_link == null)
+                                                        @else
                                                         <a href="{{$teacher_data->linkedin_link}}"><i class="fab fa-linkedin"></i></a>
+                                                        @endif
                                                         </li>
                                                         
                                                     </ul>
