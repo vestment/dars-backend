@@ -219,7 +219,7 @@ class HomeController extends Controller
         $teacher = User::role('teacher')->where('id', '=', $request->id)->first();
         $teacher_data = TeacherProfile::where('user_id', '=', $request->id)->first();
 
-        $courses = $teacher->courses;
+        $courses = [];
         if (count($teacher->courses) > 0) {
             $courses = $teacher->courses()->whereNotIn('id',$this->hidden_data['courses'])->paginate(12);
         }

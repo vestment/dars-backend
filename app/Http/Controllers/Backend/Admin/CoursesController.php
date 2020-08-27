@@ -243,7 +243,7 @@ class CoursesController extends Controller
             return abort(401);
         }
         $request = $this->saveFiles($request);
-        $slug = str_slug($request->title,'_');
+        $slug = str_slug($request->title);
 
         $slug_lesson = Course::where('slug', '=', $slug)->first();
         if ($slug_lesson != null) {
