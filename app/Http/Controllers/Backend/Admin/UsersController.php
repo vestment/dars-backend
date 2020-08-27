@@ -53,6 +53,7 @@ class UsersController extends Controller
         if (!Gate::allows('user_create')) {
             return abort(401);
         }
+
         $user = User::create($request->all());
         $user->role()->sync(array_filter((array)$request->input('role')));
 

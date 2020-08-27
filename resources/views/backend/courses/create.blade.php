@@ -89,12 +89,7 @@
                                     </div>
                                     <div class="row">
 
-                                <div class="col-12 col-lg-6 form-group">
-                                    {!! Form::label('slug',  trans('labels.backend.courses.fields.slug'), ['class' => 'control-label']) !!}
-                                    {!! Form::text('slug', old('slug'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.slug_placeholder')]) !!}
 
-                                </div>
-                            
                             </div>
                             <div class="row">
 

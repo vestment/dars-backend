@@ -2976,7 +2976,9 @@ button.alt-menu-btn.float-left {
     visibility: visible;
     z-index: 1;
 }
-
+.best-course-pic-text img {
+    width: 42px !important;
+}
 /*.best-course-pic-text:hover .course-rate {*/
 /*    opacity: 0;*/
 /*}*/
