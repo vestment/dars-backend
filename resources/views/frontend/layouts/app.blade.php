@@ -84,7 +84,7 @@
                             <div class="nav-menu ul-li hoverpink">
                                 <ul>
                                     <li>
-                                        <a class="offersmob" href="">@lang('navs.general.offers')</a>
+                                        <a class="offersmob" href="{{route('frontend.offers')}}">@lang('navs.general.offers')</a>
                                     </li>
                                     @if(!auth()->check())
                                         <li>
