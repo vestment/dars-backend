@@ -216,7 +216,7 @@
         </section>
     @endif
     @if(@isset($category))
-        <section id="search-course" class=" border ">
+    <section id="search-course" class=" border">
             <div class="container">
                 <div class="row ">
                     <div class="col-12">
@@ -224,25 +224,22 @@
                             <div class="hero-section">
                                 <ul class="nav justify-content-center">
                                     <li class="nav-item"><span class="icon"><img
-                                                    src="{{asset('/')}}assets/img/banner/260d37c0-84ad-4627-9667-26030c180189 (1).png"
-                                                    alt=""> </span><span class="text">Expert Teachers</span>
+                                                    src="/assets/img/banner/260d37c0-84ad-4627-9667-26030c180189 (1).png"
+                                                    alt=""> </span><span class="text">@lang('labels.frontend.layouts.partials.Expert_Teachers')</span>
+                                    </li>
+                                    <li class="nav-item"><span class="icon"><img src="/assets/img/banner/55.png" alt=""></span><span
+                                                class="text">@lang('labels.frontend.layouts.partials.Learn_Anywhere')</span>
                                     </li>
                                     <li class="nav-item"><span class="icon"><img
-                                                    src="{{asset('/')}}assets/img/banner/55.png" alt=""></span><span
-                                                class="text">Learn Anywhere</span>
-                                    </li>
-                                    <li class="nav-item"><span class="icon"><img
-                                                    src="{{asset('/')}}assets/img/banner/dfeferf9 (1).png"
-                                                    alt=""></span><span class="text">Earn a certificate or degree</span>
+                                                    src="/assets/img/banner/dfeferf9 (1).png" alt=""></span><span
+                                                class="text">@lang('labels.frontend.layouts.partials.Earn a certificate or degree')</span>
                                     </li>
 
-                                    <li class="nav-item"><span class="icon"><img
-                                                    src="{{asset('/')}}assets/img/banner/fdfvds.png" alt=""></span><span
-                                                class="text">Learn the latest skills</span>
+                                    <li class="nav-item"><span class="icon"><img src="/assets/img/banner/fdfvds.png"
+                                                                                 alt=""></span><span class="text">@lang('labels.frontend.layouts.partials.Learn the latest skills')</span>
                                     </li>
-                                    <li class="nav-item"><span class="icon"><img
-                                                    src="{{asset('/')}}assets/img/banner/fdfvds.png" alt=""></span><span
-                                                class="text">Booking center online or offline</span>
+                                    <li class="nav-item"><span class="icon"><img src="/assets/img/banner/fdfvds.png"
+                                                                                 alt=""></span><span class="text">@lang('labels.frontend.layouts.partials.Booking center online or offline')</span>
                                     </li>
                                 </ul>
                             </div>
