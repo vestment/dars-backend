@@ -260,7 +260,6 @@
         <!-- End Course category
             ============================================= -->
     @endif
-
     <section class="bg-static">
         <div class="row bg-static1 ">
             <div class="container">
@@ -273,7 +272,10 @@
                     <p class="">@lang('labels.frontend.layouts.partials.Offline Booking')</p>
                 </div>
                 <div class="pl-5 pb-5">
-                    <button class="btn btn-outline-info ">@lang('labels.frontend.layouts.partials.view_plans')</button>
+                  
+                        <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
+                        @lang('labels.frontend.layouts.partials.view_plans')
+                        </a>
                 </div>
             </div>
             </div>

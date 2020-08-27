@@ -111,15 +111,15 @@ class OrderController extends Controller
     public function complete(Request $request)
     {
         $order = Order::findOrfail($request->order);
+        $order_item = OrderItem::where('order_id',$request->order)->value('item_id');
+        $course = Course::where('id',$order_item)->first();
+
+        $course->seats = $course->seats -1;
+
+        $course->save();
         $order->status = 1;
         $order->save();
 
-
-        $order_item = OrderItem::where('order_id',$order->id)->value('item_id');
-        $course = Course::where('id',$order_item->item_id);
-    $course->seats = $course->seats -1;
-       
-       $course->save();
 
         (new EarningHelper)->insert($order);
 
