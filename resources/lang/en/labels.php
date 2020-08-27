@@ -1411,8 +1411,6 @@ return array(
                     'sign_up' => 'SIGN UP',
                     'terms_of_use' => 'Term of use. Privacy policy',
                     'register_as_teacher' => 'Register as a teacher',
-
-
                 ),
 
             'sign_up' =>
@@ -1557,9 +1555,6 @@ return array(
                         'academies'=>'Academies',
                         'teachers'=>'Teachers',
                         'categories'=>'categories',
-                        'offline_booking_course'=>'Offline_Booking_Course'
-                        
-                        
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',
@@ -1574,7 +1569,8 @@ return array(
                     'course_hours' => 'hours',
                     'instructor' => 'instructor',
 
-
+                    'offline_booking_course'=>'Offline Booking Course',
+                    'explore'=>'EXPLORE',
                     'category' => 'Category',
                     'author' => 'Author',
                     'courses' => 'Courses',

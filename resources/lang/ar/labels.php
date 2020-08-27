@@ -1423,6 +1423,9 @@ return array (
             'reset' => 'الغاء',
             'up' => 'أعلي',
             'hours' => 'ساعات',
+            'academies'=>'اكادميه',
+            'teachers'=>'المعلمين',
+            'categories'=>'الفئات',
 
             
            
@@ -1516,6 +1519,8 @@ return array (
 
       'featured_courses' => 'الدورات المميزة',
 
+      'offline_booking_course'=>'حجز كورسات في اكادميه',
+      'explore'=>'أستكشف',
     ),
     'faq' => 
     array (
