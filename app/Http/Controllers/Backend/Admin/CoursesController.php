@@ -411,7 +411,6 @@ class CoursesController extends Controller
 
 
         $request = $this->saveFiles($request);
-
         //Saving  videos
         if ($request->media_type != "" || $request->media_type != null) {
             if ($course->mediavideo) {
@@ -421,7 +420,7 @@ class CoursesController extends Controller
             $model_id = $course->id;
             $size = 0;
             $media = '';
-            $url = '';
+            $url = 'default';
             $video_id = '';
             $name = $course->title . ' - video';
             $media = $course->mediavideo;
