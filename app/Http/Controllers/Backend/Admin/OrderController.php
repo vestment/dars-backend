@@ -116,8 +116,9 @@ class OrderController extends Controller
 
 
         $order_item = OrderItem::where('order_id',$order->id)->value('item_id');
-        $course = Course::where('id',$order_item->item_id);
-    $course->seats = $course->seats -1;
+        $course = Course::where('id',$order_item);
+     
+    $course[0]->seats = $course[0]->seats -1;
        
        $course->save();
 

@@ -606,13 +606,13 @@ class CoursesController extends Controller
     public function saveSequence(Request $request)
     {
 
-        dd($request->all());
-
+        return $request->all();
 
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
         foreach ($request->list as $item) {
+            
             $courseTimeline = CourseTimeline::find($item['id']);
             $courseTimeline->sequence = $item['sequence'];
             $courseTimeline->save();

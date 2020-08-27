@@ -323,7 +323,7 @@
                                                                                                                     <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                     <span class="item-title"> <span
                                                                                                                                 class="menu-item-title"> <span
-                                                                                                                                    id="menutitletemp_{{$item->id}}">{{$item->title}} | {{$singleTimeline->sequence}}</span> </span>
+                                                                                                                                    id="{{$item->id}}">{{$item->title}} | {{$singleTimeline->sequence}}</span> </span>
                                                                                                                     <span class="item-controls">
                                                                                                                             <a class="item-edit"
                                                                                                                                id="edit-{{$item->id}}"
@@ -363,7 +363,7 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <span id="menutitletemp_{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}}</span>
+                                                                                                                                        <p  data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}}</p>
                                                                                                                                     </span>
                                                                                                                                 </span>
                                                                                                                                 </div>
@@ -792,11 +792,14 @@
     <script>
 
         $(document).on('click', '#save_timeline', function (e) {
+
+            // console.log("dfvgdf");
             e.preventDefault();
             var list = [];
             $('.sort_seq li').each(function (key, value) {
                 key++;
-                var val = $(value).find('span').data('id');
+                var val = $(value).find('p').data('id');
+               
                 list.push({id: val, sequence: key});
             });
 
@@ -806,9 +809,12 @@
                 data: {
                     _token: '{{csrf_token()}}',
                     list: list
+                },
+                success: function (resp) {
+                    console.log(resp);
                 }
             }).done(function () {
-                location.reload();
+                // location.reload();
             });
         })
 
