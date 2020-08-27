@@ -6,6 +6,7 @@ use App\Helpers\General\EarningHelper;
 use App\Models\Bundle;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -110,8 +111,15 @@ class OrderController extends Controller
     public function complete(Request $request)
     {
         $order = Order::findOrfail($request->order);
+        $order_item = OrderItem::where('order_id',$request->order)->value('item_id');
+        $course = Course::where('id',$order_item)->first();
+
+        $course->seats = $course->seats -1;
+
+        $course->save();
         $order->status = 1;
         $order->save();
+
 
         (new EarningHelper)->insert($order);
 

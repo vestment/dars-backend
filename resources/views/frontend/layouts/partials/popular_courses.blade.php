@@ -20,42 +20,44 @@
                 <div class="col-12">
                     <div class="section-title mb20 headline text-left ">
                         <span class="subtitle text-uppercase">@lang('labels.frontend.layouts.partials.learn_new_skills')</span>
-                        <h4 class="title">@lang('labels.frontend.layouts.partials.popular_courses')<a class="view-more" href="{{route('courses.all')}}">@lang('labels.frontend.layouts.partials.view_more') </a> </h4>
+                        <h4 class="title">@lang('labels.frontend.layouts.partials.popular_courses')<a class="view-more"
+                                                                                                      href="{{route('courses.all')}}">@lang('labels.frontend.layouts.partials.view_more') </a>
+                        </h4>
 
                     </div>
                     <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
                             @if ($category->id != 2)
-                            <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
-                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
+                                <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
+                                        class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
                             @endif
                         @endforeach
                     </div>
                     <div class="col-xl-12 courses-container">
                         @foreach($categories as $key=>$category)
-                           @if ($category->id != 2)
-                            <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
-                                 id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
-                                <div class="owl-carousel default-owl-theme p-3 " data-items="5">
-                                    @if($popular_courses->count() > 0)
+                            @if ($category->id != 2)
+                                <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
+                                     id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
+                                    <div class="owl-carousel default-owl-theme p-3 " data-items="5">
+                                        @if($popular_courses->count() > 0)
 
-                                        @foreach($popular_courses as $course)
+                                            @foreach($popular_courses as $course)
+                                                @if($course->category_id == $category->id)
+                                                    <div class="item">
 
-                                            <div class="item">
+                                                        <div class="">
+                                                            @include('frontend.layouts.partials.coursesTemp')
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
 
-                                                <div class="">
-                                                    @include('frontend.layouts.partials.coursesTemp')
-                                                </div>
-                                            </div>
+                                        @else
+                                            <h3>@lang('labels.general.no_data_available')</h3>
+                                        @endif
 
-                                        @endforeach
-
-                                    @else
-                                        <h3>@lang('labels.general.no_data_available')</h3>
-                                    @endif
-
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                         @endforeach
                     </div>

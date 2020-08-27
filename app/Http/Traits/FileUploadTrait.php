@@ -8,6 +8,19 @@ use Intervention\Image\Facades\Image;
 
 trait FileUploadTrait
 {
+    public function saveAvatar(Request $request) {
+        $finalRequest = $request;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            if (!file_exists(public_path('storage/avatars'))) {
+                mkdir(public_path('storage/avatars'), 0777, true);
+            }
+            Image::make($file)->resize(135, 135)->save(public_path('storage/avatars') . '/' . $filename);
+            $finalRequest = new Request(array_merge($finalRequest->all(), ['avatar_location' => 'storage/avatars/' . $filename,'avatar_type'=>'storage']));
+        }
+        return $finalRequest;
+    }
 
     /**
      * File upload trait used in controllers to upload files

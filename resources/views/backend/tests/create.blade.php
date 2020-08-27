@@ -2,7 +2,7 @@
 @section('title', __('labels.backend.tests.title').' | '.app_name())
 
 @push('after-styles')
-<link rel="stylesheet" type="text/css"
+    <link rel="stylesheet" type="text/css"
           href="{{asset('plugins/jqueryui-datetimepicker/jquery.datetimepicker.css')}}">
     <style>
         .select2-container--default .select2-selection--single {
@@ -22,7 +22,6 @@
 @section('content')
 
     {!! Form::open(['method' => 'POST', 'route' => ['admin.tests.store']]) !!}
-
     <div class="card">
         <div class="card-header">
             <h3 class="page-title float-left mb-0">@lang('labels.backend.tests.create')</h3>
@@ -32,7 +31,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row"> 
+            <div class="row">
 
                 <div class="col-12 col-lg-12 form-group">
                     {!! Form::label('chapter_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
@@ -42,27 +41,27 @@
             </div>
             <div class="row">
 
-<div class="col-12 col-lg-6 form-group">
-    {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
-    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title'), 'required' => '']) !!}
-</div>
-<div class="col-12 col-lg-6 form-group">
-    {!! Form::label('title_ar', trans('labels.backend.lessons.fields.title_ar').'*', ['class' => 'control-label']) !!}
-    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
-</div>
-</div>
-<div class="row">
-    <div class="col-12 col-lg-6 form-group">
-
-    
-        {!! Form::label('timer', trans('labels.backend.lessons.fields.test_timer').'*', ['class' => 'control-label']) !!}
-        {!! Form::text('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => '']) !!}
-                        
-    
-</div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
+                    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title'), 'required' => '']) !!}
+                </div>
+                <div class="col-12 col-lg-6 form-group">
+                    {!! Form::label('title_ar', trans('labels.backend.lessons.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6 form-group">
 
 
-</div>
+                    {!! Form::label('timer', trans('labels.backend.lessons.fields.test_timer').'*', ['class' => 'control-label']) !!}
+                    {!! Form::text('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => '']) !!}
+
+
+                </div>
+
+
+            </div>
             <div class="row">
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('description',trans('labels.backend.tests.fields.description'), ['class' => 'control-label']) !!}
@@ -83,8 +82,8 @@
             </div>
         </div>
     </div>
-   
-    
+
+
     {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop

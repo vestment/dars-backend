@@ -54,19 +54,11 @@ class StudentsController extends Controller
      */
     public function store(Request $request)
     {
-
+        $request = $this->saveAvatar($request);
         $student = User::create($request->all());
         $student->assignRole('student');
         $student->confirmed = 1;
         $student->active = isset($request->active) ? 1 : 0;
-        if ($request->image) {
-            $student->avatar_type = 'storage';
-            $file = $request->file('image');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $path = public_path() . '/storage/avatars';
-            $file->move($path, $filename);
-            $student->avatar_location = 'storage/avatars/' . $filename;
-        }
         $student->save();
         $student->parents()->sync(auth()->user());
 
@@ -188,19 +180,11 @@ class StudentsController extends Controller
     public function update(Request $request, $id)
     {
 
-
+        $request = $this->saveAvatar($request);
         $student = User::findOrFail($id);
         $student->update($request->except('email'));
 
         $student->active = isset($request->active) ? 1 : 0;
-        if ($request->image) {
-            $student->avatar_type = 'storage';
-            $file = $request->file('image');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $path = public_path() . '/storage/avatars';
-            $file->move($path, $filename);
-            $student->avatar_location = 'storage/avatars/' . $filename;
-        }
         $student->save();
         return redirect()->route('admin.students.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
     }

@@ -13,6 +13,7 @@ use App\academy;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use Intervention\Image\Facades\Image;
 use Yajra\DataTables\DataTables;
 
 class TeachersController extends Controller
@@ -59,7 +60,7 @@ class TeachersController extends Controller
         if (request('show_deleted') == 1) {
             $teachers = User::ofAcademy()->role('teacher')->onlyTrashed()->orderBy('created_at', 'desc')->get();
         } else {
-            $teachers = User::with('TeacherProfile')->ofAcademy()->role('teacher')->where('academy_id',$academy_id)->orderBy('created_at', 'desc')->get();
+            $teachers = User::with('TeacherProfile')->ofAcademy()->role('teacher')->where('academy_id', $academy_id)->orderBy('created_at', 'desc')->get();
         }
         if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) {
             $has_view = true;
@@ -110,6 +111,7 @@ class TeachersController extends Controller
             ->make();
 
     }
+
     public function getData(Request $request)
     {
         $has_view = false;
@@ -199,10 +201,12 @@ class TeachersController extends Controller
      */
     public function store(StoreTeachersRequest $request)
     {
-
+        $request = $this->saveAvatar($request);
+//        dd($request->all());
         $teacher = User::create($request->all());
         $teacher->confirmed = 1;
         $teacher->active = isset($request->active) ? 1 : 0;
+
         if (auth()->user()->hasRole('academy')) {
             $academy_id = auth()->user()->id;
             request()->type = 'academy';
@@ -213,7 +217,8 @@ class TeachersController extends Controller
                 $academy_id = request()->academy_id;
             }
         }
-
+        $teacher->save();
+        $teacher->assignRole('teacher');
         $payment_details = [
             'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
             'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
@@ -237,16 +242,7 @@ class TeachersController extends Controller
             'academy_id' => $academy_id,
         ];
         TeacherProfile::create($data);
-        if ($request->image) {
-            $teacher->avatar_type = 'storage';
-            $file = $request->file('image');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $path = public_path() . '/storage/avatars';
-            $file->move($path, $filename);
-            $teacher->avatar_location = 'storage/avatars/' . $filename;
-        }
-        $teacher->save();
-        $teacher->assignRole('teacher');
+
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 
@@ -273,10 +269,10 @@ class TeachersController extends Controller
     public function update(UpdateTeachersRequest $request, $id)
     {
 
-
+        $request = $this->saveAvatar($request);
         $teacher = User::findOrFail($id);
         $teacher->update($request->except('email'));
-        
+
         $teacher->active = isset($request->active) ? 1 : 0;
         $teacher->save();
 
@@ -301,16 +297,8 @@ class TeachersController extends Controller
 
         ];
         $teacher->teacherProfile->update($data);
-            if ($request->image) {
-                        $teacher->avatar_type = 'storage';
-                        $file = $request->file('image');
-                        $filename = time() . '-' . $file->getClientOriginalName();
-                        $path = public_path().'/storage/avatars';
-                        $file->move($path, $filename);
-                        $teacher->avatar_location = 'storage/avatars/' . $filename;
-                    }
-            $teacher->save();
-                    return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
+
+        return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
     }
 
 

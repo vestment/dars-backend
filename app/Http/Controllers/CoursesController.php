@@ -72,7 +72,7 @@ class CoursesController extends Controller
                 ->get();
         }
 
-        $featured_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', '=', 1)
+        $featured_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)
             ->where('featured', '=', 1)->take(8)->get();
         $trending_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 

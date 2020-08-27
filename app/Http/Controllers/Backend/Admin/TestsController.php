@@ -156,19 +156,18 @@ class TestsController extends Controller
      */
     public function store(StoreTestsRequest $request)
     {
+        $course_id = Chapter::findOrFail($request->chapter_id)->with('course')->value('course_id');
         $this->validate($request,[
-            'course_id' => 'required',
             'title' => 'required',
             'description' => 'required'
-        ],['course_id.required' => 'The course field is required']);
+        ]);
 
         if (! Gate::allows('test_create')) {
             return abort(401);
         }
 
-
-
-        $test = Test::create($request->all());
+        $test = Test::create($request->except('course_id'));
+        $test->course_id = $course_id;
         $test->slug = str_slug($request->title);
         $test->save();
 
@@ -181,11 +180,11 @@ class TestsController extends Controller
         if ($test->published == 1) {
             $timeline = CourseTimeline::where('model_type', '=', Test::class)
                 ->where('model_id', '=', $test->id)
-                ->where('course_id', $request->course_id)->first();
+                ->where('course_id', $course_id)->first();
             if ($timeline == null) {
                 $timeline = new CourseTimeline();
             }
-            $timeline->course_id = $request->course_id;
+            $timeline->course_id = $course_id;
             $timeline->chapter_id = $request->chapter_id;
 
             $timeline->model_id = $test->id;

@@ -2830,7 +2830,9 @@ button.alt-menu-btn.float-left {
 .best-course-pic-text .course-title:after {
     display: none;
 }
-
+.best-course-pic-text img {
+    width: 42px !important;
+}
 .best-course-pic-text .best-course-text {
     background-color: #fff;
     border-radius: 4px;
@@ -6831,7 +6833,6 @@ iframe {
 
 .teacher-image {
     border-radius: 50%;
-    width: 58% !important;
 
 }
 

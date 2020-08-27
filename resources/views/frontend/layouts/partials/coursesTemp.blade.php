@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="course-meta my-1 vv">
-            <span class="course-category text-dark pl-3"><i class="far fa-clock"></i> <a href="#">{{ $course->course_hours}}
+            <span class="course-category text-dark"><i class="far fa-clock"></i> <a href="#">{{ $course->course_hours}}
                     @lang('labels.frontend.course.course_hours')  </a></span>
                     <span calss="dash"> | </span>
             <span class="course-author">
