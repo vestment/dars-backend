@@ -154,7 +154,7 @@ class AppServiceProvider extends ServiceProvider
                     $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
                         $query->whereIn('user_id', $academyTeachersIds);
                     })->pluck('id');
-                    $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+//                    $categories = array_unique($coursesIds->pluck('category_id')->toArray());
                     $hidden_data = [
                         'courses' => $coursesIds,
                         'teachers' => $academyTeachersIds

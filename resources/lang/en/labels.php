@@ -87,6 +87,8 @@ return array(
                     'select_category' => 'Select Category',
                     'select_academies' => 'Select Academies',
                     'select_teachers' => 'Select Teachers',
+                    'select_opt_courses' => 'Select optional courses',
+                    'select_mand_courses' => 'Select mandatory courses',
 
                     'test' => 'Test',
                     'lesson' => 'Lesson',

@@ -35,12 +35,10 @@ class AcademyController extends Controller
     }
     public function show911()
     {
-        $id=5;
+        $id=29;
         // Refactored
-        $academy = User::whereHas('academy', function ($query) use ($id) {
-            $query->where('user_id', $id);
-        })->with('academy')->first();
-        dd($academy);
+        $academy = academy::where('user_id', $id)->with('user')->first();
+
         // Teachers associated with academy
         $academyTeachersCollection= TeacherProfile::where('academy_id', $id);
         $academyTeachers = $academyTeachersCollection->with('teacher')->get();
@@ -52,9 +50,11 @@ class AcademyController extends Controller
         $courses = $coursesCollection->get();
         // Categories associated with academy courses
         $categories = Category::where('name','911')->first();
+        $courses_911 = Course::where('category_id', $categories->id )->with('category')->get();
+        // Merge the courses into 1 variable
+        $courses = $courses->merge($courses_911);
 
-        $courses_911 = Course::where('category_id', $categories->id )->get();
 
-        return view('frontend.academy.911', compact('academy', 'academyTeachers','courses_911','courses'));
+        return view('frontend.academy.911', compact('academy', 'academyTeachers','courses'));
     }
 }

@@ -104,6 +104,9 @@
                                 <div class="msg_history">
                                     @if(count($thread->messages) > 0 )
                                         @foreach($thread->messages as $message)
+                                            @php
+                                            $userProfile = \App\Models\Auth\User::findOrFail($message->sender_id);
+                                            @endphp
                                             @if($message->sender_id == auth()->user()->id)
                                                 <div class="outgoing_msg">
                                                     <div class="sent_msg">
@@ -113,8 +116,8 @@
                                                 </div>
                                             @else
                                                 <div class="incoming_msg">
-                                                    <div class="incoming_msg_img"><img
-                                                                src="https://ptetutorials.com/images/user-profile.png"
+                                                    <div class="incoming_msg_img"><img style="border-radius: 50%"
+                                                                src="{{$userProfile->picture}}"
                                                                 alt=""></div>
                                                     <div class="received_msg">
                                                         <div class="received_withd_msg">

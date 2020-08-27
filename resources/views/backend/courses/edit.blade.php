@@ -76,7 +76,7 @@
 
                                     <div class="col-10 form-group">
                                         {!! Form::label('teachers',trans('labels.backend.courses.fields.teachers'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('teachers[]', $allTeachers, old('teachers') ? old('teachers') : $course->teachers->pluck('id')->toArray(), ['class' => 'form-control select2', 'multiple' => 'multiple','required' => true]) !!}
+                                        {!! Form::select('teachers[]', $teachersToSelect, old('teachers') ? old('teachers') : $course->teachers->pluck('id')->toArray(), ['class' => 'form-control select2', 'multiple' => 'multiple','required' => true]) !!}
                                     </div>
                                     <div class="col-2 d-flex form-group flex-column">
                                         OR <a target="_blank" class="btn btn-primary mt-auto"
@@ -88,7 +88,7 @@
                             <div class="row">
                                 <div class="col-10 form-group">
                                     {!! Form::label('category_id',trans('labels.backend.courses.fields.category'), ['class' => 'control-label']) !!}
-                                    {!! Form::select('category_id', $categ_name, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                                    {!! Form::select('category_id', $categoriesToSelect, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
                                 </div>
                                 <div class="col-2 d-flex form-group flex-column">
                                     OR <a target="_blank" class="btn btn-primary mt-auto"
@@ -148,7 +148,7 @@
                                 <div class="col-md-12 form-group">
                                     {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
 
-                                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
+                                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control media_type', 'placeholder' => 'Select One','id'=>'media_type' ,'data-type'=>'Course']) !!}
 
                                     {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
 
@@ -207,24 +207,24 @@
 
                                 </div>
                             </div>
+                            <div class="not-necessary-section d-none">
+                                <div class="row">
+                                    <div class="col-12 form-group">
+                                        {!! Form::label('meta_title',trans('labels.backend.courses.fields.meta_title'), ['class' => 'control-label']) !!}
+                                        {!! Form::text('meta_title', old('meta_title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_title')]) !!}
 
-                            <div class="row">
-                                <div class="col-12 form-group">
-                                    {!! Form::label('meta_title',trans('labels.backend.courses.fields.meta_title'), ['class' => 'control-label']) !!}
-                                    {!! Form::text('meta_title', old('meta_title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_title')]) !!}
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        {!! Form::label('meta_description',trans('labels.backend.courses.fields.meta_description'), ['class' => 'control-label']) !!}
+                                        {!! Form::textarea('meta_description', old('meta_description'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_description')]) !!}
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        {!! Form::label('meta_keywords',trans('labels.backend.courses.fields.meta_keywords'), ['class' => 'control-label']) !!}
+                                        {!! Form::textarea('meta_keywords', old('meta_keywords'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_keywords')]) !!}
+                                    </div>
+                                </div>
 
-                                </div>
-                                <div class="col-12 form-group">
-                                    {!! Form::label('meta_description',trans('labels.backend.courses.fields.meta_description'), ['class' => 'control-label']) !!}
-                                    {!! Form::textarea('meta_description', old('meta_description'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_description')]) !!}
-                                </div>
-                                <div class="col-12 form-group">
-                                    {!! Form::label('meta_keywords',trans('labels.backend.courses.fields.meta_keywords'), ['class' => 'control-label']) !!}
-                                    {!! Form::textarea('meta_keywords', old('meta_keywords'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.meta_keywords')]) !!}
-                                </div>
                             </div>
-
-
                             @if (Auth::user()->isAdmin())
                                 <div class="row">
                                     <div class="col-10 form-group">
@@ -363,7 +363,7 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p  data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}}</p>
+                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}}</p>
                                                                                                                                     </span>
                                                                                                                                 </span>
                                                                                                                                 </div>
@@ -372,7 +372,7 @@
                                                                                                                     @endforeach
                                                                                                                 </ul>
 
-                                                                                                               
+
                                                                                                             </li>
                                                                                                         @endif
                                                                                                     @endif
@@ -383,7 +383,7 @@
                                                                                         </ul>
 
                                                                                         <a href="#" id="save_timeline"
-                                                                                               class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
+                                                                                           class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
 
 
                                                                                     </div>
@@ -392,145 +392,7 @@
                                                                             </div>
                                                                         </form>
 
-                                                                        <div class="modal fade" id="exampleModal2"
-                                                                             tabindex="-1"
-                                                                             aria-labelledby="exampleModalLabel2"
-                                                                             aria-hidden="true">
-                                                                            <div class="modal-dialog modal-dialog-centered">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h5 class="modal-title"
-                                                                                            id="exampleModalLabel2">
-                                                                                            Create Lesson</h5>
-                                                                                        <button type="button"
-                                                                                                class="close"
-                                                                                                data-dismiss="modal"
-                                                                                                aria-label="Close">
-                                                                                            <span aria-hidden="true">&times;</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        {!! Form::open(['method' => 'POST', 'route' => ['admin.lessons.store'], 'files' => true,]) !!}
-                                                                                        {!! Form::hidden('chapter_id',$item->id,['id'=>'chapter_id_lesson']) !!}
-                                                                                        {!! Form::hidden('course_id',$course->id)!!}
 
-                                                                                        <div class="card">
-                                                                                            <div class="card-header">
-                                                                                                <h3 class="page-title float-left mb-0">@lang('labels.backend.lessons.create')</h3>
-                                                                                                <div class="float-right">
-
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            <div class="card-body">
-
-                                                                                                <div class="row">
-
-                                                                                                    <div class="col-12 col-lg-6 form-group">
-                                                                                                        {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
-                                                                                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title'), 'required' => '']) !!}
-                                                                                                    </div>
-                                                                                                    <div class="col-12 col-lg-6 form-group">
-                                                                                                        {!! Form::label('title_ar', trans('labels.backend.lessons.fields.title_ar').'*', ['class' => 'control-label']) !!}
-                                                                                                        {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12 form-group">
-                                                                                                        {!! Form::label('downloadable_files', trans('labels.backend.lessons.fields.downloadable_files').' '.trans('labels.backend.lessons.max_file_size'), ['class' => 'control-label']) !!}
-                                                                                                        {!! Form::file('downloadable_files[]', [
-                                                                                                        'multiple',
-                                                                                                        'class' => 'form-control file-upload',
-                                                                                                        'id' => 'downloadable_files',
-                                                                                                        'accept' => "image/jpeg,image/gif,image/png,application/msword,audio/mpeg,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/pdf,video/mp4"
-                                                                                                        ]) !!}
-                                                                                                        <div class="photo-block">
-                                                                                                            <div class="files-list"></div>
-                                                                                                        </div>
-
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12 form-group">
-                                                                                                        {!! Form::label('pdf_files', trans('labels.backend.lessons.fields.add_pdf'), ['class' => 'control-label']) !!}
-                                                                                                        {!! Form::file('add_pdf', [
-                                                                                                        'class' => 'form-control file-upload',
-                                                                                                        'id' => 'add_pdf',
-                                                                                                        'accept' => "application/pdf"
-
-                                                                                                        ]) !!}
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12 form-group">
-                                                                                                        {!! Form::label('audio_files', trans('labels.backend.lessons.fields.add_audio'), ['class' => 'control-label']) !!}
-                                                                                                        {!! Form::file('add_audio', [
-                                                                                                        'class' => 'form-control file-upload',
-                                                                                                        'id' => 'add_audio',
-                                                                                                        'accept' => "audio/mpeg3"
-
-                                                                                                        ]) !!}
-                                                                                                    </div>
-                                                                                                </div>
-
-
-                                                                                                <div class="row">
-                                <div class="col-md-12 form-group">
-                                    {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
-
-                                    {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control', 'placeholder' => 'Select One','id'=>'media_type' ]) !!}
-
-                                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
-
-                                    {!! Form::select('video_file', $videos, old('video_file'), ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
-
-                                    <input type="hidden" name="old_video_file"
-                                           value="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? $course->mediavideo->id  : ""}}">
-
-
-                                    @if($course->mediavideo && ($course->mediavideo->type == 'upload'))
-                                        <video width="300" class="mt-2 d-none video-player" controls>
-                                            <source src="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? asset($course->mediavideo->url)  : ""}}"
-                                                    type="video/mp4">
-                                            Your browser does not support HTML5 video.
-                                        </video>
-                                    @endif
-
-                                    @lang('labels.backend.lessons.video_guide')
-
-                                </div>
-                            </div>
-                                                                                                <div class="col-12 col-lg-6 form-group d-none"
-                                                                                                     id="duration">
-                                                                                                    {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
-                                                                                                    {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format')]) !!}
-
-                                                                                                </div>
-
-                                                                                                <div class="row">
-
-                                                                                                    <div class="col-12 col-lg-3 form-group">
-                                                                                                        <div class="checkbox">
-                                                                                                            {!! Form::hidden('published', 0) !!}
-                                                                                                            {!! Form::checkbox('published', 1, false, []) !!}
-                                                                                                            {!! Form::label('published', trans('labels.backend.lessons.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-12  text-left form-group">
-                                                                                                        {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        {!! Form::close() !!}
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -554,7 +416,129 @@
                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                     ...
                 </div>
+                <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">
+                                    Create Lesson</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {!! Form::open(['method' => 'POST', 'route' => ['admin.lessons.store'], 'files' => true,]) !!}
+                                {!! Form::hidden('chapter_id',null,['id'=>'chapter_id_lesson']) !!}
+                                {!! Form::hidden('course_id',$course->id)!!}
 
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="page-title float-left mb-0">@lang('labels.backend.lessons.create')</h3>
+                                        <div class="float-right">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-12 col-lg-6 form-group">
+                                                {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
+                                                {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title'), 'required' => '']) !!}
+                                            </div>
+                                            <div class="col-12 col-lg-6 form-group">
+                                                {!! Form::label('title_ar', trans('labels.backend.lessons.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                                                {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 form-group">
+                                                {!! Form::label('downloadable_files', trans('labels.backend.lessons.fields.downloadable_files').' '.trans('labels.backend.lessons.max_file_size'), ['class' => 'control-label']) !!}
+                                                {!! Form::file('downloadable_files[]', [
+                                                'multiple',
+                                                'class' => 'form-control file-upload',
+                                                'id' => 'downloadable_files',
+                                                'accept' => "image/jpeg,image/gif,image/png,application/msword,audio/mpeg,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/pdf,video/mp4"
+                                                ]) !!}
+                                                <div class="photo-block">
+                                                    <div class="files-list"></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 form-group">
+                                                {!! Form::label('pdf_files', trans('labels.backend.lessons.fields.add_pdf'), ['class' => 'control-label']) !!}
+                                                {!! Form::file('add_pdf', [
+                                                'class' => 'form-control file-upload',
+                                                'id' => 'add_pdf',
+                                                'accept' => "application/pdf"
+
+                                                ]) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 form-group">
+                                                {!! Form::label('audio_files', trans('labels.backend.lessons.fields.add_audio'), ['class' => 'control-label']) !!}
+                                                {!! Form::file('add_audio', [
+                                                'class' => 'form-control file-upload',
+                                                'id' => 'add_audio',
+                                                'accept' => "audio/mpeg3"
+
+                                                ]) !!}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
+
+                                                {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control media_type', 'placeholder' => 'Select One','id'=>'media_type','data-type'=>'Lesson' ]) !!}
+
+                                                {!! Form::text('video', null, ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
+
+                                                {!! Form::select('video_file', $videos, null, ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
+
+                                                <div class="mt-2">
+                                                    @lang('labels.backend.lessons.video_guide')
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6 form-group d-none"
+                                                 id="duration">
+                                                {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
+                                                {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+
+                                            <div class="col-12 col-lg-3 form-group">
+                                                <div class="checkbox">
+                                                    {!! Form::hidden('published', 0) !!}
+                                                    {!! Form::checkbox('published', 1, false, []) !!}
+                                                    {!! Form::label('published', trans('labels.backend.lessons.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                                                </div>
+                                            </div>
+                                            <div class="col-12  text-left form-group">
+                                                {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {!! Form::close() !!}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -658,21 +642,20 @@
         })
 
 
-        $(document).on('change', '#media_type', function () {
+        $(document).on('change', '.media_type', function () {
+            console.log($(this).data('type'))
             if ($(this).val()) {
                 if ($(this).val() != 'upload') {
-                    $('.video').removeClass('d-none').attr('required', true)
-                    $('.video_file').addClass('d-none').attr('required', false)
-                    $('#duration').removeClass('d-none').attr('required', true)
+                    $(this).parent().find('.video').removeClass('d-none').attr('required', true)
+                    $(this).parent().find('.video_file').addClass('d-none').attr('required', false)
+                    $(this).parent().find('#duration').removeClass('d-none').attr('required', true)
                 } else if ($(this).val() == 'upload') {
-                    $('.video').addClass('d-none').attr('required', false)
-                    $('.video_file').removeClass('d-none').attr('required', true)
-
-
+                    $(this).parent().find('.video').addClass('d-none').attr('required', false)
+                    $(this).parent().find('.video_file').removeClass('d-none').attr('required', true)
                 }
             } else {
-                $('.video_file').addClass('d-none').attr('required', false)
-                $('.video').addClass('d-none').attr('required', false)
+                $(this).parent().find('.video_file').addClass('d-none').attr('required', false)
+                $(this).parent().find('.video').addClass('d-none').attr('required', false)
             }
         })
         $(document).ready(function () {
@@ -799,7 +782,7 @@
             $('.sort_seq li').each(function (key, value) {
                 key++;
                 var val = $(value).find('p').data('id');
-               
+
                 list.push({id: val, sequence: key});
             });
 
@@ -909,8 +892,6 @@
             }
         })
 
-
-        
 
     </script>
 @endpush

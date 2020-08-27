@@ -116,7 +116,7 @@ class CoursesController extends Controller
         $chaptercount = $course->chapters()->where('course_id', $course->id)->get()->count();
         $academy = $course->academy ? $course->academy->with('user')->first()->user : null;
 
-        if (($course->published == 0) && ($purchased_course == false)) {
+        if (($course->published == 0)) {
             abort(404);
         }
         $course_rating = 0;

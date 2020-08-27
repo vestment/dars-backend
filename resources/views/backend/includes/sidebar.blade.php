@@ -16,8 +16,8 @@
 
 
             <!--=======================Custom menus===============================-->
-            @if ($logged_in_user->isAdmin() || $logged_in_user->hasRole('academy') || $logged_in_user->hasRole('teacher'))
-            <li class="nav-item ">
+            @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy') || auth()->user()->hasRole('teacher'))
+                <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'teachers' ? 'active' : '' }}"
                        href="{{ route('admin.courses.create') }}">
                         <i class="nav-icon icon-directions"></i>
@@ -25,24 +25,26 @@
                     </a>
                 </li>
 
-            <li class="nav-item ">
-                <a class="nav-link {{ $request->segment(2) == 'video-bank' ? 'active' : '' }}"
-                   href="{{ route('admin.video-bank.index') }}">
-                    <i class="nav-icon fa fa-file-video-o"></i>
-                    <span class="title">@lang('labels.backend.videos.title')</span>
-                </a>
-            </li>
-            @endif
-            @can('order_access')
                 <li class="nav-item ">
-                    <a class="nav-link {{ $request->segment(1) == 'orders' ? 'active' : '' }}"
-                       href="{{ route('admin.orders.index') }}">
-                        <i class="nav-icon icon-bag"></i>
-                        <span class="title">@lang('menus.backend.sidebar.orders.title')</span>
+                    <a class="nav-link {{ $request->segment(2) == 'video-bank' ? 'active' : '' }}"
+                       href="{{ route('admin.video-bank.index') }}">
+                        <i class="nav-icon fa fa-file-video-o"></i>
+                        <span class="title">@lang('labels.backend.videos.title')</span>
                     </a>
                 </li>
-            @endcan
-            @if ($logged_in_user->isAdmin() || $logged_in_user->hasRole('academy'))
+            @endif
+            @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy'))
+                @can('order_access')
+                    <li class="nav-item ">
+                        <a class="nav-link {{ $request->segment(1) == 'orders' ? 'active' : '' }}"
+                           href="{{ route('admin.orders.index') }}">
+                            <i class="nav-icon icon-bag"></i>
+                            <span class="title">@lang('menus.backend.sidebar.orders.title')</span>
+                        </a>
+                    </li>
+                @endcan
+            @endif
+            @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'teachers' ? 'active' : '' }}"
                        href="{{ route('admin.teachers.index') }}">
@@ -50,7 +52,7 @@
                         <span class="title">@lang('menus.backend.sidebar.teachers.title')</span>
                     </a>
                 </li>
-                @if ($logged_in_user->isAdmin())
+                @if (auth()->user()->isAdmin())
                     <li class="nav-item ">
                         <a class="nav-link {{ $request->segment(2) == 'academies' ? 'active' : '' }}"
                            href="{{ route('admin.academies.index') }}">
@@ -70,8 +72,8 @@
                     </a>
                 </li>
             @endcan
-            @if((!$logged_in_user->hasRole('student')) && ($logged_in_user->hasRole('teacher') || $logged_in_user->isAdmin() || $logged_in_user->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access'])))
-                {{--@if($logged_in_user->hasRole('teacher') || $logged_in_user->isAdmin() || $logged_in_user->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access']))--}}
+            @if((!auth()->user()->hasRole('student')) && (auth()->user()->hasRole('teacher') || auth()->user()->isAdmin() || auth()->user()->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access'])))
+                {{--@if(auth()->user()->hasRole('teacher') || auth()->user()->isAdmin() || auth()->user()->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access']))--}}
 
                 <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern(['user/courses*','user/lessons*','user/tests*','user/questions*']), 'open') }}">
                     <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/*')) }}"
@@ -141,7 +143,7 @@
                         </a>
                     </li>
                 @endcan
-                @if($logged_in_user->hasRole('teacher') || $logged_in_user->isAdmin())
+                @if(auth()->user()->hasRole('teacher') || auth()->user()->isAdmin())
                     <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern(['user/reports*']), 'open') }}">
                         <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/*')) }}"
                            href="#">
@@ -168,7 +170,7 @@
 
 
 
-            @if ($logged_in_user->isAdmin() || $logged_in_user->hasAnyPermission(['blog_access','page_access','reason_access']))
+            @if (auth()->user()->isAdmin() || auth()->user()->hasAnyPermission(['blog_access','page_access','reason_access']))
                 <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern(['user/contact','user/sponsors*','user/testimonials*','user/faqs*','user/footer*','user/blogs','user/sitemap*']), 'open') }}">
                     <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/*')) }}"
                        href="#">
@@ -200,7 +202,7 @@
                                 </a>
                             </li>
                         @endcan
-                        @if ($logged_in_user->isAdmin())
+                        @if (auth()->user()->isAdmin())
                             <li class="nav-item">
                                 <a class="nav-link {{ active_class(Active::checkUriPattern('admin/menu-manager')) }}"
                                    href="{{ route('admin.menu-manager') }}"> {{ __('menus.backend.sidebar.menu-manager.title') }}</a>
@@ -295,7 +297,7 @@
                             class="title">@lang('menus.backend.sidebar.messages.title')</span>
                 </a>
             </li>
-            @if ($logged_in_user->hasRole('student'))
+            @if (auth()->user()->hasRole('student'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'invoices' ? 'active' : '' }}"
                        href="{{ route('admin.invoices.index') }}">
@@ -311,7 +313,7 @@
                     </a>
                 </li>
             @endif
-            @if($logged_in_user->hasRole('parent'))
+            @if(auth()->user()->hasRole('parent'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'students' ? 'active' : '' }}"
                        href="{{ route('admin.students.index') }}">
@@ -320,7 +322,7 @@
                     </a>
                 </li>
             @endif
-                @if($logged_in_user->hasRole('teacher') || $logged_in_user->isAdmin())
+            @if(auth()->user()->hasRole('teacher') || auth()->user()->isAdmin())
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'reviews' ? 'active' : '' }}"
                        href="{{ route('admin.reviews.index') }}">
@@ -330,7 +332,7 @@
                 </li>
             @endif
 
-            @if ($logged_in_user->isAdmin())
+            @if (auth()->user()->isAdmin())
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'contact-requests' ? 'active' : '' }}"
                        href="{{ route('admin.contact-requests.index') }}">
@@ -367,7 +369,7 @@
                     <span class="title">@lang('menus.backend.sidebar.account.title')</span>
                 </a>
             </li>
-            @if ($logged_in_user->isAdmin())
+            @if (auth()->user()->isAdmin())
 
 
                 <li class="nav-title">
@@ -476,7 +478,7 @@
                 </li>
             @endif
 
-            @if ($logged_in_user->hasRole('teacher'))
+            @if (auth()->user()->hasRole('teacher'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'payments' ? 'active' : '' }}"
                        href="{{ route('admin.payments') }}">

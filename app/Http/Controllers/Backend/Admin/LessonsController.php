@@ -157,8 +157,6 @@ class LessonsController extends Controller
         foreach ($chapters as $key => $chapter) {
             $allChapters[$chapter->id] = $chapter->getDataFromColumn('title') . ' - ' . $chapter->course->getDataFromColumn('title');
         }
-
-
         return view('backend.lessons.create', compact('videos', 'courses','course_id', 'chapters', 'allChapters'));
     }
 
@@ -222,6 +220,7 @@ class LessonsController extends Controller
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
+
                     $media->save();
                 } else {
                     redirect()->back()->withFlashDanger('Please select a video from the list');
@@ -238,6 +237,7 @@ class LessonsController extends Controller
                 $media->name = $name;
                 $media->url = $url;
                 $media->type = $request->media_type;
+                $media->user_id = auth()->user()->id;
                 $media->file_name = $video_id;
                 $media->size = 0;
                 $media->save();
@@ -310,7 +310,6 @@ class LessonsController extends Controller
         }
         $lesson = Lesson::with('media')->findOrFail($id);
         $videos = Media::where('type', 'upload')->whereIn('model_type', [Lesson::class,''])->pluck('file_name', 'id');
-
                 //        if ($lesson->media) {
                 //            $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
                 //        }
@@ -376,6 +375,7 @@ class LessonsController extends Controller
                 $media->model_id = $model_id;
                 $media->name = $name;
                 $media->url = $url;
+                $media->user_id = auth()->user()->id;
                 $media->type = $request->media_type;
                 $media->file_name = $video_id;
                 $media->size = 0;
@@ -384,17 +384,23 @@ class LessonsController extends Controller
 
             if ($request->media_type == 'upload') {
                 if ($request->video) {
+                    $oldMedia = Media::where('model_id',$id)->where('model_type',$model_type)->first();
+                    if ($oldMedia) {
+                        if ($oldMedia->type == 'upload') {
+                            $oldMedia->model_type = '';
+                            $oldMedia->model_id = null;
+                            $oldMedia->name = 'Unselected - video';
+                            $oldMedia->save();
+                        } else {
+                            $oldMedia->delete();
+                        }
+                    }
                     $media = Media::findOrFail(intval($request->video))->first();
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
                     $media->save();
 
-                    $oldMedia = Media::findOrFail(intval($request->old_video_file))->first();
-                    $oldMedia->model_type = '';
-                    $oldMedia->model_id = null;
-                    $oldMedia->name = 'Un selected - video';
-                    $oldMedia->save();
                 } else {
                     redirect()->back()->withFlashDanger('Please select a video from the list');
                 }

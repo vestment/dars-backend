@@ -15,8 +15,13 @@ Route::redirect('/', '/user/dashboard', 301);
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('teachers', 'Admin\TeachersController');
 
-Route::group(['middleware' => 'role:teacher|administrator'], function () {
+Route::group(['middleware' => 'role:teacher|administrator|academy'], function () {
     Route::resource('orders', 'Admin\OrderController');
+    //===== Orders Routes =====//
+    Route::get('get-orders-data', ['uses' => 'Admin\OrderController@getData', 'as' => 'orders.get_data']);
+    Route::post('orders_mass_destroy', ['uses' => 'Admin\OrderController@massDestroy', 'as' => 'orders.mass_destroy']);
+    Route::post('orders/complete', ['uses' => 'Admin\OrderController@complete', 'as' => 'orders.complete']);
+    Route::delete('orders_perma_del/{id}', ['uses' => 'Admin\OrderController@perma_del', 'as' => 'orders.perma_del']);
 });
 Route::group(['middleware' => 'role:academy|administrator'], function () {
     Route::resource('teachers', 'Admin\TeachersController');
@@ -44,11 +49,7 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
     Route::get('forums-category/status/{id}', 'Admin\ForumController@status')->name('forums-category.status');
 
 
-    //===== Orders Routes =====//
-    Route::get('get-orders-data', ['uses' => 'Admin\OrderController@getData', 'as' => 'orders.get_data']);
-    Route::post('orders_mass_destroy', ['uses' => 'Admin\OrderController@massDestroy', 'as' => 'orders.mass_destroy']);
-    Route::post('orders/complete', ['uses' => 'Admin\OrderController@complete', 'as' => 'orders.complete']);
-    Route::delete('orders_perma_del/{id}', ['uses' => 'Admin\OrderController@perma_del', 'as' => 'orders.perma_del']);
+
 
 
     //===== Settings Routes =====//

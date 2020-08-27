@@ -25,6 +25,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::get();
+
         return view('backend.orders.index', compact('orders'));
     }
 
@@ -35,11 +36,29 @@ class OrderController extends Controller
      */
     public function getData(Request $request)
     {
-        if (request('offline_requests') == 1) {
 
-            $orders = Order::where('payment_type', '=', 3)->orderBy('updated_at', 'desc')->get();
+        if (auth()->user()->hasRole('academy')) {
+            $academy = auth()->user()->academy()->with('teachers')->first();
+            $teachers = $academy->teachers()->with('teacher')->pluck('user_id');
+            $coursesCollection = Course::whereHas('teachers', function ($query) use ($teachers) {
+                $query->whereIn('user_id', $teachers);
+            })->with('category')->where('published',1);
+            $courses = $coursesCollection->pluck('id');
+            if (request('offline_requests') == 1) {
+                $orders = Order::whereHas('items', function ($query) use ($courses) {
+                    $query->whereIn('item_id', $courses)->where('item_type',Course::class);
+                })->where('payment_type', '=', 3)->orderBy('updated_at', 'desc')->get();
+            } else {
+                $orders = Order::whereHas('items', function ($query) use ($courses) {
+                    $query->whereIn('item_id', $courses)->where('item_type',Course::class);
+                })->orderBy('updated_at', 'desc')->get();
+            }
         } else {
-            $orders = Order::orderBy('updated_at', 'desc')->get();
+            if (request('offline_requests') == 1) {
+                $orders = Order::where('payment_type', '=', 3)->orderBy('updated_at', 'desc')->get();
+            } else {
+                $orders = Order::orderBy('updated_at', 'desc')->get();
+            }
         }
 
         return DataTables::of($orders)
@@ -59,8 +78,8 @@ class OrderController extends Controller
 
                 if ($q->status == 0) {
                     $delete = view('backend.datatable.action-delete')
-                    ->with(['route' => route('admin.orders.destroy', ['order' => $q->id])])
-                    ->render();
+                        ->with(['route' => route('admin.orders.destroy', ['order' => $q->id])])
+                        ->render();
 
                     $view .= $delete;
                 }
@@ -71,7 +90,7 @@ class OrderController extends Controller
             ->addColumn('items', function ($q) {
                 $items = "";
                 foreach ($q->items as $key => $item) {
-                    if($item->item != null){
+                    if ($item->item != null) {
                         $key++;
                         $items .= $key . '. ' . $item->item->title . "<br>";
                     }
@@ -111,11 +130,11 @@ class OrderController extends Controller
     public function complete(Request $request)
     {
         $order = Order::findOrfail($request->order);
-        $order_item = OrderItem::where('order_id',$request->order)->value('item_id');
-        $course = Course::where('id',$order_item)->first();
-
-        $course->seats = $course->seats -1;
-
+        $order_item = OrderItem::where('order_id', $request->order)->value('item_id');
+        $course = Course::where('id', $order_item)->first();
+        if ($course->offline) {
+            $course->seats = $course->seats - 1;
+        }
         $course->save();
         $order->status = 1;
         $order->save();
@@ -124,14 +143,15 @@ class OrderController extends Controller
         (new EarningHelper)->insert($order);
 
         //Generating Invoice
+        // cause error: Time-out
         generateInvoice($order);
 
         foreach ($order->items as $orderItem) {
             //Bundle Entries
-            if($orderItem->item_type == Bundle::class){
-               foreach ($orderItem->item->courses as $course){
-                   $course->students()->attach($order->user_id);
-               }
+            if ($orderItem->item_type == Bundle::class) {
+                foreach ($orderItem->item->courses as $course) {
+                    $course->students()->attach($order->user_id);
+                }
             }
             $orderItem->item->students()->attach($order->user_id);
         }
@@ -141,7 +161,7 @@ class OrderController extends Controller
     /**
      * Show Order from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -153,7 +173,7 @@ class OrderController extends Controller
     /**
      * Remove Order from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

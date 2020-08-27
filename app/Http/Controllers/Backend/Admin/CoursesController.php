@@ -191,34 +191,29 @@ class CoursesController extends Controller
         $allAcademies = User::role('academy')->with('academy')->get();
         $academies = [];
         foreach ($allAcademies as $academy) {
-            $academies[$academy->academy->id] = $academy->full_name;
+            $academies[$academy->id] = $academy->full_name;
         }
         $learned = [];
-        $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
-            $q->where('role_id', 2);
-        })->get()->pluck('name', 'id');
-
         $courses = Course::pluck('title', 'id');
         $coursesRaw = Course::all();
 
         foreach ($coursesRaw as $course) {
-            if ($course->learned) {
+            if ($course->learned && $course->learned != 'null') {
                 foreach (json_decode($course->learned) as $learnItem) {
                     $learned[$learnItem] = $learnItem;
                 }
             }
         }
-        $course_hours = Course::pluck('course_hours', 'id');
-        $teachers_ar = \App\Models\Auth\User::whereHas('roles', function ($q) {
-            $q->where('role_id', 2);
-        })->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
+        $teachersToSelect = [];
+        $allTeachers = User::role('teacher')->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
 
-        foreach ($teachers_ar as $key => $teacher_ar) {
-            $ar_full_name[$teacher_ar->id] = $teacher_ar->full_name;
+        foreach ($allTeachers as $key => $teachers) {
+            $teachersToSelect[$teachers->id] = $teachers->full_name;
         }
-        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id', 'name')->get();
-        foreach ($categories_ar as $key => $categories_ar) {
-            $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
+        $allCategories = Category::where('status', '=', 1)->get();
+        $categoriesToSelect = [];
+        foreach ($allCategories as $key => $category) {
+            $categoriesToSelect[$category->id] = $category->getDataFromColumn('name');
         }
 
 
@@ -228,7 +223,7 @@ class CoursesController extends Controller
             $videos = ['' => 'No videos available'];
         }
 
-        return view('backend.courses.create', compact('videos','teachers', 'ar_full_name', 'categ_name', 'courses','learned','course_hours','academies'));
+        return view('backend.courses.create', compact('videos', 'teachersToSelect', 'categoriesToSelect', 'courses', 'learned', 'academies'));
     }
 
     /**
@@ -289,14 +284,15 @@ class CoursesController extends Controller
                 $media->file_name = $video_id;
                 $media->size = 0;
                 $media->user_id = auth()->user()->id;
-                $media->duration  = $request->duration;
+                $media->duration = $request->duration;
                 $media->save();
             }
 
             if ($request->media_type == 'upload') {
 
-                if ($request->video) {
-                    $media = Media::findOrFail($request->video)->first();
+                if ($request->video_file) {
+                    $media = Media::findOrFail($request->video_file)->first();
+
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
@@ -334,16 +330,16 @@ class CoursesController extends Controller
             return abort(401);
         }
 
-        $teachers = \App\Models\Auth\User::whereHas('roles', function ($q) {
-            $q->where('role_id', 2);
-        })->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
-        $allTeachers = [];
-        foreach ($teachers as $key => $teacher_ar) {
-            $allTeachers[$teacher_ar->id] = $teacher_ar->full_name;
+        $teachersToSelect = [];
+        $allTeachers = User::role('teacher')->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
+
+        foreach ($allTeachers as $key => $teachers) {
+            $teachersToSelect[$teachers->id] = $teachers->full_name;
         }
-        $categories_ar = Category::where('status', '=', 1)->select('ar_name', 'id', 'name')->get();
-        foreach ($categories_ar as $key => $categories_ar) {
-            $categ_name[$categories_ar->id] = $categories_ar->getDataFromColumn('name');
+        $allCategories = Category::where('status', '=', 1)->get();
+        $categoriesToSelect = [];
+        foreach ($allCategories as $key => $category) {
+            $categoriesToSelect[$category->id] = $category->getDataFromColumn('name');
         }
         $allCourses = Course::pluck('title', 'id');
 
@@ -380,12 +376,13 @@ class CoursesController extends Controller
             $timeline = [];
         }
 
-        $videos = Media::where('type', 'upload')->whereIn('model_id', [$id,null])->pluck('file_name', 'id');
+        $videos = Media::where('type', 'upload')->where('model_id', null)->orWhere('model_id', $id)->pluck('file_name', 'id');
 
         if (count($videos) == 0) {
             $videos = ['' => 'No videos available'];
         }
-        return view('backend.courses.edit', compact('chapterContent', 'videos','timeline', 'course', 'allTeachers', 'categ_name', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned'));
+//        dd($videos);
+        return view('backend.courses.edit', compact('chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned'));
     }
 
     /**
@@ -408,14 +405,12 @@ class CoursesController extends Controller
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-
-
         $request = $this->saveFiles($request);
         //Saving  videos
         if ($request->media_type != "" || $request->media_type != null) {
-            if ($course->mediavideo) {
-                $course->mediavideo->delete();
-            }
+//            if ($course->mediavideo) {
+//                $course->mediavideo->delete();
+//            }
             $model_type = Course::class;
             $model_id = $course->id;
             $size = 0;
@@ -449,9 +444,19 @@ class CoursesController extends Controller
             }
 
             if ($request->media_type == 'upload') {
-
-                if ($request->video) {
-                    $media = Media::findOrFail($request->video)->first();
+                if ($request->video_file) {
+                    $oldMedia = Media::where('model_id',$id)->where('model_type',$model_type)->first();
+                    if ($oldMedia) {
+                        if ($oldMedia->type == 'upload') {
+                            $oldMedia->model_type = '';
+                            $oldMedia->model_id = null;
+                            $oldMedia->name = 'Unselected - video';
+                            $oldMedia->save();
+                        } else {
+                            $oldMedia->delete();
+                        }
+                    }
+                    $media = Media::where('id', $request->video_file)->first();
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
@@ -515,7 +520,7 @@ class CoursesController extends Controller
 
         $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
 
-        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses','learn'));
+        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses', 'learn'));
     }
 
 
@@ -605,13 +610,12 @@ class CoursesController extends Controller
     public function saveSequence(Request $request)
     {
 
-       
 
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
         foreach ($request->list as $item) {
-            
+
             $courseTimeline = CourseTimeline::find($item['id']);
             $courseTimeline->sequence = $item['sequence'];
             $courseTimeline->save();

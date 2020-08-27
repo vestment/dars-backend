@@ -53,23 +53,23 @@
         ============================================= -->
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style  bgimage">
         <div class="blakish-overlay"></div>
-            <div class="container">
+            <div class="container d-none">
                 <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
                     <div class="m-1">
-                        <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->full_name}}</b></p>
+                        <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->user->full_name}}</b></p>
 
                     </div>
                     <div class="p-1">
-                        <h2 class="text-white"><b>{{$academy->full_name}}</b></h2>
+                        <h2 class="text-white"><b>{{$academy->user->full_name}}</b></h2>
                     </div>
                     <div class="row col-lg-3 flex">
-                        @if($academy->academy->facebook_link) <a href="{{$academy->academy->facebook_link}}"
+                        @if($academy->facebook_link) <a href="{{$academy->facebook_link}}"
                                                             class="btn btn-sm btn-outline-light mr-1"><i
                                     class="fab fa-facebook-f"></i> </a> @endif
-                        @if($academy->academy->twitter_link)<a href="{{$academy->academy->twitter_link}}"
+                        @if($academy->twitter_link)<a href="{{$academy->twitter_link}}"
                                                           class="btn btn-sm btn-outline-light mr-1"><i
                                     class="fab fa-twitter"></i> </a>@endif
-                        @if($academy->academy->linkedin_link)<a href="{{$academy->academy->linkedin_link}}"
+                        @if($academy->linkedin_link)<a href="{{$academy->linkedin_link}}"
                                                            class=" btn btn-sm btn-outline-light mr-1"><i
                                     class="fab fa-linkedin"></i> </a>@endif
 
@@ -78,11 +78,11 @@
                     <div class="row mt-5 flex">
                         <div class="col-lg-2 col-xl-2">
                             <span class=" text-light font-weight-bold">Phone:</span> <span
-                                    class="text-white font-weight-light">{{$academy->phone}}</span>
+                                    class="text-white font-weight-light">{{$academy->user->phone}}</span>
                         </div>
                         <div class="col-lg-3 col-xl-4">
                             <span class=" text-light font-weight-bold">Address:</span> <span
-                                    class="text-white font-weight-light">{{$academy->academy->adress}}</span>
+                                    class="text-white font-weight-light">{{$academy->adress}}</span>
                         </div>
                     </div>
                 </div>
@@ -92,22 +92,6 @@
     <!-- End of breadcrumb section
         ============================================= -->
 
-
-    <!-- Start of academy logo section
-        ============================================= -->
-    <section id="course-page" class="course-page-section">
-        <div class="container">
-
-            @if($academy->id != 29)
-
-                <div class="m-5 col-2 d-lg-flex d-lg-flex d-md-flex shadow-lg divfixed">
-                    <img class="academy-logo" src="{{asset($academy->academy->logo)}}" alt="{{$academy->full_name}}">
-                </div>
-            @endif
-
-
-        </div>
-    </section>
     <!-- End of academy logo section
         ============================================= -->
     <!-- Start of Teacher section
@@ -181,30 +165,18 @@
             </div>
             @if(count($courses) > 0)
                 <div class="col-md-12">
-                    <div class="col-xl-12 categories-container border-bottom">
-                        @foreach($courses_911 as $key=>$category)
-                            <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
-                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
-                        @endforeach
-                    </div>
                     <div class="col-xl-12 courses-container">
-                        @foreach($courses_911 as $key=>$category)
-                            <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
-                                 id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
                                 <div class="owl-carousel default-owl-theme p-3 ">
                                     @foreach($courses as $course)
-                                        @if($course->category_id == $category->id)
+
                                             <div class="item">
 
                                                 <div class="">
                                                     @include('frontend.layouts.partials.coursesTemp')
                                                 </div>
                                             </div>
-                                        @endif
                                     @endforeach
                                 </div>
-                            </div>
-                        @endforeach
                     </div>
                 </div>
             @else
@@ -223,11 +195,11 @@
                 <h1 class="text-dark font-weight-bolder"><span>@lang('labels.frontend.academy.Gallery').</span>
                 </h1>
             </div>
-            @if ($academy->academy->gallery != null && $academy->academy->gallery != 'null')
+            @if ($academy->gallery != null && $academy->gallery != 'null')
                 <div class="col-md-12">
                     <div class="gallery">
 
-                    @foreach(json_decode($academy->academy->gallery) as $key=>$image)
+                    @foreach(json_decode($academy->gallery) as $key=>$image)
                         <!-- Grid column -->
                             <div class="mb-3 pics 2">
                                 <img class="img-fluid"
