@@ -92,6 +92,8 @@ Route::get('offlineBooking', 'offlineBookingController@index')->name('offlineBoo
 Route::get('filter/offlineCourses', ['uses' => 'offlineBookingController@filerCoursesByCategory', 'as' => 'offlineCourses.filterCategory']);
 //============ Academy Routes=================//
 Route::get('academy/{id}', ['uses' => 'AcademyController@show', 'as' => 'academy.show']);
+Route::get('academy-911', ['uses' => 'AcademyController@show911', 'as' => 'academy-911']);
+
 
 //============Bundle Routes=================//
 Route::get('bundles', ['uses' => 'BundlesController@all', 'as' => 'bundles.all']);

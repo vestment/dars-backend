@@ -38,14 +38,16 @@ class HomeController extends Controller
     ];
     public function __construct()
     {
-        $academy_911 = 29;
+        $academy_911 = 5;
         $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
+
         if ($academy) {
             $academyTeachersIds = $academy->teachers()->pluck('user_id');
             $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
                 $query->whereIn('user_id', $academyTeachersIds);
             })->pluck('id');
             $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+            dd($coursesIds);
             $this->hidden_data = [
                 'courses' => $coursesIds,
                 'teachers' => $academyTeachersIds
@@ -217,13 +219,13 @@ class HomeController extends Controller
     {
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $teacher = User::role('teacher')->where('id', '=', $request->id)->first();
-        $teacher_data = TeacherProfile::where('user_id', '=', $request->id)->first();
-
-        $courses = $teacher->courses;
+        $teacher_data = TeacherProfile::where('user_id', '=', $request->id)->with('academy')->first();
+        $academy = User::role('academy')->where('id', '=', $teacher_data->academy_id)->first();
+        $courses = [];
         if (count($teacher->courses) > 0) {
-            $courses = $teacher->courses()->whereNotIn('id',$this->hidden_data['courses'])->paginate(12);
+            $courses = $teacher->courses()->paginate(12);
         }
-        return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses', 'teacher_data'));
+        return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses', 'teacher_data','academy'));
     }
 
     public function getDownload(Request $request)

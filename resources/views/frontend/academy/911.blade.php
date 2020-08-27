@@ -51,9 +51,8 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style @if($academy->id == 29) bgimage @else bgcolor @endif">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style  bgimage">
         <div class="blakish-overlay"></div>
-        @if($academy->id != 29)
             <div class="container">
                 <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
                     <div class="m-1">
@@ -88,7 +87,6 @@
                     </div>
                 </div>
             </div>
-        @endif
 
     </section>
     <!-- End of breadcrumb section
@@ -181,36 +179,16 @@
                     <span>@lang('labels.frontend.academy.courses_by_teacher')</span>
                 </h1>
             </div>
-            @if ($academy->id == 29)
-                @if(count($courses) > 0)
-
-                                    <div class="owl-carousel default-owl-theme p-3 ">
-                                        @foreach($courses as $course)
-                                                <div class="item">
-                                                    <div class="">
-                                                        @include('frontend.layouts.partials.coursesTemp')
-                                                    </div>
-                                                </div>
-
-                                        @endforeach
-                                    </div>
-                @else
-                    <div class="alert alert-dark">
-                        <span>@lang('labels.general.no_data_available')</span>
-                    </div>
-                @endif
-            @else
-
             @if(count($courses) > 0)
                 <div class="col-md-12">
                     <div class="col-xl-12 categories-container border-bottom">
-                        @foreach($categories as $key=>$category)
+                        @foreach($courses_911 as $key=>$category)
                             <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
                                     class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
                         @endforeach
                     </div>
                     <div class="col-xl-12 courses-container">
-                        @foreach($categories as $key=>$category)
+                        @foreach($courses_911 as $key=>$category)
                             <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
                                  id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
                                 <div class="owl-carousel default-owl-theme p-3 ">
@@ -234,7 +212,6 @@
                     <span>@lang('labels.general.no_data_available')</span>
                 </div>
             @endif
-                @endif
         </div>
     </section>
 

@@ -6833,7 +6833,6 @@ iframe {
 
 .teacher-image {
     border-radius: 50%;
-    width: 58% !important;
 
 }
 
@@ -7634,3 +7633,15 @@ hr {
 .menu-bg-overlay .menu-item-has-children:hover .sub-menu {
     transform: scaleY(1) translateY(33px);
 }
+.bg-header-offline {
+    background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
+   height: 260px;
+    color: white;
+    margin-bottom: 88px;
+    /* padding-bottom: 515px; */
+
+}
+.bg-header-offline .container-fluid .page-breadcrumb-content{
+padding-top: 5rem;
+}
+

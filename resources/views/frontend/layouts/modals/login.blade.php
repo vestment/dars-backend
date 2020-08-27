@@ -127,7 +127,7 @@
                         <div><a href="{{ route('register.index') }}"
                                 class="text-dark font-weight-bold col-12 d-flex justify-content-center mt-5">@lang('labels.frontend.login.sign_up')</a>
                         </div>
-                        <div class="mb-2"><a href="#"
+                        <div class="mb-2"><a href="{{route('frontend.index',['page'=>'privacy-policy'])}}"
                                              class="text-dark col-12 d-flex justify-content-center mt-3">@lang('labels.frontend.login.terms_of_use')</a>
                         </div>
 

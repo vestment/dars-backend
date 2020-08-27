@@ -53,21 +53,21 @@
                                 <ul class="nav justify-content-center">
                                     <li class="nav-item"><span class="icon"><img
                                                     src="assets/img/banner/260d37c0-84ad-4627-9667-26030c180189 (1).png"
-                                                    alt=""> </span><span class="text">Expert Teachers</span>
+                                                    alt=""> </span><span class="text">@lang('labels.frontend.layouts.partials.Expert_Teachers')</span>
                                     </li>
                                     <li class="nav-item"><span class="icon"><img src="assets/img/banner/55.png" alt=""></span><span
-                                                class="text">Learn Anywhere</span>
+                                                class="text">@lang('labels.frontend.layouts.partials.Learn_Anywhere')</span>
                                     </li>
                                     <li class="nav-item"><span class="icon"><img
                                                     src="assets/img/banner/dfeferf9 (1).png" alt=""></span><span
-                                                class="text">Earn a certificate or degree</span>
+                                                class="text">@lang('labels.frontend.layouts.partials.Earn a certificate or degree')</span>
                                     </li>
 
                                     <li class="nav-item"><span class="icon"><img src="assets/img/banner/fdfvds.png"
-                                                                                 alt=""></span><span class="text">Learn the latest skills</span>
+                                                                                 alt=""></span><span class="text">@lang('labels.frontend.layouts.partials.Learn the latest skills')</span>
                                     </li>
                                     <li class="nav-item"><span class="icon"><img src="assets/img/banner/fdfvds.png"
-                                                                                 alt=""></span><span class="text">Booking center online or offline</span>
+                                                                                 alt=""></span><span class="text">@lang('labels.frontend.layouts.partials.Booking center online or offline')</span>
                                     </li>
                                 </ul>
                             </div>
@@ -102,11 +102,11 @@
                                 <div class="position-absolute p-ab ">
                                     <div>
                                         <div class="text-white tex">
-                                            <h3 class="pb-4">Bundle Course</h3>
-                                            <h4 class="pb-5 textbold">World-class learning for anyone, anywhere</h4>
+                                            <h3 class="pb-4">@lang('labels.frontend.layouts.partials.Bundle Course')</h3>
+                                            <h4 class="pb-5 textbold">@lang('labels.frontend.layouts.partials.World-class learning for anyone, anywhere')</h4>
                                         </div>
                                         <div class=" text-center btn-p">
-                                            <button class=" btn btn-outline-info">view plans</button>
+                                            <button class=" btn btn-outline-info">@lang('labels.frontend.layouts.partials.view_plans')</button>
                                         </div>
 
 
@@ -260,7 +260,6 @@
         <!-- End Course category
             ============================================= -->
     @endif
-
     <section class="bg-static">
         <div class="row bg-static1 ">
             <div class="container">
@@ -269,14 +268,14 @@
                     <img src="/img/backend/brand/Council-logo-100px.png" alt="">
                 </div>
                 <div class="text-white pl-5 pb-5">
-                    <h1>Offline Booking Center.</h1>
-                    <p class="">we see first-hand every day how technology makes the impossible, possible. It’s why
-                        Pluralsight One exists: To advance our mission of democratizing technology skills,
-                        challenging
-                        assumptions about solutions and create significant, lasting social impact.</p>
+                    <h1>@lang('labels.frontend.layouts.partials.Offline Booking Center').</h1>
+                    <p class="">@lang('labels.frontend.layouts.partials.Offline Booking')</p>
                 </div>
                 <div class="pl-5 pb-5">
-                    <button class="btn btn-outline-info ">View Plans</button>
+                  
+                        <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
+                        @lang('labels.frontend.layouts.partials.view_plans')
+                        </a>
                 </div>
             </div>
             </div>

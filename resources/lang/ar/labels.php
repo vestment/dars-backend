@@ -196,6 +196,7 @@ return array (
           'add' => 'أضف دروس',
           'view' => 'عرض الدروس',
         ),
+        
         'meta_description' => '  ميتا الوصف بالانجليزية',
         'meta_description_ar' => '  ميتا الوصف بالعربي',
 
@@ -204,6 +205,7 @@ return array (
 
         'meta_title' => ' عنوان الفوقية بالانجليزية',
         'meta_title_ar' => ' عنوان الفوقية بالعربي',
+        'featured_courses' => 'الدورات المميزة',
 
         'popular' => 'جمع',
         'price' => 'السعر',
@@ -213,7 +215,7 @@ return array (
         'teachers' => 'معلمون',
         'title' => '  عنوان بالانجليزية',
         'title_ar' => 'عنوان بالعربي',
-
+       
         'trending' => 'الشائع',
         'free' => 'مجاني',
         'unpublished' => 'غير منشور',
@@ -227,6 +229,7 @@ return array (
 
       ),
       'course_hours' => 'عدد ساعات الكورس ',
+      'featured_courses' => 'الدورات المميزة',
 
       'add_categories' => 'إضافة فئات',
       'add_teachers' => 'إضافة المعلمين',
@@ -243,7 +246,7 @@ return array (
       'test' => 'اختبار',
       'timeline_description' => 'سحب وتغيير تسلسل الدروس / الاختبارات بالطبع',
       'title' => 'الدورات',
-      
+      'courses_to_start' => 'دورات لتبدأ بها ',
       'view' => 'عرض الدورات',
     ),
     'lessons' => 
@@ -1420,9 +1423,14 @@ return array (
             'reset' => 'الغاء',
             'up' => 'أعلي',
             'hours' => 'ساعات',
+            'academies'=>'اكادميه',
+            'teachers'=>'المعلمين',
+            'categories'=>'الفئات',
 
+            
+           
         ),
-        'course_hours' => 'عدد ساعات الكورس ',
+        'course_hours' => 'عدد الساعات ',
 
       'add_review_now' => 'إضافة مراجعة الآن',
       'add_reviews' => 'أضف <span> مراجعات. </span>',
@@ -1471,6 +1479,7 @@ return array (
       'starts' => 'يبدأ',
       'students' => 'الطلاب',
       'submit_results' => 'إرسال النتائج',
+      
       'test' => 'اختبار',
       'title' => 'دورة',
       'trending' => 'الشائع',
@@ -1508,7 +1517,10 @@ return array (
       'mailbusiness' => 'للحصول على عرض أسعار ، اتصل بنا علي info@ecouncilacademy.com',
       'knowledge' => 'ماذا ستتعلم في هذه الدورة',
 
-      
+      'featured_courses' => 'الدورات المميزة',
+
+      'offline_booking_course'=>'حجز كورسات في اكادميه',
+      'explore'=>'أستكشف',
     ),
     'faq' => 
     array (
@@ -1538,6 +1550,26 @@ return array (
     array (
       'partials' => 
       array (
+        'view_plans' => 'اعرض الخطط',
+        'Offline Booking Center' => ' مركز الحجز دون اتصال بالإنترنت',
+        'Offline Booking' => '
+        نرى بأنفسنا كل يوم كيف تجعل التكنولوجيا المستحيل ممكناً. هذا هو السبب
+                مفهوم التعددية واحد موجود: لتعزيز مهمتنا في إضفاء الطابع الديمقراطي على المهارات التكنولوجية ،
+                يتحدى
+                افتراضات حول الحلول وخلق تأثير اجتماعي كبير ودائم',
+
+
+        'Bundle Course' => 'مجموعة دورات',
+        'World-class learning for anyone, anywhere' => ' تعليم على مستوى عالمي لأي شخص في أي مكان',
+
+        'Expert_Teachers' => ' مدرسين خبراء',
+        'Learn_Anywhere' => 'تعلم في أي مكان',
+        'Earn a certificate or degree' => '
+        احصل على شهادة أو درجة علمية',
+        'Learn the latest skills' => '
+        تعلم أحدث المهارات',
+        'Booking center online or offline' => 'مركز الحجز عبر الإنترنت أو غير متصل',
+
         'view_more' => 'اعرض المزيد ',
         'subtext'=>"اكبر مجموعة من الكورسات",
         'paragh'=>"اختر من 100,000 فيديو ينشر كل شهر",

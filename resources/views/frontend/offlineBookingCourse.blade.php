@@ -15,11 +15,11 @@
                     <div class="page-breadcrumb-content">
                             <div class="page-breadcrumb-title">
                                 <p class="text-white pragchechout p-1">
-                                   <span style="opacity: 0.3"> EXPLORE </span> / Offline Booking Course
+                                   <span style="opacity: 0.3"> @lang('labels.frontend.course.explore')</span> / @lang('labels.frontend.course.offline_booking_course')
                                 </p>                  
                             </div>
                         <div class="page-breadcrumb-title">
-                            <h2 class="breadcrumb-head black bold p-1"><span>Offline Booking Course</h2>
+                            <h2 class="breadcrumb-head black bold p-1"><span>@lang('labels.frontend.course.offline_booking_course')</h2>
                         </div>
                     </div>
                 </div>

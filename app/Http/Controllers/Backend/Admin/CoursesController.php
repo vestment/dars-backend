@@ -243,7 +243,7 @@ class CoursesController extends Controller
             return abort(401);
         }
         $request = $this->saveFiles($request);
-        $slug = str_slug($request->title,'_');
+        $slug = str_slug($request->title);
 
         $slug_lesson = Course::where('slug', '=', $slug)->first();
         if ($slug_lesson != null) {
@@ -315,7 +315,7 @@ class CoursesController extends Controller
         }
 
 
-        $teachers = \Auth::user()->isAdmin() ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
+        $teachers = (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
         $course->teachers()->sync($teachers);
 
         return redirect()->route('admin.courses.edit', ['course' => $course->id])->withFlashSuccess(trans('alerts.backend.general.created'));
@@ -411,7 +411,6 @@ class CoursesController extends Controller
 
 
         $request = $this->saveFiles($request);
-
         //Saving  videos
         if ($request->media_type != "" || $request->media_type != null) {
             if ($course->mediavideo) {
@@ -421,7 +420,7 @@ class CoursesController extends Controller
             $model_id = $course->id;
             $size = 0;
             $media = '';
-            $url = '';
+            $url = 'default';
             $video_id = '';
             $name = $course->title . ' - video';
             $media = $course->mediavideo;
@@ -486,7 +485,7 @@ class CoursesController extends Controller
             $course->save();
         }
 
-        $teachers = \Auth::user()->isAdmin() ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
+        $teachers = (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) ? array_filter((array)$request->input('teachers')) : [auth()->user()->id];
         $course->teachers()->sync($teachers);
 
         return redirect()->route('admin.courses.index')->withFlashSuccess(trans('alerts.backend.general.updated'));

@@ -204,7 +204,7 @@
 
                                         {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>'video'  ]) !!}
 
-                                        {!! Form::select('video', $videos, old('video'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
+                                        {!! Form::select('video_file', $videos, old('video_file'), ['class' => 'form-control mt-3 d-none ','id'=>'video_file']) !!}
 
                                         @lang('labels.backend.lessons.video_guide')
 
@@ -406,9 +406,9 @@ $(document).on('click','#add-button',function (e) {
                         
                         "</div>"+
                         "<div class='col-6'>" +
-                            "<button type='button' id='add-but' class='btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
+                            "<button type='button' onclick=\"addInputTime(this)\" class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
                         "</div>" +
-                        "</div>"+
+                        "</div><div id='timepicker'></div>"+
                         "</div>";
 
                     $('.button-container').append(html);
@@ -421,35 +421,30 @@ $(document).on('click','#add-button',function (e) {
             });
             });
 
-            $(document).on('click','.remove',function () {
-                if(confirm('Are you sure want to remove button?')){
-                    $(this).parents('.button-wrapper').remove();
-                    $('#buttons').val($('.button-wrapper').length)
-                }
-             });
+         
 
 
-
-$(document).on('click','#add-but',function (e) {
-                e.preventDefault()
-               
+             function addInputTime (elemt) {
+                console.log($(elemt).parents())
                     var name = 'Booking Date&Time';
-                    var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
-                    "<div class='row'>" +
+                    var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
+                    "<div class='row mt-3'>" +
                         "<div class='col-lg-6'>" +
-                        "<input class='form-control dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' name='start_dat' type='time'>" +
+                        "<input class='form-control date-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' name='start_dat' type='time'>" +
                         "</div>"+
                         "</div>"+
                         "</div>";
-
-                    $('.button-container').append(html);
+                    // $(this).parent('.button-container')
+                    $(elemt).parent().parent().next('#timepicker').append(html);
                
                 $('.date-input').datepicker({
                 autoclose: true,
                 dateFormat: "{{ config('app.date_format_js') }}"
             
             });
-            });
+
+             }
+              
 
             $(document).on('click','.remove',function () {
                 if(confirm('Are you sure want to remove button?')){

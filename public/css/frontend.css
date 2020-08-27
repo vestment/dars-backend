@@ -100,7 +100,6 @@ body {
 .ul-li-block ul li {
     list-style: none;
     display: inline;
-    margin-left: 5%;
 }
 
 div#preloader {
@@ -126,7 +125,7 @@ a:focus {
 }
 
 img {
-    max-width: 100%;
+    /* max-width: 100%; */
     height: auto;
 }
 
@@ -494,6 +493,7 @@ padding-top: 5rem;
   color: #eeeeee;
   font-family: Open Sans;
   font-weight: lighter;
+  font-size: 16px;
 }
 .about{
   font-family: Ubuntu;
@@ -6890,10 +6890,10 @@ iframe {
 
 .teacher-details-content .teacher-image {
     width: 100% !important;
+    
 }
 .teacher-image {
     border-radius: 50%;
-    width: 58% !important;
 
 }
 
