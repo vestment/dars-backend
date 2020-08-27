@@ -11,7 +11,7 @@ return [
     | You can change it on each invoice individually.
     */
 
-    'currency' => 'USD',
+    'currency' => 'EGP',
 
     /*
     |------ --------------------------------------------------------------------
