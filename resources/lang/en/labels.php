@@ -1411,8 +1411,6 @@ return array(
                     'sign_up' => 'SIGN UP',
                     'terms_of_use' => 'Term of use. Privacy policy',
                     'register_as_teacher' => 'Register as a teacher',
-
-
                 ),
 
             'sign_up' =>
@@ -1557,9 +1555,6 @@ return array(
                         'academies'=>'Academies',
                         'teachers'=>'Teachers',
                         'categories'=>'categories',
-                        'offline_booking_course'=>'Offline_Booking_Course'
-                        
-                        
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',
@@ -1574,7 +1569,8 @@ return array(
                     'course_hours' => 'hours',
                     'instructor' => 'instructor',
 
-
+                    'offline_booking_course'=>'Offline Booking Course',
+                    'explore'=>'EXPLORE',
                     'category' => 'Category',
                     'author' => 'Author',
                     'courses' => 'Courses',
@@ -1685,6 +1681,24 @@ return array(
                 array(
                     'partials' =>
                         array(
+                            'Bundle Course' => 'Bundle Course',
+                            'view_plans' => 'view plans',
+                            'Offline Booking Center' => 'Offline Booking Center',
+                            'Offline Booking' => 'we see first-hand every day how technology makes the impossible, possible. It’s why
+                            Pluralsight One exists: To advance our mission of democratizing technology skills,
+                            challenging
+                            assumptions about solutions and create significant, lasting social impact',
+
+                            'World-class learning for anyone, anywhere' => 'World-class learning for anyone, anywhere',
+
+                            'Expert_Teachers' => 'Expert Teachers',
+                            'Learn_Anywhere' => 'Learn_Anywhere',
+                            'Earn a certificate or degree' => 'Earn a certificate or degree',
+                            'Learn the latest skills' => 'Learn the latest skills',
+                            'Booking center online or offline' => 'Booking center online or offline',
+
+
+
                             'OfferCourses' => 'Offer Courses',
                             'view_more' => 'view more ',
                             'subtext'=>"The world's largest selection of courses",

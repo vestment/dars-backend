@@ -22,6 +22,7 @@ class offlineBookingController extends Controller
 {
     public function index()
     {
+
         $courses = Course::with(['academy','category'])->withoutGlobalScope('filter')->where('offline', 1)->orderBy('id', 'desc')->get();
    
         $teacher_filtering=[];
@@ -37,13 +38,13 @@ class offlineBookingController extends Controller
 
 
         $academy_filter=[];
-        foreach($courses as $course) {
-           $academy = $course->academy->with('user')->first();
-                $academy->user->assoc_id = $course->academy_id;
-                if (!in_array($academy->user,$academy_filter)){
-                array_push($academy_filter,$academy->user);
-                }
-        }
+        // foreach($courses as $course) {
+        //    $academy = $course->academy->with('user')->first();
+        //         $academy->user->assoc_id = $course->academy_id;
+        //         if (!in_array($academy->user,$academy_filter)){
+        //         array_push($academy_filter,$academy->user);
+        //         }
+        // }
         $ac_filter= $academy_filter;
         
 
@@ -76,6 +77,7 @@ class offlineBookingController extends Controller
 
     public function filerCoursesByCategory(Request $request)
     {
+        
         $courses = [];
         $courses = Course::with(['academy','category'])->withoutGlobalScope('filter')->where('offline', 1);
        

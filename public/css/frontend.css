@@ -125,7 +125,7 @@ a:focus {
 }
 
 img {
-    max-width: 100%;
+    /* max-width: 100%; */
     height: auto;
 }
 
@@ -6890,6 +6890,7 @@ iframe {
 
 .teacher-details-content .teacher-image {
     width: 100% !important;
+    
 }
 .teacher-image {
     border-radius: 50%;
