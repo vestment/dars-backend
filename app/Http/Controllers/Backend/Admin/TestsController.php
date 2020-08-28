@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App\Models\Course;
 use App\Models\CourseTimeline;
+use App\Models\Lesson;
 use App\Models\Test;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
@@ -59,7 +60,6 @@ class TestsController extends Controller
         if ($request->chapter_id != "") {
             $tests = Test::where('chapter_id','=',$request->chapter_id)->orderBy('created_at', 'desc')->get();
         }
-
         if (request('show_deleted') == 1) {
             if (!Gate::allows('test_delete')) {
                 return abort(401);
@@ -111,7 +111,7 @@ class TestsController extends Controller
                 if(count($q->questions) > 0){
                     return "<span>".count($q->questions)."</span><a class='btn btn-success float-right' href='".route('admin.questions.index',['test_id'=>$q->id])."'><i class='fa fa-arrow-circle-o-right'></i></a> ";
                 }
-              return count($q->questions);
+                return count($q->questions);
             })
 
             ->editColumn('course',function ($q){
@@ -156,7 +156,7 @@ class TestsController extends Controller
      */
     public function store(StoreTestsRequest $request)
     {
-        $course_id = Chapter::findOrFail($request->chapter_id)->with('course')->value('course_id');
+
         $this->validate($request,[
             'title' => 'required',
             'description' => 'required'
@@ -165,9 +165,9 @@ class TestsController extends Controller
         if (! Gate::allows('test_create')) {
             return abort(401);
         }
-
+        $chapter = Chapter::findOrFail($request->chapter_id);
         $test = Test::create($request->except('course_id'));
-        $test->course_id = $course_id;
+        $test->course_id = $chapter->course_id;
         $test->slug = str_slug($request->title);
         $test->save();
 
@@ -180,11 +180,11 @@ class TestsController extends Controller
         if ($test->published == 1) {
             $timeline = CourseTimeline::where('model_type', '=', Test::class)
                 ->where('model_id', '=', $test->id)
-                ->where('course_id', $course_id)->first();
+                ->where('course_id', $chapter->course_id)->first();
             if ($timeline == null) {
                 $timeline = new CourseTimeline();
             }
-            $timeline->course_id = $course_id;
+            $timeline->course_id = $chapter->course_id;
             $timeline->chapter_id = $request->chapter_id;
 
             $timeline->model_id = $test->id;
@@ -210,14 +210,18 @@ class TestsController extends Controller
         if (! Gate::allows('test_edit')) {
             return abort(401);
         }
-        $courses = \App\Models\Course::ofTeacher()->get();
+        $courses = Course::ofTeacher()->get();
         $courses_ids = $courses->pluck('id');
         $courses = $courses->pluck('title', 'id')->prepend('Please select', '');
-        $lessons = \App\Models\Lesson::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
-
+        $lessons = Lesson::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
+        $allChapters = Chapter::with('course')->get();
+        $chapters = ['Please Select'];
+        foreach ($allChapters as $key => $chapter) {
+            $chapters[$chapter->id] = $chapter->getDataFromColumn('title').' - '.$chapter->course->getDataFromColumn('title');
+        }
         $test = Test::findOrFail($id);
 
-        return view('backend.tests.edit', compact('test', 'courses', 'lessons'));
+        return view('backend.tests.edit', compact('test', 'courses', 'lessons','chapters'));
     }
 
     /**
@@ -232,13 +236,15 @@ class TestsController extends Controller
         if (! Gate::allows('test_edit')) {
             return abort(401);
         }
+        $chapter = Chapter::findOrFail($request->chapter_id);
         $test = Test::findOrFail($id);
-        $test->update($request->all());
+        $test->update($request->except('course_id'));
+        $test->course_id = $chapter->course_id;
         $test->slug = str_slug($request->title);
         $test->save();
 
 
-        $sequence = 1; 
+        $sequence = 1;
         if (count($test->course->courseTimeline) > 0) {
             $sequence = $test->course->courseTimeline->max('sequence');
             $sequence = $sequence + 1;
@@ -247,11 +253,11 @@ class TestsController extends Controller
         if ($test->published == 1) {
             $timeline = CourseTimeline::where('model_type', '=', Test::class)
                 ->where('model_id', '=', $test->id)
-                ->where('course_id', $request->course_id)->first();
+                ->where('course_id', $chapter->course_id)->first();
             if ($timeline == null) {
                 $timeline = new CourseTimeline();
             }
-            $timeline->course_id = $request->course_id;
+            $timeline->course_id = $chapter->course_id;
             $timeline->chapter_id = $request->chapter_id;
             $timeline->model_id = $test->id;
             $timeline->model_type = Test::class;

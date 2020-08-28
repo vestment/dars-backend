@@ -31,9 +31,9 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('course_id',trans('labels.backend.tests.fields.course'), ['class' => 'control-label']) !!}
-                    {!! Form::select('course_id', $courses, old('course_id'), ['class' => 'form-control select2']) !!}
+                <div class="col-12 col-lg-12 form-group">
+                    {!! Form::label('chapter_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
+                    {!! Form::select('chapter_id', $chapters,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'chapter_id']) !!}
                 </div>
 
                 <div class="col-12 col-lg-6 form-group">
