@@ -19,8 +19,8 @@
         <div class="card-body table-responsive">
             <div class="row">
                 <div class="col-12 col-lg-6 form-group">
-                    {!! Form::label('course_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
-                    {!! Form::select('course_id', $chapters,  (request('course_id')) ? request('course_id') : old('course_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'course_id']) !!}
+                    {!! Form::label('chapter_id', trans('labels.backend.chapters.title'), ['class' => 'control-label']) !!}
+                    {!! Form::select('chapter_id', $chapters,  (request('chapter_id')) ? request('chapter_id') : old('chapter_id'), ['class' => 'form-control js-example-placeholder-single select2 ', 'id' => 'chapter_id']) !!}
                 </div>
             </div>
             <div class="d-block">
@@ -37,7 +37,7 @@
                 </ul>
             </div>
 
-            @if(request('course_id') != "" || request('show_deleted') == 1)
+            @if(request('chapter_id') != "" || request('show_deleted') == 1)
 
 
             <table id="myTable"
@@ -94,14 +94,14 @@
 
             @php
                 $show_deleted = (request('show_deleted') == 1) ? 1 : 0;
-                $course_id = (request('course_id') != "") ? request('course_id') : 0;
-            $route = route('admin.tests.get_data',['show_deleted' => $show_deleted,'course_id' => $course_id]);
+                $chapter_id = (request('chapter_id') != "") ? request('chapter_id') : 0;
+            $route = route('admin.tests.get_data',['show_deleted' => $show_deleted,'chapter_id' => $chapter_id]);
             @endphp
 
             route = '{{$route}}';
             route = route.replace(/&amp;/g, '&');
 
-            @if(request('show_deleted') == 1 ||  request('course_id') != "")
+            @if(request('show_deleted') == 1 ||  request('chapter_id') != "")
 
             $('#myTable').DataTable({
                 processing: true,
@@ -165,8 +165,8 @@
 
 
             $(document).on('change', '#course_id', function (e) {
-                var course_id = $(this).val();
-                window.location.href = "{{route('admin.tests.index')}}" + "?course_id=" + course_id
+                var chapter_id = $(this).val();
+                window.location.href = "{{route('admin.tests.index')}}" + "?chapter_id=" + chapter_id
             });
             @can('test_delete')
             @if(request('show_deleted') != 1)

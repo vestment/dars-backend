@@ -56,8 +56,8 @@ class TestsController extends Controller
         $tests = "";
 
 
-        if ($request->course_id != "") {
-            $tests = Test::where('course_id','=',$request->course_id)->orderBy('created_at', 'desc')->get();
+        if ($request->chapter_id != "") {
+            $tests = Test::where('chapter_id','=',$request->chapter_id)->orderBy('created_at', 'desc')->get();
         }
 
         if (request('show_deleted') == 1) {
