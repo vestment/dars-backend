@@ -162,24 +162,7 @@
                     <nav class="navbar-menu coursesmob">
                         <div class="nav-menu ul-li">
                             <ul>
-                                {{--                                        <div class="btn-group dropright">--}}
-                                {{--                                            <button type="button" class="btn btn-secondary dropdown-toggle btndropdown"--}}
-                                {{--                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-                                {{--                                                @lang('navs.general.courses')--}}
-                                {{--                                            </button>--}}
-                                {{--                                            <div class="dropdown-menu droplist">--}}
-                                {{--                                                --}}{{-- <a class="linkdrop" href="">hsdfghs</a> --}}
-                                {{--                                                <ul>--}}
-                                {{--                                                    @if(count($categories) > 0)--}}
-                                {{--                                                        @foreach($categories as $category)--}}
-                                {{--                                                            <li><a class="linkdrop" href="{{route('courses.category',['category'=>$category->slug])}}"><i--}}
-                                {{--                                                                            class="{{$category->icon}} p-2"></i> {{$category->getDataFromColumn('name')}}--}}
-                                {{--                                                                </a></li>--}}
-                                {{--                                                        @endforeach--}}
-                                {{--                                                    @endif--}}
-                                {{--                                                </ul>--}}
-                                {{--                                            </div>--}}
-                                {{--                                        </div>--}}
+
                                 <li class="menu-item-has-children ul-li-block">
                                     <a href="#!"> @lang('navs.general.courses') <i class="fa fa-caret-{{app()->getLocale() == 'ar' ? 'left': 'right'}}"></i> </a>
                                     <ul class="sub-menu">
@@ -260,7 +243,7 @@
                                 @endif
                                 @if(auth()->check())
                                     <li class="">
-                                        <img src="{{ $logged_in_user->picture}}" class="img-avatar"
+                                        <img src="{{ $logged_in_user->picture}}" class="img-avatar d-sm-none"
                                              alt="{{ $logged_in_user->full_name }}">
                                         <a href="#!">{{ $logged_in_user->name}}</a>
                                         <ul class="">
