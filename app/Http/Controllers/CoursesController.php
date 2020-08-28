@@ -34,19 +34,25 @@ class CoursesController extends Controller
         $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
         if ($academy) {
             $academyTeachersIds = $academy->teachers()->pluck('user_id');
-            $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+            $coursesIds = Course::withoutGlobalScope('filter')->whereHas('teachers', function ($query) use ($academyTeachersIds) {
                 $query->whereIn('user_id', $academyTeachersIds);
-            })->pluck('id');
-            $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+            })->where('published',1)->pluck('id');
+            $categories = Category::where('name','911')->first();
+            $courses_911 = Course::withoutGlobalScope('filter')->where('category_id', $categories->id )->with('category')->pluck('id');
+            // Merge the courses into 1 variable
+            $coursesIds = $coursesIds->merge($courses_911);
             $this->hidden_data = [
                 'courses' => $coursesIds,
                 'teachers' => $academyTeachersIds
             ];
+
         }
+
     }
 
     public function all()
     {
+
         if (request('type') == 'popular') {
             $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
@@ -59,6 +65,7 @@ class CoursesController extends Controller
         } else {
             $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->orderBy('id', 'desc')->paginate(9);
         }
+
         $purchased_courses = NULL;
         $purchased_bundles = NULL;
         $categories = Category::where('status', '=', 1)->get();
@@ -240,7 +247,7 @@ class CoursesController extends Controller
                             <small><i class="fab fa-youtube"></i> ' . $course->chapters()->count() . ' lecture</small></div>';
 
 
-                $html .= '<div class="row my-2"> <div class="col-4">';
+                $html .= '<div class="row tech-height my-2"> <div class="col-4">';
                 foreach ($course->teachers as $key => $teacher) {
                     if ($teacher->picture == "") {
                         $html .= '<img class="rounded-circle teach_img" src="/assets/img/teacher/d8951937-b033-4829-8166-77a698ec46dc.jpeg" alt="">';
@@ -365,7 +372,8 @@ class CoursesController extends Controller
 //            $teacherProfile = TeacherProfile::where('user_id', $teacher->id)->first();
             // dd($teacher);
             $cour = Course::with('teachers')->whereNotIn('id', $this->hidden_data['courses'])->get();
-            //  dd($cour);
+            //  dd($courses);
+
             return view('frontend.courses.index', compact('courses', 'teacher_data', 'teachers', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
         }
         return abort(404);

@@ -71,7 +71,7 @@
 
                         <div class="card-body">
 
-                            @if (Auth::user()->isAdmin())
+                            @if (Auth::user()->isAdmin() || auth()->user()->hasRole('academy'))
                                 <div class="row">
 
                                     <div class="col-10 form-group">
@@ -95,25 +95,41 @@
                                           href="{{route('admin.categories.index').'?create'}}">{{trans('labels.backend.courses.add_categories')}}</a>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 col-lg-6 form-group">
-                                    {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
-                                    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
-                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-lg-6 form-group">
 
+                                        {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
+                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title')]) !!}
+                                    </div>
+
+                                    <div class="col-6 col-lg-6 form-group">
+                                        {!! Form::label('title', trans('labels.backend.courses.fields.title_ar').' *', ['class' => 'control-label']) !!}
+
+                                        {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
+                                    </div>
+                                </div>
+                                <div class="row">
                                 <div class="col-12 col-lg-6 form-group">
                                     {!! Form::label('course_hours', trans('labels.backend.courses.course_hours'), ['class' => 'control-label']) !!}
-                                    {!! Form::text('course_hours', old('course_hours'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.slug_placeholder')]) !!}
+                                    {!! Form::text('course_hours', old('course_hours'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.course_hours')]) !!}
                                 </div>
 
                             </div>
 
-                            <div class="row">
-                                <div class="col-12 form-group">
-                                    {!! Form::label('description',trans('labels.backend.courses.fields.description'), ['class' => 'control-label']) !!}
-                                    {!! Form::textarea('description', old('description'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description')]) !!}
+                                <div class="row">
+
+                                    <div class="col-6 form-group">
+                                        {!! Form::label('description',  trans('labels.backend.courses.fields.description'), ['class' => 'control-label']) !!}
+                                        {!! Form::textarea('description', old('description'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description')]) !!}
+                                    </div>
+                                    <div class="col-6 form-group">
+                                        {!! Form::label('description',  trans('labels.backend.courses.fields.description_ar'), ['class' => 'control-label']) !!}
+
+                                        {!! Form::textarea('description_ar', old('description_ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description_ar')]) !!}
+                                    </div>
+
+
                                 </div>
-                            </div>
                             <div class="row">
                                 <div class="col-12 col-lg-4 form-group">
                                     {!! Form::label('price', trans('labels.backend.courses.fields.price').' (in '.$appCurrency["symbol"].')', ['class' => 'control-label']) !!}

@@ -53,8 +53,6 @@ class AcademyController extends Controller
         $courses_911 = Course::where('category_id', $categories->id )->with('category')->get();
         // Merge the courses into 1 variable
         $courses = $courses->merge($courses_911);
-
-
         return view('frontend.academy.911', compact('academy', 'academyTeachers','courses'));
     }
 }

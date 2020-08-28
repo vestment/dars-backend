@@ -102,17 +102,17 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('slides', $slides);
             });
         }
-            view()->composer(['frontend.layouts.*'], function ($view) {
-                $menu_name = NULL;
-                $custom_menus = MenuItems::where('menu', '=', config('nav_menu'))
-                    ->orderBy('sort')
-                    ->get();
-                $menu_name = Menus::find((int)config('nav_menu'));
-                $menu_name = ($menu_name != NULL) ? $menu_name->name : NULL;
-                $custom_menus = menuList($custom_menus);
-                $max_depth = MenuItems::max('depth');
-                $view->with(compact('custom_menus', 'max_depth', 'menu_name'));
-            });
+        view()->composer(['frontend.layouts.*'], function ($view) {
+            $menu_name = NULL;
+            $custom_menus = MenuItems::where('menu', '=', config('nav_menu'))
+                ->orderBy('sort')
+                ->get();
+            $menu_name = Menus::find((int)config('nav_menu'));
+            $menu_name = ($menu_name != NULL) ? $menu_name->name : NULL;
+            $custom_menus = menuList($custom_menus);
+            $max_depth = MenuItems::max('depth');
+            $view->with(compact('custom_menus', 'max_depth', 'menu_name'));
+        });
 
         if (Schema::hasTable('blogs')) {
             view()->composer(['frontend.layouts.partials.right-sidebar'], function ($view) {
@@ -148,19 +148,24 @@ class AppServiceProvider extends ServiceProvider
             ];
             if (Schema::hasTable('academies')) {
                 $academy_911 = 29;
-                $academy = academy::where('user_id',$academy_911)->with(['user','courses','teachers'])->first();
+                $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
                 if ($academy) {
                     $academyTeachersIds = $academy->teachers()->pluck('user_id');
-                    $coursesIds = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+                    $coursesIds = Course::withoutGlobalScope('filter')->whereHas('teachers', function ($query) use ($academyTeachersIds) {
                         $query->whereIn('user_id', $academyTeachersIds);
-                    })->pluck('id');
-//                    $categories = array_unique($coursesIds->pluck('category_id')->toArray());
+                    })->where('published',1)->pluck('id');
+                    $categories = Category::where('name','911')->first();
+                    $courses_911 = Course::withoutGlobalScope('filter')->where('category_id', $categories->id )->with('category')->pluck('id');
+                    // Merge the courses into 1 variable
+                    $coursesIds = $coursesIds->merge($courses_911);
                     $hidden_data = [
                         'courses' => $coursesIds,
                         'teachers' => $academyTeachersIds
                     ];
+
                 }
             }
+
             if (Schema::hasTable('categories')) {
                 $appCurrency['symbol'] = app()->getLocale() == 'ar' ? 'ج م': 'EGP';
                 $categories = Category::where('status', 1)->get();

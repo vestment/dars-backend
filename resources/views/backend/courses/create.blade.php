@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="card-body">
-                            @if (Auth::user()->isAdmin())
+                            @if (Auth::user()->isAdmin() || auth()->user()->hasRole('academy'))
                                 <div class="row">
                                     <div class="col-10 form-group">
                                         {!! Form::label('teachers',trans('labels.backend.courses.fields.teachers'), ['class' => 'control-label']) !!}
@@ -91,8 +91,10 @@
                                 </div>
                             </div>
                             <div class="row">
-
-
+                                <div class="col-12 col-lg-6 form-group">
+                                    {!! Form::label('course_hours', trans('labels.backend.courses.course_hours'), ['class' => 'control-label']) !!}
+                                    {!! Form::text('course_hours', old('course_hours'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.slug_placeholder')]) !!}
+                                </div>
                             </div>
                             <div class="row">
 
