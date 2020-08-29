@@ -280,9 +280,9 @@ Route::group(['middleware' => ['auth', 'password_expires']], function () {
 
 Route::group(['middleware' => 'role:teacher|administrator'], function () {
 //====== Review Routes =====//
-    Route::resource('reviews', 'ReviewController');
-    Route::get('get-reviews-data', ['uses' => 'ReviewController@getData', 'as' => 'reviews.get_data']);
-    Route::post('updateState', ['uses' => 'ReviewController@updateStatus', 'as' => 'review.active']);
+    Route::resource('reviews', 'Admin\ReviewController');
+    Route::get('get-reviews-data', ['uses' => 'Admin\ReviewController@getData', 'as' => 'reviews.get_data']);
+    Route::post('updateState', ['uses' => 'Admin\ReviewController@updateStatus', 'as' => 'review.active']);
 });
 
 

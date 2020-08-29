@@ -99,6 +99,9 @@ class OrderController extends Controller
                 return $items;
             })
             ->addColumn('user_email', function ($q) {
+                if (!$q->user) {
+                    return 'User not found';
+                }
                 return $q->user->email;
             })
             ->addColumn('date', function ($q) {

@@ -384,17 +384,17 @@ class CoursesController extends Controller
         $this->validate($request, [
             'review' => 'required'
         ]);
-        $course = Course::findORFail($request->id);
+        $course = Course::withoutGlobalScope('filter')->findORFail($request->id);
         $review = new Review();
         $review->user_id = auth()->user()->id;
         $review->reviewable_id = $course->id;
         $review->reviewable_type = Course::class;
-        $review->rating = $request->rating;
+        $review->rating = $request->rating ?? null;
         $review->content = $request->review;
         $review->active = 0;
         $review->save();
 
-        return back();
+        return redirect()->route('courses.show',['slug'=>$course->slug]);
     }
 
     public function editReview(Request $request)

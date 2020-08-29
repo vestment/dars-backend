@@ -95,6 +95,7 @@ trait FileUploadTrait
                             'type' => $item->getClientMimeType(),
                             'file_name' => $filename,
                             'size' => $size,
+                            'user_id' => auth()->user()->id
                         ]);
                     }
                     $finalRequest = $finalRequest = new Request($request->except($downloadable_file_input));
@@ -118,6 +119,7 @@ trait FileUploadTrait
                                 'url' => asset('storage/uploads/' . $filename),
                                 'type' => 'lesson_pdf',
                                 'file_name' => $filename,
+                                'user_id' => auth()->user()->id,
                                 'size' => $size,
                             ]);
                             $finalRequest = new Request(array_merge($finalRequest->all(), [$key => $filename]));
@@ -138,6 +140,7 @@ trait FileUploadTrait
                                 'file_name' => $filename,
                                 'url' => asset('storage/uploads/' . $filename),
                                 'size' => $size,
+                                'user_id' => auth()->user()->id
                             ]);
                             $finalRequest = new Request(array_merge($finalRequest->all(), [$key => $filename]));
                             } else {

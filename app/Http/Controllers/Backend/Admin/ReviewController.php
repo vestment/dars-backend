@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Admin;
 use App\Models\Course;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
@@ -31,7 +31,7 @@ class ReviewController extends Controller
         if (auth()->user()->hasRole('teacher')) {
             $courses_id = auth()->user()->courses()->has('reviews')->pluck('id')->toArray();
         }
-        $reviews = Review::where('reviewable_type','=','App\Models\Course')
+        $reviews = Review::where('reviewable_type','App\Models\Course')
             ->whereIn('reviewable_id',$courses_id)
             ->orderBy('created_at', 'desc')
             ->get();

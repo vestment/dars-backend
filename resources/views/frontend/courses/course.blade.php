@@ -673,9 +673,7 @@
                         @endif
                     @endif
                 @endif
-
-
-
+            @endif
                 @foreach($course_review as $key=>$review)
                     <div class="row" data-id="{{$teacher->id}}">
                         <div class="row col-lg-3">
@@ -709,7 +707,7 @@
 
                     </div>
                 @endforeach
-            @endif
+
 
 
         </div>

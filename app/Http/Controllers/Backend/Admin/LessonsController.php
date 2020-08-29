@@ -251,13 +251,9 @@ class LessonsController extends Controller
             $lesson->save();
         }
 
-
-
-
 // dd($request->all());
 
 // $chapterSeq = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
-
         $sequence = 1;
         if (count($lesson->course->courseTimeline) > 0) {
 
