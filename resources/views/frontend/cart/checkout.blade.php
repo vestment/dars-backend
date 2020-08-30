@@ -116,12 +116,12 @@
                                                 <td>
                                                     <div class="course-list-img-text">
                                                         <div class="course-list-img"
-                                                             @if($course->course_image != "") style="background-image: url({{asset('storage/uploads/'.$course->course_image)}})" @endif >
+                                                             @if($course->image != "") style="background-image: url('{{$course->image}}')" @endif>
 
                                                         </div>
                                                         <div class="course-list-text">
                                                             <h3 class="h-width">
-                                                                <a href="{{ route('courses.show', [$course->slug]) }}">{{$course->title}}</a>
+                                                                <a @if(class_basename($course) == 'Course') href="{{ route('courses.show', [$course->slug]) }}" @else href="{{ route('bundles.show', [$course->slug]) }}" @endif>{{$course->title}}</a>
                                                             </h3>
                                                             <div class="course-meta">
                                                                 <span class="course-category bold-font"><a

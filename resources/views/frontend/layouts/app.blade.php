@@ -189,7 +189,7 @@
                                                 <li class="">
                                                     <a href="{{asset($menu->link)}}"
                                                        class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
-                                                       id="menu-{{$menu->id}}">@if($menu->label == 911) <img style=" width: 32px;" src="{{asset('WhatsApp Image 2020-08-30 at 11.49.37 AM.jpeg')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
+                                                       id="menu-{{$menu->id}}">@if($menu->label == '911') <img style=" width: 32px;" src="{{asset('WhatsApp Image 2020-08-30 at 11.49.37 AM.jpeg')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
                                                 </li>
 
                                             @else
