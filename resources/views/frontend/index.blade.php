@@ -130,8 +130,8 @@
                                         <div class="item">
                                             <div class="">
                                                 <div class="best-course-pic-text bg-white relative-position">
-                                                    <div class="best-course-pic piclip relative-position"
-                                                         @if($course->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$course->course_image)}}')" @endif>
+                                                    <a href="{{ route('bundles.show', [$course->slug]) }}"><div class="best-course-pic piclip relative-position"
+                                                                                                                @if($course->image != "") style="background-image: url('{{$course->image}}')" @endif>
                                                         <div class="course-price text-center gradient-bg">
                                                             @if($course->free == 1)
                                                                 <span>{{trans('labels.backend.courses.fields.free')}}</span>
@@ -139,12 +139,8 @@
                                                                 <span> {{$appCurrency['symbol'].' '.$course->price}}</span>
                                                             @endif
                                                         </div>
-                                                    <!-- <div class="course-details-btn">
-                                                            <a href="{{ route('courses.show', [$course->slug]) }}">@lang('labels.frontend.course.course_detail')
-                                                            <i class="fas fa-arrow-right"></i></a>
-                                                    </div>
-                                                    <div class="blakish-overlay"></div> -->
-                                                    </div>
+
+                                                    </div></a>
                                                     <div class="card-body text-dark">
                                                         <h3 class="card-title titleofcard">{{$course->title}}</h3>
                                                         <div class="row">
@@ -213,7 +209,7 @@
                                                                 @endif
                                                             </div>
                                                             <div class="">
-                                                                <a href="{{ route('courses.show', [$course->slug]) }}"
+                                                                <a href="{{ route('bundles.show', [$course->slug]) }}"
                                                                    class="btn btnWishList">
                                                                     <i class="far fa-bookmark"></i>
                                                                 </a>
@@ -274,7 +270,7 @@
                 <div class="pl-5 pb-5">
                   
                         <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
-                        @lang('labels.frontend.layouts.partials.view_plans')
+                        @lang('labels.frontend.layouts.partials.view_offline_courses')
                         </a>
                 </div>
             </div>

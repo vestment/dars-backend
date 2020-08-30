@@ -23,7 +23,7 @@ class offlineBookingController extends Controller
     public function index()
     {
 
-        $courses = Course::with(['academy','category'])->withoutGlobalScope('filter')->where('offline', 1)->orderBy('id', 'desc')->get();
+        $courses = Course::with(['academy','category'])->withoutGlobalScope('filter')->where('offline', 1)->where('published',1)->orderBy('id', 'desc')->get();
    
         $teacher_filtering=[];
         foreach($courses as $course) {

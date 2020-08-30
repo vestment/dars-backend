@@ -66,6 +66,13 @@ ul.pagination {
         padding: 65px;
     }
 }
+@media screen and (max-width: 768px) {
+    
+     .owl-carousel .owl-item img {
+        display: none;
+
+    }
+}
 
 .styleicon {
     text-align: left;
