@@ -36,6 +36,7 @@ return array(
                             'teachers' => 'Teachers',
                             'academies' => 'Academies',
                             'offline_courses'=>'Offline Courses',
+                            'online_courses'=>'online Courses',
                             'hours' => 'Houres',
                             'hours' => 'Hours',
                             'lectures' => 'Lectures',
@@ -1685,6 +1686,7 @@ return array(
                         array(
                             'Bundle Course' => 'Bundle Course',
                             'view_plans' => 'view plans',
+                            'view_offline_courses' => 'View Offline Courses',
                             'Offline Booking Center' => 'Offline Booking Center',
                             'Offline Booking' => 'we see first-hand every day how technology makes the impossible, possible. It’s why
                             Pluralsight One exists: To advance our mission of democratizing technology skills,

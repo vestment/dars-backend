@@ -54,18 +54,18 @@ class CoursesController extends Controller
     {
 
         if (request('type') == 'popular') {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         } else if (request('type') == 'trending') {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         } else if (request('type') == 'featured') {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         } else {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('online', 1)->where('published', 1)->orderBy('id', 'desc')->get();
         }
-
+// dd($courses);
         $purchased_courses = NULL;
         $purchased_bundles = NULL;
         $categories = Category::where('status', '=', 1)->get();
@@ -79,9 +79,9 @@ class CoursesController extends Controller
                 ->get();
         }
 
-        $featured_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)
+        $featured_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)
             ->where('featured', '=', 1)->take(8)->get();
-        $trending_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+        $trending_courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
 
@@ -174,8 +174,12 @@ class CoursesController extends Controller
         if ($course->mandatory_courses) {
             $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
         }
+        if ($course->date) {
+            $course_date = $course->date ? json_decode($course->date) : null;
+
+        }
 //dd($course->getDataFromColumn('title'));
-        return view('frontend.courses.course', compact('academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course'));
+        return view('frontend.courses.course', compact('academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
     }
 
     public function filerCoursesByCategory(Request $request)
@@ -343,19 +347,19 @@ class CoursesController extends Controller
                 ->where('featured', '=', 1)->take(8)->get();
 
             if (request('type') == 'popular') {
-                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
             } else if (request('type') == 'trending') {
-                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
             } else if (request('type') == 'featured') {
-                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
+                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
             } else {
-                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->orderBy('id', 'desc')->paginate(9);
+                $courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->orderBy('id', 'desc')->paginate(9);
             }
-            $popular_course = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-            $trending_courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $popular_course = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $trending_courses = $category->courses()->withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
             $categoryTeachers = [];
             foreach ($courses as $course) {
                 foreach ($course->teachers as $teacher) {

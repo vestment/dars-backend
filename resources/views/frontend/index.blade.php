@@ -274,7 +274,7 @@
                 <div class="pl-5 pb-5">
                   
                         <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
-                        @lang('labels.frontend.layouts.partials.view_plans')
+                        @lang('labels.frontend.layouts.partials.view_offline_courses')
                         </a>
                 </div>
             </div>

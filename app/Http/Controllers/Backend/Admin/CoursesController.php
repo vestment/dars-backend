@@ -244,12 +244,13 @@ class CoursesController extends Controller
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-        $course = Course::create($request->all());
+        // dd($request->all());
+        $course = Course::create($request->except('offlineData'));
         $course->slug = $slug;
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
         $course->learned = $request->learned ? json_encode($request->learned) : null;
-
+        $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
 
         $course->save();
 
