@@ -1,5 +1,7 @@
 @extends('frontend.layouts.app')
 @push('after-styles')
+<link rel="stylesheet" href="../../assets/css/course.css"/>
+
     <style>
         .section-title-2 h2:after {
             background: #ffffff;
@@ -163,63 +165,9 @@
                 </div>
                 @if(count($courses) > 0)
                     <div class="row">
-                        @foreach($courses as $item)
-                            <div class="col-md-4">
-                                <div class="best-course-pic-text relative-position ">
-                                    <div class="best-course-pic relative-position"
-                                         @if($item->image) style="background-image:url({{$item->image}}) " @endif >
-
-                                        @if($item->trending == 1)
-                                            <div class="trend-badge-2 text-center text-uppercase">
-                                                <i class="fas fa-bolt"></i>
-                                                <span>@lang('labels.frontend.badges.trending')</span>
-                                            </div>
-                                        @endif
-                                        @if($item->free == 1)
-                                            <div class="trend-badge-3 text-center text-uppercase">
-                                                <i class="fas fa-bolt"></i>
-                                                <span>@lang('labels.backend.courses.fields.free')</span>
-                                            </div>
-                                        @endif
-                                        <div class="course-price text-center gradient-bg">
-                                            @if($item->free == 1)
-                                                <span> {{trans('labels.backend.courses.fields.free')}}</span>
-                                            @else
-                                                <span>{{$appCurrency['symbol'].' '.$item->price}}</span>
-                                            @endif
-                                        </div>
-                                        <div class="course-rate ul-li">
-                                            <ul>
-                                                @for($i=1; $i<=(int)$item->rating; $i++)
-                                                    <li><i class="fas fa-star"></i></li>
-                                                @endfor
-                                            </ul>
-                                        </div>
-                                        <div class="course-details-btn">
-                                            <a class="text-uppercase"
-                                               href="{{ route('courses.show', [$item->slug]) }}">@lang('labels.frontend.teacher.course_detail')
-                                                <i
-                                                        class="fas fa-arrow-right"></i></a>
-                                        </div>
-                                        <div class="blakish-overlay"></div>
-                                    </div>
-                                    <div class="best-course-text">
-                                        <div class="course-title mb20 headline relative-position">
-                                            <h3>
-                                                <a href="{{ route('courses.show', [$item->slug]) }}">{{$item->getDataFromColumn('title')}}</a>
-                                            </h3>
-                                        </div>
-                                        <div class="course-meta">
-                                                    <span class="course-category"><a
-                                                                href="#">{{$item->category->getDataFromColumn('name')}}</a></span>
-                                            <span class="course-author">
-                                                        <a href="#">
-                                                            {{ $item->students()->count() }}
-                                                            @lang('labels.frontend.teacher.students')</a>
-                                                    </span>
-                                        </div>
-                                    </div>
-                                </div>
+                        @foreach($courses as $course)
+                            <div class="col-md-3">
+                            @include('frontend.layouts.partials.coursesTemp')
                             </div>
                         @endforeach
 
