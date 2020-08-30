@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-10 form-group">
                     {!! Form::label('category_id',trans('labels.backend.bundles.fields.category'), ['class' => 'control-label']) !!}
-                    {!! Form::select('category_id', $categories, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false]) !!}
+                    {!! Form::select('category_id', $allCategories, old('category_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false]) !!}
                 </div>
                 <div class="col-2 d-flex form-group flex-column">
                     OR <a target="_blank" class="btn btn-primary mt-auto"

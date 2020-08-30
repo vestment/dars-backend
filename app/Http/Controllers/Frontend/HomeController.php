@@ -47,7 +47,6 @@ class HomeController extends Controller
                 $query->whereIn('user_id', $academyTeachersIds);
             })->pluck('id');
             $categories = array_unique($coursesIds->pluck('category_id')->toArray());
-            dd($coursesIds);
             $this->hidden_data = [
                 'courses' => $coursesIds,
                 'teachers' => $academyTeachersIds
