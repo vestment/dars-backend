@@ -543,12 +543,16 @@
                                 <p class="subtitle2 test" onclick="startTest(this)" @if(in_array($item->model->id,$completed_lessons))data-test-id="{{$item->model->id}}" data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>  <a  id="test" >
                                                 {{$item->model->title}}
                                                 @if($item->model_type == 'App\Models\Test')
-                                                    <p class="mb-0 text-primary test" onclick="startTest(this)" @if(in_array($item->model->id,$completed_lessons))data-test-id="{{$item->model->id}}" data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                                    <p class="mb-0 text-primary test" onclick="startTest(this)" data-test-id="{{$item->model->id}}" data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
                                                         - @lang('labels.frontend.course.test')</p>
                                                 @endif
                                                 @if(in_array($item->model->id,$completed_lessons)) <i  
                                                 class="fa text-success float-right fa-check-square"></i> @endif
                                             </a> </p>
+
+                                            @else
+                                            <i  
+                                                class="fa text-success float-right fa-lock"></i>
                                 <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
                                 @endif
                                     @endforeach

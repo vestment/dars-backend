@@ -408,9 +408,9 @@ class CoursesController extends Controller
         $request = $this->saveFiles($request);
         //Saving  videos
         if ($request->media_type != "" || $request->media_type != null) {
-//            if ($course->mediavideo) {
-//                $course->mediavideo->delete();
-//            }
+            //            if ($course->mediavideo) {
+            //                $course->mediavideo->delete();
+            //            }
             $model_type = Course::class;
             $model_id = $course->id;
             $size = 0;
@@ -610,13 +610,17 @@ class CoursesController extends Controller
     public function saveSequence(Request $request)
     {
 
+        dd($request->all());
 
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
+        return $request->list;
         foreach ($request->list as $item) {
+            // dd($item);
 
-            $courseTimeline = CourseTimeline::find($item['id']);
+            $courseTimeline = CourseTimeline::where('model_id',$item['id'])->first();
+            // dd($courseTimeline);
             $courseTimeline->sequence = $item['sequence'];
             $courseTimeline->save();
         }

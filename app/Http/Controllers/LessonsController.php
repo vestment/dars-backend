@@ -24,12 +24,7 @@ class LessonsController extends Controller
         $completed_lessons = "";
 
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
-        $purchased_course = $lesson->course->students()->where('user_id', \Auth::id())->count() > 0;
-        if ($purchased_course) {
-            $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
-
-
-            if ($lesson == "") {
+         if ($lesson == "") {
                 $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->firstOrFail();
                 $lesson->full_text = $lesson->description;
 
@@ -40,6 +35,14 @@ class LessonsController extends Controller
                         ->first();
                 }
             }
+        if($lesson){
+        $purchased_course = $lesson->course->students()->where('user_id', \Auth::id())->count() > 0;
+        
+        if ($purchased_course) {
+            $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
+
+
+         
 
             if ((int)config('lesson_timer') == 0) {
                 if ($lesson->chapterStudents()->where('user_id', \Auth::id())->count() == 0) {
@@ -97,11 +100,14 @@ class LessonsController extends Controller
                 }
 
             }
+        }
+        
             return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'test_result',
                 'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time'));
         } else {
             return abort(403);
 //            return redirect()->back()->withFlashDanger(__('labels.frontend.cart.complete_your_purchases'));
+        
         }
     }
 

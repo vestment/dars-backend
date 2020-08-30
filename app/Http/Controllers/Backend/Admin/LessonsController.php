@@ -216,7 +216,7 @@ class LessonsController extends Controller
 
             } elseif ($request->media_type == 'upload') {
                 if ($request->video) {
-                    $media = Media::findOrFail($request->video)->first();
+                    $media = Media::findOrFail($request->video);
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
@@ -391,7 +391,7 @@ class LessonsController extends Controller
                             $oldMedia->delete();
                         }
                     }
-                    $media = Media::findOrFail(intval($request->video))->first();
+                    $media = Media::findOrFail(intval($request->video));
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;

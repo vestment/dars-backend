@@ -208,7 +208,7 @@ class Course extends Model
         $completed_lessons = auth()->user()->chapters()->where('course_id', $this->id)->pluck('model_id');
 
         if ($completed_lessons->count() > 0) {
-            return intval($completed_lessons->count() / $main_chapter_timeline->count() * 100);
+            // return intval($completed_lessons->count() / $main_chapter_timeline->count() * 100);
         } else {
             return 0;
         }

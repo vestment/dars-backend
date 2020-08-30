@@ -563,8 +563,10 @@
                         <a target="_blank"
                            href="{{asset('/user/messages/?thread='.$item->id)}}">{{$item->title}}</a>
                      </td>
+                     @if($item->lastMessage)
                      <td>{{$item->lastMessage->body}}</td>
                      <td>{{$item->lastMessage->created_at->diffForHumans() }}</td>
+                     @endif
                   </tr>
                   @endforeach
                   @else
