@@ -162,9 +162,9 @@ class BundlesController extends Controller
         }
 
         $courses = Course::ofTeacher()->pluck('title', 'id');
-        $categories = Category::where('status', '=', 1)->pluck('name', 'id');
+        $allCategories = Category::where('status', '=', 1)->pluck('name', 'id');
 
-        return view('backend.bundles.create', compact('courses', 'categories'));
+        return view('backend.bundles.create', compact('courses', 'allCategories'));
     }
 
     /**
