@@ -81,9 +81,12 @@
 
                                     <div class="">
                                         @if($teacher_data->type == 'academy')
+                                        @if($academy)
                                             <h5 class="type">{{$academy->full_name}}</h5>
+                                            @endif
                                         @else
                                             <h5 class="type">{{$teacher_data->type}}</h5>
+                                          
 
                                         @endif
                                         <div class="address-details ul-li-block my-3">

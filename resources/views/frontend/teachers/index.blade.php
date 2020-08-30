@@ -29,7 +29,7 @@
 		.finger-img {
     position: relative;
     z-index: 1;
-    width: 84%;
+    width: 84% !important;
 }
 		.prof-img {
     position: absolute;
@@ -38,6 +38,9 @@
     right: -6px;
     top: 24px;
     left: -38px;
+}
+img{
+    max-width: 100% !important;
 }
     </style>
 @endpush
@@ -73,7 +76,8 @@
                         @php
                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$item->id)->first();
                         @endphp
-                        @if ($teacherProfile && $teacherProfile->academy_id != $academy_911)
+                        @if ($teacherProfile )
+                        @if ($teacherProfile->academy_id != $academy_911 )
                                 <div class="item">
                                     <div class="text-center ">
                                         <div class="bg-card">
@@ -121,6 +125,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 @endif
                     @endforeach
                 @endif
