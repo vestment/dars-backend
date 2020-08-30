@@ -52,9 +52,9 @@
 
                         <div class="about-text-item">
                             <div class="section-title-2  headline text-left">
-                                <h2>{{$page->title}}</h2>
+                                <h2>{{$page->getDataFromColumn('title')}}</h2>
                             </div>
-                           {!! $page->content !!}
+                           {!! $page->getDataFromColumn('content') !!}
                         </div>
                         <!-- /about-text -->
                     </div>
