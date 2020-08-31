@@ -38,10 +38,7 @@ class QuestionsController extends Controller
         } else {
             $questions = Question::orderBy('created_at', 'desc')->get();
         }
-
-        $tests = Test::where('published','=',1)->pluck('title','id')->prepend('Please select', '');
-
-        return view('backend.questions.index', compact('questions','tests'));
+        return view('backend.questions.index', compact('questions'));
     }
 
 
@@ -58,13 +55,6 @@ class QuestionsController extends Controller
 
         /*TODO:: Show All questions if Admin, Show related if  Teacher*/
         $questions = Question::orderBy('created_at', 'desc');
-
-        if ($request->test_id != "") {
-            $test_id = $request->test_id;
-            $questions = Question::whereHas('tests',function ($q) use ($test_id){
-                $q->where('test_id',$test_id);
-            })->orderBy('created_at', 'desc')->get();
-        }
 
         if (!auth()->user()->role('administrator')) {
             $questions->where('user_id', '=', auth()->user()->id);
@@ -110,7 +100,7 @@ class QuestionsController extends Controller
 
                 if ($has_delete) {
                     $delete = view('backend.datatable.action-delete')
-                        ->with(['route' => route('admin.questions.destroy', ['questions_option' => $q->id, 'test_id' => $request->test_id??''])])
+                        ->with(['route' => route('admin.questions.destroy', ['questions_option' => $q->id, 'test_id' => $request->test_id ?? ''])])
                         ->render();
                     $view .= $delete;
                 }
@@ -141,7 +131,7 @@ class QuestionsController extends Controller
     /**
      * Store a newly created Question in storage.
      *
-     * @param  \App\Http\Requests\StoreQuestionsRequest $request
+     * @param \App\Http\Requests\StoreQuestionsRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreQuestionsRequest $request)
@@ -155,7 +145,7 @@ class QuestionsController extends Controller
         $question->user_id = auth()->user()->id;
         $question->save();
         $question->tests()->sync(array_filter((array)$request->input('tests')));
-
+        /* ToDo create input for lesson_id and time frame in blade and here */
         for ($q = 1; $q <= 4; $q++) {
             $option = $request->input('option_text_' . $q, '');
             $explanation = $request->input('explanation_' . $q, '');
@@ -176,7 +166,7 @@ class QuestionsController extends Controller
     /**
      * Show the form for editing Question.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -193,8 +183,8 @@ class QuestionsController extends Controller
     /**
      * Update Question in storage.
      *
-     * @param  \App\Http\Requests\UpdateQuestionsRequest $request
-     * @param  int $id
+     * @param \App\Http\Requests\UpdateQuestionsRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateQuestionsRequest $request, $id)
@@ -208,7 +198,7 @@ class QuestionsController extends Controller
         $question->user_id = auth()->user()->id;
         $question->save();
         $question->tests()->sync(array_filter((array)$request->input('tests')));
-
+        /* ToDo create input for lesson_id and time frame in blade and here */
         for ($q = 1; $q <= 4; $q++) {
             $option = $request->input('option_text_' . $q, '');
             $explanation = $request->input('explanation_' . $q, '');
@@ -233,7 +223,7 @@ class QuestionsController extends Controller
     /**
      * Display Question.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -256,7 +246,7 @@ class QuestionsController extends Controller
     /**
      * Remove Question from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -265,7 +255,7 @@ class QuestionsController extends Controller
             return abort(401);
         }
         $question = Question::findOrFail($id);
-        if(request()->get('test_id'))
+        if (request()->get('test_id'))
             \DB::table('question_test')->where('question_id', $id)->where('test_id', request()->get('test_id'))->delete();
         else
             \DB::table('question_test')->where('question_id', $id)->delete();
@@ -298,7 +288,7 @@ class QuestionsController extends Controller
     /**
      * Restore Question from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
@@ -315,7 +305,7 @@ class QuestionsController extends Controller
     /**
      * Permanently delete Question from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function perma_del($id)

@@ -113,10 +113,10 @@ class CoursesController extends Controller
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with(['publishedLessons', 'academy', 'reviews'])->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
-        $chapters = Chapter::where('course_id', $course_id)->get();
+        $chapters = $course->chapters()->where('course_id', $course->id)->get();
 
         // Related courses will be from same category even if the academy is 911
-        $related_courses = Course::where('category_id', $course->category->id)->with('teachers')->where('id', '!=', $course_id)->take(2)->get();
+        $related_courses = Course::where('category_id', $course->category->id)->withoutGlobalScope('filter')->with('teachers')->where('id', '!=', $course_id)->take(2)->get();
 
         $chapter_lessons = Lesson::where('course_id', $course_id)->where('published', '=', 1);
         $lessoncount = $course->lessons()->where('course_id', $course->id)->get()->count();

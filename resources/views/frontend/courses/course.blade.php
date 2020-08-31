@@ -386,19 +386,16 @@
                             <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link btn-block text-left" type="button"
-                                            data-toggle="collapse" data-target="#{{$chapter->id}}" aria-expanded="true"
+                                            data-toggle="collapse" data-target="#chapter-{{$chapter->id}}" aria-expanded="true"
                                             aria-controls="{{$chapter->id}}">
                                         {{ $chapter->title}} <i class="fa fa-angle-down float-right"
                                                                 aria-hidden="true"></i>
                                     </button>
-                                    {{--                                    @if($course->trending == 1)--}}
-                                    {{--                                        <span class="trend-badge text-uppercase bold-font"><i--}}
-                                    {{--                                                    class="fas fa-bolt"></i> @lang('labels.frontend.badges.trending')</span>--}}
-                                    {{--                                    @endif--}}
+
                                 </h2>
                             </div>
 
-                            <div id="{{$chapter->id}}" class="collapse show" aria-labelledby="headingOne"
+                            <div id="chapter-{{$chapter->id}}" class="collapse show" aria-labelledby="headingOne"
                                  data-parent="#accordionExample">
                                 <div class="card-body">
                                     @foreach($lessons->get() as $key=>$item)
@@ -406,7 +403,7 @@
                                             @if($item->model->chapter_id == $chapter->id)
                                                 <div class="bordered border-bottom">
                                                     <p class="subtitle2">
-                                                        <a href="{{route('lessons.show',['id' => $item->course->id,'slug'=>$item->model->slug])}}">
+                                                        <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">
                                                             <i class="fas fa-play-circle"></i> Video File {{$key}}
                                                             - {{$item->model->title}}
                                                     @if($item->model_type == 'App\Models\Test')

@@ -13,7 +13,6 @@ class MessagesController extends Controller
 {
     public function index(Request $request){
         $thread="";
-       
         $teachers = User::role('teacher')->get()
             ->where('id','!=',auth()->user()->id)
             ->pluck('name', 'id');

@@ -95,20 +95,20 @@
                                           href="{{route('admin.categories.index').'?create'}}">{{trans('labels.backend.courses.add_categories')}}</a>
                                 </div>
                             </div>
-                                <div class="row">
-                                    <div class="col-6 col-lg-6 form-group">
+                            <div class="row">
+                                <div class="col-6 col-lg-6 form-group">
 
-                                        {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
-                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title')]) !!}
-                                    </div>
-
-                                    <div class="col-6 col-lg-6 form-group">
-                                        {!! Form::label('title', trans('labels.backend.courses.fields.title_ar').' *', ['class' => 'control-label']) !!}
-
-                                        {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
-                                    </div>
+                                    {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
+                                    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title')]) !!}
                                 </div>
-                                <div class="row">
+
+                                <div class="col-6 col-lg-6 form-group">
+                                    {!! Form::label('title', trans('labels.backend.courses.fields.title_ar').' *', ['class' => 'control-label']) !!}
+
+                                    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-12 col-lg-6 form-group">
                                     {!! Form::label('course_hours', trans('labels.backend.courses.course_hours'), ['class' => 'control-label']) !!}
                                     {!! Form::text('course_hours', old('course_hours'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.course_hours')]) !!}
@@ -116,20 +116,20 @@
 
                             </div>
 
-                                <div class="row">
+                            <div class="row">
 
-                                    <div class="col-6 form-group">
-                                        {!! Form::label('description',  trans('labels.backend.courses.fields.description'), ['class' => 'control-label']) !!}
-                                        {!! Form::textarea('description', old('description'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description')]) !!}
-                                    </div>
-                                    <div class="col-6 form-group">
-                                        {!! Form::label('description',  trans('labels.backend.courses.fields.description_ar'), ['class' => 'control-label']) !!}
-
-                                        {!! Form::textarea('description_ar', old('description_ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description_ar')]) !!}
-                                    </div>
-
-
+                                <div class="col-6 form-group">
+                                    {!! Form::label('description',  trans('labels.backend.courses.fields.description'), ['class' => 'control-label']) !!}
+                                    {!! Form::textarea('description', old('description'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description')]) !!}
                                 </div>
+                                <div class="col-6 form-group">
+                                    {!! Form::label('description',  trans('labels.backend.courses.fields.description_ar'), ['class' => 'control-label']) !!}
+
+                                    {!! Form::textarea('description_ar', old('description_ar'), ['class' => 'form-control ', 'placeholder' => trans('labels.backend.courses.fields.description_ar')]) !!}
+                                </div>
+
+
+                            </div>
                             <div class="row">
                                 <div class="col-12 col-lg-4 form-group">
                                     {!! Form::label('price', trans('labels.backend.courses.fields.price').' (in '.$appCurrency["symbol"].')', ['class' => 'control-label']) !!}
@@ -329,7 +329,7 @@
                                                                                                     @if($singleTimeline->model_id == $item->id)
                                                                                                         @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                             @php
-                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
+                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type',\App\Models\Lesson::class)->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
                                                                                                             @endphp
                                                                                                             <li id="menu-item-{{$item->id}}"
                                                                                                                 data-type="{{$singleTimeline->model_type}}"
@@ -352,7 +352,7 @@
                                                                                                                 <div class="menu-item-settings col-12 col-lg-7"
                                                                                                                      id="menu-item-settings-{{$item->id}}">
                                                                                                                     <div class="row">
-                                                                                                                        <div class="col-12">
+                                                                                                                        <div class="col-6">
                                                                                                                             @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                                                 <button onclick="$('#chapter_id_lesson').val({{$item->id}});"
                                                                                                                                         type="button"
@@ -361,6 +361,18 @@
                                                                                                                                         data-target="#exampleModal2">
                                                                                                                                     Create
                                                                                                                                     Lesson
+                                                                                                                                </button>
+                                                                                                                            @endif
+                                                                                                                        </div>
+                                                                                                                        <div class="col-6">
+                                                                                                                            @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                                                                <button onclick="$('#chapter_id_test').val({{$item->id}});"
+                                                                                                                                        type="button"
+                                                                                                                                        class="btn btn-primary"
+                                                                                                                                        data-toggle="modal"
+                                                                                                                                        data-target="#create-test">
+                                                                                                                                    Create
+                                                                                                                                    Test
                                                                                                                                 </button>
                                                                                                                             @endif
                                                                                                                         </div>
@@ -615,6 +627,58 @@
                             </div>
 
                         </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="create-test" tabindex="-1" aria-labelledby="create-test"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="create-test">Create Test</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {!! Form::open(['method' => 'POST', 'route' => ['admin.tests.store']]) !!}
+                                {!! Form::hidden('course_id',$course->id)!!}
+                                {!! Form::hidden('chapter_id',null,['id'=>'chapter_id_test'])!!}
+                                <div class="row">
+
+                                    <div class="col-12 col-lg-6 form-group">
+                                        {!! Form::label('title', trans('labels.backend.tests.fields.title').'*', ['class' => 'control-label']) !!}
+                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => '']) !!}
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        {!! Form::label('title_ar', trans('labels.backend.chapters.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                                        {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title_ar'), 'required' => '']) !!}
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        {!! Form::label('timer', trans('labels.backend.lessons.fields.test_timer').'*', ['class' => 'control-label']) !!}
+                                        {!! Form::text('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => '']) !!}
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        {!! Form::label('no_questions', trans('labels.backend.tests.fields.no_questions').'*', ['class' => 'control-label']) !!}
+                                        {!! Form::text('no_questions', old('no_questions'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.no_questions'), 'required' => '']) !!}
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <div class="checkbox d-inline mr-3">
+                                            {!! Form::checkbox('published', 1, false, []) !!}
+                                            {!! Form::label('published', trans('labels.backend.tests.fields.published'), ['class' => 'control-label font-weight-bold']) !!}</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                        {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
+
+                            </div>
+                        </div>
+
+                        {!! Form::close() !!}
+
+
                     </div>
                 </div>
 
