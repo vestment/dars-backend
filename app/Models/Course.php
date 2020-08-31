@@ -134,7 +134,7 @@ class Course extends Model
 
     public function lessons()
     {
-        return $this->hasMany(Lesson::class)->orderBy('position');
+        return $this->hasMany(Lesson::class)->where('published', 1)->orderBy('position');
     }
 
     public function publishedLessons()

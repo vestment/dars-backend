@@ -120,7 +120,7 @@ class LessonsController extends Controller
         $notes = Note::create([
             'lesson_id' => $lesson->id,
             'user_id' => \Auth::id(),
-            'content' => $request->content,
+            'content' => $request->contentText,
         ]);
         
       
@@ -129,13 +129,7 @@ class LessonsController extends Controller
 
 
     }
-
-
-
-
-
-
-    public function showNotes()
+    public function showNotes(Request $request)
     {
         $lesson = lesson::where('slug', $request->lesson_slug)->firstOrFail();
 
@@ -158,6 +152,7 @@ class LessonsController extends Controller
 
     public function startTimeUpdate(Request $request)
     {
+//        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
         $check_prev_entry = auth()->user()->current_test()->where('test_id', $request->id)->first();
         if (!$check_prev_entry) {
             auth()->user()->current_test()->attach($request->id, ['start_time' => time()]);

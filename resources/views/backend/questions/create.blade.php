@@ -96,6 +96,28 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-6 form-group">
+                    {!! Form::label('explanation_lessonRef_' . $question, trans('labels.backend.questions.fields.option_explanation_lessonRef'), ['class' => 'control-label']) !!}
+                    {!! Form::select('explanation_lessonRef_' . $question, $lessonsToShow, old('explanation_lessonRef_'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('explanation_lessonRef_' . $question))
+                        <p class="help-block">
+                            {{ $errors->first('explanation_lessonRef_' . $question) }}
+                        </p>
+                    @endif
+                </div>
+                <div class="col-6 form-group">
+                    {!! Form::label('explanation_timeFrame_' . $question, trans('labels.backend.questions.fields.option_explanation_lessonTimeFrame'), ['class' => 'control-label']) !!}
+                    {!! Form::text('explanation_timeFrame_' . $question, old('explanation_timeFrame_'.$question), ['class' => 'form-control ', 'rows' => 3]) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('explanation_timeFrame_' . $question))
+                        <p class="help-block">
+                            {{ $errors->first('explanation_timeFrame_' . $question) }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::label('correct_' . $question, trans('labels.backend.questions.fields.correct'), ['class' => 'control-label']) !!}
                     {!! Form::hidden('correct_' . $question, 0) !!}

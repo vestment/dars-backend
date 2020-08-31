@@ -514,6 +514,8 @@ return array(
                             'lesson' => 'Lesson',
                             'title' => 'Title',
                             'option_explanation' => 'Option Explanation',
+                            'option_explanation_lessonRef' => 'Lesson',
+                            'option_explanation_lessonTimeFrame' => 'Time Frame',
                         ),
                     'title' => 'Questions',
                     'create' => 'Create Question',

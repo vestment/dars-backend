@@ -648,6 +648,7 @@
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'id': $(element).data('test-id'),
+                    {{--'lesson_slug': '{{$lesson->slug}}'--}}
                 },
                 success: function (result) {
                     console.log($(element).data('test-id'));
@@ -736,8 +737,6 @@
         player.on('ready', event => {
             player.currentTime = parseInt(current_progress);
             duration = event.detail.plyr.duration;
-
-
             if (!storedDuration || (parseInt(storedDuration) === 0)) {
                 Cookies.set("duration_" + "{{auth()->user()->id}}" + "_" + "{{$lesson->id}}" + "_" + "{{$lesson->course->id}}", duration);
             }
