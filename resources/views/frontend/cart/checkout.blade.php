@@ -122,7 +122,12 @@
                                                         <div class="course-list-text">
                                                             <h3 class="h-width">
                                                                 <a @if(class_basename($course) == 'Course') href="{{ route('courses.show', [$course->slug]) }}" @else href="{{ route('bundles.show', [$course->slug]) }}" @endif>{{$course->title}}</a>
+                                                                
                                                             </h3>
+                                                            @if($courseData)
+                                                            <p>Booking date: {{$courseData[$course->id]['selectedDate']}}</p>
+                                                            <p>Booking time: {{$courseData[$course->id]['selectedTime']}}</p>
+                                                            @endif
                                                             <div class="course-meta">
                                                                 <span class="course-category bold-font"><a
                                                                             href="#">@if($course->free == 1)

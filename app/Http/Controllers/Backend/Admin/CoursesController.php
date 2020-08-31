@@ -244,14 +244,19 @@ class CoursesController extends Controller
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-        // dd($request->all());
+       
+        $seats = 0;
+        foreach (json_decode($request->offlineData) as $key=>$item) {
+            $item  = json_decode(json_encode($item),true);
+            $seats += $item['seats-'.$key]; 
+        }
         $course = Course::create($request->except('offlineData'));
         $course->slug = $slug;
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
         $course->learned = $request->learned ? json_encode($request->learned) : null;
         $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
-
+        $course->seats = $seats;
         $course->save();
 
         //Saving  videos
@@ -331,6 +336,11 @@ class CoursesController extends Controller
             return abort(401);
         }
 
+        $allAcademies = User::role('academy')->with('academy')->get();
+        $academies = [];
+        foreach ($allAcademies as $academy) {
+            $academies[$academy->id] = $academy->full_name;
+        }
         $teachersToSelect = [];
         $allTeachers = User::role('teacher')->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
 
@@ -383,7 +393,7 @@ class CoursesController extends Controller
             $videos = ['' => 'No videos available'];
         }
 //        dd($videos);
-        return view('backend.courses.edit', compact('chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned'));
+        return view('backend.courses.edit', compact('chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies'));
     }
 
     /**

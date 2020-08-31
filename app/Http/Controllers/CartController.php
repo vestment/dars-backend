@@ -35,11 +35,16 @@ class CartController extends Controller
         $ids = Cart::session(auth()->user()->id)->getContent()->keys();
         $course_ids = [];
         $bundle_ids = [];
+        $courseData = [];
         foreach (Cart::session(auth()->user()->id)->getContent() as $item) {
             if ($item->attributes->type == 'bundle') {
                 $bundle_ids[] = $item->id;
             } else {
                 $course_ids[] = $item->id;
+                if ($item->attributes->selectedDate && $item->attributes->selectedTime) {
+                $courseData[$item->id]['selectedDate'] = $item->attributes->selectedDate;
+                $courseData[$item->id]['selectedTime'] = $item->attributes->selectedTime;
+                }
             }
         }
         $courses = new Collection(Course::find($course_ids));
@@ -50,11 +55,12 @@ class CartController extends Controller
         //Apply Tax
         $taxData = $this->applyTax('total');
         
-        return view('frontend.cart.checkout', compact('courses', 'bundles', 'total', 'taxData'));
+        return view('frontend.cart.checkout', compact('courses', 'bundles', 'total', 'taxData','courseData'));
     }
 
     public function addToCart(Request $request)
     {
+       
         $product = "";
         $teachers = "";
         $type = "";
@@ -121,6 +127,7 @@ class CartController extends Controller
                 $bundle_ids[] = $item->id;
             } else {
                 $course_ids[] = $item->id;
+               
             }
         }
         $courses = new Collection(Course::find($course_ids));
@@ -480,6 +487,7 @@ class CartController extends Controller
         $order->reference_no = str_random(8);
         $order->amount = Cart::session(auth()->user()->id)->getTotal();
         $order->status = 1;
+   
         $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
         $order->payment_type = 3;
         $order->save();
@@ -489,9 +497,12 @@ class CartController extends Controller
                 $type = Bundle::class;
             } else {
                 $type = Course::class;
+             
             }
             $order->items()->create([
                 'item_id' => $cartItem->id,
+                'selectedDate'=>$cartItem->attributes->selectedDate ?? null,
+                'selectedTime'=>$cartItem->attributes->selectedTime ?? null,
                 'item_type' => $type,
                 'price' => $cartItem->price
             ]);

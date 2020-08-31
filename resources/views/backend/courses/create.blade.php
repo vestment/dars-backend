@@ -333,9 +333,7 @@
                         </div>
                     </div>
                 </div>
-                @php
-                    $a = 0;
-                @endphp
+              
                 @stop
                 @push('after-scripts')
                     <script>
