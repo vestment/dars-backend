@@ -1315,6 +1315,7 @@ return array (
       'order_payment' => 'اطلب <span> الدفع. </span>',
       'pay_now' => 'ادفع الآن',
       'pay_securely_paypal' => 'ادفع بأمان باستخدام PayPal',
+      'pay_securely_fawry' => 'ادفع بأمان باستخدام Fawry',
       'payment_cards' => 'بطاقة الائتمان أو الخصم',
       'payment_status' => 'حالة السداد',
       'paypal' => 'باي بال',

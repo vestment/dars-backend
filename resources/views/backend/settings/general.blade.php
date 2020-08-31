@@ -809,6 +809,46 @@
                                 </div><!--col-->
                             </div><!--form-group-->
                             <div class="form-group row">
+                                {{ html()->label(__('labels.backend.general_settings.payment_settings.fawry'))->class('col-md-3 form-control-label')}}
+                                <div class="col-md-9">
+                                    <div class="checkbox">
+                                        {{ html()->label(
+                                                html()->checkbox('fawry__active', config('fawry.active') ? true : false,1)
+                                                      ->class('switch-input')->value(1)
+                                                . '<span class="switch-label"></span><span class="switch-handle"></span>')
+
+                                            ->class('switch switch-sm switch-3d switch-primary')
+                                        }}
+                                       
+                                    </div>
+                                    <small>
+                                        <!-- <i> {{ __('labels.backend.general_settings.payment_settings.paypal_note')}}</i> -->
+                                    </small>
+                                    <div class="switch-content @if(config('fawry.active') == 0 || config('fawry.active') == false) d-none @endif">
+                                        <br>
+                                        
+                                        <div class="form-group row">
+                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.merchant_code'))->class('col-md-2 form-control-label') }}
+                                            <div class="col-md-8 col-xs-12">
+                                                {{ html()->text('fawry__merchant_code')
+                                                     ->class('form-control')
+                                                     ->value(config('fawry.merchant_code'))
+                                                     }}
+                                            </div><!--col-->
+                                        </div><!--form-group-->
+                                        <div class="form-group row">
+                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.security_key'))->class('col-md-2 form-control-label')->for('fawry.fawry.security_key') }}
+                                            <div class="col-md-8 col-xs-12">
+                                                {{ html()->text('fawry__security_key')
+                                                     ->class('form-control')
+                                                     ->value(config('fawry.security_key'))
+                                                     }}
+                                            </div><!--col-->
+                                        </div><!--form-group-->
+                                    </div>
+                                </div><!--col-->
+                            </div><!--form-group-->
+                            <div class="form-group row">
                                 {{ html()->label(__('labels.backend.general_settings.payment_settings.offline_mode'))->class('col-md-3 form-control-label')}}
                                 <div class="col-md-9">
                                     <div class="checkbox">

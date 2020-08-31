@@ -149,6 +149,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('cart/remove-coupon',['uses' => 'CartController@removeCoupon','as'=>'cart.removeCoupon']);
     Route::post('cart/stripe-payment', ['uses' => 'CartController@stripePayment', 'as' => 'cart.stripe.payment']);
     Route::post('cart/paypal-payment', ['uses' => 'CartController@paypalPayment', 'as' => 'cart.paypal.payment']);
+    Route::post('cart/fawry-payment', ['uses' => 'CartController@fawryPayment', 'as' => 'cart.fawry.payment']);
     Route::get('cart/paypal-payment/status', ['uses' => 'CartController@getPaymentStatus'])->name('cart.paypal.status');
 
     Route::get('status', function () {
