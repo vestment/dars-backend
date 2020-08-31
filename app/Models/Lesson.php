@@ -113,6 +113,10 @@ class Lesson extends Model
     {
         return $this->hasOne('App\Models\Test');
     }
+    public function notes()
+    {
+        return $this->hasMany('App\Models\Note');
+    }
 
     public function students()
     {
