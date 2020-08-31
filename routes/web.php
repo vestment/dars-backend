@@ -90,6 +90,7 @@ Route::get('courses/review/{id}/delete', ['uses' => 'CoursesController@deleteRev
 //============offline booking Routes=================//
 Route::get('offlineBooking', 'offlineBookingController@index')->name('offlineBooking.index');
 Route::get('filter/offlineCourses', ['uses' => 'offlineBookingController@filerCoursesByCategory', 'as' => 'offlineCourses.filterCategory']);
+Route::post('course/{slug}', ['uses' => 'CoursesController@bookOfflineCourse', 'as' => 'offline.book']);
 //============ Academy Routes=================//
 Route::get('academy/{id}', ['uses' => 'AcademyController@show', 'as' => 'academy.show']);
 Route::get('academy-911', ['uses' => 'AcademyController@show911', 'as' => 'academy-911']);
