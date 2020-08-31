@@ -85,8 +85,8 @@ class CoursesController extends Controller
 
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
 
-        $chapters = Course::whereNotIn('id', $this->hidden_data['courses'])->with('chapters')->get();
-        //  dd($chapters);
+        $chapters = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with('chapters')->where('published', 1)->where('online', 1)->get();
+
         foreach ($courses as $course) {
             foreach ($course->teachers as $teacher) {
                 $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
@@ -167,7 +167,7 @@ class CoursesController extends Controller
         }
         $mandatory_courses = [];
         $optional_courses = [];
-
+$course_date =json_encode([]);
         if ($course->optional_courses) {
             $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->get();
         }
@@ -176,8 +176,8 @@ class CoursesController extends Controller
         }
         if ($course->date) {
             $course_date = $course->date ? json_decode($course->date) : null;
-
         }
+        // dd($course_date);
 //dd($course->getDataFromColumn('title'));
         return view('frontend.courses.course', compact('academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
     }
@@ -455,6 +455,41 @@ class CoursesController extends Controller
         }
         return abort(404);
     }
+
+    public function bookOfflineCourse(Request $request)
+    {
+        $product = "";
+        $teachers = "";
+        $type = "";
+        if ($request->has('course_id')) {
+            $product = Course::findOrFail($request->get('course_id'));
+            $teachers = $product->teachers->pluck('id', 'name');
+            $type = 'course';
+
+        } elseif ($request->has('bundle_id')) {
+            $product = Bundle::findOrFail($request->get('bundle_id'));
+            $teachers = $product->user->name;
+            $type = 'bundle';
+        }
+
+        $cart_items = Cart::session(auth()->user()->id)->getContent()->keys()->toArray();
+        if (!in_array($product->id, $cart_items)) {
+            Cart::session(auth()->user()->id)
+                ->add($product->id, $product->title, $product->price, 1,
+                    [
+                        'user_id' => auth()->user()->id,
+                        'description' => $product->description,
+                        'image' => $product->course_image,
+                        'type' => $type,
+                        'teachers' => $teachers,
+                        'selectedDate' => $request->selectedDate,
+                        'selectedTime' => $request->selectedTime,
+                    ]);
+        }
+        Session::flash('success', trans('labels.frontend.cart.product_added'));
+        return back();
+    }
+
 
 
 }

@@ -221,6 +221,17 @@
                                         {!! Form::label('free',  trans('labels.backend.courses.fields.free'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
 
+                                    <div class="checkbox d-inline mr-3">
+                                            {!! Form::hidden('online', 0) !!}
+                                            {!! Form::checkbox('online', 1 , old('online'), [], false, ['id'=>'online']) !!}
+                                            {!! Form::label('online',  trans('labels.backend.courses.fields.online_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                                    </div>
+                                    <div class="checkbox d-inline mr-3">
+                                        {!! Form::hidden('offline', 0) !!}
+                                        {!! Form::checkbox('offline', 1 ,old('offline'), [] , false, ['id'=>'offline','onclick'=>'toggleOfflineMode()']) !!}
+                                        {!! Form::label('offline',  trans('labels.backend.courses.fields.offline_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="not-necessary-section d-none">
@@ -685,7 +696,49 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="offlineDataModal" tabindex="-1" aria-labelledby="offlineDataModal"
+    aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title" id="offlineDataModal">
+                   Add Booking times</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body">
+                   <div class="academy d-none">
+                           <div class="row ">
+                               <div class="col-12 form-group">
+                                   {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                                   {!! Form::select('academies', $academies, old('academies'), ['class' => 'form-control d-none select2', 'id'=>'selected-academy','multiple' => false]) !!}
+                               </div>
+                           </div>
+                               <div class="row ">
 
+                                   <div class="col-12 form-group">
+                                       {{ html()->label()->class(' form-control-label')->for('buttons') }}
+                                       <button type="button" id="add-button"
+                                               class="btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add').' '.__('labels.backend.teachers.fields.Booking_Date&Time')}}</button>
+                                   </div>
+                                   
+                               </div>
+                              
+                           <div class="row">
+                                   <div class="col-12 col-md-12 form-group button-container mt-2">
+
+                                       </div>
+                           </div>
+                       </div>
+           </div>
+           <div class="modal-footer">
+                   <button type='button' onclick="saveOfflineData(this)" class='add-but btn-block btn  btn-primary'>Save</button>
+           </div>
+
+       </div>
+   </div>
+</div>
 @stop
 
 @push('after-scripts')
@@ -972,6 +1025,30 @@
             }
         })
 
+        function toggleOfflineMode() {
+                            if ($('#offline').prop('checked')) {
+                                $('#offlineDataModal').modal();
+                                $("#selected-academy").select2({
+                                    placeholder: "{{trans('labels.backend.courses.select_academies')}}",
+                                });
+                                $('.academy').removeClass('d-none');
+                                $('#selected-academy').next('span').show();
+                                 $('#selected-academy').next('span').show();
+                            } else {
+                                $('.academy').addClass('d-none');
+                                $('#selected-academy').next('span').hide();
+                                $('.academy input').each(function (key, value) {
+                                    $(value).val('');
+                                });
+                                $('.academy select').each(function (key, value) {
+                                    $(value).val('');
+                                    if ($(value).select2()) {
+                                    $(value).select2('destroy');
+                                    }
+                                })
+                            }
+                        }
+                        toggleOfflineMode();
 
     </script>
 @endpush

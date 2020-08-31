@@ -5,6 +5,12 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.5.3/plyr.css"/>
     <link href="{{asset('plugins/touchpdf-master/jquery.touchPDF.css')}}" rel="stylesheet">
     <link href="{{asset('Lexxus-jq-timeTo-f2c4b67/timeTo.css')}}" rel="stylesheet">
+    <link href="{{asset('froala_editor_3.2.1/css/froala_style.min.css')}}" rel="stylesheet">
+    <link href="{{asset('froala_editor_3.2.1/css/froala_editor.pkgd.min.css')}}" rel="stylesheet">
+    <link href="{{asset('froala_editor_3.2.1/css/plugins.pkgd.min.css')}}" rel="stylesheet">
+
+
+
 
     <script>
         var lang = '{{app()->getLocale()}}';
@@ -181,6 +187,9 @@
 
             border-bottom: solid 1px #e4e4e4;
         }
+.fr-quick-insert{
+    display:none !important;
+}
     </style>
 @endpush
 @section('lesson-title')
@@ -220,8 +229,12 @@
                     @include('includes.partials.messages')
 
                     <div class="course-details-item border-bottom-0 mb-0">
+                       
+
                         @if ($lesson->available == 1)
                             @if ($test_exists)
+                        
+
                                 <div class="course-single-text row">
 
                                     <div class="col-6">
@@ -589,7 +602,43 @@
     <script src="{{asset('plugins/touchpdf-master/jquery.panzoom.js')}}"></script>
     <script src="{{asset('plugins/touchpdf-master/jquery.mousewheel.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="{{asset('froala_editor_3.2.1/js/froala_editor.min.js')}}"></script>
+    <script src="{{asset('froala_editor_3.2.1/js/froala_editor.pkgd.min.js')}}"></script>
+    <script src="{{asset('froala_editor_3.2.1/js/plugins.pkgd.min.js')}}"></script>
 
+
+
+    <link href="{{asset('froala_editor_3.2.1/css/froala_style.min.css')}}" rel="stylesheet">
+
+    <script>
+           $(document).ready(function () {
+            new FroalaEditor("#edit", {
+        enter: FroalaEditor.ENTER_BR,
+        fileUpload: false,
+        fileInsertButtons: [],
+        imageUpload: false
+      },function () {
+  // Call the method inside the initialized event.
+  $('#insertFile-1').remove();
+  $('#insertFiles-1').remove();
+
+  $('#insertLink-1').remove();
+  $('#insertImage-1').remove();
+  $('#insertVideo-1').remove();
+  $('#getPDF-1').remove();
+  $('#print-1').remove();
+  $('#logo').remove();
+
+
+
+
+
+})
+
+
+           })
+
+  </script>
 
     <script>
         function startTest(element) {

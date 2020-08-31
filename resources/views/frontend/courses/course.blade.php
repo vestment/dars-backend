@@ -120,6 +120,8 @@
                             @elseif(!auth()->check())
                                 @if($course->free == 1)
                                     <a href="{{route('login.index')}}" class="btn btn-outline-light addcart">
+                                            <i
+                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
                                         @lang('labels.frontend.course.get_now')
                                         <i class="fas fa-caret-right"></i>
                                     </a>
@@ -840,67 +842,59 @@
         <div class="modal-dialog modal-lg" role="document">
         <!--Content-->
             <div class="modal-content">
+                <form method="post" action="{{route('offline.book',['slug'=>$course->slug])}}">
+                    @csrf
+                    <input type="hidden" id="selectedTime" name="selectedTime" value="null">
+                    <input type="hidden" id="selectedDate" name="selectedDate" value="null">
                 <div class="row">
                 <div class="col-lg-6">
-                        <h2 class="modal-title ml-4 mt-4">Select a Date & Time</h2>
+                       
                         <h5 class="modal-title m-4">first select Available day</h5>
 
-                        <div id='calendar' onclick='myFunction()'>
-                             
-                                    
-                                    <!-- /.modal-content -->
-
-
-
-                        </div>
-                            <!-- /.modal-dialog -->
-                            <!-- /.modal -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            @if (!$purchased_course)
-                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                    <button class="btn btn-primary"
-                                            type="submit">@lang('labels.frontend.course.added_to_cart')
-                                    </button>
-                                @elseif(!auth()->check())
-                                        <a href="{{route('login.index')}}" class="btn btn-primary"> <i
-                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                            @lang('labels.frontend.course.add_to_cart')
-                                        </a>
-                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-                                        <form action="{{ route('cart.addToCart') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                            <input type="hidden" name="amount"
-                                                value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                            <button type="submit" class="btn btn-primary"><i
-                                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                                @lang('labels.frontend.course.add_to_cart')
-                                            </button>
-                                        </form>
-                                @else
-                                    <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
-                                @endif
-                            @endif
-                            <!-- <button type="button" class="btn btn-primary" id="save-event">Save changes</button> -->
-
-                        </div>
+                        <select class="form-control form-control ml-4" id="datesToSelect">
+                            
+                        </select>
+                           
+                       
                 </div>
-
                 <div class="col-lg-6" id="myDIV">
-                    <h5 class="modal-title m-4">second select available time</h5>
-                    <div class="row ml-1">
-                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
-                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
-                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
-                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
-                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
-                        <div class="col-3 m-3 border border-primary rounded">3:00</div>
+                    <h5 class="modal-title mt-4">second select available time</h5>
+                    <div class="ml-1" id="timesToSelect">
+                        
                     </div>
                 </div>
             </div>
-            </div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @if (!$purchased_course)
+                        @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                            <button class="btn btn-primary"
+                                    type="submit">@lang('labels.frontend.course.added_to_cart')
+                            </button>
+                        @elseif(!auth()->check())
+                                <a href="{{route('login.index')}}" class="btn btn-primary"> <i
+                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.add_to_cart')
+                                </a>
+                        @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+                              
+                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                    <input type="hidden" name="amount"
+                                        value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                    <button type="submit" class="btn btn-primary"><i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        @lang('labels.frontend.course.add_to_cart')
+                                    </button>
+                               
+                        @else
+                            <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                        @endif
+                    @endif
+                    <!-- <button type="button" class="btn btn-primary" id="save-event">Save changes</button> -->
 
+                </div>
+            </div>
+        </form>
          
 
 
@@ -920,8 +914,39 @@
 
     <script>
         const player = new Plyr('#player');
+        function selectTime(element){
+            $(element).parent().find('.btn-primary').addClass('btn-outline-dark');
+            $(element).parent().find('.btn-primary').removeClass('selectedTime');
+            $(element).parent().find('.btn-primary').removeClass('btn-primary');
+            $(element).removeClass('btn-outline-dark');
+            $(element).addClass('selectedTime');
+            $(element).addClass('btn-primary');
+            $('#selectedTime').val($(element).data('value'));
+                
+            }
         $(document).ready(function () {
-
+var OfflineDates = JSON.parse('{!!$course_date!!}');
+var dates = [];
+  
+$.each(OfflineDates,function(key,value) {
+    var elemt = '<option value='+key+'>'+value.date+'</option>';
+    $('#datesToSelect').append(elemt);
+    // dates.push(value.date)
+})
+$('#datesToSelect').on('change', function () {
+        var objKeys = Object.keys(OfflineDates[$(this).val()]);
+        var objValues = Object.values(OfflineDates[$(this).val()]);
+        $('#timesToSelect').html('');
+        $('#selectedDate').val(OfflineDates[$(this).val()].date);
+        $.each(objKeys,function(key,values){
+            if (objKeys[key] !='date' && !objKeys[key].startsWith('seats') && objValues[key] != '') {
+                var timeElem = '<a href="#" class="m-3 btn btn-outline-dark '+objKeys[key]+' rounded" data-value="'+objValues[key]+'" onclick=\"selectTime(this)\">'+objValues[key]+'</a>';
+                $('#timesToSelect').append(timeElem);
+            //  console.log(objKeys[key]+'=>'+objValues[key]);
+            }
+        }) 
+            })
+         
             $(document).on('change', '#sortBy', function () {
                 if ($(this).val() != "") {
                     location.href = '{{url()->current()}}?type=' + $(this).val();
