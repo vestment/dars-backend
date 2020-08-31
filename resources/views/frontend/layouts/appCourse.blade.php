@@ -32,7 +32,25 @@
         {{--<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">--}}
         <link rel="stylesheet" href="{{ asset('css/'.$cssFile) }}">
         <link rel="stylesheet" href="{{asset('assets/css/fontawesome-all.css')}}">
+        <style>
 
+            .cart-search li{
+                height: 35px;
+                width: 35px;
+                text-align: center;
+                line-height: 30px;
+                border-radius: 100%;
+                color: #fff;
+                margin-left: 10px;
+                border: 2px solid #fff;
+                position: absolute;
+                top: 27%;
+            }
+            .cart-search li a {
+                margin-top: 2px;
+            }
+
+        </style>
        
         @yield('css')
         @stack('after-styles')
@@ -76,6 +94,7 @@
                                     {{--<img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">--}}
                                     <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
                                 </a>
+                                @yield('lesson-title')
                             </div><!-- /.navbar-header -->
 
                             <div class="cart-search float-right ul-li">
@@ -210,34 +229,10 @@
 
     <script src="{{asset('assets/js/switch.js')}}"></script>
 
-    <script>
-        @if(request()->has('user')  && (request('user') == 'admin'))
-
-        $('#myModal').modal('show');
-        $('#loginForm').find('#email').val('admin@lms.com')
-        $('#loginForm').find('#password').val('secret')
-
-        @elseif(request()->has('user')  && (request('user') == 'student'))
-
-        $('#myModal').modal('show');
-        $('#loginForm').find('#email').val('student@lms.com')
-        $('#loginForm').find('#password').val('secret')
-
-        @elseif(request()->has('user')  && (request('user') == 'teacher'))
-
-        $('#myModal').modal('show');
-        $('#loginForm').find('#email').val('teacher@lms.com')
-        $('#loginForm').find('#password').val('secret')
-
-        @endif
-    </script>
 
 
     <script src="{{asset('assets/js/script.js')}}"></script>
     <script>
-        @if((session()->has('show_login')) && (session('show_login') == true))
-        $('#myModal').modal('show');
-                @endif
         var font_color = "{{config('font_color')}}"
         setActiveStyleSheet(font_color);
     </script>
@@ -255,28 +250,7 @@
     @endif
 
 
-    <style>
-    .logo-lesson{
-        height: 105px;
-    width: 121px;
-    position: absolute;
-    top: -10%;
-    left: 7%;
-}
-.cart-search li{
-    height: 35px;
-    width: 35px;
-    text-align: center;
-    line-height: 30px;
-    border-radius: 100%;
-    color: #fff;
-    margin-left: 10px;
-    border: 2px solid #fff;
-    position: absolute;
-    top: 27%;
-}
-    }
-    </style>
+
 
     </body>
     </html>

@@ -121,6 +121,7 @@ return array(
                             'description_ar' => 'Description In Arabic',
                             'published' => 'Published',
                             'questions' => 'Questions',
+                            'no_questions' => 'Number of Questions',
 
                         ),
                     'create' => 'Create Test',

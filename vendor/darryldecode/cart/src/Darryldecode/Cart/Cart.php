@@ -144,7 +144,8 @@ class Cart
      * @return $this
      * @throws InvalidItemException
      */
-    public function add($id, $name = null, $price = null, $quantity = null, $attributes = array(), $conditions = array())
+   
+     public function add($id, $name = null, $price = null, $quantity = null, $attributes = array(), $conditions = array())
     {
         // if the first argument is an array,
         // we will need to call add again
@@ -201,6 +202,9 @@ class Cart
 
         return $this;
     }
+
+
+
 
     /**
      * update a cart

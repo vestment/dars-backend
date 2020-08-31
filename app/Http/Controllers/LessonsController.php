@@ -12,7 +12,7 @@ use App\Models\TestsResult;
 use App\Models\VideoProgress;
 use Illuminate\Http\Request;
 use App\Models\Chapter;
-
+use App\Note;
 
 class LessonsController extends Controller
 {
@@ -111,6 +111,42 @@ class LessonsController extends Controller
         }
     }
 
+
+
+    public function saveNotes(Request $request)
+    {
+        $lesson = lesson::where('slug', $request->lesson_slug)->firstOrFail();
+
+        $notes = Note::create([
+            'lesson_id' => $lesson->id,
+            'user_id' => \Auth::id(),
+            'content' => $request->content,
+        ]);
+        
+      
+        return redirect()->back();
+
+
+
+    }
+
+
+
+
+
+
+    public function showNotes()
+    {
+        $lesson = lesson::where('slug', $request->lesson_slug)->firstOrFail();
+
+        $notes = Note::where(['lesson_id' => $lesson->id,'user_id' => \Auth::id() ])->get();
+        
+      
+        return view('frontend.courses.lesson', compact('notes') );
+
+
+    }
+
     public function availablityUpdate(Request $request)
     {
         // return $request;
@@ -179,6 +215,7 @@ class LessonsController extends Controller
 
         return back()->with(['message' => 'Test score: ' . $test_score, 'result' => $test_result]);
     }
+    
 
     public function retest(Request $request)
     {
