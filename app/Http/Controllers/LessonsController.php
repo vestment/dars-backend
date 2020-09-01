@@ -58,7 +58,7 @@ class LessonsController extends Controller
             $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
             $course_tests = ($lesson->course->tests) ? $lesson->course->tests->pluck('id')->toArray() : [];
             $course_lessons = array_merge($course_lessons, $course_tests);
-dd($lesson->courseTimeline()->get());
+//dd($lesson->courseTimeline()->get());
             $previous_lesson = $lesson->course->courseTimeline()
                 ->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->whereIn('model_id', $course_lessons)
@@ -152,6 +152,7 @@ dd($lesson->courseTimeline()->get());
 
     public function startTimeUpdate(Request $request)
     {
+        return $request;
 //        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
         $check_prev_entry = auth()->user()->current_test()->where('test_id', $request->id)->first();
         if (!$check_prev_entry) {

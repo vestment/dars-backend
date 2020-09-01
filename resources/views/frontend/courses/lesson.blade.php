@@ -558,9 +558,7 @@
                                                                     </a> </p>
 
                                                                 @else
-                                                                    <i
-                                                                            class="fa text-success float-right fa-lock"></i>
-                                                                    <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
+                                                                    <i class="fa text-success float-right fa-unlock"></i>
                                                                 @endif
                                                                 @endforeach
                                                     </div>
@@ -664,7 +662,7 @@
                     {{--'lesson_slug': '{{$lesson->slug}}'--}}
                 },
                 success: function (result) {
-                    console.log($(element).data('test-id'));
+                    console.log(result);
                     window.location.href = $(element).data('href');
                 }
             });

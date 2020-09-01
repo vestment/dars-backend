@@ -246,9 +246,11 @@ class CoursesController extends Controller
         }
        
         $seats = 0;
-        foreach (json_decode($request->offlineData) as $key=>$item) {
-            $item  = json_decode(json_encode($item),true);
-            $seats += $item['seats-'.$key]; 
+        if ($request->offlineData) {
+            foreach (json_decode($request->offlineData) as $key => $item) {
+                $item = json_decode(json_encode($item), true);
+                $seats += $item['seats-' . $key];
+            }
         }
         $course = Course::create($request->except('offlineData'));
         $course->slug = $slug;
