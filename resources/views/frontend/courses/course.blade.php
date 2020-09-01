@@ -5,8 +5,9 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
     <link rel="stylesheet" href="{{asset('css/datepicker.css')}}">
     <link rel="stylesheet" href="https://fullcalendar.io/js/fullcalendar-3.0.1/fullcalendar.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css">
-    
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css">
+
     <style>
         .couse-pagination li.active {
             color: #333333 !important;
@@ -65,7 +66,7 @@
                 <div class="m-1">
                     <p> @lang('labels.frontend.layouts.partials.explore')
                         / {{$course->category->getDataFromColumn('name')}} / <b
-                            class="text-white">{{$course->getDataFromColumn('title')}}</b></p>
+                                class="text-white">{{$course->getDataFromColumn('title')}}</b></p>
                 </div>
                 <div class="p-1">
                     <h2 class="text-white"><b>{{$course->getDataFromColumn('title')}}</b></h2>
@@ -120,8 +121,8 @@
                             @elseif(!auth()->check())
                                 @if($course->free == 1)
                                     <a href="{{route('login.index')}}" class="btn btn-outline-light addcart">
-                                            <i
-                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        <i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
                                         @lang('labels.frontend.course.get_now')
                                         <i class="fas fa-caret-right"></i>
                                     </a>
@@ -211,10 +212,11 @@
                             @lang('labels.frontend.course.Share')
                         </button>
                         @if($course->offline)
-                            <button type="submit" id="bookNowButton" data-target="#bookNowModal" data-toggle="modal" class="btn btn-outline-light ml-1 btnbook btn-sm-block">
+                            <button type="submit" id="bookNowButton" data-target="#bookNowModal" data-toggle="modal"
+                                    class="btn btn-outline-light ml-1 btnbook btn-sm-block">
                                 <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')
                             </button>
-                        @endif
+                    @endif
                     <!-- Button trigger modal -->
 
                     </div>
@@ -332,35 +334,35 @@
                 <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
                 <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
 
-            
-              @if (!$purchased_course)
-                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                    <button class="btn btn-primary"
-                                            type="submit">@lang('labels.frontend.course.added_to_cart')
-                                    </button>
-                                @elseif(!auth()->check())
-                                        <a href="{{route('login.index')}}"  class="btn btn-info btn-sm btn-block text-white"> <i
-                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                            @lang('labels.frontend.course.add_to_cart')
-                                        </a>
-                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-                                        <form action="{{ route('cart.addToCart') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                            <input type="hidden" name="amount"
-                                                value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                            <button type="submit"  class="btn btn-info btn-sm btn-block text-white"><i
-                                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                                @lang('labels.frontend.course.add_to_cart')
-                                            </button>
-                                        </form>
-                                @else
-                                    <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
-                                @endif
 
-              
-            @endif
-       
+                @if (!$purchased_course)
+                    @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                        <button class="btn btn-primary"
+                                type="submit">@lang('labels.frontend.course.added_to_cart')
+                        </button>
+                    @elseif(!auth()->check())
+                        <a href="{{route('login.index')}}" class="btn btn-info btn-sm btn-block text-white"> <i
+                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            @lang('labels.frontend.course.add_to_cart')
+                        </a>
+                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+                        <form action="{{ route('cart.addToCart') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                            <input type="hidden" name="amount"
+                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                            <button type="submit" class="btn btn-info btn-sm btn-block text-white"><i
+                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                @lang('labels.frontend.course.add_to_cart')
+                            </button>
+                        </form>
+                    @else
+                        <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                    @endif
+
+
+                @endif
+
             </div>
         </div>
     </section>
@@ -388,7 +390,8 @@
                             <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link btn-block text-left" type="button"
-                                            data-toggle="collapse" data-target="#chapter-{{$chapter->id}}" aria-expanded="true"
+                                            data-toggle="collapse" data-target="#chapter-{{$chapter->id}}"
+                                            aria-expanded="true"
                                             aria-controls="{{$chapter->id}}">
                                         {{ $chapter->title}} <i class="fa fa-angle-down float-right"
                                                                 aria-hidden="true"></i>
@@ -403,17 +406,14 @@
                                     @foreach($lessons->get() as $key=>$item)
                                         @if($item->model && $item->model->published == 1)
                                             @if($item->model->chapter_id == $chapter->id)
-                                                <div class="bordered border-bottom">
-                                                    <p class="subtitle2">
-                                                        <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">
-                                                            <i class="fas fa-play-circle"></i> Video File {{$key}}
-                                                            - {{$item->model->title}}
+                                                <div class="mt-4 bordered border-bottom">
+                                                <p class="subtitle2">
+                                                {{-- <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">--}}
+                                                <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->title}}
                                                     @if($item->model_type == 'App\Models\Test')
-                                                        <p class="mb-0 text-primary">
-                                                            - @lang('labels.frontend.course.test')</p>
-                                                        @endif
-                                                        </a>
-                                                        </p>
+                                                        <p class="mb-0 text-primary"> - @lang('labels.frontend.course.test')</p>
+                                                    @endif
+                                                 </p>
                                                 </div>
                                             @endif
                                         @endif
@@ -493,9 +493,7 @@
                                         @php
                                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                                         @endphp
-                                        @php $key++ @endphp
                                         <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
-                                        @php $key++ @endphp
                                         <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
                                             <p class="font12">{{$teacher->full_name}}</p>
                                             <p class="font10">{{$teacherProfile->description}}</p>
@@ -695,40 +693,39 @@
                     @endif
                 @endif
             @endif
-                @foreach($course_review as $key=>$review)
-                    <div class="row" data-id="{{$teacher->id}}">
-                        <div class="row col-lg-3">
-                            <div class="col-lg-1 col-md-2 col-sm-3">
-                                <img style="max-width:50px;height:50px" class="rounded-circle"
-                                     src="{{$teacher->picture}}"
-                                     alt="">
+            @foreach($course_review as $key=>$review)
+                <div class="row" data-id="{{$teacher->id}}">
+                    <div class="row col-lg-3">
+                        <div class="col-lg-1 col-md-2 col-sm-3">
+                            <img style="max-width:50px;height:50px" class="rounded-circle"
+                                 src="{{$teacher->picture}}"
+                                 alt="">
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-3 ml-5 mt-2">
+                            <span>{{$review->user->full_name}}</span>
+                            <div class="ul-li">
+                                <ul>
+                                    @for ($i=0; $i<5; ++$i)
+                                        <li>
+                                            <i class="fa{{($review->rating<=$i?'r':'s')}} fa-star{{($review->rating==$i+.5?'-half-alt':'')}} text-warning"
+                                               aria-hidden="true"></i></li>
+                                    @endfor
+                                </ul>
                             </div>
-                            <div class="col-lg-5 col-md-5 col-sm-3 ml-5 mt-2">
-                                <span>{{$review->user->full_name}}</span>
-                                <div class="ul-li">
-                                    <ul>
-                                        @for ($i=0; $i<5; ++$i)
-                                            <li>
-                                                <i class="fa{{($review->rating<=$i?'r':'s')}} fa-star{{($review->rating==$i+.5?'-half-alt':'')}} text-warning"
-                                                   aria-hidden="true"></i></li>
-                                        @endfor
-                                    </ul>
-                                </div>
-                                <div class="col-lg-3 col-md-5 col-sm-3 mt-4" style="padding-left: 0px">
-                                    <p>{{$review->content}}</p>
-                                </div>
+                            <div class="col-lg-3 col-md-5 col-sm-3 mt-4" style="padding-left: 0px">
+                                <p>{{$review->content}}</p>
                             </div>
-
-                        <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
                         </div>
 
+                    <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
                     </div>
-                    <div class="row col-6">
+
+                </div>
+                <div class="row col-6">
 
 
-                    </div>
-                @endforeach
-
+                </div>
+            @endforeach
 
 
         </div>
@@ -823,11 +820,11 @@
                             </div>
                         @endif
 
-                @else
-                    <p class="text-center text-white display-4 mx-5 my-5">No Videos available </p>
-                @endif
+                    @else
+                        <p class="text-center text-white display-4 mx-5 my-5">No Videos available </p>
+                    @endif
+                </div>
             </div>
-        </div>
         </div>
         <!-- </div> -->
         <!--/.Content-->
@@ -836,71 +833,70 @@
 
 
 
-<!-- calender date modal -->
+    <!-- calender date modal -->
 
     <div class="modal fade" id="bookNowModal" tabindex="-2" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
-        <!--Content-->
+            <!--Content-->
             <div class="modal-content">
                 <form method="post" action="{{route('offline.book',['slug'=>$course->slug])}}">
                     @csrf
                     <input type="hidden" id="selectedTime" name="selectedTime" value="null">
                     <input type="hidden" id="selectedDate" name="selectedDate" value="null">
-                <div class="row">
-                <div class="col-lg-6">
-                       
-                        <h5 class="modal-title m-4">first select Available day</h5>
+                    <div class="row">
+                        <div class="col-lg-6">
 
-                        <select class="form-control form-control ml-4" id="datesToSelect">
-                            
-                        </select>
-                           
-                       
-                </div>
-                <div class="col-lg-6" id="myDIV">
-                    <h5 class="modal-title mt-4">second select available time</h5>
-                    <div class="ml-1" id="timesToSelect">
-                        
+                            <h5 class="modal-title m-4">first select Available day</h5>
+
+                            <select class="form-control form-control ml-4" id="datesToSelect">
+
+                            </select>
+
+
+                        </div>
+                        <div class="col-lg-6" id="myDIV">
+                            <h5 class="modal-title mt-4">second select available time</h5>
+                            <div class="ml-1" id="timesToSelect">
+
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    @if (!$purchased_course)
-                        @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                            <button class="btn btn-primary"
-                                    type="submit">@lang('labels.frontend.course.added_to_cart')
-                            </button>
-                        @elseif(!auth()->check())
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        @if (!$purchased_course)
+                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                <button class="btn btn-primary"
+                                        type="submit">@lang('labels.frontend.course.added_to_cart')
+                                </button>
+                            @elseif(!auth()->check())
                                 <a href="{{route('login.index')}}" class="btn btn-primary"> <i
                                             class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
                                 </a>
-                        @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-                              
-                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                    <input type="hidden" name="amount"
-                                        value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                    <button type="submit" class="btn btn-primary"><i
-                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                        @lang('labels.frontend.course.add_to_cart')
-                                    </button>
-                               
-                        @else
-                            <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                <input type="hidden" name="amount"
+                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                <button type="submit" class="btn btn-primary"><i
+                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.add_to_cart')
+                                </button>
+
+                            @else
+                                <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
                         @endif
                     @endif
                     <!-- <button type="button" class="btn btn-primary" id="save-event">Save changes</button> -->
 
-                </div>
+                    </div>
             </div>
-        </form>
-         
+            </form>
 
 
         </div>
     </div>
-<!-- end of calender date modal -->
+    <!-- end of calender date modal -->
 
 
 
@@ -914,7 +910,8 @@
 
     <script>
         const player = new Plyr('#player');
-        function selectTime(element){
+
+        function selectTime(element) {
             $(element).parent().find('.btn-primary').addClass('btn-outline-dark');
             $(element).parent().find('.btn-primary').removeClass('selectedTime');
             $(element).parent().find('.btn-primary').removeClass('btn-primary');
@@ -922,31 +919,32 @@
             $(element).addClass('selectedTime');
             $(element).addClass('btn-primary');
             $('#selectedTime').val($(element).data('value'));
-                
-            }
+
+        }
+
         $(document).ready(function () {
-var OfflineDates = JSON.parse('{!!$course_date!!}');
-var dates = [];
-  
-$.each(OfflineDates,function(key,value) {
-    var elemt = '<option value='+key+'>'+value.date+'</option>';
-    $('#datesToSelect').append(elemt);
-    // dates.push(value.date)
-})
-$('#datesToSelect').on('change', function () {
-        var objKeys = Object.keys(OfflineDates[$(this).val()]);
-        var objValues = Object.values(OfflineDates[$(this).val()]);
-        $('#timesToSelect').html('');
-        $('#selectedDate').val(OfflineDates[$(this).val()].date);
-        $.each(objKeys,function(key,values){
-            if (objKeys[key] !='date' && !objKeys[key].startsWith('seats') && objValues[key] != '') {
-                var timeElem = '<a href="#" class="m-3 btn btn-outline-dark '+objKeys[key]+' rounded" data-value="'+objValues[key]+'" onclick=\"selectTime(this)\">'+objValues[key]+'</a>';
-                $('#timesToSelect').append(timeElem);
-            //  console.log(objKeys[key]+'=>'+objValues[key]);
-            }
-        }) 
+            var OfflineDates = JSON.parse('{!!$course_date!!}');
+            var dates = [];
+
+            $.each(OfflineDates, function (key, value) {
+                var elemt = '<option value=' + key + '>' + value.date + '</option>';
+                $('#datesToSelect').append(elemt);
+                // dates.push(value.date)
             })
-         
+            $('#datesToSelect').on('change', function () {
+                var objKeys = Object.keys(OfflineDates[$(this).val()]);
+                var objValues = Object.values(OfflineDates[$(this).val()]);
+                $('#timesToSelect').html('');
+                $('#selectedDate').val(OfflineDates[$(this).val()].date);
+                $.each(objKeys, function (key, values) {
+                    if (objKeys[key] != 'date' && !objKeys[key].startsWith('seats') && objValues[key] != '') {
+                        var timeElem = '<a href="#" class="m-3 btn btn-outline-dark ' + objKeys[key] + ' rounded" data-value="' + objValues[key] + '" onclick=\"selectTime(this)\">' + objValues[key] + '</a>';
+                        $('#timesToSelect').append(timeElem);
+                        //  console.log(objKeys[key]+'=>'+objValues[key]);
+                    }
+                })
+            })
+
             $(document).on('change', '#sortBy', function () {
                 if ($(this).val() != "") {
                     location.href = '{{url()->current()}}?type=' + $(this).val();
@@ -974,27 +972,27 @@ $('#datesToSelect').on('change', function () {
     </script>
 
     <script>
-    $(document).on('change', 'input[name="stars"]', function () {
-    $('#rating').val($(this).val());
+        $(document).on('change', 'input[name="stars"]', function () {
+            $('#rating').val($(this).val());
 
-    })
-    @if(isset($review))
+        })
+                @if(isset($review))
         var rating = "{{$review->rating}}";
         $('input[value="' + rating + '"]').prop("checked", true);
         $('#rating').val(rating);
-    @endif
+        @endif
     </script>
 
-<script>
-    function myFunction() {
-  var x = document.getElementById("myDIV");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
-</script>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
 
 
 
@@ -1003,54 +1001,54 @@ $('#datesToSelect').on('change', function () {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/js/bootstrap-datetimepicker.min.js"></script>
     <script>
-        $(document).ready(function() {
-        $('#calendar').fullCalendar({
-       
-            selectable: true,
-select: function (start, end, jsEvent, view) {
-    $("#calendar").fullCalendar('addEventSource', [{
-        start: start,
-        end: end,
-        rendering: 'background',
-        block: true,
-    }, ]);
-    $("#calendar").fullCalendar("unselect");
-},
-selectOverlap: function(event) {
-    return ! event.block;
-}
+        $(document).ready(function () {
+            $('#calendar').fullCalendar({
+
+                selectable: true,
+                select: function (start, end, jsEvent, view) {
+                    $("#calendar").fullCalendar('addEventSource', [{
+                        start: start,
+                        end: end,
+                        rendering: 'background',
+                        block: true,
+                    },]);
+                    $("#calendar").fullCalendar("unselect");
+                },
+                selectOverlap: function (event) {
+                    return !event.block;
+                }
+            });
+            // Bind the dates to datetimepicker.
+            // You should pass the options you need
+            $("#starts-at, #ends-at").datetimepicker();
+
+            $('#bookNowButton').on('click', function () {
+
+                // Whenever the user clicks on the "save" button om the dialog
+                $('#save-event').on('click', function () {
+                    var title = $('#title').val();
+                    if (title) {
+                        var eventData = {
+                            title: title,
+                            start: $('#starts-at').val(),
+                            end: $('#ends-at').val()
+                        };
+                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                    }
+                    $('#calendar').fullCalendar('unselect');
+
+                    // Clear modal inputs
+                    $('#calendar-modal').find('input').val('');
+
+                    // hide modal
+                    $('#calendar-modal').modal('hide');
+                });
+            });
+
         });
-    // Bind the dates to datetimepicker.
-    // You should pass the options you need
-    $("#starts-at, #ends-at").datetimepicker();
-
-    $('#bookNowButton').on('click',function() {
-        
-    // Whenever the user clicks on the "save" button om the dialog
-    $('#save-event').on('click', function() {
-        var title = $('#title').val();
-        if (title) {
-            var eventData = {
-                title: title,
-                start: $('#starts-at').val(),
-                end: $('#ends-at').val()
-            };
-            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-        }
-        $('#calendar').fullCalendar('unselect');
-
-        // Clear modal inputs
-        $('#calendar-modal').find('input').val('');
-
-        // hide modal
-        $('#calendar-modal').modal('hide');
-        });
-    });
-
-});
 
 
-</script>
+    </script>
 
 
 

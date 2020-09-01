@@ -558,9 +558,7 @@
                                                                     </a> </p>
 
                                                                 @else
-                                                                    <i
-                                                                            class="fa text-success float-right fa-lock"></i>
-                                                                    <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
+                                                                    <i class="fa text-success float-right fa-unlock"></i>
                                                                 @endif
                                                                 @endforeach
                                                     </div>
@@ -581,6 +579,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+    <section>
+        <div class="container my-5">
+            <h2>Write Your Notes</h2>
+            <form action="{{route('save.note')}}" method="POST">
+                <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
+                @csrf
+                <textarea id='edit' name="contentText" style="margin-top: 30px;">
+
+                    </textarea>
+                <button type="submit" class=" float-right btn btn-success my-5"> save </button>
+            </form>
         </div>
     </section>
     <!-- End of course details section
@@ -648,9 +659,10 @@
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'id': $(element).data('test-id'),
+                    {{--'lesson_slug': '{{$lesson->slug}}'--}}
                 },
                 success: function (result) {
-                    console.log($(element).data('test-id'));
+                    console.log(result);
                     window.location.href = $(element).data('href');
                 }
             });
@@ -736,8 +748,6 @@
         player.on('ready', event => {
             player.currentTime = parseInt(current_progress);
             duration = event.detail.plyr.duration;
-
-
             if (!storedDuration || (parseInt(storedDuration) === 0)) {
                 Cookies.set("duration_" + "{{auth()->user()->id}}" + "_" + "{{$lesson->id}}" + "_" + "{{$lesson->course->id}}", duration);
             }

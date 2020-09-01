@@ -100,10 +100,7 @@
                             <div class="cart-search float-right ul-li">
                                 <ul>
                                     <li>
-                                        <a href="{{route('cart.index')}}"><i class="fa fa-times" aria-hidden="true"></i>
-                                            @if(auth()->check() && Cart::session(auth()->user()->id)->getTotalQuantity() != 0)
-                                                <span class="badge badge-danger position-absolute">{{Cart::session(auth()->user()->id)->getTotalQuantity()}}</span>
-                                            @endif
+                                        <a href="{{route('courses.all')}}"><i class="fa fa-times" aria-hidden="true"></i>
                                         </a>
                                     </li>
                                     

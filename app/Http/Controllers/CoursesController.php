@@ -54,16 +54,16 @@ class CoursesController extends Controller
     {
 
         if (request('type') == 'popular') {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews','chapters'])->where('published', 1)->where('online', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         } else if (request('type') == 'trending') {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews','chapters'])->where('published', 1)->where('online', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         } else if (request('type') == 'featured') {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('published', 1)->where('online', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews','chapters'])->where('published', 1)->where('online', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
 
         } else {
-            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('online', 1)->where('published', 1)->orderBy('id', 'desc')->get();
+            $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews','chapters'])->where('online', 1)->where('published', 1)->orderBy('id', 'desc')->get();
         }
 // dd($courses);
         $purchased_courses = NULL;
@@ -85,25 +85,11 @@ class CoursesController extends Controller
 
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
 
-        $chapters = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with('chapters')->where('published', 1)->where('online', 1)->get();
-
-        foreach ($courses as $course) {
-            foreach ($course->teachers as $teacher) {
-                $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
-            }
-
-        }
-
-        $course_rating = 0; // Default value
         $course_lessons = null; // Not Used but exported in the return
-        if ($course->reviews->count() > 0) {
-            $course_rating = $course->reviews->avg('rating');
-            $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
-        }
         $teacher_dat = TeacherProfile::get();
         $teachers = User::get();
         $popular_course = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-        return view('frontend.courses.index', compact('teacher_dat', 'trending_courses','teachers', 'popular_course', 'course_rating', 'chapters', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
+        return view('frontend.courses.index', compact('teacher_dat', 'trending_courses','teachers', 'popular_course', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
     }
 
     public function show($course_slug)
@@ -137,7 +123,6 @@ class CoursesController extends Controller
         if ($course->reviews->count() > 0) {
             $course_rating = $course->reviews->avg('rating');
             $course_review = $course->reviews()->where('active', 1)->get();
-
             $total_ratings = $course->reviews()->where('rating', '!=', "")->where('active', 1)->get()->count();
         }
         $lessons = $course->courseTimeline()->orderby('sequence', 'asc');
@@ -163,7 +148,7 @@ class CoursesController extends Controller
                     ->where('model_type', Lesson::class)
                     ->orderby('sequence', 'asc')->first();
             }
-
+dd($continue_course->model);
         }
         $mandatory_courses = [];
         $optional_courses = [];

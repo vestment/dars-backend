@@ -25,7 +25,7 @@ class LessonsController extends Controller
 
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
          if ($lesson == "") {
-                $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->firstOrFail();
+                $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->with('courseTimeline')->where('published', '=', 1)->firstOrFail();
                 $lesson->full_text = $lesson->description;
 
                 $test_result = NULL;
@@ -58,7 +58,7 @@ class LessonsController extends Controller
             $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
             $course_tests = ($lesson->course->tests) ? $lesson->course->tests->pluck('id')->toArray() : [];
             $course_lessons = array_merge($course_lessons, $course_tests);
-
+//dd($lesson->courseTimeline()->get());
             $previous_lesson = $lesson->course->courseTimeline()
                 ->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->whereIn('model_id', $course_lessons)
@@ -120,7 +120,7 @@ class LessonsController extends Controller
         $notes = Note::create([
             'lesson_id' => $lesson->id,
             'user_id' => \Auth::id(),
-            'content' => $request->content,
+            'content' => $request->contentText,
         ]);
         
       
@@ -129,13 +129,7 @@ class LessonsController extends Controller
 
 
     }
-
-
-
-
-
-
-    public function showNotes()
+    public function showNotes(Request $request)
     {
         $lesson = lesson::where('slug', $request->lesson_slug)->firstOrFail();
 
@@ -158,6 +152,8 @@ class LessonsController extends Controller
 
     public function startTimeUpdate(Request $request)
     {
+        return $request;
+//        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
         $check_prev_entry = auth()->user()->current_test()->where('test_id', $request->id)->first();
         if (!$check_prev_entry) {
             auth()->user()->current_test()->attach($request->id, ['start_time' => time()]);

@@ -868,6 +868,8 @@ return array (
         'tests' => 'اختبارات',
         'title' => 'عنوان',
         'option_explanation' => 'شرح الخيار',
+          'option_explanation_lessonRef' => 'عنوان الدرس',
+          'option_explanation_lessonTimeFrame' => 'وقت الجزء',
       ),
       'title' => 'الأسئلة',
       'view' => 'عرض الأسئلة',

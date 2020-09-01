@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
+use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\QuestionsOption;
 use App\Models\Test;
@@ -124,8 +125,13 @@ class QuestionsController extends Controller
         if (!Gate::allows('question_create')) {
             return abort(401);
         }
-        $tests = \App\Models\Test::get()->pluck('title', 'id');
-        return view('backend.questions.create', compact('tests'));
+        $tests = Test::get()->pluck('title', 'id');
+        $lessons = Lesson::with('course')->get();
+        $lessonsToShow = ['Select a lesson to refer'];
+        foreach ($lessons as $lesson) {
+            $lessonsToShow[$lesson->id] = $lesson->course->title .' - ' . $lesson->title;
+        }
+        return view('backend.questions.create', compact('tests','lessonsToShow'));
     }
 
     /**
@@ -145,17 +151,23 @@ class QuestionsController extends Controller
         $question->user_id = auth()->user()->id;
         $question->save();
         $question->tests()->sync(array_filter((array)$request->input('tests')));
-        /* ToDo create input for lesson_id and time frame in blade and here */
         for ($q = 1; $q <= 4; $q++) {
             $option = $request->input('option_text_' . $q, '');
             $explanation = $request->input('explanation_' . $q, '');
+            $lessonRef = $request->input('explanation_lessonRef_' . $q, '');
+            $lessonTimeFrame = $request->input('explanation_timeFrame_' . $q, '');
             if ($option != '') {
-                QuestionsOption::create([
+              $recentquestion = QuestionsOption::create([
                     'question_id' => $question->id,
                     'option_text' => $option,
                     'explanation' => $explanation,
                     'correct' => $request->input('correct_' . $q)
                 ]);
+              if ($lessonRef && $lessonTimeFrame) {
+                  $recentquestion->lesson_id = $lessonRef;
+                  $recentquestion->time_frame = $lessonTimeFrame;
+                  $recentquestion->save();
+              }
             }
         }
 
@@ -175,9 +187,13 @@ class QuestionsController extends Controller
             return abort(401);
         }
         $question = Question::findOrFail($id);
-        $tests = \App\Models\Test::get()->pluck('title', 'id');
-
-        return view('backend.questions.edit', compact('question', 'tests'));
+        $tests = Test::get()->pluck('title', 'id');
+        $lessons = Lesson::with('course')->get();
+        $lessonsToShow = ['Select a lesson to refer'];
+        foreach ($lessons as $lesson) {
+            $lessonsToShow[$lesson->id] = $lesson->course->title .' - ' . $lesson->title;
+        }
+        return view('backend.questions.edit', compact('question', 'tests','lessonsToShow'));
     }
 
     /**
@@ -198,7 +214,6 @@ class QuestionsController extends Controller
         $question->user_id = auth()->user()->id;
         $question->save();
         $question->tests()->sync(array_filter((array)$request->input('tests')));
-        /* ToDo create input for lesson_id and time frame in blade and here */
         for ($q = 1; $q <= 4; $q++) {
             $option = $request->input('option_text_' . $q, '');
             $explanation = $request->input('explanation_' . $q, '');

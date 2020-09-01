@@ -86,9 +86,9 @@
                         </div>
                     @else
                         <div class="col-12 col-md-9 col-xl-9">
-                            @if($chapters->count() > 0)
+                            @if($courses->count() > 0)
                                 <div class="row">
-                                    @foreach($chapters as $course)
+                                    @foreach($courses as $course)
 
                                         <div class="col-12 col-xl-3 col-md-3 col-sm-6">
                                             @include('frontend.layouts.partials.coursesTemp')
