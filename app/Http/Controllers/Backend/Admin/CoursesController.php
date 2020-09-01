@@ -360,10 +360,9 @@ class CoursesController extends Controller
 
         $course = Course::findOrFail($id);
 
-        $date = $course->date ? json_encode($course->date) : null;
-    
+        $date = $course->date ? json_decode($course->date) : null;
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
-
+        
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
         // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
@@ -400,7 +399,7 @@ class CoursesController extends Controller
             $videos = ['' => 'No videos available'];
         }
 //        dd($videos);
-        return view('backend.courses.edit', compact('chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies'));
+        return view('backend.courses.edit', compact('chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies','date'));
     }
 
     /**

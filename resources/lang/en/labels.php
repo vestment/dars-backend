@@ -1417,6 +1417,7 @@ return array(
                     'sign_up' => 'SIGN UP',
                     'terms_of_use' => 'Term of use. Privacy policy',
                     'register_as_teacher' => 'Register as a teacher',
+                    'register_as_parent' => 'Register as a parent',
                 ),
 
             'sign_up' =>

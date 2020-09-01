@@ -173,7 +173,12 @@ class AppServiceProvider extends ServiceProvider
             if (Schema::hasTable('locales')) {
                 $locales = Locale::pluck('short_name as locale')->toArray();
             }
-            $view->with(compact('locales', 'appCurrency','hidden_data', 'academy_911','cssFile', 'categories'));
+            $registerFields = [];
+
+            if (Schema::hasTable('configs')) {
+                $registerFields = json_decode(Config::where('key','registration_fields')->value('value'));
+            }
+            $view->with(compact('locales', 'appCurrency','hidden_data', 'academy_911','cssFile', 'categories','registerFields'));
 
         });
 

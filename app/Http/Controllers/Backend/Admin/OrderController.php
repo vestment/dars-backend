@@ -133,11 +133,29 @@ class OrderController extends Controller
     public function complete(Request $request)
     {
         $order = Order::findOrfail($request->order);
-        $order_item = OrderItem::where('order_id', $request->order)->value('item_id');
-        $course = Course::where('id', $order_item)->first();
+        $orderItem = OrderItem::where('order_id', $request->order)->first();
+        $course = Course::where('id', $orderItem->item_id)->first();
+
+
+
         if ($course->offline) {
-            $course->seats = $course->seats - 1;
+            $date = $course->date ? json_decode(json_decode($course->date),true) : null;
+            // dd($date);
+            if(array_search($orderItem->selectedDate,array_column($date, 'date'))) {
+                $selectDate= $date[array_search($orderItem->selectedDate,array_column($date, 'date'))];
+                foreach($selectDate as $key=>$value) {
+                    if ($key != 'date') {
+                    if ($value ==$orderItem->selectedTime) {
+                        $incrementKey = explode('-',$key);
+                        $seats = intval($selectDate['seats-'.$incrementKey[1]]) - 1;
+                        $date[array_search($orderItem->selectedDate,array_column($date, 'date'))]['seats-'.$incrementKey[1]] = $seats;
+                        $course->date = json_encode(json_encode($date));
+                    }
+                }
+                }
+            }
         }
+
         $course->save();
         $order->status = 1;
         $order->save();

@@ -728,7 +728,8 @@
                            <div class="row">
                                    <div class="col-12 col-md-12 form-group button-container mt-2">
 
-                                       </div>
+                                       
+                                    </div>
                            </div>
                        </div>
            </div>
@@ -745,6 +746,56 @@
     <script>
 
         $(document).ready(function () {
+            var OfflineDates = JSON.parse('{!!$date!!}');
+            var dates = [];
+           
+            $.each(OfflineDates, function (key, value) {
+                
+                var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
+                                "<div class='row'>" +
+                                "<div class='col-lg-10'>" +
+                                "<label for='start_dat' class='control-label'>Start Date (yyyy-mm-dd)</label>" +
+                                "<input value='"+value.date+"' class='form-control  date-input dat' pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='text'>" +
+
+
+                                "</div>" +
+                                "<div class='col-2 mt-4'>" +
+                                "<button type='button' onclick=\"addInputTime(this)\" class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
+                                "</div>" +
+                                "</div><div class='timepicker'></div>" +
+                                "</div>";
+
+                            $('.button-container').append(html);
+
+
+                            var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
+                                "<div class='row mt-3'>" +
+                                "<div class='col-lg-12'>" +
+                                "<div class='row'>"+
+                                    "<div class='col-lg-6'>" +
+                                "<input class='form-control time-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='time'>" +
+                                "</div>" +
+                            "<div class='col-lg-6'>" +
+                                "<input class='form-control seats-input' placeholder='seats' autocomplete='off' name='seats' type='number'>" +
+                                "</div>" +
+                            "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>";
+                            // $(this).parent('.button-container')
+                            $(elemt).parent().parent().next('.timepicker').append(html);
+
+                            $('.date-input').datepicker({
+                                autoclose: true,
+                                dateFormat: "{{ config('app.date_format_js') }}"
+
+                            });
+                            
+            })
+            $('.date-input').datepicker({
+                autoclose: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
+            });
             $('#start_date').datepicker({
                 autoclose: true,
                 dateFormat: "{{ config('app.date_format_js') }}"
@@ -1061,9 +1112,7 @@
                                 "</div>" +
                             "<div class='col-lg-6'>" +
                                 "<input class='form-control seats-input' placeholder='seats' autocomplete='off' name='seats' type='number'>" +
-                                
                                 "</div>" +
-                                
                             "</div>" +
                                 "</div>" +
                                 "</div>" +
