@@ -341,7 +341,7 @@
                                                                 <div class="radio">
                                                                     <label>
                                                                         <input data-toggle="collapse"
-                                                                               href="#collapsePaymentThree"
+                                                                               href="#collapsePaymentFour"
                                                                                type="radio" name="paymentMethod"
                                                                                value="2">
                                                                         @lang('labels.frontend.cart.fawry')
@@ -352,15 +352,15 @@
 
                                                         <div class="col-md-6">
                                                             <div class="payment-img float-right">
-                                                                <img src="{{asset('assets/img/banner/p-2.jpg')}}"
+                                                                <img src="{{asset('assets/img/banner/fawry.png')}}"
                                                                      alt="">
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="check-out-form collapse disabled" id="collapsePaymentThree"
+                                                <div class="check-out-form collapse disabled" id="collapsePaymentFour"
                                                      data-parent="#accordion">
-                                                    <form class="w3-container w3-display-middle w3-card-4 "
+                                                    <form class="w3-container w3-display-middle w3-card-4"
                                                           method="POST"
                                                           id="payment-form" action="{{route('cart.fawry.payment')}}">
                                                         {{ csrf_field() }}
@@ -371,6 +371,8 @@
                                                             @lang('labels.frontend.cart.pay_now') <i
                                                                     class="fas fa-caret-right"></i>
                                                         </button>
+
+                                                        
                                                     </form>
                                                 </div>
                                             </div>

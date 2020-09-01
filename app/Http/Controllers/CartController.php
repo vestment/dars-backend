@@ -259,80 +259,71 @@ class CartController extends Controller
 
     public function fawryPayment(Request $request) 
     {
-        // dd($request->all());
-
-        
         $user = User::find(auth()->user()->id);
-         $number = '123456789';
-         $amount = Cart::session(auth()->user()->id)->getTotal();
-         $order = $this->makeOrder();
-        
-        $merchantRefNum = 'zedny-package-'.$number;
-        // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
-        // if (strpos($paymentAttempt->amount, '.') !== false) {
-        //     $amount = round($paymentAttempt->amount,2);
-        // }else {
-        //     $amount = $paymentAttempt->amount.'.00';
-        // }
-
+        $number = str_random(8);
+        $amount = Cart::session(auth()->user()->id)->getTotal();
        
-        $fawryUrl = 'https://atfawry.fawrystaging.com//ECommerceWeb/Fawry/payments/charge';
-        
-        // Generate Fawry Signature
-        $merchantCode = '1tSa6uxz2nS4FdtsrOKg1g==';
-        $customerProfileId = auth()->user()->id;
-        $paymentMethod = 'PAYATFAWRY';
-        $secureKey = '713141788a4342bfbeaf9fb406d8ae18';
+       $merchantRefNum = str_random(8);
+       // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
+       if (strpos($amount, '.') !== false) {
+           $amount = round($amount,2);
+       }else {
+           $amount = $amount.'.00';
+       }
+       $fawryUrl = 'https://atfawry.fawrystaging.com//ECommerceWeb/Fawry/payments/charge';
+       
+       // Generate Fawry Signature
+       $merchantCode = config('fawry.merchant_code');
+       $customerProfileId = auth()->user()->id;
+       $paymentMethod = 'PAYATFAWRY';
+       $secureKey = config('fawry.security_key');
+       $buffer = $merchantCode.$merchantRefNum.$customerProfileId.$paymentMethod.$amount.$secureKey;
+       $signature = hash('sha256', $buffer);
+       $fawryData = [
+           'merchantCode'=>$merchantCode,
+           'customerProfileId'=>$customerProfileId,
+           'customerMobile'=>'01149786203',
+           // 'customerEmail'=>$user->email,
+           //'customerName'=>$user->name,
+           'paymentMethod'=>$paymentMethod,
+           'amount'=>$amount,
+           //'paymentExpiry'=>'72',
+           // 'chargeItems'=> $invoiceDataArray,
+           'signature'=>$signature,
+           'merchantRefNum'=> $merchantRefNum,
+           // 'description'=> $description
+       ];
 
-        $buffer = $merchantCode.$merchantRefNum.$customerProfileId.$paymentMethod.$amount.$secureKey;
+       $data_string = json_encode($fawryData);                                                                                   
+                                                                                                                    
+       $ch = curl_init($fawryUrl);                                                                      
+       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");     
+       curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);                                                                
+       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+       curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+           'Content-Type: application/json',                                                                                
+           'Content-Length: ' . strlen($data_string))                                                                       
+       );                                                                                                                   
+                                                                                                                           
+       $result = curl_exec($ch);
+       $result = json_decode($result,true);
+       $description = $result['statusDescription'];
+       $order = new Order();
+       $order->user_id = $customerProfileId;
+       $order->reference_no =$merchantRefNum;
+       $order->amount = $amount;
+       $order->payment_type = 4;
+       $order->status = 0;
+       $order->fawry_status = $result['statusDescription'];
+       if($result['statusCode'] == 200)
+       {
+       $order->fawry_ref_no = $result['referenceNumber'];
+       $order->fawry_expirationTime = $result['expirationTime'];
+       }
+       $order->save();
 
-        $signature = hash('sha256', $buffer);
-
-        // Invoice Data
-        $invoiceDataArray = [];
-        $invoiceData = [];
-
-        $invoiceData['itemId'] = $number;
-        $invoiceData['price'] = $amount;
-        // $invoiceData['description'] = $description;
-        $invoiceData['quantity'] = '1';
-
-        $invoiceDataArray[] = $invoiceData;
-
-        // Gather the data for post request
-        $fawryData = [
-            'merchantCode'=>$merchantCode,
-            'customerProfileId'=>$customerProfileId,
-            'customerMobile'=>'01149786203',
-            'customerEmail'=>$user->email,
-            //'customerName'=>$user->name,
-            'paymentMethod'=>$paymentMethod,
-            'amount'=>$amount,
-            //'paymentExpiry'=>'72',
-            'chargeItems'=> $invoiceDataArray,
-            'signature'=>$signature,
-            'merchantRefNum'=> $merchantRefNum,
-            // 'description'=> $description
-        ];
-
-        
-
-        $data_string = json_encode($fawryData);                                                                                   
-                                                                                                                     
-        $ch = curl_init($fawryUrl);                                                                      
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");     
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);                                                                
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
-            'Content-Length: ' . strlen($data_string))                                                                       
-        );                                                                                                                   
-                                                                                                                            
-        $result = curl_exec($ch);
-        $result = json_decode($result,true);
-        
-        return $result;
+       return redirect()->route('courses.all');
     }
     public function offlinePayment(Request $request)
     {

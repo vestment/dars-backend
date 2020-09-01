@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-
+ 
     * Generated on 2020-08-31 12:08:13.
 
     *
