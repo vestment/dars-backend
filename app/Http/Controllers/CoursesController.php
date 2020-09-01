@@ -65,7 +65,6 @@ class CoursesController extends Controller
         } else {
             $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->where('online', 1)->where('published', 1)->orderBy('id', 'desc')->get();
         }
-// dd($courses);
         $purchased_courses = NULL;
         $purchased_bundles = NULL;
         $categories = Category::where('status', '=', 1)->get();

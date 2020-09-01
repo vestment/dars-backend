@@ -58,7 +58,10 @@ class LessonsController extends Controller
             $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
             $course_tests = ($lesson->course->tests) ? $lesson->course->tests->pluck('id')->toArray() : [];
             $course_lessons = array_merge($course_lessons, $course_tests);
+<<<<<<< HEAD
+=======
 //dd($lesson->courseTimeline()->get());
+>>>>>>> 69885dba0176f709bc8bbfec561fe3be7133e71b
             $previous_lesson = $lesson->course->courseTimeline()
                 ->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->whereIn('model_id', $course_lessons)
@@ -101,9 +104,11 @@ class LessonsController extends Controller
 
             }
         }
+
+        $notes = Note::where(['lesson_id' => $lesson->id,'user_id' => \Auth::id() ])->get();
         
             return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'test_result',
-                'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time'));
+                'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time','notes'));
         } else {
             return abort(403);
 //            return redirect()->back()->withFlashDanger(__('labels.frontend.cart.complete_your_purchases'));
@@ -111,7 +116,13 @@ class LessonsController extends Controller
         }
     }
 
+    public function editNotes(Request $request){
 
+        $notes_modal = Note::where(['id' => $request->id])->first();
+        return $notes_modal;
+
+
+    }
 
     public function saveNotes(Request $request)
     {
@@ -120,8 +131,22 @@ class LessonsController extends Controller
         $notes = Note::create([
             'lesson_id' => $lesson->id,
             'user_id' => \Auth::id(),
-            'content' => $request->contentText,
+            'contentText' => $request->contentText,
         ]);
+        
+      
+        return redirect()->back();
+
+
+
+    }
+    public function updateNotes(Request $request)
+    {
+        $notes_modal = Note::where('id', $request->note_id)->firstOrFail();
+
+       
+        $notes_modal->contentText = $request->contentText;
+        $notes_modal->save();
         
       
         return redirect()->back();

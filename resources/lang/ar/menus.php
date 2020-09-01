@@ -174,6 +174,10 @@ return array (
       array (
         'title' => 'شهادات',
       ),
+      'note' => 
+      array (
+        'title' => 'مدونة',
+      ),
       'bundles' => 
       array (
         'title' => 'بال',

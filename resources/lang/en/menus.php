@@ -125,6 +125,10 @@ return array (
       array (
         'title' => 'Certificates',
       ),
+      'note' => 
+      array (
+        'title' => 'Notes',
+      ),
       'contacts' => 
       array (
         'title' => 'Leads',
