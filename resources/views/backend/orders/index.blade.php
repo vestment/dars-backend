@@ -39,6 +39,15 @@
                         <th>@lang('labels.backend.orders.fields.payment_status.title')</th>
                         <th>@lang('labels.backend.orders.fields.user_email')</th>
                         <th>@lang('labels.backend.orders.fields.date')</th>
+                        <th>@lang('labels.backend.orders.fields.fawry_status')</th>
+                        <th>@lang('labels.backend.orders.fields.fawry_ref_no')</th>
+                        <th>@lang('labels.backend.orders.fields.fawry_expirationTime')</th>
+
+                        <th>@lang('labels.backend.orders.fields.payment_type')</th>
+                        
+
+
+                       
                         <th>&nbsp; @lang('strings.backend.general.actions')</th>
                     </tr>
                     </thead>
@@ -94,6 +103,10 @@
                     {data: "payment", name: 'payment'},
                     {data: "user_email", name: 'user_email'},
                     {data: "date", name: "date"},
+                    {data: "fawry_status", name: "fawry_status"},
+                    {data: "fawry_ref_no", name: "fawry_ref_no"},
+                    {data: "fawry_expirationTime", name: "fawry_expirationTime"},
+                    {data: "payment_type", name: "payment_type"},
                     {data: "actions", name: "actions"}
                 ],
                 @if(request('show_deleted') != 1)

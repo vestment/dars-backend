@@ -132,13 +132,34 @@ class OrderController extends Controller
      */
     public function complete(Request $request)
     {
+       
         $order = Order::findOrfail($request->order);
+        $order_type = OrderItem::where('order_id', $request->order)->value('item_type');
         $order_item = OrderItem::where('order_id', $request->order)->value('item_id');
-        $course = Course::where('id', $order_item)->first();
-        if ($course->offline) {
-            $course->seats = $course->seats - 1;
+        if($order_type == 'App\Models\Course')
+        {
+            $course = Course::where('id', $order_item)->first();
+            if ($course->offline) {
+                $course->seats = $course->seats - 1;
+            }
+            $course->save();
+
         }
-        $course->save();
+        else{
+            $bundle = Bundle::where('id', $order_item)->with('courses')->get();
+           
+            foreach($bundle[0]->courses as $course){
+                $course = Course::where('id', $course->id)->first();
+            if ($course->offline) {
+                $course->seats = $course->seats - 1;
+            }
+            $course->save();
+
+            }
+           
+        }
+      
+       
         $order->status = 1;
         $order->save();
 
