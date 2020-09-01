@@ -151,7 +151,6 @@ class QuestionsController extends Controller
         $question->user_id = auth()->user()->id;
         $question->save();
         $question->tests()->sync(array_filter((array)$request->input('tests')));
-        /* ToDo create input for lesson_id and time frame in blade and here */
         for ($q = 1; $q <= 4; $q++) {
             $option = $request->input('option_text_' . $q, '');
             $explanation = $request->input('explanation_' . $q, '');
@@ -215,7 +214,6 @@ class QuestionsController extends Controller
         $question->user_id = auth()->user()->id;
         $question->save();
         $question->tests()->sync(array_filter((array)$request->input('tests')));
-        /* ToDo create input for lesson_id and time frame in blade and here */
         for ($q = 1; $q <= 4; $q++) {
             $option = $request->input('option_text_' . $q, '');
             $explanation = $request->input('explanation_' . $q, '');
