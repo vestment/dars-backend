@@ -583,6 +583,19 @@
             </div>
         </div>
     </section>
+    <section>
+        <div class="container my-5">
+            <h2>Write Your Notes</h2>
+            <form action="{{route('save.note')}}" method="POST">
+                <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
+                @csrf
+                <textarea id='edit' name="contentText" style="margin-top: 30px;">
+
+                    </textarea>
+                <button type="submit" class=" float-right btn btn-success my-5"> save </button>
+            </form>
+        </div>
+    </section>
     <!-- End of course details section
     ============================================= -->
 
