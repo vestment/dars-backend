@@ -77,6 +77,9 @@ class ConfigController extends Controller
         if ($request->get('paypal__active') == null) {
             $requests['paypal__active'] = 0;
         }
+        if ($request->get('fawry__active') == null) {
+            $requests['fawry__active'] = 0;
+        }
         if ($request->get('payment_offline_active') == null) {
             $requests['payment_offline_active'] = 0;
         }

@@ -129,7 +129,5 @@ class RegisterController extends Controller
         $userForRole->assignRole('student');
         return $user;
     }
-
-
-
+    
 }

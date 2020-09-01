@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\General\EarningHelper;
 use App\Mail\OfflineOrderMail;
 use App\Models\Bundle;
+use App\Models\Auth\User;
+
 use App\Models\Coupon;
 use App\Models\Course;
 use App\Models\Order;
@@ -219,6 +221,8 @@ class CartController extends Controller
 
     public function paypalPayment(Request $request)
     {
+        
+        
         if ($this->checkDuplicate()) {
             return $this->checkDuplicate();
         }
@@ -230,12 +234,12 @@ class CartController extends Controller
         $gateway->setTestMode($mode);
 
         $cartTotal = Cart::session(auth()->user()->id)->getTotal();
-        $currency = $this->currency['short_code'];
+        // $currency = $this->currency['short_code'];
 
         try {
             $response = $gateway->purchase([
                 'amount' => $cartTotal,
-                'currency' => $currency,
+                'currency' => 'EGP',
                 'description' => auth()->user()->name,
                 'cancelUrl' => route('cart.paypal.status', ['status' => 0]),
                 'returnUrl' => route('cart.paypal.status', ['status' => 1]),
@@ -253,8 +257,103 @@ class CartController extends Controller
         return Redirect::route('cart.paypal.status');
     }
 
+    public function fawryPayment(Request $request) 
+    {
+        $user = User::find(auth()->user()->id);
+        $number = str_random(8);
+        $amount = Cart::session(auth()->user()->id)->getTotal();
+       
+       $merchantRefNum = str_random(8);
+       // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
+       if (strpos($amount, '.') !== false) {
+           $amount = round($amount,2);
+       }else {
+           $amount = $amount.'.00';
+       }
+       $fawryUrl = 'https://atfawry.fawrystaging.com//ECommerceWeb/Fawry/payments/charge';
+       
+       // Generate Fawry Signature
+       $merchantCode = config('fawry.merchant_code');
+       $customerProfileId = auth()->user()->id;
+       $paymentMethod = 'PAYATFAWRY';
+       $secureKey = config('fawry.security_key');
+       $buffer = $merchantCode.$merchantRefNum.$customerProfileId.$paymentMethod.$amount.$secureKey;
+       $signature = hash('sha256', $buffer);
+       $fawryData = [
+           'merchantCode'=>$merchantCode,
+           'customerProfileId'=>$customerProfileId,
+           'customerMobile'=>'01149786203',
+           // 'customerEmail'=>$user->email,
+           //'customerName'=>$user->name,
+           'paymentMethod'=>$paymentMethod,
+           'amount'=>$amount,
+           //'paymentExpiry'=>'72',
+           // 'chargeItems'=> $invoiceDataArray,
+           'signature'=>$signature,
+           'merchantRefNum'=> $merchantRefNum,
+           // 'description'=> $description
+       ];
+
+       $data_string = json_encode($fawryData);                                                                                   
+                                                                                                                    
+       $ch = curl_init($fawryUrl);                                                                      
+       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");     
+       curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);                                                                
+       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+       curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+           'Content-Type: application/json',                                                                                
+           'Content-Length: ' . strlen($data_string))                                                                       
+       );                                                                                                                   
+                          
+       $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
+       if ($coupon != null) {
+           $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+       }
+       $result = curl_exec($ch);
+       $result = json_decode($result,true);
+       $description = $result['statusDescription'];
+       $order = new Order();
+       $order->user_id = $customerProfileId;
+       $order->reference_no =$merchantRefNum;
+       $order->amount = $amount;
+       $order->payment_type = 4;
+       $order->status = 0;
+       $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
+       $order->fawry_status = $result['statusDescription'];
+       if($result['statusCode'] == 200)
+       {
+       $order->fawry_ref_no = $result['referenceNumber'];
+       $order->fawry_expirationTime = $result['expirationTime'];
+       }
+       $order->save();
+       foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
+        if ($cartItem->attributes->type == 'bundle') {
+            $type = Bundle::class;
+        } else {
+            $type = Course::class;
+         
+        }
+        $order->items()->create([
+            'item_id' => $cartItem->id,
+            'selectedDate'=>$cartItem->attributes->selectedDate ?? null,
+            'selectedTime'=>$cartItem->attributes->selectedTime ?? null,
+            'item_type' => $type,
+            'price' => $cartItem->price
+        ]);
+    }
+
+         return redirect()->route('courses.all');
+    }
+
+    public function acceptPayment(Request $request) 
+    {
+
+         return redirect()->route('courses.all');
+    }
     public function offlinePayment(Request $request)
     {
+       
         if ($this->checkDuplicate()) {
             return $this->checkDuplicate();
         }

@@ -30,10 +30,29 @@
     ul.sorter li {
         height: 25%;
     }
+    .form-control-label {
+            line-height: 35px;
+        }
 
+        .remove {
+            float: right;
+            color: red;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .removeTime {
+            float: right;
+            color: red;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-</style>
+        .error {
+            color: red;
+        }
 
+       
+    </style>
 @section('content')
 
     <div class="row">
@@ -59,7 +78,8 @@
                      aria-labelledby="v-pills-home-tab">
 
                     {!! Form::model($course, ['method' => 'PUT', 'route' => ['admin.courses.update', $course->id], 'files' => true,]) !!}
-
+                    {!!  Form::hidden('offlineData', null, ['id'=>'offlineData']) !!}
+{!!  Form::hidden('academy_id', null, ['id'=>'academy_id']) !!}
                     <div class="card">
                         <div class="card-header">
                             <h3 class="page-title float-left mb-0">@lang('labels.backend.courses.edit')</h3>
@@ -722,8 +742,73 @@
                               
                            <div class="row">
                                    <div class="col-12 col-md-12 form-group button-container mt-2">
+                                        
+                                        @foreach($date as   $Pkey => $singleDate )
+                                            
+                                            @foreach($singleDate as  $key => $value)
+                                               
 
-                                       </div>
+                                                @if($key =='date')
+                                                    <div class='button-wrapper'> 
+                                                        <h6 class='mt-3'> 
+                                                            <span class='remove'>
+                                                                <i class='fa fa-window-close'></i>
+                                                            </span>
+                                                        </h6>
+                                                   
+                                                    <div class='row' >
+                                                        <div class='col-lg-10' style="padding: 1;" >
+                                                            <label for='start_dat' class='control-label'>Start Date (yyyy-mm-dd)</label>
+                                                            <input class='form-control date-input dat' pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))'  value='{{$value}}' autocomplete='off' type='text'>
+
+
+                                                        </div>
+
+                                                        <div class='col-2 mt-4'>
+                                                            <button type='button' onclick="addInputTime(this)" class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class='timepicker'></div>
+                                                   
+                                                @endif
+                                            
+                                                @if(substr($key , 0,4) == 'time' )
+                                                    
+                                                    
+                                                        <div class='row mt-3' style="justify-content: flex-end;">
+
+                                                        <span class='removeTime mr-3'><i class='fa fa-window-close'></i></span>
+                                                        <div class='col-lg-12'>
+                                                            <div class='row timeRemove'>
+                                                            <div class='col-lg-6'>
+                                                                <input class='form-control time-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' value="{{$value}}" autocomplete='off' type='time'>
+                                                            </div>
+                                                        
+
+                                                @endif
+                                                
+                                                
+                                                @if(substr($key , 0,4) == 'seat')
+
+                                                    <div class='col-lg-6'>
+                                                        <input class='form-control seats-input' value = '{{$value}}' autocomplete='off' name='seats' type='number'>
+                                                    </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                        </div>
+                                               @endif
+                                                        
+                                                
+                                                
+
+                                            @endforeach
+                                            
+                                            <br>
+                                            <br>
+                                        @endforeach
+                                       
+                                    </div>
                            </div>
                        </div>
            </div>
@@ -740,6 +825,56 @@
     <script>
 
         $(document).ready(function () {
+            var OfflineDates = JSON.parse('{!!$date!!}');
+            var dates = [];
+           
+            $.each(OfflineDates, function (key, value) {
+                
+                var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
+                                "<div class='row'>" +
+                                "<div class='col-lg-10'>" +
+                                "<label for='start_dat' class='control-label'>Start Date (yyyy-mm-dd)</label>" +
+                                "<input value='"+value.date+"' class='form-control  date-input dat' pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='text'>" +
+
+
+                                "</div>" +
+                                "<div class='col-2 mt-4'>" +
+                                "<button type='button' onclick=\"addInputTime(this)\" class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
+                                "</div>" +
+                                "</div><div class='timepicker'></div>" +
+                                "</div>";
+
+                            $('.button-container').append(html);
+
+
+                            var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
+                                "<div class='row mt-3'>" +
+                                "<div class='col-lg-12'>" +
+                                "<div class='row'>"+
+                                    "<div class='col-lg-6'>" +
+                                "<input class='form-control time-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='time'>" +
+                                "</div>" +
+                            "<div class='col-lg-6'>" +
+                                "<input class='form-control seats-input' placeholder='seats' autocomplete='off' name='seats' type='number'>" +
+                                "</div>" +
+                            "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>";
+                            // $(this).parent('.button-container')
+                            $(elemt).parent().parent().next('.timepicker').append(html);
+
+                            $('.date-input').datepicker({
+                                autoclose: true,
+                                dateFormat: "{{ config('app.date_format_js') }}"
+
+                            });
+                            
+            })
+            $('.date-input').datepicker({
+                autoclose: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
+            });
             $('#start_date').datepicker({
                 autoclose: true,
                 dateFormat: "{{ config('app.date_format_js') }}"
@@ -1019,6 +1154,11 @@
                 $('.video').addClass('d-none').attr('required', false)
             }
         })
+        $('.date-input').datepicker({
+                                autoclose: true,
+                                dateFormat: "{{ config('app.date_format_js') }}"
+
+                            });
         $(document).on('click', '#add-button', function (e) {
                             e.preventDefault()
                             var name = 'Booking Date&Time';
@@ -1037,14 +1177,13 @@
                                 "</div>";
 
                             $('.button-container').append(html);
-
-
                             $('.date-input').datepicker({
                                 autoclose: true,
                                 dateFormat: "{{ config('app.date_format_js') }}"
 
                             });
                         });
+                        
                         function addInputTime(elemt) {
                             var name = 'Booking Date&Time';
                             var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
@@ -1056,21 +1195,19 @@
                                 "</div>" +
                             "<div class='col-lg-6'>" +
                                 "<input class='form-control seats-input' placeholder='seats' autocomplete='off' name='seats' type='number'>" +
-                                
                                 "</div>" +
-                                
                             "</div>" +
                                 "</div>" +
                                 "</div>" +
                                 "</div>";
                             // $(this).parent('.button-container')
                             $(elemt).parent().parent().next('.timepicker').append(html);
-
                             $('.date-input').datepicker({
                                 autoclose: true,
                                 dateFormat: "{{ config('app.date_format_js') }}"
 
                             });
+                            
                         }
                         $(document).on('click', '.remove', function () {
                             if (confirm('Are you sure want to remove button?')) {
@@ -1079,12 +1216,21 @@
                             }
                         });
 
+                        $(document).on('click', '.removeTime', function () {
+                            if (confirm('Are you sure want to remove button?')) {
+                                console.log($(this).parent().find('.timeRemove')[0])
+                                $(this).parent().find('.timeRemove')[0].remove();
+                                $(this).remove();
+                                $('#buttons').val($('.timeRemove').length)
+                            }
+                        });
                         function saveOfflineData(element) {
                             var arrObj = [];
                           var button_wrapper = $(element).parent().parent().find('.button-wrapper');
                           button_wrapper.each(function(key,value){
                              
                              var date_input = $(value).find('.date-input').val();
+                            //  console.log(date_input) ; 
                              var time_input = $(value).find('.time-input');
                              var seats = $(value).find('.seats-input');
                     
@@ -1102,6 +1248,7 @@
                           $('#academy_id').val($('#selected-academy').val());
                           $('#offlineDataModal').modal('hide');
                         }
+
                         function toggleOfflineMode() {
                             if ($('#offline').prop('checked')) {
                                 $('#offlineDataModal').modal();
@@ -1115,7 +1262,7 @@
                                 $('.academy').addClass('d-none');
                                 $('#selected-academy').next('span').hide();
                                 $('.academy input').each(function (key, value) {
-                                    $(value).val('');
+                                    //$(value).val('');
                                 });
                                 $('.academy select').each(function (key, value) {
                                     // $(value).val('');

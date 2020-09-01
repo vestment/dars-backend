@@ -112,7 +112,13 @@
                             <input name="password_confirmation" type="password" class="form-control"
                                    id="password_confirmation">
                         </div>
-
+                        @foreach($registerFields as $field)
+                        <div class="form-group">
+                                <label for="{{$field->type}}">{{$field->name}}</label>
+                                <input name="{{$field->name}}" type="{{$field->type}}" class="form-control"
+                                       id="{{$field->type}}">
+                            </div>
+                            @endforeach
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group form-check">
@@ -122,13 +128,22 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit"
-                                class="btn btn-primary btn-lg text-white col-12 mt-5">@lang('labels.frontend.sign_up.sign_up')</button>
+                        
+                        <input type="hidden" value="0" id="parent-role">
 
-                        <a href="{{ route('frontend.auth.teacher.register') }}" class="btn btn-info btn-lg text-white col-12 mt-5">
-                            @lang('labels.frontend.login.register_as_teacher')
-                        </a>
 
+                    <div class="row justify-content-center">
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg text-white col-5 mt-5 ">@lang('labels.frontend.sign_up.sign_up')</button>
+                            <button type="submit"
+                                    class="btn btn-primary text-white col-5 ml-3 mt-5"> @lang('labels.frontend.login.register_as_parent')</button>
+                    </div>
+
+
+                            <a href="{{ route('frontend.auth.teacher.register') }}" class="btn btn-info btn-lg text-white col-12 mt-5">
+                                @lang('labels.frontend.login.register_as_teacher')
+                            </a>
+                    
 
                     </form>
                     <div><a href="{{ route('login.index') }}"
@@ -143,5 +158,9 @@
         </div>
     </div>
 </div>
+
+<script>
+
+</script>
 </body>
 </html>    

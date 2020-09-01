@@ -17,13 +17,11 @@
     </script>
     <style>
         .main-menu-container.menu-bg-overlay {
-            background-color: #0C0C3F;
+           background-color: #0C0C3F;
         }
-
         .main-menu-container {
             background-color: #0C0C3F;
         }
-
         .test-form {
             color: #333333;
         }
@@ -35,6 +33,9 @@
         .sidebar.is_stuck {
             top: 15% !important;
         }
+        .m-note{
+            margin-top: 11%;
+        }
 
         .course-timeline-list {
             max-height: 300px;
@@ -43,6 +44,9 @@
 
         .options-list li {
             list-style-type: none;
+        }
+        .shadow-c{
+            box-shadow: 2px 3px #ebebeb;
         }
 
         .options-list li.correct {
@@ -189,10 +193,9 @@
 
             border-bottom: solid 1px #e4e4e4;
         }
-
-        .fr-quick-insert {
-            display: none !important;
-        }
+.fr-quick-insert{
+    display:none !important;
+}
     </style>
 @endpush
 @section('lesson-title')
@@ -232,7 +235,7 @@
                     @include('includes.partials.messages')
 
                     <div class="course-details-item border-bottom-0 mb-0">
-
+                       
 
                         @if ($lesson->available == 1)
                             @if ($test_exists)
@@ -251,49 +254,49 @@
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <div id="countdown" class="timeTo timeTo-white"
-                                                 style="font-family: Verdana, sans-serif;">
-                                                <div class="first" style="">
-                                                    <ul style="left:3px; top:-30px">
-                                                        <li>0</li>
-                                                        <li>0</li>
-                                                    </ul>
+                                        <div id="countdown" class="timeTo timeTo-white"
+                                             style="font-family: Verdana, sans-serif;">
+                                            <div class="first" style="">
+                                                <ul style="left:3px; top:-30px">
+                                                    <li>0</li>
+                                                    <li>0</li>
+                                                </ul>
                                                 </div>
                                                 <div style="">
                                                     <ul style="left:3px; top:-30px">
-                                                        <li>0</li>
-                                                        <li>0</li>
-                                                    </ul>
+                                                    <li>0</li>
+                                                    <li>0</li>
+                                                </ul>
                                                 </div>
                                                 <span>:</span>
                                                 <div class="first" style="">
                                                     <ul style="left:3px; top:-30px">
-                                                        <li>0</li>
-                                                        <li>0</li>
-                                                    </ul>
-                                                </div>
-                                                <div style="">
+                                                    <li>0</li>
+                                                    <li>0</li>
+                                                </ul>
+                                            </div>
+                                            <div style="">
                                                     <ul style="left: 3px; top: -30px;" class="">
-                                                        <li>1</li>
-                                                        <li>1</li>
-                                                    </ul>
+                                                    <li>1</li>
+                                                    <li>1</li>
+                                                </ul>
                                                 </div>
                                                 <span>:</span>
                                                 <div class="first" style="">
-                                                    <ul style="left: 3px; top: -30px;" class="">
-                                                        <li>2</li>
-                                                        <li>2</li>
-                                                    </ul>
-                                                </div>
-                                                <div style="">
-                                                    <ul style="left: 3px; top: 0px;" class="transition">
-                                                        <li>0</li>
-                                                        <li>1</li>
-                                                    </ul>
-                                                </div>
+                                                <ul style="left: 3px; top: -30px;" class="">
+                                                    <li>2</li>
+                                                    <li>2</li>
+                                                </ul>
+                                            </div>
+                                            <div style="">
+                                                <ul style="left: 3px; top: 0px;" class="transition">
+                                                    <li>0</li>
+                                                    <li>1</li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 @else
                                     <p>You already entered this test 3 times</p>
                                 @endif
@@ -330,7 +333,7 @@
                                             <ul class="options-list pl-4">
                                                 @foreach ($question->options as $option)
 
-                                                    <li class="@if(($option->answered($latestTest->id) != null && $option->answered($latestTest->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($latestTest->id) != null && $option->answered($latestTest->id) == 2) incorrect  @endif"> {{ $option->option_text }}
+                                                    <li class="@if(($option->answered($test_result->id) != null && $option->answered($test_result->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($test_result->id) != null && $option->answered($test_result->id) == 2) incorrect  @endif"> {{ $option->option_text }}
 
                                                         @if($option->correct == 1 && $option->explanation != null)
                                                             <p class="text-dark">
@@ -370,47 +373,52 @@
                                             }, 1000);
 
 
+
+
+
+
                                         </script>
                                         <form action="{{ route('lessons.test', [$lesson->slug]) }}"
                                               method="post">
                                             {{ csrf_field() }}
                                             @foreach ($lesson->questions as $question)
-                                                <h4 class="mb-0">{{ $loop->iteration }}
-                                                    . {!! $question->question !!}  </h4>
+                                                    <h4 class="mb-0">{{ $loop->iteration }}
+                                                        . {!! $question->question !!}  </h4>
                                                 <br/>
                                                 @foreach ($question->options as $option)
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio"
-                                                                   name="questions[{{ $question->id }}]"
-                                                                   value="{{ $option->id }}"/>
-                                                            <span class="cr"><i
-                                                                        class="cr-icon fa fa-circle"></i></span>
-                                                            {{ $option->option_text }}<br/>
-                                                        </label>
-                                                    </div>
+                                                                <input type="radio"
+                                                                       name="questions[{{ $question->id }}]"
+                                                                       value="{{ $option->id }}"/>
+                                                                <span class="cr"><i
+                                                                            class="cr-icon fa fa-circle"></i></span>
+                                                                {{ $option->option_text }}<br/>
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                    <br/>
                                                 @endforeach
-                                                <br/>
-                                            @endforeach
-                                            <input class="btn gradient-bg text-white font-weight-bold"
-                                                   type="submit"
-                                                   value=" @lang('labels.frontend.course.submit_results') "/>
-                                        </form>
-                                    @else
-                                        <h3>@lang('labels.general.no_data_available')</h3>
+                                                <input class="btn gradient-bg text-white font-weight-bold" type="submit"
+                                                       value=" @lang('labels.frontend.course.submit_results') "/>
+                                            </form>
+                                        @else
+                                            <h3>@lang('labels.general.no_data_available')</h3>
 
-                                    @endif
-                                </div>
+                                        @endif
+                                    </div>
+                                @endif
+                            @else
+                                <h3>@lang('labels.general.no_data_available')</h3>
+
                             @endif
+                            <hr/>
                         @else
-                            <h3>@lang('labels.general.no_data_available')</h3>
 
                         @endif
-                        <hr/>
 
                         @if($lesson->mediaPDF)
-                            <div class="course-single-text mb-5 course_frame"
-                                 style="width: 95%; height: 650px;">
+                            <div class="course-single-text mb-5 course_frame" style="width: 95%; height: 650px;">
                                 {{--<iframe src="{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}"  width="100%"--}}
                                 {{--height="100%" class="iframe_style">--}}
                                 {{--</iframe>--}}
@@ -424,21 +432,17 @@
                             <div class="course-single-text">
                                 @if($lesson->mediavideo != "")
                                     <div class="course-details-content mt-3">
-                                        <div class="video-container mb-5"
-                                             data-id="{{$lesson->mediavideo->id}}">
+                                        <div class="video-container mb-5" data-id="{{$lesson->mediavideo->id}}">
                                             @if($lesson->mediavideo->type == 'youtube')
                                                 <div id="player" class="js-player"
                                                      data-plyr-provider="youtube"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
                                             @elseif($lesson->mediavideo->type == 'vimeo')
-                                                <div id="player" class="js-player"
-                                                     data-plyr-provider="vimeo"
+                                                <div id="player" class="js-player" data-plyr-provider="vimeo"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
                                             @elseif($lesson->mediavideo->type == 'upload')
-                                                <video poster="" id="player" class="js-player" playsinline
-                                                       controls>
-                                                    <source src="{{$lesson->mediavideo->url}}"
-                                                            type="video/mp4"/>
+                                                <video poster="" id="player" class="js-player" playsinline controls>
+                                                    <source src="{{$lesson->mediavideo->url}}" type="video/mp4"/>
                                                 </video>
                                             @elseif($lesson->mediavideo->type == 'embed')
                                                 {!! $lesson->mediavideo->url !!}
@@ -447,6 +451,75 @@
                                     </div>
                                 @endif
                             </div>
+                            <section class="m-note">
+                                <div class="container my-5">
+                                    <h2 class="m-3">Write Your Notes</h2>
+                                    <div class="row">
+                                    <div class="col-12">
+
+                                        <form action="{{route('save.note')}}" method="POST">
+                                            <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
+                                            @csrf
+                                                <textarea class='edit-froala' name="contentText" style="margin-top: 30px;">
+
+                                                </textarea>
+
+                                                    <button type="submit" class=" float-right btn btn-success my-5"> save </button>
+
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container my-5">
+                                    <h3 class="my-3 mx-4  ">Notes</h3>
+                                    <div class="card shadow-c">
+
+                                        <div class="container">
+                                            @foreach($notes as $note)
+                                                <div class="card shadow-c my-5 ">
+                                                    <div class="card-body">
+                                                    {{$note->contentText}}
+                                                        <a class="float-right text-pink " onclick="editnote({{$note->id}})" data-toggle="modal" data-target="#edit-note-modal"><i class="far fa-edit"></i> <a>
+
+                                                    </div>
+
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Button trigger modal -->
+
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="edit-note-modal" tabindex="-1" role="dialog" aria-labelledby="edit-note-modallLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content my-4">
+                                    <div class="modal-header m-3 " style="background: unset;">
+                                        <h5 class="modal-title" id="edit-note-modallLabel">edit note</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" id="note_content_body">
+                                    <form action="{{route('update.note')}}" method="POST">
+                                            <input type="hidden" name="note_id" id="note_id">
+                                            @csrf
+                                                <textarea id="edit-note" class='edit-froala' name="contentText" style="margin-top: 30px;">
+
+                                                </textarea>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit"  class="btn btn-primary">Save changes</button>
+                                    </div>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </section>
                         @endif
 
                         @if($lesson->mediaAudio)
@@ -480,11 +553,7 @@
                             </div>
                         @endif
                     </div>
-                    <!-- /course-details -->
 
-                    <!-- /market guide -->
-
-                    <!-- /review overview -->
                 </div>
 
                 <div style="margin-left:-3.5%" class="col-md-3">
@@ -554,12 +623,12 @@
 
                                                                 {{--@php $key++; @endphp--}}
                                                                 @if($item->model_type == 'App\Models\Lesson')
-                                                                    <p class="subtitle2 test"
-                                                                       @if(in_array($item->model->id,$completed_lessons))role="button"
-                                                                       onclick="startTest(this)"
-                                                                       data-test-id="{{$item->model->id}}"
-                                                                       data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
-                                                                        <a id="test"> {{$item->model->title}}
+                                                                <p class="subtitle2 test"
+                                                                   @if(in_array($item->model->id,$completed_lessons))role="button"
+                                                                   onclick="startTest(this)"
+                                                                   data-test-id="{{$item->model->id}}"
+                                                                   data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                                                    <a id="test"> {{$item->model->title}}
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                     <p class="mb-0 text-primary test"
@@ -589,6 +658,15 @@
                             @endforeach
 
 
+
+
+
+
+
+
+
+
+
                         </div>
 
                     </div>
@@ -605,7 +683,7 @@
                 <textarea id='edit' name="contentText" style="margin-top: 30px;">
 
                     </textarea>
-                <button type="submit" class=" float-right btn btn-success my-5"> save</button>
+                <button type="submit" class=" float-right btn btn-success my-5"> save </button>
             </form>
         </div>
     </section>
@@ -637,35 +715,73 @@
     <link href="{{asset('froala_editor_3.2.1/css/froala_style.min.css')}}" rel="stylesheet">
 
     <script>
-        $(document).ready(function () {
-            new FroalaEditor("#edit", {
-                enter: FroalaEditor.ENTER_BR,
-                fileUpload: false,
-                fileInsertButtons: [],
-                imageUpload: false
-            }, function () {
-                // Call the method inside the initialized event.
-                $('#insertFile-1').remove();
-                $('#insertFiles-1').remove();
+           $(document).ready(function () {
+            new FroalaEditor(".edit-froala", {
+        enter: FroalaEditor.ENTER_BR,
+        fileUpload: false,
+        fileInsertButtons: [],
+        imageUpload: false
+      },function () {
+  // Call the method inside the initialized event.
+  $('#insertFile-1').remove();
+  $('#insertFiles-1').remove();
 
-                $('#insertLink-1').remove();
-                $('#insertImage-1').remove();
-                $('#insertVideo-1').remove();
-                $('#getPDF-1').remove();
-                $('#print-1').remove();
-                $('#logo').remove();
+  $('#insertLink-1').remove();
+  $('#insertImage-1').remove();
+  $('#insertVideo-1').remove();
+  $('#getPDF-1').remove();
+  $('#print-1').remove();
+  $('#insertFile-2').remove();
+  $('#insertFiles-2').remove();
+
+  $('#insertLink-2').remove();
+  $('#insertImage-2').remove();
+  $('#insertVideo-2').remove();
+  $('#getPDF-2').remove();
+  $('#print-2').remove();
+  $('#logo').remove();
 
 
-            })
 
 
-        })
+
+})
+
+
+           })
+
+  </script>
+
+
+
+    <script>
+  function editnote(id){
+    $.ajax({
+                url: "{{route('editnote')}}",
+                method: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id,
+                },
+                success: function (result) {
+                    $('#note_content_body .fr-element').html(result.contentText);
+                    $('#note_content_body .fr-placeholder').hide();
+                    $('#note_id').val(id);
+
+                //   window.location.href = $(element).data('href');
+                }
+            });
+    }
+
+
 
     </script>
 
+
+
     <script>
-        function startTest(element) {
-            $.ajax({
+    function startTest(element) {
+        $.ajax({
                 url: "{{route('update.test.start_time')}}",
                 method: "POST",
                 data: {
@@ -760,6 +876,8 @@
         player.on('ready', event => {
             player.currentTime = parseInt(current_progress);
             duration = event.detail.plyr.duration;
+
+
             if (!storedDuration || (parseInt(storedDuration) === 0)) {
                 Cookies.set("duration_" + "{{auth()->user()->id}}" + "_" + "{{$lesson->id}}" + "_" + "{{$lesson->course->id}}", duration);
             }
@@ -779,7 +897,7 @@
                     progress = parseInt(event.detail.plyr.currentTime);
                 }
             });
-            if (duration !== 0 || parseInt(progress) !== 0) {
+            if(duration !== 0 || parseInt(progress) !== 0 ) {
                 saveProgress(video_id, duration, parseInt(progress));
             }
         }, 3000);
@@ -858,7 +976,7 @@
                 Cookies.set("user_lesson_" + "{{auth()->user()->id}}" + "_" + "{{$lesson->id}}" + "_" + "{{$lesson->course->id}}", 'true');
                 Cookies.remove('duration');
 
-                @if ($test_exists && (is_null($latestTest)))
+                @if ($test_exists && (is_null($test_result)))
                 $('#nextButton').html("<a class='btn btn-block bg-danger font-weight-bold text-white' href='#'>@lang('labels.frontend.course.complete_test')</a>")
                 @else
                 @if($next_lesson)
