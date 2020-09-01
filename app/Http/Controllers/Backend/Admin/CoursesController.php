@@ -336,12 +336,16 @@ class CoursesController extends Controller
             return abort(401);
         }
 
+
+       
+
         $allAcademies = User::role('academy')->with('academy')->get();
         $academies = [];
         foreach ($allAcademies as $academy) {
             $academies[$academy->id] = $academy->full_name;
         }
         $teachersToSelect = [];
+
         $allTeachers = User::role('teacher')->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
 
         foreach ($allTeachers as $key => $teachers) {
@@ -356,7 +360,10 @@ class CoursesController extends Controller
 
         $course = Course::findOrFail($id);
 
+        $date = $course->date ? json_encode($course->date) : null;
+    
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
+
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
         // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
