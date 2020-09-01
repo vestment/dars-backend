@@ -16,7 +16,6 @@ class AddColumnOfflineCoursesToTableCourses extends Migration
         Schema::table('courses', function (Blueprint $table) {
             $table->integer('offline')->default(0)->nullable();
             $table->unsignedInteger('academy_id')->nullable();
-//            $table->foreign('academy_id')->references('id')->on('academies');
 
         });
     }

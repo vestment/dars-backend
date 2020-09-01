@@ -1594,7 +1594,7 @@ return array(
                     'author' => 'Author',
                     'courses' => 'Courses',
                     'students' => 'Students',
-                    'give_test_again' => 'Give Test Again',
+                    'give_test_again' => 'Repeat test',
                     'submit_results' => 'Submit Results',
                     'chapter_videos' => 'Chapter Videos',
                     'download_files' => 'Download Files',
