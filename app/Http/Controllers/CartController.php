@@ -305,7 +305,11 @@ class CartController extends Controller
            'Content-Type: application/json',                                                                                
            'Content-Length: ' . strlen($data_string))                                                                       
        );                                                                                                                   
-                                                                                                                           
+                          
+       $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
+       if ($coupon != null) {
+           $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+       }
        $result = curl_exec($ch);
        $result = json_decode($result,true);
        $description = $result['statusDescription'];
@@ -315,6 +319,7 @@ class CartController extends Controller
        $order->amount = $amount;
        $order->payment_type = 4;
        $order->status = 0;
+       $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
        $order->fawry_status = $result['statusDescription'];
        if($result['statusCode'] == 200)
        {
@@ -322,8 +327,29 @@ class CartController extends Controller
        $order->fawry_expirationTime = $result['expirationTime'];
        }
        $order->save();
+       foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
+        if ($cartItem->attributes->type == 'bundle') {
+            $type = Bundle::class;
+        } else {
+            $type = Course::class;
+         
+        }
+        $order->items()->create([
+            'item_id' => $cartItem->id,
+            'selectedDate'=>$cartItem->attributes->selectedDate ?? null,
+            'selectedTime'=>$cartItem->attributes->selectedTime ?? null,
+            'item_type' => $type,
+            'price' => $cartItem->price
+        ]);
+    }
 
-       return redirect()->route('courses.all');
+         return redirect()->route('courses.all');
+    }
+
+    public function acceptPayment(Request $request) 
+    {
+
+         return redirect()->route('courses.all');
     }
     public function offlinePayment(Request $request)
     {

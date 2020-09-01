@@ -185,6 +185,11 @@ return array(
                             'amount' => 'Amount',
                             'user_email' => 'User Email',
                             'date' => 'Order date',
+                            'fawry_status' => 'Fawry Status',
+                            'fawry_ref_no' => 'Fawry Ref No',
+                            'fawry_expirationTime' => 'Fawry EXP Time',
+                            'payment_type' => 'Payment Type',
+
                         ),
                     'complete' => 'Complete Manually',
                     'offline_requests' => 'Offline Requests',
@@ -629,6 +634,7 @@ return array(
                             'stripe_note' => 'Enables payments in site with Debit / Credit Cards',
                             'paypal' => 'Paypal Payment Method',
                             'fawry' => 'Fawry Payment Method',
+                            'accept' => 'Accept Payment Method',
                              'merchant_code' => 'Merchant Code',
                              'security_key'=>'Security Key',
                             'paypal_note' => 'Redirects to paypal for payment',
@@ -1530,7 +1536,8 @@ return array(
                     'total_price' => 'Total Price',
                     'pay' => 'Pay',
                     'price' => 'price',
-                    'fawry' => 'Fawry'
+                    'fawry' => 'Fawry',
+                    'accept' =>'Accept'
 
 
                 ),

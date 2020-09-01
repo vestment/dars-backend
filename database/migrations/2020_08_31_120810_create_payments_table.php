@@ -13,22 +13,22 @@ class CreatePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('number');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('course_id')->nullable();
-            $table->foreign('course_id')->references('id')->on('courses');
-            $table->unsignedBigInteger('bundle_id')->nullable();
-            $table->foreign('bundle_id')->references('id')->on('bundles');
-            $table->double('amount');
-            $table->string('payment_method');
-            $table->enum('status',['unpaid','paid','expired']);
-            $table->string('payment_response')->nullable();
-            $table->integer('payment_sync')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('payments', function (Blueprint $table) {
+        //     $table->bigIncrements('id');
+        //     $table->string('number');
+        //     $table->unsignedBigInteger('user_id');
+        //     $table->foreign('user_id')->references('id')->on('users');
+        //     $table->unsignedBigInteger('course_id')->nullable();
+        //     $table->foreign('course_id')->references('id')->on('courses');
+        //     $table->unsignedBigInteger('bundle_id')->nullable();
+        //     $table->foreign('bundle_id')->references('id')->on('bundles');
+        //     $table->double('amount');
+        //     $table->string('payment_method');
+        //     $table->enum('status',['unpaid','paid','expired']);
+        //     $table->string('payment_response')->nullable();
+        //     $table->integer('payment_sync')->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -38,6 +38,6 @@ class CreatePaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        // Schema::dropIfExists('payments');
     }
 }
