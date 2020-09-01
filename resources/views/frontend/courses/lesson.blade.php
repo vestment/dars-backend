@@ -580,37 +580,35 @@
                                             </div>
                                     
                                             <div id="chapter-{{ $chapter->id}}" class="collapse show"
-                                                                        aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                                        <div class="card-body">
-                                                                            <div class="bordered" id="start_test">
-                                                                                @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
+                                                 aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                    <div class="bordered" id="start_test">
+                                                        @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
 
-                                                                                    @if($item->model && $item->model->published == 1)
+                                                            @if($item->model && $item->model->published == 1)
 
-                                                                                        {{--@php $key++; @endphp--}}
-                                                                                        <p class="subtitle2 test"
-                                                                                        @if(in_array($item->model->id,$completed_lessons))role="button"
-                                                                                        onclick="startTest(this)"
-                                                                                        data-test-id="{{$item->model->id}}"
-                                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
-                                                                                            <a id="test"> {{$item->model->title}}
-                                                                                        @if($item->model_type == 'App\Models\Test')
-                                                                                            <p class="mb-0 text-primary test"
-                                                                                            onclick="startTest(this)"
-                                                                                            data-test-id="{{$item->model->id}}"
-                                                                                            data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
-                                                                                                - @lang('labels.frontend.course.test')</p>
-                                                                                        @endif
-                                                                                        @if(!in_array($item->model->id,$completed_lessons))
-                                                                                            <i class="fa float-right fa-lock"></i> @endif
-                                                                                            </a> </p>
+                                                                {{--@php $key++; @endphp--}}
+                                                                <p class="subtitle2 test"
+                                                                   @if(in_array($item->model->id,$completed_lessons))role="button"
+                                                                   onclick="startTest(this)"
+                                                                   data-test-id="{{$item->model->id}}"
+                                                                   data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                                                    <a id="test"> {{$item->model->title}}
+                                                                @if($item->model_type == 'App\Models\Test')
+                                                                    <p class="mb-0 text-primary test"
+                                                                       onclick="startTest(this)"
+                                                                       data-test-id="{{$item->model->id}}"
+                                                                       data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
+                                                                        - @lang('labels.frontend.course.test')</p>
+                                                                @endif
+                                                                @if(!in_array($item->model->id,$completed_lessons))
+                                                                    <i class="fa float-right fa-lock"></i> @endif
+                                                                    </a> </p>
 
-                                                                                        @else
-                                                                                            <i
-                                                                                                    class="fa text-success float-right fa-lock"></i>
-                                                                                            <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
-                                                                                        @endif
-                                                                                        @endforeach
+                                                                @else
+                                                                    <i class="fa text-success float-right fa-unlock"></i>
+                                                                @endif
+                                                                @endforeach
                                                     </div>
                                                 </div>
                                             
@@ -746,8 +744,8 @@
                     'id': $(element).data('test-id'),
                 },
                 success: function (result) {
-                    console.log($(element).data('test-id'));
-                  window.location.href = $(element).data('href');
+                    console.log(result);
+                    window.location.href = $(element).data('href');
                 }
             });
     }

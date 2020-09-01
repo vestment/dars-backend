@@ -157,16 +157,16 @@ class QuestionsController extends Controller
             $lessonRef = $request->input('explanation_lessonRef_' . $q, '');
             $lessonTimeFrame = $request->input('explanation_timeFrame_' . $q, '');
             if ($option != '') {
-              $question = QuestionsOption::create([
+              $recentquestion = QuestionsOption::create([
                     'question_id' => $question->id,
                     'option_text' => $option,
                     'explanation' => $explanation,
                     'correct' => $request->input('correct_' . $q)
                 ]);
               if ($lessonRef && $lessonTimeFrame) {
-                  $question->lesson_id = $lessonRef;
-                  $question->time_frame = $lessonTimeFrame;
-                  $question->save();
+                  $recentquestion->lesson_id = $lessonRef;
+                  $recentquestion->time_frame = $lessonTimeFrame;
+                  $recentquestion->save();
               }
             }
         }
