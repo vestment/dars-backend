@@ -12,17 +12,17 @@
 
 
 
-    <script>
-        var lang = '{{app()->getLocale()}}';
-    </script>
+<script>
+ var lang = '{{app()->getLocale()}}';
+</script>
     <style>
-        .main-menu-container.menu-bg-overlay {
+     .main-menu-container.menu-bg-overlay {
            background-color: #0C0C3F;
         }
         .main-menu-container {
             background-color: #0C0C3F;
         }
-        .test-form {
+                .test-form {
             color: #333333;
         }
 
@@ -33,6 +33,9 @@
         .sidebar.is_stuck {
             top: 15% !important;
         }
+        .m-note{
+            margin-top: 11%;
+        }
 
         .course-timeline-list {
             max-height: 300px;
@@ -41,6 +44,9 @@
 
         .options-list li {
             list-style-type: none;
+        }
+        .shadow-c{
+            box-shadow: 2px 3px #ebebeb;
         }
 
         .options-list li.correct {
@@ -140,53 +146,47 @@
         @media screen  and  (max-width: 768px) {
 
         }
-
-        .breadcrumb-sectionn {
-            background-color: #0C0C3F !important;
-
+        .breadcrumb-sectionn{
+            background-color:#0C0C3F !important;
+            
         }
-
-        .course-title-header {
+        .course-title-header{
             color: white;
-            font-weight: bold;
-            font-size: 24px;
-            position: absolute;
-            left: 15%;
-            top: 30%;
+    font-weight: bold;
+    font-size: 24px;
+    position: absolute;
+    left: 15%;
+    top: 30%;
         }
+.progress{
+    color:#D2498B
+}
+.video-container iframe{
+    width: 95%;
+    height: 553px;
+    margin-top: -0.2%;
+    margin-left: 5%;
 
-        .progress {
-            color: #D2498B
-        }
+}
 
-        .video-container iframe {
-            width: 95%;
-            height: 553px;
-            margin-top: -0.2%;
-            margin-left: 5%;
-
-        }
-
-        .plyr--video {
-            width: 93.2%;
-            margin-left: 6%;
-            margin-top: -1.3%;
-        }
-
-        .course-details-item {
-            width: 93.2%;
-            margin-left: 4%;
-            margin-top: -1%;
-        }
-
-        .subtitle2 {
-            font-weight: light;
-            font-size: 14px;
-
-            padding-bottom: 17px;
-
-            border-bottom: solid 1px #e4e4e4;
-        }
+.plyr--video{
+    width: 93.2%;
+    margin-left: 6%;
+    margin-top: -1.3%;
+}
+.course-details-item {
+    width: 93.2%;
+    margin-left: 4%;
+    margin-top: -1%;
+}
+.subtitle2 {
+    font-weight: light;
+    font-size: 14px;
+  
+    padding-bottom: 17px;
+ 
+    border-bottom: solid 1px #e4e4e4;
+}
 .fr-quick-insert{
     display:none !important;
 }
@@ -204,8 +204,8 @@
             <div class="page-breadcrumb-content text-center">
                 <div class="page-breadcrumb-title">
                     <h2 class="breadcrumb-head black bold">
-                        <span class="course-title-header">{{$lesson->course->title}}</span><br> <br></h2>
-
+                        <span class="course-title-header">{{$lesson->course->title}}</span><br> <br> </h2>
+                        
                 </div>
             </div>
         </div>
@@ -231,174 +231,156 @@
                     <div class="course-details-item border-bottom-0 mb-0">
                        
 
-                        @if ($lesson->available == 1)
-                            @if ($test_exists)
+                    @if ($lesson->available == 1)
+                        @if ($test_exists)
                         
 
-                                <div class="course-single-text row">
-
-                                    <div class="col-6">
-                                        <div class="course-title mt10 headline relative-position">
-                                            <h3>
-                                                <b>@lang('labels.frontend.course.test')
-                                                    : {{$lesson->title}}</b>
-                                            </h3>
-                                        </div>
-                                        <div class="course-details-content">
-                                            <p> {!! $lesson->full_text !!} </p>
-                                        </div>
+                            <div class="course-single-text row">
+                           
+                                <div class="col-6">
+                                    <div class="course-title mt10 headline relative-position">
+                                        <h3>
+                                            <b>@lang('labels.frontend.course.test')
+                                                : {{$lesson->title}}</b>
+                                        </h3>
                                     </div>
-                                    <div class="col-6">
-                                        <div id="countdown" class="timeTo timeTo-white"
-                                             style="font-family: Verdana, sans-serif;">
-                                            <div class="first" style="">
-                                                <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
-                                                <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
-                                            </div>
-                                            <span>:</span>
-                                            <div class="first" style="">
-                                                <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
-                                                <ul style="left: 3px; top: -30px;" class="">
-                                                    <li>1</li>
-                                                    <li>1</li>
-                                                </ul>
-                                            </div>
-                                            <span>:</span>
-                                            <div class="first" style="">
-                                                <ul style="left: 3px; top: -30px;" class="">
-                                                    <li>2</li>
-                                                    <li>2</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
-                                                <ul style="left: 3px; top: 0px;" class="transition">
-                                                    <li>0</li>
-                                                    <li>1</li>
-                                                </ul>
-                                            </div>
+                                    <div class="course-details-content">
+                                        <p> {!! $lesson->full_text !!} </p>
+                                    </div>
+                                </div>
+                                <div class="col-6"> 
+                                    <div id="countdown" class="timeTo timeTo-white" style="font-family: Verdana, sans-serif;">
+                                        <div class="first" style=""><ul style="left:3px; top:-30px">
+                                        <li>0</li><li>0</li></ul>
+                                        </div>
+                                        <div style="">
+                                        <ul style="left:3px; top:-30px">
+                                        <li>0</li><li>0</li></ul>
+                                        </div>
+                                        <span>:</span>
+                                        <div class="first" style="">
+                                        <ul style="left:3px; top:-30px">
+                                        <li>0</li><li>0</li></ul></div><div style="">
+                                        <ul style="left: 3px; top: -30px;" class="">
+                                        <li>1</li><li>1</li></ul>
+                                        </div>
+                                        <span>:</span>
+                                        <div class="first" style="">
+                                        <ul style="left: 3px; top: -30px;" class=""><li>2</li><li>2</li></ul>
+                                        </div>
+                                        <div style=""><ul style="left: 3px; top: 0px;" class="transition">
+                                        <li>0</li><li>1</li></ul>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                          
 
+                            <hr/>
+                            @if (!is_null($test_result))
+                                <div class="alert alert-info">@lang('labels.frontend.course.your_test_score')
+                                    : {{ $test_result->test_result }}</div>
+                                @if(config('retest'))
+                                    <form action="{{route('lessons.retest',[$test_result->test->slug])}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="result_id" value="{{$test_result->id}}">
+                                        <button type="submit" class="btn gradient-bg font-weight-bold text-white"
+                                                href="">
+                                            @lang('labels.frontend.course.give_test_again')
+                                        </button>
+                                    </form>
+                                @endif
 
-                                <hr/>
-                                @if (!is_null($test_result))
-                                    <div class="alert alert-info">@lang('labels.frontend.course.your_test_score')
-                                        : {{ $test_result->test_result }}</div>
-                                    @if(config('retest'))
-                                        <form action="{{route('lessons.retest',[$test_result->test->slug])}}"
-                                              method="post">
-                                            @csrf
-                                            <input type="hidden" name="result_id" value="{{$test_result->id}}">
-                                            <button type="submit" class="btn gradient-bg font-weight-bold text-white"
-                                                    href="">
-                                                @lang('labels.frontend.course.give_test_again')
-                                            </button>
-                                        </form>
-                                    @endif
+                                @if(count($lesson->questions) > 0  )
+                                    <hr>
+                                  
+                                    @foreach ($lesson->questions as $question)
 
+                                        <h4 class="mb-0">{{ $loop->iteration }}
+                                            . {!! $question->question !!}   @if(!$question->isAttempted($test_result->id))
+                                                <small class="badge badge-danger"> @lang('labels.frontend.course.not_attempted')</small> @endif
+                                        </h4>
+                                        <br/>
+                                        <ul class="options-list pl-4">
+                                            @foreach ($question->options as $option)
+
+                                                <li class="@if(($option->answered($test_result->id) != null && $option->answered($test_result->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($test_result->id) != null && $option->answered($test_result->id) == 2) incorrect  @endif"> {{ $option->option_text }}
+
+                                                    @if($option->correct == 1 && $option->explanation != null)
+                                                        <p class="text-dark">
+                                                            <b>@lang('labels.frontend.course.explanation')</b><br>
+                                                            {{$option->explanation}}
+                                                        </p>
+                                                    @endif
+                                                </li>
+
+                                            @endforeach
+                                        </ul>
+                                        <br/>
+                                    @endforeach
+
+                                @else
+                                    <h3>@lang('labels.general.no_data_available')</h3>
+
+                                @endif
+                            @else
+                                <div class="test-form">
                                     @if(count($lesson->questions) > 0  )
-                                        <hr>
+                                    <script>
+                                        var slug = '{{$lesson->slug}}';
+                                        var id = '{{$lesson->id}}';
+                                        var timeoutorg = parseInt('{{$lesson->timer*60}}');
+                                        var start = parseInt('{{$start_time}}');
+                                         var endtime =parseInt(start+ timeoutorg);
+                                        var now = Date.now() / 1000;
+                                        
+                                        var timecomp = (endtime - now);
+                                        setInterval(() => {
+                                        var endtime =parseInt(start+ timeoutorg);
+                                        var now = Date.now() / 1000;
+                                        var timecomp = (endtime - now);
 
-                                        @foreach ($lesson->questions as $question)
+                                        }, 1000);
+                                        
+                                      
+                                        
 
-                                            <h4 class="mb-0">{{ $loop->iteration }}
-                                                . {!! $question->question !!}   @if(!$question->isAttempted($test_result->id))
-                                                    <small class="badge badge-danger"> @lang('labels.frontend.course.not_attempted')</small> @endif
-                                            </h4>
-                                            <br/>
-                                            <ul class="options-list pl-4">
+
+
+                                    </script>   
+                                        <form action="{{ route('lessons.test', [$lesson->slug]) }}" method="post">
+                                            {{ csrf_field() }}
+                                            @foreach ($lesson->questions as $question)
+                                                <h4 class="mb-0">{{ $loop->iteration }}. {!! $question->question !!}  </h4>
+                                                <br/>
                                                 @foreach ($question->options as $option)
-
-                                                    <li class="@if(($option->answered($test_result->id) != null && $option->answered($test_result->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($test_result->id) != null && $option->answered($test_result->id) == 2) incorrect  @endif"> {{ $option->option_text }}
-
-                                                        @if($option->correct == 1 && $option->explanation != null)
-                                                            <p class="text-dark">
-                                                                <b>@lang('labels.frontend.course.explanation')</b><br>
-                                                                {{$option->explanation}}
-                                                            </p>
-                                                        @endif
-                                                    </li>
-
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="questions[{{ $question->id }}]"
+                                                                   value="{{ $option->id }}"/>
+                                                            <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                                            {{ $option->option_text }}<br/>
+                                                        </label>
+                                                    </div>
                                                 @endforeach
-                                            </ul>
-                                            <br/>
-                                        @endforeach
-
+                                                <br/>
+                                            @endforeach
+                                            <input class="btn gradient-bg text-white font-weight-bold" type="submit"
+                                                   value=" @lang('labels.frontend.course.submit_results') "/>
+                                        </form>
                                     @else
                                         <h3>@lang('labels.general.no_data_available')</h3>
 
                                     @endif
-                                @else
-                                    <div class="test-form">
-                                        @if(count($lesson->questions) > 0  )
-                                            <script>
-                                                var slug = '{{$lesson->slug}}';
-                                                var id = '{{$lesson->id}}';
-                                                var timeoutorg = parseInt('{{$lesson->timer*60}}');
-                                                var start = parseInt('{{$start_time}}');
-                                                var endtime = parseInt(start + timeoutorg);
-                                                var now = Date.now() / 1000;
-
-                                                var timecomp = (endtime - now);
-                                                setInterval(() => {
-                                                    var endtime = parseInt(start + timeoutorg);
-                                                    var now = Date.now() / 1000;
-                                                    var timecomp = (endtime - now);
-
-                                                }, 1000);
-
-
-                                            </script>
-                                            <form action="{{ route('lessons.test', [$lesson->slug]) }}" method="post">
-                                                {{ csrf_field() }}
-                                                @foreach ($lesson->questions as $question)
-                                                    <h4 class="mb-0">{{ $loop->iteration }}
-                                                        . {!! $question->question !!}  </h4>
-                                                    <br/>
-                                                    @foreach ($question->options as $option)
-                                                        <div class="radio">
-                                                            <label>
-                                                                <input type="radio"
-                                                                       name="questions[{{ $question->id }}]"
-                                                                       value="{{ $option->id }}"/>
-                                                                <span class="cr"><i
-                                                                            class="cr-icon fa fa-circle"></i></span>
-                                                                {{ $option->option_text }}<br/>
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
-                                                    <br/>
-                                                @endforeach
-                                                <input class="btn gradient-bg text-white font-weight-bold" type="submit"
-                                                       value=" @lang('labels.frontend.course.submit_results') "/>
-                                            </form>
-                                        @else
-                                            <h3>@lang('labels.general.no_data_available')</h3>
-
-                                        @endif
-                                    </div>
-                                @endif
+                                </div>
+                            @endif
                             @else
-                                <h3>@lang('labels.general.no_data_available')</h3>
+                            <h3>@lang('labels.general.no_data_available')</h3>
 
                             @endif
                             <hr/>
                         @else
-
+                            
                         @endif
 
                         @if($lesson->mediaPDF)
@@ -413,13 +395,16 @@
 
 
                         @if($lesson->mediaVideo && $lesson->mediavideo->count() > 0)
-                            <div class="course-single-text">
+                            <div class="course-single-text mb-4">
                                 @if($lesson->mediavideo != "")
                                     <div class="course-details-content mt-3">
                                         <div class="video-container mb-5" data-id="{{$lesson->mediavideo->id}}">
                                             @if($lesson->mediavideo->type == 'youtube')
+
+
                                                 <div id="player" class="js-player" data-plyr-provider="youtube"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
+                                                     
                                             @elseif($lesson->mediavideo->type == 'vimeo')
                                                 <div id="player" class="js-player" data-plyr-provider="vimeo"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
@@ -429,11 +414,81 @@
                                                 </video>
                                             @elseif($lesson->mediavideo->type == 'embed')
                                                 {!! $lesson->mediavideo->url !!}
+                                                
                                             @endif
                                         </div>
                                     </div>
                                 @endif
                             </div>
+                            <section class="m-note">
+                                <div class="container my-5">
+                                    <h2 class="m-3">Write Your Notes</h2>
+                                    <div class="row">
+                                    <div class="col-12">
+
+                                        <form action="{{route('save.note')}}" method="POST">
+                                            <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
+                                            @csrf
+                                                <textarea class='edit-froala' name="contentText" style="margin-top: 30px;">
+                                                
+                                                </textarea>
+                                              
+                                                    <button type="submit" class=" float-right btn btn-success my-5"> save </button>
+                                                
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="container my-5">
+                                    <h3 class="my-3 mx-4  ">Notes</h3>
+                                    <div class="card shadow-c">
+                                
+                                        <div class="container">
+                                            @foreach($notes as $note)
+                                                <div class="card shadow-c my-5 ">
+                                                    <div class="card-body">
+                                                    {{$note->contentText}}
+                                                        <a class="float-right text-pink " onclick="editnote({{$note->id}})" data-toggle="modal" data-target="#edit-note-modal"><i class="far fa-edit"></i> <a>
+
+                                                    </div>
+
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Button trigger modal -->
+                               
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="edit-note-modal" tabindex="-1" role="dialog" aria-labelledby="edit-note-modallLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content my-4">
+                                    <div class="modal-header m-3 " style="background: unset;">
+                                        <h5 class="modal-title" id="edit-note-modallLabel">edit note</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" id="note_content_body">
+                                    <form action="{{route('update.note')}}" method="POST">
+                                            <input type="hidden" name="note_id" id="note_id">
+                                            @csrf
+                                                <textarea id="edit-note" class='edit-froala' name="contentText" style="margin-top: 30px;">
+                                                
+                                                </textarea>
+                                          
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit"  class="btn btn-primary">Save changes</button>
+                                    </div>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </section>
                         @endif
 
                         @if($lesson->mediaAudio)
@@ -467,11 +522,7 @@
                             </div>
                         @endif
                     </div>
-                    <!-- /course-details -->
-
-                    <!-- /market guide -->
-
-                    <!-- /review overview -->
+                    
                 </div>
 
                 <div style="margin-left:-3.5%" class="col-md-3">
@@ -514,6 +565,7 @@
 
 
 
+                            
 
                             @foreach($chapters as $chapter)
                                 <div class="row m-2 shadow">
@@ -521,81 +573,77 @@
                                         <div class="card">
                                             <div class="card-header" id="headingOne">
                                                 <h2 class="mb-0">
-                                                    <button class="btn btn-link btn-block text-left" type="button"
-                                                            data-toggle="collapse"
-                                                            data-target="#chapter-{{ $chapter->id}}"
-                                                            aria-expanded="true" aria-controls="collapseOne">
-                                                        {{ $chapter->title}} <i class="fa fa-angle-down float-right"
-                                                                                aria-hidden="true"></i>
-                                                    </button>
+                                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                                                {{ $chapter->title}} <i class="fa fa-angle-down float-right" aria-hidden="true"></i>
+                                                </button>
                                                 </h2>
                                             </div>
-
+                                    
                                             <div id="chapter-{{ $chapter->id}}" class="collapse show"
-                                                 aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                <div class="card-body">
-                                                    <div class="bordered" id="start_test">
-                                                        @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
+                                                                        aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                                        <div class="card-body">
+                                                                            <div class="bordered" id="start_test">
+                                                                                @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
 
-                                                            @if($item->model && $item->model->published == 1)
+                                                                                    @if($item->model && $item->model->published == 1)
 
-                                                                {{--@php $key++; @endphp--}}
-                                                                <p class="subtitle2 test"
-                                                                   @if(in_array($item->model->id,$completed_lessons))role="button"
-                                                                   onclick="startTest(this)"
-                                                                   data-test-id="{{$item->model->id}}"
-                                                                   data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
-                                                                    <a id="test"> {{$item->model->title}}
-                                                                @if($item->model_type == 'App\Models\Test')
-                                                                    <p class="mb-0 text-primary test"
-                                                                       onclick="startTest(this)"
-                                                                       data-test-id="{{$item->model->id}}"
-                                                                       data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
-                                                                        - @lang('labels.frontend.course.test')</p>
-                                                                @endif
-                                                                @if(!in_array($item->model->id,$completed_lessons))
-                                                                    <i class="fa float-right fa-lock"></i> @endif
-                                                                    </a> </p>
+                                                                                        {{--@php $key++; @endphp--}}
+                                                                                        <p class="subtitle2 test"
+                                                                                        @if(in_array($item->model->id,$completed_lessons))role="button"
+                                                                                        onclick="startTest(this)"
+                                                                                        data-test-id="{{$item->model->id}}"
+                                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                                                                            <a id="test"> {{$item->model->title}}
+                                                                                        @if($item->model_type == 'App\Models\Test')
+                                                                                            <p class="mb-0 text-primary test"
+                                                                                            onclick="startTest(this)"
+                                                                                            data-test-id="{{$item->model->id}}"
+                                                                                            data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
+                                                                                                - @lang('labels.frontend.course.test')</p>
+                                                                                        @endif
+                                                                                        @if(!in_array($item->model->id,$completed_lessons))
+                                                                                            <i class="fa float-right fa-lock"></i> @endif
+                                                                                            </a> </p>
 
-                                                                @else
-                                                                    <i
-                                                                            class="fa text-success float-right fa-lock"></i>
-                                                                    <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
-                                                                @endif
-                                                                @endforeach
+                                                                                        @else
+                                                                                            <i
+                                                                                                    class="fa text-success float-right fa-lock"></i>
+                                                                                            <!-- <p class="play10"> <i class="fa fa-play-circle" aria-hidden="true"></i> 10 Min </p> -->
+                                                                                        @endif
+                                                                                        @endforeach
                                                     </div>
                                                 </div>
-
+                                            
                                             </div>
                                         </div>
 
-
+                                    
                                     </div>
                                 </div>
-
+                                
                             @endforeach
 
 
-                        </div>
 
+
+
+
+
+
+
+
+
+                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section>
-        <div class="container my-5">
-            <h2>Write Your Notes</h2>
-            <form action="{{route('save.note')}}" method="POST">
-                <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
-                @csrf
-                <textarea id='edit' name="contentText" style="margin-top: 30px;">
+   
 
-                    </textarea>
-                <button type="submit" class=" float-right btn btn-success my-5"> save </button>
-            </form>
-        </div>
-    </section>
+
+
     <!-- End of course details section
     ============================================= -->
 
@@ -625,7 +673,7 @@
 
     <script>
            $(document).ready(function () {
-            new FroalaEditor("#edit", {
+            new FroalaEditor(".edit-froala", {
         enter: FroalaEditor.ENTER_BR,
         fileUpload: false,
         fileInsertButtons: [],
@@ -640,6 +688,14 @@
   $('#insertVideo-1').remove();
   $('#getPDF-1').remove();
   $('#print-1').remove();
+  $('#insertFile-2').remove();
+  $('#insertFiles-2').remove();
+
+  $('#insertLink-2').remove();
+  $('#insertImage-2').remove();
+  $('#insertVideo-2').remove();
+  $('#getPDF-2').remove();
+  $('#print-2').remove();
   $('#logo').remove();
 
 
@@ -647,67 +703,92 @@
 
 
 })
-
+      
 
            })
 
   </script>
 
+
+
     <script>
-        function startTest(element) {
-            $.ajax({
+  function editnote(id){
+    $.ajax({
+                url: "{{route('editnote')}}",
+                method: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id,
+                },
+                success: function (result) {
+                    $('#note_content_body .fr-element').html(result.contentText);
+                    $('#note_content_body .fr-placeholder').hide();
+                    $('#note_id').val(id);
+
+                //   window.location.href = $(element).data('href');
+                }
+            });
+    }
+
+
+    
+    </script>
+
+
+
+    <script>
+    function startTest(element) {
+        $.ajax({
                 url: "{{route('update.test.start_time')}}",
                 method: "POST",
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'id': $(element).data('test-id'),
-                    {{--'lesson_slug': '{{$lesson->slug}}'--}}
                 },
                 success: function (result) {
                     console.log($(element).data('test-id'));
-                    window.location.href = $(element).data('href');
+                  window.location.href = $(element).data('href');
                 }
             });
-        }
-
-        @if($lesson->questions != null )
+    }
+    @if($lesson->questions != null )
 
         @if(count($lesson->questions) > 0  )
-        $(document).ready(function () {
-            var $countdown = $('#countdown');
-            if (timecomp > 0) {
+    $(document).ready(function() {
+        var $countdown = $('#countdown');
+        if(timecomp > 0){
+        
+        $countdown.show().timeTo(parseInt(timecomp));
 
-                $countdown.show().timeTo(parseInt(timecomp));
+       
 
+        }
+        if(timecomp ==0){
+ $countdown.timeTo(parseInt(timecomp),
+   function() {
+     $countdown.hide();
+     $.ajax({
+                url: "{{route('update.test.available')}}",
+                method: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'lesson_slug': slug,
+                },
+                success: function (result) {
+                    console.log(result)
+                    window.location.href="{{route('courses.show', [$lesson->course->slug])}}"
+                }
+            });
+   }
+ )
+ };
 
-            }
-            if (timecomp == 0) {
-                $countdown.timeTo(parseInt(timecomp),
-                    function () {
-                        $countdown.hide();
-                        $.ajax({
-                            url: "{{route('update.test.available')}}",
-                            method: "POST",
-                            data: {
-                                "_token": "{{ csrf_token() }}",
-                                'lesson_slug': slug,
-                            },
-                            success: function (result) {
-                                console.log(result)
-                                window.location.href = "{{route('courses.show', [$lesson->course->slug])}}"
-                            }
-                        });
-                    }
-                )
-            }
-            ;
-
-        });
+});
+ @endif
         @endif
-        @endif
 
-
-
+   
+ 
         @if($lesson->mediaPDF)
         $(function () {
             $("#myPDF").pdf({
@@ -718,7 +799,7 @@
             });
 
         });
-        @endif
+                @endif
 
         var storedDuration = 0;
         var storedLesson;
@@ -731,13 +812,13 @@
         }
 
 
-        @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
+                @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
         var current_progress = 0;
 
 
         @if($lesson->mediaVideo->getProgress(auth()->user()->id) != "")
             current_progress = "{{$lesson->mediaVideo->getProgress(auth()->user()->id)->progress}}";
-        @endif
+                @endif
 
 
 
@@ -750,6 +831,8 @@
         player.on('ready', event => {
             player.currentTime = parseInt(current_progress);
             duration = event.detail.plyr.duration;
+
+
             if (!storedDuration || (parseInt(storedDuration) === 0)) {
                 Cookies.set("duration_" + "{{auth()->user()->id}}" + "_" + "{{$lesson->id}}" + "_" + "{{$lesson->course->id}}", duration);
             }
@@ -769,7 +852,7 @@
                     progress = parseInt(event.detail.plyr.currentTime);
                 }
             });
-            if (duration !== 0 || parseInt(progress) !== 0) {
+            if(duration !== 0 || parseInt(progress) !== 0 ) {
                 saveProgress(video_id, duration, parseInt(progress));
             }
         }, 3000);

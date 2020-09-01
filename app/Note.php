@@ -1,13 +1,13 @@
 <?php
 
 namespace App;
-
+use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
     protected $fillable = [
-        'user_id', 'lesson_id', 'content'
+        'user_id', 'lesson_id', 'contentText'
     ];
     public function lesson()
     {

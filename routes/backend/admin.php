@@ -284,6 +284,7 @@ Route::group(['middleware' => 'role:teacher|administrator'], function () {
     Route::get('get-reviews-data', ['uses' => 'Admin\ReviewController@getData', 'as' => 'reviews.get_data']);
     Route::post('updateState', ['uses' => 'Admin\ReviewController@updateStatus', 'as' => 'review.active']);
 });
+Route::resource('notes', 'notestableController');
 
 
 Route::group(['middleware' => 'role:student'], function () {
