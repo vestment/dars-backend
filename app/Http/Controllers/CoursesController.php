@@ -65,7 +65,6 @@ class CoursesController extends Controller
         } else {
             $courses = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews','chapters'])->where('online', 1)->where('published', 1)->orderBy('id', 'desc')->get();
         }
-// dd($courses);
         $purchased_courses = NULL;
         $purchased_bundles = NULL;
         $categories = Category::where('status', '=', 1)->get();
@@ -148,7 +147,7 @@ class CoursesController extends Controller
                     ->where('model_type', Lesson::class)
                     ->orderby('sequence', 'asc')->first();
             }
-
+dd($continue_course->model);
         }
         $mandatory_courses = [];
         $optional_courses = [];
