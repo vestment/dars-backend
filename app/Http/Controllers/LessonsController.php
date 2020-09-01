@@ -20,97 +20,110 @@ class LessonsController extends Controller
 
     public function show($course_id, $lesson_slug)
     {
-        $test_result = "";
+        $latestTest = "";
         $completed_lessons = "";
+        $chapter = Chapter::where('slug', $lesson_slug)->first();
+        // if the income is chapter slug
+        if ($chapter) {
+            $lesson = Lesson::where('chapter_id', $chapter->id)->where('course_id', $course_id)->where('published', '=', 1)->first();
+            $lesson = Lesson::where('slug', $lesson->slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
+        } else {
+            // if the income is lesson slug
+            $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
+        }
+        // if the income is Test slug
+        if (!$lesson) {
+            $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->with('courseTimeline')->where('published', '=', 1)->firstOrFail();
+            $lesson->full_text = $lesson->description;
 
-        $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
-         if ($lesson == "") {
-                $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->with('courseTimeline')->where('published', '=', 1)->firstOrFail();
-                $lesson->full_text = $lesson->description;
-
-                $test_result = NULL;
-                if ($lesson) {
-                    $test_result = TestsResult::where('test_id', $lesson->id)
-                        ->where('user_id', \Auth::id())
-                        ->first();
-                }
-            }
-        if($lesson){
-        $purchased_course = $lesson->course->students()->where('user_id', \Auth::id())->count() > 0;
-        
-        if ($purchased_course) {
-            $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
-
-
-         
-
-            if ((int)config('lesson_timer') == 0) {
-                if ($lesson->chapterStudents()->where('user_id', \Auth::id())->count() == 0) {
-                    $lesson->chapterStudents()->create([
-                        'model_type' => get_class($lesson),
-                        'model_id' => $lesson->id,
-                        'user_id' => auth()->user()->id,
-                        'course_id' => $lesson->course->id
-                    ]);
-                }
-            }
-
-            $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
-            $course_tests = ($lesson->course->tests) ? $lesson->course->tests->pluck('id')->toArray() : [];
-            $course_lessons = array_merge($course_lessons, $course_tests);
-//dd($lesson->courseTimeline()->get());
-            $previous_lesson = $lesson->course->courseTimeline()
-                ->where('sequence', '<', $lesson->courseTimeline->sequence)
-                ->whereIn('model_id', $course_lessons)
-                ->where('model_type', Lesson::class)
-                ->orderBy('sequence', 'desc')
-                ->first();
-
-            $next_lesson = $lesson->course->courseTimeline()
-                ->whereIn('model_id', $course_lessons)
-                ->where('sequence', '>', $lesson->courseTimeline->sequence)
-                ->where('model_type', Lesson::class)
-                ->orderBy('sequence', 'asc')
-                ->first();
-
-            $lessons = $lesson->course->courseTimeline()
-                ->whereIn('model_id', $course_lessons)
-                ->where('model_type', Lesson::class)
-                ->orderby('sequence', 'asc')
-                ->get();
-
-
-            $test_exists = FALSE;
-
-            if (get_class($lesson) == 'App\Models\Test') {
-                $test_exists = TRUE;
-            }
-
-            $completed_lessons = \Auth::user()->chapters()
-                ->where('course_id', $lesson->course->id)
-                ->get()
-                ->pluck('model_id')
-                ->toArray();
-            $start_time = time();
-            if (auth()->user()->current_test()->first()) {
-                $pivot = auth()->user()->current_test()->first()->pivot->where('test_id', $lesson->id)->first();
-                // dd($pivot);
-                if ($pivot) {
-                    $start_time = $pivot->start_time;
-                }
-
+            $latestTest = NULL;
+            $prevTests = NULL;
+            if ($lesson) {
+                $latestTest = TestsResult::where('test_id', $lesson->id)
+                    ->where('user_id', \Auth::id())
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+                $prevTests = TestsResult::where('test_id', $lesson->id)
+                    ->where('user_id', \Auth::id())
+                    ->orderBy('created_at', 'asc')
+                    ->get();
             }
         }
-        
-            return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'test_result',
-                'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time'));
+
+
+        if ($lesson) {
+            $purchased_course = $lesson->course->students()->where('user_id', \Auth::id())->count() > 0;
+
+            if ($purchased_course) {
+                $chapters = Chapter::where('course_id', $course_id)->where('published', '=', 1)->get();
+
+
+                if ((int)config('lesson_timer') == 0) {
+                    if ($lesson->chapterStudents()->where('user_id', \Auth::id())->count() == 0) {
+                        $lesson->chapterStudents()->create([
+                            'model_type' => get_class($lesson),
+                            'model_id' => $lesson->id,
+                            'user_id' => auth()->user()->id,
+                            'course_id' => $lesson->course->id
+                        ]);
+                    }
+                }
+
+                $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
+                $course_tests = ($lesson->course->tests) ? $lesson->course->tests->pluck('id')->toArray() : [];
+                $course_lessons = array_merge($course_lessons, $course_tests);
+//dd($lesson->courseTimeline()->get());
+                $previous_lesson = $lesson->course->courseTimeline()
+                    ->where('sequence', '<', $lesson->courseTimeline->sequence)
+                    ->whereIn('model_id', $course_lessons)
+                    ->where('model_type', Lesson::class)
+                    ->orderBy('sequence', 'desc')
+                    ->first();
+
+                $next_lesson = $lesson->course->courseTimeline()
+                    ->whereIn('model_id', $course_lessons)
+                    ->where('sequence', '>', $lesson->courseTimeline->sequence)
+                    ->where('model_type', Lesson::class)
+                    ->orderBy('sequence', 'asc')
+                    ->first();
+
+                $lessons = $lesson->course->courseTimeline()
+                    ->whereIn('model_id', $course_lessons)
+                    ->where('model_type', Lesson::class)
+                    ->orderby('sequence', 'asc')
+                    ->get();
+
+
+                $test_exists = FALSE;
+
+                if (get_class($lesson) == 'App\Models\Test') {
+                    $test_exists = TRUE;
+                }
+
+                $completed_lessons = \Auth::user()->chapters()
+                    ->where('course_id', $lesson->course->id)
+                    ->get()
+                    ->pluck('model_id')
+                    ->toArray();
+                $start_time = time();
+                if (auth()->user()->current_test()->first()) {
+                    $pivot = auth()->user()->current_test()->first()->pivot->where('test_id', $lesson->id)->first();
+                    // dd($pivot);
+                    if ($pivot) {
+                        $start_time = $pivot->start_time;
+                    }
+
+                }
+            }
+
+            return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'latestTest',
+                'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time','prevTests'));
         } else {
             return abort(403);
 //            return redirect()->back()->withFlashDanger(__('labels.frontend.cart.complete_your_purchases'));
-        
+
         }
     }
-
 
 
     public function saveNotes(Request $request)
@@ -122,21 +135,21 @@ class LessonsController extends Controller
             'user_id' => \Auth::id(),
             'content' => $request->contentText,
         ]);
-        
-      
+
+
         return redirect()->back();
 
 
-
     }
+
     public function showNotes(Request $request)
     {
         $lesson = lesson::where('slug', $request->lesson_slug)->firstOrFail();
 
-        $notes = Note::where(['lesson_id' => $lesson->id,'user_id' => \Auth::id() ])->get();
-        
-      
-        return view('frontend.courses.lesson', compact('notes') );
+        $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
+
+
+        return view('frontend.courses.lesson', compact('notes'));
 
 
     }
@@ -152,8 +165,6 @@ class LessonsController extends Controller
 
     public function startTimeUpdate(Request $request)
     {
-        return $request;
-//        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
         $check_prev_entry = auth()->user()->current_test()->where('test_id', $request->id)->first();
         if (!$check_prev_entry) {
             auth()->user()->current_test()->attach($request->id, ['start_time' => time()]);
@@ -191,11 +202,20 @@ class LessonsController extends Controller
              * Save all test result and show the points
              */
         }
+        $prevResults = TestsResult::where('user_id', \Auth::id())->where('test_id', $test->id)->orderBy('created_at', 'desc')->first();
+        $attempts = 1;
+        if ($prevResults && $prevResults->attempts < 3) {
+            $attempts = $prevResults->attempts + 1;
+        }
         $test_result = TestsResult::create([
             'test_id' => $test->id,
             'user_id' => \Auth::id(),
             'test_result' => $test_score,
+            'attempts' => $attempts
         ]);
+//        dd($attempts);
+        $prevEntry = auth()->user()->current_test()->where('test_id', $request->id)->first();
+        $prevEntry->delete();
         $test_result->answers()->createMany($answers);
 
 
@@ -211,14 +231,14 @@ class LessonsController extends Controller
 
         return back()->with(['message' => 'Test score: ' . $test_score, 'result' => $test_result]);
     }
-    
+
 
     public function retest(Request $request)
     {
         $test = TestsResult::where('id', '=', $request->result_id)
             ->where('user_id', '=', auth()->user()->id)
             ->first();
-        $test->delete();
+//        $test->delete();
         return back();
     }
 

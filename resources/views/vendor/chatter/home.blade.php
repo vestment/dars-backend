@@ -1,18 +1,5 @@
-@php
-    $path = 'frontend';
 
-    if(session()->has('display_type')){
-                if(session('display_type') == 'rtl'){
-                    $path = 'frontend-rtl';
-                }else{
-                    $path = 'frontend';
-                }
-            }else if(config('app.display_type') == 'rtl'){
-                $path = 'frontend-rtl';
-            }
-
-@endphp
-@extends($path.'.layouts.app'.config('theme_layout'))
+@extends('frontend.layouts.app')
 
 @section(Config::get('chatter.yields.head'))
     <link href="{{ url('/vendor/devdojo/chatter/assets/vendor/spectrum/spectrum.css') }}" rel="stylesheet">
@@ -276,7 +263,7 @@
             });
             $('#new_discussion_btn').click(function () {
                 @if(Auth::guest())
-                    window.location.href = "{{ route('frontend.auth.login') }}";
+                    window.location.href = "{{ route('login.index') }}";
                 @else
                 $('#new_discussion').slideDown();
                 $('#title').focus();

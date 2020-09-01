@@ -334,8 +334,9 @@
                                                                                                     @if($singleTimeline->model_id == $item->id)
                                                                                                         @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                             @php
-                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type',\App\Models\Lesson::class)->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
+                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type','!=','App\Models\Chapter')->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
                                                                                                             @endphp
+
                                                                                                             <li id="menu-item-{{$item->id}}"
                                                                                                                 data-type="{{$singleTimeline->model_type}}"
                                                                                                                 class="menu-item menu-item-depth-0  menu-item-page menu-item-edit-inactive pending"
@@ -396,7 +397,7 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}}</p>
+                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class) | Test @endif</p>
                                                                                                                                     </span>
                                                                                                                                 </span>
                                                                                                                                 </div>

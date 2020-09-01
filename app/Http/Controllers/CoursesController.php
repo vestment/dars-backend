@@ -148,7 +148,7 @@ class CoursesController extends Controller
                     ->where('model_type', Lesson::class)
                     ->orderby('sequence', 'asc')->first();
             }
-dd($continue_course->model);
+//dd($continue_course->model);
         }
         $mandatory_courses = [];
         $optional_courses = [];

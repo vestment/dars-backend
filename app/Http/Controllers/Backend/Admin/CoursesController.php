@@ -395,14 +395,14 @@ class CoursesController extends Controller
             $chapterContent = [];
             $timeline = [];
         }
-
+//dd($content);
         $videos = Media::where('type', 'upload')->where('model_id', null)->orWhere('model_id', $id)->pluck('file_name', 'id');
 
         if (count($videos) == 0) {
             $videos = ['' => 'No videos available'];
         }
 //        dd($videos);
-        return view('backend.courses.edit', compact('chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies'));
+        return view('backend.courses.edit', compact('chapterContent','content', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies'));
     }
 
     /**

@@ -14,7 +14,7 @@ class AddColumnTooTestTable extends Migration
     public function up()
     { Schema::table('tests', function (Blueprint $table) {
             
-        // $table->integer('available')->nullable()->default(1);
+         $table->integer('available')->nullable()->default(1);
        
        
      

@@ -17,11 +17,13 @@
     </script>
     <style>
         .main-menu-container.menu-bg-overlay {
-           background-color: #0C0C3F;
+            background-color: #0C0C3F;
         }
+
         .main-menu-container {
             background-color: #0C0C3F;
         }
+
         .test-form {
             color: #333333;
         }
@@ -187,9 +189,10 @@
 
             border-bottom: solid 1px #e4e4e4;
         }
-.fr-quick-insert{
-    display:none !important;
-}
+
+        .fr-quick-insert {
+            display: none !important;
+        }
     </style>
 @endpush
 @section('lesson-title')
@@ -229,80 +232,86 @@
                     @include('includes.partials.messages')
 
                     <div class="course-details-item border-bottom-0 mb-0">
-                       
+
 
                         @if ($lesson->available == 1)
                             @if ($test_exists)
-                        
+                                @if (count($prevTests) < 3)
+                                    <div class="course-single-text row">
 
-                                <div class="course-single-text row">
-
-                                    <div class="col-6">
-                                        <div class="course-title mt10 headline relative-position">
-                                            <h3>
-                                                <b>@lang('labels.frontend.course.test')
-                                                    : {{$lesson->title}}</b>
-                                            </h3>
+                                        <div class="col-6">
+                                            <div class="course-title mt10 headline relative-position">
+                                                <h3>
+                                                    <b>@lang('labels.frontend.course.test')
+                                                        : {{$lesson->title}}</b>
+                                                </h3>
+                                            </div>
+                                            <div class="course-details-content">
+                                                <p> {!! $lesson->full_text !!} </p>
+                                            </div>
                                         </div>
-                                        <div class="course-details-content">
-                                            <p> {!! $lesson->full_text !!} </p>
+                                        <div class="col-6">
+                                            <div id="countdown" class="timeTo timeTo-white"
+                                                 style="font-family: Verdana, sans-serif;">
+                                                <div class="first" style="">
+                                                    <ul style="left:3px; top:-30px">
+                                                        <li>0</li>
+                                                        <li>0</li>
+                                                    </ul>
+                                                </div>
+                                                <div style="">
+                                                    <ul style="left:3px; top:-30px">
+                                                        <li>0</li>
+                                                        <li>0</li>
+                                                    </ul>
+                                                </div>
+                                                <span>:</span>
+                                                <div class="first" style="">
+                                                    <ul style="left:3px; top:-30px">
+                                                        <li>0</li>
+                                                        <li>0</li>
+                                                    </ul>
+                                                </div>
+                                                <div style="">
+                                                    <ul style="left: 3px; top: -30px;" class="">
+                                                        <li>1</li>
+                                                        <li>1</li>
+                                                    </ul>
+                                                </div>
+                                                <span>:</span>
+                                                <div class="first" style="">
+                                                    <ul style="left: 3px; top: -30px;" class="">
+                                                        <li>2</li>
+                                                        <li>2</li>
+                                                    </ul>
+                                                </div>
+                                                <div style="">
+                                                    <ul style="left: 3px; top: 0px;" class="transition">
+                                                        <li>0</li>
+                                                        <li>1</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
-                                        <div id="countdown" class="timeTo timeTo-white"
-                                             style="font-family: Verdana, sans-serif;">
-                                            <div class="first" style="">
-                                                <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
-                                                <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
-                                            </div>
-                                            <span>:</span>
-                                            <div class="first" style="">
-                                                <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
-                                                <ul style="left: 3px; top: -30px;" class="">
-                                                    <li>1</li>
-                                                    <li>1</li>
-                                                </ul>
-                                            </div>
-                                            <span>:</span>
-                                            <div class="first" style="">
-                                                <ul style="left: 3px; top: -30px;" class="">
-                                                    <li>2</li>
-                                                    <li>2</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
-                                                <ul style="left: 3px; top: 0px;" class="transition">
-                                                    <li>0</li>
-                                                    <li>1</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                @else
+                                    <p>You already entered this test 3 times</p>
+                                @endif
 
                                 <hr/>
-                                @if (!is_null($test_result))
+                                @if ($latestTest && $latestTest->attempts >= 3)
                                     <div class="alert alert-info">@lang('labels.frontend.course.your_test_score')
-                                        : {{ $test_result->test_result }}</div>
-                                    @if(config('retest'))
-                                        <form action="{{route('lessons.retest',[$test_result->test->slug])}}"
+                                        @foreach($prevTests as $prevTest)
+                                            <p>Attempt {{$prevTest->attempts}} : {{ $prevTest->test_result }}</p>
+                                        @endforeach
+                                    </div>
+                                @endif
+                                @if ($latestTest && $latestTest->attempts < 3)
+                                    @if(!config('retest'))
+                                        <form action="{{route('lessons.retest',[$latestTest->test->slug])}}"
                                               method="post">
                                             @csrf
-                                            <input type="hidden" name="result_id" value="{{$test_result->id}}">
+                                            <input type="hidden" name="result_id" value="{{$latestTest->id}}">
                                             <button type="submit" class="btn gradient-bg font-weight-bold text-white"
                                                     href="">
                                                 @lang('labels.frontend.course.give_test_again')
@@ -312,18 +321,16 @@
 
                                     @if(count($lesson->questions) > 0  )
                                         <hr>
-
                                         @foreach ($lesson->questions as $question)
-
                                             <h4 class="mb-0">{{ $loop->iteration }}
-                                                . {!! $question->question !!}   @if(!$question->isAttempted($test_result->id))
+                                                . {!! $question->question !!}   @if(!$question->isAttempted($latestTest->id))
                                                     <small class="badge badge-danger"> @lang('labels.frontend.course.not_attempted')</small> @endif
                                             </h4>
                                             <br/>
                                             <ul class="options-list pl-4">
                                                 @foreach ($question->options as $option)
 
-                                                    <li class="@if(($option->answered($test_result->id) != null && $option->answered($test_result->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($test_result->id) != null && $option->answered($test_result->id) == 2) incorrect  @endif"> {{ $option->option_text }}
+                                                    <li class="@if(($option->answered($latestTest->id) != null && $option->answered($latestTest->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($latestTest->id) != null && $option->answered($latestTest->id) == 2) incorrect  @endif"> {{ $option->option_text }}
 
                                                         @if($option->correct == 1 && $option->explanation != null)
                                                             <p class="text-dark">
@@ -342,67 +349,68 @@
                                         <h3>@lang('labels.general.no_data_available')</h3>
 
                                     @endif
-                                @else
-                                    <div class="test-form">
-                                        @if(count($lesson->questions) > 0  )
-                                            <script>
-                                                var slug = '{{$lesson->slug}}';
-                                                var id = '{{$lesson->id}}';
-                                                var timeoutorg = parseInt('{{$lesson->timer*60}}');
-                                                var start = parseInt('{{$start_time}}');
+                                @endif
+                            @elseif  (count($prevTests) < 3)
+                                <div class="test-form">
+                                    @if(count($lesson->questions) > 0  )
+                                        <script>
+                                            var slug = '{{$lesson->slug}}';
+                                            var id = '{{$lesson->id}}';
+                                            var timeoutorg = parseInt('{{$lesson->timer*60}}');
+                                            var start = parseInt('{{$start_time}}');
+                                            var endtime = parseInt(start + timeoutorg);
+                                            var now = Date.now() / 1000;
+
+                                            var timecomp = (endtime - now);
+                                            setInterval(() => {
                                                 var endtime = parseInt(start + timeoutorg);
                                                 var now = Date.now() / 1000;
-
                                                 var timecomp = (endtime - now);
-                                                setInterval(() => {
-                                                    var endtime = parseInt(start + timeoutorg);
-                                                    var now = Date.now() / 1000;
-                                                    var timecomp = (endtime - now);
 
-                                                }, 1000);
+                                            }, 1000);
 
 
-                                            </script>
-                                            <form action="{{ route('lessons.test', [$lesson->slug]) }}" method="post">
-                                                {{ csrf_field() }}
-                                                @foreach ($lesson->questions as $question)
-                                                    <h4 class="mb-0">{{ $loop->iteration }}
-                                                        . {!! $question->question !!}  </h4>
-                                                    <br/>
-                                                    @foreach ($question->options as $option)
-                                                        <div class="radio">
-                                                            <label>
-                                                                <input type="radio"
-                                                                       name="questions[{{ $question->id }}]"
-                                                                       value="{{ $option->id }}"/>
-                                                                <span class="cr"><i
-                                                                            class="cr-icon fa fa-circle"></i></span>
-                                                                {{ $option->option_text }}<br/>
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
-                                                    <br/>
+                                        </script>
+                                        <form action="{{ route('lessons.test', [$lesson->slug]) }}"
+                                              method="post">
+                                            {{ csrf_field() }}
+                                            @foreach ($lesson->questions as $question)
+                                                <h4 class="mb-0">{{ $loop->iteration }}
+                                                    . {!! $question->question !!}  </h4>
+                                                <br/>
+                                                @foreach ($question->options as $option)
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio"
+                                                                   name="questions[{{ $question->id }}]"
+                                                                   value="{{ $option->id }}"/>
+                                                            <span class="cr"><i
+                                                                        class="cr-icon fa fa-circle"></i></span>
+                                                            {{ $option->option_text }}<br/>
+                                                        </label>
+                                                    </div>
                                                 @endforeach
-                                                <input class="btn gradient-bg text-white font-weight-bold" type="submit"
-                                                       value=" @lang('labels.frontend.course.submit_results') "/>
-                                            </form>
-                                        @else
-                                            <h3>@lang('labels.general.no_data_available')</h3>
+                                                <br/>
+                                            @endforeach
+                                            <input class="btn gradient-bg text-white font-weight-bold"
+                                                   type="submit"
+                                                   value=" @lang('labels.frontend.course.submit_results') "/>
+                                        </form>
+                                    @else
+                                        <h3>@lang('labels.general.no_data_available')</h3>
 
-                                        @endif
-                                    </div>
-                                @endif
-                            @else
-                                <h3>@lang('labels.general.no_data_available')</h3>
-
+                                    @endif
+                                </div>
                             @endif
-                            <hr/>
                         @else
+                            <h3>@lang('labels.general.no_data_available')</h3>
 
                         @endif
+                        <hr/>
 
                         @if($lesson->mediaPDF)
-                            <div class="course-single-text mb-5 course_frame" style="width: 95%; height: 650px;">
+                            <div class="course-single-text mb-5 course_frame"
+                                 style="width: 95%; height: 650px;">
                                 {{--<iframe src="{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}"  width="100%"--}}
                                 {{--height="100%" class="iframe_style">--}}
                                 {{--</iframe>--}}
@@ -416,16 +424,21 @@
                             <div class="course-single-text">
                                 @if($lesson->mediavideo != "")
                                     <div class="course-details-content mt-3">
-                                        <div class="video-container mb-5" data-id="{{$lesson->mediavideo->id}}">
+                                        <div class="video-container mb-5"
+                                             data-id="{{$lesson->mediavideo->id}}">
                                             @if($lesson->mediavideo->type == 'youtube')
-                                                <div id="player" class="js-player" data-plyr-provider="youtube"
+                                                <div id="player" class="js-player"
+                                                     data-plyr-provider="youtube"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
                                             @elseif($lesson->mediavideo->type == 'vimeo')
-                                                <div id="player" class="js-player" data-plyr-provider="vimeo"
+                                                <div id="player" class="js-player"
+                                                     data-plyr-provider="vimeo"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
                                             @elseif($lesson->mediavideo->type == 'upload')
-                                                <video poster="" id="player" class="js-player" playsinline controls>
-                                                    <source src="{{$lesson->mediavideo->url}}" type="video/mp4"/>
+                                                <video poster="" id="player" class="js-player" playsinline
+                                                       controls>
+                                                    <source src="{{$lesson->mediavideo->url}}"
+                                                            type="video/mp4"/>
                                                 </video>
                                             @elseif($lesson->mediavideo->type == 'embed')
                                                 {!! $lesson->mediavideo->url !!}
@@ -540,12 +553,14 @@
                                                             @if($item->model && $item->model->published == 1)
 
                                                                 {{--@php $key++; @endphp--}}
-                                                                <p class="subtitle2 test"
-                                                                   @if(in_array($item->model->id,$completed_lessons))role="button"
-                                                                   onclick="startTest(this)"
-                                                                   data-test-id="{{$item->model->id}}"
-                                                                   data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
-                                                                    <a id="test"> {{$item->model->title}}
+                                                                @if($item->model_type == 'App\Models\Lesson')
+                                                                    <p class="subtitle2 test"
+                                                                       @if(in_array($item->model->id,$completed_lessons))role="button"
+                                                                       onclick="startTest(this)"
+                                                                       data-test-id="{{$item->model->id}}"
+                                                                       data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
+                                                                        <a id="test"> {{$item->model->title}}
+                                                                @endif
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                     <p class="mb-0 text-primary test"
                                                                        onclick="startTest(this)"
@@ -555,12 +570,12 @@
                                                                 @endif
                                                                 @if(!in_array($item->model->id,$completed_lessons))
                                                                     <i class="fa float-right fa-lock"></i> @endif
-                                                                    </a> </p>
-
+                                                                    </p>
                                                                 @else
                                                                     <i class="fa text-success float-right fa-unlock"></i>
-                                                                @endif
-                                                                @endforeach
+                                                                    @endif
+                                                                    </a>
+                                                                    @endforeach
                                                     </div>
                                                 </div>
 
@@ -590,7 +605,7 @@
                 <textarea id='edit' name="contentText" style="margin-top: 30px;">
 
                     </textarea>
-                <button type="submit" class=" float-right btn btn-success my-5"> save </button>
+                <button type="submit" class=" float-right btn btn-success my-5"> save</button>
             </form>
         </div>
     </section>
@@ -622,34 +637,31 @@
     <link href="{{asset('froala_editor_3.2.1/css/froala_style.min.css')}}" rel="stylesheet">
 
     <script>
-           $(document).ready(function () {
+        $(document).ready(function () {
             new FroalaEditor("#edit", {
-        enter: FroalaEditor.ENTER_BR,
-        fileUpload: false,
-        fileInsertButtons: [],
-        imageUpload: false
-      },function () {
-  // Call the method inside the initialized event.
-  $('#insertFile-1').remove();
-  $('#insertFiles-1').remove();
+                enter: FroalaEditor.ENTER_BR,
+                fileUpload: false,
+                fileInsertButtons: [],
+                imageUpload: false
+            }, function () {
+                // Call the method inside the initialized event.
+                $('#insertFile-1').remove();
+                $('#insertFiles-1').remove();
 
-  $('#insertLink-1').remove();
-  $('#insertImage-1').remove();
-  $('#insertVideo-1').remove();
-  $('#getPDF-1').remove();
-  $('#print-1').remove();
-  $('#logo').remove();
-
-
+                $('#insertLink-1').remove();
+                $('#insertImage-1').remove();
+                $('#insertVideo-1').remove();
+                $('#getPDF-1').remove();
+                $('#print-1').remove();
+                $('#logo').remove();
 
 
+            })
 
-})
 
+        })
 
-           })
-
-  </script>
+    </script>
 
     <script>
         function startTest(element) {
@@ -846,7 +858,7 @@
                 Cookies.set("user_lesson_" + "{{auth()->user()->id}}" + "_" + "{{$lesson->id}}" + "_" + "{{$lesson->course->id}}", 'true');
                 Cookies.remove('duration');
 
-                @if ($test_exists && (is_null($test_result)))
+                @if ($test_exists && (is_null($latestTest)))
                 $('#nextButton').html("<a class='btn btn-block bg-danger font-weight-bold text-white' href='#'>@lang('labels.frontend.course.complete_test')</a>")
                 @else
                 @if($next_lesson)
