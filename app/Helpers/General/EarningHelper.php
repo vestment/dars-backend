@@ -25,7 +25,11 @@ class EarningHelper
             if($items->item_type == 'App\Models\Bundle'){
                 $coursesPrice = $items->item->courses->sum('price');
                 foreach ($items->item->courses as $courses) {
+                    if($coursesPrice != 0){
                     $commissionForTeacher = (($items->item->price/$coursesPrice) * config('commission_rate') * $courses->price)/100;
+                    }else{
+                        $commissionForTeacher =0;
+                    }
                     $teacherIds = $courses->teachers->pluck('id')->toArray();
                     if($teacherIds) {
                         foreach ($teacherIds as $teacherId) {

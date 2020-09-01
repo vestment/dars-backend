@@ -108,13 +108,7 @@
                                     {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 col-lg-6 form-group">
-                                    {!! Form::label('course_hours', trans('labels.backend.courses.course_hours'), ['class' => 'control-label']) !!}
-                                    {!! Form::text('course_hours', old('course_hours'), ['class' => 'form-control', 'placeholder' =>  trans('labels.backend.courses.course_hours')]) !!}
-                                </div>
 
-                            </div>
 
                             <div class="row">
 

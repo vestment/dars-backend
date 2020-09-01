@@ -185,6 +185,11 @@ return array(
                             'amount' => 'Amount',
                             'user_email' => 'User Email',
                             'date' => 'Order date',
+                            'fawry_status' => 'Fawry Status',
+                            'fawry_ref_no' => 'Fawry Ref No',
+                            'fawry_expirationTime' => 'Fawry EXP Time',
+                            'payment_type' => 'Payment Type',
+
                         ),
                     'complete' => 'Complete Manually',
                     'offline_requests' => 'Offline Requests',
@@ -628,6 +633,10 @@ return array(
                             'stripe' => 'Stripe Payment Method',
                             'stripe_note' => 'Enables payments in site with Debit / Credit Cards',
                             'paypal' => 'Paypal Payment Method',
+                            'fawry' => 'Fawry Payment Method',
+                            'accept' => 'Accept Payment Method',
+                             'merchant_code' => 'Merchant Code',
+                             'security_key'=>'Security Key',
                             'paypal_note' => 'Redirects to paypal for payment',
                             'offline_mode' => 'Offline Payment Method',
                             'offline_mode_note' => 'User gets assistance for offline payment via admin',
@@ -1481,6 +1490,7 @@ return array(
                     'stripe_error_message' => 'Please correct the errors and try again.',
                     'paypal' => 'PayPal',
                     'pay_securely_paypal' => 'Pay securely with PayPal',
+                    'pay_securely_fawry' => 'Pay securely with Fawry',
                     'offline_payment' => 'Offline Payment',
                     'offline_payment_note' => 'In this payment method our executives will contact you and give you instructions regarding payment and course purchase.',
                     'request_assistance' => 'Request Assistance',
@@ -1527,6 +1537,8 @@ return array(
                     'total_price' => 'Total Price',
                     'pay' => 'Pay',
                     'price' => 'price',
+                    'fawry' => 'Fawry',
+                    'accept' =>'Accept'
 
 
                 ),

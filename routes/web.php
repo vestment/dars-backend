@@ -115,6 +115,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('video/progress', 'LessonsController@videoProgress')->name('update.videos.progress');
     Route::post('lesson/progress', 'LessonsController@courseProgress')->name('update.course.progress');
     Route::post('lesson/note', 'LessonsController@saveNotes')->name('save.note');
+    Route::post('lesson/note/edit', 'LessonsController@editNotes')->name('editnote');
+    Route::post('lesson/note/update', 'LessonsController@updateNotes')->name('update.note');
+
+
 
     Route::post('ajax/request', 'LessonsController@availablityUpdate')->name('update.test.available');
     Route::post('ajax/request/time', 'LessonsController@startTimeUpdate')->name('update.test.start_time');
@@ -152,6 +156,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('cart/remove-coupon',['uses' => 'CartController@removeCoupon','as'=>'cart.removeCoupon']);
     Route::post('cart/stripe-payment', ['uses' => 'CartController@stripePayment', 'as' => 'cart.stripe.payment']);
     Route::post('cart/paypal-payment', ['uses' => 'CartController@paypalPayment', 'as' => 'cart.paypal.payment']);
+    Route::post('cart/fawry-payment', ['uses' => 'CartController@fawryPayment', 'as' => 'cart.fawry.payment']);
+    Route::post('cart/accept-payment', ['uses' => 'CartController@acceptPayment', 'as' => 'cart.accept.payment']);
+
     Route::get('cart/paypal-payment/status', ['uses' => 'CartController@getPaymentStatus'])->name('cart.paypal.status');
 
     Route::get('status', function () {

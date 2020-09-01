@@ -391,11 +391,8 @@ class LessonsController extends Controller
                             $oldMedia->delete();
                         }
                     }
-<<<<<<< HEAD
-                    $media = Media::findOrFail(intval($request->video));
-=======
+
                     $media = Media::findOrFail(intval($request->video_file));
->>>>>>> 06e0cf0b4e0bfcf341c04a8dffbbf1dd447734d8
                     $media->model_type = $model_type;
                     $media->model_id = $model_id;
                     $media->name = $name;
