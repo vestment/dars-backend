@@ -234,6 +234,7 @@ class CoursesController extends Controller
      */
     public function store(StoreCoursesRequest $request)
     {
+        
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
@@ -246,11 +247,14 @@ class CoursesController extends Controller
         }
        
         $seats = 0;
+        // dd($seats) ; 
+        if ($request->offlineData) {
         foreach (json_decode($request->offlineData) as $key=>$item) {
             $item  = json_decode(json_encode($item),true);
             $seats += $item['seats-'.$key]; 
         }
-        $course = Course::create($request->except('offlineData'));
+    }
+        $course = Course::create($request->except(['offlineData','duration']));
         $course->slug = $slug;
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
@@ -336,7 +340,7 @@ class CoursesController extends Controller
             return abort(401);
         }
 
-
+        
        
 
         $allAcademies = User::role('academy')->with('academy')->get();
@@ -360,11 +364,18 @@ class CoursesController extends Controller
 
         $course = Course::findOrFail($id);
 
-        $date = $course->date ? json_encode($course->date) : null;
-    
+        $date = $course->date ? json_decode($course->date , true ) : null;
+
+        $date = json_decode($date,true);
+        //dd($date) ; 
+        //dd(json_decode($date,true));
+
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
 
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
+
+        
+
         // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
         $prevLearned = [];
@@ -399,8 +410,11 @@ class CoursesController extends Controller
         if (count($videos) == 0) {
             $videos = ['' => 'No videos available'];
         }
+
+
+
 //        dd($videos);
-        return view('backend.courses.edit', compact('chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies'));
+        return view('backend.courses.edit', compact('chapterContent', 'date' , 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies'));
     }
 
     /**
@@ -490,6 +504,8 @@ class CoursesController extends Controller
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
         $course->learned = $request->learn ? json_encode($request->learn) : null;
+        //dd($request->offlineData);
+        $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
 
         if ($request->opt_courses && $request->mand_courses) {
             if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0 || count($request->learned) > 0) {
