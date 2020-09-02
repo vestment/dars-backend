@@ -29,7 +29,6 @@ class AddColumnOfflineCoursesToTableCourses extends Migration
     {
         Schema::table('courses', function (Blueprint $table) {
             $table->dropColumn('offline');
-
             $table->dropColumn('academy_id');
         });
     }

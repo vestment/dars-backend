@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('lesson/{slug}/retest', ['uses' => 'LessonsController@retest', 'as' => 'lessons.retest']);
     Route::post('video/progress', 'LessonsController@videoProgress')->name('update.videos.progress');
     Route::post('lesson/progress', 'LessonsController@courseProgress')->name('update.course.progress');
+    Route::get('lesson/notes', 'LessonsController@getNotes')->name('notes.index');
     Route::post('lesson/note', 'LessonsController@saveNotes')->name('save.note');
     Route::post('lesson/note/edit', 'LessonsController@editNotes')->name('editnote');
     Route::post('lesson/note/update', 'LessonsController@updateNotes')->name('update.note');

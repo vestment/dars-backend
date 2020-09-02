@@ -23,6 +23,7 @@ class LessonsController extends Controller
         $completed_lessons = "";
         $prevTests = NULL;
         $latestTest = NULL;
+        $next_lesson = NULL;
         $canEnterNextChapter = true;
         $canReTest = false;
         $questionsToAnswer = [];
@@ -43,8 +44,8 @@ class LessonsController extends Controller
                 $questionsToAnswer = $lesson->questions()->inRandomOrder()->limit($lesson->no_questoins)->get();
 
                 if ($latestTest && $latestTest->test_result < $lesson->min_grade) {
-                $canEnterNextChapter = false;
-                $canReTest = true;
+                    $canEnterNextChapter = false;
+                    $canReTest = true;
                 }
                 if ($latestTest && $latestTest->attempts < 3) {
                     $prevTestQuestions = $latestTest->answers()->pluck('question_id');
@@ -150,7 +151,6 @@ class LessonsController extends Controller
 
         }
     }
-
 
 
     public function submitTest($lesson_slug, Request $request)
@@ -299,13 +299,18 @@ class LessonsController extends Controller
     public function showNotes(Request $request)
     {
         $lesson = lesson::where('slug', $request->lesson_slug)->firstOrFail();
-
         $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
-
-
         return view('frontend.courses.lesson', compact('notes'));
+    }
 
-
+    public function getNotes(Request $request)
+    {
+        $lesson = lesson::where('slug', $request->lesson_slug)->firstOrFail();
+        $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
+        if ($notes) {
+            return response()->json(['notes' => $notes, 'status' => 'success'], 200);
+        }
+        return response()->json(['message' => 'no notes found', 'status' => 'not_found'], 200);
     }
 
     public function videoProgress(Request $request)

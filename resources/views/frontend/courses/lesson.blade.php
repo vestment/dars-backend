@@ -442,11 +442,8 @@
                                     <div class="course-details-content mt-3">
                                         <div class="video-container mb-5" data-id="{{$lesson->mediavideo->id}}">
                                             @if($lesson->mediavideo->type == 'youtube')
-
-
                                                 <div id="player" class="js-player" data-plyr-provider="youtube"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
-
                                             @elseif($lesson->mediavideo->type == 'vimeo')
                                                 <div id="player" class="js-player" data-plyr-provider="vimeo"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
@@ -485,17 +482,16 @@
                                     </div>
                                 </div>
                                 @if(count($notes) > 0)
-                                    <div class="container my-5">
+                                    <div class="container my-5 d-none">
                                         <h3 class="my-3 mx-4">Notes</h3>
                                         <div class="card shadow-c">
-
                                             <div class="container">
                                                 @foreach($notes as $note)
                                                     <div class="card shadow-c my-5 ">
                                                         <div class="card-body">
                                                             {{$note->contentText}}
                                                             <a class="float-right text-pink "
-                                                               onclick="editnote({{$note->id}})" data-toggle="modal"
+                                                               onclick="editNote({{$note->id}})" data-toggle="modal"
                                                                data-target="#edit-note-modal"><i
                                                                         class="far fa-edit"></i>
                                                             </a>
@@ -505,86 +501,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                @endif
 
-                                    <div class="modal fade" id="staticBackdrop_{{$lesson->id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Lesson Notes</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <?php
-                   $notesOfLeaaon = \App\Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
-
-      ?>
-      @foreach($notesOfLeaaon as $note)
-                                                    <div class="card shadow-c my-5 ">
-                                                        <div class="card-body">
-                                                            {{$note->contentText}}
-                                                            <a class="float-right text-pink "
-                                                               onclick="editnote({{$note->id}})" data-toggle="modal"
-                                                               data-target="#edit-note-modal"><i
-                                                                        class="far fa-edit"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-                            @endif
-                            <!-- Button trigger modal -->
-
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="edit-note-modal" tabindex="-1" role="dialog"
-                                     aria-labelledby="edit-note-modallLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content my-4">
-                                            <div class="modal-header m-3 " style="background: unset;">
-                                                <h5 class="modal-title" id="edit-note-modallLabel">edit note</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form action="{{route('update.note')}}" method="POST">
-                                                <div class="modal-body" id="note_content_body">
-
-                                                    <input type="hidden" name="note_id" id="note_id">
-                                                    @csrf
-                                                    <textarea id="edit-note" class='edit-froala' name="contentText"
-                                                              style="margin-top: 30px;">
-                                                </textarea>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close
-                                                    </button>
-                                                    <button type="submit" class="btn btn-primary">Save changes
-                                                    </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
                             </section>
                         @endif
-
-
-
 
 
                     </div>
@@ -628,11 +548,6 @@
                                     </div>
                                 @endif
                             @endif
-
-
-
-
-
                             @foreach($chapters as $chapter)
                                 <div class="row m-2 shadow">
                                     <div class="accordion" id="accordionExample">
@@ -664,33 +579,39 @@
                                                                                 @endif>
                                                                             {{$item->model->title}}
                                                                         </a>
-
-                                                                        @if($item->model->mediaPDF)
-
-
-                                                                    <a href="{{asset('storage/uploads/'.$item->model->mediaPDF->name)}}" target="_blank" data-toggle="tooltip" data-placement="top" title="Open PDF">
-                                                                    <i class="far fa-file-pdf ml-2"></i>
-                                                                    </a>
-                                                                    @endif
-
-
-                                                                        <i class="far fa-sticky-note ml-2" data-toggle="modal" data-target="#staticBackdrop_{{$item->model->id}}"></i>
-
-                                                                        @if(($item->model->downloadableMedia != "") && ($item->model->downloadableMedia->count() > 0))
-                                                                        @foreach($item->model->downloadableMedia as $media)
-                                                                       <a data-toggle="tooltip" data-placement="top" title="Download {{ $media->name }}" href="{{ route('download',['filename'=>$media->name,'lesson'=>$lesson->id]) }}"> <i class="fas fa-download ml-2"></i> </a>
-                                                                       @endforeach
-                                                                       @endif
-
-
-
-
-
-
-                                                            @if($item->model->mediaAudio)
-
-                                                                     <a id="audioPlayer" controls href="{{$item->model->mediaAudio->url}}" target="_blank" >   <i class="fas fa-volume-up "></i> </a>
-                                                                        @endif
+                                                                        <b class="float-right">
+                                                                            @if($item->model->mediaPDF)
+                                                                                <a href="{{asset('storage/uploads/'.$item->model->mediaPDF->name)}}"
+                                                                                   target="_blank" data-toggle="tooltip"
+                                                                                   data-placement="top"
+                                                                                   title="Open PDF">
+                                                                                    <i class="far fa-file-pdf ml-2"></i>
+                                                                                </a>
+                                                                            @endif
+                                                                            @if(count($notes) > 0)
+                                                                                <a href="#notesModal"
+                                                                                   onclick="getLessonNotes('{{$item->model->slug}}')"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#notesModal"><i
+                                                                                            class="far fa-sticky-note ml-2"></i></a>
+                                                                            @endif
+                                                                            @if(($item->model->downloadableMedia != "") && ($item->model->downloadableMedia->count() > 0))
+                                                                                @foreach($item->model->downloadableMedia as $media)
+                                                                                    <a data-toggle="tooltip"
+                                                                                       data-placement="top"
+                                                                                       title="Download {{ $media->name }}"
+                                                                                       href="{{ route('download',['filename'=>$media->name,'lesson'=>$lesson->id]) }}">
+                                                                                        <i class="fas fa-download ml-2"></i>
+                                                                                    </a>
+                                                                                @endforeach
+                                                                            @endif
+                                                                            @if($item->model->mediaAudio)
+                                                                                <a id="audioPlayer" controls
+                                                                                   href="{{$item->model->mediaAudio->url}}"
+                                                                                   target="_blank"> <i
+                                                                                            class="fas fa-volume-up "></i>
+                                                                                </a>
+                                                                            @endif
 
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
@@ -700,17 +621,17 @@
                                                                        data-test-id="{{$item->model->id}}"
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
                                                                         - @lang('labels.frontend.course.test')
-                                                                        On {{$item->model->title}}
-                                                                        @endif
-                                                                        @if(!in_array($item->model->id,$completed_lessons))
-                                                                            <i class="fa text-dark float-right fa-lock"></i>
-                                                                        @else
-                                                                            <i class="fa text-success float-right fa-unlock"></i>
-                                                                        @endif
-
-                                                                    </p>
+                                                                        On {{$item->model->title}} <b class="float-right">
                                                                 @endif
-                                                                @endforeach
+                                                                        @if(!in_array($item->model->id,$completed_lessons))
+                                                                            <i class="fa text-dark  fa-lock"></i>
+                                                                        @else
+                                                                            <i class="fa text-success fa-unlock"></i>
+                                                                        @endif
+                                                                        </b>
+                                                                    </p>
+                                                            @endif
+                                                        @endforeach
                                                     </div>
                                                 </div>
 
@@ -722,8 +643,6 @@
                                 </div>
 
                             @endforeach
-
-
                         </div>
 
                     </div>
@@ -731,10 +650,56 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="notesModal" tabindex="-2" aria-labelledby="notesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notesModalLabel">Lesson Notes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="notes-container">
 
+                </div>
 
+            </div>
+        </div>
+    </div>
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="edit-note-modal" tabindex="-1" role="dialog"
+         aria-labelledby="edit-note-modallLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content my-4">
+                <div class="modal-header m-3 " style="background: unset;">
+                    <h5 class="modal-title" id="edit-note-modallLabel">Edit note</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('update.note')}}" method="POST">
+                    <div class="modal-body" id="note_content_body">
 
+                        <input type="hidden" name="note_id" id="note_id">
+                        @csrf
+                        <textarea id="edit-note" class='edit-froala' name="contentText"
+                                  style="margin-top: 30px;">
+                                                </textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes
+                        </button>
 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- End of course details section
     ============================================= -->
 
@@ -794,13 +759,16 @@
 
 
         })
-
     </script>
-
-
-
     <script>
-        function editnote(id) {
+        $('#edit-note-modal').on('show.bs.modal', function (e) {
+            $('#notesModal').modal('hide');
+        })
+        $('#edit-note-modal').on('hidden.bs.modal', function (e) {
+            $('#notesModal').modal('show');
+        })
+
+        function editNote(id) {
             $.ajax({
                 url: "{{route('editnote')}}",
                 method: "POST",
@@ -812,12 +780,40 @@
                     $('#note_content_body .fr-element').html(result.contentText);
                     $('#note_content_body .fr-placeholder').hide();
                     $('#note_id').val(id);
-
-                    //   window.location.href = $(element).data('href');
                 }
             });
         }
 
+        function getLessonNotes(lessonSlug) {
+            $.ajax({
+                url: "{{route('notes.index')}}",
+                method: "get",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'lesson_slug': lessonSlug,
+                },
+                success: function (resp) {
+                    if (resp.status == 'success') {
+                        $('#notes-container').html('')
+                        $(resp.notes).each(function (key, note) {
+                            var cardElement = '<div class="card shadow-c my-5 ">\n' +
+                                '                            <div class="card-body">\n' +
+                                '                                ' + note.contentText + '\n' +
+                                '                                <a class="float-right text-pink "\n' +
+                                '                                   onclick=\"editNote(' + note.id + ')\" data-toggle="modal"\n' +
+                                '                                   data-target="#edit-note-modal"><i\n' +
+                                '                                            class="far fa-edit"></i>\n' +
+                                '                                </a>\n' +
+                                '                            </div>\n' +
+                                '                        </div>';
+                            $('#notes-container').append(cardElement)
+                        })
+
+                    }
+
+                }
+            });
+        }
 
     </script>
 
@@ -870,7 +866,7 @@
             }
         });
 
-        @endif
+                @endif
 
 
 
@@ -887,13 +883,13 @@
         }
 
 
-        @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
+                @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
         var current_progress = 0;
 
 
         @if($lesson->mediaVideo->getProgress(auth()->user()->id) != "")
             current_progress = "{{$lesson->mediaVideo->getProgress(auth()->user()->id)->progress}}";
-        @endif
+                @endif
 
 
 
