@@ -26,7 +26,7 @@ class AddColoumnSelectedDateAtTableCourses extends Migration
      */
     public function down()
     {
-        Schema::table('courses', function (Blueprint $table) {
+        Schema::table('order_items', function (Blueprint $table) {
             $table->dropColumn('selectedDate');
             $table->dropColumn('selectedTime');
         
