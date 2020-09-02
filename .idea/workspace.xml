@@ -9,12 +9,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="854c60c3-bb30-4f87-8675-8f4f95edef59" name="Default" comment="Last Changes">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Backend/Admin/CoursesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Backend/Admin/CoursesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/courses/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/courses/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/courses/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/courses/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/.ignore_locales" beforeDir="false" afterPath="$PROJECT_DIR$/storage/.ignore_locales" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_٢٦‏_٨‏_٢٠٢٠_١١_٠١_ص_[Default]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/faq.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/faq.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -318,6 +314,7 @@
       <workItem from="1598453884431" duration="234000" />
       <workItem from="1598517964512" duration="2755000" />
       <workItem from="1598966235484" duration="401000" />
+      <workItem from="1599051218429" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="Home Slider Width Fix">
       <created>1597313762323</created>

@@ -6,6 +6,8 @@ use App\Exceptions\GeneralException;
 use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Models\Auth\User;
 use App\Models\Course;
+use App\Models\TestsResult;
+use App\Models\Chapter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -202,6 +204,7 @@ class StudentsController extends Controller
         $purchased_courses = Course::whereHas('students', function ($query) use ($id) {
             $query->where('user_id', $id);
         })->get();
+        // dd($purchased_courses);
 
         return view('backend.students.show', compact('student', 'purchased_courses'));
     }
@@ -288,5 +291,20 @@ class StudentsController extends Controller
         $student = User::find(request('id'));
         $student->active = $student->active == 1 ? 0 : 1;
         $student->save();
+    }
+    public function getChapters(Request $request)
+    {
+        $chapters = Chapter::where('course_id',$request->id)->with('test')->get();
+        $content = [];
+        foreach ($chapters as $key => $value) {
+        $arrToPush =[];
+        $arrToPush['chapter'] = $value;
+        $arrToPush['chapter']['test'] = $value->test;
+        $testResults = TestsResult::where('test_id',$value->test->id)->whereIn('user_id',auth()->user()->students()->pluck('id'))->get();
+        $arrToPush['chapter']['test']['results'] = $testResults;
+        array_push($content,$arrToPush);
+        }
+       return $content;
+
     }
 }

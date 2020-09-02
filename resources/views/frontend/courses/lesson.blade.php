@@ -32,9 +32,9 @@
             width: 100%;
         }
 
-        .sidebar.is_stuck {
-            top: 15% !important;
-        }
+        /*.sidebar.is_stuck {*/
+        /*    top: 15% !important;*/
+        /*}*/
 
         .m-note {
             margin-top: 11%;
@@ -435,16 +435,6 @@
 
                         @endif
 
-                        @if($lesson->mediaPDF)
-                            <div class="course-single-text mb-5 course_frame" style="width: 95%; height: 650px;">
-                                {{--<iframe src="{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}"  width="100%"--}}
-                                {{--height="100%" class="iframe_style">--}}
-                                {{--</iframe>--}}
-                                <div id="myPDF"></div>
-
-                            </div>
-                        @endif
-
 
                         @if($lesson->mediaVideo && $lesson->mediavideo->count() > 0)
                             <div class="course-single-text mb-4">
@@ -515,6 +505,45 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="modal fade" id="staticBackdrop_{{$lesson->id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Lesson Notes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <?php
+                   $notesOfLeaaon = \App\Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
+
+      ?>
+      @foreach($notesOfLeaaon as $note)
+                                                    <div class="card shadow-c my-5 ">
+                                                        <div class="card-body">
+                                                            {{$note->contentText}}
+                                                            <a class="float-right text-pink "
+                                                               onclick="editnote({{$note->id}})" data-toggle="modal"
+                                                               data-target="#edit-note-modal"><i
+                                                                        class="far fa-edit"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
                             @endif
                             <!-- Button trigger modal -->
 
@@ -554,36 +583,10 @@
                             </section>
                         @endif
 
-                        @if($lesson->mediaAudio)
-                            <div class="course-single-text mb-5">
-                                <audio id="audioPlayer" controls>
-                                    <source src="{{$lesson->mediaAudio->url}}" type="audio/mp3"/>
-                                </audio>
-                            </div>
-                        @endif
 
 
-                        @if(($lesson->downloadableMedia != "") && ($lesson->downloadableMedia->count() > 0))
-                            <div class="course-single-text mt-4 px-3 py-1 gradient-bg text-white">
-                                <div class="course-title mt10 headline relative-position">
-                                    <h4 class="text-white">
-                                        @lang('labels.frontend.course.download_files')
-                                    </h4>
-                                </div>
 
-                                @foreach($lesson->downloadableMedia as $media)
-                                    <div class="course-details-content text-white">
-                                        <p class="form-group">
-                                            <a href="{{ route('download',['filename'=>$media->name,'lesson'=>$lesson->id]) }}"
-                                               class="text-white font-weight-bold"><i
-                                                        class="fa fa-download"></i> {{ $media->name }}
-                                                ({{ number_format((float)$media->size / 1024 , 2, '.', '')}} @lang('labels.frontend.course.mb')
-                                                )</a>
-                                        </p>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
+
                     </div>
 
                 </div>
@@ -661,12 +664,36 @@
                                                                                 @endif>
                                                                             {{$item->model->title}}
                                                                         </a>
-                                                                        @if(!in_array($item->model->id,$completed_lessons) && !$canEnterNextChapter)
-                                                                            <i class="fa text-dark float-right fa-lock"></i>
-                                                                        @else
-                                                                            <i class="fa text-success float-right fa-unlock"></i>
-                                                                        @endif</p>
-                                                                @elseif($item->model_type == 'App\Models\Test')
+
+                                                                        @if($item->model->mediaPDF)
+
+
+                                                                    <a href="{{asset('storage/uploads/'.$item->model->mediaPDF->name)}}" target="_blank" data-toggle="tooltip" data-placement="top" title="Open PDF">
+                                                                    <i class="far fa-file-pdf ml-2"></i>
+                                                                    </a>
+                                                                    @endif
+
+
+                                                                        <i class="far fa-sticky-note ml-2" data-toggle="modal" data-target="#staticBackdrop_{{$item->model->id}}"></i>
+
+                                                                        @if(($item->model->downloadableMedia != "") && ($item->model->downloadableMedia->count() > 0))
+                                                                        @foreach($item->model->downloadableMedia as $media)
+                                                                       <a data-toggle="tooltip" data-placement="top" title="Download {{ $media->name }}" href="{{ route('download',['filename'=>$media->name,'lesson'=>$lesson->id]) }}"> <i class="fas fa-download ml-2"></i> </a>
+                                                                       @endforeach
+                                                                       @endif
+
+
+
+
+
+
+                                                            @if($item->model->mediaAudio)
+
+                                                                     <a id="audioPlayer" controls href="{{$item->model->mediaAudio->url}}" target="_blank" >   <i class="fas fa-volume-up "></i> </a>
+                                                                        @endif
+
+                                                                @endif
+                                                                @if($item->model_type == 'App\Models\Test')
                                                                     <p class="mb-0 mt-1 text-primary test"
                                                                        style="cursor: pointer;"
                                                                        onclick="startTest(this)"
@@ -674,18 +701,16 @@
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
                                                                         - @lang('labels.frontend.course.test')
                                                                         On {{$item->model->title}}
-                                                                    @if(!in_array($item->model->id,$completed_lessons) && !$canEnterNextChapter)
-                                                                       <i class="fa text-dark float-right fa-lock"></i>
-                                                                    @else
-                                                                       <i class="fa text-success float-right fa-unlock"></i>
                                                                         @endif
-                                                                        </p>
+                                                                        @if(!in_array($item->model->id,$completed_lessons))
+                                                                            <i class="fa text-dark float-right fa-lock"></i>
+                                                                        @else
+                                                                            <i class="fa text-success float-right fa-unlock"></i>
+                                                                        @endif
+
+                                                                    </p>
                                                                 @endif
-
-
-
-                                                            @endif
-                                                        @endforeach
+                                                                @endforeach
                                                     </div>
                                                 </div>
 
@@ -849,17 +874,7 @@
 
 
 
-        @if($lesson->mediaPDF)
-        $(function () {
-            $("#myPDF").pdf({
-                source: "{{asset('storage/uploads/'.$lesson->mediaPDF->name)}}",
-                loadingHeight: 800,
-                loadingWidth: 800,
-                loadingHTML: ""
-            });
 
-        });
-        @endif
 
         var storedDuration = 0;
         var storedLesson;

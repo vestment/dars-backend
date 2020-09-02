@@ -77,7 +77,11 @@
    .titleofcard{
        font-weight: bolder;
    }
-   
+   .btn-pink{
+    background-color: var(--pink);
+    color: #fff;
+    border: none;
+   }
    .best-course-pic-text{
     width: 90% !important;
    }
@@ -194,6 +198,9 @@
         </div>
         <div class="card-body">
             <div class="col-12">
+                @if(count($purchased_courses) > 0)
+                    @foreach($purchased_courses as $item)
+
                     <div  class="row m-3">
                             @if(count($purchased_courses) > 0)
                                @foreach($purchased_courses as $item)
@@ -207,10 +214,9 @@
                                         <div class="card-body">
                                               <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
                                               <div class="row p-4">
-                                                    <button type="submit" class="btn btn-info btn-sm ml-1 sharebutton" data-toggle="modal"
-                                                    data-target="#shareModal"><i class="fa fa-share-alt"
-                                                                                 aria-hidden="true"></i>
-                                                @lang('labels.frontend.course.Share')
+                                                <button type="submit" class="btn-pin"  onclick="courseChapters({{$item->id}})" data-toggle="modal"
+                                                    data-target="#shareModal"><i class="fas fa-graduation-cap d-block"></i>
+                                                @lang('labels.backend.dashboard.grades')
                                             </button>
                                               </div>
                                            <div class="row m-1">
@@ -292,13 +298,46 @@
     
                 <!-- Modal content-->
                 <div class="modal-content">
-                    <div class="mo-head">
-                       
+                    <div class="modal-header">
+                       <h4>Chapters</h4>
                     </div>
                     <div class="modal-body">
-                       
+                       <table>
+                           <thead>
+                               <th>Chapter</th>
+                               <th>Test</th>
+                               <th>Results</th>
+                           </thead>
+                           <tbody id="chaptersTable">
+
+                           </tbody>
+                       </table>
                     </div>
                 </div>
             </div>
         </div>
 @stop
+<script>
+         function courseChapters(id) {
+            $.ajax({
+                url: "{{route('admin.students.get_chapters')}}",
+                method: "get",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id,
+                },
+                success: function (result) {
+                    $('#chaptersTable').html('');
+                 $(result).each(function (key,value){
+
+                    var resultsTD = '';
+                     $(value.chapter.test.results).each(function(key,value){
+                        resultsTD = resultsTD.concat('<p>Attempt ( '+value.attempts+' ) : '+value.test_result+'</p>');
+                     })
+                     var trElem = '<tr><td>'+value.chapter.title+'</td><td>'+value.chapter.test.title+'</td><td>'+resultsTD+'</td></tr>'
+                     $('#chaptersTable').append(trElem)
+                 })
+                }
+            });
+        }
+</script>

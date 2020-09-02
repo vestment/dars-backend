@@ -412,6 +412,7 @@
                                                                                                                         @php
                                                                                                                                 $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
                                                                                                                         @endphp
+                                                                                                                        @if($lessonData)
                                                                                                                         <li id="menu-item-{{$lesson->model_id}}"
                                                                                                                             data-type="{{$lesson->model_type}}"
                                                                                                                             class="menu-item  menu-item-depth-1  menu-item-page menu-item-edit-inactive pending"
@@ -428,6 +429,7 @@
                                                                                                                                 </div>
                                                                                                                             </dl>
                                                                                                                         </li>
+                                                                                                                    @endif
                                                                                                                     @endif
                                                                                                                     @endforeach
                                                                                                                 </ul>

@@ -97,7 +97,7 @@
             @endforeach
         </div>
         <div class="row">
-            <div class="col-xl-10 col-9">
+            <div class="col-xl-9 col-9 p-0 pl-2">
                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
                     <button type="submit"
                             class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart')
@@ -151,7 +151,7 @@
                     @endif
                 @endif
             </div>
-            <div class="">
+            <div class="col-2 p-0 pl-2">
                 <a href="{{ route('courses.show', [$course->slug]) }}"
                    class="btn btnWishList">
                     <i class="far fa-bookmark"></i>
