@@ -41,10 +41,12 @@ class LessonsController extends Controller
                     ->orderBy('created_at', 'asc')
                     ->get();
                 $questionsToAnswer = $lesson->questions()->inRandomOrder()->limit($lesson->no_questoins)->get();
+              
                 if ($latestTest->test_result < $lesson->min_grade) {
                 $canEnterNextChapter = false;
                 $canReTest = true;
                 }
+            
                 if ($latestTest && $latestTest->attempts < 3) {
                     $prevTestQuestions = $latestTest->answers()->pluck('question_id');
                     // Student enter the test for the first time
@@ -136,6 +138,8 @@ class LessonsController extends Controller
 
         }
     }
+
+   
 
     public function submitTest($lesson_slug, Request $request)
     {
