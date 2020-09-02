@@ -107,6 +107,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // dd($data);
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -122,11 +123,15 @@ class RegisterController extends Controller
                 $user->state = isset($data['state']) ? $data['state'] : NULL;
                 $user->country = isset($data['country']) ? $data['country'] : NULL;
                 $user->save();
-
+// dd($data);
         $userForRole = User::find($user->id);
         $userForRole->confirmed = 1;
         $userForRole->save();
+if($data['parentRole']==0){
         $userForRole->assignRole('student');
+}else{
+    $userForRole->assignRole('parent');
+}
         return $user;
     }
     
