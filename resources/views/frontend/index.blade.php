@@ -155,10 +155,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="course-meta my-1 vv">
+                                                        <div class="course-meta my-3 vv">
 
-                                                            <span class="course-author"><a href="#">{{ $course->students()->count() }}
-                                                                    @lang('labels.frontend.course.students')</a></span>
+                                                            <span class="course-author"><a href="#">{{ $course->count() }}
+                                                                    @lang('labels.frontend.course.courses')</a></span>
 
                                                         </div>
                                                         <div class="row">

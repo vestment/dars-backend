@@ -70,7 +70,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="teacher-img text-center">
-                                        <img class="teacher-image p-3" src="{{$teacher->picture}}" alt="">
+                                        <img class=" p-3" src="{{$teacher->picture}}" alt="">
                                     </div>
                                 </div>
                                 <div class="col-md-8 pt-5 pl-5">

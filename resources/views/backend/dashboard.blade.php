@@ -93,7 +93,7 @@
    <div class="col">
       <div class="card">
          <div class="card-header">
-            <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}!</h1>
+            <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}! {{auth()->user()->id}}</h1>
          </div>
          <!--card-header-->
          <div class="card-body">
@@ -173,12 +173,8 @@
                      </div>
                     </a>
                         <div class="card-body">
-                            <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
-                            <div class="row p-4">
-                                <i class="far fa-user"></i> &nbsp &nbsp<span class="course-author float-right"> {{ $item->students()->count() }}
-                                @lang('labels.backend.dashboard.students')
-                                </span>
-                            </div>
+                            <h3 class="card-title titleofcard mb-5">{{$item->getDataFromColumn('title')}}</h3>
+                            
                             <div class="row m-1">
                                 <div class="col-3 p-0 pl-1  ">
                                 {{ $item->progress()}} %
