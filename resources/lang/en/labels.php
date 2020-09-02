@@ -1077,7 +1077,7 @@ return array(
                     'trending' => 'Trending',
                     'teachers' => 'Teachers',
                     'academies' => 'Academies',
-
+                    'grades'=>'Grades',
                     'completed' => 'Completed',
                     'no_data' => 'No data available',
                     'buy_course_now' => 'Buy course now',

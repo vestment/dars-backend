@@ -849,8 +849,8 @@
                             <h5 class="modal-title m-4">first select Available day</h5>
 
                             <select class="form-control form-control ml-4" id="datesToSelect">
-
-                            </select>
+                                <option value="m">select date</option>
+                           </select>
 
 
                         </div>
@@ -922,7 +922,7 @@
 
         }
 
-        $(document).ready(function () {
+        $(window).load(function () {
             var OfflineDates = JSON.parse('{!!$course_date!!}');
             var dates = [];
 
