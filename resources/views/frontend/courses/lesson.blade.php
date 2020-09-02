@@ -319,7 +319,7 @@
                                         @endforeach
                                     </div>
                                     @if(config('retest') && $canReTest)
-                                        @if(session()->get('test_attempts')  < 3 || $latestTest->attempts <3)
+                                        @if( $latestTest->attempts <3)
                                             @if (!session()->get('reTest'))
                                                 <form action="{{route('lessons.retest',[$latestTest->test->slug])}}"
                                                       method="post">
@@ -333,7 +333,7 @@
                                                 </form>
                                             @endif
                                         @else
-                                            <div class="alert alert-danger">You already repeated this test 3 times</div>
+                                            <div class="alert alert-danger">You already attended this test 3 times</div>
                                         @endif
                                     @endif
 
@@ -649,32 +649,23 @@
                                                 <div class="card-body">
                                                     <div class="bordered" id="start_test">
                                                         @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
-
                                                             @if($item->model && $item->model->published == 1)
-
                                                                 @if($item->model_type == 'App\Models\Lesson')
                                                                     <p class="mb-0 subtitle2 test"><a
-                                                                       @if(in_array($item->model->id,$completed_lessons))
-                                                                       data-test-id="{{$item->model->id}}"
-                                                                       href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
-                                                                            @endif>
-                                                                        {{$item->model->title}}
-                                                                    </a>
-
-
-                                                                    <i class="fas fa-download ml-2" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></i>
-                                                                    <i class="fas fa-volume-up ml-2"></i>
-                                                                    <i class="far fa-sticky-note ml-2"></i>
-                                                                    <i class="far fa-file-pdf ml-2"></i>
-                                                                    </p>
-                                                                    
-
+                                                                                @if(in_array($item->model->id,$completed_lessons))
+                                                                                data-test-id="{{$item->model->id}}"
+                                                                                data-passed="{{$canEnterNextChapter}}"
+                                                                                href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
+                                                                                @endif>
+                                                                            {{$item->model->title}}
+                                                                        </a>
 
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                     <p class="mb-0 mt-1 text-primary test"
                                                                        style="cursor: pointer;"
                                                                        onclick="startTest(this)"
+                                                                       data-passed="{{$canEnterNextChapter}}"
                                                                        data-test-id="{{$item->model->id}}"
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
                                                                         - @lang('labels.frontend.course.test')
