@@ -129,14 +129,14 @@
                             </div>
                         </div>
                         
-                        <input type="hidden" value="0" id="parent-role">
+                        <input type="hidden" value="0" name="parentRole" id="parent-role">
 
 
                     <div class="row justify-content-center">
                             <button type="submit"
                                     class="btn btn-primary btn-lg text-white col-5 mt-5 ">@lang('labels.frontend.sign_up.sign_up')</button>
-                            <button type="submit"
-                                    class="btn btn-primary text-white col-5 ml-3 mt-5"> @lang('labels.frontend.login.register_as_parent')</button>
+                            <button type="submit" id="parent_value"
+                                    class="btn btn-primary text-white col-5 ml-3 mt-5"  > @lang('labels.frontend.login.register_as_parent')</button>
                     </div>
 
 
@@ -158,9 +158,15 @@
         </div>
     </div>
 </div>
-
+<script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
+<script src="{{asset('assets/js/popper.min.js')}}"></script>
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 <script>
-
+$(document).ready(function(){
+  $("#parent_value").click(function(){
+    $("#parent-role").val(1);
+  });
+});
 </script>
 </body>
 </html>    

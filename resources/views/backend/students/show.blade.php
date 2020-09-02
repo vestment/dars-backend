@@ -2,10 +2,97 @@
 
 @section('title', __('labels.backend.students.title').' | '.app_name())
 @push('after-styles')
+<link rel="stylesheet" href="../../assets/css/course.css"/>
+<link rel="stylesheet" href="../../assets/css/frontend.css"/>
     <style>
         table th {
             width: 20%;
         }
+        .progresss {
+   background-color: #b6b9bb;
+   height: 3px;
+   font-weight: bold;
+   font-size: 0.8rem;
+   padding : 0px !important;
+   }
+   .progress-bar{
+   height: 4px !important;
+   background-color:  #D2498B;
+   }
+
+   .best-course-pic-text:before {
+    background-image: url(../../images/MIX-SLP8.svg);
+    background-position: center;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    content: ' ';
+    position: absolute;
+    top: 10%;
+    z-index: -1;
+    transform: scale(2);
+    height: 100%;
+    opacity: 0.05;
+    overflow: hidden;
+    width: 100%;
+}
+.best-course-pic-text {
+    padding-top: 0;
+    position:relative;
+    margin-bottom: 10%;
+    box-shadow: 0px 1px 5px #9ea3a9;
+    transition: 0.3s ease;
+}
+.best-course-pic-text {
+    border-radius: 4px;
+    padding-top: 30px;
+    overflow: hidden !important;
+}
+.best-course-pic-text:hover {
+    box-shadow: 0px 10px 15px #9ea3a9;
+    transform: scale(1.015);
+}
+   .pink{
+   color:var(--pink);
+   }
+   .bg-pink{
+   background-color:var(--pink);
+   }
+   .round{
+   }
+   .icon{
+   font-size:43px;
+   }
+   .trend-badge-2 {
+   top: -10px;
+   left: -52px;
+   color: #fff;
+   font-size: 12px;
+   font-weight: 700;
+   position: absolute;
+   padding: 40px 40px 12px;
+   -webkit-transform: rotate(-45deg);
+   transform: rotate(-45deg);
+   background-color: #ff5a00;
+   }
+   .titleofcard{
+       font-weight: bolder;
+   }
+   
+   .best-course-pic-text{
+    width: 90% !important;
+   }
+   .progress-bar{
+   height: 4px !important;
+   background-color:  #D2498B;
+   }
+   .best-course-pic {
+   background-color: #333333;
+   background-position: center;
+   background-size: cover;
+   height: 150px;
+   width: 100%;
+   background-repeat: no-repeat;
+   }
     </style>
 @endpush
 @section('content')
@@ -110,71 +197,94 @@
                 @if(count($purchased_courses) > 0)
                     @foreach($purchased_courses as $item)
 
-                        <div class="col-md-3">
-                            <div class="best-course-pic-text position-relative border">
-                                <div class="best-course-pic position-relative overflow-hidden"
-                                     @if($item->course_image != "") style="background-image: url({{asset('storage/uploads/'.$item->course_image)}})" @endif>
-
-                                    @if($item->trending == 1)
-                                        <div class="trend-badge-2 text-center text-uppercase">
-                                            <i class="fas fa-bolt"></i>
-                                            <span>@lang('labels.backend.dashboard.trending') </span>
+                    <div  class="row m-3">
+                            @if(count($purchased_courses) > 0)
+                               @foreach($purchased_courses as $item)
+                                  <div class="col-md-3">
+                                     <div class="best-course-pic-text relative-position p-0" data-ref="partials">
+                                        <a href="{{ route('courses.show', [$item->slug]) }}">
+                                           <div class="best-course-pic piclip relative-position"
+                                                 @if($item->image != "") style="background-image: url('{{$item->image}}')" @endif>
+                                           </div>
+                                        </a>
+                                        <div class="card-body">
+                                              <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
+                                              <div class="row p-4">
+                                                    <button type="submit" class="btn btn-info btn-sm ml-1 sharebutton" data-toggle="modal"
+                                                    data-target="#shareModal"><i class="fa fa-share-alt"
+                                                                                 aria-hidden="true"></i>
+                                                @lang('labels.frontend.course.Share')
+                                            </button>
+                                              </div>
+                                           <div class="row m-1">
+                                                 <div class="col-3 p-0 pl-1  ">
+                                                 {{ $item->progress()}} %
+                                                 </div>
+                                                 <div class="progresss  mt-2 col-9">
+                                                 <div class="progress-bar"
+                                                    style="width:{{$item->progress() }}%">
+                                                 </div>
+                                                 </div>     
+                                           </div>
                                         </div>
-                                    @endif
-
-                                    <div class="course-rate ul-li">
-                                        <ul>
-                                            @for($i=1; $i<=(int)$item->rating; $i++)
-                                                <li><i class="fas fa-star"></i></li>
-                                            @endfor
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="best-course-text d-inline-block w-100 p-2">
-                                    <div class="course-title mb20 headline relative-position">
-                                        <h5>
-                                            <a href="{{ route('courses.show', [$item->slug]) }}">{{$item->title}}</a>
+                                     </div>
+                                  </div>
+                               @endforeach
+                            @else
+                               <div class="col-12 text-center">
+                                  <h4 class="text-center">@lang('labels.backend.dashboard.no_data')</h4>
+                                  <a class="btn btn-primary"
+                                     href="{{route('courses.all')}}">@lang('labels.backend.dashboard.buy_course_now')
+                                  <i class="fa fa-arrow-right"></i></a>
+                               </div>
+                            @endif
+                            {{-- @if(count($purchased_bundles) > 0)
+                               <div class="col-12 mt-5">
+                                  <h4>@lang('labels.backend.dashboard.my_course_bundles')</h4>
+                               </div>
+                               @foreach($purchased_bundles as $key=>$bundle)
+                                  @php $key++ @endphp
+                                     <div class="col-12">
+                                        <h5><a
+                                           href="{{route('bundles.show',['slug'=>$bundle->slug ])}}">
+                                           {{$key.'. '.$bundle->title}}</a>
                                         </h5>
-                                    </div>
-                                    <div class="course-meta d-inline-block w-100 ">
-                                        <div class="d-inline-block w-100 0 mt-2">
-                                                     <span class="course-category float-left">
-                                                <a href="{{route('courses.category',['category'=>$item->category->slug])}}"
-                                                   class="bg-success text-decoration-none px-2 p-1">{{$item->category->name}}</a>
-                                            </span>
-                                            <span class="course-author float-right">
-                                                 {{ $item->students()->count() }}
-                                                @lang('labels.backend.dashboard.students')
-                                            </span>
-                                        </div>
-
-                                        <div class="progress my-2">
-                                            <div class="progress-bar text-light"
-                                                 style="width:{{$item->progress() }}%">
-                                                @lang('labels.backend.dashboard.completed')
-                                                {{ $item->progress()  }} %
-                                            </div>
-                                        </div>
-                                        @if($item->progress() == 100)
-                                            @if(!$item->isUserCertified())
-                                                <form method="post"
-                                                      action="{{route('admin.certificates.generate')}}">
-                                                    @csrf
-                                                    <input type="hidden" value="{{$item->id}}"
-                                                           name="course_id">
-                                                    <button class="btn btn-success btn-block text-white mb-3 text-uppercase font-weight-bold"
-                                                            id="finish">@lang('labels.frontend.course.finish_course')</button>
-                                                </form>
-                                            @else
-                                                <div class="alert alert-success px-1 text-center mb-0">
-                                                    @lang('labels.frontend.course.certified')
-                                                </div>
-                                            @endif
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                     </div>
+                                     @if(count($bundle->courses) > 0)
+                                        @foreach($bundle->courses as $item)
+                                           <div class="col-md-3 mb-5">
+                                              <div class="best-course-pic-text relative-position p-0" data-ref="partials">
+                                                 <a href="{{ route('courses.show', [$item->slug]) }}">
+                                                    <div class="best-course-pic piclip relative-position"
+                                                       @if($item->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$item->course_image)}}')" @endif>
+                                                    </div>
+                                                 </a>
+                                                 <div class="card-body">
+                                                    <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
+                                                    <div class="row p-4">
+                                                         <i class="far fa-user"></i> &nbsp &nbsp<span class="course-author float-right"> {{ $item->students()->count() }}
+                                                         @lang('labels.backend.dashboard.students')
+                                                         </span>
+                                                    </div>
+                                                    <div class="row m-1">
+                                                       <div class="col-3 p-0 pl-1  ">
+                                                       {{ $item->progress()}} %
+                                                       </div>
+                                                       <div class="progress  mt-2 col-9">
+                                                       <div class="progress-bar"
+                                                          style="width:{{$item->progress() }}%">
+                                                       </div>
+                                                       </div>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        @endforeach
+                                     @endif
+                               @endforeach
+                          
+                            @endif --}}
+                         </div>   
                     @endforeach
                 @else
                     <div class="col-12 text-center">
@@ -187,4 +297,20 @@
             </div>
         </div>
     </div>
+     <!-- Modal -->
+     <div class="modal fade" id="shareModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+    
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="mo-head">
+                       
+                    </div>
+                    <div class="modal-body">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
 @stop
+  
