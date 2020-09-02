@@ -18,7 +18,6 @@
         width: 100%;
         
     }
-
     
 }
         .my-alert {
@@ -110,7 +109,7 @@
                     <div class="row bg-grd package p-5">
                         <div class="col-lg-4 pic-hd ">
                             <div class=" position-relative p-re">
-                                <div class="position-absolute p-ab ">
+                                <div class="p-ab ">
                                     <div>
                                         <div class="text-white tex">
                                             <h3 class="pb-4">@lang('labels.frontend.layouts.partials.Bundle Course')</h3>
@@ -278,12 +277,12 @@
                     <div class="cont text-white pl-5 pb-5">
                         <h1>@lang('labels.frontend.layouts.partials.Offline Booking Center').</h1>
                         <p class="">@lang('labels.frontend.layouts.partials.Offline Booking')</p>
-                        <div class="pl-5 pb-5">
+                         <div class="pl-5 pb-5">
                     
-                    <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
-                    @lang('labels.frontend.layouts.partials.view_offline_courses')
-                    </a>
-            </div>
+                            <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
+                            @lang('labels.frontend.layouts.partials.view_offline_courses')
+                            </a>
+                    </div>
                     </div>
                    
                 </div>

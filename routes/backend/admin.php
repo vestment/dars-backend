@@ -24,6 +24,10 @@ Route::group(['middleware' => 'role:teacher|administrator|academy|parent'], func
     Route::delete('orders_perma_del/{id}', ['uses' => 'Admin\OrderController@perma_del', 'as' => 'orders.perma_del']);
 });
 Route::group(['middleware' => 'role:academy|administrator'], function () {
+    //====== Coupon Routes =====//
+    Route::resource('coupons', 'CouponController');
+    Route::get('coupons/status/{id}', 'CouponController@status')->name('coupons.status', 'id');
+    Route::post('coupons/status', 'CouponController@updateStatus')->name('coupons.status');
     Route::resource('teachers', 'Admin\TeachersController');
     Route::get('teachers/{id}', 'Admin\TeachersController@getacademyTeachers');
     Route::get('get-teachers-data', ['uses' => 'Admin\TeachersController@getData', 'as' => 'teachers.get_data']);
@@ -111,10 +115,7 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
     Route::post('tax/status', 'TaxController@updateStatus')->name('tax.status');
 
 
-    //====== Coupon Routes =====//
-    Route::resource('coupons', 'CouponController');
-    Route::get('coupons/status/{id}', 'CouponController@status')->name('coupons.status', 'id');
-    Route::post('coupons/status', 'CouponController@updateStatus')->name('coupons.status');
+    
 
 
     //==== Remove Locale FIle ====//
@@ -344,6 +345,7 @@ Route::post('reasons/status', ['uses' => 'Admin\ReasonController@updateStatus', 
 // ========= Student Routes ========== //
 Route::resource('students', 'Admin\StudentsController');
 Route::get('get-students-data', ['uses' => 'Admin\StudentsController@getData', 'as' => 'students.get_data']);
+Route::get('get-chapter-data', ['uses' => 'Admin\StudentsController@getChapters', 'as' => 'students.get_chapters']);
 Route::post('students_mass_destroy', ['uses' => 'Admin\StudentsController@massDestroy', 'as' => 'students.mass_destroy']);
 Route::post('students_restore/{id}', ['uses' => 'Admin\StudentsController@restore', 'as' => 'students.restore']);
 Route::delete('students_perma_del/{id}', ['uses' => 'Admin\StudentsController@perma_del', 'as' => 'students.perma_del']);
