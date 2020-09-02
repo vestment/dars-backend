@@ -9,9 +9,6 @@
     <link href="{{asset('froala_editor_3.2.1/css/froala_editor.pkgd.min.css')}}" rel="stylesheet">
     <link href="{{asset('froala_editor_3.2.1/css/plugins.pkgd.min.css')}}" rel="stylesheet">
 
-
-
-
     <script>
         var lang = '{{app()->getLocale()}}';
     </script>
@@ -32,9 +29,9 @@
             width: 100%;
         }
 
-        .sidebar.is_stuck {
+        /* .sidebar.is_stuck {
             top: 15% !important;
-        }
+        } */
 
         .m-note {
             margin-top: 11%;
@@ -653,7 +650,16 @@
                                                                             @endif>
                                                                         {{$item->model->title}}
                                                                     </a>
+
+
+                                                                    <i class="fas fa-download ml-2" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></i>
+                                                                    <i class="fas fa-volume-up ml-2"></i>
+                                                                    <i class="far fa-sticky-note ml-2"></i>
+                                                                    <i class="far fa-file-pdf ml-2"></i>
                                                                     </p>
+                                                                    
+
+
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                     <p class="mb-0 mt-1 text-primary test"
