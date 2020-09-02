@@ -67,6 +67,10 @@ body {
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
 }
+.mean-nav img{
+    width: 12% !important;
+
+}
 
 .ul-li ul {
     margin: 0;
@@ -6620,6 +6624,12 @@ ul.product-tab li.active:after {
     }
 }
 
+
+.titleofcard{
+    font-size: 1.5VW;
+}
+
+
 @media (max-width: 768px) {
     .divfixed {
         display: none;
@@ -7360,7 +7370,7 @@ hr {
     border-right: 1px solid #cecece;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1420px) {
     .hero-section .nav .nav-item:not(.nav-title) {
         flex: 0 0 50%;
         min-width: 50%;

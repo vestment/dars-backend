@@ -1358,6 +1358,10 @@ button.alt-menu-btn.float-left {
     color: #fff;
     font-weight: 100;
 }
+.mean-nav img{
+    width: 12% !important;
+
+}
 
 @media screen and (max-width: 768px) {
     .slider-text .section-title {
@@ -1720,7 +1724,7 @@ button.alt-menu-btn.float-left {
 .counter-number p {
     font-size: 14px;
     font-weight: 700;
-    font-color: #989898;
+    color: #989898;
 }
 
 .counter-number .counter-count,
@@ -2958,7 +2962,7 @@ button.alt-menu-btn.float-left {
 }
 
 ul.product-tab li {
-    direction: none;
+    direction: unset;
     display: inline;
 }
 
@@ -7247,7 +7251,7 @@ hr {
     border-right: 1px solid #cecece;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1420px) {
     .hero-section .nav .nav-item:not(.nav-title) {
         flex: 0 0 50%;
         min-width: 50%;

@@ -122,6 +122,7 @@ return array(
                             'published' => 'Published',
                             'questions' => 'Questions',
                             'no_questions' => 'Number of Questions',
+                            'min_grade' => 'Min Grade to pass',
 
                         ),
                     'create' => 'Create Test',
@@ -349,7 +350,7 @@ return array(
                         array(
                             'content' => 'Content',
                             'course' => 'Course',
-                            'test_timer' => 'Test Time by munites',
+                            'test_timer' => 'Test Time by minutes',
 
 
                             'slug' => 'Slug',

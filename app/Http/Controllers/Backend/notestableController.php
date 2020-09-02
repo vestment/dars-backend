@@ -74,12 +74,12 @@ class notestableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $notes = Note::where('id',$id)->first();
-        $notes->contentText = $request->contentText;
-        $notes->save();
-        return redirect()->back();
-
-
+        $note = Note::where('id',$id)->first();
+        $note->contentText = $request->contentText;
+        $note->save();
+        $notes = Note::where('user_id',auth()->user()->id)->with('lesson')->get();
+       
+        return view('backend.notestable', compact('notes'));
        
     }
 

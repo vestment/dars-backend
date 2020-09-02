@@ -356,8 +356,9 @@
                                                                                                     @if($singleTimeline->model_id == $item->id)
                                                                                                         @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                             @php
-                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type',\App\Models\Lesson::class)->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
+                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type','!=','App\Models\Chapter')->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
                                                                                                             @endphp
+
                                                                                                             <li id="menu-item-{{$item->id}}"
                                                                                                                 data-type="{{$singleTimeline->model_type}}"
                                                                                                                 class="menu-item menu-item-depth-0  menu-item-page menu-item-edit-inactive pending"
@@ -405,11 +406,14 @@
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                <ul class="menu-item-transport sort_seq">
+                                                                                                                <ul class="menu-item-transport sort_seq"
+                                                                                                                    data-sadf="{{$lessons[0]->model_id}}">
                                                                                                                     @foreach($lessons as $lesson)
+                                                                                                                        @if ($lesson->model_type == \App\Models\Lesson::class)
                                                                                                                         @php
-                                                                                                                            $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
+                                                                                                                                $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
                                                                                                                         @endphp
+                                                                                                                        @if($lessonData)
                                                                                                                         <li id="menu-item-{{$lesson->model_id}}"
                                                                                                                             data-type="{{$lesson->model_type}}"
                                                                                                                             class="menu-item  menu-item-depth-1  menu-item-page menu-item-edit-inactive pending"
@@ -418,12 +422,15 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}}</p>
+                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                                |
+                                                                                                                                                Test @endif</p>
                                                                                                                                     </span>
                                                                                                                                 </span>
                                                                                                                                 </div>
                                                                                                                             </dl>
                                                                                                                         </li>
+                                                                                                                    @endif
                                                                                                                     @endforeach
                                                                                                                 </ul>
 
@@ -674,7 +681,7 @@
 
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('title', trans('labels.backend.tests.fields.title').'*', ['class' => 'control-label']) !!}
-                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => '']) !!}
+                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => 'required']) !!}
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('title_ar', trans('labels.backend.chapters.fields.title_ar').'*', ['class' => 'control-label']) !!}
@@ -682,11 +689,15 @@
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('timer', trans('labels.backend.lessons.fields.test_timer').'*', ['class' => 'control-label']) !!}
-                                        {!! Form::text('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => '']) !!}
+                                        {!! Form::number('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => 'required','min'=>0]) !!}
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('no_questions', trans('labels.backend.tests.fields.no_questions').'*', ['class' => 'control-label']) !!}
-                                        {!! Form::text('no_questions', old('no_questions'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.no_questions'), 'required' => '']) !!}
+                                        {!! Form::number('no_questions', old('no_questions'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.no_questions'), 'required' => 'required','min'=>0]) !!}
+                                    </div>
+                                    <div class="col-12 col-lg-12 form-group">
+                                        {!! Form::label('min_grade', trans('labels.backend.tests.fields.min_grade').'*', ['class' => 'control-label']) !!}
+                                        {!! Form::number('min_grade', old('min_grade'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.min_grade'), 'required' => 'required','min'=>0]) !!}
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         <div class="checkbox d-inline mr-3">

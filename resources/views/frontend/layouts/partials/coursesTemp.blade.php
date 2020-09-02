@@ -37,7 +37,7 @@
             <i class="far fa-play-circle"></i> {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
             </span>
         </div>
-      
+
         <div class="row  tech-height">
             @foreach($course->teachers as $key=>$teacher)
                 @if($key == 0)
@@ -49,10 +49,7 @@
                         <div class="col-9">
                             <div class="row pt-2">
                                 @foreach($course->teachers as $key=>$teacher)
-                                    @php
-                                        $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
-                                    @endphp
-                                    @if($key == 0)
+                                    @if($key == 0 && $teacher->teacherProfile)
                                         <a class="text-pink"
                                            href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                            target="_blank">
@@ -63,7 +60,7 @@
                                         <a class="text-muted teacher-title"
                                            href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                            target="_blank">
-                                            {{$teacherProfile->getDataFromColumn('title')}}
+                                            {{$teacher->teacherProfile->getDataFromColumn('title')}}
                                         </a>
                                     @endif
                                 @endforeach
@@ -90,7 +87,7 @@
                                         {{$teacher->full_name}}
 
                                     </a>
-                                    
+
 
                                 </div>
                             </div>
@@ -100,7 +97,7 @@
             @endforeach
         </div>
         <div class="row">
-            <div class="col-xl-10 col-9">
+            <div class="col-xl-9 col-9 p-0 pl-2">
                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
                     <button type="submit"
                             class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart')
@@ -154,7 +151,7 @@
                     @endif
                 @endif
             </div>
-            <div class="">
+            <div class="col-2 p-0 pl-2">
                 <a href="{{ route('courses.show', [$course->slug]) }}"
                    class="btn btnWishList">
                     <i class="far fa-bookmark"></i>
