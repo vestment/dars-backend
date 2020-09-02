@@ -9,7 +9,18 @@
     <link rel="stylesheet" href="../../assets/css/course.css"/>
     <style>
 
+.cont{
+    width:50%;
+    /* float:right; */
+}
+@media screen and (max-width: 768px) {
+    .cont{
+        width: 100%;
+        
+    }
 
+    
+}
         .my-alert {
             position: absolute;
             z-index: 10;
@@ -51,22 +62,22 @@
                         <div class="row">
                             <div class="hero-section">
                                 <ul class="nav justify-content-center">
-                                    <li class="nav-item"><span class="icon"><img
+                                    <li class="nav-item"><span class="icon iconss"><img
                                                     src="assets/img/banner/260d37c0-84ad-4627-9667-26030c180189 (1).png"
                                                     alt=""> </span><span class="text">@lang('labels.frontend.layouts.partials.Expert_Teachers')</span>
                                     </li>
-                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/55.png" alt=""></span><span
+                                    <li class="nav-item"><span class="icon iconss"><img src="assets/img/banner/55.png" alt=""></span><span
                                                 class="text">@lang('labels.frontend.layouts.partials.Learn_Anywhere')</span>
                                     </li>
-                                    <li class="nav-item"><span class="icon"><img
+                                    <li class="nav-item"><span class="icon iconss"><img
                                                     src="assets/img/banner/dfeferf9 (1).png" alt=""></span><span
                                                 class="text">@lang('labels.frontend.layouts.partials.Earn a certificate or degree')</span>
                                     </li>
 
-                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/fdfvds.png"
+                                    <li class="nav-item"><span class="icon iconss"><img src="assets/img/banner/fdfvds.png"
                                                                                  alt=""></span><span class="text">@lang('labels.frontend.layouts.partials.Learn the latest skills')</span>
                                     </li>
-                                    <li class="nav-item"><span class="icon"><img src="assets/img/banner/fdfvds.png"
+                                    <li class="nav-item"><span class="icon iconss"><img src="assets/img/banner/fdfvds.png"
                                                                                  alt=""></span><span class="text">@lang('labels.frontend.layouts.partials.Booking center online or offline')</span>
                                     </li>
                                 </ul>
@@ -155,10 +166,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="course-meta my-1 vv">
+                                                        <div class="course-meta my-3 vv">
 
-                                                            <span class="course-author"><a href="#">{{ $course->students()->count() }}
-                                                                    @lang('labels.frontend.course.students')</a></span>
+                                                            <span class="course-author"><a href="#">{{ $course->count() }}
+                                                                    @lang('labels.frontend.course.courses')</a></span>
 
                                                         </div>
                                                         <div class="row">
@@ -259,21 +270,23 @@
     <section class="bg-static">
         <div class="row bg-static1 ">
             <div class="container">
-            <div class="col-xl-5 col-sm-6 p-5">
-                <div class="p-5 ">
-                    <img src="/img/backend/brand/Council-logo-100px.png" alt="">
-                </div>
-                <div class="text-white pl-5 pb-5">
-                    <h1>@lang('labels.frontend.layouts.partials.Offline Booking Center').</h1>
-                    <p class="">@lang('labels.frontend.layouts.partials.Offline Booking')</p>
-                </div>
-                <div class="pl-5 pb-5">
-                  
-                        <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
-                        @lang('labels.frontend.layouts.partials.view_offline_courses')
-                        </a>
-                </div>
+                
+                <div class="">
+                    <div class="p-5 ">
+                        <img src="/img/backend/brand/Council-logo-100px.png" alt="">
+                    </div>
+                    <div class="cont text-white pl-5 pb-5">
+                        <h1>@lang('labels.frontend.layouts.partials.Offline Booking Center').</h1>
+                        <p class="">@lang('labels.frontend.layouts.partials.Offline Booking')</p>
+                        <div class="pl-5 pb-5">
+                    
+                    <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
+                    @lang('labels.frontend.layouts.partials.view_offline_courses')
+                    </a>
             </div>
+                    </div>
+                   
+                </div>
             </div>
         </div>
     </section>

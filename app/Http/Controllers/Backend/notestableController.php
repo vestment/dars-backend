@@ -60,7 +60,7 @@ class notestableController extends Controller
     {
         $notes = Note::where('id',$id)->first();
        
-        return view('Backend.editnotes', compact('notes') );
+        return view('backend.editnotes', compact('notes') );
 
 
     }
@@ -74,7 +74,13 @@ class notestableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $notes = Note::where('id',$id)->first();
+        $notes->contentText = $request->contentText;
+        $notes->save();
+        return redirect()->back();
+
+
+       
     }
 
     /**

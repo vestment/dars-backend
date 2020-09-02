@@ -1574,6 +1574,8 @@ return array(
                         'academies'=>'Academies',
                         'teachers'=>'Teachers',
                         'categories'=>'categories',
+                        'courses'=>'courses',
+
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',

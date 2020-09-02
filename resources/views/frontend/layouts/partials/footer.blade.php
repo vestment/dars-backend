@@ -77,8 +77,7 @@
                     @if($footer_data->newsletter_form->status == 1)
                         <div class="col-md-9">
                             <div class="subscribe-form ml-0 footersec">
-                                <h2 >@lang('labels.frontend.layouts.partials.subscribe_newsletter')</h2>
-                                <div class="container">
+                                <div class="container my-4">
                                     <form action="{{route('subscribe')}}" method="post" class=" subs-form">
                                         <div class="row">
 

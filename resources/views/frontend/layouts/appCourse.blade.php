@@ -92,7 +92,8 @@
                             <div class="navbar-header float-left logo-lesson">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
                                     {{--<img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">--}}
-                                    <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
+                                    <img style="height: 53px;
+    margin-top: 17px;" src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
                                 </a>
                                 @yield('lesson-title')
                             </div><!-- /.navbar-header -->

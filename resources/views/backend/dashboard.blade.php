@@ -93,7 +93,7 @@
    <div class="col">
       <div class="card">
          <div class="card-header">
-            <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}!</h1>
+            <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}! {{auth()->user()->id}}</h1>
          </div>
          <!--card-header-->
          <div class="card-body">
