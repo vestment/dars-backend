@@ -58,10 +58,7 @@ class LessonsController extends Controller
             $course_lessons = $lesson->course->lessons->pluck('id')->toArray();
             $course_tests = ($lesson->course->tests) ? $lesson->course->tests->pluck('id')->toArray() : [];
             $course_lessons = array_merge($course_lessons, $course_tests);
-<<<<<<< HEAD
-=======
 //dd($lesson->courseTimeline()->get());
->>>>>>> 69885dba0176f709bc8bbfec561fe3be7133e71b
             $previous_lesson = $lesson->course->courseTimeline()
                 ->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->whereIn('model_id', $course_lessons)
