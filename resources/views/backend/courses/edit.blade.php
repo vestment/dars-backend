@@ -406,11 +406,14 @@
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                <ul class="menu-item-transport sort_seq">
+                                                                                                                <ul class="menu-item-transport sort_seq"
+                                                                                                                    data-sadf="{{$lessons[0]->model_id}}">
                                                                                                                     @foreach($lessons as $lesson)
+                                                                                                                        @if ($lesson->model_type == \App\Models\Lesson::class)
                                                                                                                         @php
-                                                                                                                            $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
+                                                                                                                                $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
                                                                                                                         @endphp
+                                                                                                                        @if($lessonData)
                                                                                                                         <li id="menu-item-{{$lesson->model_id}}"
                                                                                                                             data-type="{{$lesson->model_type}}"
                                                                                                                             class="menu-item  menu-item-depth-1  menu-item-page menu-item-edit-inactive pending"
@@ -419,12 +422,15 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class) | Test @endif</p>
+                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                                |
+                                                                                                                                                Test @endif</p>
                                                                                                                                     </span>
                                                                                                                                 </span>
                                                                                                                                 </div>
                                                                                                                             </dl>
                                                                                                                         </li>
+                                                                                                                    @endif
                                                                                                                     @endforeach
                                                                                                                 </ul>
 
