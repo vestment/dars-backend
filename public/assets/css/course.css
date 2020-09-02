@@ -66,11 +66,14 @@ ul.pagination {
         padding: 65px;
     }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1329px) {
     
      .owl-carousel .owl-item img {
         display: none;
 
+    }
+    .btnWishList{
+        width:100%;
     }
 }
 

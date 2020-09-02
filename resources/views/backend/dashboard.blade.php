@@ -174,8 +174,8 @@
                <div class="card-body">
                      <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
                      <div class="row p-4">
-                        <i class="far fa-user"></i> &nbsp &nbsp<span class="course-author float-right"> {{ $item->students()->count() }}
-                        @lang('labels.backend.dashboard.students')
+                       <span class="course-author float-right"> {{ $item->count() }}
+                        @lang('labels.backend.dashboard.course')
                         </span>
                      </div>
                   <div class="row m-1">
@@ -224,8 +224,8 @@
                         <div class="card-body">
                            <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
                            <div class="row p-4">
-                                <i class="far fa-user"></i> &nbsp &nbsp<span class="course-author float-right"> {{ $item->students()->count() }}
-                                @lang('labels.backend.dashboard.students')
+                               <span class="course-author float-right"> {{ $item->count() }}
+                                @lang('labels.backend.dashboard.course')
                                 </span>
                            </div>
                            <div class="row m-1">
