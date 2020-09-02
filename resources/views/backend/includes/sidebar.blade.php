@@ -33,11 +33,11 @@
                     </a>
                 </li>
             @endif
-            @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy'))
+            @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')  || auth()->user()->hasRole('parent') )
                 @can('order_access')
                     <li class="nav-item ">
                         <a class="nav-link {{ $request->segment(1) == 'orders' ? 'active' : '' }}"
-                           href="{{ route('admin.orders.index') }}">
+                           href="{{  route('admin.orders.index')  }}">
                             <i class="nav-icon icon-bag"></i>
                             <span class="title">@lang('menus.backend.sidebar.orders.title')</span>
                         </a>

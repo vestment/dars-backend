@@ -93,12 +93,12 @@
    <div class="col">
       <div class="card">
          <div class="card-header">
-            <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}!</h1>
+            <h1>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->full_name }}! {{auth()->user()->id}}</h1>
          </div>
          <!--card-header-->
          <div class="card-body">
             <div class="row">
-               @if(auth()->user()->hasRole('student'))
+            @if(auth()->user()->hasRole('student'))
                @if(count($pending_orders) > 0)
                <div class="col-12">
                   <h4>@lang('labels.backend.dashboard.pending_orders')</h4>
@@ -156,101 +156,97 @@
                   </table>
                </div>
                @endif
-             
+            </div>      
                <div class="col-12">
                   <h4>@lang('labels.backend.dashboard.my_courses')</h4>
                </div>
-</div>
-               <div  class="row m-3">
-               @if(count($purchased_courses) > 0)
-               @foreach($purchased_courses as $item)
-               <div class="col-md-3">
-                 
-                  <div class="best-course-pic-text relative-position p-0" data-ref="partials">
-                     <a href="{{ route('courses.show', [$item->slug]) }}">
-                     <div class="best-course-pic piclip relative-position"
-                         @if($item->image != "") style="background-image: url('{{$item->image}}')" @endif>
+
+<div  class="row m-3">
+   @if(count($purchased_courses) > 0)
+      @foreach($purchased_courses as $item)
+         <div class="col-md-3">
+            <div class="best-course-pic-text relative-position p-0" data-ref="partials">
+               <a href="{{ route('courses.show', [$item->slug]) }}">
+                  <div class="best-course-pic piclip relative-position"
+                        @if($item->image != "") style="background-image: url('{{$item->image}}')" @endif>
+                  </div>
+               </a>
+               <div class="card-body">
+                     <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
+                     <div class="row p-4">
+                        <i class="far fa-user"></i> &nbsp &nbsp<span class="course-author float-right"> {{ $item->students()->count() }}
+                        @lang('labels.backend.dashboard.students')
+                        </span>
                      </div>
-                    </a>
-                        <div class="card-body">
-                            <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
-                            <div class="row p-4">
-                                <i class="far fa-user"></i> &nbsp &nbsp<span class="course-author float-right"> {{ $item->students()->count() }}
-                                @lang('labels.backend.dashboard.students')
-                                </span>
-                            </div>
-                            <div class="row m-1">
-                                <div class="col-3 p-0 pl-1  ">
-                                {{ $item->progress()}} %
-                                </div>
-                                <div class="progress  mt-2 col-9">
-                                <div class="progress-bar"
-                                    style="width:{{$item->progress() }}%">
-                                </div>
-                                </div>
-                                
-                            </div>
-                      
+                  <div class="row m-1">
+                        <div class="col-3 p-0 pl-1  ">
+                        {{ $item->progress()}} %
+                        </div>
+                        <div class="progress  mt-2 col-9">
+                        <div class="progress-bar"
+                           style="width:{{$item->progress() }}%">
+                        </div>
+                        </div>     
                   </div>
                </div>
             </div>
-         @endforeach
-         @else
-         <div class="col-12 text-center">
-            <h4 class="text-center">@lang('labels.backend.dashboard.no_data')</h4>
-            <a class="btn btn-primary"
-               href="{{route('courses.all')}}">@lang('labels.backend.dashboard.buy_course_now')
-            <i class="fa fa-arrow-right"></i></a>
          </div>
-         @endif
-         @if(count($purchased_bundles) > 0)
-         <div class="col-12 mt-5">
-            <h4>@lang('labels.backend.dashboard.my_course_bundles')</h4>
-         </div>
-         @foreach($purchased_bundles as $key=>$bundle)
+      @endforeach
+   @else
+      <div class="col-12 text-center">
+         <h4 class="text-center">@lang('labels.backend.dashboard.no_data')</h4>
+         <a class="btn btn-primary"
+            href="{{route('courses.all')}}">@lang('labels.backend.dashboard.buy_course_now')
+         <i class="fa fa-arrow-right"></i></a>
+      </div>
+   @endif
+   @if(count($purchased_bundles) > 0)
+      <div class="col-12 mt-5">
+         <h4>@lang('labels.backend.dashboard.my_course_bundles')</h4>
+      </div>
+      @foreach($purchased_bundles as $key=>$bundle)
          @php $key++ @endphp
-         <div class="col-12">
-            <h5><a
-               href="{{route('bundles.show',['slug'=>$bundle->slug ])}}">
-               {{$key.'. '.$bundle->title}}</a>
-            </h5>
-         </div>
-         @if(count($bundle->courses) > 0)
-         @foreach($bundle->courses as $item)
-         <div class="col-md-3 mb-5">
-         <div class="best-course-pic-text relative-position p-0" data-ref="partials">
-                     <a href="{{ route('courses.show', [$item->slug]) }}">
-                     <div class="best-course-pic piclip relative-position"
-                         @if($item->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$item->course_image)}}')" @endif>
-                     </div>
-                    </a>
+            <div class="col-12">
+               <h5><a
+                  href="{{route('bundles.show',['slug'=>$bundle->slug ])}}">
+                  {{$key.'. '.$bundle->title}}</a>
+               </h5>
+            </div>
+            @if(count($bundle->courses) > 0)
+               @foreach($bundle->courses as $item)
+                  <div class="col-md-3 mb-5">
+                     <div class="best-course-pic-text relative-position p-0" data-ref="partials">
+                        <a href="{{ route('courses.show', [$item->slug]) }}">
+                           <div class="best-course-pic piclip relative-position"
+                              @if($item->course_image != "") style="background-image: url('{{asset('storage/uploads/'.$item->course_image)}}')" @endif>
+                           </div>
+                        </a>
                         <div class="card-body">
-                            <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
-                            <div class="row p-4">
+                           <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
+                           <div class="row p-4">
                                 <i class="far fa-user"></i> &nbsp &nbsp<span class="course-author float-right"> {{ $item->students()->count() }}
                                 @lang('labels.backend.dashboard.students')
                                 </span>
-                            </div>
-                            <div class="row m-1">
-                                <div class="col-3 p-0 pl-1  ">
-                                {{ $item->progress()}} %
-                                </div>
-                                <div class="progress  mt-2 col-9">
-                                <div class="progress-bar"
-                                    style="width:{{$item->progress() }}%">
-                                </div>
-                                </div>
-                                
-                            </div>
-                      
+                           </div>
+                           <div class="row m-1">
+                              <div class="col-3 p-0 pl-1  ">
+                              {{ $item->progress()}} %
+                              </div>
+                              <div class="progress  mt-2 col-9">
+                              <div class="progress-bar"
+                                 style="width:{{$item->progress() }}%">
+                              </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-         </div>
-      </div>
+               @endforeach
+            @endif
       @endforeach
-      @endif
-      @endforeach
-   </div>
+ 
    @endif
+</div>   
    @elseif(auth()->user()->hasRole('parent'))
    <div class="col-12">
       <div class="row">
