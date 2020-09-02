@@ -15,7 +15,7 @@ Route::redirect('/', '/user/dashboard', 301);
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('teachers', 'Admin\TeachersController');
 
-Route::group(['middleware' => 'role:teacher|administrator|academy'], function () {
+Route::group(['middleware' => 'role:teacher|administrator|academy|parent'], function () {
     Route::resource('orders', 'Admin\OrderController');
     //===== Orders Routes =====//
     Route::get('get-orders-data', ['uses' => 'Admin\OrderController@getData', 'as' => 'orders.get_data']);
