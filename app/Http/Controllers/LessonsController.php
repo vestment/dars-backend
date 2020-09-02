@@ -120,7 +120,6 @@ class LessonsController extends Controller
                 $start_time = time();
                 if (auth()->user()->current_test()->first()) {
                     $pivot = auth()->user()->current_test()->first()->pivot->where('test_id', $lesson->id)->first();
-                    // dd($pivot);
                     if ($pivot) {
                         $start_time = $pivot->start_time;
                     }
