@@ -83,9 +83,11 @@
                         <nav class="navbar-menu float-right divloginsearch ">
                             <div class="nav-menu ul-li hoverpink">
                                 <ul>
+                                @if(config('show_offers') == 1){
                                     <li>
                                         <a class="offersmob" href="{{route('frontend.offers')}}">@lang('navs.general.offers')</a>
                                     </li>
+                                    @endif
                                     @if(!auth()->check())
                                         <li>
 

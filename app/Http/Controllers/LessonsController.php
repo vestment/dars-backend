@@ -23,6 +23,8 @@ class LessonsController extends Controller
         $completed_lessons = "";
         $prevTests = NULL;
         $latestTest = NULL;
+        $canEnterNextChapter = true;
+        $canReTest = false;
         $questionsToAnswer = [];
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         if ($lesson == "") {
@@ -39,6 +41,10 @@ class LessonsController extends Controller
                     ->orderBy('created_at', 'asc')
                     ->get();
                 $questionsToAnswer = $lesson->questions()->inRandomOrder()->limit($lesson->no_questoins)->get();
+                if ($latestTest->test_result < $lesson->min_grade) {
+                $canEnterNextChapter = false;
+                $canReTest = true;
+                }
                 if ($latestTest && $latestTest->attempts < 3) {
                     $prevTestQuestions = $latestTest->answers()->pluck('question_id');
                     // Student enter the test for the first time
@@ -56,6 +62,7 @@ class LessonsController extends Controller
                 }
             }
         }
+
         if ($lesson) {
             $purchased_course = $lesson->course->students()->where('user_id', \Auth::id())->count() > 0;
 
@@ -113,7 +120,6 @@ class LessonsController extends Controller
                 $start_time = time();
                 if (auth()->user()->current_test()->first()) {
                     $pivot = auth()->user()->current_test()->first()->pivot->where('test_id', $lesson->id)->first();
-                    // dd($pivot);
                     if ($pivot) {
                         $start_time = $pivot->start_time;
                     }
@@ -124,12 +130,116 @@ class LessonsController extends Controller
             $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
 
             return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'questionsToAnswer', 'latestTest', 'prevTests',
-                'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time', 'notes'));
+                'canReTest','purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time', 'notes', 'canEnterNextChapter'));
         } else {
             return abort(403);
 
         }
     }
+
+    public function submitTest($lesson_slug, Request $request)
+    {
+        $test = Test::where('slug', $lesson_slug)->firstOrFail();
+        $answers = [];
+        $test_score = 0;
+        if (!$request->get('questions')) {
+
+            return back()->with(['flash_warning' => 'No options selected']);
+        }
+        foreach ($request->get('questions') as $question_id => $answer_id) {
+            $question = Question::find($question_id);
+            $correct = QuestionsOption::where('question_id', $question_id)
+                    ->where('id', $answer_id)
+                    ->where('correct', 1)->count() > 0;
+            $answers[] = [
+                'question_id' => $question_id,
+                'option_id' => $answer_id,
+                'correct' => $correct
+            ];
+            /*
+           * Save the answer
+           * Check if it is correct and then add points
+           * Save all test result and show the points
+           */
+            if ($correct) {
+                if ($question->score) {
+                    $test_score += $question->score;
+                }
+            }
+
+        }
+        $latestTest = TestsResult::where('test_id', $test->id)
+            ->where('user_id', \Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $attempts = 1;
+        if ($latestTest && $latestTest->attempts < 3) {
+            $attempts = $latestTest->attempts + 1;
+        }
+        $test_result = TestsResult::create([
+            'test_id' => $test->id,
+            'user_id' => \Auth::id(),
+            'test_result' => $test_score,
+            'attempts' => $attempts
+        ]);
+        $prevEntry = auth()->user()->current_test()->where('test_id', $test->id)->first();
+        if (!$prevEntry) {
+            auth()->user()->current_test()->attach($test->id, ['start_time' => time()]);
+        } else {
+            $prevEntry->pivot->delete();
+        }
+        $test_result->answers()->createMany($answers);
+
+
+        if ($test->chapterStudents()->where('user_id', \Auth::id())->get()->count() == 0) {
+            $test->chapterStudents()->create([
+                'model_type' => $test->model_type,
+                'model_id' => $test->id,
+                'user_id' => auth()->user()->id,
+                'course_id' => $test->course->id
+            ]);
+        }
+
+
+        return back()->with(['message' => 'Test score: ' . $test_score, 'result' => $test_result, 'test_attempts' => $test_result->attempts]);
+    }
+
+
+    public function retest(Request $request)
+    {
+        $test = TestsResult::where('id', '=', $request->result_id)
+            ->where('user_id', '=', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $check_prev_entry = auth()->user()->current_test()->where('test_id', $test->test_id)->first();
+        if (!$check_prev_entry) {
+            auth()->user()->current_test()->attach($test->test_id, ['start_time' => time()]);
+        } else {
+            $check_prev_entry->pivot->delete();
+        }
+
+
+        return back()->with(['test_attempts' => $test->attempts, 'reTest' => true]);
+    }
+
+    public function availablityUpdate(Request $request)
+    {
+        // return $request;
+        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
+        $test->available = 0;
+        $test->save();
+        return $test;
+    }
+
+    public function startTimeUpdate(Request $request)
+    {
+        $check_prev_entry = auth()->user()->current_test()->where('test_id', $request->id)->first();
+        if (!$check_prev_entry) {
+            auth()->user()->current_test()->attach($request->id, ['start_time' => time()]);
+        }
+
+    }
+
 
     public function editNotes(Request $request)
     {
@@ -180,99 +290,6 @@ class LessonsController extends Controller
         return view('frontend.courses.lesson', compact('notes'));
 
 
-    }
-
-    public function availablityUpdate(Request $request)
-    {
-        // return $request;
-        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
-        $test->available = 0;
-        $test->save();
-        return $test;
-    }
-
-    public function startTimeUpdate(Request $request)
-    {
-        return $request;
-//        $test = Test::where('slug', $request->lesson_slug)->firstOrFail();
-        $check_prev_entry = auth()->user()->current_test()->where('test_id', $request->id)->first();
-        if (!$check_prev_entry) {
-            auth()->user()->current_test()->attach($request->id, ['start_time' => time()]);
-        }
-
-    }
-
-    public function submitTest($lesson_slug, Request $request)
-    {
-        $test = Test::where('slug', $lesson_slug)->firstOrFail();
-        $answers = [];
-        $test_score = 0;
-        if (!$request->get('questions')) {
-
-            return back()->with(['flash_warning' => 'No options selected']);
-        }
-        foreach ($request->get('questions') as $question_id => $answer_id) {
-            $question = Question::find($question_id);
-            $correct = QuestionsOption::where('question_id', $question_id)
-                    ->where('id', $answer_id)
-                    ->where('correct', 1)->count() > 0;
-            $answers[] = [
-                'question_id' => $question_id,
-                'option_id' => $answer_id,
-                'correct' => $correct
-            ];
-            /*
-           * Save the answer
-           * Check if it is correct and then add points
-           * Save all test result and show the points
-           */
-            if ($correct) {
-                if ($question->score) {
-                    $test_score += $question->score;
-                }
-            }
-
-        }
-        $latestTest = TestsResult::where('test_id', $test->id)
-            ->where('user_id', \Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->first();
-        $attempts = 1;
-        if ($latestTest && $latestTest->attempts < 3) {
-            $attempts = $latestTest->attempts + 1;
-        }
-        $test_result = TestsResult::create([
-            'test_id' => $test->id,
-            'user_id' => \Auth::id(),
-            'test_result' => $test_score,
-            'attempts' => $attempts
-        ]);
-        $removePrevEntry = auth()->user()->current_test()->where('test_id', $test->id)->delete();
-        $test_result->answers()->createMany($answers);
-
-
-        if ($test->chapterStudents()->where('user_id', \Auth::id())->get()->count() == 0) {
-            $test->chapterStudents()->create([
-                'model_type' => $test->model_type,
-                'model_id' => $test->id,
-                'user_id' => auth()->user()->id,
-                'course_id' => $test->course->id
-            ]);
-        }
-
-
-        return back()->with(['message' => 'Test score: ' . $test_score, 'result' => $test_result, 'test_attempts' => $test_result->attempts]);
-    }
-
-
-    public function retest(Request $request)
-    {
-        $test = TestsResult::where('id', '=', $request->result_id)
-            ->where('user_id', '=', auth()->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->first();
-//        $test->delete();
-        return back()->with(['test_attempts' => $test->attempts, 'reTest' => true]);
     }
 
     public function videoProgress(Request $request)

@@ -43,10 +43,14 @@ class ParentsController extends Controller
         if ($request->parentEmail) {
             $parent = User::where('email', $request->parentEmail)->first();
             if ($parent) {
-
                 if ($parent->hasRole('parent')) {
-                    auth()->user()->parents()->attach($parent, ['status' => 0]);
-                    return redirect()->route('admin.account')->withFlashSuccess(trans('alerts.backend.parent.invited'));
+                    if (!auth()->user()->parents()->where('student_id',auth()->user()->id)->where('parent_id',$parent->id)->first()) {
+                        auth()->user()->parents()->attach($parent, ['status' => 0]);
+                        return redirect()->route('admin.account')->withFlashSuccess(trans('alerts.backend.parent.invited'));
+                    }
+                    else {
+                        return redirect()->back()->withFlashDanger('You already have this parent');
+                    }
                 } else {
                     return redirect()->back()->withFlashDanger(trans('alerts.backend.parent.not_parent'));
                 }
