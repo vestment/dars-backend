@@ -363,8 +363,6 @@ class CoursesController extends Controller
         $course = Course::findOrFail($id);
 
 
-        $date = $course->date ? json_decode($course->date) : null;
-
         $date = $course->date ? json_decode($course->date , true ) : null;
 
         $date = json_decode($date,true);
@@ -393,7 +391,7 @@ class CoursesController extends Controller
                 $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
 
             }
-
+            $chapterContent =[];
             foreach ($content as $key => $item) {
 
                 foreach ($item as $j => $item) {

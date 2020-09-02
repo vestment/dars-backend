@@ -13,14 +13,13 @@ class EditTestTable extends Migration
      */
     public function up()
     {
-        Schema::table('tests', function (Blueprint $table) {
-            // $table->text('title_ar')->nullable();
-            // $table->text('description_ar')->nullable();
-            $table->text('timer')->nullable();
-           
-           
-         
-        });
+        if (!Schema::hasColumns('tests', ['available','no_questions','timer'])) {
+            Schema::table('tests', function (Blueprint $table) {
+                $table->integer('available')->nullable()->default(1);
+                $table->tinyInteger('no_questions')->nullable()->default(0);
+                $table->text('timer')->nullable();
+            });
+        }
     }
 
     /**

@@ -17,11 +17,13 @@
     </script>
     <style>
         .main-menu-container.menu-bg-overlay {
-           background-color: #0C0C3F;
+            background-color: #0C0C3F;
         }
+
         .main-menu-container {
             background-color: #0C0C3F;
         }
+
         .test-form {
             color: #333333;
         }
@@ -33,7 +35,8 @@
         .sidebar.is_stuck {
             top: 15% !important;
         }
-        .m-note{
+
+        .m-note {
             margin-top: 11%;
         }
 
@@ -45,7 +48,8 @@
         .options-list li {
             list-style-type: none;
         }
-        .shadow-c{
+
+        .shadow-c {
             box-shadow: 2px 3px #ebebeb;
         }
 
@@ -193,9 +197,10 @@
 
             border-bottom: solid 1px #e4e4e4;
         }
-.fr-quick-insert{
-    display:none !important;
-}
+
+        .fr-quick-insert {
+            display: none !important;
+        }
     </style>
 @endpush
 @section('lesson-title')
@@ -235,12 +240,13 @@
                     @include('includes.partials.messages')
 
                     <div class="course-details-item border-bottom-0 mb-0">
-                       
+
 
                         @if ($lesson->available == 1)
                             @if ($test_exists)
-                                @if (count($prevTests) < 3)
-                                    <div class="course-single-text row">
+                                @if ((session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest))
+                                    <div data-attempts="{{session()->get('test_attempts')}}"
+                                         class="course-single-text row">
 
                                         <div class="col-6">
                                             <div class="course-title mt10 headline relative-position">
@@ -254,152 +260,156 @@
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                        <div id="countdown" class="timeTo timeTo-white"
-                                             style="font-family: Verdana, sans-serif;">
-                                            <div class="first" style="">
-                                                <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
+                                            <div id="countdown" class="timeTo timeTo-white"
+                                                 style="font-family: Verdana, sans-serif;">
+                                                <div class="first" style="">
+                                                    <ul style="left:3px; top:-30px">
+                                                        <li>0</li>
+                                                        <li>0</li>
+                                                    </ul>
                                                 </div>
                                                 <div style="">
                                                     <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
+                                                        <li>0</li>
+                                                        <li>0</li>
+                                                    </ul>
                                                 </div>
                                                 <span>:</span>
                                                 <div class="first" style="">
                                                     <ul style="left:3px; top:-30px">
-                                                    <li>0</li>
-                                                    <li>0</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
+                                                        <li>0</li>
+                                                        <li>0</li>
+                                                    </ul>
+                                                </div>
+                                                <div style="">
                                                     <ul style="left: 3px; top: -30px;" class="">
-                                                    <li>1</li>
-                                                    <li>1</li>
-                                                </ul>
+                                                        <li>1</li>
+                                                        <li>1</li>
+                                                    </ul>
                                                 </div>
                                                 <span>:</span>
                                                 <div class="first" style="">
-                                                <ul style="left: 3px; top: -30px;" class="">
-                                                    <li>2</li>
-                                                    <li>2</li>
-                                                </ul>
-                                            </div>
-                                            <div style="">
-                                                <ul style="left: 3px; top: 0px;" class="transition">
-                                                    <li>0</li>
-                                                    <li>1</li>
-                                                </ul>
+                                                    <ul style="left: 3px; top: -30px;" class="">
+                                                        <li>2</li>
+                                                        <li>2</li>
+                                                    </ul>
+                                                </div>
+                                                <div style="">
+                                                    <ul style="left: 3px; top: 0px;" class="transition">
+                                                        <li>0</li>
+                                                        <li>1</li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                @else
-                                    <p>You already entered this test 3 times</p>
                                 @endif
 
                                 <hr/>
-                                @if ($latestTest && $latestTest->attempts >= 3)
-                                    <div class="alert alert-info">@lang('labels.frontend.course.your_test_score')
+                                @if (!is_null($latestTest))
+                                    <div class="alert alert-info">
+                                        <p>@lang('labels.frontend.course.your_test_score')</p>
                                         @foreach($prevTests as $prevTest)
-                                            <p>Attempt {{$prevTest->attempts}} : {{ $prevTest->test_result }}</p>
+                                            <p>Attempt ({{$prevTest->attempts}}) : {{ $prevTest->test_result }} </p>
                                         @endforeach
                                     </div>
-                                @endif
-                                @if ($latestTest && $latestTest->attempts < 3)
-                                    @if(!config('retest'))
-                                        <form action="{{route('lessons.retest',[$latestTest->test->slug])}}"
-                                              method="post">
-                                            @csrf
-                                            <input type="hidden" name="result_id" value="{{$latestTest->id}}">
-                                            <button type="submit" class="btn gradient-bg font-weight-bold text-white"
-                                                    href="">
-                                                @lang('labels.frontend.course.give_test_again')
-                                            </button>
-                                        </form>
+                                    @if(config('retest'))
+                                        @if(session()->get('test_attempts')  < 3)
+                                            @if (!session()->get('reTest'))
+                                                <form action="{{route('lessons.retest',[$latestTest->test->slug])}}"
+                                                      method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="result_id" value="{{$latestTest->id}}">
+                                                    <button type="submit"
+                                                            class="btn gradient-bg font-weight-bold text-white"
+                                                            href="">
+                                                        @lang('labels.frontend.course.give_test_again')
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @else
+                                            <div class="alert alert-danger">You already repeated this test 3 times</div>
+                                        @endif
                                     @endif
 
-                                    @if(count($lesson->questions) > 0  )
-                                        <hr>
-                                        @foreach ($lesson->questions as $question)
-                                            <h4 class="mb-0">{{ $loop->iteration }}
-                                                . {!! $question->question !!}   @if(!$question->isAttempted($latestTest->id))
-                                                    <small class="badge badge-danger"> @lang('labels.frontend.course.not_attempted')</small> @endif
-                                            </h4>
-                                            <br/>
-                                            <ul class="options-list pl-4">
-                                                @foreach ($question->options as $option)
+                                    @if(count($lesson->questions) > 0 )
+                                        @if (count($prevTests) >= 3)
+                                            <hr>
+                                            @foreach ($lesson->questions as $question)
 
-                                                    <li class="@if(($option->answered($test_result->id) != null && $option->answered($test_result->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($test_result->id) != null && $option->answered($test_result->id) == 2) incorrect  @endif"> {{ $option->option_text }}
+                                                <h4 class="mb-0">{{ $loop->iteration }}
+                                                    . {!! $question->question !!}   @if(!$question->isAttempted($latestTest->id))
+                                                        <small class="badge badge-danger"> @lang('labels.frontend.course.not_attempted')</small> @endif
+                                                </h4>
+                                                <br/>
+                                                <ul class="options-list pl-4">
+                                                    @foreach ($question->options as $option)
 
-                                                        @if($option->correct == 1 && $option->explanation != null)
-                                                            <p class="text-dark">
-                                                                <b>@lang('labels.frontend.course.explanation')</b><br>
-                                                                {{$option->explanation}}
-                                                            </p>
-                                                        @endif
-                                                    </li>
+                                                        <li class="@if(($option->answered($latestTest->id) != null && $option->answered($latestTest->id) == 1) || ($option->correct == true)) correct @elseif($option->answered($latestTest->id) != null && $option->answered($latestTest->id) == 2) incorrect  @endif"> {{ $option->option_text }}
 
-                                                @endforeach
-                                            </ul>
-                                            <br/>
-                                        @endforeach
+                                                            @if($option->correct == 1 && $option->explanation != null)
+                                                                <p class="text-dark">
+                                                                    <b>@lang('labels.frontend.course.explanation')</b><br>
+                                                                    {{$option->explanation}}
+                                                                </p>
+                                                            @endif
+                                                        </li>
 
+                                                    @endforeach
+                                                </ul>
+                                                <br/>
+                                            @endforeach
+                                        @endif
                                     @else
                                         <h3>@lang('labels.general.no_data_available')</h3>
-
                                     @endif
                                 @endif
-                            @elseif  (count($prevTests) < 3)
-                                <div class="test-form">
-                                    @if(count($lesson->questions) > 0  )
-                                        <script>
-                                            var slug = '{{$lesson->slug}}';
-                                            var id = '{{$lesson->id}}';
-                                            var timeoutorg = parseInt('{{$lesson->timer*60}}');
-                                            var start = parseInt('{{$start_time}}');
-                                            var endtime = parseInt(start + timeoutorg);
-                                            var now = Date.now() / 1000;
-
-                                            var timecomp = (endtime - now);
-                                            setInterval(() => {
+                                @if ((session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest))
+                                    <div class="test-form">
+                                        @if(count($questionsToAnswer) > 0  )
+                                            <script>
+                                                var slug = '{{$lesson->slug}}';
+                                                var id = '{{$lesson->id}}';
+                                                var timeoutorg = parseInt('{{$lesson->timer*60}}');
+                                                var start = parseInt('{{$start_time}}');
                                                 var endtime = parseInt(start + timeoutorg);
                                                 var now = Date.now() / 1000;
+
                                                 var timecomp = (endtime - now);
+                                                setInterval(() => {
+                                                    var endtime = parseInt(start + timeoutorg);
+                                                    var now = Date.now() / 1000;
+                                                    var timecomp = (endtime - now);
 
-                                            }, 1000);
+                                                }, 1000);
 
 
-
-
-
-
-                                        </script>
-                                        <form action="{{ route('lessons.test', [$lesson->slug]) }}"
-                                              method="post">
-                                            {{ csrf_field() }}
-                                            @foreach ($lesson->questions as $question)
-                                                    <h4 class="mb-0">{{ $loop->iteration }}
-                                                        . {!! $question->question !!}  </h4>
-                                                <br/>
-                                                @foreach ($question->options as $option)
-                                                    <div class="radio">
-                                                        <label>
-                                                                <input type="radio"
-                                                                       name="questions[{{ $question->id }}]"
-                                                                       value="{{ $option->id }}"/>
-                                                                <span class="cr"><i
-                                                                            class="cr-icon fa fa-circle"></i></span>
-                                                                {{ $option->option_text }}<br/>
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
-                                                    <br/>
+                                            </script>
+                                            <form action="{{ route('lessons.test', [$lesson->slug]) }}"
+                                                  method="post">
+                                                {{ csrf_field() }}
+                                                @foreach ($questionsToAnswer as $key => $question)
+                                                    @if($loop->iteration <= $lesson->no_questions)
+                                                        <h4 class="mb-0">{{ $loop->iteration }}
+                                                            . {!! $question->question !!}  </h4>
+                                                        <br/>
+                                                        @foreach ($question->options as $option)
+                                                            <div class="radio">
+                                                                <label>
+                                                                    <input type="radio"
+                                                                           name="questions[{{ $question->id }}]"
+                                                                           value="{{ $option->id }}"/>
+                                                                    <span class="cr"><i
+                                                                                class="cr-icon fa fa-circle"></i></span>
+                                                                    {{ $option->option_text }}<br/>
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                        <br/>
+                                                    @endif
                                                 @endforeach
-                                                <input class="btn gradient-bg text-white font-weight-bold" type="submit"
+                                                <input class="btn gradient-bg text-white font-weight-bold"
+                                                       type="submit"
                                                        value=" @lang('labels.frontend.course.submit_results') "/>
                                             </form>
                                         @else
@@ -429,14 +439,16 @@
 
 
                         @if($lesson->mediaVideo && $lesson->mediavideo->count() > 0)
-                            <div class="course-single-text">
+                            <div class="course-single-text mb-4">
                                 @if($lesson->mediavideo != "")
                                     <div class="course-details-content mt-3">
                                         <div class="video-container mb-5" data-id="{{$lesson->mediavideo->id}}">
                                             @if($lesson->mediavideo->type == 'youtube')
-                                                <div id="player" class="js-player"
-                                                     data-plyr-provider="youtube"
+
+
+                                                <div id="player" class="js-player" data-plyr-provider="youtube"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
+
                                             @elseif($lesson->mediavideo->type == 'vimeo')
                                                 <div id="player" class="js-player" data-plyr-provider="vimeo"
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
@@ -446,6 +458,7 @@
                                                 </video>
                                             @elseif($lesson->mediavideo->type == 'embed')
                                                 {!! $lesson->mediavideo->url !!}
+
                                             @endif
                                         </div>
                                     </div>
@@ -455,70 +468,81 @@
                                 <div class="container my-5">
                                     <h2 class="m-3">Write Your Notes</h2>
                                     <div class="row">
-                                    <div class="col-12">
+                                        <div class="col-12">
 
-                                        <form action="{{route('save.note')}}" method="POST">
-                                            <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
-                                            @csrf
-                                                <textarea class='edit-froala' name="contentText" style="margin-top: 30px;">
-
+                                            <form action="{{route('save.note')}}" method="POST">
+                                                <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
+                                                @csrf
+                                                <textarea class='edit-froala' name="contentText"
+                                                          style="margin-top: 30px;">
+                                                
                                                 </textarea>
 
-                                                    <button type="submit" class=" float-right btn btn-success my-5"> save </button>
+                                                <button type="submit" class=" float-right btn btn-success my-5">
+                                                    save
+                                                </button>
 
-                                        </form>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+                                @if(count($notes) > 0)
                                 <div class="container my-5">
-                                    <h3 class="my-3 mx-4  ">Notes</h3>
+                                    <h3 class="my-3 mx-4">Notes</h3>
                                     <div class="card shadow-c">
 
                                         <div class="container">
                                             @foreach($notes as $note)
                                                 <div class="card shadow-c my-5 ">
                                                     <div class="card-body">
-                                                    {{$note->contentText}}
-                                                        <a class="float-right text-pink " onclick="editnote({{$note->id}})" data-toggle="modal" data-target="#edit-note-modal"><i class="far fa-edit"></i> <a>
-
+                                                        {{$note->contentText}}
+                                                        <a class="float-right text-pink "
+                                                           onclick="editnote({{$note->id}})" data-toggle="modal"
+                                                           data-target="#edit-note-modal"><i
+                                                                    class="far fa-edit"></i>
+                                                        </a>
                                                     </div>
-
                                                 </div>
                                             @endforeach
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 <!-- Button trigger modal -->
 
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="edit-note-modal" tabindex="-1" role="dialog" aria-labelledby="edit-note-modallLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content my-4">
-                                    <div class="modal-header m-3 " style="background: unset;">
-                                        <h5 class="modal-title" id="edit-note-modallLabel">edit note</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body" id="note_content_body">
-                                    <form action="{{route('update.note')}}" method="POST">
-                                            <input type="hidden" name="note_id" id="note_id">
-                                            @csrf
-                                                <textarea id="edit-note" class='edit-froala' name="contentText" style="margin-top: 30px;">
+                                <div class="modal fade" id="edit-note-modal" tabindex="-1" role="dialog"
+                                     aria-labelledby="edit-note-modallLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content my-4">
+                                            <div class="modal-header m-3 " style="background: unset;">
+                                                <h5 class="modal-title" id="edit-note-modallLabel">edit note</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{route('update.note')}}" method="POST">
+                                                <div class="modal-body" id="note_content_body">
 
+                                                    <input type="hidden" name="note_id" id="note_id">
+                                                    @csrf
+                                                    <textarea id="edit-note" class='edit-froala' name="contentText"
+                                                              style="margin-top: 30px;">
                                                 </textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Save changes
+                                                    </button>
 
-
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit"  class="btn btn-primary">Save changes</button>
-                                    </div>
-                                    </div>
-                                    </form>
-                                </div>
-                                </div>
                             </section>
                         @endif
 
@@ -556,7 +580,7 @@
 
                 </div>
 
-                <div style="margin-left:-3.5%" class="col-md-3">
+                <div class="col-md-3">
                     <div id="sidebar" class="sidebar">
                         <div class="course-details-category ul-li">
                             @if ($previous_lesson)
@@ -597,6 +621,7 @@
 
 
 
+
                             @foreach($chapters as $chapter)
                                 <div class="row m-2 shadow">
                                     <div class="accordion" id="accordionExample">
@@ -604,9 +629,8 @@
                                             <div class="card-header" id="headingOne">
                                                 <h2 class="mb-0">
                                                     <button class="btn btn-link btn-block text-left" type="button"
-                                                            data-toggle="collapse"
-                                                            data-target="#chapter-{{ $chapter->id}}"
-                                                            aria-expanded="true" aria-controls="collapseOne">
+                                                            data-toggle="collapse" data-target="#chapter-{{ $chapter->id}}"
+                                                            aria-expanded="true" aria-controls="chapter-{{ $chapter->id}}">
                                                         {{ $chapter->title}} <i class="fa fa-angle-down float-right"
                                                                                 aria-hidden="true"></i>
                                                     </button>
@@ -621,30 +645,31 @@
 
                                                             @if($item->model && $item->model->published == 1)
 
-                                                                {{--@php $key++; @endphp--}}
                                                                 @if($item->model_type == 'App\Models\Lesson')
-                                                                <p class="subtitle2 test"
-                                                                   @if(in_array($item->model->id,$completed_lessons))role="button"
-                                                                   onclick="startTest(this)"
-                                                                   data-test-id="{{$item->model->id}}"
-                                                                   data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>
-                                                                    <a id="test"> {{$item->model->title}}
+                                                                    <p class="mb-0 subtitle2 test"><a
+                                                                       @if(in_array($item->model->id,$completed_lessons))
+                                                                       data-test-id="{{$item->model->id}}"
+                                                                       href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
+                                                                            @endif>
+                                                                        {{$item->model->title}}
+                                                                    </a>
+                                                                    </p>
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
-                                                                    <p class="mb-0 text-primary test"
+                                                                    <p class="mb-0 mt-1 text-primary test"
                                                                        onclick="startTest(this)"
                                                                        data-test-id="{{$item->model->id}}"
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
-                                                                        - @lang('labels.frontend.course.test')</p>
+                                                                        - @lang('labels.frontend.course.test')
+                                                                        On {{$item->model->title}}</p>
                                                                 @endif
                                                                 @if(!in_array($item->model->id,$completed_lessons))
                                                                     <i class="fa float-right fa-lock"></i> @endif
-                                                                    </p>
-                                                                @else
-                                                                    <i class="fa text-success float-right fa-unlock"></i>
-                                                                    @endif
-                                                                    </a>
-                                                                    @endforeach
+                                                            @else
+                                                                <i class="fa text-success float-right fa-unlock"></i>
+                                                                @endif
+
+                                                                @endforeach
                                                     </div>
                                                 </div>
 
@@ -658,15 +683,6 @@
                             @endforeach
 
 
-
-
-
-
-
-
-
-
-
                         </div>
 
                     </div>
@@ -674,19 +690,10 @@
             </div>
         </div>
     </section>
-    <section>
-        <div class="container my-5">
-            <h2>Write Your Notes</h2>
-            <form action="{{route('save.note')}}" method="POST">
-                <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
-                @csrf
-                <textarea id='edit' name="contentText" style="margin-top: 30px;">
 
-                    </textarea>
-                <button type="submit" class=" float-right btn btn-success my-5"> save </button>
-            </form>
-        </div>
-    </section>
+
+
+
     <!-- End of course details section
     ============================================= -->
 
@@ -715,48 +722,45 @@
     <link href="{{asset('froala_editor_3.2.1/css/froala_style.min.css')}}" rel="stylesheet">
 
     <script>
-           $(document).ready(function () {
+        $(document).ready(function () {
             new FroalaEditor(".edit-froala", {
-        enter: FroalaEditor.ENTER_BR,
-        fileUpload: false,
-        fileInsertButtons: [],
-        imageUpload: false
-      },function () {
-  // Call the method inside the initialized event.
-  $('#insertFile-1').remove();
-  $('#insertFiles-1').remove();
+                enter: FroalaEditor.ENTER_BR,
+                fileUpload: false,
+                fileInsertButtons: [],
+                imageUpload: false
+            }, function () {
+                // Call the method inside the initialized event.
+                $('#insertFile-1').remove();
+                $('#insertFiles-1').remove();
 
-  $('#insertLink-1').remove();
-  $('#insertImage-1').remove();
-  $('#insertVideo-1').remove();
-  $('#getPDF-1').remove();
-  $('#print-1').remove();
-  $('#insertFile-2').remove();
-  $('#insertFiles-2').remove();
+                $('#insertLink-1').remove();
+                $('#insertImage-1').remove();
+                $('#insertVideo-1').remove();
+                $('#getPDF-1').remove();
+                $('#print-1').remove();
+                $('#insertFile-2').remove();
+                $('#insertFiles-2').remove();
 
-  $('#insertLink-2').remove();
-  $('#insertImage-2').remove();
-  $('#insertVideo-2').remove();
-  $('#getPDF-2').remove();
-  $('#print-2').remove();
-  $('#logo').remove();
-
-
+                $('#insertLink-2').remove();
+                $('#insertImage-2').remove();
+                $('#insertVideo-2').remove();
+                $('#getPDF-2').remove();
+                $('#print-2').remove();
+                $('#logo').remove();
 
 
+            })
 
-})
 
+        })
 
-           })
-
-  </script>
+    </script>
 
 
 
     <script>
-  function editnote(id){
-    $.ajax({
+        function editnote(id) {
+            $.ajax({
                 url: "{{route('editnote')}}",
                 method: "POST",
                 data: {
@@ -768,11 +772,10 @@
                     $('#note_content_body .fr-placeholder').hide();
                     $('#note_id').val(id);
 
-                //   window.location.href = $(element).data('href');
+                    //   window.location.href = $(element).data('href');
                 }
             });
-    }
-
+        }
 
 
     </script>
@@ -780,14 +783,13 @@
 
 
     <script>
-    function startTest(element) {
-        $.ajax({
+        function startTest(element) {
+            $.ajax({
                 url: "{{route('update.test.start_time')}}",
                 method: "POST",
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'id': $(element).data('test-id'),
-                    {{--'lesson_slug': '{{$lesson->slug}}'--}}
                 },
                 success: function (result) {
                     console.log(result);
@@ -798,14 +800,11 @@
 
         @if($lesson->questions != null )
 
-        @if(count($lesson->questions) > 0  )
+        @if(count($questionsToAnswer) > 0 && (session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest) )
         $(document).ready(function () {
             var $countdown = $('#countdown');
             if (timecomp > 0) {
-
                 $countdown.show().timeTo(parseInt(timecomp));
-
-
             }
             if (timecomp == 0) {
                 $countdown.timeTo(parseInt(timecomp),
@@ -844,7 +843,7 @@
             });
 
         });
-        @endif
+                @endif
 
         var storedDuration = 0;
         var storedLesson;
@@ -857,13 +856,13 @@
         }
 
 
-        @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
+                @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
         var current_progress = 0;
 
 
         @if($lesson->mediaVideo->getProgress(auth()->user()->id) != "")
             current_progress = "{{$lesson->mediaVideo->getProgress(auth()->user()->id)->progress}}";
-        @endif
+                @endif
 
 
 
@@ -897,7 +896,7 @@
                     progress = parseInt(event.detail.plyr.currentTime);
                 }
             });
-            if(duration !== 0 || parseInt(progress) !== 0 ) {
+            if (duration !== 0 || parseInt(progress) !== 0) {
                 saveProgress(video_id, duration, parseInt(progress));
             }
         }, 3000);
@@ -976,7 +975,7 @@
                 Cookies.set("user_lesson_" + "{{auth()->user()->id}}" + "_" + "{{$lesson->id}}" + "_" + "{{$lesson->course->id}}", 'true');
                 Cookies.remove('duration');
 
-                @if ($test_exists && (is_null($test_result)))
+                @if ($test_exists && (is_null($latestTest)))
                 $('#nextButton').html("<a class='btn btn-block bg-danger font-weight-bold text-white' href='#'>@lang('labels.frontend.course.complete_test')</a>")
                 @else
                 @if($next_lesson)
