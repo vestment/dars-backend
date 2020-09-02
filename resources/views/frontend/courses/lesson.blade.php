@@ -600,7 +600,7 @@
 
                             <p id="nextButton">
                                 @if($next_lesson)
-                                    @if((int)config('lesson_timer') == 1 && $lesson->isCompleted() )
+                                    @if((int)config('lesson_timer') == 1 && $lesson->isCompleted() && $canEnterNextChapter)
                                         <a class="btn btn-block gradient-bg font-weight-bold text-white"
                                            href="{{ route('lessons.show', [$next_lesson->course_id, $next_lesson->model->slug]) }}">@lang('labels.frontend.course.next')
                                             <i class='fa fa-angle-double-right'></i> </a>
@@ -655,34 +655,37 @@
                                                             @if($item->model && $item->model->published == 1)
                                                                 @if($item->model_type == 'App\Models\Lesson')
                                                                     <p class="mb-0 subtitle2 test"><a
-                                                                                @if(in_array($item->model->id,$completed_lessons))
+                                                                                @if($canEnterNextChapter)
                                                                                 data-test-id="{{$item->model->id}}"
-                                                                                data-passed="{{$canEnterNextChapter}}"
                                                                                 href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
                                                                                 @endif>
                                                                             {{$item->model->title}}
                                                                         </a>
-
-                                                                @endif
-                                                                @if($item->model_type == 'App\Models\Test')
+                                                                        @if(!in_array($item->model->id,$completed_lessons) && !$canEnterNextChapter)
+                                                                            <i class="fa text-dark float-right fa-lock"></i>
+                                                                        @else
+                                                                            <i class="fa text-success float-right fa-unlock"></i>
+                                                                        @endif</p>
+                                                                @elseif($item->model_type == 'App\Models\Test')
                                                                     <p class="mb-0 mt-1 text-primary test"
                                                                        style="cursor: pointer;"
                                                                        onclick="startTest(this)"
-                                                                       data-passed="{{$canEnterNextChapter}}"
                                                                        data-test-id="{{$item->model->id}}"
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
                                                                         - @lang('labels.frontend.course.test')
                                                                         On {{$item->model->title}}
+                                                                    @if(!in_array($item->model->id,$completed_lessons) && !$canEnterNextChapter)
+                                                                       <i class="fa text-dark float-right fa-lock"></i>
+                                                                    @else
+                                                                       <i class="fa text-success float-right fa-unlock"></i>
                                                                         @endif
-                                                                        @if(!in_array($item->model->id,$completed_lessons))
-                                                                            <i class="fa text-dark float-right fa-lock"></i>
-                                                                        @else
-                                                                            <i class="fa text-success float-right fa-unlock"></i>
-                                                                        @endif
-
-                                                                    </p>
+                                                                        </p>
                                                                 @endif
-                                                                @endforeach
+
+
+
+                                                            @endif
+                                                        @endforeach
                                                     </div>
                                                 </div>
 

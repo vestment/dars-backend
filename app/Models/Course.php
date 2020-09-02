@@ -202,13 +202,15 @@ class Course extends Model
         return $this->morphMany('App\Models\Review', 'reviewable');
     }
 
-    public function progress()
+    public function progress($student = null)
     {
         $main_chapter_timeline = $this->lessons()->where('published', 1)->pluck('id')->merge($this->tests()->pluck('id'));
         $completed_lessons = auth()->user()->chapters()->where('course_id', $this->id)->pluck('model_id');
-
+        if ($student) {
+            $completed_lessons = $student->chapters()->where('course_id', $this->id)->pluck('model_id');
+        }
         if ($completed_lessons->count() > 0) {
-            // return intval($completed_lessons->count() / $main_chapter_timeline->count() * 100);
+             return intval($completed_lessons->count() / $main_chapter_timeline->count() * 100);
         } else {
             return 0;
         }

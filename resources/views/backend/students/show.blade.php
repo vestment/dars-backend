@@ -194,9 +194,6 @@
         </div>
         <div class="card-body">
             <div class="col-12">
-                @if(count($purchased_courses) > 0)
-                    @foreach($purchased_courses as $item)
-
                     <div  class="row m-3">
                             @if(count($purchased_courses) > 0)
                                @foreach($purchased_courses as $item)
@@ -218,11 +215,11 @@
                                               </div>
                                            <div class="row m-1">
                                                  <div class="col-3 p-0 pl-1  ">
-                                                 {{ $item->progress()}} %
+                                                 {{ $item->progress($student)}} %
                                                  </div>
                                                  <div class="progresss  mt-2 col-9">
                                                  <div class="progress-bar"
-                                                    style="width:{{$item->progress() }}%">
+                                                    style="width:{{$item->progress($student) }}%">
                                                  </div>
                                                  </div>     
                                            </div>
@@ -284,16 +281,8 @@
                                @endforeach
                           
                             @endif --}}
-                         </div>   
-                    @endforeach
-                @else
-                    <div class="col-12 text-center">
-                        <h4 class="text-center">@lang('labels.backend.dashboard.no_data')</h4>
-                        <a class="btn btn-primary"
-                           href="{{route('courses.all')}}">@lang('labels.backend.dashboard.buy_course_now')
-                            <i class="fa fa-arrow-right"></i></a>
-                    </div>
-                @endif
+                         </div>
+
             </div>
         </div>
     </div>
@@ -313,4 +302,3 @@
             </div>
         </div>
 @stop
-  

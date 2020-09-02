@@ -25,6 +25,7 @@ class LessonsController extends Controller
         $latestTest = NULL;
         $canEnterNextChapter = true;
         $canReTest = false;
+        $next_lesson = false;
         $questionsToAnswer = [];
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         if ($lesson == "") {
@@ -41,10 +42,11 @@ class LessonsController extends Controller
                     ->orderBy('created_at', 'asc')
                     ->get();
                 $questionsToAnswer = $lesson->questions()->inRandomOrder()->limit($lesson->no_questoins)->get();
-                if ($latestTest->test_result < $lesson->min_grade) {
-                $canEnterNextChapter = false;
-                $canReTest = true;
+                if ($latestTest && $latestTest->test_result < $lesson->min_grade) {
+                    $canEnterNextChapter = false;
+                    $canReTest = true;
                 }
+
                 if ($latestTest && $latestTest->attempts < 3) {
                     $prevTestQuestions = $latestTest->answers()->pluck('question_id');
                     // Student enter the test for the first time
@@ -91,14 +93,27 @@ class LessonsController extends Controller
                     ->where('model_type', Lesson::class)
                     ->orderBy('sequence', 'desc')
                     ->first();
-
-                $next_lesson = $lesson->course->courseTimeline()
+                $previousChapter = $lesson->course->courseTimeline()
+                    ->where('sequence', '<', $lesson->courseTimeline->sequence)
                     ->whereIn('model_id', $course_lessons)
-                    ->where('sequence', '>', $lesson->courseTimeline->sequence)
-                    ->where('model_type', Lesson::class)
-                    ->orderBy('sequence', 'asc')
+                    ->where('model_type', Chapter::class)
+                    ->orderBy('sequence', 'desc')
                     ->first();
+                if ($previousChapter && $previousChapter->model->test) {
+                    $previousChapterTestResult = TestsResult::where('test_id', $previousChapter->model->test->id)
+                        ->where('user_id', \Auth::id())
+                        ->orderBy('created_at', 'desc')
+                        ->first();
 
+                    if ($previousChapterTestResult && $previousChapterTestResult->test_result >= $previousChapter->model->test->min_grade) {
+                        $next_lesson = $lesson->course->courseTimeline()
+                            ->whereIn('model_id', $course_lessons)
+                            ->where('sequence', '>', $lesson->courseTimeline->sequence)
+                            ->where('model_type', Lesson::class)
+                            ->orderBy('sequence', 'asc')
+                            ->first();
+                    }
+                }
                 $lessons = $lesson->course->courseTimeline()
                     ->whereIn('model_id', $course_lessons)
                     ->where('model_type', Lesson::class)
@@ -130,7 +145,7 @@ class LessonsController extends Controller
             $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
 
             return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'questionsToAnswer', 'latestTest', 'prevTests',
-                'canReTest','purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time', 'notes', 'canEnterNextChapter'));
+                'canReTest', 'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time', 'notes', 'canEnterNextChapter'));
         } else {
             return abort(403);
 

@@ -406,8 +406,7 @@
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                <ul class="menu-item-transport sort_seq"
-                                                                                                                    data-sadf="{{$lessons[0]->model_id}}">
+                                                                                                                <ul class="menu-item-transport sort_seq">
                                                                                                                     @foreach($lessons as $lesson)
                                                                                                                         @if ($lesson->model_type == \App\Models\Lesson::class)
                                                                                                                         @php
@@ -563,7 +562,7 @@
 
                                                 {!! Form::text('video', null, ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
 
-                                                {!! Form::select('video_file', $videos, null, ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
+                                                {!! Form::select('video_file', $notSelectedVideos, null, ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
 
                                                 <div class="mt-2">
                                                     @lang('labels.backend.lessons.video_guide')
