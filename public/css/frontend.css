@@ -67,6 +67,10 @@ body {
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
 }
+.mean-nav img{
+    width: 12% !important;
+
+}
 
 .ul-li ul {
     margin: 0;

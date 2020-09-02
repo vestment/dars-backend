@@ -4,6 +4,7 @@
             <span class="subtitle text-uppercase"> @lang('labels.frontend.layouts.partials.faq')</span>
             <h4 class="title">@lang('labels.frontend.layouts.partials.faq_full')</h4>
         </div>
+        <div>
         @if(count($faqs)> 0)
 
             <div class="faq-tab text-center">
@@ -45,5 +46,6 @@
         @else
             <h4>@lang('labels.general.no_data_available')</h4>
         @endif
+        </div>
     </div>
 </section>
