@@ -24,6 +24,10 @@ Route::group(['middleware' => 'role:teacher|administrator|academy|parent'], func
     Route::delete('orders_perma_del/{id}', ['uses' => 'Admin\OrderController@perma_del', 'as' => 'orders.perma_del']);
 });
 Route::group(['middleware' => 'role:academy|administrator'], function () {
+    //====== Coupon Routes =====//
+    Route::resource('coupons', 'CouponController');
+    Route::get('coupons/status/{id}', 'CouponController@status')->name('coupons.status', 'id');
+    Route::post('coupons/status', 'CouponController@updateStatus')->name('coupons.status');
     Route::resource('teachers', 'Admin\TeachersController');
     Route::get('teachers/{id}', 'Admin\TeachersController@getacademyTeachers');
     Route::get('get-teachers-data', ['uses' => 'Admin\TeachersController@getData', 'as' => 'teachers.get_data']);
@@ -111,10 +115,7 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
     Route::post('tax/status', 'TaxController@updateStatus')->name('tax.status');
 
 
-    //====== Coupon Routes =====//
-    Route::resource('coupons', 'CouponController');
-    Route::get('coupons/status/{id}', 'CouponController@status')->name('coupons.status', 'id');
-    Route::post('coupons/status', 'CouponController@updateStatus')->name('coupons.status');
+    
 
 
     //==== Remove Locale FIle ====//
