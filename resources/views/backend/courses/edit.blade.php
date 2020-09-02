@@ -675,7 +675,7 @@
 
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('title', trans('labels.backend.tests.fields.title').'*', ['class' => 'control-label']) !!}
-                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => '']) !!}
+                                        {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => 'required']) !!}
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('title_ar', trans('labels.backend.chapters.fields.title_ar').'*', ['class' => 'control-label']) !!}
@@ -683,11 +683,15 @@
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('timer', trans('labels.backend.lessons.fields.test_timer').'*', ['class' => 'control-label']) !!}
-                                        {!! Form::text('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => '']) !!}
+                                        {!! Form::number('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => 'required','min'=>0]) !!}
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         {!! Form::label('no_questions', trans('labels.backend.tests.fields.no_questions').'*', ['class' => 'control-label']) !!}
-                                        {!! Form::text('no_questions', old('no_questions'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.no_questions'), 'required' => '']) !!}
+                                        {!! Form::number('no_questions', old('no_questions'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.no_questions'), 'required' => 'required','min'=>0]) !!}
+                                    </div>
+                                    <div class="col-12 col-lg-12 form-group">
+                                        {!! Form::label('min_grade', trans('labels.backend.tests.fields.min_grade').'*', ['class' => 'control-label']) !!}
+                                        {!! Form::number('min_grade', old('min_grade'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.min_grade'), 'required' => 'required','min'=>0]) !!}
                                     </div>
                                     <div class="col-12 col-lg-6 form-group">
                                         <div class="checkbox d-inline mr-3">

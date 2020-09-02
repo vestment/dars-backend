@@ -160,7 +160,8 @@ class TestsController extends Controller
         $this->validate($request,[
             'title' => 'required',
             'timer' => 'required|integer',
-            'no_questions' => 'required|integer'
+            'no_questions' => 'required|integer',
+            'min_grade' => 'required|integer',
         ]);
 
         if (! Gate::allows('test_create')) {
