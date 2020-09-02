@@ -134,6 +134,32 @@ class OrderController extends Controller
     {
        
         $order = Order::findOrfail($request->order);
+
+        $orderItem = OrderItem::where('order_id', $request->order)->first();
+        $course = Course::where('id', $orderItem->item_id)->first();
+
+
+
+        if ($course->offline) {
+            $date = $course->date ? json_decode(json_decode($course->date),true) : null;
+            // dd($date);
+            if(array_search($orderItem->selectedDate,array_column($date, 'date'))) {
+                $selectDate= $date[array_search($orderItem->selectedDate,array_column($date, 'date'))];
+                foreach($selectDate as $key=>$value) {
+                    if ($key != 'date') {
+                    if ($value ==$orderItem->selectedTime) {
+                        $incrementKey = explode('-',$key);
+                        $seats = intval($selectDate['seats-'.$incrementKey[1]]) - 1;
+                        $date[array_search($orderItem->selectedDate,array_column($date, 'date'))]['seats-'.$incrementKey[1]] = $seats;
+                        $course->date = json_encode(json_encode($date));
+                    }
+                }
+                }
+            }
+        }
+
+        $course->save();
+
         $order_type = OrderItem::where('order_id', $request->order)->value('item_type');
         $order_item = OrderItem::where('order_id', $request->order)->value('item_id');
         if($order_type == 'App\Models\Course')
@@ -159,7 +185,6 @@ class OrderController extends Controller
            
         }
       
-       
         $order->status = 1;
         $order->save();
 

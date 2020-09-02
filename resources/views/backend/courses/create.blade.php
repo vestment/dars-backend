@@ -317,7 +317,7 @@
                                             <div class="row">
                                                     <div class="col-12 col-md-12 form-group button-container mt-2">
             
-                                                        </div>
+                                                    </div>
                                             </div>
                                         </div>
                             </div>
@@ -407,6 +407,11 @@
                                 x--;
                             })
                         });
+                        $('.date-input').datepicker({
+                                autoclose: true,
+                                dateFormat: "{{ config('app.date_format_js') }}"
+
+                            });
                         $(document).on('click', '#add-button', function (e) {
                             e.preventDefault()
                             var name = 'Booking Date&Time';
@@ -427,11 +432,7 @@
                             $('.button-container').append(html);
 
 
-                            $('.date-input').datepicker({
-                                autoclose: true,
-                                dateFormat: "{{ config('app.date_format_js') }}"
-
-                            });
+                            
                         });
                         function addInputTime(elemt) {
                             var name = 'Booking Date&Time';

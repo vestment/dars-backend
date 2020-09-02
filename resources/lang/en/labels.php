@@ -1426,6 +1426,7 @@ return array(
                     'sign_up' => 'SIGN UP',
                     'terms_of_use' => 'Term of use. Privacy policy',
                     'register_as_teacher' => 'Register as a teacher',
+                    'register_as_parent' => 'Register as a parent',
                 ),
 
             'sign_up' =>
@@ -1573,6 +1574,8 @@ return array(
                         'academies'=>'Academies',
                         'teachers'=>'Teachers',
                         'categories'=>'categories',
+                        'courses'=>'courses',
+
                     ),
                     'ratings' => 'Ratings',
                     'stars' => 'Stars',
@@ -1593,7 +1596,7 @@ return array(
                     'author' => 'Author',
                     'courses' => 'Courses',
                     'students' => 'Students',
-                    'give_test_again' => 'Give Test Again',
+                    'give_test_again' => 'Repeat test',
                     'submit_results' => 'Submit Results',
                     'chapter_videos' => 'Chapter Videos',
                     'download_files' => 'Download Files',

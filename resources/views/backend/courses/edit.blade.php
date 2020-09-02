@@ -31,9 +31,30 @@
         height: 25%;
     }
 
+    .form-control-label {
+        line-height: 35px;
+    }
+
+    .remove {
+        float: right;
+        color: red;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .removeTime {
+        float: right;
+        color: red;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .error {
+        color: red;
+    }
+
 
 </style>
-
 @section('content')
 
     <div class="row">
@@ -59,7 +80,8 @@
                      aria-labelledby="v-pills-home-tab">
 
                     {!! Form::model($course, ['method' => 'PUT', 'route' => ['admin.courses.update', $course->id], 'files' => true,]) !!}
-
+                    {!!  Form::hidden('offlineData', null, ['id'=>'offlineData']) !!}
+                    {!!  Form::hidden('academy_id', null, ['id'=>'academy_id']) !!}
                     <div class="card">
                         <div class="card-header">
                             <h3 class="page-title float-left mb-0">@lang('labels.backend.courses.edit')</h3>
@@ -216,9 +238,9 @@
                                     </div>
 
                                     <div class="checkbox d-inline mr-3">
-                                            {!! Form::hidden('online', 0) !!}
-                                            {!! Form::checkbox('online', 1 , old('online'),  ['id'=>'online'], false) !!}
-                                            {!! Form::label('online',  trans('labels.backend.courses.fields.online_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                                        {!! Form::hidden('online', 0) !!}
+                                        {!! Form::checkbox('online', 1 , old('online'),  ['id'=>'online'], false) !!}
+                                        {!! Form::label('online',  trans('labels.backend.courses.fields.online_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
                                     <div class="checkbox d-inline mr-3">
                                         {!! Form::hidden('offline', 0) !!}
@@ -676,7 +698,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                        {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
+                                {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
 
                             </div>
                         </div>
@@ -691,54 +713,116 @@
         </div>
     </div>
     <div class="modal fade" id="offlineDataModal" tabindex="-1" aria-labelledby="offlineDataModal"
-    aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h5 class="modal-title" id="offlineDataModal">
-                   Add Booking times</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                   <span aria-hidden="true">&times;</span>
-               </button>
-           </div>
-           <div class="modal-body">
-                   <div class="academy d-none">
-                           <div class="row ">
-                               <div class="col-12 form-group">
-                                   {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
-                                   {!! Form::select('academies', $academies, old('academies'), ['class' => 'form-control d-none select2', 'id'=>'selected-academy','multiple' => false]) !!}
-                               </div>
-                           </div>
-                               <div class="row ">
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="offlineDataModal">
+                        Add Booking times</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="academy d-none">
+                        <div class="row ">
+                            <div class="col-12 form-group">
+                                {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                                {!! Form::select('academies', $academies, old('academies'), ['class' => 'form-control d-none select2', 'id'=>'selected-academy','multiple' => false]) !!}
+                            </div>
+                        </div>
+                        <div class="row ">
 
-                                   <div class="col-12 form-group">
-                                       {{ html()->label()->class(' form-control-label')->for('buttons') }}
-                                       <button type="button" id="add-button"
-                                               class="btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add').' '.__('labels.backend.teachers.fields.Booking_Date&Time')}}</button>
-                                   </div>
-                                   
-                               </div>
-                              
-                           <div class="row">
-                                   <div class="col-12 col-md-12 form-group button-container mt-2">
+                            <div class="col-12 form-group">
+                                {{ html()->label()->class(' form-control-label')->for('buttons') }}
+                                <button type="button" id="add-button"
+                                        class="btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add').' '.__('labels.backend.teachers.fields.Booking_Date&Time')}}</button>
+                            </div>
 
-                                       </div>
-                           </div>
-                       </div>
-           </div>
-           <div class="modal-footer">
-                   <button type='button' onclick="saveOfflineData(this)" class='add-but btn-block btn  btn-primary'>Save</button>
-           </div>
+                        </div>
 
-       </div>
-   </div>
-</div>
+                        <div class="row">
+                            <div class="col-12 col-md-12 form-group button-container mt-2">
+                                @if($date)
+                                    @foreach($date as $Pkey => $singleDate )
+                                        @foreach($singleDate as  $key => $value)
+                                            @if($key =='date')
+                                                <div class='button-wrapper'>
+                                                    <h6 class='mt-3'>
+                                                            <span class='remove'>
+                                                                <i class='fa fa-window-close'></i>
+                                                            </span>
+                                                    </h6>
+                                                    <div class='row'>
+                                                        <div class='col-lg-10'>
+                                                            <label for='start_dat' class='control-label'>Start Date
+                                                                (yyyy-mm-dd)</label>
+                                                            <input class='form-control date-input dat'
+                                                                   pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))'
+                                                                   value='{{$value}}' autocomplete='off' type='text'>
+
+
+                                                        </div>
+                                                        <div class='col-2 mt-4'>
+                                                            <button type='button' onclick="addInputTime(this)"
+                                                                    class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class='timepicker'></div>
+                                                    @endif
+                                                    @if(substr($key , 0,4) == 'time' )
+                                                        <div class='row mt-3' style="justify-content: flex-end;">
+                                                            <span class='removeTime mr-3'><i
+                                                                        class='fa fa-window-close'></i></span>
+                                                            <div class='col-lg-12'>
+                                                                <div class='row timeRemove'>
+                                                                    <div class='col-lg-6'>
+                                                                        <input class='form-control time-input dat'
+                                                                               pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]'
+                                                                               value="{{$value}}" autocomplete='off'
+                                                                               type='time'>
+                                                                    </div>
+                                                                    @endif
+                                                                    @if(substr($key , 0,4) == 'seat')
+                                                                        <div class='col-lg-6'>
+                                                                            <input class='form-control seats-input'
+                                                                                   value='{{$value}}' autocomplete='off'
+                                                                                   name='seats' type='number'>
+                                                                        </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type='button' onclick="saveOfflineData(this)"
+                            class='add-but btn-block btn  btn-primary'>Save
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @stop
 
 @push('after-scripts')
     <script>
 
         $(document).ready(function () {
+
+            $('.date-input').datepicker({
+                autoclose: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
+            });
             $('#start_date').datepicker({
                 autoclose: true,
                 dateFormat: "{{ config('app.date_format_js') }}"
@@ -824,15 +908,6 @@
 
 
         });
-        // $(document).on('change', 'input[type="file"]', function () {
-        //     var $this = $(this);
-        //     $(this.files).each(function (key, value) {
-        //         if (value.size > 50000000) {
-        //             alert('"' + value.name + '"' + 'exceeds limit of maximum file upload size')
-        //             $this.val("");
-        //         }
-        //     })
-        // });
 
         $(document).ready(function () {
             $(document).on('click', '.delete', function (e) {
@@ -975,7 +1050,8 @@
 
     <script src="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
     <script type="text/javascript" src="{{asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/vendor/unisharp/laravel-ckeditor/adapters/jquery.js')}}"></script>
+    <script type="text/javascript"
+            src="{{asset('/vendor/unisharp/laravel-ckeditor/adapters/jquery.js')}}"></script>
     <script src="{{asset('/vendor/laravel-filemanager/js/lfm.js')}}"></script>
     <script>
         $('.editor').each(function () {
@@ -1018,113 +1094,128 @@
                 $('.video').addClass('d-none').attr('required', false)
             }
         })
+        $('.date-input').datepicker({
+            autoclose: true,
+            dateFormat: "{{ config('app.date_format_js') }}"
+
+        });
         $(document).on('click', '#add-button', function (e) {
-                            e.preventDefault()
-                            var name = 'Booking Date&Time';
-                            var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
-                                "<div class='row'>" +
-                                "<div class='col-lg-10'>" +
-                                "<label for='start_dat' class='control-label'>Start Date (yyyy-mm-dd)</label>" +
-                                "<input class='form-control date-input dat' pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='text'>" +
+            e.preventDefault()
+            var name = 'Booking Date&Time';
+            var html = "<div class='button-wrapper'> <h6 class='mt-3'> " + " <span class='remove'><i class='fa fa-window-close'></i></span></h6>" +
+                "<div class='row'>" +
+                "<div class='col-lg-10'>" +
+                "<label for='start_dat' class='control-label'>Start Date (yyyy-mm-dd)</label>" +
+                "<input class='form-control date-input dat' pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='text'>" +
 
 
-                                "</div>" +
-                                "<div class='col-2 mt-4'>" +
-                                "<button type='button' onclick=\"addInputTime(this)\" class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
-                                "</div>" +
-                                "</div><div class='timepicker'></div>" +
-                                "</div>";
+                "</div>" +
+                "<div class='col-2 mt-4'>" +
+                "<button type='button' onclick=\"addInputTime(this)\" class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>" +
+                "</div>" +
+                "</div><div class='timepicker'></div>" +
+                "</div>";
 
-                            $('.button-container').append(html);
+            $('.button-container').append(html);
+            $('.date-input').datepicker({
+                autoclose: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
 
+            });
+        });
 
-                            $('.date-input').datepicker({
-                                autoclose: true,
-                                dateFormat: "{{ config('app.date_format_js') }}"
+        function addInputTime(elemt) {
+            var name = 'Booking Date&Time';
+            var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
+                "<div class='row mt-3'>" +
+                "<div class='col-lg-12'>" +
+                "<div class='row'>" +
+                "<div class='col-lg-6'>" +
+                "<input class='form-control time-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='time'>" +
+                "</div>" +
+                "<div class='col-lg-6'>" +
+                "<input class='form-control seats-input' placeholder='seats' autocomplete='off' name='seats' type='number'>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+            // $(this).parent('.button-container')
+            $(elemt).parent().parent().next('.timepicker').append(html);
+            $('.date-input').datepicker({
+                autoclose: true,
+                dateFormat: "{{ config('app.date_format_js') }}"
 
-                            });
-                        });
-                        function addInputTime(elemt) {
-                            var name = 'Booking Date&Time';
-                            var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
-                                "<div class='row mt-3'>" +
-                                "<div class='col-lg-12'>" +
-                                "<div class='row'>"+
-                                    "<div class='col-lg-6'>" +
-                                "<input class='form-control time-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='time'>" +
-                                "</div>" +
-                            "<div class='col-lg-6'>" +
-                                "<input class='form-control seats-input' placeholder='seats' autocomplete='off' name='seats' type='number'>" +
-                                
-                                "</div>" +
-                                
-                            "</div>" +
-                                "</div>" +
-                                "</div>" +
-                                "</div>";
-                            // $(this).parent('.button-container')
-                            $(elemt).parent().parent().next('.timepicker').append(html);
+            });
 
-                            $('.date-input').datepicker({
-                                autoclose: true,
-                                dateFormat: "{{ config('app.date_format_js') }}"
+        }
 
-                            });
-                        }
-                        $(document).on('click', '.remove', function () {
-                            if (confirm('Are you sure want to remove button?')) {
-                                $(this).parents('.button-wrapper').remove();
-                                $('#buttons').val($('.button-wrapper').length)
-                            }
-                        });
+        $(document).on('click', '.remove', function () {
+            if (confirm('Are you sure want to remove button?')) {
+                $(this).parents('.button-wrapper').remove();
+                $('#buttons').val($('.button-wrapper').length)
+            }
+        });
 
-                        function saveOfflineData(element) {
-                            var arrObj = [];
-                          var button_wrapper = $(element).parent().parent().find('.button-wrapper');
-                          button_wrapper.each(function(key,value){
-                             
-                             var date_input = $(value).find('.date-input').val();
-                             var time_input = $(value).find('.time-input');
-                             var seats = $(value).find('.seats-input');
-                    
-                             var obj = {
-                                 'date':date_input
-                             };
-                             time_input.each(function(key,value) {
-                                 obj['time-'+key] = $(value).val();
-                                 obj['seats-'+key] = $(seats[key]).val();
-                             }) 
-                             arrObj.push(obj);
-                          })
-                        
-                          $('#offlineData').val(JSON.stringify(arrObj))
-                          $('#academy_id').val($('#selected-academy').val());
-                          $('#offlineDataModal').modal('hide');
-                        }
-                        function toggleOfflineMode() {
-                            if ($('#offline').prop('checked')) {
-                                $('#offlineDataModal').modal();
-                                $("#selected-academy").select2({
-                                    placeholder: "{{trans('labels.backend.courses.select_academies')}}",
-                                });
-                                $('.academy').removeClass('d-none');
-                                $('#selected-academy').next('span').show();
-                                 $('#selected-academy').next('span').show();
-                            } else {
-                                $('.academy').addClass('d-none');
-                                $('#selected-academy').next('span').hide();
-                                $('.academy input').each(function (key, value) {
-                                    $(value).val('');
-                                });
-                                $('.academy select').each(function (key, value) {
-                                    // $(value).val('');
-                                    // if ($(value).select2()) {
-                                    // $(value).select2('destroy');
-                                    // }
-                                })
-                            }
-                        }
-                        // toggleOfflineMode(); 
+        $(document).on('click', '.removeTime', function () {
+            if (confirm('Are you sure want to remove button?')) {
+                console.log($(this).parent().find('.timeRemove')[0])
+                $(this).parent().find('.timeRemove')[0].remove();
+                $(this).remove();
+                $('#buttons').val($('.timeRemove').length)
+            }
+        });
+
+        function saveOfflineData(element) {
+            var arrObj = [];
+            var button_wrapper = $(element).parent().parent().find('.button-wrapper');
+            button_wrapper.each(function (key, value) {
+
+                var date_input = $(value).find('.date-input').val();
+                //  console.log(date_input) ;
+                var time_input = $(value).find('.time-input');
+                var seats = $(value).find('.seats-input');
+
+                var obj = {
+                    'date': date_input
+                };
+                time_input.each(function (key, value) {
+                    obj['time-' + key] = $(value).val();
+                    obj['seats-' + key] = $(seats[key]).val();
+                })
+                arrObj.push(obj);
+            })
+
+            $('#offlineData').val(JSON.stringify(arrObj))
+            $('#academy_id').val($('#selected-academy').val());
+            $('#offlineDataModal').modal('hide');
+        }
+
+        function toggleOfflineMode() {
+            if ($('#offline').prop('checked')) {
+                $('#offlineDataModal').modal();
+                $("#selected-academy").select2({
+                    placeholder: "{{trans('labels.backend.courses.select_academies')}}",
+                });
+                $('.academy').removeClass('d-none');
+                $('#selected-academy').next('span').show();
+                $('#selected-academy').next('span').show();
+            } else {
+                $('.academy').addClass('d-none');
+                $('#selected-academy').next('span').hide();
+                $('.academy input').each(function (key, value) {
+                    //$(value).val('');
+                });
+                $('.academy select').each(function (key, value) {
+                    // $(value).val('');
+                    // if ($(value).select2()) {
+                    // $(value).select2('destroy');
+                    // }
+                })
+            }
+        }
+
+        // toggleOfflineMode();
 
     </script>
 @endpush
