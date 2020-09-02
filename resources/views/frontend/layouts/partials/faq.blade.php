@@ -5,8 +5,26 @@
             <h4 class="title">@lang('labels.frontend.layouts.partials.faq_full')</h4>
         </div>
         @if(count($faqs)> 0)
+                    <div class="owl-carousel custom-owl-theme d-sm-block d-lg-none"> 
+                        @foreach($faqs as $key=>$faq)
+                        
+                            <div class="faq-tab-ques ul-li" style="text-align: center; margin-left: 35px; margin-top:50px;">
 
-            <div class="faq-tab text-center">
+                                <div class="tab-button pt-5 mb65 ">
+
+                                    <ul class="product-tab">
+                                        <div class="item ml-lg-5">
+                                                <li rel="tab{{$faq->id}}">{{$faq->name}}</li>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+            <div class="faq-tab text-center d-sm-none d-lg-block">
                 <div class="faq-tab-ques ul-li">
                     <div class="tab-button pt-5 mb65 ">
                         <ul class="product-tab">
