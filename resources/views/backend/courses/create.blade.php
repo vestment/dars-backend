@@ -82,13 +82,13 @@
                                 <div class="col-6 col-lg-6 form-group">
 
                                     {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
-                                    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title')]) !!}
+                                    {!! Form::text('title', old('title'), [ 'maxlength' => 35 , 'class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title')]) !!}
                                 </div>
 
                                 <div class="col-6 col-lg-6 form-group">
                                     {!! Form::label('title', trans('labels.backend.courses.fields.title_ar').' *', ['class' => 'control-label']) !!}
 
-                                    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
+                                    {!! Form::text('title_ar', old('title_ar'), ['maxlength' => 35 , 'class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
                                 </div>
                             </div>
 

@@ -98,11 +98,13 @@
                         @php
                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                         @endphp
+                    @if($teacherProfile)
                         <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
                         <div class="col-lg-5 col-sm-3 mt-3">
                             <p class="text-white font12">{{$teacher->full_name}}</p>
                             <p class="text-white font10">{{$teacherProfile->getDataFromColumn('description')}}</p>
                         </div>
+                        @endif
                     @endforeach
 
 
@@ -493,11 +495,13 @@
                                         @php
                                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                                         @endphp
+                                        @if($teacherProfile)
                                         <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
                                         <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
                                             <p class="font12">{{$teacher->full_name}}</p>
                                             <p class="font10">{{$teacherProfile->description}}</p>
                                         </div>
+                                        @endif
                                     @endforeach
                                 </div>
 
@@ -746,6 +750,7 @@
                 @php
                     $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                 @endphp
+                @if($teacherProfile)
                 <div class="row" data-id="{{$teacher->id}}">
 
                     <div class="col-lg-1 col-md-2 col-sm-3">
@@ -765,6 +770,7 @@
                         <p>{{$teacherProfile->getDataFromColumn('description')}}</p>
                     </div>
                 </div>
+                @endif
             @endforeach
         </div>
     </section>

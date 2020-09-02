@@ -186,9 +186,8 @@ Route::post('certificate-verification','Backend\CertificateController@verifyCert
 Route::get('certificates/download', ['uses' => 'Backend\CertificateController@download', 'as' => 'certificates.download']);
 
 
-if(config('show_offers') == 1){
-    Route::get('offers',['uses' => 'CartController@getOffers', 'as' => 'frontend.offers']);
-}
+Route::get('offers',['uses' => 'CartController@getOffers', 'as' => 'frontend.offers']);
+
 
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
     Route::get('/{page?}', [HomeController::class, 'index'])->name('index');

@@ -63,7 +63,6 @@ body {
     overflow-x: hidden;
     font-size: 16px;
     line-height: 1.4;
-    direction: rtl;
     color: #777777;
     font-family: Cairo;
     -webkit-font-smoothing: antialiased;
@@ -1352,9 +1351,7 @@ button.alt-menu-btn.float-left {
     transform: translateY(-50%);
 }
 
-.slider-text .section-title {
-    width: 70%;
-}
+
 
 .slider-text .section-title h2 {
     font-size: 60px;
@@ -1426,6 +1423,12 @@ button.alt-menu-btn.float-left {
 
 #slider-item .scound-slide {
     font-size: 70px;
+}
+#search-course{
+    direction: rtl;
+}
+.iconss{
+    width: 100% !important;
 }
 
 #slider-item .search-course {
@@ -1717,7 +1720,7 @@ button.alt-menu-btn.float-left {
 .counter-number p {
     font-size: 14px;
     font-weight: 700;
-    font-color: #989898;
+    color: #989898;
 }
 
 .counter-number .counter-count,
@@ -2955,7 +2958,7 @@ button.alt-menu-btn.float-left {
 }
 
 ul.product-tab li {
-    direction: none;
+    direction: unset;
     display: inline;
 }
 
@@ -6225,7 +6228,7 @@ ul.product-tab li.active:after {
     width: 20%;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width:1200px) {
     #search-course .search-group select {
         width: 35%;
         font-size: 12px;
@@ -6567,6 +6570,7 @@ ul.product-tab li.active:after {
     cursor: pointer;
 
 }
+
 
 .pricebottom {
     bottom: 10px;
@@ -7059,6 +7063,9 @@ hr {
 .tx-fnt {
     font-size: 22px;
 }
+.cont{
+    float:right;
+}
 
 
 .custom-tabs .nav-link {
@@ -7240,7 +7247,7 @@ hr {
     border-right: 1px solid #cecece;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .hero-section .nav .nav-item:not(.nav-title) {
         flex: 0 0 50%;
         min-width: 50%;

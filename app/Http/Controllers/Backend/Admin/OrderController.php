@@ -36,7 +36,9 @@ class OrderController extends Controller
      */
     public function getData(Request $request)
     {
+        //dd($request) ; 
 
+        
         if (auth()->user()->hasRole('academy')) {
             $academy = auth()->user()->academy()->with('teachers')->first();
             $teachers = $academy->teachers()->with('teacher')->pluck('user_id');
@@ -53,14 +55,20 @@ class OrderController extends Controller
                     $query->whereIn('item_id', $courses)->where('item_type',Course::class);
                 })->orderBy('updated_at', 'desc')->get();
             }
-        } else {
+        } else if(auth()->user()->hasRole('parent')){
+            $students  = auth()->user()->students()->pluck('id');
+            $orders = Order::whereIn('user_id' , $students )->get(); 
+            //$coursesCollection = $students->courses() ; 
+            // dd($orders[0]->items) ;  
+        }   
+        else{
             if (request('offline_requests') == 1) {
                 $orders = Order::where('payment_type', '=', 3)->orderBy('updated_at', 'desc')->get();
             } else {
                 $orders = Order::orderBy('updated_at', 'desc')->get();
             }
         }
-
+        
         return DataTables::of($orders)
             ->addIndexColumn()
             ->addColumn('actions', function ($q) use ($request) {
@@ -142,7 +150,7 @@ class OrderController extends Controller
 
         if ($course->offline) {
             $date = $course->date ? json_decode(json_decode($course->date),true) : null;
-            // dd($date);
+            if($date) {
             if(array_search($orderItem->selectedDate,array_column($date, 'date'))) {
                 $selectDate= $date[array_search($orderItem->selectedDate,array_column($date, 'date'))];
                 foreach($selectDate as $key=>$value) {
@@ -156,6 +164,7 @@ class OrderController extends Controller
                 }
                 }
             }
+        }
         }
 
         $course->save();

@@ -307,11 +307,19 @@
                                     <div class="alert alert-info">
                                         <p>@lang('labels.frontend.course.your_test_score')</p>
                                         @foreach($prevTests as $prevTest)
-                                            <p>Attempt ({{$prevTest->attempts}}) : {{ $prevTest->test_result }} </p>
+                                            <p>Attempt ({{$prevTest->attempts}}) : {{ $prevTest->test_result }}
+                                                / {{$questionsToAnswer->sum('score')}}
+                                                @if ($prevTest->test_result < $prevTest->test->min_grade)
+                                                    <span class="ml-2 text-danger">
+                                                    You need min ({{$prevTest->test->min_grade}}) points to pass this test
+                                                </span>
+                                                @endif
+                                            </p>
+
                                         @endforeach
                                     </div>
-                                    @if(config('retest'))
-                                        @if(session()->get('test_attempts')  < 3)
+                                    @if(config('retest') && $canReTest)
+                                        @if(session()->get('test_attempts')  < 3 || $latestTest->attempts <3)
                                             @if (!session()->get('reTest'))
                                                 <form action="{{route('lessons.retest',[$latestTest->test->slug])}}"
                                                       method="post">
@@ -484,28 +492,28 @@
                                     </div>
                                 </div>
                                 @if(count($notes) > 0)
-                                <div class="container my-5">
-                                    <h3 class="my-3 mx-4">Notes</h3>
-                                    <div class="card shadow-c">
+                                    <div class="container my-5">
+                                        <h3 class="my-3 mx-4">Notes</h3>
+                                        <div class="card shadow-c">
 
-                                        <div class="container">
-                                            @foreach($notes as $note)
-                                                <div class="card shadow-c my-5 ">
-                                                    <div class="card-body">
-                                                        {{$note->contentText}}
-                                                        <a class="float-right text-pink "
-                                                           onclick="editnote({{$note->id}})" data-toggle="modal"
-                                                           data-target="#edit-note-modal"><i
-                                                                    class="far fa-edit"></i>
-                                                        </a>
+                                            <div class="container">
+                                                @foreach($notes as $note)
+                                                    <div class="card shadow-c my-5 ">
+                                                        <div class="card-body">
+                                                            {{$note->contentText}}
+                                                            <a class="float-right text-pink "
+                                                               onclick="editnote({{$note->id}})" data-toggle="modal"
+                                                               data-target="#edit-note-modal"><i
+                                                                        class="far fa-edit"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                @endif
-                                <!-- Button trigger modal -->
+                            @endif
+                            <!-- Button trigger modal -->
 
 
                                 <!-- Modal -->
@@ -626,8 +634,10 @@
                                             <div class="card-header" id="headingOne">
                                                 <h2 class="mb-0">
                                                     <button class="btn btn-link btn-block text-left" type="button"
-                                                            data-toggle="collapse" data-target="#chapter-{{ $chapter->id}}"
-                                                            aria-expanded="true" aria-controls="chapter-{{ $chapter->id}}">
+                                                            data-toggle="collapse"
+                                                            data-target="#chapter-{{ $chapter->id}}"
+                                                            aria-expanded="true"
+                                                            aria-controls="chapter-{{ $chapter->id}}">
                                                         {{ $chapter->title}} <i class="fa fa-angle-down float-right"
                                                                                 aria-hidden="true"></i>
                                                     </button>
@@ -663,18 +673,21 @@
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                     <p class="mb-0 mt-1 text-primary test"
+                                                                       style="cursor: pointer;"
                                                                        onclick="startTest(this)"
                                                                        data-test-id="{{$item->model->id}}"
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
                                                                         - @lang('labels.frontend.course.test')
-                                                                        On {{$item->model->title}}</p>
-                                                                @endif
-                                                                @if(!in_array($item->model->id,$completed_lessons))
-                                                                    <i class="fa float-right fa-lock"></i> @endif
-                                                            @else
-                                                                <i class="fa text-success float-right fa-unlock"></i>
-                                                                @endif
+                                                                        On {{$item->model->title}}
+                                                                        @endif
+                                                                        @if(!in_array($item->model->id,$completed_lessons))
+                                                                            <i class="fa text-dark float-right fa-lock"></i>
+                                                                        @else
+                                                                            <i class="fa text-success float-right fa-unlock"></i>
+                                                                        @endif
 
+                                                                    </p>
+                                                                @endif
                                                                 @endforeach
                                                     </div>
                                                 </div>
@@ -804,37 +817,37 @@
             });
         }
 
-        @if($lesson->questions != null )
+        @if($questionsToAnswer != null )
 
-        @if(count($questionsToAnswer) > 0 && (session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest) )
+        {{--        @if(count($questionsToAnswer) > 0 && ((session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest)) )--}}
         $(document).ready(function () {
-            var $countdown = $('#countdown');
-            if (timecomp > 0) {
-                $countdown.show().timeTo(parseInt(timecomp));
+            if (typeof timecomp !== 'undefined') {
+                var $countdown = $('#countdown');
+                if (timecomp > 0) {
+                    $countdown.show().timeTo(parseInt(timecomp));
+                }
+                if (timecomp == 0) {
+                    $countdown.timeTo(parseInt(timecomp),
+                        function () {
+                            $countdown.hide();
+                            $.ajax({
+                                url: "{{route('update.test.available')}}",
+                                method: "POST",
+                                data: {
+                                    "_token": "{{ csrf_token() }}",
+                                    'lesson_slug': slug,
+                                },
+                                success: function (result) {
+                                    console.log(result)
+                                    window.location.href = "{{route('courses.show', [$lesson->course->slug])}}"
+                                }
+                            });
+                        }
+                    )
+                }
             }
-            if (timecomp == 0) {
-                $countdown.timeTo(parseInt(timecomp),
-                    function () {
-                        $countdown.hide();
-                        $.ajax({
-                            url: "{{route('update.test.available')}}",
-                            method: "POST",
-                            data: {
-                                "_token": "{{ csrf_token() }}",
-                                'lesson_slug': slug,
-                            },
-                            success: function (result) {
-                                console.log(result)
-                                window.location.href = "{{route('courses.show', [$lesson->course->slug])}}"
-                            }
-                        });
-                    }
-                )
-            }
-            ;
-
         });
-        @endif
+
         @endif
 
 
@@ -849,7 +862,7 @@
             });
 
         });
-                @endif
+        @endif
 
         var storedDuration = 0;
         var storedLesson;
@@ -862,13 +875,13 @@
         }
 
 
-                @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
+        @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
         var current_progress = 0;
 
 
         @if($lesson->mediaVideo->getProgress(auth()->user()->id) != "")
             current_progress = "{{$lesson->mediaVideo->getProgress(auth()->user()->id)->progress}}";
-                @endif
+        @endif
 
 
 
