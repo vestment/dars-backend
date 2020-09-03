@@ -121,13 +121,13 @@
                                 <div class="col-6 col-lg-6 form-group">
 
                                     {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
-                                    {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title')]) !!}
+                                    {!! Form::text('title', old('title'), ['maxlength' => 35 ,'class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title')]) !!}
                                 </div>
 
                                 <div class="col-6 col-lg-6 form-group">
                                     {!! Form::label('title', trans('labels.backend.courses.fields.title_ar').' *', ['class' => 'control-label']) !!}
 
-                                    {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
+                                    {!! Form::text('title_ar', old('title_ar'), ['maxlength' => 35 , 'class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title_ar')]) !!}
                                 </div>
                             </div>
 
@@ -406,8 +406,7 @@
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                <ul class="menu-item-transport sort_seq"
-                                                                                                                    data-sadf="{{$lessons[0]->model_id}}">
+                                                                                                                <ul class="menu-item-transport sort_seq">
                                                                                                                     @foreach($lessons as $lesson)
                                                                                                                         @if ($lesson->model_type == \App\Models\Lesson::class)
                                                                                                                         @php
@@ -430,6 +429,7 @@
                                                                                                                                 </div>
                                                                                                                             </dl>
                                                                                                                         </li>
+                                                                                                                    @endif
                                                                                                                     @endif
                                                                                                                     @endforeach
                                                                                                                 </ul>
@@ -564,7 +564,7 @@
 
                                                 {!! Form::text('video', null, ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
 
-                                                {!! Form::select('video_file', $videos, null, ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
+                                                {!! Form::select('video_file', $notSelectedVideos, null, ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
 
                                                 <div class="mt-2">
                                                     @lang('labels.backend.lessons.video_guide')

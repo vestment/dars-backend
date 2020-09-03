@@ -133,6 +133,7 @@ img {
 
 section {
     overflow: hidden;
+    direction: rtl;
     text-align: right;
 }
 
@@ -887,11 +888,11 @@ h6 {
     margin: 12.75rem auto;
 }
 
-.modal-header {
-    padding: 0;
-    position: relative;
-    background-image: url(/images/pb.jpg?778942a2fa506db8b32539e0ab3aa018);
-}
+/*.modal-header {*/
+/*    padding: 0;*/
+/*    position: relative;*/
+/*    background-image: url(/images/pb.jpg?778942a2fa506db8b32539e0ab3aa018);*/
+/*}*/
 
 .modal-header .gradient-bg,
 .modal-header .modal-body .nws-button button,
@@ -1432,7 +1433,7 @@ button.alt-menu-btn.float-left {
     direction: rtl;
 }
 .iconss{
-    width: 100% !important;
+    width: auto !important;
 }
 
 #slider-item .search-course {

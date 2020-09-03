@@ -46,7 +46,7 @@ $(document).on('click', '#btn-submit', function (e) {
 
         var dataJson_ar = {};
         var hero_text_ar = $('input[name="ar_content[hero_text]"]').val()
-        var sub_text_ar = $('input[name="ar_content[sub_text]"]').val()
+        var sub_text_ar = $('input[name="sub_text_ar"]').val()
 
         dataJson_ar.hero_text =  hero_text_ar;
         dataJson_ar.sub_text=  sub_text_ar;

@@ -154,6 +154,7 @@ class LessonsController extends Controller
         $chapters = Chapter::with('course')->get();
         $allChapters = [];
         $videos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
+
         foreach ($chapters as $key => $chapter) {
             $allChapters[$chapter->id] = $chapter->getDataFromColumn('title') . ' - ' . $chapter->course->getDataFromColumn('title');
         }

@@ -57,14 +57,6 @@
    .bg-pink{
    background-color:var(--pink);
    }
-   .btn-pin{
-    background-color: var(--pink);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    padding: 4%;
-    width: 25%;
-   }
    .round{
    }
    .icon{
@@ -229,11 +221,11 @@
                                               </div>
                                            <div class="row m-1">
                                                  <div class="col-3 p-0 pl-1  ">
-                                                 {{ $item->progress()}} %
+                                                 {{ $item->progress($student)}} %
                                                  </div>
                                                  <div class="progresss  mt-2 col-9">
                                                  <div class="progress-bar"
-                                                    style="width:{{$item->progress() }}%">
+                                                    style="width:{{$item->progress($student) }}%">
                                                  </div>
                                                  </div>     
                                            </div>
@@ -295,16 +287,8 @@
                                @endforeach
                           
                             @endif --}}
-                         </div>   
-                    @endforeach
-                @else
-                    <div class="col-12 text-center">
-                        <h4 class="text-center">@lang('labels.backend.dashboard.no_data')</h4>
-                        <a class="btn btn-primary"
-                           href="{{route('courses.all')}}">@lang('labels.backend.dashboard.buy_course_now')
-                            <i class="fa fa-arrow-right"></i></a>
-                    </div>
-                @endif
+                         </div>
+
             </div>
         </div>
     </div>
@@ -325,7 +309,7 @@
                                <th>@lang('labels.backend.dashboard.results')</th>
                            </thead>
                            <tbody id="chaptersTable">
-                              
+
                            </tbody>
                        </table>
                     </div>
@@ -345,7 +329,7 @@
                 success: function (result) {
                     $('#chaptersTable').html('');
                  $(result).each(function (key,value){
-                   
+
                     var resultsTD = '';
                      $(value.chapter.test.results).each(function(key,value){
                         resultsTD = resultsTD.concat('<p>@lang('labels.backend.dashboard.attempt') ( '+value.attempts+' ) : '+value.test_result+'</p>');

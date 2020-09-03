@@ -9,7 +9,7 @@
         <div class="container">
             <div class="footer-content pb10 footerHidden">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-@if($footer_data->section1->status == 1) 4 @else 12 @endif fot-1">
                         <div class="footer-widget ">
                             <div class="footer-logo mb35">
                             <img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
@@ -24,10 +24,11 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <div class="row">
+                    @if($footer_data->section1->status == 1)
+                    <div class="col-md-8 fot-2">
+                        <div class="row fot-2-1">
 
-                        @if($footer_data->section1->status == 1)
+                        
                                 @php
                                     $section_data = section_filter($footer_data->section1)
                                 @endphp
@@ -49,11 +50,12 @@
                                 @endphp
 
                                 @include('frontend.layouts.partials.footer_section',['section_data' => $section_data])
-                        @endif
+                      
 
 
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
             <!-- /footer-widget-content -->
@@ -79,6 +81,7 @@
                             <div class="subscribe-form ml-0 footersec">
                                 <div class="container my-4">
                                     <form action="{{route('subscribe')}}" method="post" class=" subs-form">
+                                        @csrf
                                         <div class="row">
 
                                             <div class="col-sm-9">
