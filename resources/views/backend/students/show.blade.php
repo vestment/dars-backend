@@ -222,8 +222,8 @@
                                         <div class="card-body">
                                               <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
                                               <div class="row p-4">
-                                                <button type="submit" class="btn-pin"  onclick="courseChapters({{$item->id}})" data-toggle="modal"
-                                                    data-target="#shareModal"><i class="fas fa-graduation-cap d-block"></i>
+                                                <button type="submit" class="btn-info btn"  onclick="courseChapters({{$item->id}})" data-toggle="modal"
+                                                    data-target="#shareModal"><i class="fas fa-graduation-cap"></i>
                                                 @lang('labels.backend.dashboard.grades')
                                             </button>
                                               </div>
@@ -315,14 +315,14 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                       <h4>Chapters</h4>
+                       <h4>@lang('labels.backend.dashboard.chapters')</h4>
                     </div>
                     <div class="modal-body">
                        <table>
                            <thead>
-                               <th>Chapter</th>
-                               <th>Test</th>
-                               <th>Results</th>
+                               <th>@lang('labels.backend.dashboard.chapters')</th>
+                               <th>@lang('labels.backend.dashboard.test')</th>
+                               <th>@lang('labels.backend.dashboard.results')</th>
                            </thead>
                            <tbody id="chaptersTable">
                               
@@ -331,7 +331,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
 @stop
 <script>
          function courseChapters(id) {
@@ -348,7 +348,7 @@
                    
                     var resultsTD = '';
                      $(value.chapter.test.results).each(function(key,value){
-                        resultsTD = resultsTD.concat('<p>Attempt ( '+value.attempts+' ) : '+value.test_result+'</p>');
+                        resultsTD = resultsTD.concat('<p>@lang('labels.backend.dashboard.attempt') ( '+value.attempts+' ) : '+value.test_result+'</p>');
                      })
                      var trElem = '<tr><td>'+value.chapter.title+'</td><td>'+value.chapter.test.title+'</td><td>'+resultsTD+'</td></tr>'
                      $('#chaptersTable').append(trElem)
