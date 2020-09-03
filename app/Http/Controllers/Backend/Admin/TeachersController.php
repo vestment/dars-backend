@@ -13,6 +13,7 @@ use App\academy;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\DataTables;
 
@@ -185,7 +186,7 @@ class TeachersController extends Controller
      */
     public function create()
     {
-        $academies = \App\Models\Auth\User::whereHas('roles', function ($q) {
+        $academies = User::whereHas('roles', function ($q) {
             $q->where('role_id', 5);
         })->get()->pluck('name', 'id');
 
@@ -201,8 +202,14 @@ class TeachersController extends Controller
      */
     public function store(StoreTeachersRequest $request)
     {
-        $request = $this->saveAvatar($request);
-//        dd($request->all());
+        $validator = Validator::make(Input::all(), [
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+        ]);
+        if ($validator->passes()) {
+            $request = $this->saveAvatar($request);
+
         $teacher = User::create($request->all());
         $teacher->confirmed = 1;
         $teacher->active = isset($request->active) ? 1 : 0;
@@ -242,8 +249,9 @@ class TeachersController extends Controller
             'academy_id' => $academy_id,
         ];
         TeacherProfile::create($data);
-
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.created'));
+        }
+        return back()->with(['errors'=>$validator->errors()]);
     }
 
 

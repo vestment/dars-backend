@@ -11,6 +11,7 @@ use App\Models\Chapter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\DataTables;
 
 class StudentsController extends Controller
@@ -57,15 +58,22 @@ class StudentsController extends Controller
      */
     public function store(Request $request)
     {
-        $request = $this->saveAvatar($request);
-        $student = User::create($request->all());
-        $student->assignRole('student');
-        $student->confirmed = 1;
-        $student->active = isset($request->active) ? 1 : 0;
-        $student->save();
-        $student->parents()->sync(auth()->user());
-
-        return redirect()->route('admin.students.index')->withFlashSuccess(trans('alerts.backend.general.created'));
+        $validator = Validator::make(Input::all(), [
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+        ]);
+        if ($validator->passes()) {
+            $request = $this->saveAvatar($request);
+            $student = User::create($request->all());
+            $student->assignRole('student');
+            $student->confirmed = 1;
+            $student->active = isset($request->active) ? 1 : 0;
+            $student->save();
+            $student->parents()->sync(auth()->user());
+            return redirect()->route('admin.students.index')->withFlashSuccess(trans('alerts.backend.general.created'));
+        }
+        return back()->with(['errors'=>$validator->errors()]);
     }
 
     public function getData(Request $request)
