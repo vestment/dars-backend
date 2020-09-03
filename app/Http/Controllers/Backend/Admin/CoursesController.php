@@ -644,17 +644,16 @@ class CoursesController extends Controller
     public function saveSequence(Request $request)
     {
 
-        dd($request->all());
-
+    
+//    dd($request->all());
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
-        return $request->list;
+       
         foreach ($request->list as $item) {
             // dd($item);
 
-            $courseTimeline = CourseTimeline::where('model_id',$item['id'])->first();
-            // dd($courseTimeline);
+            $courseTimeline = CourseTimeline::where('id',$item['id'])->first();
             $courseTimeline->sequence = $item['sequence'];
             $courseTimeline->save();
         }

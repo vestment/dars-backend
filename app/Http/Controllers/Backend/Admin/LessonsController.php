@@ -252,14 +252,14 @@ class LessonsController extends Controller
             $lesson->save();
         }
 
-// dd($request->all());
+            // dd($request->all());
 
-// $chapterSeq = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
+            // $chapterSeq = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
         $sequence = 1;
         if (count($lesson->course->courseTimeline) > 0) {
 
-            // $sequence = $lesson->course->courseTimeline->max('sequence');
-            $sequence = CourseTimeline::where('model_id', $request->chapter_id)->value('sequence');
+            $sequence = $lesson->course->courseTimeline->max('sequence');
+            // $sequence = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
 
             $sequence = $sequence + 1;
         }

@@ -125,6 +125,14 @@
                            </th>
                            <th>@lang('labels.backend.orders.fields.payment_status.title')</th>
                            <th>@lang('labels.backend.orders.fields.date')</th>
+                           <th>@lang('labels.backend.orders.fields.fawry_status')</th>
+                           <th>@lang('labels.backend.orders.fields.fawry_ref_no')</th>
+                           <th>@lang('labels.backend.orders.fields.fawry_expirationTime')</th>
+                           <th></th>
+
+
+
+                          
                         </tr>
                      </thead>
                      <tbody>
@@ -159,6 +167,18 @@
                            </td>
                            <td>
                               {{$item->created_at->format('d-m-Y h:i:s')}}
+                           </td>
+                           <td>
+                              {{$item->fawry_status}}
+                           </td>
+                           <td>
+                              {{$item->fawry_ref_no}}
+                           </td>
+                           <td>
+                              {{$item->fawry_expirationTime}}
+                           </td>
+                           <td>
+                              <button class="btn btn-danger" onclick="cancleRequest({{$item->id}})"> Cancle Request </button>
                            </td>
                         </tr>
                         @endforeach
@@ -715,7 +735,7 @@
    <div class="col-12">
       <h1>@lang('labels.backend.dashboard.title')</h1>
    </div>
-   @endif
+@endif
                      </div>
    
 
@@ -749,6 +769,30 @@
       </div>
 </div>
 @endsection
+
+
+<script>
+   function cancleRequest(id) {
+
+console.log(id);
+
+
+            $.ajax({
+                url: "{{route('order.cancleRequest')}}",
+                method: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'order_id': parseInt(id),
+                    
+                },
+            });
+
+            location.reload();
+
+
+        }
+
+</script>
 <script>
       function courseChapters(id) {
          $.ajax({

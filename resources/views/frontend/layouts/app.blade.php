@@ -105,6 +105,14 @@
                                             </a>
                                         </li>
                                     @endif
+                                    <div class="search-form">
+            <form action="{{route('search')}}" method="get">
+                <div class="search-bar">
+                    <input autocomplete="off" class="input-text course" name="q" type="text"
+                           placeholder="@lang('labels.frontend.home.search_course_placeholder')">
+                </div>
+            </form>
+        </div>
 
                                     @if(auth()->check())
                                         <img src="{{ $logged_in_user->picture}}" class="img-avatar" alt="{{ $logged_in_user->full_name }}">
@@ -190,9 +198,12 @@
 
                                                 <li class="">
                                                     <a href="{{asset($menu->link)}}"
-                                                       class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
+                                                       class="nav-link @if($menu->label == 'courses') d-lg-none @endif {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
                                                        id="menu-{{$menu->id}}">@if($menu->label == '911') <img style=" width: 32px;" src="{{asset('WhatsApp Image 2020-08-30 at 11.49.37 AM.jpeg')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
                                                 </li>
+                                                
+                                               
+
 
                                             @else
                                                 <li class="menu-item-has-children ul-li-block">
@@ -235,10 +246,11 @@
                                             @else
                                             
                                                 <li class="">
-                                                    <a href="{{asset($menu->link)}}"
-                                                       class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
+                                                    <a href="{{asset($menu->link)}}" data-label="{{$menu->label}}"
+                                                       class="nav-link @if($menu->label == 'courses') d-lg-none @endif {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
                                                        id="menu-{{$menu->id}}" data-label="{{$menu->label}}">@if($menu->label == 911) <img src="{{asset('WhatsApp Image 2020-08-30 at 11.49.37 AM.jpeg')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
                                                 </li>
+                                              
                                             @endif
 
                                         @endif
@@ -303,14 +315,7 @@
             </div>
 
         </div>
-        <div class="search-form">
-            <form action="{{route('search')}}" method="get">
-                <div class="search-bar">
-                    <input autocomplete="off" class="input-text course" name="q" type="text"
-                           placeholder="@lang('labels.frontend.home.search_course_placeholder')">
-                </div>
-            </form>
-        </div>
+        
     </header>
     <!-- Start of Header section
         ============================================= -->

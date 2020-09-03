@@ -27,6 +27,18 @@
         .test-form {
             color: #333333;
         }
+        .progress {
+   background-color: #b6b9bb;
+   height: 6px;
+   font-weight: bold;
+   font-size: 0.8rem;
+   padding : 0px !important;
+   }
+  
+   .progress-bar{
+   height: 6px !important;
+   background-color:  #D2498B;
+   }
 
         .course-details-category ul li {
             width: 100%;
@@ -231,6 +243,17 @@
         <div class="container-fluid">
             <div class="row main-content">
                 <div class="col-md-9">
+                    <div class="row mb-5 ">
+                            <div class="col-2 text-right ">
+                            {{ $lesson->course->progress()}} %
+                            </div>
+                            <div class="progress  col-9">
+                                <div class="progress-bar"
+                                style="width:{{ $lesson->course->progress() }}%">
+                                </div>
+                            </div>     
+                    </div>
+   
                     @if(session()->has('success'))
                         <div class="alert alert-dismissable alert-success fade show">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -534,6 +557,8 @@
                                     @endif
                                 @endif
                             </p>
+                          
+                   
                             @if($lesson->course->progress() == 100)
                                 @if(!$lesson->course->isUserCertified())
                                     <form method="post" action="{{route('admin.certificates.generate')}}">

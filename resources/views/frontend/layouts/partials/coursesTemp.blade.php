@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="course-rate ul-li pb-1">
-                    <ul>
+                    <ul data-rate="{{$course->rating}}">
                         @for ($i=0; $i<5; ++$i)
                             <li>
                                 <i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}"

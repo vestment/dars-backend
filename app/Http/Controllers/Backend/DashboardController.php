@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
@@ -139,5 +140,20 @@ class DashboardController extends Controller
         }
 
         return view('backend.dashboard', compact('parent', 'purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
+    }
+
+    public function cancleRequest(Request $request){
+
+        $order = Order::findOrfail($request->order_id);
+        $order->delete();
+
+
+        return ("deleted");       
+
+
+        // dd($request->all());
+
+
+
     }
 }

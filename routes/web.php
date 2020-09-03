@@ -119,6 +119,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('lesson/note/edit', 'LessonsController@editNotes')->name('editnote');
     Route::post('lesson/note/update', 'LessonsController@updateNotes')->name('update.note');
 
+    Route::post('order/cancelRequest', 'backend\DashboardController@cancleRequest')->name('order.cancleRequest');
+
+
 
 
     Route::post('ajax/request', 'LessonsController@availablityUpdate')->name('update.test.available');

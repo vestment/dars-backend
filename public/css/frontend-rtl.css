@@ -5304,8 +5304,8 @@ ul.product-tab li.active:after {
 .course-page-section .course-list-img {
     height: 70px;
     width: 70px;
-    float: left;
-    margin-right: 20px;
+    /* float: left; */
+    margin-left: 20px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -5315,8 +5315,12 @@ ul.product-tab li.active:after {
 .course-page-section .course-list-text {
     /* width: 200px; */
     display: inline-block;
+    float: left;
 }
-
+.course-list-img-text
+{
+    display: flex;
+}
 .course-page-section .course-list-text h3 {
     font-size: 13px;
     font-weight: 700;
@@ -7424,19 +7428,7 @@ hr {
     top: 11% !important;
 }
 
-.search-form.active {
-    -webkit-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    display: block;
-    position: fixed;
-    top: 9%;
-    left: 0;
-    z-index: 2;
-    background-color: #fff;
-    margin-left: 6rem;
-    padding: 10px;
-    border-radius: 2px;
-}
+
 
 .search-form {
     display: none;
@@ -7492,6 +7484,15 @@ hr {
     }
 
 }
+.search-bar.active .input-text {
+    max-width: 100%;
+    border: 1px solid #DADCDB;
+    background: #f8f9fa;
+    /* transform: translate3d(85px, 0px, 0); */
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: 4px 5px #e8e8e8;
+}
 
 
 @media (max-width: 768px) {
@@ -7539,6 +7540,38 @@ hr {
 .navbar-brand {
     float: right !important;
 }
+@media (max-width: 1131px) {
+    .search-form.active{
+        top: 17%;
+        left: 11px;
+    z-index: 9;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    display: block;
+    position: fixed;
+    margin-right: 9rem;
+    padding: 10px;
+    border-radius: 2px;
+
+    }
+
+}
+@media (min-width: 1131px) {
+
+.search-form.active {
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    display: block;
+    position: fixed;
+    top: 3%;
+    left: 310px;
+    z-index: 2;
+  
+    margin-right: 9rem;
+    padding: 10px;
+    border-radius: 2px;
+}
+}
 
 
 @media (max-width: 425px) {
@@ -7552,7 +7585,7 @@ hr {
     .navbar-brand img {
         width: 66px;
         margin-top: 12px;
-        margin-left: 155px;
+      
     }
 
     .divloginsearch {

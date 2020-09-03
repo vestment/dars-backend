@@ -403,9 +403,9 @@
                                                                                                                         @endif
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                            </div>
-                                                                                                            <ul class="menu-item-transport sort_seq">
-
+                                                                                                                </div>
+                                                                                                                </li>
+                                                                                      
                                                                                                                 @foreach($lessons as $lesson)
                                                                                                                     @php
                                                                                                                         if($lesson->model_type == \App\Models\Lesson::class) {
@@ -415,6 +415,7 @@
                                                                                                                                 }
                                                                                                                     @endphp
                                                                                                                     @if($lessonData)
+
                                                                                                                         <li id="menu-item-{{$lesson->model_id}}"
                                                                                                                             data-type="{{$lesson->model_type}}"
                                                                                                                             class="menu-item  menu-item-depth-1  menu-item-page menu-item-edit-inactive pending"
@@ -423,9 +424,7 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p data-id="{{$lesson->model_id}}">
-                                                                                                                                            {{$lessonData->title}} | {{$lesson->chapter_id}}
-                                                                                                                                            @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                        <p data-id="{{$lesson->id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
                                                                                                                                                 |
                                                                                                                                                 Test
                                                                                                                                             @endif
@@ -503,13 +502,9 @@
                                                                                                                             </dl>
                                                                                                                         </li>
                                                                                                                     @endif
-                                                                                                                @endforeach
-                                                                                                            </ul>
-
-
-                                                                                                        </li>
+                                                                                                                    @endforeach
+                                                                                                        @endif
                                                                                                     @endif
-                                                                                                @endif
 
                                                                                             @endforeach
                                                                                         @endforeach
@@ -1275,12 +1270,14 @@
             // console.log("dfvgdf");
             e.preventDefault();
             var list = [];
-            $('.sort_seq li').each(function (key, value) {
+            $('.ui-sortable .menu-item-depth-1').each(function (key, value) {
                 key++;
                 var val = $(value).find('p').data('id');
 
                 list.push({id: val, sequence: key});
             });
+
+            console.log(list);
 
             $.ajax({
                 method: 'POST',
@@ -1293,7 +1290,7 @@
                     console.log(resp);
                 }
             }).done(function () {
-                // location.reload();
+                location.reload();
             });
         })
 
