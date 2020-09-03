@@ -406,9 +406,10 @@
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                <ul class="menu-item-transport sort_seq">
-                                                                                                                    @foreach($lessons as $lesson)
-                                                                                                                        @if ($lesson->model_type == \App\Models\Lesson::class)
+                                                                                                                
+                                                                                                            </li>
+                                                                                                            @foreach($lessons as $lesson)
+                                                                                                                        @if ($lesson->model_type == \App\Models\Lesson::class )
                                                                                                                         @php
                                                                                                                                 $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
                                                                                                                         @endphp
@@ -421,7 +422,7 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                        <p data-id="{{$lesson->id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
                                                                                                                                                 |
                                                                                                                                                 Test @endif</p>
                                                                                                                                     </span>
@@ -432,10 +433,6 @@
                                                                                                                     @endif
                                                                                                                     @endif
                                                                                                                     @endforeach
-                                                                                                                </ul>
-
-
-                                                                                                            </li>
                                                                                                         @endif
                                                                                                     @endif
 
@@ -992,12 +989,14 @@
             // console.log("dfvgdf");
             e.preventDefault();
             var list = [];
-            $('.sort_seq li').each(function (key, value) {
+            $('.ui-sortable .menu-item-depth-1').each(function (key, value) {
                 key++;
                 var val = $(value).find('p').data('id');
 
                 list.push({id: val, sequence: key});
             });
+
+            console.log(list);
 
             $.ajax({
                 method: 'POST',
@@ -1010,7 +1009,7 @@
                     console.log(resp);
                 }
             }).done(function () {
-                // location.reload();
+                location.reload();
             });
         })
 

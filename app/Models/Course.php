@@ -209,7 +209,7 @@ class Course extends Model
         if ($student) {
             $completed_lessons = $student->chapters()->where('course_id', $this->id)->pluck('model_id');
         }
-        if ($completed_lessons->count() > 0) {
+        if ($main_chapter_timeline->count() > 0) {
              return intval($completed_lessons->count() / $main_chapter_timeline->count() * 100);
         } else {
             return 0;
