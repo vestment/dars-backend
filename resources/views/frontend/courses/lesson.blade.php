@@ -472,7 +472,7 @@
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
                                             @elseif($lesson->mediavideo->type == 'upload')
                                                 <video poster="" id="player" class="js-player" playsinline controls>
-                                                    <source src="{{$lesson->mediavideo->url}}" type="video/mp4"/>
+                                                    <source src="{{route('videos.stream',['course'=>$lesson->mediavideo->file_name])}}" type="video/mp4"/>
                                                 </video>
                                             @elseif($lesson->mediavideo->type == 'embed')
                                                 {!! $lesson->mediavideo->url !!}

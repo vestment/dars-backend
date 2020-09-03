@@ -717,7 +717,7 @@
                                 </ul>
                             </div>
                             <div class="col-lg-3 col-md-5 col-sm-3 mt-4" style="padding-left: 0px">
-                                <p>{{$review->content}}</p>
+                                <p style="white-space: nowrap;">{{$review->content}}</p>
                             </div>
                         </div>
 

@@ -9,8 +9,14 @@ class StreamController extends Controller
 {
     public function stream($course)
     {
-        $cours = Course::findOrFail($course);
-        $filename = $cours->mediaVideo->url;
+        $cours = Course::find($course);
+        if ($cours) {
+
+            $filename = $cours->mediaVideo->url;
+        }
+        else {
+            $filename = 'storage/uploads/'.$course;
+        }
         $videosDir = public_path();
         if (file_exists($filePath = $videosDir . "/" . $filename)) {
             $stream = new VideoStream($filePath);
@@ -21,7 +27,8 @@ class StreamController extends Controller
         return response("File doesn't exists", 404);
     }
 
-    public function streamer()
+    public
+    function streamer()
     {
         return 'Hello from Streamer Package!';
     }
