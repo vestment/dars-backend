@@ -715,7 +715,7 @@
    <div class="col-12">
       <h1>@lang('labels.backend.dashboard.title')</h1>
    </div>
-   @endif
+@endif
                      </div>
    
 

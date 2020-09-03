@@ -114,17 +114,19 @@
                                                         <h3>
                                                             <a href="{{ route('courses.show', [$course->slug]) }}">{{$course->title}}</a>
                                                         </h3>
-                                                        <div>
-                                                            <img src="storage/uploads/star.png">
-                                                            <img src="storage/uploads/star.png">
-                                                            <img src="storage/uploads/star.png">
-                                                            <img src="storage/uploads/star.png">
-                                                            <img src="storage/uploads/star.png">
+                                                        <div class="course-rate ul-li pb-1" style="font-size: 12px">
+                                                            <ul>
+                                                                @for ($i=0; $i<5; ++$i)
+                                                                    <li>
+                                                                        <i class="fa{{($course->rating<=$i?'r':'s')}} fa-star{{($course->rating==$i+.5?'-half-alt':'')}}"
+                                                                           aria-hidden="true"></i></li>
+                                                                @endfor
+                                                                <li><span class="text-muted">{{number_format($course->rating)}} ({{number_format($course->reviews->count())}})</span>
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                         <div>
-                                                            <small><i class="fas fa-map-marker-alt"></i> cairo |</small>
-                                                            <small><i class="far fa-clock"></i> 10 hours |</small>
-                                                            <small><i class="fab fa-youtube"></i> 10 lecture</small>
+                                                            <i class="far fa-play-circle"></i> {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
                                                         </div>
                                                     </div>
                                                 </div>
