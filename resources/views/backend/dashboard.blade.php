@@ -2,10 +2,20 @@
 @section('title', __('strings.backend.dashboard.title').' | '.app_name())
 @push('after-styles')
 <link rel="stylesheet" href="../../assets/css/course.css"/>
-<link rel="stylesheet" href="../../assets/css/frontend.css"/>
 <style>
    :root{
    --pink:#D2498B;
+   }
+   .modal-degrees th{
+            width: 20%;
+        }
+   .btn-pink{
+    background-color: var(--pink);
+    color: #fff;
+    border: none;
+
+    padding: 4%;
+    width: 25%;
    }
    .best-course-pic-text:before {
     background-image: url(../../images/MIX-SLP8.svg);
@@ -194,9 +204,13 @@
                <div class="card-body">
                      <h3 class="card-title titleofcard">{{$item->getDataFromColumn('title')}}</h3>
                      <div class="row p-4">
-                       <span class="course-author float-right"> {{ $item->count() }}
+                       <span class="course-author float-right col-6"> {{ $item->count() }}
                         @lang('labels.backend.dashboard.course')
                         </span>
+                        <button type="submit" class="btn-info btn col-6"  onclick="courseChapters({{$item->id}})" data-toggle="modal"
+                              data-target="#shareModal"><i class="fas fa-graduation-cap d-block"></i>
+                          @lang('labels.backend.dashboard.grades')
+                      </button>
                      </div>
                   <div class="row m-1">
                         <div class="col-3 p-0 pl-1  ">
@@ -721,7 +735,7 @@
    <div class="col-12">
       <h1>@lang('labels.backend.dashboard.title')</h1>
    </div>
-   @endif
+@endif
                      </div>
    
 
@@ -729,6 +743,31 @@
 <!--card-body-->
 </div><!--card-->
 </div><!--col-->
+
+  <!-- Modal -->
+  <div class="modal fade" id="shareModal" role="dialog">
+      <div class="modal-dialog modal-lg">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                 <h4>@lang('labels.backend.dashboard.chapters')</h4>
+              </div>
+              <div class="modal-body">
+                 <table>
+                     <thead class="modal-degrees">
+                        <th>@lang('labels.backend.dashboard.chapters')</th>
+                        <th>@lang('labels.backend.dashboard.test')</th>
+                        <th>@lang('labels.backend.dashboard.results')</th>
+                     </thead>
+                     <tbody id="chaptersTable">
+                        
+                     </tbody>
+                 </table>
+              </div>
+          </div>
+      </div>
+</div>
 @endsection
 
 
@@ -753,5 +792,28 @@ console.log(id);
 
         }
 
-
+</script>
+<script>
+      function courseChapters(id) {
+         $.ajax({
+             url: "{{route('admin.students.get_chapters')}}",
+             method: "get",
+             data: {
+                 "_token": "{{ csrf_token() }}",
+                 'id': id,
+             },
+             success: function (result) {
+                 $('#chaptersTable').html('');
+              $(result).each(function (key,value){
+                
+                 var resultsTD = '';
+                  $(value.chapter.test.results).each(function(key,value){
+                     resultsTD = resultsTD.concat('<p>@lang('labels.backend.dashboard.attempt') ( '+value.attempts+' ) : '+value.test_result+'</p>');
+                  })
+                  var trElem = '<tr><td>'+value.chapter.title+'</td><td>'+value.chapter.test.title+'</td><td>'+resultsTD+'</td></tr>'
+                  $('#chaptersTable').append(trElem)
+              })
+             }
+         });
+     }
 </script>

@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCoursesRequest;
 use App\Http\Requests\Admin\UpdateCoursesRequest;
 use App\Http\Controllers\Traits\FileUploadTrait;
+use phpDocumentor\Reflection\Types\Null_;
 use Yajra\DataTables\Facades\DataTables;
 
 class CoursesController extends Controller

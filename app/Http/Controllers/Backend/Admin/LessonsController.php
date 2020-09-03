@@ -158,7 +158,7 @@ class LessonsController extends Controller
         foreach ($chapters as $key => $chapter) {
             $allChapters[$chapter->id] = $chapter->getDataFromColumn('title') . ' - ' . $chapter->course->getDataFromColumn('title');
         }
-        return view('backend.lessons.create', compact('videos', 'courses','course_id', 'chapters', 'allChapters'));
+        return view('backend.lessons.create', compact('videos', 'courses', 'course_id', 'chapters', 'allChapters'));
     }
 
     /**
@@ -169,8 +169,8 @@ class LessonsController extends Controller
      */
     public function store(StoreLessonsRequest $request)
     {
-      
-        
+
+
         if (!Gate::allows('lesson_create')) {
             return abort(401);
         }
@@ -279,7 +279,7 @@ class LessonsController extends Controller
             $timeline->save();
         }
 
-        return redirect()->route('admin.courses.edit', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.created'));
+        return redirect()->back()->withFlashSuccess(__('alerts.backend.general.created'));
     }
 
 
@@ -289,29 +289,16 @@ class LessonsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
         if (!Gate::allows('lesson_edit')) {
             return abort(401);
         }
         $videos = [];
-        $allCourses = Course::has('category')->select('title_ar', 'id', 'title')->get();
-        $courses = [];
-        foreach ($allCourses as $key => $course) {
-            $courses[$course->id] = $course->getDataFromColumn('title');
-        }
-        $allchapters = Chapter::select('title_ar', 'id', 'title')->get();
-        $chapters = [];
-        foreach ($allchapters as $key => $chapter) {
-            $chapters[$chapter->id] = $chapter->getDataFromColumn('title');
-        }
-        $lesson = Lesson::with('media')->findOrFail($id);
-        $videos = Media::where('type', 'upload')->whereIn('model_type', [Lesson::class,''])->pluck('file_name', 'id');
-                //        if ($lesson->media) {
-                //            $videos = $lesson->media()->where('media.type', '=', 'YT')->pluck('url')->implode(',');
-                //        }
 
-        return view('backend.lessons.edit', compact('lesson', 'courses', 'videos', 'chapters'));
+        $lesson = Lesson::with('media')->findOrFail($request->id);
+        $videos = Media::where('type', 'upload')->whereIn('model_type', [Lesson::class, ''])->pluck('file_name', 'id');
+        return $lesson;
     }
 
     /**
@@ -327,12 +314,8 @@ class LessonsController extends Controller
             return abort(401);
         }
 
-        $slug = "";
-        if (($request->slug == "") || $request->slug == null) {
-            $slug = str_slug($request->title);
-        } else if ($request->slug != null) {
-            $slug = $request->slug;
-        }
+
+        $slug = str_slug($request->title);
 
         $slug_lesson = Lesson::where('slug', '=', $slug)->where('id', '!=', $id)->first();
         if ($slug_lesson != null) {
@@ -340,7 +323,7 @@ class LessonsController extends Controller
         }
 
         $lesson = Lesson::findOrFail($id);
-        $lesson->update($request->except('downloadable_files', 'lesson_image'));
+        $lesson->update($request->except('downloadable_files', 'lesson_image','course_id','chapter_id'));
         $lesson->slug = $slug;
         $lesson->save();
 
@@ -381,7 +364,7 @@ class LessonsController extends Controller
 
             if ($request->media_type == 'upload') {
                 if ($request->video_file) {
-                    $oldMedia = Media::where('model_id',$id)->where('model_type',$model_type)->first();
+                    $oldMedia = Media::where('model_id', $id)->where('model_type', $model_type)->first();
                     if ($oldMedia) {
                         if ($oldMedia->type == 'upload') {
                             $oldMedia->model_type = '';
@@ -423,11 +406,11 @@ class LessonsController extends Controller
         if ((int)$request->published == 1) {
             $timeline = CourseTimeline::where('model_type', '=', Lesson::class)
                 ->where('model_id', '=', $lesson->id)
-                ->where('course_id', $request->course_id)->first();
+                ->where('course_id', $lesson->course_id)->first();
             if ($timeline == null) {
                 $timeline = new CourseTimeline();
             }
-            $timeline->course_id = $request->course_id;
+            $timeline->course_id = $lesson->course_id;
             $timeline->model_id = $lesson->id;
             $timeline->model_type = Lesson::class;
             $timeline->sequence = $sequence;
@@ -435,7 +418,7 @@ class LessonsController extends Controller
         }
 
 
-        return redirect()->route('admin.lessons.index', ['course_id' => $request->course_id])->withFlashSuccess(__('alerts.backend.general.updated'));
+        return redirect()->back()->withFlashSuccess(__('alerts.backend.general.updated'));
     }
 
 

@@ -121,9 +121,9 @@
                 </div><!--col-->
             </div>
             <div class="row form-group">
-                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text_arabic'))->class('col-md-2 form-control-label')->for('ar_content[sub_text]') }}
+                {{ html()->label(__('labels.backend.hero_slider.fields.sub_text_arabic'))->class('col-md-2 form-control-label')->for('sub_text_ar') }}
                 <div class="col-md-10">
-                    {{ html()->text('ar_content[sub_text]')
+                    {{ html()->text('sub_text_ar')
                         ->class('form-control')
                         ->placeholder(__('labels.backend.hero_slider.fields.sub_text_arabic'))
                          }}

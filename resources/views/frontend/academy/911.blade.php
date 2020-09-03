@@ -48,13 +48,15 @@
     </style>
 @endpush
 @section('content')
-
+@if($academy)
     <!-- Start of breadcrumb section
         ============================================= -->
     <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style  bgimage">
+    
         <div class="blakish-overlay"></div>
             <div class="container d-none">
                 <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
+              
                     <div class="m-1">
                         <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->user->full_name}}</b></p>
 
@@ -221,7 +223,7 @@
         </div>
 
     </section>
-
+    @endif
 @endsection
 
 @push('after-scripts')

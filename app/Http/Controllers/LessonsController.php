@@ -27,6 +27,7 @@ class LessonsController extends Controller
         $canEnterNextChapter = true;
         $canReTest = false;
         $questionsToAnswer = [];
+        $next_lesson = [];
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         if ($lesson == "") {
             $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->with('courseTimeline')->where('published', '=', 1)->firstOrFail();

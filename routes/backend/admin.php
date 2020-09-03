@@ -226,6 +226,7 @@ Route::get('bundle-publish/{id}', ['uses' => 'Admin\BundlesController@publish', 
 //===== Lessons Routes =====//
 Route::resource('lessons', 'Admin\LessonsController');
 Route::post('storelessons', ['uses' => 'Admin\LessonsController@store', 'as' => 'lessons.storelessons']);
+Route::get('getLessonData', ['uses' => 'Admin\LessonsController@edit', 'as' => 'lesson.getData']);
 
 Route::get('get-lessons-data', ['uses' => 'Admin\LessonsController@getData', 'as' => 'lessons.get_data']);
 Route::post('lessons_mass_destroy', ['uses' => 'Admin\LessonsController@massDestroy', 'as' => 'lessons.mass_destroy']);
@@ -258,7 +259,7 @@ Route::delete('questions_options_perma_del/{id}', ['uses' => 'Admin\QuestionsOpt
 //===== Tests Routes =====//
 Route::resource('tests', 'Admin\TestsController');
 // Route::get('testschapter/{id}', 'Admin\TestsController@showChapter');
-
+Route::get('getTestData', ['uses' => 'Admin\TestsController@edit', 'as' => 'test.getData']);
 Route::get('get-tests-data', ['uses' => 'Admin\TestsController@getData', 'as' => 'tests.get_data']);
 Route::post('tests_mass_destroy', ['uses' => 'Admin\TestsController@massDestroy', 'as' => 'tests.mass_destroy']);
 Route::post('tests_restore/{id}', ['uses' => 'Admin\TestsController@restore', 'as' => 'tests.restore']);
