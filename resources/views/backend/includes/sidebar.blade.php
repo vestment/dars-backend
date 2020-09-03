@@ -19,7 +19,7 @@
             @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy') || auth()->user()->hasRole('teacher'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'teachers' ? 'active' : '' }}"
-                       href="{{ route('admin.courses.create') }}">
+                       href="{{ route('admin.courses.index') }}">
                         <i class="nav-icon icon-directions"></i>
                         <span class="title">@lang('menus.backend.sidebar.courses.title')</span>
                     </a>
@@ -73,38 +73,15 @@
                 </li>
             @endcan
             @if((!auth()->user()->hasRole('student')) && (auth()->user()->hasRole('teacher') || auth()->user()->isAdmin() || auth()->user()->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access'])))
-                {{--@if(auth()->user()->hasRole('teacher') || auth()->user()->isAdmin() || auth()->user()->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access']))--}}
-
-                <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern(['user/courses*','user/lessons*','user/tests*','user/questions*']), 'open') }}">
-                    <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/*')) }}"
-                       href="#">
-                        <i class="nav-icon icon-puzzle"></i> @lang('menus.backend.sidebar.courses.management')
-
-
-                    </a>
-
-                    <ul class="nav-dropdown-items">
-                        @can('test_access')
-                            <li class="nav-item ">
-                                <a class="nav-link {{ $request->segment(2) == 'tests' ? 'active' : '' }}"
-                                   href="{{ route('admin.tests.index') }}">
-                                    <span class="title">@lang('menus.backend.sidebar.tests.title')</span>
-                                </a>
-                            </li>
-                        @endcan
-
-
-                        @can('question_access')
-                            <li class="nav-item">
-                                <a class="nav-link {{ $request->segment(2) == 'questions' ? 'active' : '' }}"
-                                   href="{{ route('admin.questions.index') }}">
-                                    <span class="title">@lang('menus.backend.sidebar.questions.title')</span>
-                                </a>
-                            </li>
-                        @endcan
-
-                    </ul>
-                </li>
+                @can('question_access')
+                    <li class="nav-item">
+                        <a class="nav-link {{ $request->segment(2) == 'questions' ? 'active' : '' }}"
+                           href="{{ route('admin.questions.index') }}">
+                            <i class="nav-icon icon-folder-alt"></i>
+                            <span class="title">@lang('menus.backend.sidebar.questions.title')</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('bundle_access')
                     <li class="nav-item ">
                         <a class="nav-link {{ $request->segment(2) == 'bundles' ? 'active' : '' }}"
