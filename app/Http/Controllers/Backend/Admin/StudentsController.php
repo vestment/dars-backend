@@ -25,6 +25,7 @@ class StudentsController extends Controller
     public function index()
     {
         $studentsIds = auth()->user()->students->pluck('id');
+        // dd($studentsIds);
         if (request('show_deleted') == 1) {
 
             $students = User::role('student')->whereIn('id', $studentsIds)->onlyTrashed()->orderBy('created_at', 'desc')->get();
@@ -300,9 +301,17 @@ class StudentsController extends Controller
         $arrToPush =[];
         $arrToPush['chapter'] = $value;
         $arrToPush['chapter']['test'] = $value->test;
+        $arrToPush['chapter']['test']->title = $value->test->getDataFromColumn('title');
+        $arrToPush['chapter']->title = $value->getDataFromColumn('title');
+       if (auth()->user()->hasRole('parent')) {
         $testResults = TestsResult::where('test_id',$value->test->id)->whereIn('user_id',auth()->user()->students()->pluck('id'))->get();
+       } else {
+        $testResults = TestsResult::where('test_id',$value->test->id)->where('user_id',auth()->user()->id)->get();
+       }
         $arrToPush['chapter']['test']['results'] = $testResults;
+
         array_push($content,$arrToPush);
+
         }
        return $content;
 

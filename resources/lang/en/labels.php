@@ -1079,6 +1079,11 @@ return array(
                     'teachers' => 'Teachers',
                     'academies' => 'Academies',
                     'grades'=>'Grades',
+                    'chapters'=>'Chapters',
+                    'test'=>'Test',
+                    'results'=>'Results',
+                    'attempt'=>'Attempt',
+                    
                     'completed' => 'Completed',
                     'no_data' => 'No data available',
                     'buy_course_now' => 'Buy course now',
@@ -1714,8 +1719,8 @@ return array(
 
                             'World-class learning for anyone, anywhere' => 'World-class learning for anyone, anywhere',
 
-                            'Expert_Teachers' => 'Expert Teachers',
-                            'Learn_Anywhere' => 'Learn_Anywhere',
+                            'Expert_Teachers' => 'Expert teachers',
+                            'Learn_Anywhere' => 'Learn anywhere',
                             'Earn a certificate or degree' => 'Earn a certificate or degree',
                             'Learn the latest skills' => 'Learn the latest skills',
                             'Booking center online or offline' => 'Booking center online or offline',

@@ -78,6 +78,7 @@ class HomeController extends Controller
             ->whereNotIn('id',$this->hidden_data['courses'])
             ->with(['teachers', 'reviews'])
             ->where('published', '=', 1);
+         
         $popular_courses = $courses->where('popular', '=', 1)->take(6)->get();
         $featured_courses = $courses->where('featured', '=', 1)->take(8)->get();
         $trending_courses = $courses->where('trending', '=', 1)->take(2)->get();

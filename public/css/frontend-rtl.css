@@ -5304,8 +5304,8 @@ ul.product-tab li.active:after {
 .course-page-section .course-list-img {
     height: 70px;
     width: 70px;
-    float: left;
-    margin-right: 20px;
+    /* float: left; */
+    margin-left: 20px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -5315,8 +5315,12 @@ ul.product-tab li.active:after {
 .course-page-section .course-list-text {
     /* width: 200px; */
     display: inline-block;
+    float: left;
 }
-
+.course-list-img-text
+{
+    display: flex;
+}
 .course-page-section .course-list-text h3 {
     font-size: 13px;
     font-weight: 700;

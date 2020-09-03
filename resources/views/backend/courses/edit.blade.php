@@ -341,30 +341,28 @@
                                                                 <div class="col-lg-9 col-12"
                                                                      id="menu-management-liquid">
                                                                     <div id="menu-management">
-                                                                        <form id="update-nav-menu" action=""
-                                                                              method="post"
-                                                                              enctype="multipart/form-data">
-                                                                            <div class="menu-edit ">
 
-                                                                                <div id="post-body">
-                                                                                    <div id="post-body-content">
+                                                                        <div class="menu-edit ">
 
-                                                                                        <ul class="menu ui-sortable"
-                                                                                            id="menu-to-edit">
-                                                                                            @foreach($chapterContent as $item)
-                                                                                                @foreach ($timeline as  $singleTimeline)
-                                                                                                    @if($singleTimeline->model_id == $item->id)
-                                                                                                        @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                            @php
-                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type','!=','App\Models\Chapter')->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
-                                                                                                            @endphp
+                                                                            <div id="post-body">
+                                                                                <div id="post-body-content">
 
-                                                                                                            <li id="menu-item-{{$item->id}}"
-                                                                                                                data-type="{{$singleTimeline->model_type}}"
-                                                                                                                class="menu-item menu-item-depth-0  menu-item-page menu-item-edit-inactive pending"
-                                                                                                                style="display: list-item;">
-                                                                                                                <dl class="menu-item-bar">
-                                                                                                                    <div class="menu-item-handle col-12 col-lg-7">
+                                                                                    <ul class="menu ui-sortable"
+                                                                                        id="menu-to-edit">
+                                                                                        @foreach($chapterContent as $item)
+                                                                                            @foreach ($timeline as  $singleTimeline)
+                                                                                                @if($singleTimeline->model_id == $item->id)
+                                                                                                    @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                                        @php
+                                                                                                            $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type','!=','App\Models\Chapter')->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
+                                                                                                        @endphp
+
+                                                                                                        <li id="menu-item-{{$item->id}}"
+                                                                                                            data-type="{{$singleTimeline->model_type}}"
+                                                                                                            class="menu-item menu-item-depth-0  menu-item-page menu-item-edit-inactive pending"
+                                                                                                            style="display: list-item;">
+                                                                                                            <dl class="menu-item-bar">
+                                                                                                                <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                     <span class="item-title"> <span
                                                                                                                                 class="menu-item-title"> <span
                                                                                                                                     id="{{$item->id}}">{{$item->title}} | {{$singleTimeline->sequence}}</span> </span>
@@ -374,45 +372,49 @@
                                                                                                                                title=" "
                                                                                                                                href="{{ url()->current() }}?edit-menu-item=#menu-item-settings-{{$item->id}}"> </a>
                                                                                                                         </span>  </span>
-                                                                                                                    </div>
-                                                                                                                </dl>
+                                                                                                                </div>
+                                                                                                            </dl>
 
-                                                                                                                <div class="menu-item-settings col-12 col-lg-7"
-                                                                                                                     id="menu-item-settings-{{$item->id}}">
-                                                                                                                    <div class="row">
-                                                                                                                        <div class="col-6">
-                                                                                                                            @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                                                <button onclick="$('#chapter_id_lesson').val({{$item->id}});"
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn btn-primary"
-                                                                                                                                        data-toggle="modal"
-                                                                                                                                        data-target="#exampleModal2">
-                                                                                                                                    Create
-                                                                                                                                    Lesson
-                                                                                                                                </button>
-                                                                                                                            @endif
-                                                                                                                        </div>
-                                                                                                                        <div class="col-6">
-                                                                                                                            @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                                                <button onclick="$('#chapter_id_test').val({{$item->id}});"
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn btn-primary"
-                                                                                                                                        data-toggle="modal"
-                                                                                                                                        data-target="#create-test">
-                                                                                                                                    Create
-                                                                                                                                    Test
-                                                                                                                                </button>
-                                                                                                                            @endif
-                                                                                                                        </div>
+                                                                                                            <div class="menu-item-settings col-12 col-lg-7"
+                                                                                                                 id="menu-item-settings-{{$item->id}}">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-6">
+                                                                                                                        @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                                                            <button onclick="$('#chapter_id_lesson').val({{$item->id}});"
+                                                                                                                                    type="button"
+                                                                                                                                    class="btn btn-primary"
+                                                                                                                                    data-toggle="modal"
+                                                                                                                                    data-target="#exampleModal2">
+                                                                                                                                Create
+                                                                                                                                Lesson
+                                                                                                                            </button>
+                                                                                                                        @endif
+                                                                                                                    </div>
+                                                                                                                    <div class="col-6">
+                                                                                                                        @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                                                            <button onclick="$('#chapter_id_test').val({{$item->id}});"
+                                                                                                                                    type="button"
+                                                                                                                                    class="btn btn-primary"
+                                                                                                                                    data-toggle="modal"
+                                                                                                                                    data-target="#create-test">
+                                                                                                                                Create
+                                                                                                                                Test
+                                                                                                                            </button>
+                                                                                                                        @endif
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                <ul class="menu-item-transport sort_seq">
-                                                                                                                    @foreach($lessons as $lesson)
-                                                                                                                        @if ($lesson->model_type == \App\Models\Lesson::class)
-                                                                                                                        @php
-                                                                                                                                $lessonData = \App\Models\Lesson::findOrFail($lesson->model_id);
-                                                                                                                        @endphp
-                                                                                                                        @if($lessonData)
+                                                                                                            </div>
+                                                                                                            <ul class="menu-item-transport sort_seq">
+
+                                                                                                                @foreach($lessons as $lesson)
+                                                                                                                    @php
+                                                                                                                        if($lesson->model_type == \App\Models\Lesson::class) {
+                                                                                                                                $lessonData = \App\Models\Lesson::withTrashed()->findOrFail($lesson->model_id);
+                                                                                                                                } elseif ($lesson->model_type == \App\Models\Test::class) {
+                                                                                                                                $lessonData = \App\Models\Test::withTrashed()->findOrFail($lesson->model_id);
+                                                                                                                                }
+                                                                                                                    @endphp
+                                                                                                                    @if($lessonData)
                                                                                                                         <li id="menu-item-{{$lesson->model_id}}"
                                                                                                                             data-type="{{$lesson->model_type}}"
                                                                                                                             class="menu-item  menu-item-depth-1  menu-item-page menu-item-edit-inactive pending"
@@ -421,38 +423,92 @@
                                                                                                                                 <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p data-id="{{$lesson->model_id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                        <p data-id="{{$lesson->model_id}}">
+                                                                                                                                            {{$lessonData->title}} | {{$lesson->chapter_id}}
+                                                                                                                                            @if($lesson->model_type == \App\Models\Test::class)
                                                                                                                                                 |
-                                                                                                                                                Test @endif</p>
+                                                                                                                                                Test
+                                                                                                                                            @endif
+                                                                                                                                         </p>
                                                                                                                                     </span>
                                                                                                                                 </span>
+                                                                                                                                    <div class="float-right">
+                                                                                                                                        @if ( !is_null($lessonData->deleted_at))
+                                                                                                                                            <form method="post"
+                                                                                                                                                  class="d-inline"
+                                                                                                                                                  @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                                  action="{{route('admin.tests.restore', ['id' => $lesson->model_id])}}"
+                                                                                                                                                  @elseif ( $lesson->model_type == \App\Models\Lesson::class)
+                                                                                                                                                  action="{{route('admin.lessons.restore', ['id' => $lesson->model_id])}}"
+                                                                                                                                                    @endif
+                                                                                                                                                >
+                                                                                                                                                @csrf
+                                                                                                                                                <button type="submit"
+                                                                                                                                                        class="btn btn-danger ml-1">
+                                                                                                                                                    <i class="fa fa-repeat"></i>
+                                                                                                                                                </button>
+                                                                                                                                            </form>
+                                                                                                                                        @else
+                                                                                                                                            @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                                <form method="post"
+                                                                                                                                                      class="d-inline"
+                                                                                                                                                      action="{{route('admin.tests.destroy', ['test' => $lesson->model_id])}}">
+                                                                                                                                                    @csrf
+                                                                                                                                                    @method('DELETE')
+                                                                                                                                                    <button type="submit"
+                                                                                                                                                            class="btn btn-light float-right ml-1">
+                                                                                                                                                        <i
+                                                                                                                                                                class="fa fa-trash"></i>
+                                                                                                                                                    </button>
+                                                                                                                                                </form>
+                                                                                                                                            @elseif ($lesson->model_type == \App\Models\Lesson::class)
+                                                                                                                                                <form method="post"
+                                                                                                                                                      class="d-inline"
+                                                                                                                                                      action="{{route('admin.lessons.destroy', ['lesson' => $lesson->model_id])}}">
+                                                                                                                                                    @csrf
+                                                                                                                                                    @method('DELETE')
+                                                                                                                                                    <button type="submit"
+                                                                                                                                                            class="float-right btn btn-light  ml-1">
+                                                                                                                                                        <i
+                                                                                                                                                                class="fa fa-trash"></i>
+                                                                                                                                                    </button>
+                                                                                                                                                </form>
+                                                                                                                                            @endif
+                                                                                                                                            <a @if($lesson->model_type == \App\Models\Test::class) onclick="editTest({{$lesson->model_id}})"
+                                                                                                                                               @else onclick="editLesson({{$lesson->model_id}})"
+                                                                                                                                               @endif class="btn btn-info float-right"
+                                                                                                                                               href="#editModal"
+                                                                                                                                               data-toggle="modal"
+                                                                                                                                               data-target="#editModal"><i
+                                                                                                                                                        class="fa fa-edit"></i>
+                                                                                                                                            </a>
+                                                                                                                                        @endif
+                                                                                                                                    </div>
                                                                                                                                 </div>
                                                                                                                             </dl>
                                                                                                                         </li>
                                                                                                                     @endif
-                                                                                                                    @endif
-                                                                                                                    @endforeach
-                                                                                                                </ul>
+                                                                                                                @endforeach
+                                                                                                            </ul>
 
 
-                                                                                                            </li>
-                                                                                                        @endif
+                                                                                                        </li>
                                                                                                     @endif
+                                                                                                @endif
 
-                                                                                                @endforeach
                                                                                             @endforeach
+                                                                                        @endforeach
 
-                                                                                        </ul>
+                                                                                    </ul>
 
-                                                                                        <a href="#" id="save_timeline"
-                                                                                           class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
+                                                                                    <a href="#" id="save_timeline"
+                                                                                       class="btn btn-primary float-right">@lang('labels.backend.hero_slider.save_sequence')</a>
 
 
-                                                                                    </div>
                                                                                 </div>
-
                                                                             </div>
-                                                                        </form>
+
+                                                                        </div>
 
 
                                                                     </div>
@@ -719,116 +775,328 @@
 
                     </div>
                 </div>
+                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit <span>Model</span></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="editTestForm" method="post" action="" style="display: none">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-body">
 
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="offlineDataModal" tabindex="-1" aria-labelledby="offlineDataModal"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="offlineDataModal">
-                        Add Booking times</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6 form-group">
+                                            {!! Form::label('title', trans('labels.backend.tests.fields.title').'*', ['class' => 'control-label']) !!}
+                                            {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => 'required']) !!}
+                                        </div>
+                                        <div class="col-12 col-lg-6 form-group">
+                                            {!! Form::label('title_ar', trans('labels.backend.chapters.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                                            {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title_ar'), 'required' => '']) !!}
+                                        </div>
+                                        <div class="col-12 col-lg-6 form-group">
+                                            {!! Form::label('timer', trans('labels.backend.lessons.fields.test_timer').'*', ['class' => 'control-label']) !!}
+                                            {!! Form::number('timer', old('timer'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.test_timer'), 'required' => 'required','min'=>0]) !!}
+                                        </div>
+                                        <div class="col-12 col-lg-6 form-group">
+                                            {!! Form::label('no_questions', trans('labels.backend.tests.fields.no_questions').'*', ['class' => 'control-label']) !!}
+                                            {!! Form::number('no_questions', old('no_questions'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.no_questions'), 'required' => 'required','min'=>0]) !!}
+                                        </div>
+                                        <div class="col-12 col-lg-12 form-group">
+                                            {!! Form::label('min_grade', trans('labels.backend.tests.fields.min_grade').'*', ['class' => 'control-label']) !!}
+                                            {!! Form::number('min_grade', old('min_grade'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.min_grade'), 'required' => 'required','min'=>0]) !!}
+                                        </div>
+                                        <div class="col-12 col-lg-6 form-group">
+                                            <div class="checkbox d-inline mr-3">
+                                                {!! Form::checkbox('published', 1, false, []) !!}
+                                                {!! Form::label('published', trans('labels.backend.tests.fields.published'), ['class' => 'control-label font-weight-bold']) !!}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
+
+                                </div>
+                            </form>
+                            <form id="editLessonForm" method="post" action="" style="display: none">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-body">
+                                    <div class="row">
+
+                                        <div class="col-12 col-lg-6 form-group">
+                                            {!! Form::label('title', trans('labels.backend.lessons.fields.title').'*', ['class' => 'control-label']) !!}
+                                            {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title'), 'required' => '']) !!}
+                                        </div>
+                                        <div class="col-12 col-lg-6 form-group">
+                                            {!! Form::label('title_ar', trans('labels.backend.lessons.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                                            {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.lessons.fields.title_ar'), 'required' => '']) !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 form-group">
+                                            {!! Form::label('downloadable_files', trans('labels.backend.lessons.fields.downloadable_files').' '.trans('labels.backend.lessons.max_file_size'), ['class' => 'control-label']) !!}
+                                            {!! Form::file('downloadable_files[]', [
+                                            'multiple',
+                                            'class' => 'form-control file-upload',
+                                            'id' => 'downloadable_files',
+                                            'accept' => "image/jpeg,image/gif,image/png,application/msword,audio/mpeg,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/pdf,video/mp4"
+                                            ]) !!}
+                                            <div class="photo-block">
+                                                <div class="files-list"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 form-group">
+                                            {!! Form::label('pdf_files', trans('labels.backend.lessons.fields.add_pdf'), ['class' => 'control-label']) !!}
+                                            {!! Form::file('add_pdf', [
+                                            'class' => 'form-control file-upload',
+                                            'id' => 'add_pdf',
+                                            'accept' => "application/pdf"
+
+                                            ]) !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 form-group">
+                                            {!! Form::label('audio_files', trans('labels.backend.lessons.fields.add_audio'), ['class' => 'control-label']) !!}
+                                            {!! Form::file('add_audio', [
+                                            'class' => 'form-control file-upload',
+                                            'id' => 'add_audio',
+                                            'accept' => "audio/mpeg3"
+
+                                            ]) !!}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-12 form-group">
+                                            {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
+
+                                            {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control media_type', 'placeholder' => 'Select One','id'=>'media_type','data-type'=>'Lesson' ]) !!}
+
+                                            {!! Form::text('video', null, ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
+
+                                            {!! Form::select('video_file', $notSelectedVideos, null, ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
+
+                                            <div class="mt-2">
+                                                @lang('labels.backend.lessons.video_guide')
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6 form-group d-none"
+                                             id="duration">
+                                            {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
+                                            {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+
+                                        <div class="col-12 col-lg-3 form-group">
+                                            <div class="checkbox">
+                                                {!! Form::hidden('published', 0) !!}
+                                                {!! Form::checkbox('published', 1, false, []) !!}
+                                                {!! Form::label('published', trans('labels.backend.lessons.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="academy d-none">
-                        <div class="row ">
-                            <div class="col-12 form-group">
-                                {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
-                                {!! Form::select('academies', $academies, old('academies'), ['class' => 'form-control d-none select2', 'id'=>'selected-academy','multiple' => false]) !!}
+
+
+                <div class="modal fade" id="offlineDataModal" tabindex="-1" aria-labelledby="offlineDataModal"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="offlineDataModal">
+                                    Add Booking times</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                        </div>
-                        <div class="row ">
+                            <div class="modal-body">
+                                <div class="academy d-none">
+                                    <div class="row ">
+                                        <div class="col-12 form-group">
+                                            {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                                            {!! Form::select('academies', $academies, old('academies'), ['class' => 'form-control d-none select2', 'id'=>'selected-academy','multiple' => false]) !!}
+                                        </div>
+                                    </div>
+                                    <div class="row ">
 
-                            <div class="col-12 form-group">
-                                {{ html()->label()->class(' form-control-label')->for('buttons') }}
-                                <button type="button" id="add-button"
-                                        class="btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add').' '.__('labels.backend.teachers.fields.Booking_Date&Time')}}</button>
-                            </div>
+                                        <div class="col-12 form-group">
+                                            {{ html()->label()->class(' form-control-label')->for('buttons') }}
+                                            <button type="button" id="add-button"
+                                                    class="btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add').' '.__('labels.backend.teachers.fields.Booking_Date&Time')}}</button>
+                                        </div>
 
-                        </div>
+                                    </div>
 
-                        <div class="row">
-                            <div class="col-12 col-md-12 form-group button-container mt-2">
-                                @if($date)
-                                    @foreach($date as $Pkey => $singleDate )
-                                        @foreach($singleDate as  $key => $value)
-                                            @if($key =='date')
-                                                <div class='button-wrapper'>
-                                                    <h6 class='mt-3'>
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 form-group button-container mt-2">
+                                            @if($date)
+                                                @foreach($date as $Pkey => $singleDate )
+                                                    @foreach($singleDate as  $key => $value)
+                                                        @if($key =='date')
+                                                            <div class='button-wrapper'>
+                                                                <h6 class='mt-3'>
                                                             <span class='remove'>
                                                                 <i class='fa fa-window-close'></i>
                                                             </span>
-                                                    </h6>
-                                                    <div class='row'>
-                                                        <div class='col-lg-10'>
-                                                            <label for='start_dat' class='control-label'>Start Date
-                                                                (yyyy-mm-dd)</label>
-                                                            <input class='form-control date-input dat'
-                                                                   pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))'
-                                                                   value='{{$value}}' autocomplete='off' type='text'>
+                                                                </h6>
+                                                                <div class='row'>
+                                                                    <div class='col-lg-10'>
+                                                                        <label for='start_dat' class='control-label'>Start
+                                                                            Date
+                                                                            (yyyy-mm-dd)</label>
+                                                                        <input class='form-control date-input dat'
+                                                                               pattern='(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))'
+                                                                               value='{{$value}}' autocomplete='off'
+                                                                               type='text'>
 
 
-                                                        </div>
-                                                        <div class='col-2 mt-4'>
-                                                            <button type='button' onclick="addInputTime(this)"
-                                                                    class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>
-                                                        </div>
-                                                    </div>
-                                                    <div class='timepicker'></div>
-                                                    @endif
-                                                    @if(substr($key , 0,4) == 'time' )
-                                                        <div class='row mt-3' style="justify-content: flex-end;">
+                                                                    </div>
+                                                                    <div class='col-2 mt-4'>
+                                                                        <button type='button'
+                                                                                onclick="addInputTime(this)"
+                                                                                class='add-but btn-block btn  btn-primary'>{{__('labels.backend.hero_slider.fields.buttons.add')}}</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='timepicker'></div>
+                                                                @endif
+                                                                @if(substr($key , 0,4) == 'time' )
+                                                                    <div class='row mt-3'
+                                                                         style="justify-content: flex-end;">
                                                             <span class='removeTime mr-3'><i
                                                                         class='fa fa-window-close'></i></span>
-                                                            <div class='col-lg-12'>
-                                                                <div class='row timeRemove'>
-                                                                    <div class='col-lg-6'>
-                                                                        <input class='form-control time-input dat'
-                                                                               pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]'
-                                                                               value="{{$value}}" autocomplete='off'
-                                                                               type='time'>
-                                                                    </div>
-                                                                    @endif
-                                                                    @if(substr($key , 0,4) == 'seat')
-                                                                        <div class='col-lg-6'>
-                                                                            <input class='form-control seats-input'
-                                                                                   value='{{$value}}' autocomplete='off'
-                                                                                   name='seats' type='number'>
+                                                                        <div class='col-lg-12'>
+                                                                            <div class='row timeRemove'>
+                                                                                <div class='col-lg-6'>
+                                                                                    <input class='form-control time-input dat'
+                                                                                           pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]'
+                                                                                           value="{{$value}}"
+                                                                                           autocomplete='off'
+                                                                                           type='time'>
+                                                                                </div>
+                                                                                @endif
+                                                                                @if(substr($key , 0,4) == 'seat')
+                                                                                    <div class='col-lg-6'>
+                                                                                        <input class='form-control seats-input'
+                                                                                               value='{{$value}}'
+                                                                                               autocomplete='off'
+                                                                                               name='seats'
+                                                                                               type='number'>
+                                                                                    </div>
+                                                                            </div>
+
                                                                         </div>
-                                                                </div>
-
+                                                                    </div>
                                                             </div>
-                                                        </div>
-                                                </div>
+                                                        @endif
+                                                    @endforeach
+                                                @endforeach
                                             @endif
-                                        @endforeach
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
+                                        </div>
+                                    </div>
 
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type='button' onclick="saveOfflineData(this)"
+                                        class='add-but btn-block btn  btn-primary'>Save
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type='button' onclick="saveOfflineData(this)"
-                            class='add-but btn-block btn  btn-primary'>Save
-                    </button>
-                </div>
-
             </div>
         </div>
+    </div>
     </div>
 @stop
 
 @push('after-scripts')
     <script>
+        function editTest(id) {
+            $('#editLessonForm').hide();
+            $.ajax({
+                type: "get",
+                url: '{{route('admin.test.getData')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function (resp) {
+                    $('#editTestForm').show();
+                    var url = "{{ route('admin.tests.update',":id") }}";
+                    url = url.replace(':id', id);
+
+                    $('#editTestForm').attr('action', url)
+                    var inputName = Object.keys(resp);
+                    $(inputName).each(function (key, value) {
+                        $('#editTestForm input[name="' + value + '"]').val(resp[value])
+                    })
+                    if (resp.published) {
+                        $('#editTestForm input[name="published"]').prop('checked', true);
+                    }
+                    console.log(resp)
+                }
+            })
+        }
+
+        function editLesson(id) {
+            $('#editTestForm').hide();
+            $.ajax({
+                type: "get",
+                url: '{{route('admin.lesson.getData')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function (resp) {
+                    $('#editLessonForm').show();
+                    var url = "{{ route('admin.lessons.update',":id") }}";
+                    url = url.replace(':id', id);
+                    $('#editLessonForm').attr('action', url)
+                    var inputName = Object.keys(resp);
+                    $(inputName).each(function (key, value) {
+                        $('#editLessonForm input[name="' + value + '"]').val(resp[value])
+                    })
+                    if (resp.published) {
+                        $('#editLessonForm input[name="published"]').prop('checked', true);
+                    }
+                    if (resp.media) {
+                        $('#editLessonForm input[name="video"]').val(resp.media[0].url);
+                    }
+                    console.log(resp)
+                }
+            })
+        }
 
         $(document).ready(function () {
+
 
             $('.date-input').datepicker({
                 autoclose: true,
