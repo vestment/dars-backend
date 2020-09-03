@@ -201,7 +201,7 @@ class TestsController extends Controller
 
 
 
-        return redirect()->route('admin.tests.index')->withFlashSuccess(trans('alerts.backend.general.created'));
+        return redirect()->back()->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 
 
@@ -211,23 +211,14 @@ class TestsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
         if (! Gate::allows('test_edit')) {
             return abort(401);
         }
-        $courses = Course::ofTeacher()->get();
-        $courses_ids = $courses->pluck('id');
-        $courses = $courses->pluck('title', 'id')->prepend('Please select', '');
-        $lessons = Lesson::whereIn('course_id', $courses_ids)->get()->pluck('title', 'id')->prepend('Please select', '');
-        $allChapters = Chapter::with('course')->get();
-        $chapters = ['Please Select'];
-        foreach ($allChapters as $key => $chapter) {
-            $chapters[$chapter->id] = $chapter->getDataFromColumn('title').' - '.$chapter->course->getDataFromColumn('title');
-        }
-        $test = Test::findOrFail($id);
+        $test = Test::findOrFail($request->id);
 
-        return view('backend.tests.edit', compact('test', 'courses', 'lessons','chapters'));
+        return $test;
     }
 
     /**
@@ -242,10 +233,8 @@ class TestsController extends Controller
         if (! Gate::allows('test_edit')) {
             return abort(401);
         }
-        $chapter = Chapter::findOrFail($request->chapter_id);
         $test = Test::findOrFail($id);
-        $test->update($request->except('course_id'));
-        $test->course_id = $chapter->course_id;
+        $test->update($request->all());
         $test->slug = str_slug($request->title);
         $test->save();
 
@@ -259,12 +248,12 @@ class TestsController extends Controller
         if ($test->published == 1) {
             $timeline = CourseTimeline::where('model_type', '=', Test::class)
                 ->where('model_id', '=', $test->id)
-                ->where('course_id', $chapter->course_id)->first();
+                ->where('course_id', $test->course_id)->first();
             if ($timeline == null) {
                 $timeline = new CourseTimeline();
             }
-            $timeline->course_id = $chapter->course_id;
-            $timeline->chapter_id = $request->chapter_id;
+            $timeline->course_id = $test->course_id;
+            $timeline->chapter_id = $test->chapter_id;
             $timeline->model_id = $test->id;
             $timeline->model_type = Test::class;
             $timeline->sequence = $sequence;
@@ -272,7 +261,7 @@ class TestsController extends Controller
         }
 
 
-        return redirect()->route('admin.tests.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
+        return redirect()->back()->withFlashSuccess(trans('alerts.backend.general.updated'));
     }
 
 
