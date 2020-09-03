@@ -409,9 +409,9 @@
                                                                                                                 @foreach($lessons as $lesson)
                                                                                                                     @php
                                                                                                                         if($lesson->model_type == \App\Models\Lesson::class) {
-                                                                                                                                $lessonData = \App\Models\Lesson::withTrashed()->findOrFail($lesson->model_id);
+                                                                                                                                $lessonData = \App\Models\Lesson::withTrashed()->find($lesson->model_id);
                                                                                                                                 } elseif ($lesson->model_type == \App\Models\Test::class) {
-                                                                                                                                $lessonData = \App\Models\Test::withTrashed()->findOrFail($lesson->model_id);
+                                                                                                                                $lessonData = \App\Models\Test::withTrashed()->find($lesson->model_id);
                                                                                                                                 }
                                                                                                                     @endphp
                                                                                                                     @if($lessonData)
@@ -444,8 +444,23 @@
                                                                                                                                                 >
                                                                                                                                                 @csrf
                                                                                                                                                 <button type="submit"
-                                                                                                                                                        class="btn btn-danger ml-1">
+                                                                                                                                                        class="btn btn-dark ml-1">
                                                                                                                                                     <i class="fa fa-repeat"></i>
+                                                                                                                                                </button>
+                                                                                                                                            </form>
+                                                                                                                                            <form method="post"
+                                                                                                                                                  class="d-inline"
+                                                                                                                                                  @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                                  action="{{route('admin.tests.perma_del', ['id' => $lesson->model_id])}}"
+                                                                                                                                                  @elseif ( $lesson->model_type == \App\Models\Lesson::class)
+                                                                                                                                                  action="{{route('admin.lessons.perma_del', ['id' => $lesson->model_id])}}"
+                                                                                                                                                    @endif
+                                                                                                                                            >
+                                                                                                                                                @csrf
+                                                                                                                                                @method('DELETE')
+                                                                                                                                                <button type="submit"
+                                                                                                                                                        class="btn btn-danger ml-1">
+                                                                                                                                                    <i class="fa fa-times"></i>
                                                                                                                                                 </button>
                                                                                                                                             </form>
                                                                                                                                         @else
