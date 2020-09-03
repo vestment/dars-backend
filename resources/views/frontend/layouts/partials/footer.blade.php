@@ -81,6 +81,7 @@
                             <div class="subscribe-form ml-0 footersec">
                                 <div class="container my-4">
                                     <form action="{{route('subscribe')}}" method="post" class=" subs-form">
+                                        @csrf
                                         <div class="row">
 
                                             <div class="col-sm-9">

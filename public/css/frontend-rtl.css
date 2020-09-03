@@ -133,6 +133,7 @@ img {
 
 section {
     overflow: hidden;
+    direction: rtl;
     text-align: right;
 }
 
@@ -1432,7 +1433,7 @@ button.alt-menu-btn.float-left {
     direction: rtl;
 }
 .iconss{
-    width: 100% !important;
+    width: auto !important;
 }
 
 #slider-item .search-course {
