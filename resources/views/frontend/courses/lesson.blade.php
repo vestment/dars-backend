@@ -472,7 +472,7 @@
                                                      data-plyr-embed-id="{{$lesson->mediavideo->file_name}}"></div>
                                             @elseif($lesson->mediavideo->type == 'upload')
                                                 <video poster="" id="player" class="js-player" playsinline controls>
-                                                    <source src="{{route('videos.stream',['course'=>$lesson->mediavideo->file_name])}}" type="video/mp4"/>
+                                                    <source src="{{route('videos.stream',['encryptedId'=>\Illuminate\Support\Facades\Crypt::encryptString($lesson->mediavideo->id)])}}" type="video/mp4"/>
                                                 </video>
                                             @elseif($lesson->mediavideo->type == 'embed')
                                                 {!! $lesson->mediavideo->url !!}
@@ -919,8 +919,8 @@
 
 
         const player2 = new Plyr('#audioPlayer');
-
         const player = new Plyr('#player');
+        $('.js-player source').remove();
         duration = 10;
         var progress = 0;
         var video_id = $('#player').parents('.video-container').data('id');

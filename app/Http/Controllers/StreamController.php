@@ -4,19 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Helpers\VideoStream;
 use App\Models\Course;
-
+use App\Models\Media;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 class StreamController extends Controller
 {
-    public function stream($course)
+    public function stream($encryptedId)
     {
-        $cours = Course::find($course);
-        if ($cours) {
+        $mediaId = Crypt::decryptString($encryptedId);
+        $media = Media::find($mediaId);
 
-            $filename = $cours->mediaVideo->url;
-        }
-        else {
-            $filename = 'storage/uploads/'.$course;
-        }
+        $filename = $media->url;
+        // dd(url());
         $videosDir = public_path();
         if (file_exists($filePath = $videosDir . "/" . $filename)) {
             $stream = new VideoStream($filePath);
@@ -27,8 +26,7 @@ class StreamController extends Controller
         return response("File doesn't exists", 404);
     }
 
-    public
-    function streamer()
+    public function streamer()
     {
         return 'Hello from Streamer Package!';
     }

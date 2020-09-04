@@ -818,7 +818,7 @@
                                     <video data-provider="{{$course->mediavideo->type}}" style="width: 100%" id="player"
                                            class="js-player" playsinline
                                            controls>
-                                        <source src="{{route('videos.stream',['course'=>$course])}}" type="video/mp4"/>
+                                        <source src="{{route('videos.stream',['encryptedId'=>\Illuminate\Support\Facades\Crypt::encryptString($course->mediavideo->id)])}}"/>
                                     </video>
                                 @elseif($course->mediavideo->type == 'embed')
                                     {!! $course->mediavideo->url !!}
@@ -916,7 +916,7 @@
 
     <script>
         const player = new Plyr('#player');
-
+        $('.js-player source').remove();
         function selectTime(element) {
             $(element).parent().find('.btn-primary').addClass('btn-outline-dark');
             $(element).parent().find('.btn-primary').removeClass('selectedTime');
