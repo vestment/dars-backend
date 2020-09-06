@@ -148,7 +148,8 @@
                                         </div>
                                         <hr>
                                         <div class="teacher-name text-dark  justify-content-center">
-                                            <span>{{$teacher->getDataFromColumn('description')}}</span>
+                                            <span>{{Illuminate\Support\Str::words($teacher->getDataFromColumn('description'),10,'...') }}</span>
+
                                         </div>
                                         <ul>
                                             <li><a href="{{'mailto:'.$teacher->teacher->email}}"><i

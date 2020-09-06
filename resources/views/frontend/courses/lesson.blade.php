@@ -19,6 +19,32 @@
         .main-menu-container.menu-bg-overlay {
             background-color: #0C0C3F;
         }
+        .course-details-section{
+            padding:0px;
+        }
+        .bg-lgh{
+            background-color: #f1f1f1;
+
+        }
+
+
+         .bg-active a:active  {
+           
+            background-color: yellow;
+       
+            }
+        
+        .shad{
+            box-shadow: 0px 1px 15px #dad4d4;
+        }
+        .play {
+            font-size: 10px !important;
+            display: inline !important;
+        }
+        .play i{
+            font-size: 10px;
+        }
+        .subtitle2 a:
 
         .main-menu-container {
             background-color: #0C0C3F;
@@ -26,6 +52,13 @@
 
         .test-form {
             color: #333333;
+        }
+        .bollder{
+            font-weight:bolder;
+
+        }
+        .test{
+
         }
         .progress {
    background-color: #b6b9bb;
@@ -160,6 +193,21 @@
 
 
         @media screen  and  (max-width: 768px) {
+            .txt-ara{
+                display:none;
+            }
+            .txt-ara2{
+                display:block;
+            }
+
+        }
+        @media screen  and  (min-width: 768px) {
+            .txt-ara{
+                display:block;
+            }
+            .txt-ara2{
+                display:none;
+            }
 
         }
 
@@ -182,10 +230,9 @@
         }
 
         .video-container iframe {
-            width: 95%;
+            width: 100%;
             height: 553px;
             margin-top: -0.2%;
-            margin-left: 5%;
 
         }
 
@@ -196,7 +243,7 @@
         }
 
         .course-details-item {
-            width: 93.2%;
+            width: 100%;
             margin-left: 4%;
             margin-top: -1%;
         }
@@ -205,8 +252,10 @@
             font-weight: light;
             font-size: 14px;
 
-            padding-bottom: 17px;
 
+            
+        }
+        .bg-active{
             border-bottom: solid 1px #e4e4e4;
         }
 
@@ -216,7 +265,7 @@
     </style>
 @endpush
 @section('lesson-title')
-    <span class="course-title-header ml-5">{{$lesson->course->title}}</span>
+    <span class="course-title-header ml-5">{{$lesson->course->getDataFromColumn('title')}}</span>
 @endsection
 @section('content')
     <!-- Start of breadcrumb section
@@ -227,7 +276,7 @@
             <div class="page-breadcrumb-content text-center">
                 <div class="page-breadcrumb-title">
                     <h2 class="breadcrumb-head black bold">
-                        <span class="course-title-header">{{$lesson->course->title}}</span><br> <br></h2>
+                        <span class="course-title-header">{{$lesson->course->getDataFromColumn('title')}}</span><br> <br></h2>
 
                 </div>
             </div>
@@ -242,8 +291,9 @@
     <section id="course-details" class="course-details-section">
         <div class="container-fluid">
             <div class="row main-content">
-                <div class="col-md-9">
-                    <div class="row mb-5 ">
+                <div class="col-md-9 p-0 pt-5">
+                <div class="row">
+                    <!-- <div class="row mb-5 ">
                             <div class="col-2 text-right ">
                             {{ $lesson->course->progress()}} %
                             </div>
@@ -252,7 +302,7 @@
                                 style="width:{{ $lesson->course->progress() }}%">
                                 </div>
                             </div>     
-                    </div>
+                    </div> -->
    
                     @if(session()->has('success'))
                         <div class="alert alert-dismissable alert-success fade show">
@@ -275,7 +325,8 @@
                                             <div class="course-title mt10 headline relative-position">
                                                 <h3>
                                                     <b>@lang('labels.frontend.course.test')
-                                                        : {{$lesson->title}}</b>
+                                                        :   {{$lesson->getDataFromColumn('title')}}</b>
+                                                      
                                                 </h3>
                                             </div>
                                             <div class="course-details-content">
@@ -481,9 +532,11 @@
                                         </div>
                                     </div>
                                 @endif
+
+                             
                             </div>
                             <section class="m-note">
-                                <div class="container my-5">
+                                <div class="container my-5 txt-ara">
                                     <h2 class="m-3">Write Your Notes</h2>
                                     <div class="row">
                                         <div class="col-12">
@@ -533,9 +586,10 @@
                     </div>
 
                 </div>
+                </div>
 
-                <div class="col-md-3">
-                    <div id="sidebar" class="sidebar">
+                <div class="col-md-3 p-0">
+                    <div id="sidebar" class="sidebar p-0">
                         <div class="course-details-category ul-li">
                             @if ($previous_lesson)
                                 <p><a class="btn btn-block gradient-bg font-weight-bold text-white"
@@ -568,23 +622,23 @@
                                                 id="finish">@lang('labels.frontend.course.finish_course')</button>
                                     </form>
                                 @else
-                                    <div class="alert alert-success">
+                                    <!-- <div class="alert alert-success">
                                         @lang('labels.frontend.course.certified')
-                                    </div>
+                                    </div> -->
                                 @endif
                             @endif
                             @foreach($chapters as $chapter)
                                 <div class="row m-2 shadow">
                                     <div class="accordion" id="accordionExample">
-                                        <div class="card">
+                                        <div class="card shad">
                                             <div class="card-header" id="headingOne">
                                                 <h2 class="mb-0">
-                                                    <button class="btn btn-link btn-block text-left" type="button"
+                                                    <button class="btn btn-link btn-block text-left bollder" type="button"
                                                             data-toggle="collapse"
                                                             data-target="#chapter-{{ $chapter->id}}"
                                                             aria-expanded="true"
                                                             aria-controls="chapter-{{ $chapter->id}}">
-                                                        {{ $chapter->title}} <i class="fa fa-angle-down float-right"
+                                                        {{ $chapter->getDataFromColumn('title')}} <i class="fa fa-angle-down float-right"
                                                                                 aria-hidden="true"></i>
                                                     </button>
                                                 </h2>
@@ -597,13 +651,16 @@
                                                         @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
                                                             @if($item->model && $item->model->published == 1)
                                                                 @if($item->model_type == 'App\Models\Lesson')
+                                                                <div class="bg-active px-2 pt-2">
                                                                     <p class="mb-0 subtitle2 test"><a
                                                                                 @if($canEnterNextChapter)
                                                                                 data-test-id="{{$item->model->id}}"
                                                                                 href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
                                                                                 @endif>
-                                                                            {{$item->model->title}}
+                                                                            {{$item->model->getDataFromColumn('title')}}
+                                                                            <p class="play p-0"><i class="far fa-play-circle"></i> {{$lesson->mediavideo->duration}} @lang('labels.frontend.course.minutes')</p>  
                                                                         </a>
+                                                                       
                                                                         <b class="float-right">
                                                                             @if($item->model->mediaPDF)
                                                                                 <a href="{{asset('storage/uploads/'.$item->model->mediaPDF->name)}}"
@@ -640,23 +697,29 @@
 
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
-                                                                    <p class="mb-0 mt-1 text-primary test"
+                                                                <div class="p-1">
+                                                                    <p class="mb-0 mt-1 text-pink test"
                                                                        style="cursor: pointer;"
                                                                        onclick="startTest(this)"
                                                                        data-test-id="{{$item->model->id}}"
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
-                                                                        - @lang('labels.frontend.course.test')
-                                                                        On {{$item->model->title}} <b class="float-right">
+                                                                       &nbsp;&nbsp;@lang('labels.frontend.course.test')
+                                                                        On {{$item->model->getDataFromColumn('title')}} <b class="float-right">
                                                                 @endif
                                                                         @if(!in_array($item->model->id,$completed_lessons))
-                                                                            <i class="fa text-dark  fa-lock"></i>
+                                                                            <i class="fas fa-unlock-alt"></i>
                                                                         @else
-                                                                            <i class="fa text-success fa-unlock"></i>
+                                                                        <i class="fas fa-unlock-alt"></i>
                                                                         @endif
                                                                         </b>
                                                                     </p>
+                                                                   
+                                                                    </div>
+                                                                    </div>
                                                             @endif
                                                         @endforeach
+                                                        
+                                                        
                                                     </div>
                                                 </div>
 
@@ -674,6 +737,27 @@
                 </div>
             </div>
         </div>
+        <div class="container my-5text-ara2">
+                                    <h2 class="m-3">Write Your Notes</h2>
+                                    <div class="row">
+                                        <div class="col-12">
+
+                                            <form action="{{route('save.note')}}" method="POST">
+                                                <input type="hidden" name="lesson_slug" value="{{$lesson->slug}}">
+                                                @csrf
+                                                <textarea class='edit-froala' name="contentText"
+                                                          style="margin-top: 30px;">
+                                                
+                                                </textarea>
+
+                                                <button type="submit" class=" float-right btn btn-success my-5">
+                                                    save
+                                                </button>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
     </section>
     <div class="modal fade" id="notesModal" tabindex="-2" aria-labelledby="notesModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -784,6 +868,15 @@
 
 
         })
+    </script>
+    <script> 
+    $('.bg-active').on('click', function(){
+
+        $('.bg-active').addClass('bg-lgh')
+
+    });
+    
+    
     </script>
     <script>
         $('#edit-note-modal').on('show.bs.modal', function (e) {

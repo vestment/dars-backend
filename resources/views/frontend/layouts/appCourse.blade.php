@@ -39,10 +39,9 @@
                 width: 35px;
                 text-align: center;
                 line-height: 30px;
-                border-radius: 100%;
+             
                 color: #fff;
                 margin-left: 10px;
-                border: 2px solid #fff;
                 position: absolute;
                 top: 27%;
             }

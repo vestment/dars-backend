@@ -1584,6 +1584,7 @@ return array(
 
                     ),
                     'ratings' => 'Ratings',
+                    'minutes' => 'min',
                     'stars' => 'Stars',
                     'by' => 'By',
                     'no_reviews_yet' => 'No reviews yet.',

@@ -1441,6 +1441,8 @@ return array(
 
                     ),
                     'course_hours' => 'عدد الساعات ',
+                    'minutes' => 'دقيقة ',
+
 
                     'add_review_now' => 'إضافة مراجعة الآن',
                     'add_reviews' => 'أضف <span> مراجعات. </span>',

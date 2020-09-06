@@ -28,6 +28,7 @@ class LessonsController extends Controller
         $canReTest = false;
         $questionsToAnswer = [];
         $next_lesson = [];
+
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         if ($lesson == "") {
             $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->with('courseTimeline')->where('published', '=', 1)->firstOrFail();
@@ -120,6 +121,7 @@ class LessonsController extends Controller
                     ->where('model_type', Lesson::class)
                     ->orderby('sequence', 'asc')
                     ->get();
+                   
 
 
                 $test_exists = FALSE;
@@ -144,8 +146,8 @@ class LessonsController extends Controller
             }
 
             $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
-
-            return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'questionsToAnswer', 'latestTest', 'prevTests',
+// dd($lessons);           
+ return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'questionsToAnswer', 'latestTest', 'prevTests',
                 'canReTest', 'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time', 'notes', 'canEnterNextChapter'));
         } else {
             return abort(403);
