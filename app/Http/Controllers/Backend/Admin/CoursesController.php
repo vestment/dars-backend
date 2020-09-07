@@ -501,11 +501,11 @@ class CoursesController extends Controller
         }
 
         $course->update($request->all());
-        $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
-        $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
-        $course->learned = $request->learn ? json_encode($request->learn) : null;
+        $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : Null;
+        $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : Null;
+        $course->learned = $request->learn ? json_encode($request->learn) : Null;
         //dd($request->offlineData);
-        $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
+        $course->date = $request->offlineData ? json_encode($request->offlineData) : Null;
 
         if ($request->opt_courses && $request->mand_courses) {
             if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0 || count($request->learned) > 0) {
@@ -523,7 +523,15 @@ class CoursesController extends Controller
             $course->price = NULL;
             $course->save();
         }
-
+        $seats = 0;
+        if ($request->offlineData) {
+            foreach (json_decode($request->offlineData) as $key => $item) {
+                $item = json_decode(json_encode($item), true);
+                $seats += $item['seats-' . $key];
+            }
+            $course->seats = $seats;
+            $course->save();
+        }
         $teachers = (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) ? array_filter((array)$request->input('teachers')) : [auth()->user()->id];
         $course->teachers()->sync($teachers);
 

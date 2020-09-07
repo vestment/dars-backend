@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\General\EarningHelper;
+use App\Helpers\PayMob;
 use App\Mail\OfflineOrderMail;
 use App\Models\Bundle;
 use App\Models\Auth\User;
@@ -44,8 +45,8 @@ class CartController extends Controller
             } else {
                 $course_ids[] = $item->id;
                 if ($item->attributes->selectedDate && $item->attributes->selectedTime) {
-                $courseData[$item->id]['selectedDate'] = $item->attributes->selectedDate;
-                $courseData[$item->id]['selectedTime'] = $item->attributes->selectedTime;
+                    $courseData[$item->id]['selectedDate'] = $item->attributes->selectedDate;
+                    $courseData[$item->id]['selectedTime'] = $item->attributes->selectedTime;
                 }
             }
         }
@@ -56,13 +57,13 @@ class CartController extends Controller
         $total = $courses->sum('price');
         //Apply Tax
         $taxData = $this->applyTax('total');
-        
-        return view('frontend.cart.checkout', compact('courses', 'bundles', 'total', 'taxData','courseData'));
+
+        return view('frontend.cart.checkout', compact('courses', 'bundles', 'total', 'taxData', 'courseData'));
     }
 
     public function addToCart(Request $request)
     {
-       
+
         $product = "";
         $teachers = "";
         $type = "";
@@ -129,7 +130,7 @@ class CartController extends Controller
                 $bundle_ids[] = $item->id;
             } else {
                 $course_ids[] = $item->id;
-               
+
             }
         }
         $courses = new Collection(Course::find($course_ids));
@@ -221,8 +222,8 @@ class CartController extends Controller
 
     public function paypalPayment(Request $request)
     {
-        
-        
+
+
         if ($this->checkDuplicate()) {
             return $this->checkDuplicate();
         }
@@ -257,103 +258,136 @@ class CartController extends Controller
         return Redirect::route('cart.paypal.status');
     }
 
-    public function fawryPayment(Request $request) 
+    public function fawryPayment(Request $request)
     {
         $user = User::find(auth()->user()->id);
         $number = str_random(8);
         $amount = Cart::session(auth()->user()->id)->getTotal();
-       
-       $merchantRefNum = str_random(8);
-       // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
-       if (strpos($amount, '.') !== false) {
-           $amount = round($amount,2);
-       }else {
-           $amount = $amount.'.00';
-       }
-       $fawryUrl = 'https://atfawry.fawrystaging.com//ECommerceWeb/Fawry/payments/charge';
-       
-       // Generate Fawry Signature
-       $merchantCode = config('fawry.merchant_code');
-       $customerProfileId = auth()->user()->id;
-       $paymentMethod = 'PAYATFAWRY';
-       $secureKey = config('fawry.security_key');
-       $buffer = $merchantCode.$merchantRefNum.$customerProfileId.$paymentMethod.$amount.$secureKey;
-       $signature = hash('sha256', $buffer);
-       $fawryData = [
-           'merchantCode'=>$merchantCode,
-           'customerProfileId'=>$customerProfileId,
-           'customerMobile'=>'01149786203',
-           // 'customerEmail'=>$user->email,
-           //'customerName'=>$user->name,
-           'paymentMethod'=>$paymentMethod,
-           'amount'=>$amount,
-           //'paymentExpiry'=>'72',
-           // 'chargeItems'=> $invoiceDataArray,
-           'signature'=>$signature,
-           'merchantRefNum'=> $merchantRefNum,
-           // 'description'=> $description
-       ];
 
-       $data_string = json_encode($fawryData);                                                                                   
-                                                                                                                    
-       $ch = curl_init($fawryUrl);                                                                      
-       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");     
-       curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);                                                                
-       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-       curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-           'Content-Type: application/json',                                                                                
-           'Content-Length: ' . strlen($data_string))                                                                       
-       );                                                                                                                   
-                          
-       $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
-       if ($coupon != null) {
-           $coupon = Coupon::where('code', '=', $coupon->getName())->first();
-       }
-       $result = curl_exec($ch);
-       $result = json_decode($result,true);
-       $description = $result['statusDescription'];
-       $order = new Order();
-       $order->user_id = $customerProfileId;
-       $order->reference_no =$merchantRefNum;
-       $order->amount = $amount;
-       $order->payment_type = 4;
-       $order->status = 0;
-       $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
-       $order->fawry_status = $result['statusDescription'];
-       if($result['statusCode'] == 200)
-       {
-       $order->fawry_ref_no = $result['referenceNumber'];
-       $order->fawry_expirationTime = $result['expirationTime'];
-       }
-       $order->save();
-       foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
-        if ($cartItem->attributes->type == 'bundle') {
-            $type = Bundle::class;
+        $merchantRefNum = str_random(8);
+        // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
+        if (strpos($amount, '.') !== false) {
+            $amount = round($amount, 2);
         } else {
-            $type = Course::class;
-         
+            $amount = $amount . '.00';
         }
-        $order->items()->create([
-            'item_id' => $cartItem->id,
-            'selectedDate'=>$cartItem->attributes->selectedDate ?? null,
-            'selectedTime'=>$cartItem->attributes->selectedTime ?? null,
-            'item_type' => $type,
-            'price' => $cartItem->price
-        ]);
+        $fawryUrl = 'https://atfawry.fawrystaging.com//ECommerceWeb/Fawry/payments/charge';
+
+        // Generate Fawry Signature
+        $merchantCode = config('fawry.merchant_code');
+        $customerProfileId = auth()->user()->id;
+        $paymentMethod = 'PAYATFAWRY';
+        $secureKey = config('fawry.security_key');
+        $buffer = $merchantCode . $merchantRefNum . $customerProfileId . $paymentMethod . $amount . $secureKey;
+        $signature = hash('sha256', $buffer);
+        $fawryData = [
+            'merchantCode' => $merchantCode,
+            'customerProfileId' => $customerProfileId,
+            'customerMobile' => '01149786203',
+            // 'customerEmail'=>$user->email,
+            //'customerName'=>$user->name,
+            'paymentMethod' => $paymentMethod,
+            'amount' => $amount,
+            //'paymentExpiry'=>'72',
+            // 'chargeItems'=> $invoiceDataArray,
+            'signature' => $signature,
+            'merchantRefNum' => $merchantRefNum,
+            // 'description'=> $description
+        ];
+
+        $data_string = json_encode($fawryData);
+
+        $ch = curl_init($fawryUrl);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string))
+        );
+
+        $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
+        if ($coupon != null) {
+            $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+        }
+        $result = curl_exec($ch);
+        $result = json_decode($result, true);
+        $description = $result['statusDescription'];
+        $order = new Order();
+        $order->user_id = $customerProfileId;
+        $order->reference_no = $merchantRefNum;
+        $order->amount = $amount;
+        $order->payment_type = 4;
+        $order->status = 0;
+        $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
+        $order->fawry_status = $result['statusDescription'];
+        if ($result['statusCode'] == 200) {
+            $order->fawry_ref_no = $result['referenceNumber'];
+            $order->fawry_expirationTime = $result['expirationTime'];
+        }
+        $order->save();
+        foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
+            if ($cartItem->attributes->type == 'bundle') {
+                $type = Bundle::class;
+            } else {
+                $type = Course::class;
+
+            }
+            $order->items()->create([
+                'item_id' => $cartItem->id,
+                'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                'selectedTime' => $cartItem->attributes->selectedTime ?? null,
+                'item_type' => $type,
+                'price' => $cartItem->price
+            ]);
+        }
+
+        return redirect()->route('courses.all');
     }
 
-         return redirect()->route('courses.all');
-    }
-
-    public function acceptPayment(Request $request) 
+    public function acceptPayment()
     {
+        $payMob = new PayMob();
+        $amount = Cart::session(auth()->user()->id)->getTotal();
+        $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
 
-         return redirect()->route('courses.all');
+        if ($coupon != null) {
+            $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+        }
+        $items = [];
+        $counter = 0;
+        foreach (Cart::session(auth()->user()->id)->getContent() as $key => $cartItem) {
+            $counter++;
+            $item = (object) ['number' => $counter, 'name' => $cartItem->name, 'amount_cents' => $cartItem->price * 100, 'quantity' => 1];
+            array_push($items, $item);
+        }
+        if (strpos($amount, '.') !== false) {
+            $amount = round($amount, 2);
+        } else {
+            $amount = $amount . '.00';
+        }
+        $payMob->authPaymob();
+        $order = $this->makeOrder();
+        $order->user_id = auth()->user()->id;
+        $order->reference_no = str_random(8);
+        $order->amount = $amount;
+        $order->payment_type = 5;
+        $order->status = 0;
+        $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
+        $order->save();
+        $paymobOrder = $payMob->makeOrderPaymob(
+            $payMob->auth->profile->id, // this is the merchant id from step 1.
+            $amount * 100, // total amount by cents/piasters.
+            $order->reference_no, // your (merchant) order id.
+            $items
+        );
+        dd($paymobOrder);
     }
+
     public function offlinePayment(Request $request)
     {
-       
+
         if ($this->checkDuplicate()) {
             return $this->checkDuplicate();
         }
@@ -415,8 +449,7 @@ class CartController extends Controller
             generateInvoice($order);
             Cart::session(auth()->user()->id)->clear();
             return Redirect::route('status');
-        }
-        else {
+        } else {
             \Session::flash('failure', trans('labels.frontend.cart.payment_failed'));
             return Redirect::route('status');
         }
@@ -586,7 +619,7 @@ class CartController extends Controller
         $order->reference_no = str_random(8);
         $order->amount = Cart::session(auth()->user()->id)->getTotal();
         $order->status = 1;
-   
+
         $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
         $order->payment_type = 3;
         $order->save();
@@ -596,12 +629,12 @@ class CartController extends Controller
                 $type = Bundle::class;
             } else {
                 $type = Course::class;
-             
+
             }
             $order->items()->create([
                 'item_id' => $cartItem->id,
-                'selectedDate'=>$cartItem->attributes->selectedDate ?? null,
-                'selectedTime'=>$cartItem->attributes->selectedTime ?? null,
+                'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                'selectedTime' => $cartItem->attributes->selectedTime ?? null,
                 'item_type' => $type,
                 'price' => $cartItem->price
             ]);

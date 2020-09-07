@@ -262,12 +262,22 @@
         .fr-quick-insert {
             display: none !important;
         }
+        .svg-embedded {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
     </style>
 @endpush
 @section('lesson-title')
     <span class="course-title-header ml-5">{{$lesson->course->getDataFromColumn('title')}}</span>
 @endsection
 @section('content')
+    <div class="svg-embedded" style="display:none;"></div>
     <!-- Start of breadcrumb section
         ============================================= -->
     <section id="breadcrumb" class="breadcrumb-sectionn relative-position ">
@@ -511,6 +521,9 @@
 
 
                         @if($lesson->mediaVideo && $lesson->mediavideo->count() > 0)
+                            <script>
+                                $('.svg-embedded').show();
+                            </script>
                             <div class="course-single-text mb-4">
                                 @if($lesson->mediavideo != "")
                                     <div class="course-details-content mt-3">
@@ -838,6 +851,20 @@
 
     <script>
         $(document).ready(function () {
+            setInterval(function() {
+                var $div = $('.svg-embedded'),
+                    docHeight = $div.parent().height(),
+                    docWidth = $div.parent().width(),
+                    divHeight = $div.height(),
+                    divWidth = $div.width(),
+                    heightMax = docHeight - divHeight,
+                    widthMax = docWidth - divWidth;
+
+                $div.css({
+                    left: Math.floor( Math.random() * widthMax ),
+                    top: Math.floor( Math.random() * heightMax )
+                });
+            },2*60*1000);
             new FroalaEditor(".edit-froala", {
                 enter: FroalaEditor.ENTER_BR,
                 fileUpload: false,
@@ -1013,6 +1040,13 @@
 
         const player2 = new Plyr('#audioPlayer');
         const player = new Plyr('#player');
+        let plyrVideoWrapper = document.getElementsByClassName('plyr__video-wrapper')
+        if (plyrVideoWrapper) {
+            let myPluginCollection = document.getElementsByClassName('svg-embedded')
+            if (myPluginCollection) {
+                plyrVideoWrapper[0].appendChild(myPluginCollection[0])
+            }
+        }
         $('.js-player source').remove();
         duration = 10;
         var progress = 0;

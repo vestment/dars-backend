@@ -865,23 +865,13 @@
                                         <!-- <i> {{ __('labels.backend.general_settings.payment_settings.paypal_note')}}</i> -->
                                     </small>
                                     <div class="switch-content @if(config('accept.active') == 0 || config('accept.active') == false) d-none @endif">
-                                        <br>
-                                        
+
                                         <div class="form-group row">
-                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.merchant_code'))->class('col-md-2 form-control-label') }}
+                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.key'))->class('col-md-2 form-control-label')->for('accept.accept.api_key') }}
                                             <div class="col-md-8 col-xs-12">
-                                                {{ html()->text('accept__merchant_code')
+                                                {{ html()->textarea('accept__api_key')
                                                      ->class('form-control')
-                                                     ->value(config('accept.merchant_code'))
-                                                     }}
-                                            </div><!--col-->
-                                        </div><!--form-group-->
-                                        <div class="form-group row">
-                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.security_key'))->class('col-md-2 form-control-label')->for('accept.accept.security_key') }}
-                                            <div class="col-md-8 col-xs-12">
-                                                {{ html()->text('accept__security_key')
-                                                     ->class('form-control')
-                                                     ->value(config('accept.security_key'))
+                                                     ->value(config('accept.api_key'))
                                                      }}
                                             </div><!--col-->
                                         </div><!--form-group-->

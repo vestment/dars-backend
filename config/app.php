@@ -288,7 +288,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Zipper' => 'Chumper\Zipper\Zipper',
 
-
         /*
          * Package Aliases
          */

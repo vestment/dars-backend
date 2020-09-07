@@ -152,7 +152,7 @@ class CoursesController extends Controller
         }
         $mandatory_courses = [];
         $optional_courses = [];
-$course_date =json_encode([]);
+        $course_date =json_encode([]);
         if ($course->optional_courses) {
             $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->get();
         }
@@ -208,7 +208,7 @@ $course_date =json_encode([]);
         $html = '';
         if (count($courses->items()) > 0) {
             foreach ($courses->items() as $course) {
-                $html .= '<div class="col-xl-3 col-lg-3 col-md-6 col-12 mb-2"><div class="best-course-pic-text relative-position"><div class="best-course-pic piclip relative-position" style="background-image: url(' . $course->image . ')">';
+                $html .= '<div class="col-xl-3 col-lg-3 col-md-6 col-12 mb-2"><div class="best-course-pic-text relative-position"><a href="'.route('courses.show', [$course->slug]).'"><div class="best-course-pic piclip relative-position" style="background-image: url(' . $course->image . ')">';
 
                 $html .= '';
 
@@ -218,7 +218,7 @@ $course_date =json_encode([]);
                 } else {
                     $html .= '<span>' . (app()->getLocale() == 'ar' ? 'ج م' : 'EGP') . ' ' . $course->price . '</span>';
                 }
-                $html .= '</div></div> <div class="card-body back-im p-3"><h3 class="card-title titleofcard">' . $course->getDataFromColumn('title') . '</h3>
+                $html .= '</div></div></a> <div class="card-body back-im p-3"><a href="'.route('courses.show', [$course->slug]).'"><h3 class="card-title titleofcard">' . $course->getDataFromColumn('title') . '</h3></a>
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="course-rate ul-li"><ul>';
@@ -472,7 +472,7 @@ $course_date =json_encode([]);
                     ]);
         }
         Session::flash('success', trans('labels.frontend.cart.product_added'));
-        return back();
+        return redirect()->back();
     }
 
 
