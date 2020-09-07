@@ -42,4 +42,7 @@ class Media extends Model
     public function uploader() {
         return $this->belongsTo(User::class,'user_id');
     }
+    public function course() {
+        return $this->belongsTo(course::class,'model_id');
+    }
 }

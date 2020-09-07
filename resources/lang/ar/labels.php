@@ -1442,6 +1442,10 @@ return array(
                     ),
                     'course_hours' => 'عدد الساعات ',
                     'minutes' => 'دقيقة ',
+                    'OptionalCourses' => 'الدورات الاختياربة  ',
+                    'MandatoryCourses' => 'الدورات الاجبارية  ',
+
+
 
 
                     'add_review_now' => 'إضافة مراجعة الآن',

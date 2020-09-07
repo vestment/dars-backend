@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\academy;
+use App\Models\Media;
+use Illuminate\Support\Facades\DB;
+
 /**
  * Class Course
  *
@@ -191,10 +194,19 @@ class Course extends Model
         return false;
     }
 
+
     public function getDataFromColumn($col)
     {
         // ?? null return if the column not found
         return $this->attributes[app()->getLocale() == 'ar' ? $col . '_ar' : $col] ?? $this->attributes[$col];
+    }
+
+
+    public function getDurationAttribute()
+    {
+        $lessonsIds = $this->lessons()->where('published', 1)->pluck('id');
+        $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->sum(DB::raw("TIME_TO_SEC(duration)"));
+        return $duration;
     }
 
     public function reviews()
@@ -251,7 +263,9 @@ class Course extends Model
     public function mediaVideo()
     {
         $types = ['youtube', 'vimeo', 'upload', 'embed'];
+
         return $this->morphOne(Media::class, 'model')
+
             ->whereIn('type', $types);
 
     }

@@ -16,7 +16,7 @@
         var lang = '{{app()->getLocale()}}';
     </script>
     <style>
-        .main-menu-container.menu-bg-overlay {
+        .main-menu-container.menu-bg-overlay , .main-menu-container{
             background-color: #0C0C3F;
         }
         .course-details-section{
@@ -77,9 +77,18 @@
             width: 100%;
         }
 
-        /*.sidebar.is_stuck {*/
-        /*    top: 15% !important;*/
-        /*}*/
+        .sidebar.is_stuck {
+           top: 16% !important;
+           margin-top:0;
+          
+        }
+        .sidebar {
+            margin-top:10%;
+            margin-left: 1%;
+
+            -webkit-transition: .3s all ease-in-out;
+    transition: .3s all ease-in-out;
+        }
 
         .m-note {
             margin-top: 11%;
@@ -199,6 +208,9 @@
             .txt-ara2{
                 display:block;
             }
+            .prog{
+                display:none;
+            }
 
         }
         @media screen  and  (min-width: 768px) {
@@ -220,9 +232,7 @@
             color: white;
             font-weight: bold;
             font-size: 24px;
-            position: absolute;
-            left: 15%;
-            top: 30%;
+            
         }
 
         .progress {
@@ -267,10 +277,27 @@
 @section('lesson-title')
     <span class="course-title-header ml-5">{{$lesson->course->getDataFromColumn('title')}}</span>
 @endsection
+@section('course_route')
+<a href="{{route('courses.show',['slug'=>$lesson->course->slug])}}"><i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+@endsection
+@section('progress_bar')
+ <div class="row prog ">
+                            <div class="col-2 text-right ">
+                            {{ $lesson->course->progress()}} %
+                            </div>
+                            <div class="progress  col-9">
+                                <div class="progress-bar"
+                                style="width:{{ $lesson->course->progress() }}%">
+                                </div>
+                            </div>     
+                    </div>                                        </a>
+@endsection
+
 @section('content')
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-sectionn relative-position ">
+    <section id="breadcrumb" class="breadcrumb-sectionn relative-position d-none">
         <div class="blakish-overlay"></div>
         <div class="container">
             <div class="page-breadcrumb-content text-center">
@@ -288,7 +315,7 @@
 
     <!-- Start of course details section
         ============================================= -->
-    <section id="course-details" class="course-details-section">
+    <section id="course-details" class="course-details-section pt-5">
         <div class="container-fluid">
             <div class="row main-content">
                 <div class="col-md-9 p-0 pt-5">
@@ -628,7 +655,7 @@
                                 @endif
                             @endif
                             @foreach($chapters as $chapter)
-                                <div class="row m-2 shadow">
+                                <div class="row m-2 shadow ml-3">
                                     <div class="accordion" id="accordionExample">
                                         <div class="card shad">
                                             <div class="card-header" id="headingOne">
@@ -698,13 +725,16 @@
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                 <div class="p-1">
-                                                                    <p class="mb-0 mt-1 text-pink test"
+                                                                
+                                                                    <p class="mb-0 mt-1 text-pink test "
                                                                        style="cursor: pointer;"
                                                                        onclick="startTest(this)"
                                                                        data-test-id="{{$item->model->id}}"
                                                                        data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
                                                                        &nbsp;&nbsp;@lang('labels.frontend.course.test')
                                                                         On {{$item->model->getDataFromColumn('title')}} <b class="float-right">
+                                                                       
+
                                                                 @endif
                                                                         @if(!in_array($item->model->id,$completed_lessons))
                                                                             <i class="fas fa-unlock-alt"></i>
@@ -712,12 +742,15 @@
                                                                         <i class="fas fa-unlock-alt"></i>
                                                                         @endif
                                                                         </b>
+                                                                       
                                                                     </p>
+                                                                   
                                                                    
                                                                     </div>
                                                                     </div>
                                                             @endif
                                                         @endforeach
+                                                       
                                                         
                                                         
                                                     </div>
@@ -737,7 +770,7 @@
                 </div>
             </div>
         </div>
-        <div class="container my-5text-ara2">
+        <div class="container my-5 txt-ara2">
                                     <h2 class="m-3">Write Your Notes</h2>
                                     <div class="row">
                                         <div class="col-12">

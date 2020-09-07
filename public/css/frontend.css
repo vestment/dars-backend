@@ -1205,6 +1205,12 @@ h6 {
 .sub-menu li:before {
     content: '\BB';
 }
+.tx-font{
+    font-size: 12px;
+}
+.courses-menu li:before {
+    content: '';
+}
 
 .sub-menu li ul.depth-1 {
     margin-left: 10px;
@@ -7522,8 +7528,7 @@ hr {
 @media (max-width: 768px) {
 
     .navbar-brand img {
-        width: 66px;
-        margin-top: 12px;
+       
         margin-left: 55px;
 
 
@@ -7562,9 +7567,7 @@ hr {
 @media (max-width: 425px) {
 
     .navbar-brand img {
-        width: 66px;
-        margin-top: 12px;
-        margin-left: 55px;
+       
 
     }
 

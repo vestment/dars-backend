@@ -1596,6 +1596,9 @@ return array(
                     'chapters' => 'Chapters',
                     'course_hours' => 'hours',
                     'instructor' => 'instructor',
+                    'OptionalCourses' => 'Optional Courses   ',
+                    'MandatoryCourses' => 'Mandatory Courses    ',
+
 
                     'offline_booking_course'=>'Offline Booking Course',
                     'explore'=>'EXPLORE',
