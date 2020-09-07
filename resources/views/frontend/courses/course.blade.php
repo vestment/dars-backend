@@ -102,7 +102,7 @@
                         <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
                         <div class="col-lg-5 col-sm-3 mt-3">
                             <p class="text-white font12">{{$teacher->full_name}}</p>
-                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('description')}}</p>
+                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('title')}}</p>
                         </div>
                         @endif
                     @endforeach
@@ -262,10 +262,11 @@
             <div class="row  coursesec d-block m-3">
                 <h2>@lang('labels.frontend.course.requirements')</h2>
             </div>
+            {{$course->duration}}
             <div class="row m-3">
                 @if(count($optional_courses) >0 || count($mandatory_courses) >0)
                     <div class="col-lg-3">
-                        <p class="font-weight-bold text-dark">Optional Courses</p>
+                        <p class="font-weight-bold text-dark">@lang('labels.frontend.course.OptionalCourses')</p>
 
                         @foreach($optional_courses as $opt_course)
                             <a href="{{ route('courses.show', [$opt_course->slug]) }}"><p><i
@@ -276,7 +277,7 @@
                     </div>
 
                     <div class="col-lg-3">
-                        <p class="font-weight-bold text-dark"> Mandatory Courses</p>
+                        <p class="font-weight-bold text-dark">@lang('labels.frontend.course.MandatoryCourses') </p>
                         @foreach($mandatory_courses as $mand_course)
                             <a href="{{ route('courses.show', [$mand_course->slug]) }}"><p><i
                                             class="fa fa-angle-right p-2"
@@ -395,7 +396,7 @@
                                             data-toggle="collapse" data-target="#chapter-{{$chapter->id}}"
                                             aria-expanded="true"
                                             aria-controls="{{$chapter->id}}">
-                                        {{ $chapter->title}} <i class="fa fa-angle-down float-right"
+                                        {{ $chapter->getDataFromColumn('title')}} <i class="fa fa-angle-down float-right"
                                                                 aria-hidden="true"></i>
                                     </button>
 
@@ -411,7 +412,7 @@
                                                 <div class="mt-4 bordered border-bottom">
                                                 <p class="subtitle2">
                                                 {{-- <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">--}}
-                                                <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->title}}
+                                                <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->getDataFromColumn('title')}}
                                                     @if($item->model_type == 'App\Models\Test')
                                                         <p class="mb-0 text-primary"> - @lang('labels.frontend.course.test')</p>
                                                     @endif

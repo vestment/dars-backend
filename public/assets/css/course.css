@@ -67,7 +67,11 @@ ul.pagination {
     }
 }
 @media screen and (max-width: 1329px) {
+    
+     .owl-carousel .owl-item .img-tech2 {
+        display: none;
 
+    }
     .btnWishList{
         width:100%;
     }

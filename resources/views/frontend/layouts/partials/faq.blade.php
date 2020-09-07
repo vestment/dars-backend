@@ -15,7 +15,7 @@
 
                                     <ul class="product-tab">
                                         <div class="item ml-lg-5">
-                                                <li rel="tab{{$faq->id}}">{{$faq->name}}</li>
+                                                <li rel="tab{{$faq->id}}">{{$faq->getDataFromColumn('name')}}</li>
                                         </div>
                                     </ul>
                                 </div>
@@ -30,7 +30,7 @@
                     <div class="tab-button pt-5 mb65 ">
                         <ul class="product-tab">
                             @foreach($faqs as $key=>$faq)
-                                <li rel="tab{{$faq->id}}">{{$faq->name}}</li>
+                                <li rel="tab{{$faq->id}}">{{$faq->getDataFromColumn('name')}}</li>
                             @endforeach
                         </ul>
                     </div>

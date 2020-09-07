@@ -175,16 +175,20 @@
 
                                 <li class="menu-item-has-children ul-li-block">
                                     <a href="#!"> @lang('navs.general.courses') <i class="fa fa-caret-{{app()->getLocale() == 'ar' ? 'left': 'right'}}"></i> </a>
-                                    <ul class="sub-menu">
-                                        @if(count($categories) > 0)
+                                    <ul class="sub-menu courses-menu">
+                                        <li>
+                                            <div class="row">
                                         @foreach($categories as $category)
-                                            <li>
-                                                <a href="{{route('courses.category',['category'=>$category->slug])}}">
+                                          
+                                                <div class="col-4 mr-5">
+                                                    <a href="{{route('courses.category',['category'=>$category->slug])}}">
                                                     <i class="{{$category->icon}} p-2"></i>{{$category->getDataFromColumn('name')}}
                                                 </a>
-                                            </li>
+                                                </div>
+                                            
                                         @endforeach
-                                        @endif
+                                        </div>
+                                        </li>
                                     </ul>
                                 </li>
 
