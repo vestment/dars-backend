@@ -19,7 +19,7 @@ class PayMob
     {
         $this->token = '';
         $this->auth = '';
-        $this->api_key = config('accept.api_key');
+        $this->api_key = config('paymob.api_key');
     }
 
     /**
@@ -157,8 +157,8 @@ class PayMob
         $fname = 'null',
         $lname = 'null',
         $phone = 'null',
-        $city = 'null',
-        $country = 'null'
+        $city = 'NA',
+        $country = 'EG'
     )
     {
         // Request body
@@ -179,6 +179,7 @@ class PayMob
                 'apartment' => 'null'
             ],
             'currency' => 'EGP',
+            "lock_order_when_paid" => "false",
             'card_integration_id' => config('paymob.integration_id')
         ];
 

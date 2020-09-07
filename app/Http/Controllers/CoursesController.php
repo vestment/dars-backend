@@ -162,6 +162,9 @@ class CoursesController extends Controller
         if ($course->date) {
             $course_date = $course->date ? json_decode($course->date) : null;
         }
+        if ($course->learned == 'null') {
+            $course->learned = json_encode([]);
+        }
         // dd($course_date);
 //dd($course->getDataFromColumn('title'));
         return view('frontend.courses.course', compact('academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));

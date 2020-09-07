@@ -346,7 +346,7 @@ class CartController extends Controller
         return redirect()->route('courses.all');
     }
 
-    public function acceptPayment()
+    public function payMobPayment()
     {
         $payMob = new PayMob();
         $amount = Cart::session(auth()->user()->id)->getTotal();
@@ -359,7 +359,7 @@ class CartController extends Controller
         $counter = 0;
         foreach (Cart::session(auth()->user()->id)->getContent() as $key => $cartItem) {
             $counter++;
-            $item = (object) ['number' => $counter, 'name' => $cartItem->name, 'amount_cents' => $cartItem->price * 100, 'quantity' => 1];
+            $item = (object)['number' => $counter, 'name' => $cartItem->name, 'amount_cents' => $cartItem->price * 100, 'quantity' => 1];
             array_push($items, $item);
         }
         if (strpos($amount, '.') !== false) {
@@ -367,22 +367,60 @@ class CartController extends Controller
         } else {
             $amount = $amount . '.00';
         }
+        $refNumber = str_random(8);
+        // Step 1
         $payMob->authPaymob();
-        $order = $this->makeOrder();
-        $order->user_id = auth()->user()->id;
-        $order->reference_no = str_random(8);
-        $order->amount = $amount;
-        $order->payment_type = 5;
-        $order->status = 0;
-        $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
-        $order->save();
+        // Step 2
         $paymobOrder = $payMob->makeOrderPaymob(
-            $payMob->auth->profile->id, // this is the merchant id from step 1.
+            $payMob->auth->profile->id, // merchant id.
             $amount * 100, // total amount by cents/piasters.
-            $order->reference_no, // your (merchant) order id.
+            $refNumber, // your (merchant) order id.
             $items
         );
-        dd($paymobOrder);
+        // Step 3
+        $paymentKey = $payMob->getPaymentKeyPaymob(
+            $amount * 100, // total amount by cents/piasters.
+            $paymobOrder->shipping_data->order_id, // paymob order id from step 2.
+            // For billing data
+            auth()->user()->email, // optional
+            auth()->user()->first_name, // optional
+            auth()->user()->last_name, // optional
+            auth()->user()->phone ? auth()->user()->phone : 'no-phone-found', // optional
+            auth()->user()->city ? auth()->user()->city : 'NA' // optional
+        );
+
+        return response()->json(['paymentKey' => $paymentKey->token, 'url' => 'https://accept.paymob.com/api/acceptance/iframes/63885?payment_token=' . $paymentKey->token], 200);
+    }
+
+    public function processedCallback(Request $request)
+    {
+        $orderId = $request['obj']['order']['id'];
+        // Statuses.
+        $isSuccess = $request['obj']['success'];
+        $isVoided = $request['obj']['is_voided'];
+        $isRefunded = $request['obj']['is_refunded'];
+        $user = User::where('email',$request['obj']['order']['shipping_data']['email'])->first();
+        if ($isSuccess) {
+            $order = new Order();
+            $order->user_id = $user->id;
+            $order->reference_no = $request['obj']['order']['merchant_order_id'];
+            $order->transaction_id = $request['obj']['id'];
+            $order->amount = $request['obj']['amount_cents'] / 100;
+            $order->payment_type = 5;
+            $order->status = 1;
+            $order->paymob_orderId = $orderId;
+            $order->save();
+        }
+        if ($isVoided) {
+            dd($orderId);
+        }
+
+        return response()->json(['success' => true, 'response' => $order], 200);
+    }
+    public function responseCallback(Request $request)
+    {
+        $order = Order::where('paymob_orderId',$request->order)->first();
+        return response()->json(['success' => true, 'response' => $order], 200);
     }
 
     public function offlinePayment(Request $request)

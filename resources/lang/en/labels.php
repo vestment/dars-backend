@@ -643,6 +643,7 @@ return array(
                             'offline_mode_note' => 'User gets assistance for offline payment via admin',
                             'offline_mode_instruction' => 'Enter offline payment instructions',
                             'key' => 'API Key',
+                            'integration_id' => 'Integration ID',
                             'secret' => 'API Secret',
                             'client_id' => 'Client ID',
                             'client_secret' => 'Secret',

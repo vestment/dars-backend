@@ -94,6 +94,7 @@ return array(
             'backup' =>
                 array(
                     'api_key' => 'مفتاح API',
+                    'integration_id' => 'رقم طريقة الدفع',
                     'api_secret' => 'سر API',
                     'app_key' => 'مفتاح التطبيق',
                     'app_secret' => 'سر التطبيق',
