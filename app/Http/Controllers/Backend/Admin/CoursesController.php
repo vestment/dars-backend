@@ -253,7 +253,7 @@ class CoursesController extends Controller
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-       
+
         $seats = 0;
         if ($request->offlineData) {
             foreach (json_decode($request->offlineData) as $key => $item) {
@@ -348,7 +348,7 @@ class CoursesController extends Controller
         }
 
 
-       
+
 
         $allAcademies = User::role('academy')->with('academy')->get();
         $academies = [];
@@ -370,26 +370,44 @@ class CoursesController extends Controller
         $allCourses = Course::pluck('title', 'id');
 
         $course = Course::findOrFail($id);
-
-
         $date = $course->date ? json_decode($course->date , true ) : null;
 
         $date = json_decode($date,true);
         //dd($date) ;
         //dd(json_decode($date,true));
-    
+
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
 
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
-
-
-
-        // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
         $prevLearned = [];
         if ($learned != null) {
             foreach ($learned as $key => $value) {
                 $prevLearned[$value] = $value;
+            }
+        }
+        $learned_ar = $course->learned_ar ? json_decode($course->learned_ar) : null;
+        $prevLearned_ar = [];
+        if ($learned_ar != null) {
+            foreach ($learned_ar as $key => $value) {
+                $prevLearned_ar[$value] = $value;
+            }
+        }
+        $coursesRaw = Course::all();
+        $allLearned = [];
+        foreach ($coursesRaw as $course) {
+            if ($course->learned && $course->learned != 'null') {
+                foreach (json_decode($course->learned) as $learnItem) {
+                    $allLearned[$learnItem] = $learnItem;
+                }
+            }
+        }
+        $allLearned_ar = [];
+        foreach ($coursesRaw as $course) {
+            if ($course->learned_ar && $course->learned_ar != 'null') {
+                foreach (json_decode($course->learned_ar) as $learnItem) {
+                    $allLearned_ar[$learnItem] = $learnItem;
+                }
             }
         }
 
@@ -419,12 +437,10 @@ class CoursesController extends Controller
             $videos = ['' => 'No videos available'];
             $notSelectedVideos = ['' => 'No videos available'];
         }
-//        dd($videos);
-        return view('backend.courses.edit', compact('notSelectedVideos','chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies','date'));
+        return view('backend.courses.edit', compact('notSelectedVideos','chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned','prevLearned_ar', 'allLearned', 'allLearned_ar','academies','date'));
 
 
     }
-
     /**
      * Update Course in storage.
      *
@@ -511,8 +527,7 @@ class CoursesController extends Controller
         $course->update($request->all());
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : Null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : Null;
-        $course->learned = $request->learn ? json_encode($request->learn) : Null;
-        $course->learned_ar = $request->learn ? json_encode($request->learn) : Null;
+
         //dd($request->offlineData);
         $course->date = $request->offlineData ? json_encode($request->offlineData) : Null;
 
@@ -520,8 +535,8 @@ class CoursesController extends Controller
             if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0 || count($request->learned) > 0) {
                 $course->optional_courses = json_encode($request->opt_courses);
                 $course->mandatory_courses = json_encode($request->mand_courses);
-                $course->learned = json_encode($request->learned);
-                $course->learned_ar = json_encode($request->learned_ar);
+                $course->learned = $request->learn ? json_encode($request->learn) : json_encode([]);
+                $course->learned_ar = $request->learn_ar ? json_encode($request->learn_ar) : json_encode([]);
                 $course->save();
             }
         }
@@ -670,12 +685,12 @@ class CoursesController extends Controller
     public function saveSequence(Request $request)
     {
 
-    
+
 //    dd($request->all());
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
-       
+
         foreach ($request->list as $item) {
             // dd($item);
 

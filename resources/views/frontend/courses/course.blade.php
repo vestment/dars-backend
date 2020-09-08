@@ -98,12 +98,12 @@
                         @php
                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                         @endphp
-                    @if($teacherProfile)
-                        <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
-                        <div class="col-lg-5 col-sm-3 mt-3">
-                            <p class="text-white font12">{{$teacher->full_name}}</p>
-                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('title')}}</p>
-                        </div>
+                        @if($teacherProfile)
+                            <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
+                            <div class="col-lg-5 col-sm-3 mt-3">
+                                <p class="text-white font12">{{$teacher->full_name}}</p>
+                                <p class="text-white font10">{{$teacherProfile->getDataFromColumn('title')}}</p>
+                            </div>
                         @endif
                     @endforeach
 
@@ -163,29 +163,29 @@
                                 @endif
 
                             @else
-                            <div class="col-12">
-                                <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
-                              
+                                <div class="col-12">
+                                    <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
+
                                 </div>
                             @endif
                         @else
-                        <div class="row">
+                            <div class="row">
 
-                            @if($continue_course)
-                            
-                                <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
+                                @if($continue_course)
+
+                                    <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
+                                        <button class="btn btn-outline-light  addcart" type="submit">
+                                            @lang('labels.frontend.course.continue_course')
+                                            <i class="fa fa-arrow-right"></i>
+                                        </button>
+                                    </a>
+                                @else
                                     <button class="btn btn-outline-light  addcart" type="submit">
-                                        @lang('labels.frontend.course.continue_course')
+                                        No lessons available
                                         <i class="fa fa-arrow-right"></i>
                                     </button>
-                                </a>
-                            @else
-                                <button class="btn btn-outline-light  addcart" type="submit">
-                                    No lessons available
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
-                            @endif
-    </div>
+                                @endif
+                            </div>
                         @endif
 
 
@@ -239,6 +239,7 @@
     <!-- Start of what you will learn content section
         ============================================= -->
     <section id="course-page" class="course-page-section">
+
         <div class="container">
             @if ($course->getDataFromColumn('learned') != null && $course->getDataFromColumn('learned') != "null" && count(json_decode($course->getDataFromColumn('learned'))) > 0)
                 <div class="row col-lg-8 col-sm-12 coursesec d-block m-2">
@@ -403,7 +404,7 @@
                                             aria-expanded="true"
                                             aria-controls="{{$chapter->id}}">
                                         {{ $chapter->getDataFromColumn('title')}} <i class="fa fa-angle-down float-right"
-                                                                aria-hidden="true"></i>
+                                                                                     aria-hidden="true"></i>
                                     </button>
 
                                 </h2>
@@ -416,13 +417,13 @@
                                         @if($item->model && $item->model->published == 1)
                                             @if($item->model->chapter_id == $chapter->id)
                                                 <div class="mt-4 bordered border-bottom">
-                                                <p class="subtitle2">
-                                                {{-- <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">--}}
-                                                <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->getDataFromColumn('title')}}
+                                                    <p class="subtitle2">
+                                                        {{-- <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">--}}
+                                                        <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->getDataFromColumn('title')}}
                                                     @if($item->model_type == 'App\Models\Test')
                                                         <p class="mb-0 text-primary"> - @lang('labels.frontend.course.test')</p>
-                                                    @endif
-                                                 </p>
+                                                        @endif
+                                                        </p>
                                                 </div>
                                             @endif
                                         @endif
@@ -503,11 +504,11 @@
                                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                                         @endphp
                                         @if($teacherProfile)
-                                        <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
-                                        <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
-                                            <p class="font12">{{$teacher->full_name}}</p>
-                                            <p class="font10">{{$teacherProfile->description}}</p>
-                                        </div>
+                                            <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
+                                            <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
+                                                <p class="font12">{{$teacher->full_name}}</p>
+                                                <p class="font10">{{$teacherProfile->description}}</p>
+                                            </div>
                                         @endif
                                     @endforeach
                                 </div>
@@ -758,25 +759,25 @@
                     $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                 @endphp
                 @if($teacherProfile)
-                <div class="row" data-id="{{$teacher->id}}">
+                    <div class="row" data-id="{{$teacher->id}}">
 
-                    <div class="col-lg-1 col-md-2 col-sm-3">
-                        <img style="max-width: 100px" class="rounded-circle" src="{{$teacher->picture}}"
-                             alt="">
+                        <div class="col-lg-1 col-md-2 col-sm-3">
+                            <img style="max-width: 100px" class="rounded-circle" src="{{$teacher->picture}}"
+                                 alt="">
 
-                    <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
-                    </div>
-                    <div class="col-lg-6 col-md-5 col-sm-3">
-                        @php $key++ @endphp
-                        <p style="font-size:30px;">{{$teacher->full_name}}</p>
-                        <p class="teacher-title">{{$teacherProfile->getDataFromColumn('title')}}</p>
-                        <hr class="ml-0 divider">
+                        <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
+                        </div>
+                        <div class="col-lg-6 col-md-5 col-sm-3">
+                            @php $key++ @endphp
+                            <p style="font-size:30px;">{{$teacher->full_name}}</p>
+                            <p class="teacher-title">{{$teacherProfile->getDataFromColumn('title')}}</p>
+                            <hr class="ml-0 divider">
 
+                        </div>
+                        <div class="col-12 teacher-description">
+                            <p>{{$teacherProfile->getDataFromColumn('description')}}</p>
+                        </div>
                     </div>
-                    <div class="col-12 teacher-description">
-                        <p>{{$teacherProfile->getDataFromColumn('description')}}</p>
-                    </div>
-                </div>
                 @endif
             @endforeach
         </div>
@@ -863,7 +864,7 @@
 
                             <select class="form-control form-control ml-4" id="datesToSelect">
                                 <option value="m">select date</option>
-                           </select>
+                            </select>
 
 
                         </div>
@@ -989,7 +990,7 @@
             $('#rating').val($(this).val());
 
         })
-                @if(isset($review))
+        @if(isset($review))
         var rating = "{{$review->rating}}";
         $('input[value="' + rating + '"]').prop("checked", true);
         $('#rating').val(rating);

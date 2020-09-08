@@ -943,7 +943,7 @@ h6 {
     height: 50px;
     padding: 0px 20px;
     color: #000;
-    
+
     border: 1px solid #eee;
 }
 
@@ -1176,7 +1176,12 @@ h6 {
     border-radius: 4px;
     padding: 15px !important;
 }
-
+.courses-menu {
+    width:28vw;
+}
+.courses-menu li {
+    width:40vw;
+}
 .sub-menu li {
     position: relative;
     border-bottom: 1px solid #e8e8e8;
@@ -1187,6 +1192,7 @@ h6 {
     text-transform: capitalize !important;
     color: #333;
     padding: 0;
+    font-size: 1.1rem;
 }
 
 .sub-menu li a:after {
@@ -6888,35 +6894,35 @@ iframe {
 
 @media (max-width: 1131px) {
     .search-form.active{
-    top: 16%;
-    right: -138px;
-    z-index: 9;
-    -webkit-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    display: block;
-    position: fixed;
-    margin-right: 9rem;
-    padding: 10px;
-    border-radius: 2px;
+        top: 16%;
+        right: -138px;
+        z-index: 9;
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        display: block;
+        position: fixed;
+        margin-right: 9rem;
+        padding: 10px;
+        border-radius: 2px;
 
     }
 
 }
 @media (min-width: 1131px) {
 
-.search-form.active {
-    -webkit-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    display: block;
-    position: fixed;
-    top: 4%;
-    right: 206px;
-    z-index: 2;
-  
-    margin-right: 9rem;
-    padding: 10px;
-    border-radius: 2px;
-}
+    .search-form.active {
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        display: block;
+        position: fixed;
+        top: 4%;
+        right: 206px;
+        z-index: 2;
+
+        margin-right: 9rem;
+        padding: 10px;
+        border-radius: 2px;
+    }
 }
 
 
@@ -7060,7 +7066,7 @@ hr {
         width: 95% !important;
     }
 
-   
+
 
 }
 
@@ -7528,7 +7534,7 @@ hr {
 @media (max-width: 768px) {
 
     .navbar-brand img {
-       
+
         margin-left: 55px;
 
 
@@ -7567,7 +7573,7 @@ hr {
 @media (max-width: 425px) {
 
     .navbar-brand img {
-       
+
 
     }
 

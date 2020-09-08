@@ -1076,8 +1076,14 @@ h6 {
     text-transform: capitalize !important;
     color: #333;
     padding: 0;
+    font-size: 1.1rem;
 }
-
+.courses-menu {
+    width:28vw;
+}
+.courses-menu li {
+    width:40vw;
+}
 .sub-menu li a:after {
     display: none;
 }
@@ -7542,33 +7548,33 @@ hr {
     .search-form.active{
         top: 17%;
         left: 11px;
-    z-index: 9;
-    -webkit-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    display: block;
-    position: fixed;
-    margin-right: 9rem;
-    padding: 10px;
-    border-radius: 2px;
+        z-index: 9;
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        display: block;
+        position: fixed;
+        margin-right: 9rem;
+        padding: 10px;
+        border-radius: 2px;
 
     }
 
 }
 @media (min-width: 1131px) {
 
-.search-form.active {
-    -webkit-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    display: block;
-    position: fixed;
-    top: 3%;
-    left: 310px;
-    z-index: 2;
-  
-    margin-right: 9rem;
-    padding: 10px;
-    border-radius: 2px;
-}
+    .search-form.active {
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        display: block;
+        position: fixed;
+        top: 3%;
+        left: 310px;
+        z-index: 2;
+
+        margin-right: 9rem;
+        padding: 10px;
+        border-radius: 2px;
+    }
 }
 
 
@@ -7583,7 +7589,7 @@ hr {
     .navbar-brand img {
         width: 66px;
         margin-top: 12px;
-      
+
     }
 
     .divloginsearch {
@@ -7680,13 +7686,13 @@ hr {
 }
 .bg-header-offline {
     background-image: linear-gradient(to right, #52ADE1, #625CA8, #D2498B);
-   height: 260px;
+    height: 260px;
     color: white;
     margin-bottom: 88px;
     /* padding-bottom: 515px; */
 
 }
 .bg-header-offline .container-fluid .page-breadcrumb-content{
-padding-top: 5rem;
+    padding-top: 5rem;
 }
 

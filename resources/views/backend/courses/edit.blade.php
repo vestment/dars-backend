@@ -182,7 +182,7 @@
 
                                     {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control media_type', 'placeholder' => 'Select One','id'=>'media_type' ,'data-type'=>'Course']) !!}
 
-                                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
+                                    {!! Form::text('video', ($course->mediavideo && $course->mediavideo->url) ? $course->mediavideo->url : old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
 
                                     {!! Form::select('video_file', $videos, old('video_file'), ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
 
@@ -297,7 +297,7 @@
                             <div class="row">
                                 <div class="col-10 form-group">
                                     {!! Form::label('learned_ar',trans('labels.backend.courses.fields.learned_ar'), ['class' => 'control-label']) !!}
-                                    {!! Form::select('learn_ar[]', $prevLearned, old('learn_ar') ? old('learn_ar') : $prevLearned, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                                    {!! Form::select('learn_ar[]', $prevLearned_ar, old('learn_ar') ? old('learn_ar') : $prevLearned_ar, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
                             </div>
 

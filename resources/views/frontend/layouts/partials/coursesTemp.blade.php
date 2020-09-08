@@ -109,8 +109,7 @@
                     @if($course->free == 1)
                         <a class="btn btn-info btn-block btnAddCard"
                            href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now')
-                            <i
-                                    class="fas fa-caret-right"></i></a>
+                            <i class="fas fa-caret-right"></i></a>
                     @else
 
                         <a class="btn btn-info btnAddCard btn-block"
@@ -130,8 +129,7 @@
                                    value="{{($course->free == 1) ? 0 : $course->price}}"/>
                             <button class="btn btn-info btnAddCard btn-block"
                                     href="#">@lang('labels.frontend.course.get_now')
-                                <i
-                                        class="fas fa-caret-right"></i>
+                                <i class="fas fa-caret-right"></i>
                             </button>
                         </form>
                     @else
