@@ -112,7 +112,7 @@
 
                 <div class="row mt-1 flex">
 
-                    <div class="row col-lg-6 buttoncart">
+                    <div class="row col-lg-6 buttoncart"  data-roles="{{auth()->user()->RolesLabel}}">
 
                         @if (!$purchased_course)
 
