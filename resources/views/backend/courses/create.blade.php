@@ -269,6 +269,12 @@
                                             {!! Form::select('learned[]',$learned, old('learned'), ['class' => 'form-control learned_courses select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-10 form-group">
+                                            {!! Form::label('learned',trans('labels.backend.courses.fields.learned_ar'), ['class' => 'control-label']) !!}
+                                            {!! Form::select('learned_ar[]',$learned_ar, old('learned_ar'), ['class' => 'form-control learned_courses select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                                        </div>
+                                    </div>
 
 
                                     <div class="row">
