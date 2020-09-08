@@ -62,7 +62,9 @@ return array(
                             'lessons' => 'Lessons',
                             'optional_courses' => 'Optional courses',
                             'mandatory_courses' => 'Mandatory courses',
-                            'learned' => 'What you will learn',
+                            'learned' => 'What you will learn in english',
+                            'learned_ar' => 'What you will learn in arabic',
+
 
 
                             array(

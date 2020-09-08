@@ -163,11 +163,16 @@
                                 @endif
 
                             @else
-                                <h6 class="alert alert-danger alertclass"> @lang('labels.frontend.course.buy_note')</h6>
+                            <div class="col-12">
+                                <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
+                              
+                                </div>
                             @endif
                         @else
+                        <div class="row">
 
                             @if($continue_course)
+                            
                                 <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
                                     <button class="btn btn-outline-light  addcart" type="submit">
                                         @lang('labels.frontend.course.continue_course')
@@ -180,6 +185,7 @@
                                     <i class="fa fa-arrow-right"></i>
                                 </button>
                             @endif
+    </div>
                         @endif
 
 
@@ -234,11 +240,11 @@
         ============================================= -->
     <section id="course-page" class="course-page-section">
         <div class="container">
-            @if ($course->learned != null && count(json_decode($course->learned)) > 0)
+            @if ($course->getDataFromColumn('learned') != null && $course->getDataFromColumn('learned') != "null" && count(json_decode($course->getDataFromColumn('learned'))) > 0)
                 <div class="row col-lg-8 col-sm-12 coursesec d-block m-2">
                     <h2>@lang('labels.frontend.course.knowledge')</h2>
                     <div class="row subtitle2">
-                        @foreach (json_decode($course->learned) as $key => $learned)
+                        @foreach (json_decode($course->getDataFromColumn('learned')) as $key => $learned)
                             @if ($key < 6)
                                 <div class="col-lg-6 col-sm-12">
 
@@ -323,7 +329,7 @@
                     @endif</h3>
                 <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
                 <p class="smpara"><i class="fa fa-play-circle"
-                                     aria-hidden="true"></i> {{ $course->course_hours }} @lang('labels.frontend.course.hours')
+                                     aria-hidden="true"></i> {{ $course->duration}} @lang('labels.frontend.course.hours')
                 </p>
                 <p class="smpara"><i class="fa fa-file" aria-hidden="true"></i>
                     <span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters')</p>
@@ -383,7 +389,7 @@
             <div class="row smpara d-block m-2">
                 <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->course_hours }} @lang('labels.frontend.course.hours')</p>
+                    • {{ $course->duration }} @lang('labels.frontend.course.hours')</p>
             </div>
 
             @foreach($chapters as $chapter)
@@ -481,7 +487,7 @@
                                 </div>
                                 <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $related_course->course_hours }} @lang('labels.frontend.course.hours')
+                            <i class="far fa-clock font12"></i> {{ $related_course->duration }} @lang('labels.frontend.course.hours')
 
                             </span>
                                     <span>
