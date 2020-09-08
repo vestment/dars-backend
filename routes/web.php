@@ -162,6 +162,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('cart/paypal-payment', ['uses' => 'CartController@paypalPayment', 'as' => 'cart.paypal.payment']);
     Route::post('cart/fawry-payment', ['uses' => 'CartController@fawryPayment', 'as' => 'cart.fawry.payment']);
     Route::post('cart/paymob-payment', ['uses' => 'CartController@payMobPayment', 'as' => 'cart.paymob.payment']);
+    Route::post('cart/vodafoneCash-payment', ['uses' => 'CartController@payMobPayment', 'as' => 'cart.vodafoneCash.payment']);
 
 
     Route::get('cart/paypal-payment/status', ['uses' => 'CartController@getPaymentStatus'])->name('cart.paypal.status');

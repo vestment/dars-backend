@@ -638,6 +638,7 @@ return array(
                             'paypal' => 'Paypal Payment Method',
                             'fawry' => 'Fawry Payment Method',
                             'accept' => 'Accept Payment Method',
+                            'vodafoneCash' => 'Vodafone Cash Method',
                              'merchant_code' => 'Merchant Code',
                              'security_key'=>'Security Key',
                             'paypal_note' => 'Redirects to paypal for payment',
@@ -646,6 +647,7 @@ return array(
                             'offline_mode_instruction' => 'Enter offline payment instructions',
                             'key' => 'API Key',
                             'integration_id' => 'Integration ID',
+                            'iframe_id' => 'iFrame ID',
                             'secret' => 'API Secret',
                             'client_id' => 'Client ID',
                             'client_secret' => 'Secret',
@@ -1547,7 +1549,8 @@ return array(
                     'pay' => 'Pay',
                     'price' => 'price',
                     'fawry' => 'Fawry',
-                    'accept' =>'Accept'
+                    'accept' =>'Accept',
+                    'vodafoneCash' =>'Vodafone Cash'
 
 
                 ),
