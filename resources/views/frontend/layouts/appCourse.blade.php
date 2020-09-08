@@ -59,8 +59,7 @@
 }
 .navbar-header{
     display: flex;
-  
-  justify-content: center;
+
   
   align-items: center;
 }
@@ -131,21 +130,21 @@
                 <div class="main-menu">
                     <div class="">
                         <div class="row navbar-default p-0 ">
-                            <div class="col-11 row navbar-header float-left logo-lesson p-0 m-0">
+                            <div class="col-11 row navbar-header float-left logo-lesson">
                             <div class="col-4 p-0">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
                                     {{--<img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">--}}
                                     <img style="" src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
                                 </a>
                             </div>
-                            <div class="col-4 p-0">
+                            <div class="col-5 p-0">
                                 <span class=" y-1 "> @yield('lesson-title')</span>
                             </div>
-                            <div class="col-4 p-0">
+                            <div class="col-2 p-0">
                             @yield('progress_bar')
                             </div>`
                             </div><!-- /.navbar-header -->
-                            <div class="col-12 y-2"> @yield('lesson-title')</div>
+
 
                             <div class="cart-search float-right ul-li">
                                 <ul>

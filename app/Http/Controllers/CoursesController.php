@@ -162,7 +162,7 @@ class CoursesController extends Controller
         if ($course->date) {
             $course_date = $course->date ? json_decode($course->date) : null;
         }
-        if ($course->learned == 'null') {
+        if ($course->learned == 'null' || $course->learned == null) {
             $course->learned = json_encode([]);
         }
         // dd($course_date);

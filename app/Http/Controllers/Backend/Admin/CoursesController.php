@@ -558,6 +558,10 @@ class CoursesController extends Controller
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
         $learn = $course->learned ? json_decode($course->learned) : null;
+        if ($course->learned == 'null') {
+            $learn = [];
+        }
+
 
 
         $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
