@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                                 @if(count($courses) > 0)
-                                    @if((config('services.stripe.active') == 0) && (config('paypal.active') == 0) && (config('payment_offline_active') == 0))
+                                    @if((config('services.stripe.active') == 0) && (config('paypal.active') == 0) && (config('payment_offline_active') == 0) && (config('paymob.active') == 0))
                                         <div class="order-payment">
                                             <div class="section-title-2 headline text-left">
                                                 <h2>@lang('labels.frontend.cart.no_payment_method')</h2>
@@ -344,8 +344,6 @@
                                                         </div>
                                                     </div>
                                                 @endif
-
-
                                                 @if(config('fawry.active') == 1)
                                                     <div class="payment-method w-100 mb-0">
                                                         <div class="payment-method-header">
@@ -393,9 +391,6 @@
                                                         </div>
                                                     </div>
                                                 @endif
-
-
-
                                                 @if(config('paymob.active') == 1)
                                                     <div class="payment-method w-100 mb-0">
                                                         <div class="payment-method-header">
@@ -448,6 +443,99 @@
                                                                 <div class="modal-body">
 
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                @if(config('vodafoneCash.active') == 1)
+                                                    <div class="payment-method w-100 mb-0">
+                                                        <div class="payment-method-header">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="method-header-text">
+                                                                        <div class="radio">
+                                                                            <label>
+                                                                                <input data-toggle="collapse"
+                                                                                       href="#vodafoneCashPayment"
+                                                                                       type="radio" name="paymentMethod"
+                                                                                       value="2">
+                                                                                @lang('labels.frontend.cart.vodafoneCash')
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="payment-img float-right">
+                                                                        <img src="{{asset('assets/img/banner/ezgif-7-7f87b8a8bf19.jpg')}}"
+                                                                             alt="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="check-out-form collapse disabled"
+                                                             id="vodafoneCashPayment"
+                                                             data-parent="#accordion">
+                                                            <p>In this method you will enter your Mobile number pay.</p>
+                                                            <button type="submit" data-toggle="modal"
+                                                                    data-target="#vodafoneCashModal"
+                                                                    class="text-white genius-btn mt25 gradient-bg text-center text-uppercase  bold-font">
+                                                                @lang('labels.frontend.cart.pay_now') <i
+                                                                        class="fas fa-caret-right"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="vodafoneCashModal" role="dialog">
+                                                        <div class="modal-dialog modal-lg">
+
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background: unset">
+                                                                    <h2>Pay by Vodafone Cash</h2>
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal">&times;
+                                                                    </button>
+                                                                </div>
+                                                                <form method="post" action="#">
+                                                                    <div class="modal-body">
+                                                                        @csrf
+                                                                        <div class="form-group row ">
+                                                                            <div class="col-12 ">
+                                                                                <input name="mobileNumber" type="text"
+                                                                                       class="form-control"
+                                                                                       placeholder="You mobile number">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row d-none">
+                                                                            <div class="col-6 ">
+                                                                                <input type="password" name="mobile_PIN"
+                                                                                       class="form-control"
+                                                                                       maxlength="6"
+                                                                                       placeholder="You PIN">
+                                                                            </div>
+                                                                            <div class="col-6 ">
+                                                                                <input type="number" name="OTP"
+                                                                                       class="form-control"
+                                                                                       maxlength="6" placeholder="OTP">
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <div class="col-6 ">
+                                                                            <button data-dismiss="modal"
+                                                                                    class="btn btn-light ">Close
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-6 ">
+                                                                            <button type="submit"
+                                                                                    class="btn btn-primary float-right">Submit
+                                                                            </button>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -667,8 +755,35 @@
                         $('#payMobModal .modal-body .ajax-loader').remove();
                         $('#payMobModal .modal-body').css('justify-content', 'unset');
                         if (resp.paymentKey) {
-                            $('#payMobModal .modal-body').html('<iframe style="height: 570px;border: none;" src="'+resp.url+'"></iframe>')
+                            $('#payMobModal .modal-body').html('<iframe style="height: 570px;border: none;" src="' + resp.url + '"></iframe>')
+                        } else {
+                            location.reload();
+                            $('#payMobModal').modal('hide');
                         }
+                    }
+                })
+            })
+            $('#vodafoneCashModal form').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    method: 'post',
+                    url: "{{route('cart.vodafoneCash.payment')}}",
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        mobileNumber: $('input[name="mobileNumber"]').val(),
+                    },
+                    beforeSend: function () {
+                        $('#vodafoneCashModal .modal-body').html('');
+                        $('#vodafoneCashModal .modal-body').append('<div class="ajax-loader" style="margin: 0 auto;"></div>');
+                    },
+                    success: function (resp) {
+                        $('#vodafoneCashModal .modal-body .ajax-loader').remove();
+                        $('#vodafoneCashModal .modal-body').css('justify-content', 'unset');
+                        if (resp.payment.detail) {
+                            $('#vodafoneCashModal .modal-body').text(resp.payment.detail);
+                        }
+                        console.log(resp)
                     }
                 })
             })
