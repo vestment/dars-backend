@@ -5,9 +5,59 @@
 @section('meta_keywords', $bundle->meta_keywords)
 
 @push('after-styles')
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
+    <link rel="stylesheet" href="{{asset('css/datepicker.css')}}">
+    <link rel="stylesheet" href="https://fullcalendar.io/js/fullcalendar-3.0.1/fullcalendar.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css">
+
+
     <style>
         .leanth-course.go {
             right: 0;
+        }
+        .couse-pagination li.active {
+            color: #333333 !important;
+            font-weight: 700;
+        }
+
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #c7c7c7;
+            background-color: white;
+            border: none;
+        }
+
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #333333;
+            background-color: white;
+            border: none;
+
+        }
+
+        .listing-filter-form select {
+            height: 50px !important;
+        }
+
+        ul.pagination {
+            display: inline;
+            text-align: center;
+        }
+
+        .divider {
+            height: 2px;
+        }
+
+        .teacher-description {
+            /*border-bottom: 1px solid;*/
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
         }
 
     </style>
@@ -19,16 +69,202 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style">
+        <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
         <div class="blakish-overlay"></div>
         <div class="container">
-            <div class="page-breadcrumb-content text-center">
+            <div class="col m-5 p-3 paragraph1">
+            <div class="page-breadcrumb-content ">
                 <div class="page-breadcrumb-title">
                     <h2 class="breadcrumb-head black bold"><span>{{$bundle->title}}</span></h2>
                 </div>
             </div>
+                <div class="row">
+                <div class="ml-4">
+                        @for ($i=0; $i<5; ++$i)
+                            <i class="fa{{($bundle_rating<=$i?'r':'s')}} fa-star{{($bundle_rating==$i+.5?'-half-alt':'')}} text-warning"
+                               aria-hidden="true"></i>
+                        @endfor
+
+                        <span class="text-white">{{$bundle_rating}}</span>
+                    </div>
+                    
+                </div>
+
+                <div class="row col-lg-5 col-sm-9 flex teacherdesc mt-2">
+                @foreach($courses as $course)
+                    @foreach($course->teachers as $key=>$teacher)
+                        @php
+                            $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
+                        @endphp
+                    @if($teacherProfile)
+                        <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
+                        <div class="col-lg-5 col-sm-3 mt-3">
+                            <p class="text-white font12">{{$teacher->full_name}}</p>
+                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('title')}}</p>
+                        </div>
+                        @endif
+                    @endforeach
+                   
+
+
+                </div>
+
+
+               
+                <div class="row mt-1 flex">
+
+                    <div class="row col-lg-6 buttoncart">
+
+                        @if (!$purchased_bundle)
+
+                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                <button class="btn btn-outline-light  addcart"
+                                        type="submit">@lang('labels.frontend.course.added_to_cart')
+                                </button>
+                            @elseif(!auth()->check())
+                                @if($courses->free == 1)
+                                    <a href="{{route('login.index')}}" class="btn btn-outline-light addcart">
+                                        <i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        @lang('labels.frontend.course.get_now')
+                                        <i class="fas fa-caret-right"></i>
+                                    </a>
+                                @else
+
+                                    <a href="{{route('login.index')}}" class="btn btn-outline-light addcart"> <i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        @lang('labels.frontend.course.add_to_cart')
+                                    </a>
+                                @endif
+
+                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                                @if($course->free == 1)
+                                    <form action="{{ route('cart.getnow') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                        <input type="hidden" name="amount"
+                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                        <button class="btn btn-outline-light addcart"
+                                                href="#">@lang('labels.frontend.course.get_now') <i
+                                                    class="fas fa-caret-right"></i></button>
+                                    </form>
+                                @else
+
+                                    <form action="{{ route('cart.addToCart') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                        <input type="hidden" name="amount"
+                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                        <button type="submit" class="btn btn-outline-light addcart"><i
+                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                            @lang('labels.frontend.course.add_to_cart')
+                                        </button>
+                                    </form>
+                                @endif
+
+                            @else
+                            <div class="col-12">
+                                <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
+                              
+                                </div>
+                            @endif
+                        @else
+                        <div class="row">
+
+                         
+    </div>
+                        @endif
+
+
+
+                        @if(auth()->check() && (auth()->user()->hasRole('student')))
+                            @if(!auth()->user()->wishList->where('id',$course->id)->first())
+                            <!-- wishlist -->
+                                <form action="{{ route('wishlist.add') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                    <button type="submit" class="btn btn-outline-light ml-1"><i
+                                                class="fa fa-heart"
+                                                aria-hidden="true"></i>
+                                        @lang('labels.frontend.course.wishlist')
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{route('wishlist.remove',['course'=>$course])}}"
+                                   class="btn btn-outline-light ml-1"><i
+                                            class="fa fa-times"></i> @lang('labels.frontend.course.remove')
+                                </a>
+                            @endif
+                        @else
+                            <a href="{{route('login.index')}}"
+                               class="btn btn-outline-light ml-1"><i
+                                        class="fa fa-heart"
+                                        aria-hidden="true"></i> @lang('labels.frontend.course.wishlist')</a>
+                        @endif
+                        <button type="submit" class="btn btn-outline-light btn-sm ml-1 sharebutton" data-toggle="modal"
+                                data-target="#shareModal"><i class="fa fa-share-alt"
+                                                             aria-hidden="true"></i>
+                        </button>
+                      
+                    <!-- Button trigger modal -->
+                 
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 m-5 shadow-lg divfixed paddingleft">
+            <!-- Grid row -->
+            <a>
+              
+            </a>
+
+            <div class="col mr-3 pricebottom">
+                <h3 class="font49">
+                    
+                        <span>   {{$appCurrency['symbol'].' '.$bundle->price}}</span>
+                   
+                <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
+              
+              
+
+                </p>
+                <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
+                <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
+
+
+                @if (!$purchased_bundle)
+                    @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                        <button class="btn btn-primary"
+                                type="submit">@lang('labels.frontend.course.added_to_cart')
+                        </button>
+                    @elseif(!auth()->check())
+                        <a href="{{route('login.index')}}" class="btn btn-info btn-sm btn-block text-white"> <i
+                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            @lang('labels.frontend.course.add_to_cart')
+                        </a>
+                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+                        <form action="{{ route('cart.addToCart') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                            <input type="hidden" name="amount"
+                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                            <button type="submit" class="btn btn-info btn-sm btn-block text-white"><i
+                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                @lang('labels.frontend.course.add_to_cart')
+                            </button>
+                        </form>
+                    @else
+                        <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                    @endif
+
+
+                @endif
+                @endforeach
+            </div>
+        </div>
         </div>
     </section>
+   
     <!-- End of breadcrumb section
         ============================================= -->
 
