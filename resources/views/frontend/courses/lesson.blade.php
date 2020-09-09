@@ -290,8 +290,11 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            background-color:#000;
+            color:#fff;
+            width: auto;
+            z-index:1000000000;
+            height: auto;
             pointer-events: none;
             overflow: hidden;
         }
@@ -318,7 +321,7 @@
 @endsection
 
 @section('content')
-    <div class="svg-embedded" style="display:none;"></div>
+    <div class="svg-embedded" style="display:none;">{{auth()->user()->full_name}} - {{auth()->user()->id}}</div>
     <!-- Start of breadcrumb section
         ============================================= -->
     <section id="breadcrumb" class="breadcrumb-sectionn relative-position d-none">
@@ -1086,9 +1089,10 @@
 
                 $div.css({
                     left: Math.floor(Math.random() * widthMax),
-                    top: Math.floor(Math.random() * heightMax)
+                    top: Math.floor(Math.random()*-10 * heightMax)
                 });
-            }, 2 * 60 * 1000);
+                console.log(widthMax,heightMax)
+            }, 2000);
         }
         $('.js-player source').remove();
         duration = 10;
@@ -1149,7 +1153,7 @@
 
         @endif
 
-        $("#sidebar").stick_in_parent();
+        // $("#sidebar").stick_in_parent();
 
 
         @if((int)config('lesson_timer') != 0)

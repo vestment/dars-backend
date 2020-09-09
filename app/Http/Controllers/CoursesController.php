@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Stripe\Customer;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Cart;
 use App\Models\TeacherProfile;
 use App\Models\Chapter;
@@ -165,9 +167,13 @@ class CoursesController extends Controller
         if ($course->learned == 'null' || $course->learned == null) {
             $course->learned = json_encode([]);
         }
-        // dd($course_date);
+        $studentsEnrolled = $course->students()->pluck('user_id');
+        $Orders = Order::whereIn('user_id', $studentsEnrolled)->where('status',1)->pluck('id');
+        $studentCount = OrderItem::whereIn('order_id',$Orders)->where(['item_type'=>Course::class,'item_id'=>$course->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->count();
+        $availableSeats = $course->seats - $studentCount;
+
 //dd($course->getDataFromColumn('title'));
-        return view('frontend.courses.course', compact('academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
+        return view('frontend.courses.course', compact('availableSeats','academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
     }
 
     public function filerCoursesByCategory(Request $request)

@@ -196,7 +196,7 @@
                                 <form action="{{ route('wishlist.add') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                    <button type="submit" class="btn btn-outline-light ml-1"><i
+                                    <button type="submit" class="btn btn-outline-light ml-4"><i
                                                 class="fa fa-heart"
                                                 aria-hidden="true"></i>
                                         @lang('labels.frontend.course.wishlist')
@@ -204,7 +204,7 @@
                                 </form>
                             @else
                                 <a href="{{route('wishlist.remove',['course'=>$course])}}"
-                                   class="btn btn-outline-light ml-1"><i
+                                   class="btn btn-outline-light ml-4"><i
                                             class="fa fa-times"></i> @lang('labels.frontend.course.remove')
                                 </a>
                             @endif
@@ -510,7 +510,7 @@
                                             <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
                                             <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
                                                 <p class="font12">{{$teacher->full_name}}</p>
-                                                <p class="font10">{{$teacherProfile->description}}</p>
+                                                <p class="font10">{{$teacherProfile->getDataFromColumn('title')}}</p>
                                             </div>
                                         @endif
                                     @endforeach

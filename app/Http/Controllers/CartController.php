@@ -199,7 +199,7 @@ class CartController extends Controller
 
             (new EarningHelper)->insert($order);
             foreach ($order->items as $orderItem) {
-             $course = $orderItem->item->course;
+                $course = $orderItem->item->course;
                 if ($course->offline) {
                     $date = $course->date ? json_decode(json_decode($course->date), true) : null;
                     if ($date) {
@@ -243,7 +243,9 @@ class CartController extends Controller
                     }
                 }
 
-                $orderItem->item->students()->attach($order->user_id);
+                if (!$orderItem->item->offline) {
+                    $orderItem->item->students()->attach($order->user_id);
+                }
             }
 
             //Generating Invoice
@@ -539,7 +541,9 @@ class CartController extends Controller
                     }
                 }
 
-                $orderItem->item->students()->attach($order->user_id);
+                if (!$orderItem->item->offline) {
+                    $orderItem->item->students()->attach($order->user_id);
+                }
             }
         }
         Cart::session(auth()->user()->id)->clear();
@@ -548,6 +552,7 @@ class CartController extends Controller
 
     public function responseCallback(Request $request)
     {
+        Cart::session(auth()->user()->id)->clear();
         return redirect()->route('status')->with(['success' => trans('labels.frontend.cart.purchase_successful')]);
     }
 
@@ -608,7 +613,9 @@ class CartController extends Controller
                         $course->students()->attach($order->user_id);
                     }
                 }
-                $orderItem->item->students()->attach($order->user_id);
+                if (!$orderItem->item->offline) {
+                    $orderItem->item->students()->attach($order->user_id);
+                }
             }
 
             //Generating Invoice
@@ -635,10 +642,11 @@ class CartController extends Controller
         if ($request->course_id) {
             $type = Course::class;
             $id = $request->course_id;
+            $slug = Course::findOrFail($id)->value('slug');
         } else {
             $type = Bundle::class;
             $id = $request->bundle_id;
-
+            $slug = Bundle::findOrFail($id)->value('slug');
         }
         $order->items()->create([
             'item_id' => $id,
@@ -656,8 +664,12 @@ class CartController extends Controller
             $orderItem->item->students()->attach($order->user_id);
         }
         Session::flash('success', trans('labels.frontend.cart.purchase_successful'));
-        return back();
-
+//        return back();
+        if ($type == Course::class) {
+            return redirect()->route('courses.show', [$slug]);
+        } else {
+            return redirect()->route('bundle.show', [$slug]);
+        }
     }
 
     public function getOffers()
@@ -693,7 +705,7 @@ class CartController extends Controller
             $bundles = Bundle::find($bundle_ids);
             $courses = $bundles->merge($courses);
 
-            $total = $courses->sum('price');
+            $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
             $isCouponValid = false;
             if ($coupon->useByUser() < $coupon->per_user_limit) {
                 $isCouponValid = true;
