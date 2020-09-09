@@ -43,7 +43,6 @@ class DashboardController extends Controller
             $purchased_courses = auth()->user()->purchasedCourses();
             $purchased_bundles = auth()->user()->purchasedBundles();
             $pending_orders = auth()->user()->pendingOrders();
-
             if (auth()->user()->hasRole('teacher')) {
                 //IF logged in user is teacher
                 $students_count = Course::whereHas('teachers', function ($query) {
@@ -124,6 +123,7 @@ class DashboardController extends Controller
                 $recent_contacts = Contact::orderBy('created_at', 'desc')->take(10)->get();
             } elseif (auth()->user()->hasRole('student')) {
                 $parent = auth()->user()->parents;
+
             } elseif (auth()->user()->hasRole('parent')) {
                 $parent = auth()->user();
                 $studentsIds = $parent->students->pluck('id');

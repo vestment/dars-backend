@@ -192,9 +192,8 @@
 
 
                                     @if($course->mediavideo && ($course->mediavideo->type == 'upload'))
-                                        <video width="300" class="mt-2 d-none video-player" controls>
-                                            <source src="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? asset($course->mediavideo->url)  : ""}}"
-                                                    type="video/mp4">
+                                        <video width="300" class="mt-2 d-none video-player" controls  controlsList="nodownload">
+                                            <source src="{{route('videos.stream',['encryptedId'=>\Illuminate\Support\Facades\Crypt::encryptString($course->mediavideo->id)])}}"/>
                                             Your browser does not support HTML5 video.
                                         </video>
                                     @endif
@@ -641,7 +640,7 @@
                                 <div class="col-12 col-lg-6 form-group d-none"
                                      id="duration">
                                     {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
-                                    {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
+                                    {!! Form::text('duration', old('duration'), ['class' => 'form-control ','title'=>'Required format ex:(05:05:05)', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]+|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
 
                                 </div>
                             </div>
@@ -909,7 +908,7 @@
                             <div class="col-12 col-lg-6 form-group d-none"
                                  id="duration">
                                 {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
-                                {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
+                                {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'title'=>'Required format ex:(05:05:05)', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]+|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
 
                             </div>
                         </div>
@@ -1110,6 +1109,7 @@
                     }
                     if (resp.media) {
                         $('#editLessonForm input[name="video"]').val(resp.media[0].url);
+                        $('#editLessonForm input[name="duration"]').val(resp.media[0].duration);
                     }
                     console.log(resp)
                 }
@@ -1159,7 +1159,7 @@
                 if ($(this).val() != 'upload') {
                     $(this).parent().find('.video').removeClass('d-none').attr('required', true)
                     $(this).parent().find('.video_file').addClass('d-none').attr('required', false)
-                    $(this).parent().find('#duration').removeClass('d-none').attr('required', true)
+                    $(this).parent().parent().find('#duration').removeClass('d-none').attr('required', true)
                 } else if ($(this).val() == 'upload') {
                     $(this).parent().find('.video').addClass('d-none').attr('required', false)
                     $(this).parent().find('.video_file').removeClass('d-none').attr('required', true)
@@ -1254,22 +1254,6 @@
         @endif
         @endif
 
-        $(document).on('change', '#media_type', function () {
-            if ($(this).val()) {
-                if ($(this).val() != 'upload') {
-                    $('.video').removeClass('d-none').attr('required', true);
-                    $('.video_file').addClass('d-none').attr('required', false);
-                    $('.video-player').addClass('d-none')
-                } else if ($(this).val() == 'upload') {
-                    $('.video').addClass('d-none').attr('required', false);
-                    $('.video_file').removeClass('d-none').attr('required', true);
-                    $('.video-player').removeClass('d-none')
-                }
-            } else {
-                $('.video_file').addClass('d-none').attr('required', false);
-                $('.video').addClass('d-none').attr('required', false)
-            }
-        })
 
 
     </script>
@@ -1378,24 +1362,6 @@
         })
 
 
-        $(document).on('change', '#media_type', function () {
-            if ($(this).val()) {
-                if ($(this).val() != 'upload') {
-                    $('.video').removeClass('d-none').attr('required', true)
-                    $('.video_file').addClass('d-none').attr('required', false)
-                    $('#duration').removeClass('d-none').attr('required', true)
-                } else if ($(this).val() == 'upload') {
-                    $('.video').addClass('d-none').attr('required', false)
-                    $('.video_file').removeClass('d-none').attr('required', true)
-                    $('#duration').addClass('d-none').attr('required', true)
-
-
-                }
-            } else {
-                $('.video_file').addClass('d-none').attr('required', false)
-                $('.video').addClass('d-none').attr('required', false)
-            }
-        })
         $('.date-input').datepicker({
             autoclose: true,
             dateFormat: "{{ config('app.date_format_js') }}"

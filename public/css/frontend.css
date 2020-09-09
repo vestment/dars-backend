@@ -6454,6 +6454,13 @@ ul.product-tab li.active:after {
         .paragraph1 {
             top: 38%;
         }
+        .btn-sm-block {
+            width: 100%;
+            margin-top: 0.25rem;
+        }
+        .ml-es-0, .mx-es-0 {
+            margin-left: 0!important;
+        }
     }
 
     .paragraph1 h2 {

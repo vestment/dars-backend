@@ -594,9 +594,8 @@
                                     <div class="side-bar-widget first-widget">
                                         <div class="sub-total-item">
                                             @if(count($courses) > 0)
-                                                <div class="purchase-list py-3 ul-li-block">
+
                                                     @include('frontend.cart.partials.order-stats')
-                                                </div>
                                             @else
                                                 {{--                                        <div class="purchase-list mt15 ul-li-block row">--}}
                                                 {{--                                            <div class="col-6">--}}

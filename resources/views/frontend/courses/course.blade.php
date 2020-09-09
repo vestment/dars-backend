@@ -53,6 +53,7 @@
             padding: 10px;
         }
 
+
     </style>
 @endpush
 @section('content')
@@ -83,7 +84,7 @@
                     @if($course->offline )
                         <div class="ml-4 mt-1 text-white" data-offline="{{$course->offline}}">
                             <i class="fas fa-chair"></i> @lang('labels.frontend.course.availiable_seats')
-                            ({{$course->seats}}/100)
+                            ({{number_format($course->seats)}}/100)
                         </div>
 
                         <div class="ml-4 mt-1 text-white">
@@ -110,124 +111,114 @@
 
                 </div>
 
-                <div class="row mt-1 flex">
+                <div class="row col-lg-5 col-sm-9 mt-1 flex">
 
-                    <div class="row col-lg-6 buttoncart" data-roles="{{auth()->user()->RolesLabel}}">
+                    @if (!$purchased_course)
 
-                        @if (!$purchased_course)
-
-                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                <button class="btn btn-outline-light  addcart"
-                                        type="submit">@lang('labels.frontend.course.added_to_cart')
-                                </button>
-                            @elseif(!auth()->check())
-                                @if($course->free == 1)
-                                    <a href="{{route('login.index')}}" class="btn btn-outline-light addcart">
-                                        <i
-                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                        @lang('labels.frontend.course.get_now')
-                                        <i class="fas fa-caret-right"></i>
-                                    </a>
-                                @else
-
-                                    <a href="{{route('login.index')}}" class="btn btn-outline-light addcart"> <i
-                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                        @lang('labels.frontend.course.add_to_cart')
-                                    </a>
-                                @endif
-
-                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                @if($course->free == 1)
-                                    <form action="{{ route('cart.getnow') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                        <input type="hidden" name="amount"
-                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button class="btn btn-outline-light addcart"
-                                                href="#">@lang('labels.frontend.course.get_now') <i
-                                                    class="fas fa-caret-right"></i></button>
-                                    </form>
-                                @else
-
-                                    <form action="{{ route('cart.addToCart') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                        <input type="hidden" name="amount"
-                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button type="submit" class="btn btn-outline-light addcart"><i
-                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                            @lang('labels.frontend.course.add_to_cart')
-                                        </button>
-                                    </form>
-                                @endif
-
+                        @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                            <button class="btn btn-outline-light "
+                                    type="submit">@lang('labels.frontend.course.added_to_cart')
+                            </button>
+                        @elseif(!auth()->check())
+                            @if($course->free == 1)
+                                <a href="{{route('login.index')}}" class="btn btn-outline-light">
+                                    <i
+                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.get_now')
+                                    <i class="fas fa-caret-right"></i>
+                                </a>
                             @else
-                                <div class="col-12">
-                                    <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
 
-                                </div>
-                            @endif
-                        @else
-                            <div class="row">
-
-                                @if($continue_course)
-
-                                    <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
-                                        <button class="btn btn-outline-light  addcart" type="submit">
-                                            @lang('labels.frontend.course.continue_course')
-                                            <i class="fa fa-arrow-right"></i>
-                                        </button>
-                                    </a>
-                                @else
-                                    <button class="btn btn-outline-light  addcart" type="submit">
-                                        No lessons available
-                                        <i class="fa fa-arrow-right"></i>
-                                    </button>
-                                @endif
-                            </div>
-                        @endif
-
-
-
-                        @if(auth()->check() && (auth()->user()->hasRole('student')))
-                            @if(!auth()->user()->wishList->where('id',$course->id)->first())
-                            <!-- wishlist -->
-                                <form action="{{ route('wishlist.add') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                    <button type="submit" class="btn btn-outline-light ml-4"><i
-                                                class="fa fa-heart"
-                                                aria-hidden="true"></i>
-                                        @lang('labels.frontend.course.wishlist')
-                                    </button>
-                                </form>
-                            @else
-                                <a href="{{route('wishlist.remove',['course'=>$course])}}"
-                                   class="btn btn-outline-light ml-4"><i
-                                            class="fa fa-times"></i> @lang('labels.frontend.course.remove')
+                                <a href="{{route('login.index')}}" class="btn btn-outline-light"> <i
+                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.add_to_cart')
                                 </a>
                             @endif
-                        @else
-                            <a href="{{route('login.index')}}"
-                               class="btn btn-outline-light ml-1"><i
-                                        class="fa fa-heart"
-                                        aria-hidden="true"></i> @lang('labels.frontend.course.wishlist')</a>
-                        @endif
-                        <button type="submit" class="btn btn-outline-light btn-sm ml-1 sharebutton" data-toggle="modal"
-                                data-target="#shareModal"><i class="fa fa-share-alt"
-                                                             aria-hidden="true"></i>
-                            @lang('labels.frontend.course.Share')
-                        </button>
-                        @if($course->offline)
-                            <button type="submit" id="bookNowButton" data-target="#bookNowModal" data-toggle="modal"
-                                    class="btn btn-outline-light ml-1 btnbook btn-sm-block">
-                                <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')
-                            </button>
-                    @endif
-                    <!-- Button trigger modal -->
 
-                    </div>
+                        @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                            @if($course->free == 1)
+                                <form action="{{ route('cart.getnow') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                    <input type="hidden" name="amount"
+                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                    <button class="btn btn-outline-light"
+                                            href="#">@lang('labels.frontend.course.get_now') <i
+                                                class="fas fa-caret-right"></i></button>
+                                </form>
+                            @else
+
+                                <form action="{{ route('cart.addToCart') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                    <input type="hidden" name="amount"
+                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                    <button type="submit" class="btn btn-outline-light"><i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        @lang('labels.frontend.course.add_to_cart')
+                                    </button>
+                                </form>
+                            @endif
+
+                        @else
+                            <h6 class="alert alert-danger alertclass"> @lang('labels.frontend.course.buy_note')</h6>
+                        @endif
+                    @else
+
+                        @if($continue_course)
+                            <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
+                                <button class="btn btn-outline-light" type="submit">
+                                    @lang('labels.frontend.course.continue_course')
+                                    <i class="fa fa-arrow-right"></i>
+                                </button>
+                            </a>
+                        @else
+                            <button class="btn btn-outline-light" type="submit">
+                                No lessons available
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        @endif
+                    @endif
+
+
+
+                    @if(auth()->check() && (auth()->user()->hasRole('student')))
+                        @if(!auth()->user()->wishList->where('id',$course->id)->first())
+                        <!-- wishlist -->
+                            <form action="{{ route('wishlist.add') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                <button type="submit" class="btn btn-outline-light ml-1"><i
+                                            class="fa fa-heart"
+                                            aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.wishlist')
+                                </button>
+                            </form>
+                        @else
+                            <a href="{{route('wishlist.remove',['course'=>$course])}}"
+                               class="btn btn-outline-light ml-1"><i
+                                        class="fa fa-times"></i> @lang('labels.frontend.course.remove')
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{route('login.index')}}"
+                           class="btn btn-outline-light ml-1"><i
+                                    class="fa fa-heart"
+                                    aria-hidden="true"></i> @lang('labels.frontend.course.wishlist')</a>
+                    @endif
+                    <button type="submit" class="btn btn-outline-light btn-sm ml-1" data-toggle="modal"
+                            data-target="#shareModal"><i class="fa fa-share-alt"
+                                                         aria-hidden="true"></i>
+                        @lang('labels.frontend.course.Share')
+                    </button>
+                    @if($course->offline)
+                        <button type="submit" id="bookNowButton" data-target="#bookNowModal" data-toggle="modal"
+                                class="btn btn-outline-light ml-1 ml-es-0 btn-sm-block">
+                            <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')
+                        </button>
+                @endif
+                <!-- Button trigger modal -->
                 </div>
             </div>
         </div>
@@ -269,7 +260,6 @@
             <div class="row  coursesec d-block m-3">
                 <h2>@lang('labels.frontend.course.requirements')</h2>
             </div>
-            {{$course->duration}}
             <div class="row m-3">
                 @if(count($optional_courses) >0 || count($mandatory_courses) >0)
                     <div class="col-lg-3">
@@ -495,7 +485,7 @@
 
                             </span>
                                     <span>
-                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> @lang('labels.frontend.course.lessons') 
+                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> @lang('labels.frontend.course.lessons')
 
                             </span>
 
@@ -862,7 +852,8 @@
                     <input type="hidden" id="selectedTime" name="selectedTime" value="null">
                     <input type="hidden" id="selectedDate" name="selectedDate" value="null">
                     <div class="modal-body" style="padding: 20px 50px;">
-                        <p class="text-capitalize btn btn-info" id="offline-price">Price per seat: {{number_format($course->offline_price)}} {{config('invoices.currency')}}</p>
+                        <p class="text-capitalize btn btn-info" id="offline-price">Price per
+                            seat: {{number_format($course->offline_price)}} {{config('invoices.currency')}}</p>
                         <div class="row mt-2 mb-4">
                             <div class="col-lg-6">
                                 <label for="datesToSelect">Select Date</label>
@@ -996,7 +987,7 @@
             $('#rating').val($(this).val());
 
         })
-        @if(isset($review))
+                @if(isset($review))
         var rating = "{{$review->rating}}";
         $('input[value="' + rating + '"]').prop("checked", true);
         $('#rating').val(rating);

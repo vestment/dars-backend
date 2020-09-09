@@ -6375,7 +6375,13 @@ ul.product-tab li.active:after {
         .academy-info {
             top: 38% !important;
         }
-
+        .btn-sm-block {
+            width: 100%;
+            margin-top: 0.25rem;
+        }
+        .ml-es-0, .mx-es-0 {
+            margin-left: 0!important;
+        }
         .paragraph1 {
             top: 38%;
         }
