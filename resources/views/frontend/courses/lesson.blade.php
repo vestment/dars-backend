@@ -30,11 +30,9 @@
         }
 
 
-        .bg-active a:active {
-
-            background-color: yellow;
-
-        }
+        /*.bg-active a:active {*/
+        /*    background-color: yellow;*/
+        /*}*/
 
         .shad {
             box-shadow: 0px 1px 15px #dad4d4;
@@ -290,10 +288,10 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color:#000;
-            color:#fff;
+            background-color: #000;
+            color: #fff;
             width: auto;
-            z-index:1000000000;
+            z-index: 1000000000;
             height: auto;
             pointer-events: none;
             overflow: hidden;
@@ -359,6 +357,7 @@
 
 
                         @if ($lesson->available == 1)
+
                             @if ($test_exists)
                                 @if ((session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest))
                                     <div data-attempts="{{session()->get('test_attempts')}}"
@@ -494,51 +493,54 @@
                                 @if ((session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest))
                                     <div class="test-form">
                                         @if(count($questionsToAnswer) > 0  )
-                                            <script>
-                                                var slug = '{{$lesson->slug}}';
-                                                var id = '{{$lesson->id}}';
-                                                var timeoutorg = parseInt('{{$lesson->timer*60}}');
-                                                var start = parseInt('{{$start_time}}');
-                                                var endtime = parseInt(start + timeoutorg);
-                                                var now = Date.now() / 1000;
-
-                                                var timecomp = (endtime - now);
-                                                setInterval(() => {
+                                            @if($timecomp > 0)
+                                                <script>
+                                                    var slug = '{{$lesson->slug}}';
+                                                    var id = '{{$lesson->id}}';
+                                                    var timeoutorg = parseInt('{{$lesson->timer*60}}');
+                                                    var start = parseInt('{{$start_time}}');
                                                     var endtime = parseInt(start + timeoutorg);
                                                     var now = Date.now() / 1000;
                                                     var timecomp = (endtime - now);
+                                                    setInterval(() => {
+                                                        var endtime = parseInt(start + timeoutorg);
+                                                        var now = Date.now() / 1000;
+                                                        var timecomp = (endtime - now);
 
-                                                }, 1000);
+                                                    }, 1000);
 
-
-                                            </script>
-                                            <form action="{{ route('lessons.test', [$lesson->slug]) }}"
-                                                  method="post">
-                                                {{ csrf_field() }}
-                                                @foreach ($questionsToAnswer as $key => $question)
-                                                    @if($loop->iteration <= $lesson->no_questions)
-                                                        <h4 class="mb-0">{{ $loop->iteration }}
-                                                            . {!! $question->question !!}  </h4>
-                                                        <br/>
-                                                        @foreach ($question->options as $option)
-                                                            <div class="radio">
-                                                                <label>
-                                                                    <input type="radio"
-                                                                           name="questions[{{ $question->id }}]"
-                                                                           value="{{ $option->id }}"/>
-                                                                    <span class="cr"><i
-                                                                                class="cr-icon fa fa-circle"></i></span>
-                                                                    {{ $option->option_text }}<br/>
-                                                                </label>
-                                                            </div>
-                                                        @endforeach
-                                                        <br/>
-                                                    @endif
-                                                @endforeach
-                                                <input class="btn gradient-bg text-white font-weight-bold"
-                                                       type="submit"
-                                                       value=" @lang('labels.frontend.course.submit_results') "/>
-                                            </form>
+                                                </script>
+                                                <form id="testForm"
+                                                      action="{{ route('lessons.test', [$lesson->slug]) }}"
+                                                      method="post">
+                                                    {{ csrf_field() }}
+                                                    @foreach ($questionsToAnswer as $key => $question)
+                                                        @if($loop->iteration <= $lesson->no_questions)
+                                                            <h4 class="mb-0">{{ $loop->iteration }}
+                                                                . {!! $question->question !!}  </h4>
+                                                            <br/>
+                                                            @foreach ($question->options as $option)
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input type="radio"
+                                                                               name="questions[{{ $question->id }}]"
+                                                                               value="{{ $option->id }}"/>
+                                                                        <span class="cr"><i
+                                                                                    class="cr-icon fa fa-circle"></i></span>
+                                                                        {{ $option->option_text }}<br/>
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                            <br/>
+                                                        @endif
+                                                    @endforeach
+                                                    <input class="btn gradient-bg text-white font-weight-bold"
+                                                           type="submit"
+                                                           value=" @lang('labels.frontend.course.submit_results') "/>
+                                                </form>
+                                            @else
+                                                <div class="alert alert-danger">Test Timeout</div>
+                                            @endif
                                         @else
                                             <h3>@lang('labels.general.no_data_available')</h3>
 
@@ -549,6 +551,7 @@
                                 <h3>@lang('labels.general.no_data_available')</h3>
 
                             @endif
+
                             <hr/>
                         @else
 
@@ -643,8 +646,9 @@
                                         @lang('labels.frontend.course.prev')</a></p>
                             @endif
 
-                            <p id="nextButton">
-                                @if($next_lesson)
+
+                            @if($next_lesson)
+                                <p id="nextButton">
                                     @if((int)config('lesson_timer') == 1 && $lesson->isCompleted() && $canEnterNextChapter)
                                         <a class="btn btn-block gradient-bg font-weight-bold text-white"
                                            href="{{ route('lessons.show', [$next_lesson->course_id, $next_lesson->model->slug]) }}">@lang('labels.frontend.course.next')
@@ -654,8 +658,9 @@
                                            href="{{ route('lessons.show', [$next_lesson->course_id, $next_lesson->model->slug]) }}">@lang('labels.frontend.course.next')
                                             <i class='fa fa-angle-double-right'></i> </a>
                                     @endif
-                                @endif
-                            </p>
+                                </p>
+                            @endif
+
 
 
                             @if($lesson->course->progress() == 100)
@@ -693,28 +698,29 @@
 
                                             <div id="chapter-{{ $chapter->id}}" class="collapse show"
                                                  aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                <div class="card-body">
+                                                <div class="card-body border-0">
                                                     <div class="bordered" id="start_test">
                                                         @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
                                                             @if($item->model && $item->model->published == 1)
                                                                 @if($item->model_type == 'App\Models\Lesson')
                                                                     <div class="bg-active px-2 pt-2">
                                                                         <p class="mb-0 subtitle2 test"><a
-                                                                                    @if($canEnterNextChapter)
+                                                                                    @if($canEnterNextChapter || in_array($item->model->id,$completed_lessons))
                                                                                     data-test-id="{{$item->model->id}}"
                                                                                     href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
                                                                                     @endif>
-                                                                        {{$item->model->getDataFromColumn('title')}}
-                                                                        @if ($lesson->mediavideo)  <p class="play p-0"><i
-                                                                                    class="far fa-play-circle"></i> {{$lesson->mediavideo->duration}}  @lang('labels.frontend.course.minutes')
-                                                                        </p>
+                                                                                {{$item->model->getDataFromColumn('title')}}
+                                                                            </a></p>
+                                                                        @if ($item->model->mediavideo)
+                                                                            <p class="play p-0">
+                                                                                <i class="far fa-play-circle"></i> {{$item->model->mediavideo->durations}}
+                                                                            </p>
                                                                         @endif
-                                                                        </a>
-
-                                                                        <b class="float-right">
+                                                                        <p class="float-right">
                                                                             @if($item->model->mediaPDF)
                                                                                 <a href="{{asset('storage/uploads/'.$item->model->mediaPDF->name)}}"
-                                                                                   target="_blank" data-toggle="tooltip"
+                                                                                   target="_blank"
+                                                                                   data-toggle="tooltip"
                                                                                    data-placement="top"
                                                                                    title="Open PDF">
                                                                                     <i class="far fa-file-pdf ml-2"></i>
@@ -738,44 +744,44 @@
                                                                                 @endforeach
                                                                             @endif
                                                                             @if($item->model->mediaAudio)
-                                                                                <a id="audioPlayer" controls
+                                                                                <a id="audioPlayer"
                                                                                    href="{{$item->model->mediaAudio->url}}"
                                                                                    target="_blank"> <i
                                                                                             class="fas fa-volume-up "></i>
                                                                                 </a>
                                                                             @endif
-
+                                                                                @if(!$canEnterNextChapter && !in_array($item->model->id,$completed_lessons))
+                                                                                <i class="fas fa-lock"></i>
+                                                                            @else
+                                                                                <i class="fas fa-unlock-alt"></i>
                                                                             @endif
-                                                                            @if($item->model_type == 'App\Models\Test')
-                                                                                <div class="p-1">
-
-                                                                                    <p class="mb-0 mt-1 text-pink test "
-                                                                                       style="cursor: pointer;"
-                                                                                       onclick="startTest(this)"
-                                                                                       data-test-id="{{$item->model->id}}"
-                                                                                       data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}">
-                                                                                        &nbsp;&nbsp;@lang('labels.frontend.course.test')
-                                                                                        On {{$item->model->getDataFromColumn('title')}}
-                                                                                        <b class="float-right">
-
-
-                                                                                            @endif
-                                                                                            @if(!in_array($item->model->id,$completed_lessons))
-                                                                                                <i class="fas fa-unlock-alt"></i>
-                                                                                            @else
-                                                                                                <i class="fas fa-unlock-alt"></i>
-                                                                                            @endif
-                                                                                        </b>
-
-                                                                                    </p>
-
-
-
-                                                                                </div>
-                                                                        @endif
-                                                                        @endforeach
-
+                                                                        </p>
                                                                     </div>
+                                                                @endif
+                                                                @if($item->model_type == 'App\Models\Test')
+                                                                    <div class="bg-active px-2 pt-2">
+                                                                        <a class="mb-0 py-1 text-pink test"
+                                                                           @if(!$next_lesson)
+                                                                           style="cursor: pointer"
+                                                                           onclick="startTest(this)"
+                                                                           data-test-id="{{$item->model->id}}"
+                                                                           data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>{{$item->model->getDataFromColumn('title')}}
+                                                                        </a>
+                                                                        <p class="float-right">
+                                                                            @if(!in_array($item->model->id,$completed_lessons))
+                                                                                <i class="fas fa-lock"></i>
+                                                                            @else
+                                                                                <i class="fas fa-unlock-alt"></i>
+                                                                            @endif
+                                                                        </p>
+                                                                    </div>
+                                                                @endif
+
+                                                            @endif
+
+                                                        @endforeach
+
+
                                                     </div>
                                                 </div>
 
@@ -928,15 +934,6 @@
         })
     </script>
     <script>
-        $('.bg-active').on('click', function () {
-
-            $('.bg-active').addClass('bg-lgh')
-
-        });
-
-
-    </script>
-    <script>
         $('#edit-note-modal').on('show.bs.modal', function (e) {
             $('#notesModal').modal('hide');
         })
@@ -1016,10 +1013,13 @@
         {{--        @if(count($questionsToAnswer) > 0 && ((session()->get('test_attempts')  < 3 && session()->get('reTest')) || is_null($latestTest)) )--}}
         $(document).ready(function () {
             if (typeof timecomp !== 'undefined') {
+
                 var $countdown = $('#countdown');
                 if (timecomp > 0) {
+                    $('#testForm').show();
                     $countdown.show().timeTo(parseInt(timecomp));
                 }
+
                 if (timecomp == 0) {
                     $countdown.timeTo(parseInt(timecomp),
                         function () {
@@ -1032,7 +1032,7 @@
                                     'lesson_slug': slug,
                                 },
                                 success: function (result) {
-                                    console.log(result)
+                                    $('#testForm').submit();
                                     window.location.href = "{{route('courses.show', [$lesson->course->slug])}}"
                                 }
                             });
@@ -1042,7 +1042,7 @@
             }
         });
 
-        @endif
+                @endif
 
 
 
@@ -1059,13 +1059,13 @@
         }
 
 
-        @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
+                @if($lesson->mediaVideo && $lesson->mediaVideo->type != 'embed')
         var current_progress = 0;
 
 
         @if($lesson->mediaVideo->getProgress(auth()->user()->id) != "")
             current_progress = "{{$lesson->mediaVideo->getProgress(auth()->user()->id)->progress}}";
-        @endif
+                @endif
 
 
 
@@ -1080,8 +1080,8 @@
             $('.svg-embedded').show();
             setInterval(function () {
                 var $div = $('.svg-embedded'),
-                    docHeight = $div.parent().height(),
-                    docWidth = $div.parent().width(),
+                    docHeight = $div.prev().height(),
+                    docWidth = $div.prev().width(),
                     divHeight = $div.height(),
                     divWidth = $div.width(),
                     heightMax = docHeight - divHeight,
@@ -1089,10 +1089,10 @@
 
                 $div.css({
                     left: Math.floor(Math.random() * widthMax),
-                    top: Math.floor(Math.random()*-10 * heightMax)
+                    top: Math.floor(Math.random() * heightMax)
                 });
-                console.log(widthMax,heightMax)
-            }, 2000);
+                console.log(widthMax, heightMax)
+            }, 2 * 60 * 1000);
         }
         $('.js-player source').remove();
         duration = 10;
