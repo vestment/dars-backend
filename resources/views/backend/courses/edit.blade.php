@@ -82,6 +82,7 @@
                     {!! Form::model($course, ['method' => 'PUT', 'route' => ['admin.courses.update', $course->id], 'files' => true,]) !!}
                     {!!  Form::hidden('offlineData', null, ['id'=>'offlineData']) !!}
                     {!!  Form::hidden('academy_id', null, ['id'=>'academy_id']) !!}
+                    {!!  Form::hidden('offline_price', null, ['id'=>'offline_price']) !!}
                     <div class="card">
                         <div class="card-header">
                             <h3 class="page-title float-left mb-0">@lang('labels.backend.courses.edit')</h3>
@@ -268,36 +269,29 @@
                                 </div>
 
                             </div>
-                            @if (Auth::user()->isAdmin())
-                                <div class="row">
-                                    <div class="col-10 form-group">
-                                        {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('opt_courses[]', $allCourses,old('opt_courses') ? old('opt_courses') : $opt_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
-                                    </div>
+                            <div class="row">
+                                <div class="col-10 form-group">
+                                    {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('opt_courses[]', $allCourses,old('opt_courses') ? old('opt_courses') : $opt_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
-                            @endif
-
-
-
-                            @if (Auth::user()->isAdmin())
-                                <div class="row">
-                                    <div class="col-10 form-group">
-                                        {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('mand_courses[]', $allCourses, old('mand_courses') ? old('mand_courses') : $mand_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10 form-group">
+                                    {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('mand_courses[]', $allCourses, old('mand_courses') ? old('mand_courses') : $mand_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
-                            @endif
+                            </div>
 
                             <div class="row">
                                 <div class="col-10 form-group">
                                     {!! Form::label('learned',trans('labels.backend.courses.fields.learned'), ['class' => 'control-label']) !!}
-                                    {!! Form::select('learn[]', $prevLearned, old('learn') ? old('learn') : $prevLearned, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                                    {!! Form::select('learn[]', $allLearned, old('learn') ? old('learn') : $prevLearned, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-10 form-group">
                                     {!! Form::label('learned_ar',trans('labels.backend.courses.fields.learned_ar'), ['class' => 'control-label']) !!}
-                                    {!! Form::select('learn_ar[]', $prevLearned_ar, old('learn_ar') ? old('learn_ar') : $prevLearned_ar, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                                    {!! Form::select('learn_ar[]', $allLearned_ar, old('learn_ar') ? old('learn_ar') : $prevLearned_ar, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
                             </div>
 
@@ -962,6 +956,12 @@
                             </div>
                         </div>
                         <div class="row ">
+                            <div class="col-12 form-group">
+                                {!! Form::label('teachers',trans('labels.backend.courses.fields.offline_price'), ['class' => 'control-label']) !!}
+                                {!! Form::input('number','offline_price',$course->offline_price ? $course->offline_price : old('offline_price'), ['class' => 'form-control', 'id'=>'offline-price']) !!}
+                            </div>
+                        </div>
+                        <div class="row ">
 
                             <div class="col-12 form-group">
                                 {{ html()->label()->class(' form-control-label')->for('buttons') }}
@@ -973,6 +973,7 @@
 
                         <div class="row">
                             <div class="col-12 col-md-12 form-group button-container mt-2">
+
                                 @if($date)
                                     @foreach($date as $Pkey => $singleDate )
                                         @foreach($singleDate as  $key => $value)
@@ -1012,7 +1013,6 @@
                                                                 <div class='row timeRemove'>
                                                                     <div class='col-lg-6'>
                                                                         <input class='form-control time-input dat'
-                                                                               pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]'
                                                                                value="{{$value}}"
                                                                                autocomplete='off'
                                                                                type='time'>
@@ -1030,11 +1030,14 @@
 
                                                             </div>
                                                         </div>
+
+                                                    @endif
+
+                                                    @endforeach
+                                                    @endforeach
                                                 </div>
                                             @endif
-                                        @endforeach
-                                    @endforeach
-                                @endif
+
                             </div>
                         </div>
 
@@ -1487,6 +1490,7 @@
 
             $('#offlineData').val(JSON.stringify(arrObj))
             $('#academy_id').val($('#selected-academy').val());
+            $('#offline_price').val($('#offline-price').val());
             $('#offlineDataModal').modal('hide');
         }
 

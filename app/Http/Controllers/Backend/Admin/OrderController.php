@@ -38,37 +38,36 @@ class OrderController extends Controller
     {
         //dd($request) ; 
 
-        
+
         if (auth()->user()->hasRole('academy')) {
             $academy = auth()->user()->academy()->with('teachers')->first();
             $teachers = $academy->teachers()->with('teacher')->pluck('user_id');
             $coursesCollection = Course::whereHas('teachers', function ($query) use ($teachers) {
                 $query->whereIn('user_id', $teachers);
-            })->with('category')->where('published',1);
+            })->with('category')->where('published', 1);
             $courses = $coursesCollection->pluck('id');
             if (request('offline_requests') == 1) {
                 $orders = Order::whereHas('items', function ($query) use ($courses) {
-                    $query->whereIn('item_id', $courses)->where('item_type',Course::class);
+                    $query->whereIn('item_id', $courses)->where('item_type', Course::class);
                 })->where('payment_type', '=', 3)->orderBy('updated_at', 'desc')->get();
             } else {
                 $orders = Order::whereHas('items', function ($query) use ($courses) {
-                    $query->whereIn('item_id', $courses)->where('item_type',Course::class);
+                    $query->whereIn('item_id', $courses)->where('item_type', Course::class);
                 })->orderBy('updated_at', 'desc')->get();
             }
-        } else if(auth()->user()->hasRole('parent')){
-            $students  = auth()->user()->students()->pluck('id');
-            $orders = Order::whereIn('user_id' , $students )->get(); 
+        } else if (auth()->user()->hasRole('parent')) {
+            $students = auth()->user()->students()->pluck('id');
+            $orders = Order::whereIn('user_id', $students)->get();
             //$coursesCollection = $students->courses() ; 
             // dd($orders[0]->items) ;  
-        }   
-        else{
+        } else {
             if (request('offline_requests') == 1) {
                 $orders = Order::where('payment_type', '=', 3)->orderBy('updated_at', 'desc')->get();
             } else {
                 $orders = Order::orderBy('updated_at', 'desc')->get();
             }
         }
-        
+
         return DataTables::of($orders)
             ->addIndexColumn()
             ->addColumn('actions', function ($q) use ($request) {
@@ -140,69 +139,35 @@ class OrderController extends Controller
      */
     public function complete(Request $request)
     {
-       
+
         $order = Order::findOrfail($request->order);
 
         $orderItem = OrderItem::where('order_id', $request->order)->first();
         $course = Course::where('id', $orderItem->item_id)->first();
 
-
-
         if ($course->offline) {
-            $date = $course->date ? json_decode(json_decode($course->date),true) : null;
-            if($date) {
-            if(array_search($orderItem->selectedDate,array_column($date, 'date'))) {
-                $selectDate= $date[array_search($orderItem->selectedDate,array_column($date, 'date'))];
-                foreach($selectDate as $key=>$value) {
-                    if ($key != 'date') {
-                    if ($value ==$orderItem->selectedTime) {
-                        $incrementKey = explode('-',$key);
-                        $seats = intval($selectDate['seats-'.$incrementKey[1]]) - 1;
-                        $date[array_search($orderItem->selectedDate,array_column($date, 'date'))]['seats-'.$incrementKey[1]] = $seats;
-                        $course->date = json_encode(json_encode($date));
+            $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+            if ($date) {
+                if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                    $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                    foreach ($selectDate as $key => $value) {
+                        if ($key != 'date') {
+                            if ($value == $orderItem->selectedTime) {
+                                $incrementKey = explode('-', $key);
+                                $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                $course->date = json_encode(json_encode($date));
+                            }
+                        }
                     }
                 }
-                }
             }
         }
-        }
-
         $course->save();
 
-        $order_type = OrderItem::where('order_id', $request->order)->value('item_type');
-        $order_item = OrderItem::where('order_id', $request->order)->value('item_id');
-        if($order_type == 'App\Models\Course')
-        {
-            $course = Course::where('id', $order_item)->first();
-            if ($course->offline) {
-                $course->seats = $course->seats - 1;
-            }
-            $course->save();
 
-        }
-        else{
-            $bundle = Bundle::where('id', $order_item)->with('courses')->get();
-           
-            foreach($bundle[0]->courses as $course){
-                $course = Course::where('id', $course->id)->first();
-            if ($course->offline) {
-                $course->seats = $course->seats - 1;
-            }
-            $course->save();
-
-            }
-           
-        }
-      
         $order->status = 1;
         $order->save();
-
-
-        (new EarningHelper)->insert($order);
-
-        //Generating Invoice
-        // cause error: Time-out
-        generateInvoice($order);
 
         foreach ($order->items as $orderItem) {
             //Bundle Entries
@@ -213,6 +178,12 @@ class OrderController extends Controller
             }
             $orderItem->item->students()->attach($order->user_id);
         }
+        (new EarningHelper)->insert($order);
+
+        //Generating Invoice
+        // cause error: Time-out
+        generateInvoice($order);
+
         return back()->withFlashSuccess(trans('alerts.backend.general.updated'));
     }
 
@@ -266,9 +237,6 @@ class OrderController extends Controller
             }
         }
     }
-
-
-    
 
 
 }

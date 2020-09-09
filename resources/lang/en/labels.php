@@ -50,6 +50,7 @@ return array(
 
 
                             'price' => 'Price',
+                            'offline_price' => 'Offline Price',
                             'course_image' => 'Course Image',
                             'start_date' => 'Start Date',
                             'meta_title' => 'Meta Title in english',
@@ -64,9 +65,10 @@ return array(
                             'mandatory_courses' => 'Mandatory courses',
                             'learned' => 'What you will learn in english',
                             'learned_ar' => 'What you will learn in arabic',
-
-
-
+                            'Booking_Date&Time'=>'Booking Date&Time',
+                            'seats'=>'Seats',
+                            'booked_seats'=>'Booked Seats',
+                            'booking_info' =>'Booking data',
                             array(
                                 'add' => 'Add Lessons',
                                 'view' => 'View Lessons',
@@ -1674,7 +1676,6 @@ return array(
                     'wishlist' => 'Wishlist',
                     'added_to_wishlist' => 'added to wishlist',
                     'Share' => 'Share',
-                    'lessons' => 'Lessons',
                     'This_course_includes' => 'This course includes:',
                     'related_courses' => 'Related Courses',
                     'requirements' => 'Requirements',

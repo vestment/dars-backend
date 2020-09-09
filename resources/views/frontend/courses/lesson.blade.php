@@ -891,23 +891,7 @@
 
     <script>
         $(document).ready(function () {
-            @if($lesson->mediaVideo && $lesson->mediavideo->count() > 0)
-            $('.svg-embedded').show();
-            setInterval(function () {
-                var $div = $('.svg-embedded'),
-                    docHeight = $div.parent().height(),
-                    docWidth = $div.parent().width(),
-                    divHeight = $div.height(),
-                    divWidth = $div.width(),
-                    heightMax = docHeight - divHeight,
-                    widthMax = docWidth - divWidth;
 
-                $div.css({
-                    left: Math.floor(Math.random() * widthMax),
-                    top: Math.floor(Math.random() * heightMax)
-                });
-            }, 2 * 60 * 1000);
-            @endif
             new FroalaEditor(".edit-froala", {
                 enter: FroalaEditor.ENTER_BR,
                 fileUpload: false,
@@ -1090,6 +1074,21 @@
             if (myPluginCollection) {
                 plyrVideoWrapper[0].appendChild(myPluginCollection[0])
             }
+            $('.svg-embedded').show();
+            setInterval(function () {
+                var $div = $('.svg-embedded'),
+                    docHeight = $div.parent().height(),
+                    docWidth = $div.parent().width(),
+                    divHeight = $div.height(),
+                    divWidth = $div.width(),
+                    heightMax = docHeight - divHeight,
+                    widthMax = docWidth - divWidth;
+
+                $div.css({
+                    left: Math.floor(Math.random() * widthMax),
+                    top: Math.floor(Math.random() * heightMax)
+                });
+            }, 2 * 60 * 1000);
         }
         $('.js-player source').remove();
         duration = 10;

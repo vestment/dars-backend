@@ -112,7 +112,7 @@
 
                 <div class="row mt-1 flex">
 
-                    <div class="row col-lg-6 buttoncart"  data-roles="{{auth()->user()->RolesLabel}}">
+                    <div class="row col-lg-6 buttoncart" data-roles="{{auth()->user()->RolesLabel}}">
 
                         @if (!$purchased_course)
 
@@ -403,8 +403,9 @@
                                             data-toggle="collapse" data-target="#chapter-{{$chapter->id}}"
                                             aria-expanded="true"
                                             aria-controls="{{$chapter->id}}">
-                                        {{ $chapter->getDataFromColumn('title')}} <i class="fa fa-angle-down float-right"
-                                                                                     aria-hidden="true"></i>
+                                        {{ $chapter->getDataFromColumn('title')}} <i
+                                                class="fa fa-angle-down float-right"
+                                                aria-hidden="true"></i>
                                     </button>
 
                                 </h2>
@@ -419,9 +420,11 @@
                                                 <div class="mt-4 bordered border-bottom">
                                                     <p class="subtitle2">
                                                         {{-- <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">--}}
-                                                        <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->getDataFromColumn('title')}}
+                                                        <i class="fas fa-play-circle"></i> Video File {{$key}}
+                                                        - {{$item->model->getDataFromColumn('title')}}
                                                     @if($item->model_type == 'App\Models\Test')
-                                                        <p class="mb-0 text-primary"> - @lang('labels.frontend.course.test')</p>
+                                                        <p class="mb-0 text-primary">
+                                                            - @lang('labels.frontend.course.test')</p>
                                                         @endif
                                                         </p>
                                                 </div>
@@ -853,26 +856,29 @@
         <div class="modal-dialog modal-lg" role="document">
             <!--Content-->
             <div class="modal-content">
+                <div class="modal-header"><h4>Book offline course</h4></div>
                 <form method="post" action="{{route('offline.book',['slug'=>$course->slug])}}">
                     @csrf
                     <input type="hidden" id="selectedTime" name="selectedTime" value="null">
                     <input type="hidden" id="selectedDate" name="selectedDate" value="null">
-                    <div class="row">
-                        <div class="col-lg-6">
+                    <div class="modal-body" style="padding: 20px 50px;">
+                        <p class="text-capitalize btn btn-info" id="offline-price">Price per seat: {{number_format($course->offline_price)}} {{config('invoices.currency')}}</p>
+                        <div class="row mt-2 mb-4">
+                            <div class="col-lg-6">
+                                <label for="datesToSelect">Select Date</label>
+                                <select class="form-control" id="datesToSelect">
+                                    <option value="m">select date</option>
+                                </select>
 
-                            <h5 class="modal-title m-4">first select Available day</h5>
-
-                            <select class="form-control form-control ml-4" id="datesToSelect">
-                                <option value="m">select date</option>
-                            </select>
-
-
-                        </div>
-                        <div class="col-lg-6" id="myDIV">
-                            <h5 class="modal-title mt-4">second select available time</h5>
-                            <div class="ml-1" id="timesToSelect">
 
                             </div>
+                            <div class="col-lg-6">
+                                <label for="timesToSelect">Select Time</label>
+                                <p id="timesToSelect">
+
+                                </p>
+                            </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -888,17 +894,16 @@
                                     @lang('labels.frontend.course.add_to_cart')
                                 </a>
                             @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
                                 <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                 <input type="hidden" name="amount"
-                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                       value="{{$course->offline_price}}"/>
                                 <button type="submit" class="btn btn-primary"><i
                                             class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
                                 </button>
 
                             @else
-                                <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                                <div class="alert alert-danger mb-0"> @lang('labels.frontend.course.buy_note')</div>
                         @endif
                     @endif
                     <!-- <button type="button" class="btn btn-primary" id="save-event">Save changes</button> -->
@@ -925,6 +930,7 @@
     <script>
         const player = new Plyr('#player');
         $('.js-player source').remove();
+
         function selectTime(element) {
             $(element).parent().find('.btn-primary').addClass('btn-outline-dark');
             $(element).parent().find('.btn-primary').removeClass('selectedTime');
@@ -952,7 +958,7 @@
                 $('#selectedDate').val(OfflineDates[$(this).val()].date);
                 $.each(objKeys, function (key, values) {
                     if (objKeys[key] != 'date' && !objKeys[key].startsWith('seats') && objValues[key] != '') {
-                        var timeElem = '<a href="#" class="m-3 btn btn-outline-dark ' + objKeys[key] + ' rounded" data-value="' + objValues[key] + '" onclick=\"selectTime(this)\">' + objValues[key] + '</a>';
+                        var timeElem = '<a href="#" class="btn btn-outline-dark ' + objKeys[key] + ' rounded" data-value="' + objValues[key] + '" onclick=\"selectTime(this)\">' + objValues[key] + '</a>';
                         $('#timesToSelect').append(timeElem);
                         //  console.log(objKeys[key]+'=>'+objValues[key]);
                     }

@@ -39,6 +39,7 @@ class CartController extends Controller
         $course_ids = [];
         $bundle_ids = [];
         $courseData = [];
+        $total = 0;
         foreach (Cart::session(auth()->user()->id)->getContent() as $item) {
             if ($item->attributes->type == 'bundle') {
                 $bundle_ids[] = $item->id;
@@ -47,6 +48,7 @@ class CartController extends Controller
                 if ($item->attributes->selectedDate && $item->attributes->selectedTime) {
                     $courseData[$item->id]['selectedDate'] = $item->attributes->selectedDate;
                     $courseData[$item->id]['selectedTime'] = $item->attributes->selectedTime;
+                    $courseData[$item->id]['offlinePrice'] = $item->attributes->offlinePrice;
                 }
             }
         }
@@ -54,7 +56,7 @@ class CartController extends Controller
         $bundles = Bundle::find($bundle_ids);
         $courses = $bundles->merge($courses);
 
-        $total = $courses->sum('price');
+        $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
         //Apply Tax
         $taxData = $this->applyTax('total');
 
@@ -87,7 +89,7 @@ class CartController extends Controller
                         'description' => $product->description,
                         'image' => $product->course_image,
                         'type' => $type,
-                        'teachers' => $teachers
+                        'teachers' => $teachers,
                     ]);
         }
         Session::flash('success', trans('labels.frontend.cart.product_added'));
@@ -137,7 +139,8 @@ class CartController extends Controller
         $bundles = Bundle::find($bundle_ids);
         $courses = $bundles->merge($courses);
 
-        $total = $courses->sum('price');
+        $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
+
 
         //Apply Tax
         $taxData = $this->applyTax('total');
@@ -193,14 +196,53 @@ class CartController extends Controller
             $order->status = 1;
             $order->payment_type = 1;
             $order->save();
+
             (new EarningHelper)->insert($order);
             foreach ($order->items as $orderItem) {
+             $course = $orderItem->item->course;
+                if ($course->offline) {
+                    $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                    if ($date) {
+                        if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                            $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                            foreach ($selectDate as $key => $value) {
+                                if ($key != 'date') {
+                                    if ($value == $orderItem->selectedTime) {
+                                        $incrementKey = explode('-', $key);
+                                        $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                        $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                        $course->date = json_encode(json_encode($date));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 //Bundle Entries
                 if ($orderItem->item_type == Bundle::class) {
                     foreach ($orderItem->item->courses as $course) {
                         $course->students()->attach($order->user_id);
+                        if ($course->offline) {
+                            $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                            if ($date) {
+                                if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                                    $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                                    foreach ($selectDate as $key => $value) {
+                                        if ($key != 'date') {
+                                            if ($value == $orderItem->selectedTime) {
+                                                $incrementKey = explode('-', $key);
+                                                $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                                $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                                $course->date = json_encode(json_encode($date));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+
                 $orderItem->item->students()->attach($order->user_id);
             }
 
@@ -405,7 +447,7 @@ class CartController extends Controller
                 auth()->user()->city ? auth()->user()->city : 'NA' // optional
             );
             if ($this->checkDuplicate()) {
-                return response()->json(['message' =>'You already have this course' ]);
+                return response()->json(['message' => 'You already have this course']);
             }
             //Making Order
             $order = new Order();
@@ -426,7 +468,7 @@ class CartController extends Controller
                     'price' => $item->amount_cents / 100
                 ]);
             }
-            return response()->json(['paymentKey' => $paymentKey->token, 'url' => 'https://accept.paymob.com/api/acceptance/iframes/'.config('paymob.iframe_id').'?payment_token=' . $paymentKey->token], 200);
+            return response()->json(['paymentKey' => $paymentKey->token, 'url' => 'https://accept.paymob.com/api/acceptance/iframes/' . config('paymob.iframe_id') . '?payment_token=' . $paymentKey->token], 200);
         } else {
             $vodafonePayment = $payMob->vodafoneCashPayment(
                 $request->mobileNumber,
@@ -435,7 +477,7 @@ class CartController extends Controller
                 auth()->user()->email, // optional
                 auth()->user()->phone ? auth()->user()->phone : 'no-phone-found' // optional
             );
-            return response()->json(['payment'=>$vodafonePayment]);
+            return response()->json(['payment' => $vodafonePayment]);
         }
     }
 
@@ -451,13 +493,52 @@ class CartController extends Controller
             $order->transaction_id = $request['obj']['id'];
             $order->status = 1;
             $order->save();
+
             foreach ($order->items as $orderItem) {
+                $course = $orderItem->item;
+                if ($course->offline) {
+                    $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                    if ($date) {
+                        if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                            $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                            foreach ($selectDate as $key => $value) {
+                                if ($key != 'date') {
+                                    if ($value == $orderItem->selectedTime) {
+                                        $incrementKey = explode('-', $key);
+                                        $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                        $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                        $course->date = json_encode(json_encode($date));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 //Bundle Entries
                 if ($orderItem->item_type == Bundle::class) {
                     foreach ($orderItem->item->courses as $course) {
                         $course->students()->attach($order->user_id);
+                        if ($course->offline) {
+                            $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                            if ($date) {
+                                if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                                    $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                                    foreach ($selectDate as $key => $value) {
+                                        if ($key != 'date') {
+                                            if ($value == $orderItem->selectedTime) {
+                                                $incrementKey = explode('-', $key);
+                                                $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                                $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                                $course->date = json_encode(json_encode($date));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+
                 $orderItem->item->students()->attach($order->user_id);
             }
         }

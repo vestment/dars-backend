@@ -29,7 +29,7 @@ class Course extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['category_id','academy_id','offline','seats','date','course_hours','learned','learned_ar','title_ar','description_ar','meta_title_ar','meta_description_ar','meta_keywords_ar', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'learned','optional_courses', 'mandatory_courses','online'];
+    protected $fillable = ['category_id','academy_id','offline','offline_price','seats','date','course_hours','learned','learned_ar','title_ar','description_ar','meta_title_ar','meta_description_ar','meta_keywords_ar', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'learned','optional_courses', 'mandatory_courses','online'];
 
     protected $appends = ['image'];
 
@@ -283,9 +283,7 @@ class Course extends Model
     }
     public function academy()
     {
-
         return $this->belongsto('App\academy');
-
     }
 
 

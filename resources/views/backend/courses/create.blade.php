@@ -39,8 +39,9 @@
                      aria-labelledby="v-pills-home-tab">
 
                     {!! Form::open(['method' => 'POST', 'route' => ['admin.courses.store'], 'files' => true]) !!}
-{!!  Form::hidden('offlineData', null, ['id'=>'offlineData']) !!}
-{!!  Form::hidden('academy_id', null, ['id'=>'academy_id']) !!}
+                    {!!  Form::hidden('offlineData', null, ['id'=>'offlineData']) !!}
+                    {!!  Form::hidden('academy_id', null, ['id'=>'academy_id']) !!}
+                    {!!  Form::hidden('offline_price', null, ['id'=>'offline_price']) !!}
                     <div class="card">
                         <div class="card-header">
                             <h3 class="page-title float-left">@lang('labels.backend.courses.create')</h3>
@@ -164,21 +165,21 @@
                                         {!! Form::label('free',  trans('labels.backend.courses.fields.free'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
                                     <div class="checkbox d-inline mr-3">
-                                            {!! Form::hidden('online', 0) !!}
-                                            {!! Form::checkbox('online', 1 , false, ['id'=>'online']) !!}
-                                            {!! Form::label('online',  trans('labels.backend.courses.fields.online_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                                        {!! Form::hidden('online', 0) !!}
+                                        {!! Form::checkbox('online', 1 , false, ['id'=>'online']) !!}
+                                        {!! Form::label('online',  trans('labels.backend.courses.fields.online_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
                                     <div class="checkbox d-inline mr-3">
                                         {!! Form::hidden('offline', 0) !!}
                                         {!! Form::checkbox('offline', 1 , false, ['id'=>'offline','onclick'=>'toggleOfflineMode()']) !!}
                                         {!! Form::label('offline',  trans('labels.backend.courses.fields.offline_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
-                                   
+
 
                                 </div>
 
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     {!! Form::label('add_video', trans('labels.backend.lessons.fields.add_video'), ['class' => 'control-label']) !!}
@@ -303,38 +304,46 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                    <div class="academy d-none">
-                                            <div class="row ">
-                                                <div class="col-12 form-group">
-                                                    {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
-                                                    {!! Form::select('academies', $academies, old('academies'), ['class' => 'form-control d-none select2', 'id'=>'selected-academy','multiple' => false]) !!}
-                                                </div>
-                                            </div>
-                                                <div class="row ">
-            
-                                                    <div class="col-12 form-group">
-                                                        {{ html()->label()->class(' form-control-label')->for('buttons') }}
-                                                        <button type="button" id="add-button"
-                                                                class="btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add').' '.__('labels.backend.teachers.fields.Booking_Date&Time')}}</button>
-                                                    </div>
-                                                    
-                                                </div>
-                                               
-                                            <div class="row">
-                                                    <div class="col-12 col-md-12 form-group button-container mt-2">
-            
-                                                    </div>
-                                            </div>
+                                <div class="academy d-none">
+                                    <div class="row ">
+                                        <div class="col-12 form-group">
+                                            {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
+                                            {!! Form::select('academies', $academies, old('academies'), ['class' => 'form-control d-none select2', 'id'=>'selected-academy','multiple' => false]) !!}
                                         </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col-12 form-group">
+                                            {!! Form::label('teachers',trans('labels.backend.courses.fields.offline_price'), ['class' => 'control-label']) !!}
+                                            {!! Form::input('number','offline-price',old('offline_price'), ['class' => 'form-control', 'id'=>'offline-price']) !!}
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+
+                                        <div class="col-12 form-group">
+                                            {{ html()->label()->class(' form-control-label')->for('buttons') }}
+                                            <button type="button" id="add-button"
+                                                    class="btn  btn-primary">{{__('labels.backend.hero_slider.fields.buttons.add').' '.__('labels.backend.teachers.fields.Booking_Date&Time')}}</button>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 form-group button-container mt-2">
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                    <button type='button' onclick="saveOfflineData(this)" class='add-but btn-block btn  btn-primary'>Save</button>
+                                <button type='button' onclick="saveOfflineData(this)"
+                                        class='add-but btn-block btn  btn-primary'>Save
+                                </button>
                             </div>
 
                         </div>
                     </div>
                 </div>
-              
+
                 @stop
                 @push('after-scripts')
                     <script>
@@ -414,10 +423,10 @@
                             })
                         });
                         $('.date-input').datepicker({
-                                autoclose: true,
-                                dateFormat: "{{ config('app.date_format_js') }}"
+                            autoclose: true,
+                            dateFormat: "{{ config('app.date_format_js') }}"
 
-                            });
+                        });
                         $(document).on('click', '#add-button', function (e) {
                             e.preventDefault()
                             var name = 'Booking Date&Time';
@@ -438,23 +447,23 @@
                             $('.button-container').append(html);
 
 
-                            
                         });
+
                         function addInputTime(elemt) {
                             var name = 'Booking Date&Time';
                             var html = "<span class='remove'><i class='fa fa-window-close'></i></span>" +
                                 "<div class='row mt-3'>" +
                                 "<div class='col-lg-12'>" +
-                                "<div class='row'>"+
-                                    "<div class='col-lg-6'>" +
+                                "<div class='row'>" +
+                                "<div class='col-lg-6'>" +
                                 "<input class='form-control time-input dat' pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' placeholder='Start Date (Ex . 2019-01-01)' autocomplete='off' type='time'>" +
                                 "</div>" +
-                            "<div class='col-lg-6'>" +
+                                "<div class='col-lg-6'>" +
                                 "<input class='form-control seats-input' placeholder='seats' autocomplete='off' name='seats' type='number'>" +
-                                
+
                                 "</div>" +
-                                
-                            "</div>" +
+
+                                "</div>" +
                                 "</div>" +
                                 "</div>" +
                                 "</div>";
@@ -467,6 +476,7 @@
 
                             });
                         }
+
                         $(document).on('click', '.remove', function () {
                             if (confirm('Are you sure want to remove button?')) {
                                 $(this).parents('.button-wrapper').remove();
@@ -476,27 +486,29 @@
 
                         function saveOfflineData(element) {
                             var arrObj = [];
-                          var button_wrapper = $(element).parent().parent().find('.button-wrapper');
-                          button_wrapper.each(function(key,value){
-                             
-                             var date_input = $(value).find('.date-input').val();
-                             var time_input = $(value).find('.time-input');
-                             var seats = $(value).find('.seats-input');
-                    
-                             var obj = {
-                                 'date':date_input
-                             };
-                             time_input.each(function(key,value) {
-                                 obj['time-'+key] = $(value).val();
-                                 obj['seats-'+key] = $(seats[key]).val();
-                             }) 
-                             arrObj.push(obj);
-                          })
-                        
-                          $('#offlineData').val(JSON.stringify(arrObj))
-                          $('#academy_id').val($('#selected-academy').val());
-                          $('#offlineDataModal').modal('hide');
+                            var button_wrapper = $(element).parent().parent().find('.button-wrapper');
+                            button_wrapper.each(function (key, value) {
+
+                                var date_input = $(value).find('.date-input').val();
+                                var time_input = $(value).find('.time-input');
+                                var seats = $(value).find('.seats-input');
+
+                                var obj = {
+                                    'date': date_input
+                                };
+                                time_input.each(function (key, value) {
+                                    obj['time-' + key] = $(value).val();
+                                    obj['seats-' + key] = $(seats[key]).val();
+                                })
+                                arrObj.push(obj);
+                            })
+
+                            $('#offlineData').val(JSON.stringify(arrObj))
+                            $('#academy_id').val($('#selected-academy').val());
+                            $('#offline_price').val($('#offline-price').val());
+                            $('#offlineDataModal').modal('hide');
                         }
+
                         function toggleOfflineMode() {
                             if ($('#offline').prop('checked')) {
                                 $('#offlineDataModal').modal();
@@ -505,7 +517,7 @@
                                 });
                                 $('.academy').removeClass('d-none');
                                 $('#selected-academy').next('span').show();
-                                 $('#selected-academy').next('span').show();
+                                $('#selected-academy').next('span').show();
                             } else {
                                 $('.academy').addClass('d-none');
                                 $('#selected-academy').next('span').hide();
@@ -515,11 +527,12 @@
                                 $('.academy select').each(function (key, value) {
                                     $(value).val('');
                                     if ($(value).select2()) {
-                                    $(value).select2('destroy');
+                                        $(value).select2('destroy');
                                     }
                                 })
                             }
                         }
+
                         toggleOfflineMode();
                     </script>
 

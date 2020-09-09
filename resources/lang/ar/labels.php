@@ -209,7 +209,8 @@ return array(
                             'meta_title_ar' => ' عنوان الفوقية بالعربي',
                             'featured_courses' => 'الدورات المميزة',
 
-                            'popular' => 'جمع',
+                            'popular' => 'مشهور',
+                            'offline_price' => 'السعر للفرد',
                             'price' => 'السعر',
                             'published' => 'نشرت',
                             'sidebar' => 'أضف الشريط الجانبي',

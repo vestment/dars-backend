@@ -351,21 +351,14 @@ class CoursesController extends Controller
             $categoryTeachers = [];
             foreach ($courses as $course) {
                 foreach ($course->teachers as $teacher) {
-                    // $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
-                    if (!in_array($teacher, $categoryTeachers)) {
-                        array_push($categoryTeachers, $teacher);
+                    if (!in_array($teacher->id, $categoryTeachers)) {
+                        array_push($categoryTeachers, $teacher->id);
                     }
                 }
             }
-            $teachers = $categoryTeachers;
+            $teachers = User::role('teacher')->whereIn('id',$categoryTeachers)->get();
             $teacher_data = TeacherProfile::get();
-//            $teachers = User::get();
-//            $teacher = $course->teachers()->first();
-//            $teacherProfile = TeacherProfile::where('user_id', $teacher->id)->first();
-            // dd($teacher);
             $cour = Course::with('teachers')->whereNotIn('id', $this->hidden_data['courses'])->get();
-            //  dd($courses);
-
             return view('frontend.courses.index', compact('courses', 'teacher_data', 'teachers', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
         }
         return abort(404);
@@ -463,7 +456,7 @@ class CoursesController extends Controller
         $cart_items = Cart::session(auth()->user()->id)->getContent()->keys()->toArray();
         if (!in_array($product->id, $cart_items)) {
             Cart::session(auth()->user()->id)
-                ->add($product->id, $product->title, $product->price, 1,
+                ->add($product->id, $product->title,$request->amount ? $request->amount : $product->price, 1,
                     [
                         'user_id' => auth()->user()->id,
                         'description' => $product->description,
@@ -472,6 +465,7 @@ class CoursesController extends Controller
                         'teachers' => $teachers,
                         'selectedDate' => $request->selectedDate,
                         'selectedTime' => $request->selectedTime,
+                        'offlinePrice' => $request->amount,
                     ]);
         }
         Session::flash('success', trans('labels.frontend.cart.product_added'));

@@ -23,6 +23,11 @@ Route::group(['middleware' => 'role:teacher|administrator|academy|parent'], func
     Route::post('orders/complete', ['uses' => 'Admin\OrderController@complete', 'as' => 'orders.complete']);
     Route::delete('orders_perma_del/{id}', ['uses' => 'Admin\OrderController@perma_del', 'as' => 'orders.perma_del']);
 });
+Route::group(['middleware' => 'role:teacher|administrator|academy'], function () {
+    Route::resource('booking', 'Admin\BookingController');
+    //===== Orders Routes =====//
+    Route::get('get-booking-data', ['uses' => 'Admin\BookingController@getData', 'as' => 'booking.get_data']);
+});
 Route::group(['middleware' => 'role:academy|administrator'], function () {
     //====== Coupon Routes =====//
     Route::resource('coupons', 'CouponController');

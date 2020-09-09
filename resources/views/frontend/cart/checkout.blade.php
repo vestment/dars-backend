@@ -125,24 +125,27 @@
 
                                                                 </div>
                                                                 <div class="course-list-text">
-                                                                    <h3 class="h-width">
+                                                                    <h4 class="text-dark">
                                                                         <a @if(class_basename($course) == 'Course') href="{{ route('courses.show', [$course->slug]) }}"
                                                                            @else href="{{ route('bundles.show', [$course->slug]) }}" @endif>{{$course->title}}</a>
 
-                                                                    </h3>
-                                                                    @if($courseData)
+                                                                    </h4>
+                                                                    @if(array_key_exists($course->id,$courseData))
                                                                         <p>Booking
                                                                             date: {{$courseData[$course->id]['selectedDate']}}</p>
                                                                         <p>Booking
                                                                             time: {{$courseData[$course->id]['selectedTime']}}</p>
+
                                                                     @endif
                                                                     <div class="course-meta">
-                                                                <span class="course-category bold-font"><a
-                                                                            href="#">@if($course->free == 1)
-                                                                            <span class="priceLabel">{{trans('labels.backend.bundles.fields.free')}}</span>
+
+                                                                        @if (array_key_exists($course->id,$courseData) && $courseData[$course->id]['offlinePrice'])
+                                                                            <span class="badge badge-primary bg-pink"> {{$appCurrency['symbol'].' '.$course->offline_price}}</span>
+                                                                        @elseif($course->free == 1)
+                                                                            <span class="badge badge-primary bg-pink">{{trans('labels.backend.bundles.fields.free')}}</span>
                                                                         @else
-                                                                            <span class="priceLabel"> {{$appCurrency['symbol'].' '.$course->price}}</span>
-                                                                        @endif</a></span>
+                                                                            <span class="badge badge-primary bg-pink"> {{$appCurrency['symbol'].' '.$course->price}}</span>
+                                                                        @endif
 
                                                                         <div class="course-rate ul-li">
                                                                             <ul>
@@ -529,7 +532,8 @@
                                                                         </div>
                                                                         <div class="col-6 ">
                                                                             <button type="submit"
-                                                                                    class="btn btn-primary float-right">Submit
+                                                                                    class="btn btn-primary float-right">
+                                                                                Submit
                                                                             </button>
                                                                         </div>
 

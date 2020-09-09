@@ -1082,7 +1082,9 @@ h6 {
     width:28vw;
 }
 .courses-menu li {
-    width:40vw;
+    width:100%;
+    direction: rtl;
+    padding: 0;
 }
 .sub-menu li a:after {
     display: none;
@@ -1100,7 +1102,9 @@ h6 {
 .sub-menu li:before {
     content: '\BB';
 }
-
+.courses-menu li:before {
+    content: ' ';
+}
 .sub-menu li ul.depth-1 {
     margin-left: 10px;
 }

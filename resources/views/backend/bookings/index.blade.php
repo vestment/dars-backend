@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="title my-3 mx-5">     
-            <h1 class="page-title d-inline mb-5">@lang('labels.backend.courses.title')</h1>
+            <h1 class="page-title d-inline mb-5">Booked @lang('labels.backend.courses.title')</h1>
 </div>
 
     <div class="card shadow-lg p-3 mb-5 bg-white rounded">
@@ -22,12 +22,12 @@
                 <div class="d-block">
                     <ul class="list-inline">
                         <li class="list-inline-item">
-                            <a href="{{ route('admin.courses.index') }}"
+                            <a href="{{ route('admin.booking.index') }}"
                                style="{{ request('show_deleted') == 1 ? '' : 'font-weight: 700' }}">{{trans('labels.general.all')}}</a>
                         </li>
                         |
                         <li class="list-inline-item">
-                            <a href="{{ route('admin.courses.index') }}?show_deleted=1"
+                            <a href="{{ route('admin.booking.index') }}?show_deleted=1"
                                style="{{ request('show_deleted') == 1 ? 'font-weight: 700' : '' }}">{{trans('labels.general.trash')}}</a>
                         </li>
                     </ul>
@@ -37,24 +37,17 @@
                 <table id="myTable" class="border-0 shadow-lg @can('course_delete') @if ( request('show_deleted') != 1 ) dt-select @endif @endcan">
                     <thead class="thead">
                     <tr>
-                        @can('course_delete')
-                            @if ( request('show_deleted') != 1 )
-                                <th style="text-align:center;"><input type="checkbox" class="mass" id="select-all"/></th>@endif
-                        @endcan
-
-
                         @if (Auth::user()->isAdmin() || Auth::user()->hasRole('academy'))
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.courses.fields.teachers')</th>
                         @else
                                 <th>@lang('labels.general.sr_no')</th>
                             @endif
-
                         <th>@lang('labels.backend.courses.fields.title')</th>
                         <th>@lang('labels.backend.courses.fields.category')</th>
                         <th>@lang('labels.backend.courses.fields.price') <br><small>(in {{$appCurrency['symbol']}})</small></th>
                             <th>@lang('labels.backend.courses.fields.status')</th>
-{{--                            <th>@lang('labels.backend.courses.content')</th>--}}
+                            <th>@lang('labels.backend.courses.fields.booking_info')</th>
                         @if( request('show_deleted') == 1 )
                             <th>&nbsp; @lang('strings.backend.general.actions')</th>
                         @else
@@ -75,18 +68,18 @@
     <script>
         $(document).ready(function () {
 
-            var route = '{{route('admin.courses.get_data')}}';
+            var route = '{{route('admin.booking.get_data')}}';
 
             @if(request('show_deleted') == 1)
-                route = '{{route('admin.courses.get_data',['show_deleted' => 1])}}';
+                route = '{{route('admin.booking.get_data',['show_deleted' => 1])}}';
             @endif
 
             @if(request('teacher_id') != "")
-                route = '{{route('admin.courses.get_data',['teacher_id' => request('teacher_id')])}}';
+                route = '{{route('admin.booking.get_data',['teacher_id' => request('teacher_id')])}}';
             @endif
 
             @if(request('cat_id') != "")
-                route = '{{route('admin.courses.get_data',['cat_id' => request('cat_id')])}}';
+                route = '{{route('admin.booking.get_data',['cat_id' => request('cat_id')])}}';
             @endif
 
             $('#myTable').DataTable({
@@ -112,12 +105,7 @@
                 ],
                 ajax: route,
                 columns: [
-                        @if(request('show_deleted') != 1)
-                    { "data": function(data){
-                        return '<input type="checkbox" class="single" name="id[]" value="'+ data.id +'" />';
-                    }, "orderable": false, "searchable":false, "name":"id" },
-                        @endif
-                        @if (Auth::user()->isAdmin() || Auth::user()->hasRole('academy'))
+                     @if (Auth::user()->isAdmin() || Auth::user()->hasRole('academy'))
                     {data: "DT_RowIndex", name: 'DT_RowIndex'},
                     {data: "teachers", name: 'teachers'},
 
@@ -129,7 +117,7 @@
                     {data: "category", name: 'category'},
                     {data: "price", name: "price"},
                     {data: "status", name: "status"},
-                    // {data: "lessons", name: "lessons"},
+                    {data: "bookingData", name: "bookingData"},
                     {data: "actions", name: "actions"}
                 ],
                 @if(request('show_deleted') != 1)
