@@ -168,10 +168,9 @@ class BookingController extends Controller
                 return $teachers;
             })
             ->editColumn('bookingData', function ($q) {
-                $studentsEnrolled = $q->students()->pluck('user_id');
-                $Orders = Order::whereIn('user_id', $studentsEnrolled)->where('status',1)->pluck('id');
-                $studentCount = OrderItem::whereIn('order_id',$Orders)->where(['item_type'=>Course::class,'item_id'=>$q->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->count();
-                $availableSeats = $q->seats - $studentCount;
+               $studentsOrders = OrderItem::where(['item_type'=>Course::class,'item_id'=>$q->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->pluck('order_id');
+        $studentCount = Order::whereIn('id', $studentsOrders)->where('status',1)->pluck('id')->count();
+        $availableSeats = $q->seats - $studentCount;
                 $bookingData = '<span class="text-dark"> ('.$studentCount.') Students Booked</span><br><span class="text-dark"> ('.$availableSeats.') Available Seats</span>';
                 return $bookingData;
             })

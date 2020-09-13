@@ -9,12 +9,12 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 class StreamController extends Controller
 {
-    public function stream($encryptedId)
+     public function stream($encryptedId)
     {
-        $mediaId = Crypt::decryptString($encryptedId);
-        $media = Media::find($mediaId);
-
-        $filename = $media->url;
+      $mediaId = Crypt::decryptString($encryptedId);
+          $media = Media::find($mediaId);
+     
+         $filename = $media->url;
         // dd(url());
         $videosDir = public_path();
         if (file_exists($filePath = $videosDir . "/" . $filename)) {

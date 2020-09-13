@@ -242,26 +242,19 @@
                                         </div>
                                     </div>
 
-
-                                    @if (Auth::user()->isAdmin())
                                         <div class="row">
                                             <div class="col-10 form-group">
                                                 {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
                                                 {!! Form::select('opt_courses[]', $courses, old('optional_courses'), ['class' => 'form-control opt_courses select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                             </div>
                                         </div>
-                                    @endif
-
-
-
-                                    @if (Auth::user()->isAdmin())
+                                   
                                         <div class="row">
                                             <div class="col-10 form-group">
                                                 {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
                                                 {!! Form::select('mand_courses[]', $courses, old('mandatory_courses'), ['class' => 'form-control mand_courses select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                             </div>
                                         </div>
-                                    @endif
 
 
                                     <div class="row">

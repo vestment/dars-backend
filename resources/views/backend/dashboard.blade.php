@@ -232,7 +232,7 @@
                                                     Booked date: {{$orderItem->selectedDate}}<br>
                                                     Booked time: {{$orderItem->selectedTime}}
                                                 </div>
-                                            @endif
+                                            @else
                                             <div class="row p-4">
                                                 <button type="submit" class="btn-info btn col-6"
                                                         onclick="courseChapters({{$item->id}})" data-toggle="modal"
@@ -251,6 +251,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

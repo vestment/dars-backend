@@ -28,6 +28,7 @@ class LessonsController extends Controller
         $questionsToAnswer = [];
         $next_lesson = [];
         $timecomp = 0;
+        $previous_lesson = [];
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         if ($lesson == "") {
             $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->with('courseTimeline')->where('published', '=', 1)->firstOrFail();
@@ -166,32 +167,34 @@ class LessonsController extends Controller
 
     public function submitTest($lesson_slug, Request $request)
     {
-//        dd($request);
         $test = Test::where('slug', $lesson_slug)->firstOrFail();
         $answers = [];
         $test_score = 0;
-        if ($request->get('questions')) {
-            foreach ($request->get('questions') as $question_id => $answer_id) {
-                $question = Question::find($question_id);
-                $correct = QuestionsOption::where('question_id', $question_id)
-                        ->where('id', $answer_id)
-                        ->where('correct', 1)->count() > 0;
-                $answers[] = [
-                    'question_id' => $question_id,
-                    'option_id' => $answer_id,
-                    'correct' => $correct
-                ];
-                /*
-               * Save the answer
-               * Check if it is correct and then add points
-               * Save all test result and show the points
-               */
-                if ($correct) {
-                    if ($question->score) {
-                        $test_score += $question->score;
-                    }
+        if (!$request->get('questions')) {
+
+            return back()->with(['flash_warning' => 'No options selected']);
+        }
+        foreach ($request->get('questions') as $question_id => $answer_id) {
+            $question = Question::find($question_id);
+            $correct = QuestionsOption::where('question_id', $question_id)
+                    ->where('id', $answer_id)
+                    ->where('correct', 1)->count() > 0;
+            $answers[] = [
+                'question_id' => $question_id,
+                'option_id' => $answer_id,
+                'correct' => $correct
+            ];
+            /*
+           * Save the answer
+           * Check if it is correct and then add points
+           * Save all test result and show the points
+           */
+            if ($correct) {
+                if ($question->score) {
+                    $test_score += $question->score;
                 }
             }
+
         }
         $latestTest = TestsResult::where('test_id', $test->id)
             ->where('user_id', \Auth::id())

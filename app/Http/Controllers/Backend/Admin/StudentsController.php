@@ -6,6 +6,8 @@ use App\Exceptions\GeneralException;
 use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Models\Auth\User;
 use App\Models\Course;
+use App\Models\Bundle;
+
 use App\Models\TestsResult;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
@@ -13,7 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\DataTables;
-
+use Illuminate\Support\Facades\Validator;
 class StudentsController extends Controller
 {
     use FileUploadTrait;
@@ -214,8 +216,12 @@ class StudentsController extends Controller
             $query->where('user_id', $id);
         })->get();
         // dd($purchased_courses);
+        
+         $purchased_bundles = Bundle::whereHas('students', function ($query) use ($id) {
+            $query->where('user_id', $id);
+        })->get();
 
-        return view('backend.students.show', compact('student', 'purchased_courses'));
+        return view('backend.students.show', compact('student', 'purchased_courses','purchased_bundles'));
     }
 
 

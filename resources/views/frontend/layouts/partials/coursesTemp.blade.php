@@ -30,8 +30,7 @@
             </div>
         </div>
         <div class="course-meta my-1 vv">
-            <span class="course-category text-dark"><i class="far fa-clock"></i> <a href="#">{{$course->duration}}
-
+            <span class="course-category text-dark"><i class="far fa-clock"></i> <a href="#">{{ $course->course_hours}}
                     @lang('labels.frontend.course.course_hours')  </a></span>
                     <span calss="dash"> | </span>
             <span class="course-author">
@@ -43,15 +42,15 @@
             @foreach($course->teachers as $key=>$teacher)
                 @if($key == 0)
                     @if ($teacher->hasRole('teacher'))
-                        <div class="col-3 " data-role="{{$teacher->hasRole('teacher')}}">
+                        <div class="col-3" data-role="{{$teacher->hasRole('teacher')}}">
                             <img src="{{$teacher->picture}}"
-                                 class="rounded-circle img-tech2">
+                                 class="rounded-circle">
                         </div>
                         <div class="col-9">
                             <div class="row pt-2">
                                 @foreach($course->teachers as $key=>$teacher)
                                     @if($key == 0 && $teacher->teacherProfile)
-                                        <a class="text-pink tx-font"
+                                        <a class="text-pink"
                                            href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                            target="_blank">
 
@@ -109,7 +108,8 @@
                     @if($course->free == 1)
                         <a class="btn btn-info btn-block btnAddCard"
                            href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now')
-                            <i class="fas fa-caret-right"></i></a>
+                            <i
+                                    class="fas fa-caret-right"></i></a>
                     @else
 
                         <a class="btn btn-info btnAddCard btn-block"
@@ -129,7 +129,8 @@
                                    value="{{($course->free == 1) ? 0 : $course->price}}"/>
                             <button class="btn btn-info btnAddCard btn-block"
                                     href="#">@lang('labels.frontend.course.get_now')
-                                <i class="fas fa-caret-right"></i>
+                                <i
+                                        class="fas fa-caret-right"></i>
                             </button>
                         </form>
                     @else

@@ -140,7 +140,7 @@
                             <div class="col-5 p-0">
                                 <span class=" y-1 "> @yield('lesson-title')</span>
                             </div>
-                            <div class="col-2 p-0">
+                            <div class="col-3 p-0">
                             @yield('progress_bar')
                             </div>`
                             </div><!-- /.navbar-header -->

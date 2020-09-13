@@ -71,6 +71,7 @@ body {
 .ul-li ul {
     margin: 0;
     padding: 0;
+    direction:rtl;
 }
 
 .ul-li ul li {
@@ -1078,19 +1079,19 @@ h6 {
     padding: 0;
     font-size: 1.1rem;
 }
-.courses-menu {
-    width:28vw;
+.courses-menu li {
+    width: 20vw;
+        text-align: right;
+    display: block !important;
 }
 .courses-menu li {
-    width:100%;
     direction: rtl;
-    padding: 0;
 }
-.sub-menu li a:after {
+.sub-menu li a:after, .courses-menu li a:after {
     display: none;
 }
 
-.sub-menu li a:hover {
+.sub-menu li a:hover , .courses-menu li a:hover {
     color: #17d0cf !important;
     background: unset;
 }
@@ -6375,15 +6376,16 @@ ul.product-tab li.active:after {
         .academy-info {
             top: 38% !important;
         }
-        .btn-sm-block {
+
+        .paragraph1 {
+            top: 38%;
+        }
+         .btn-sm-block {
             width: 100%;
             margin-top: 0.25rem;
         }
         .ml-es-0, .mx-es-0 {
             margin-left: 0!important;
-        }
-        .paragraph1 {
-            top: 38%;
         }
     }
 
@@ -7511,7 +7513,7 @@ hr {
 
 @media (max-width: 768px) {
     .navbar-header {
-        margin-right: 57px;
+        margin-right: 35px;
     }
 
     .navbar-brand img {

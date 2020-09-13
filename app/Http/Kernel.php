@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CORS;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Session\Middleware\StartSession;
 
@@ -53,6 +52,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\LocaleMiddleware::class,
         ],
+
         'api' => [
             'throttle:60,1',
             'bindings',

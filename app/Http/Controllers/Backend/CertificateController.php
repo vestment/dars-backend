@@ -15,6 +15,17 @@ class CertificateController extends Controller
     public function __construct()
     {
 
+        $path = 'frontend';
+        if (session()->has('display_type')) {
+            if (session('display_type') == 'rtl') {
+                $path = 'frontend-rtl';
+            } else {
+                $path = 'frontend';
+            }
+        } else if (config('app.display_type') == 'rtl') {
+            $path = 'frontend-rtl';
+        }
+        $this->path = $path;
     }
 
     /**
@@ -82,7 +93,7 @@ class CertificateController extends Controller
      */
     public function getVerificationForm()
     {
-        return view('frontend.certificate-verification');
+        return view($this->path.'.certificate-verification');
     }
 
 

@@ -191,7 +191,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('locale_full_name'));
         });
 
-
     }
 
     function menuList($array)
@@ -227,7 +226,6 @@ class AppServiceProvider extends ServiceProvider
              */
             $loader->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
         }
-
         \Illuminate\Support\Collection::macro('lists', function ($a, $b = null) {
             return collect($this->items)->pluck($a, $b);
         });

@@ -14,13 +14,12 @@ use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Stripe\Customer;
-use App\Models\Order;
-use App\Models\OrderItem;
 use Cart;
 use App\Models\TeacherProfile;
 use App\Models\Chapter;
 use App\Models\Auth\User;
-
+use App\Models\Order;
+use App\Models\OrderItem;
 class CoursesController extends Controller
 {
 
@@ -156,10 +155,10 @@ class CoursesController extends Controller
         $optional_courses = [];
         $course_date =json_encode([]);
         if ($course->optional_courses) {
-            $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->get();
+            $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->withoutGlobalScope('filter')->get();
         }
         if ($course->mandatory_courses) {
-            $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
+            $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->withoutGlobalScope('filter')->get();
         }
         if ($course->date) {
             $course_date = $course->date ? json_decode($course->date) : null;
@@ -167,12 +166,9 @@ class CoursesController extends Controller
         if ($course->learned == 'null' || $course->learned == null) {
             $course->learned = json_encode([]);
         }
-        $studentsEnrolled = $course->students()->pluck('user_id');
-        $Orders = Order::whereIn('user_id', $studentsEnrolled)->where('status',1)->pluck('id');
-        $studentCount = OrderItem::whereIn('order_id',$Orders)->where(['item_type'=>Course::class,'item_id'=>$course->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->count();
+       $studentsOrders = OrderItem::where(['item_type'=>Course::class,'item_id'=>$course->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->pluck('order_id');
+        $studentCount = Order::whereIn('id', $studentsOrders)->where('status',1)->pluck('id')->count();
         $availableSeats = $course->seats - $studentCount;
-
-//dd($course->getDataFromColumn('title'));
         return view('frontend.courses.course', compact('availableSeats','academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
     }
 
@@ -448,17 +444,10 @@ class CoursesController extends Controller
         $product = "";
         $teachers = "";
         $type = "";
-        if ($request->has('course_id')) {
-            $product = Course::findOrFail($request->get('course_id'));
+       
+            $product = Course::withoutGlobalScope('filter')->findOrFail($request->course_id);
             $teachers = $product->teachers->pluck('id', 'name');
             $type = 'course';
-
-        } elseif ($request->has('bundle_id')) {
-            $product = Bundle::findOrFail($request->get('bundle_id'));
-            $teachers = $product->user->name;
-            $type = 'bundle';
-        }
-
         $cart_items = Cart::session(auth()->user()->id)->getContent()->keys()->toArray();
         if (!in_array($product->id, $cart_items)) {
             Cart::session(auth()->user()->id)

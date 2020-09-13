@@ -9,8 +9,5 @@ return array (
     'contact' => 'اتصل',
     'courses' => 'الدورات',
     'forums' => 'المنتديات',
-    'ecouncil-for-business' =>'للاعمال ',
   ),
- 
-
 );

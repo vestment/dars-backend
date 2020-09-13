@@ -60,7 +60,7 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor">
+    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style bgcolor" ">
         <div class="blakish-overlay"></div>
         <div class="container">
             <div class="col m-5 p-3 paragraph1">
@@ -84,7 +84,7 @@
                     @if($course->offline )
                         <div class="ml-4 mt-1 text-white" data-offline="{{$course->offline}}">
                             <i class="fas fa-chair"></i> @lang('labels.frontend.course.availiable_seats')
-                            ({{number_format($course->seats)}}/100)
+                            ({{number_format($availableSeats)}}/100)
                         </div>
 
                         <div class="ml-4 mt-1 text-white">
@@ -703,7 +703,7 @@
                     <div class="row col-lg-3">
                         <div class="col-lg-1 col-md-2 col-sm-3">
                             <img style="max-width:50px;height:50px" class="rounded-circle"
-                                 src="{{$teacher->picture}}"
+                                 src="{{$review->user->picture}}"
                                  alt="">
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-3 ml-5 mt-2">

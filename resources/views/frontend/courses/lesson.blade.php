@@ -703,7 +703,7 @@
                                                         @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence')->get() as $key=>$item)
                                                             @if($item->model && $item->model->published == 1)
                                                                 @if($item->model_type == 'App\Models\Lesson')
-                                                                    <div class="bg-active px-2 pt-2">
+                                                                    <div class="bg-active px-2 py-2">
                                                                         <p class="mb-0 subtitle2 test"><a
                                                                                     @if($canEnterNextChapter || in_array($item->model->id,$completed_lessons))
                                                                                     data-test-id="{{$item->model->id}}"
@@ -711,14 +711,16 @@
                                                                                     @endif>
                                                                                 {{$item->model->getDataFromColumn('title')}}
                                                                             </a></p>
-                                                                        @if ($item->model->mediavideo)
+                                                                     
                                                                             <p class="play p-0">
+                                                                                   @if ($item->model->mediavideo)
                                                                                 <i class="far fa-play-circle"></i> {{$item->model->mediavideo->durations}}
+                                                                                @endif
                                                                             </p>
-                                                                        @endif
+                                                                        
                                                                         <p class="float-right">
                                                                             @if($item->model->mediaPDF)
-                                                                                <a href="{{asset('storage/uploads/'.$item->model->mediaPDF->name)}}"
+                                                                                <a @if($canEnterNextChapter || in_array($item->model->id,$completed_lessons)) href="{{asset('storage/uploads/'.$item->model->mediaPDF->name)}}" @endif
                                                                                    target="_blank"
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="top"
@@ -727,18 +729,20 @@
                                                                                 </a>
                                                                             @endif
                                                                             @if(count($notes) > 0)
-                                                                                <a href="#notesModal"
+                                                                                <a 
+                                                                                @if($canEnterNextChapter || in_array($item->model->id,$completed_lessons))
+                                                                                href="#notesModal"
                                                                                    onclick="getLessonNotes('{{$item->model->slug}}')"
                                                                                    data-toggle="modal"
-                                                                                   data-target="#notesModal"><i
+                                                                                   data-target="#notesModal" @endif><i
                                                                                             class="far fa-sticky-note ml-2"></i></a>
                                                                             @endif
                                                                             @if(($item->model->downloadableMedia != "") && ($item->model->downloadableMedia->count() > 0))
                                                                                 @foreach($item->model->downloadableMedia as $media)
-                                                                                    <a data-toggle="tooltip"
+                                                                                    <a @if($canEnterNextChapter || in_array($item->model->id,$completed_lessons)) data-toggle="tooltip"
                                                                                        data-placement="top"
                                                                                        title="Download {{ $media->name }}"
-                                                                                       href="{{ route('download',['filename'=>$media->name,'lesson'=>$lesson->id]) }}">
+                                                                                       href="{{ route('download',['filename'=>$media->name,'lesson'=>$lesson->id]) }}" @endif>
                                                                                         <i class="fas fa-download ml-2"></i>
                                                                                     </a>
                                                                                 @endforeach
@@ -750,16 +754,17 @@
                                                                                             class="fas fa-volume-up "></i>
                                                                                 </a>
                                                                             @endif
-                                                                                @if(!$canEnterNextChapter && !in_array($item->model->id,$completed_lessons))
-                                                                                <i class="fas fa-lock"></i>
+                                                                              @if($canEnterNextChapter || in_array($item->model->id,$completed_lessons))
+                                                                             
+                                                                                 <i class="fas fa-unlock-alt"></i>
                                                                             @else
-                                                                                <i class="fas fa-unlock-alt"></i>
+                                                                                  <i class="fas fa-lock"></i>
                                                                             @endif
                                                                         </p>
                                                                     </div>
                                                                 @endif
                                                                 @if($item->model_type == 'App\Models\Test')
-                                                                    <div class="bg-active px-2 pt-2">
+                                                                    <div class="bg-active px-2 py-2">
                                                                         <a class="mb-0 py-1 text-pink test"
                                                                            @if(!$next_lesson)
                                                                            style="cursor: pointer"
@@ -768,7 +773,7 @@
                                                                            data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>{{$item->model->getDataFromColumn('title')}}
                                                                         </a>
                                                                         <p class="float-right">
-                                                                            @if(!in_array($item->model->id,$completed_lessons))
+                                                                            @if(!in_array($item->model->id,$completed_lessons) )
                                                                                 <i class="fas fa-lock"></i>
                                                                             @else
                                                                                 <i class="fas fa-unlock-alt"></i>
@@ -1092,7 +1097,7 @@
                     top: Math.floor(Math.random() * heightMax)
                 });
                 console.log(widthMax, heightMax)
-            }, 2 * 60 * 1000);
+            }, 20 * 1000);
         }
         $('.js-player source').remove();
         duration = 10;

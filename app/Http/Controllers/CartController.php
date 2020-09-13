@@ -199,7 +199,7 @@ class CartController extends Controller
 
             (new EarningHelper)->insert($order);
             foreach ($order->items as $orderItem) {
-                $course = $orderItem->item->course;
+             $course = $orderItem->item->course;
                 if ($course->offline) {
                     $date = $course->date ? json_decode(json_decode($course->date), true) : null;
                     if ($date) {
@@ -541,7 +541,7 @@ class CartController extends Controller
                     }
                 }
 
-                if (!$orderItem->item->offline) {
+               if (!$orderItem->item->offline) {
                     $orderItem->item->students()->attach($order->user_id);
                 }
             }
@@ -613,7 +613,7 @@ class CartController extends Controller
                         $course->students()->attach($order->user_id);
                     }
                 }
-                if (!$orderItem->item->offline) {
+               if (!$orderItem->item->offline) {
                     $orderItem->item->students()->attach($order->user_id);
                 }
             }
@@ -705,7 +705,7 @@ class CartController extends Controller
             $bundles = Bundle::find($bundle_ids);
             $courses = $bundles->merge($courses);
 
-            $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
+            $total = $courses->sum('price');
             $isCouponValid = false;
             if ($coupon->useByUser() < $coupon->per_user_limit) {
                 $isCouponValid = true;

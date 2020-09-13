@@ -108,18 +108,18 @@ class PayMob
      * @param int $merchant_order_id
      * @return array
      */
-    public function makeOrderPaymob($merchant_id, $amount_cents, $merchant_order_id, $items)
+    public function makeOrderPaymob( $merchant_id, $amount_cents, $merchant_order_id,$items)
     {
         // Request body
         $json = [
             'merchant_id' => $merchant_id,
-            'delivery_needed' => false,
+            'delivery_needed'=> false,
             'items' => $items,
             'amount_cents' => $amount_cents,
             'merchant_order_id' => $merchant_order_id,
             'currency' => 'EGP',
             'notify_user_with_email' => true,
-            'shipping_data' => (object)[
+            'shipping_data' => (object) [
                 'email' => auth()->user()->email,
                 'first_name' => auth()->user()->first_name,
                 'last_name' => auth()->user()->last_name,
@@ -247,7 +247,6 @@ class PayMob
 
         return $payment;
     }
-
     public function vodafoneCashPayment(
         $mobileNumber,
         $firstname,
@@ -287,7 +286,7 @@ class PayMob
      * @param int  amount
      * @return array
      */
-    public function capture($transactionId, $amount)
+    public function capture( $transactionId, $amount)
     {
         // JSON body.
         $json = [

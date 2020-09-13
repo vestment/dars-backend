@@ -65,6 +65,7 @@ class BundlesController extends Controller
         }
         $courses = $bundle->courses()->orderby('id','asc')->get();
 
+
         return view( 'frontend.bundles.show', compact('bundle', 'purchased_bundle', 'recent_news', 'bundle_rating','bundle_rating','courses','total_ratings','is_reviewed'));
     }
 

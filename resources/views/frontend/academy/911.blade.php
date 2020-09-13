@@ -131,10 +131,10 @@
                                             {{$teacher->getDataFromColumn('title')}}
                                         </div>
                                         <hr>
-                                        <div class="teacher-name text-dark  justify-content-center">
+                                         <div class="teacher-name text-dark  justify-content-center">
 
 
-                                            <span>{{Illuminate\Support\Str::words($teacherProfile->getDataFromColumn('description'),10,'...') }}</span>
+                                            <span>{{Illuminate\Support\Str::words($teacher->getDataFromColumn('description'),10,'...') }}</span>
 
                                         </div>
                                         <ul>

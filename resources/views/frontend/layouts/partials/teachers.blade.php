@@ -3,7 +3,7 @@
         <?php
         use Illuminate\Support\Words;
         ?>
-<section id="course-teacher" class="course-teacher-section p-5" data-source="partials">
+<section id="course-teacher" class="course-teacher-section p-5">
     <div class="">
         <div class="container ">
             <div class=" section-title mb20 headline p-5 mb-5">

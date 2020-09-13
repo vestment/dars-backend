@@ -75,7 +75,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12">
-                    <ul class="nav main-nav-tabs nav-tabs">
+                    <ul class="nav main-nav-tabs nav-tabs" >
                         <li class="nav-item"><a data-toggle="tab" class="nav-link active " href="#general">
                                 {{__('labels.backend.general_settings.title')}}
                             </a>
@@ -434,8 +434,7 @@
                             </div><!--form-group-->
                         </div>
                         <div class="col-12 text-left">
-                            <a href="{{route('admin.troubleshoot')}}"
-                               class="btn btn-lg btn-warning">{{__('labels.backend.general_settings.troubleshoot')}}</a>
+                            <a href="{{route('admin.troubleshoot')}}" class="btn btn-lg btn-warning">{{__('labels.backend.general_settings.troubleshoot')}}</a>
                         </div>
                     </div>
                 </div>
@@ -527,8 +526,7 @@
 
                                 <div class="col-md-10">
                                     <select class="form-control" id="layout_type" name="layout_type">
-                                        <option selected
-                                                value="wide-layout">{{__('labels.backend.general_settings.wide')}}</option>
+                                        <option selected value="wide-layout">{{__('labels.backend.general_settings.wide')}}</option>
                                         <option value="box-layout">{{__('labels.backend.general_settings.box')}}</option>
                                     </select>
                                     <span class="help-text font-italic">{{__('labels.backend.general_settings.layout_type_note')}}</span>
@@ -540,19 +538,13 @@
                                 {{ html()->label(__('labels.backend.general_settings.theme_layout'))->class('col-md-2 form-control-label')->for('theme_layout') }}
                                 <div class="col-md-10">
                                     <select class="form-control" id="theme_layout" name="theme_layout">
-                                        <option selected
-                                                value="1">{{__('labels.backend.general_settings.layout_label')}} 1
-                                        </option>
-                                        <option value="2">{{__('labels.backend.general_settings.layout_label')}}2
-                                        </option>
-                                        <option value="3">{{__('labels.backend.general_settings.layout_label')}}3
-                                        </option>
-                                        <option value="4">{{__('labels.backend.general_settings.layout_label')}}4
-                                        </option>
+                                        <option selected value="1">{{__('labels.backend.general_settings.layout_label')}} 1</option>
+                                        <option value="2">{{__('labels.backend.general_settings.layout_label')}} 2</option>
+                                        <option value="3">{{__('labels.backend.general_settings.layout_label')}} 3</option>
+                                        <option value="4">{{__('labels.backend.general_settings.layout_label')}} 4</option>
                                     </select>
                                     <span class="help-text font-italic">{{__('labels.backend.general_settings.layout_note')}}</span>
-                                    <p id="sections_note"
-                                       class="d-none font-weight-bold"> {{__('labels.backend.general_settings.list_update_note')}}</p>
+                                    <p id="sections_note" class="d-none font-weight-bold"> {{__('labels.backend.general_settings.list_update_note')}}</p>
 
                                 </div><!--col-->
                             </div><!--form-group-->
@@ -714,12 +706,12 @@
                                 {{ html()->label(__('labels.backend.general_settings.payment_settings.select_currency'))->class('col-md-3 form-control-label')}}
                                 <div class="col-md-9">
                                     <select class="form-control" id="app__currency" name="app__currency">
-
-                                        <option selected
+                                        
+                                            <option selected
                                                 value="EGP">
-                                            EGP
-                                        </option>
-
+                                                EGP
+                                            </option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -827,14 +819,14 @@
 
                                             ->class('switch switch-sm switch-3d switch-primary')
                                         }}
-
+                                       
                                     </div>
                                     <small>
-                                    <!-- <i> {{ __('labels.backend.general_settings.payment_settings.paypal_note')}}</i> -->
+                                        <!-- <i> {{ __('labels.backend.general_settings.payment_settings.paypal_note')}}</i> -->
                                     </small>
                                     <div class="switch-content @if(config('fawry.active') == 0 || config('fawry.active') == false) d-none @endif">
                                         <br>
-
+                                        
                                         <div class="form-group row">
                                             {{ html()->label(__('labels.backend.general_settings.payment_settings.merchant_code'))->class('col-md-2 form-control-label') }}
                                             <div class="col-md-8 col-xs-12">
@@ -867,10 +859,10 @@
 
                                             ->class('switch switch-sm switch-3d switch-primary')
                                         }}
-
+                                       
                                     </div>
                                     <small>
-                                    <!-- <i> {{ __('labels.backend.general_settings.payment_settings.paypal_note')}}</i> -->
+                                        <!-- <i> {{ __('labels.backend.general_settings.payment_settings.paypal_note')}}</i> -->
                                     </small>
                                     <div class="switch-content @if(config('paymob.active') == 0 || config('paymob.active') == false) d-none @endif">
                                         <div class="form-group row">
@@ -903,17 +895,17 @@
                                         <div class="form-group row">
                                             {{ html()->label(__('labels.backend.general_settings.payment_settings.vodafoneCash'))->class('col-md-3 form-control-label')}}
                                             <div class="col-md-8 col-xs-12">
-                                                <div class="checkbox">
+                                        <div class="checkbox">
+                                            
+                                            {{ html()->label(
+                                                    html()->checkbox('vodafoneCash__active', config('vodafoneCash.active') ? true : false,1)
+                                                          ->class('switch-input')->value(1)
+                                                    . '<span class="switch-label"></span><span class="switch-handle"></span>')
 
-                                                    {{ html()->label(
-                                                            html()->checkbox('vodafoneCash__active', config('vodafoneCash.active') ? true : false,1)
-                                                                  ->class('switch-input')->value(1)
-                                                            . '<span class="switch-label"></span><span class="switch-handle"></span>')
-
-                                                        ->class('switch switch-sm switch-3d switch-primary')
-                                                    }}
-                                                </div>
-                                            </div>
+                                                ->class('switch switch-sm switch-3d switch-primary')
+                                            }}
+</div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div><!--col-->
@@ -1009,65 +1001,48 @@
                         <div class="col-lg-3 border-left col-12">
                             <div class="form-group input-list">
                                 <div class="checkbox">
-                                    <label><input type="checkbox" checked disabled
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.first_name')}}
-                                    </label>
+                                    <label><input type="checkbox" checked disabled value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.first_name')}}</label>
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" checked disabled
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.last_name')}}
-                                    </label>
+                                    <label><input type="checkbox" checked disabled value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.last_name')}}</label>
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" checked disabled
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.email')}}
-                                    </label>
+                                    <label><input type="checkbox" checked disabled value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.email')}}</label>
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" checked disabled
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.password')}}
-                                    </label>
+                                    <label><input type="checkbox" checked disabled value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.password')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="phone" data-type="number"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.phone')}}
-                                    </label>
+                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.phone')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="dob" data-type="date"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.dob')}}
-                                    </label>
+                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.dob')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="gender" data-type="radio"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.gender')}}
-                                    </label>
+                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.gender')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="address"
-                                                  data-type="textarea"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.address')}}
-                                    </label>
+                                                  data-type="textarea" value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.address')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="city" data-type="text"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.city')}}
-                                    </label>
+                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.city')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="pincode" data-type="text"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.pincode')}}
-                                    </label>
+                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.pincode')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="state" data-type="text"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.state')}}
-                                    </label>
+                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.state')}}</label>
                                 </div>
                                 <div class="checkbox">
                                     <label><input class="option" type="checkbox" data-name="country" data-type="text"
-                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.country')}}
-                                    </label>
+                                                  value=""> {{__('labels.backend.general_settings.user_registration_settings.fields.country')}}</label>
                                 </div>
                             </div>
                         </div>
@@ -1083,25 +1058,20 @@
                             <h4>{{__('labels.backend.general_settings.api_clients.title')}}</h4>
                         </div>
                         <div class="col-lg-4 col-12">
-                            <fieldset>
-                                <div class="input-group">
-                                    <input type="text" id="api_client_name" class="form-control"
-                                           placeholder="{{__('labels.backend.general_settings.api_clients.api_client_name')}}">
-                                    <div class="input-group-append" id="button-addon2">
-                                        <button class="btn btn-primary generate-client"
-                                                type="button">{{__('labels.backend.general_settings.api_clients.generate')}}</button>
+                                <fieldset>
+                                    <div class="input-group">
+                                        <input type="text"  id="api_client_name" class="form-control" placeholder="{{__('labels.backend.general_settings.api_clients.api_client_name')}}" >
+                                        <div class="input-group-append" id="button-addon2">
+                                            <button class="btn btn-primary generate-client" type="button">{{__('labels.backend.general_settings.api_clients.generate')}}</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <span class="text-danger" id="api_client_name_error"></span>
-                            </fieldset>
+                                    <span class="text-danger" id="api_client_name_error"></span>
+                                </fieldset>
                         </div>
                         <div class="col-12 mt-2">
                             <p>{!! __('labels.backend.general_settings.api_clients.note') !!}</p>
 
-                            <a target="_blank"
-                               href="https://documenter.getpostman.com/view/5183624/SW18uZwk?version=latest"
-                               class="btn btn-dark  font-weight-bold text-white">{{__('labels.backend.general_settings.api_clients.developer_manual')}}
-                                <i class="fa fa-arrow-right ml-2"></i></a>
+                            <a target="_blank" href="https://documenter.getpostman.com/view/5183624/SW18uZwk?version=latest" class="btn btn-dark  font-weight-bold text-white">{{__('labels.backend.general_settings.api_clients.developer_manual')}} <i class="fa fa-arrow-right ml-2"></i></a>
                         </div>
                     </div>
                     <div class="row mt-4 mb-4">
@@ -1128,13 +1098,9 @@
                                             <td>{{$client->revoked?__('labels.backend.general_settings.api_clients.revoked'):__('labels.backend.general_settings.api_clients.live')}}</td>
                                             <td>
                                                 @if(!$client->revoked)
-                                                    <a data-id="{{$client->id}}"
-                                                       class="btn btn-sm revoke-api-client btn-danger"
-                                                       href="#">{{__('labels.backend.general_settings.api_clients.revoke')}}</a>
+                                                    <a data-id="{{$client->id}}"  class="btn btn-sm revoke-api-client btn-danger"  href="#">{{__('labels.backend.general_settings.api_clients.revoke')}}</a>
                                                 @else
-                                                    <a data-id="{{$client->id}}"
-                                                       class="btn btn-sm btn-success revoke-api-client"
-                                                       href="#">{{__('labels.backend.general_settings.api_clients.enable')}}</a>
+                                                    <a data-id="{{$client->id}}" class="btn btn-sm btn-success revoke-api-client" href="#">{{__('labels.backend.general_settings.api_clients.enable')}}</a>
                                                 @endif
 
                                             </td>
@@ -1317,9 +1283,9 @@
 
             fields = JSON.parse(fields.replace(/&quot;/g, '"'));
 
-            $(fields).each(function (key, element) {
-                appendElement(element.type, element.name);
-                $('.input-list').find('[data-name="' + element.name + '"]').attr('checked', true)
+            $(fields).each(function (key,element) {
+                appendElement(element.type,element.name);
+                $('.input-list').find('[data-name="'+element.name+'"]').attr('checked',true)
 
             });
 
@@ -1372,7 +1338,7 @@
                 }
             });
 
-            @if(request()->has('tab'))
+              @if(request()->has('tab'))
             var tab = "{{request('tab')}}";
             $('.nav-tabs a[href="#' + tab + '"]').tab('show');
             @endif
@@ -1420,7 +1386,7 @@
 
 
         //Revoke App Client Secret
-        $(document).on('click', '.revoke-api-client', function () {
+        $(document).on('click','.revoke-api-client',function () {
             var api_id = $(this).data('id');
             $.ajax({
                 url: '{{ route('admin.api-client.status') }}',
@@ -1428,10 +1394,10 @@
                 dataType: 'JSON',
                 data: {'api_id': api_id, _token: '{{csrf_token()}}'},
                 success: function (response) {
-                    if (response.status == 'success') {
+                    if(response.status == 'success'){
                         window.location.href = '{{route('admin.general-settings',['tab'=>'api_client_settings'])}}'
 
-                    } else {
+                    }else{
                         alert("{{__('labels.backend.general_settings.api_clients.something_went_wrong')}}");
                     }
 
@@ -1439,26 +1405,26 @@
             })
         });
 
-        $(document).on('click', '.generate-client', function () {
+        $(document).on('click','.generate-client',function () {
             var api_client_name = $('#api_client_name').val();
 
-            if ($.trim(api_client_name).length > 0) { // zero-length string AFTER a trim
+            if($.trim(api_client_name).length > 0) { // zero-length string AFTER a trim
                 $.ajax({
                     url: '{{  route('admin.api-client.generate') }}',
                     type: 'POST',
                     dataType: 'JSON',
                     data: {'api_client_name': api_client_name, _token: '{{csrf_token()}}'},
                     success: function (response) {
-                        if (response.status == 'success') {
+                        if(response.status == 'success'){
                             window.location.href = '{{route('admin.general-settings',['tab'=>'api_client_settings'])}}'
 
-                        } else {
+                        }else{
                             alert("{{__('labels.backend.general_settings.api_clients.something_went_wrong')}}");
                         }
 
                     }
                 })
-            } else {
+            }else{
                 $('#api_client_name_error').text("{{__('labels.backend.general_settings.api_clients.please_input_api_client_name')}}");
             }
 
