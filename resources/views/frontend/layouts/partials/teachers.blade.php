@@ -1,5 +1,8 @@
 <!-- Start of course teacher
         ============================================= -->
+        <?php
+        use Illuminate\Support\Words;
+        ?>
 <section id="course-teacher" class="course-teacher-section p-5">
     <div class="">
         <div class="container ">
@@ -44,7 +47,10 @@
                                                 </div>
                                                 <hr>
                                                 <div class="teacher-name text-dark  justify-content-center">
-                                                    <span>{{$teacherProfile->getDataFromColumn('description')}}</span>
+                                              
+                                                
+                                                    <span>{{Illuminate\Support\Str::words($teacherProfile->getDataFromColumn('description'),10,'...') }}</span>
+                                                   
                                                 </div>
                                                 <ul>
                                                     <li><a href="{{'mailto:'.$item->email}}"><i

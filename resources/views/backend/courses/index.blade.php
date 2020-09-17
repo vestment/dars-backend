@@ -43,7 +43,7 @@
                         @endcan
 
 
-                        @if (Auth::user()->isAdmin())
+                        @if (Auth::user()->isAdmin() || Auth::user()->hasRole('academy'))
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.courses.fields.teachers')</th>
                         @else
@@ -54,7 +54,7 @@
                         <th>@lang('labels.backend.courses.fields.category')</th>
                         <th>@lang('labels.backend.courses.fields.price') <br><small>(in {{$appCurrency['symbol']}})</small></th>
                             <th>@lang('labels.backend.courses.fields.status')</th>
-                            <th>@lang('labels.backend.courses.content')</th>
+{{--                            <th>@lang('labels.backend.courses.content')</th>--}}
                         @if( request('show_deleted') == 1 )
                             <th>&nbsp; @lang('strings.backend.general.actions')</th>
                         @else
@@ -117,7 +117,7 @@
                         return '<input type="checkbox" class="single" name="id[]" value="'+ data.id +'" />';
                     }, "orderable": false, "searchable":false, "name":"id" },
                         @endif
-                        @if (Auth::user()->isAdmin())
+                        @if (Auth::user()->isAdmin() || Auth::user()->hasRole('academy'))
                     {data: "DT_RowIndex", name: 'DT_RowIndex'},
                     {data: "teachers", name: 'teachers'},
 
@@ -129,7 +129,7 @@
                     {data: "category", name: 'category'},
                     {data: "price", name: "price"},
                     {data: "status", name: "status"},
-                    {data: "lessons", name: "lessons"},
+                    // {data: "lessons", name: "lessons"},
                     {data: "actions", name: "actions"}
                 ],
                 @if(request('show_deleted') != 1)

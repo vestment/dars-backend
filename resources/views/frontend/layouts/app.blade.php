@@ -61,8 +61,7 @@
 <body class="{{config('layout_type')}}">
 
 <div id="app">
-{{--<div id="preloader"></div>--}}
-{{--    @include('frontend.layouts.modals.loginModal')--}}
+<!--<div id="preloader">data-role="{!! auth()->check() ? auth()->user()->rolesLabel : '' !!}</div>-->
 
 <!-- Start of Header section
         ============================================= -->
@@ -166,27 +165,71 @@
 
                     </div>
                     <!-- /.navbar-header -->
+<style>
+    .dropdown-large{ padding:20px; }
 
+@media all and (min-width: 992px) {
+	.dropdown-large{ min-width:500px; }
+}
+</style>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <nav class="navbar-menu coursesmob">
                         <div class="nav-menu ul-li">
-                            <ul>
-
-                                <li class="menu-item-has-children ul-li-block">
-                                    <a href="#!"> @lang('navs.general.courses') <i class="fa fa-caret-{{app()->getLocale() == 'ar' ? 'left': 'right'}}"></i> </a>
-                                    <ul class="sub-menu">
-                                        @if(count($categories) > 0)
-                                        @foreach($categories as $category)
-                                            <li>
-                                                <a href="{{route('courses.category',['category'=>$category->slug])}}">
-                                                    <i class="{{$category->icon}} p-2"></i>{{$category->getDataFromColumn('name')}}
+                            <ul >
+                                <li class="nav-item dropdown">
+                            	    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">@lang('navs.general.courses')</a>
+                            	    <div class="dropdown-menu dropdown-large">
+                            	           <div class="row">
+                            	               @php
+                            	               $categories_1 = array_slice($categories->toArray(), 0, count($categories) / 2);
+                                               $categories_2 = array_slice($categories->toArray(),  count($categories) / 2);
+                            	               @endphp
+                            	                <div class="col-md-6">
+                                                <ul class="courses-menu">
+                                         @foreach($categories_1 as $category)
+                                         @php $category = json_decode(json_encode($category), FALSE); @endphp
+                                                <li>
+                                                    <a href="{{route('courses.category',['category'=>$category->slug])}}">
+                                                    <i class="{{$category->icon}} p-2"></i>{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}}
                                                 </a>
-                                            </li>
+                                                </li>
                                         @endforeach
-                                        @endif
-                                    </ul>
-                                </li>
+                                         </ul>
+                                        </div>
+                                          <div class="col-md-6">
+                                                <ul class="courses-menu">
+                                         @foreach($categories_2 as $category)
+                                          @php $category = json_decode(json_encode($category), FALSE); @endphp
+                                                <li>
+                                                    <a href="{{route('courses.category',['category'=>$category->slug])}}">
+                                                    <i class="{{$category->icon}} p-2"></i>{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}}
+                                                </a>
+                                                </li>
+                                        @endforeach
+                                         </ul>
+                                        </div>
+                                        </div> <!-- dropdown-large.// -->
+                                         </div>
+                            	</li>
+                                <!--<li class="menu-item-has-children ul-li-block">-->
+                                <!--    <a href="#!"> @lang('navs.general.courses') <i class="fa fa-caret-{{app()->getLocale() == 'ar' ? 'left': 'right'}}"></i> </a>-->
+                                <!--    <ul class="sub-menu courses-menu">-->
+                                <!--        <li>-->
+                                <!--            <div class="row">-->
+                                <!--        @foreach($categories as $category)-->
+                                          
+                                <!--                <div class="col-4 mr-5">-->
+                                <!--                    <a href="{{route('courses.category',['category'=>$category->slug])}}">-->
+                                <!--                    <i class="{{$category->icon}} p-2"></i>{{$category->getDataFromColumn('name')}}-->
+                                <!--                </a>-->
+                                <!--                </div>-->
+                                            
+                                <!--        @endforeach-->
+                                <!--        </div>-->
+                                <!--        </li>-->
+                                <!--    </ul>-->
+                                <!--</li>-->
 
                                 @if(count($custom_menus) > 0 )
                                     @foreach($custom_menus as $menu)
@@ -194,18 +237,12 @@
                                         {{--@if($menu->subs && (count($menu->subs) > 0))--}}
                                         @if($menu['id'] == $menu['parent'])
                                             @if(count($menu->subs) == 0)
-
-
                                                 <li class="">
-                                                    <a href="{{asset($menu->link)}}"
+                                                    <a href="{{asset($menu->link)}}" @if($menu->label == '911') style="width: 85px;margin-top: -20px;"  @endif
                                                        class="nav-link @if($menu->label == 'courses') d-lg-none @endif {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
-                                                       id="menu-{{$menu->id}}">@if($menu->label == '911') <img style=" width: 32px;" src="{{asset('WhatsApp Image 2020-08-30 at 11.49.37 AM.jpeg')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
+                                                       id="menu-{{$menu->id}}">@if($menu->label == '911') <img style="width: 60px;" src="{{asset('WhatsApp Image 2020-08-30 at 11.49.37 AM.jpeg')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
                                                 </li>
-                                                
-                                               
-
-
-                                            @else
+                                                @else
                                                 <li class="menu-item-has-children ul-li-block">
                                                     <a href="#!">{{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}}</a>
                                                     <ul class="sub-menu">

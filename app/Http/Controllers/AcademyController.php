@@ -23,7 +23,7 @@ class AcademyController extends Controller
         $academyTeachers = $academyTeachersCollection->with('teacher')->get();
         $academyTeachersIds = $academyTeachersCollection->pluck('user_id');
         // Courses associated with academy teachers
-        $coursesCollection = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+        $coursesCollection = Course::withoutGlobalScope('filter')->whereHas('teachers', function ($query) use ($academyTeachersIds) {
             $query->whereIn('user_id', $academyTeachersIds);
         })->with('category')->where('published',1);
         $courses = $coursesCollection->get();
@@ -44,13 +44,13 @@ class AcademyController extends Controller
         $academyTeachers = $academyTeachersCollection->with('teacher')->get();
         $academyTeachersIds = $academyTeachersCollection->pluck('user_id');
         // Courses associated with academy teachers
-        $coursesCollection = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+        $coursesCollection = Course::withoutGlobalScope('filter')->whereHas('teachers', function ($query) use ($academyTeachersIds) {
             $query->whereIn('user_id', $academyTeachersIds);
         })->with('category')->where('published',1);
         $courses = $coursesCollection->get();
         // Categories associated with academy courses
         $categories = Category::where('name','911')->first();
-        $courses_911 = Course::where('category_id', $categories->id )->with('category')->get();
+        $courses_911 = Course::withoutGlobalScope('filter')->where('category_id', $categories->id )->where('published', 1)->with('category')->get();
         // Merge the courses into 1 variable
         $courses = $courses->merge($courses_911);
         return view('frontend.academy.911', compact('academy', 'academyTeachers','courses'));

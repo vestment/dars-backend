@@ -18,6 +18,13 @@
             <!--=======================Custom menus===============================-->
             @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy') || auth()->user()->hasRole('teacher'))
                 <li class="nav-item ">
+                    <a class="nav-link {{ $request->segment(2) == 'bookings' ? 'active' : '' }}"
+                       href="{{ route('admin.booking.index') }}">
+                        <i class="nav-icon icon-drawer"></i>
+                        <span class="title">@lang('menus.backend.sidebar.bookings')</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(2) == 'teachers' ? 'active' : '' }}"
                        href="{{ route('admin.courses.index') }}">
                         <i class="nav-icon icon-directions"></i>
@@ -91,7 +98,7 @@
                         </a>
                     </li>
                 @endcan
-                @if(auth()->user()->hasRole('teacher') || auth()->user()->isAdmin())
+                @if(auth()->user()->hasRole('teacher') || auth()->user()->isAdmin() || auth()->user()->hasRole('academy'))
                     <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern(['user/reports*']), 'open') }}">
                         <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/*')) }}"
                            href="#">

@@ -10,7 +10,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <ul class="nav navbar-nav d-md-down-none ">
+    <ul class="nav navbar-nav">
         <li class="nav-item px-3">
             <a class="nav-link" href="{{ route('frontend.index') }}"><i class="icon-home"></i></a>
         </li>
@@ -18,20 +18,12 @@
         <li class="nav-item px-3">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">@lang('navs.frontend.dashboard')</a>
         </li>
-        {{--@if(config('locale.status') && count(config('locale.languages')) > 1)--}}
-            {{--<li class="nav-item px-3 dropdown accountmenu">--}}
-                {{--<a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">--}}
-                    {{--<span class="d-md-down-none">@lang('menus.language-picker.language') ({{ strtoupper(app()->getLocale()) }})</span>--}}
-                {{--</a>--}}
-
-                {{--@include('includes.partials.lang')--}}
-            {{--</li>--}}
-        {{--@endif--}}
         @if(config('locale.status') && count($locales) > 1)
 
             <li class="nav-item px-3 dropdown">
                 <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <span class="d-md-down-none ">@lang('menus.language-picker.language') ({{ strtoupper(app()->getLocale()) }})</span>
+                     <span class="d-lg-none">({{ strtoupper(app()->getLocale()) }})</span>
                 </a>
 
                 @include('includes.partials.lang')

@@ -319,10 +319,9 @@ if (!function_exists('generateInvoice')) {
                 'id' => $user->id,
                 'email' => $user->email
             ])
-                ->save('public/invoices/invoice-' . $order->id . '.pdf');
+                ->save('invoices/invoice-' . $order->id . '.pdf');
 //                ->download('invoice-'.$order->id.'.pdf');
 //                ->show('invoice-'.$order->id.'.pdf');
-
             $invoiceEntry = \App\Models\Invoice::where('order_id', '=', $order->id)->first();
             if ($invoiceEntry == "") {
                 $invoiceEntry = new \App\Models\Invoice();

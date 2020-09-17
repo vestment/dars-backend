@@ -50,6 +50,7 @@ return array(
 
 
                             'price' => 'Price',
+                            'offline_price' => 'Offline Price',
                             'course_image' => 'Course Image',
                             'start_date' => 'Start Date',
                             'meta_title' => 'Meta Title in english',
@@ -62,9 +63,12 @@ return array(
                             'lessons' => 'Lessons',
                             'optional_courses' => 'Optional courses',
                             'mandatory_courses' => 'Mandatory courses',
-                            'learned' => 'What you will learn',
-
-
+                            'learned' => 'What you will learn in english',
+                            'learned_ar' => 'What you will learn in arabic',
+                            'Booking_Date&Time'=>'Booking Date&Time',
+                            'seats'=>'Seats',
+                            'booked_seats'=>'Booked Seats',
+                            'booking_info' =>'Booking data',
                             array(
                                 'add' => 'Add Lessons',
                                 'view' => 'View Lessons',
@@ -636,6 +640,7 @@ return array(
                             'paypal' => 'Paypal Payment Method',
                             'fawry' => 'Fawry Payment Method',
                             'accept' => 'Accept Payment Method',
+                            'vodafoneCash' => 'Vodafone Cash Method',
                              'merchant_code' => 'Merchant Code',
                              'security_key'=>'Security Key',
                             'paypal_note' => 'Redirects to paypal for payment',
@@ -643,6 +648,8 @@ return array(
                             'offline_mode_note' => 'User gets assistance for offline payment via admin',
                             'offline_mode_instruction' => 'Enter offline payment instructions',
                             'key' => 'API Key',
+                            'integration_id' => 'Integration ID',
+                            'iframe_id' => 'iFrame ID',
                             'secret' => 'API Secret',
                             'client_id' => 'Client ID',
                             'client_secret' => 'Secret',
@@ -1544,7 +1551,8 @@ return array(
                     'pay' => 'Pay',
                     'price' => 'price',
                     'fawry' => 'Fawry',
-                    'accept' =>'Accept'
+                    'accept' =>'Accept',
+                    'vodafoneCash' =>'Vodafone Cash'
 
 
                 ),
@@ -1584,6 +1592,7 @@ return array(
 
                     ),
                     'ratings' => 'Ratings',
+                    'minutes' => 'min',
                     'stars' => 'Stars',
                     'by' => 'By',
                     'no_reviews_yet' => 'No reviews yet.',
@@ -1595,6 +1604,9 @@ return array(
                     'chapters' => 'Chapters',
                     'course_hours' => 'hours',
                     'instructor' => 'instructor',
+                    'OptionalCourses' => 'Optional Courses   ',
+                    'MandatoryCourses' => 'Mandatory Courses    ',
+
 
                     'offline_booking_course'=>'Offline Booking Course',
                     'explore'=>'EXPLORE',
@@ -1664,7 +1676,6 @@ return array(
                     'wishlist' => 'Wishlist',
                     'added_to_wishlist' => 'added to wishlist',
                     'Share' => 'Share',
-                    'lessons' => 'Lessons',
                     'This_course_includes' => 'This course includes:',
                     'related_courses' => 'Related Courses',
                     'requirements' => 'Requirements',

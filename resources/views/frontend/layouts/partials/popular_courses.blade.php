@@ -27,15 +27,18 @@
                     </div>
                     <div class="col-xl-12 categories-container border-bottom">
                         @foreach($categories as $key=>$category)
-                            @if ($category->id != 2)
+                            @if ($category->slug != '911')
+                            @if($category->courses()->count() > 0)
                                 <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
                                         class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
+                                        @endif
                             @endif
                         @endforeach
                     </div>
                     <div class="col-xl-12 courses-container">
                         @foreach($categories as $key=>$category)
-                            @if ($category->id != 2)
+                            @if ($category->slug != '911')
+                             @if($category->courses()->count() > 0)
                                 <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
                                      id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
                                     <div class="owl-carousel default-owl-theme p-3 " data-items="5">
@@ -58,6 +61,7 @@
 
                                     </div>
                                 </div>
+                                @endif
                             @endif
                         @endforeach
                     </div>

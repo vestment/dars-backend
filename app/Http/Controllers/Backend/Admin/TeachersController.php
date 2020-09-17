@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\DataTables;
-
+use Illuminate\Support\Facades\Validator;
 class TeachersController extends Controller
 {
     use FileUploadTrait;

@@ -853,7 +853,7 @@
                                 <div class="col-md-9">
                                     <div class="checkbox">
                                         {{ html()->label(
-                                                html()->checkbox('accept__active', config('accept.active') ? true : false,1)
+                                                html()->checkbox('paymob__active', config('paymob.active') ? true : false,1)
                                                       ->class('switch-input')->value(1)
                                                 . '<span class="switch-label"></span><span class="switch-handle"></span>')
 
@@ -864,27 +864,49 @@
                                     <small>
                                         <!-- <i> {{ __('labels.backend.general_settings.payment_settings.paypal_note')}}</i> -->
                                     </small>
-                                    <div class="switch-content @if(config('accept.active') == 0 || config('accept.active') == false) d-none @endif">
-                                        <br>
-                                        
+                                    <div class="switch-content @if(config('paymob.active') == 0 || config('paymob.active') == false) d-none @endif">
                                         <div class="form-group row">
-                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.merchant_code'))->class('col-md-2 form-control-label') }}
+                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.integration_id'))->class('col-md-2 form-control-label')->for('paymob__integration_id') }}
                                             <div class="col-md-8 col-xs-12">
-                                                {{ html()->text('accept__merchant_code')
+                                                {{ html()->input('number','paymob__integration_id')
                                                      ->class('form-control')
-                                                     ->value(config('accept.merchant_code'))
+                                                     ->value(config('paymob.integration_id'))
                                                      }}
                                             </div><!--col-->
                                         </div><!--form-group-->
                                         <div class="form-group row">
-                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.security_key'))->class('col-md-2 form-control-label')->for('accept.accept.security_key') }}
+                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.iframe_id'))->class('col-md-2 form-control-label')->for('paymob__iframe_id') }}
                                             <div class="col-md-8 col-xs-12">
-                                                {{ html()->text('accept__security_key')
+                                                {{ html()->input('number','paymob__iframe_id')
                                                      ->class('form-control')
-                                                     ->value(config('accept.security_key'))
+                                                     ->value(config('paymob.iframe_id'))
                                                      }}
                                             </div><!--col-->
                                         </div><!--form-group-->
+                                        <div class="form-group row">
+                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.key'))->class('col-md-2 form-control-label')->for('paymob__api_key') }}
+                                            <div class="col-md-8 col-xs-12">
+                                                {{ html()->textarea('paymob__api_key')
+                                                     ->class('form-control')
+                                                     ->value(config('paymob.api_key'))
+                                                     }}
+                                            </div><!--col-->
+                                        </div><!--form-group-->
+                                        <div class="form-group row">
+                                            {{ html()->label(__('labels.backend.general_settings.payment_settings.vodafoneCash'))->class('col-md-3 form-control-label')}}
+                                            <div class="col-md-8 col-xs-12">
+                                        <div class="checkbox">
+                                            
+                                            {{ html()->label(
+                                                    html()->checkbox('vodafoneCash__active', config('vodafoneCash.active') ? true : false,1)
+                                                          ->class('switch-input')->value(1)
+                                                    . '<span class="switch-label"></span><span class="switch-handle"></span>')
+
+                                                ->class('switch switch-sm switch-3d switch-primary')
+                                            }}
+</div>
+                                        </div>
+                                        </div>
                                     </div>
                                 </div><!--col-->
                             </div><!--form-group-->

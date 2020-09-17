@@ -128,13 +128,14 @@
                 ajax: course_route,
                 columns: [
                     {data: "DT_RowIndex", name: 'DT_RowIndex', width: '8%'},
-                    {data: "name", name: 'name'},
+                    {data: "course", name: 'course'},
                     {data: "orders", name: 'orders'},
                     {data: "earnings", name: 'earnings'},
                 ],
 
 
                 createdRow: function (row, data, dataIndex) {
+                    console.log(data)
                     $(row).attr('data-entry-id', data.id);
                 },
             });

@@ -3,17 +3,16 @@
 @section('content')
     <div class="title mb-4 mx-5">
         <h1 class="page-title d-inline mb-5">@lang('labels.backend.videos.title')</h1>
-        @can('user_create')
+       
     </div>
+    
     <div class="card shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="">
-
+         @can('course_create')
             <div class="float-right mx-5 mt-4">
                 <a href="{{ route('admin.video-bank.create') }}"
                    class="btn btn-pink">@lang('strings.backend.general.app_add_new')</a>
             </div>
             @endcan
-        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-12">

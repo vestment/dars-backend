@@ -8,7 +8,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
-
+use Storage;
 class InvoiceController extends Controller
 {
     /**
@@ -19,6 +19,7 @@ class InvoiceController extends Controller
     public function getIndex(){
 
         $invoices = auth()->user()->invoices()->whereHas('order')->get();
+       
         return view('backend.invoices.index',compact('invoices'));
     }
 
@@ -39,8 +40,9 @@ class InvoiceController extends Controller
 
             $order = Order::findOrFail($order_id);
             if (auth()->user()->isAdmin() || ($order->user_id == auth()->user()->id)) {
-                $file = public_path() . "/storage/invoices/" . $order->invoice->url;
-                return Response::download($file);
+                return Storage::download('invoices/' . $order->invoice->url);
+                // $file = public_path() . "/storage/invoices/" . $order->invoice->url;
+                // return Response::download($file);
             }
         }
         return abort(404);
@@ -56,7 +58,7 @@ class InvoiceController extends Controller
 
             $order = Order::findOrFail($order_id);
             if (auth()->user()->isAdmin() || ($order->user_id == auth()->user()->id)) {
-                return response()->file(public_path() . "/storage/invoices/" . $order->invoice->url);
+                return response()->file(Storage::path('invoices/' . $order->invoice->url));
             }
         }
         return abort(404);

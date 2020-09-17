@@ -67,7 +67,7 @@ class CertificateController extends Controller
 
             $pdf->save(public_path('storage/certificates/' . $certificate_name));
 
-            return back()->withFlashSuccess(trans('alerts.frontend.course.completed'));
+            return back()->with(['success'=>trans('alerts.frontend.course.completed')]);
         }
         return abort(404);
     }

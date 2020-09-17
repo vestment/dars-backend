@@ -130,7 +130,9 @@
                 {{ html()->label(__('labels.backend.hero_slider.fields.sub_text_arabic'))->class('col-md-2 form-control-label')->for('sub_text_ar') }}
                 <div class="col-md-10">
                     {{ html()->text('sub_text_ar')
+                     ->value(json_decode($slide->ar_content)->sub_text)
                         ->class('form-control')
+                        
                         ->placeholder(__('labels.backend.hero_slider.fields.sub_text_arabic'))
                          }}
                 </div><!--col-->
@@ -242,7 +244,7 @@
 
             //Adding texts
             $('input[name="hero_text_ar"]').val(dataJson_ar.hero_text_ar);
-            $('input[name="sub_text_ar"]').val(dataJson_ar.sub_text_ar);
+            $('input[name="sub_text_ar"]').val(dataJson_ar.sub_text);
             $('input[name="hero_text"]').val(dataJson.hero_text);
             $('input[name="sub_text"]').val(dataJson.sub_text);
             $('input[name="first_name"]').val(dataJson.first_name);

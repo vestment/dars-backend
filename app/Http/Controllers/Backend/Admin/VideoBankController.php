@@ -154,7 +154,7 @@ class VideoBankController extends Controller
                     $media->type = 'upload';
                     $media->file_name = $filename;
                     $media->size = $size;
-                    $media->duration = round($duration_seconds);
+                    $media->duration = round($duration_string);
                     $media->save();
                 }
             }

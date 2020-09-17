@@ -18,7 +18,8 @@ use Cart;
 use App\Models\TeacherProfile;
 use App\Models\Chapter;
 use App\Models\Auth\User;
-
+use App\Models\Order;
+use App\Models\OrderItem;
 class CoursesController extends Controller
 {
 
@@ -38,7 +39,7 @@ class CoursesController extends Controller
                 $query->whereIn('user_id', $academyTeachersIds);
             })->where('published',1)->pluck('id');
             $categories = Category::where('name','911')->first();
-            $courses_911 = Course::withoutGlobalScope('filter')->where('category_id', $categories->id )->with('category')->pluck('id');
+            $courses_911 = Course::withoutGlobalScope('filter')->where('category_id', $categories->id )->where('published', 1)->with('category')->pluck('id');
             // Merge the courses into 1 variable
             $coursesIds = $coursesIds->merge($courses_911);
             $this->hidden_data = [
@@ -152,19 +153,23 @@ class CoursesController extends Controller
         }
         $mandatory_courses = [];
         $optional_courses = [];
-$course_date =json_encode([]);
+        $course_date =json_encode([]);
         if ($course->optional_courses) {
-            $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->get();
+            $optional_courses = Course::whereIn('id', json_decode($course->optional_courses))->withoutGlobalScope('filter')->get();
         }
         if ($course->mandatory_courses) {
-            $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->get();
+            $mandatory_courses = Course::whereIn('id', json_decode($course->mandatory_courses))->withoutGlobalScope('filter')->get();
         }
         if ($course->date) {
             $course_date = $course->date ? json_decode($course->date) : null;
         }
-        // dd($course_date);
-//dd($course->getDataFromColumn('title'));
-        return view('frontend.courses.course', compact('academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
+        if ($course->learned == 'null' || $course->learned == null) {
+            $course->learned = json_encode([]);
+        }
+       $studentsOrders = OrderItem::where(['item_type'=>Course::class,'item_id'=>$course->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->pluck('order_id');
+        $studentCount = Order::whereIn('id', $studentsOrders)->where('status',1)->pluck('id')->count();
+        $availableSeats = $course->seats - $studentCount;
+        return view('frontend.courses.course', compact('availableSeats','academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
     }
 
     public function filerCoursesByCategory(Request $request)
@@ -208,7 +213,7 @@ $course_date =json_encode([]);
         $html = '';
         if (count($courses->items()) > 0) {
             foreach ($courses->items() as $course) {
-                $html .= '<div class="col-xl-3 col-lg-3 col-md-6 col-12 mb-2"><div class="best-course-pic-text relative-position"><div class="best-course-pic piclip relative-position" style="background-image: url(' . $course->image . ')">';
+                $html .= '<div class="col-xl-3 col-lg-3 col-md-6 col-12 mb-2"><div class="best-course-pic-text relative-position"><a href="'.route('courses.show', [$course->slug]).'"><div class="best-course-pic piclip relative-position" style="background-image: url(' . $course->image . ')">';
 
                 $html .= '';
 
@@ -218,7 +223,7 @@ $course_date =json_encode([]);
                 } else {
                     $html .= '<span>' . (app()->getLocale() == 'ar' ? 'ج م' : 'EGP') . ' ' . $course->price . '</span>';
                 }
-                $html .= '</div></div> <div class="card-body back-im p-3"><h3 class="card-title titleofcard">' . $course->getDataFromColumn('title') . '</h3>
+                $html .= '</div></div></a> <div class="card-body back-im p-3"><a href="'.route('courses.show', [$course->slug]).'"><h3 class="card-title titleofcard">' . $course->getDataFromColumn('title') . '</h3></a>
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="course-rate ul-li"><ul>';
@@ -348,21 +353,14 @@ $course_date =json_encode([]);
             $categoryTeachers = [];
             foreach ($courses as $course) {
                 foreach ($course->teachers as $teacher) {
-                    // $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
-                    if (!in_array($teacher, $categoryTeachers)) {
-                        array_push($categoryTeachers, $teacher);
+                    if (!in_array($teacher->id, $categoryTeachers)) {
+                        array_push($categoryTeachers, $teacher->id);
                     }
                 }
             }
-            $teachers = $categoryTeachers;
+            $teachers = User::role('teacher')->whereIn('id',$categoryTeachers)->get();
             $teacher_data = TeacherProfile::get();
-//            $teachers = User::get();
-//            $teacher = $course->teachers()->first();
-//            $teacherProfile = TeacherProfile::where('user_id', $teacher->id)->first();
-            // dd($teacher);
             $cour = Course::with('teachers')->whereNotIn('id', $this->hidden_data['courses'])->get();
-            //  dd($courses);
-
             return view('frontend.courses.index', compact('courses', 'teacher_data', 'teachers', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
         }
         return abort(404);
@@ -446,21 +444,14 @@ $course_date =json_encode([]);
         $product = "";
         $teachers = "";
         $type = "";
-        if ($request->has('course_id')) {
-            $product = Course::findOrFail($request->get('course_id'));
+       
+            $product = Course::withoutGlobalScope('filter')->findOrFail($request->course_id);
             $teachers = $product->teachers->pluck('id', 'name');
             $type = 'course';
-
-        } elseif ($request->has('bundle_id')) {
-            $product = Bundle::findOrFail($request->get('bundle_id'));
-            $teachers = $product->user->name;
-            $type = 'bundle';
-        }
-
         $cart_items = Cart::session(auth()->user()->id)->getContent()->keys()->toArray();
         if (!in_array($product->id, $cart_items)) {
             Cart::session(auth()->user()->id)
-                ->add($product->id, $product->title, $product->price, 1,
+                ->add($product->id, $product->title,$request->amount ? $request->amount : $product->price, 1,
                     [
                         'user_id' => auth()->user()->id,
                         'description' => $product->description,
@@ -469,10 +460,11 @@ $course_date =json_encode([]);
                         'teachers' => $teachers,
                         'selectedDate' => $request->selectedDate,
                         'selectedTime' => $request->selectedTime,
+                        'offlinePrice' => $request->amount,
                     ]);
         }
         Session::flash('success', trans('labels.frontend.cart.product_added'));
-        return back();
+        return redirect()->back();
     }
 
 

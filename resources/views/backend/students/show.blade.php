@@ -198,8 +198,8 @@
         </div>
         <div class="card-body">
             <div class="col-12">
-                @if(count($purchased_courses) > 0)
-                    @foreach($purchased_courses as $item)
+                
+                  
 
                     <div  class="row m-3">
                             @if(count($purchased_courses) > 0)
@@ -241,7 +241,7 @@
                                   <i class="fa fa-arrow-right"></i></a>
                                </div>
                             @endif
-                            {{-- @if(count($purchased_bundles) > 0)
+                             @if(count($purchased_bundles) > 0)
                                <div class="col-12 mt-5">
                                   <h4>@lang('labels.backend.dashboard.my_course_bundles')</h4>
                                </div>
@@ -286,7 +286,7 @@
                                      @endif
                                @endforeach
                           
-                            @endif --}}
+                            @endif
                          </div>
 
             </div>

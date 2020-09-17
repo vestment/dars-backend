@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\academy;
+use App\Models\Media;
+
 /**
  * Class Course
  *
@@ -26,12 +28,10 @@ class Course extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['category_id','academy_id','offline','seats','date','course_hours','learned','title_ar','description_ar','meta_title_ar','meta_description_ar','meta_keywords_ar', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'optional_courses', 'mandatory_courses','online'];
+    protected $fillable = ['category_id','academy_id','offline','offline_price','seats','date','course_hours','learned','learned_ar','title_ar','description_ar','meta_title_ar','meta_description_ar','meta_keywords_ar', 'title', 'slug', 'description', 'price', 'course_image', 'course_video', 'start_date', 'published', 'free', 'featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'knowledge', 'learned','optional_courses', 'mandatory_courses','online'];
 
     protected $appends = ['image'];
-    protected $casts = [
-        'learned' => 'array',
-    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -165,7 +165,7 @@ class Course extends Model
 
     public function orderItem()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class,'item_id');
     }
 
     public function category()
@@ -191,10 +191,21 @@ class Course extends Model
         return false;
     }
 
+
     public function getDataFromColumn($col)
     {
         // ?? null return if the column not found
         return $this->attributes[app()->getLocale() == 'ar' ? $col . '_ar' : $col] ?? $this->attributes[$col];
+    }
+
+
+    public function getDurationAttribute()
+    {
+        $lessonsIds = $this->lessons()->where('published', 1)->pluck('id');
+        $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->sum('duration');
+        $duration = strtotime($duration);
+        $duration = date("H", $duration);
+        return $duration;
     }
 
     public function reviews()
@@ -251,7 +262,9 @@ class Course extends Model
     public function mediaVideo()
     {
         $types = ['youtube', 'vimeo', 'upload', 'embed'];
+
         return $this->morphOne(Media::class, 'model')
+
             ->whereIn('type', $types);
 
     }
@@ -271,9 +284,7 @@ class Course extends Model
     }
     public function academy()
     {
-
         return $this->belongsto('App\academy');
-
     }
 
 

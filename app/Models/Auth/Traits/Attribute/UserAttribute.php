@@ -66,7 +66,7 @@ trait UserAttribute
     {
         $roles = $this->getRoleNames()->toArray();
 
-        if (\count($roles)) {
+        if (count($roles)) {
             return implode(', ', array_map(function ($item) {
                 return ucwords($item);
             }, $roles));

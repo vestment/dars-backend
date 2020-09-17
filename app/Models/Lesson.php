@@ -53,7 +53,11 @@ class Lesson extends Model
         });
     }
 
-
+public function getDataFromColumn($col)
+    {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() == 'ar' ? $col . '_ar' : $col] ?? $this->attributes[$col];
+    }
     /**
      * Set to null if empty
      * @param $input

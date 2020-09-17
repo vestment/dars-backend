@@ -82,6 +82,7 @@
                     {!! Form::model($course, ['method' => 'PUT', 'route' => ['admin.courses.update', $course->id], 'files' => true,]) !!}
                     {!!  Form::hidden('offlineData', null, ['id'=>'offlineData']) !!}
                     {!!  Form::hidden('academy_id', null, ['id'=>'academy_id']) !!}
+                    {!!  Form::hidden('offline_price', null, ['id'=>'offline_price']) !!}
                     <div class="card">
                         <div class="card-header">
                             <h3 class="page-title float-left mb-0">@lang('labels.backend.courses.edit')</h3>
@@ -182,7 +183,7 @@
 
                                     {!! Form::select('media_type', ['youtube' => 'Youtube','vimeo' => 'Vimeo','upload' => 'Upload','embed' => 'Embed'],($course->mediavideo && $course->mediavideo->type) ? $course->mediavideo->type : '',['class' => 'form-control media_type', 'placeholder' => 'Select One','id'=>'media_type' ,'data-type'=>'Course']) !!}
 
-                                    {!! Form::text('video', old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
+                                    {!! Form::text('video', ($course->mediavideo && $course->mediavideo->url) ? $course->mediavideo->url : old('video'), ['class' => 'form-control mt-3 video d-none', 'placeholder' => trans('labels.backend.lessons.enter_video_url'),'id'=>''  ]) !!}
 
                                     {!! Form::select('video_file', $videos, old('video_file'), ['class' => 'form-control mt-3 d-none video_file','id'=>'']) !!}
 
@@ -191,9 +192,8 @@
 
 
                                     @if($course->mediavideo && ($course->mediavideo->type == 'upload'))
-                                        <video width="300" class="mt-2 d-none video-player" controls>
-                                            <source src="{{($course->mediavideo && $course->mediavideo->type == 'upload') ? asset($course->mediavideo->url)  : ""}}"
-                                                    type="video/mp4">
+                                        <video width="300" class="mt-2 d-none video-player" controls  controlsList="nodownload">
+                                            <source src="{{route('videos.stream',['encryptedId'=>\Illuminate\Support\Facades\Crypt::encryptString($course->mediavideo->id)])}}"/>
                                             Your browser does not support HTML5 video.
                                         </video>
                                     @endif
@@ -268,30 +268,29 @@
                                 </div>
 
                             </div>
-                            @if (Auth::user()->isAdmin())
-                                <div class="row">
-                                    <div class="col-10 form-group">
-                                        {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('opt_courses[]', $allCourses,old('opt_courses') ? old('opt_courses') : $opt_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
-                                    </div>
+                            <div class="row">
+                                <div class="col-10 form-group">
+                                    {!! Form::label('optional_courses',trans('labels.backend.courses.fields.optional_courses'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('opt_courses[]', $allCourses,old('opt_courses') ? old('opt_courses') : $opt_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
-                            @endif
-
-
-
-                            @if (Auth::user()->isAdmin())
-                                <div class="row">
-                                    <div class="col-10 form-group">
-                                        {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('mand_courses[]', $allCourses, old('mand_courses') ? old('mand_courses') : $mand_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10 form-group">
+                                    {!! Form::label('mandatory_courses',trans('labels.backend.courses.fields.mandatory_courses'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('mand_courses[]', $allCourses, old('mand_courses') ? old('mand_courses') : $mand_courses, ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
-                            @endif
+                            </div>
 
                             <div class="row">
                                 <div class="col-10 form-group">
                                     {!! Form::label('learned',trans('labels.backend.courses.fields.learned'), ['class' => 'control-label']) !!}
-                                    {!! Form::select('learn[]', $prevLearned, old('learn') ? old('learn') : $prevLearned, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                                    {!! Form::select('learn[]', $allLearned, old('learn') ? old('learn') : $prevLearned, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10 form-group">
+                                    {!! Form::label('learned_ar',trans('labels.backend.courses.fields.learned_ar'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('learn_ar[]', $allLearned_ar, old('learn_ar') ? old('learn_ar') : $prevLearned_ar, ['class' => 'form-control select2 js-input-tag', 'multiple' => 'multiple', 'required' => false]) !!}
                                 </div>
                             </div>
 
@@ -353,8 +352,9 @@
                                                                                             id="menu-to-edit">
                                                                                             @foreach($chapterContent as $item)
                                                                                                 @foreach ($timeline as  $singleTimeline)
+                                                                                                @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                     @if($singleTimeline->model_id == $item->id)
-                                                                                                        @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                                        
                                                                                                             @php
                                                                                                                 $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type','!=','App\Models\Chapter')->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
                                                                                                             @endphp
@@ -466,6 +466,34 @@
                                                                                                     </form>
                                                                                                 @else
                                                                                                     @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                    @if($lesson->must_finish == 0)
+                                                                                                    <form method="post"
+                                                                                                              class="d-inline"
+                                                                                                               action="{{route('admin.test.must_finish', ['test' => $lesson->model_id])}}">
+                                                                                                            @csrf
+                                                                                                            @method('post')
+                                                                                                            <button type="submit"
+                                                                                                                    class="btn btn-light float-right ml-1">
+                                                                                                                make this test Must Pass
+                                                                                                            </button>
+                                                                                                        </form>
+                                                                                                        @else
+                                                                                                        <form 
+                                                                                                              class="d-inline"
+                                                                                                               >
+                                                                                                            
+                                                                                                            
+                                                                                                                <p   class="btn btn-light float-right ml-1">
+                                                                                                                <i
+                                                                                                                        class="fa fa-check"></i> Must Pass this test  before certificate
+                                                                                                                </p>
+                                                                                                            
+                                                                                                        </form>
+                                                                                                        
+                                                                                                        @endif
+                                                                                                        
+                                                                                                        
+                                                                                                        
                                                                                                         <form method="post"
                                                                                                               class="d-inline"
                                                                                                               action="{{route('admin.tests.destroy', ['test' => $lesson->model_id])}}">
@@ -477,6 +505,8 @@
                                                                                                                         class="fa fa-trash"></i>
                                                                                                             </button>
                                                                                                         </form>
+                                                                                                          
+                                                                                                        
                                                                                                     @elseif ($lesson->model_type == \App\Models\Lesson::class)
                                                                                                         <form method="post"
                                                                                                               class="d-inline"
@@ -489,6 +519,9 @@
                                                                                                                         class="fa fa-trash"></i>
                                                                                                             </button>
                                                                                                         </form>
+                                                                                                        
+                                                                                                          
+                                                                                                        
                                                                                                     @endif
                                                                                                     <a @if($lesson->model_type == \App\Models\Test::class) onclick="editTest({{$lesson->model_id}})"
                                                                                                        @else onclick="editLesson({{$lesson->model_id}})"
@@ -641,7 +674,7 @@
                                 <div class="col-12 col-lg-6 form-group d-none"
                                      id="duration">
                                     {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
-                                    {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
+                                    {!! Form::text('duration', old('duration'), ['class' => 'form-control ','title'=>'Required format ex:(05:05:05)', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]+|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
 
                                 </div>
                             </div>
@@ -909,7 +942,7 @@
                             <div class="col-12 col-lg-6 form-group d-none"
                                  id="duration">
                                 {!! Form::label('duration',  trans('labels.backend.courses.duration'), ['class' => 'control-label']) !!}
-                                {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
+                                {!! Form::text('duration', old('duration'), ['class' => 'form-control ', 'title'=>'Required format ex:(05:05:05)', 'placeholder' =>  trans('labels.backend.courses.video_format'),'pattern'=>'([01]?[0-9]+|2[0-3]):[0-5][0-9]:[0-5][0-9]']) !!}
 
                             </div>
                         </div>
@@ -956,6 +989,12 @@
                             </div>
                         </div>
                         <div class="row ">
+                            <div class="col-12 form-group">
+                                {!! Form::label('teachers',trans('labels.backend.courses.fields.offline_price'), ['class' => 'control-label']) !!}
+                                {!! Form::input('number','offline_price',$course->offline_price ? $course->offline_price : old('offline_price'), ['class' => 'form-control', 'id'=>'offline-price']) !!}
+                            </div>
+                        </div>
+                        <div class="row ">
 
                             <div class="col-12 form-group">
                                 {{ html()->label()->class(' form-control-label')->for('buttons') }}
@@ -967,6 +1006,7 @@
 
                         <div class="row">
                             <div class="col-12 col-md-12 form-group button-container mt-2">
+
                                 @if($date)
                                     @foreach($date as $Pkey => $singleDate )
                                         @foreach($singleDate as  $key => $value)
@@ -1006,7 +1046,6 @@
                                                                 <div class='row timeRemove'>
                                                                     <div class='col-lg-6'>
                                                                         <input class='form-control time-input dat'
-                                                                               pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]'
                                                                                value="{{$value}}"
                                                                                autocomplete='off'
                                                                                type='time'>
@@ -1024,11 +1063,14 @@
 
                                                             </div>
                                                         </div>
+
+                                                    @endif
+
+                                                    @endforeach
+                                                    @endforeach
                                                 </div>
                                             @endif
-                                        @endforeach
-                                    @endforeach
-                                @endif
+
                             </div>
                         </div>
 
@@ -1101,6 +1143,7 @@
                     }
                     if (resp.media) {
                         $('#editLessonForm input[name="video"]').val(resp.media[0].url);
+                        $('#editLessonForm input[name="duration"]').val(resp.media[0].duration);
                     }
                     console.log(resp)
                 }
@@ -1150,7 +1193,7 @@
                 if ($(this).val() != 'upload') {
                     $(this).parent().find('.video').removeClass('d-none').attr('required', true)
                     $(this).parent().find('.video_file').addClass('d-none').attr('required', false)
-                    $(this).parent().find('#duration').removeClass('d-none').attr('required', true)
+                    $(this).parent().parent().find('#duration').removeClass('d-none').attr('required', true)
                 } else if ($(this).val() == 'upload') {
                     $(this).parent().find('.video').addClass('d-none').attr('required', false)
                     $(this).parent().find('.video_file').removeClass('d-none').attr('required', true)
@@ -1245,22 +1288,6 @@
         @endif
         @endif
 
-        $(document).on('change', '#media_type', function () {
-            if ($(this).val()) {
-                if ($(this).val() != 'upload') {
-                    $('.video').removeClass('d-none').attr('required', true);
-                    $('.video_file').addClass('d-none').attr('required', false);
-                    $('.video-player').addClass('d-none')
-                } else if ($(this).val() == 'upload') {
-                    $('.video').addClass('d-none').attr('required', false);
-                    $('.video_file').removeClass('d-none').attr('required', true);
-                    $('.video-player').removeClass('d-none')
-                }
-            } else {
-                $('.video_file').addClass('d-none').attr('required', false);
-                $('.video').addClass('d-none').attr('required', false)
-            }
-        })
 
 
     </script>
@@ -1369,24 +1396,6 @@
         })
 
 
-        $(document).on('change', '#media_type', function () {
-            if ($(this).val()) {
-                if ($(this).val() != 'upload') {
-                    $('.video').removeClass('d-none').attr('required', true)
-                    $('.video_file').addClass('d-none').attr('required', false)
-                    $('#duration').removeClass('d-none').attr('required', true)
-                } else if ($(this).val() == 'upload') {
-                    $('.video').addClass('d-none').attr('required', false)
-                    $('.video_file').removeClass('d-none').attr('required', true)
-                    $('#duration').addClass('d-none').attr('required', true)
-
-
-                }
-            } else {
-                $('.video_file').addClass('d-none').attr('required', false)
-                $('.video').addClass('d-none').attr('required', false)
-            }
-        })
         $('.date-input').datepicker({
             autoclose: true,
             dateFormat: "{{ config('app.date_format_js') }}"
@@ -1481,6 +1490,7 @@
 
             $('#offlineData').val(JSON.stringify(arrObj))
             $('#academy_id').val($('#selected-academy').val());
+            $('#offline_price').val($('#offline-price').val());
             $('#offlineDataModal').modal('hide');
         }
 

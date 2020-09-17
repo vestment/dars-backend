@@ -23,30 +23,42 @@ class LessonsController extends Controller
         $completed_lessons = "";
         $prevTests = NULL;
         $latestTest = NULL;
-        $next_lesson = NULL;
-        $canEnterNextChapter = true;
-        $canReTest = false;
+        $canEnterNextChapter = false;
+        $canReTest = true;
         $questionsToAnswer = [];
         $next_lesson = [];
+        $timecomp = 0;
+        $previous_lesson = [];
         $lesson = Lesson::where('slug', $lesson_slug)->where('course_id', $course_id)->where('published', '=', 1)->first();
         if ($lesson == "") {
             $lesson = Test::where('slug', $lesson_slug)->where('course_id', $course_id)->with('courseTimeline')->where('published', '=', 1)->firstOrFail();
             $lesson->full_text = $lesson->description;
+            $timeoutorg = intval($lesson->timer * 60);
+            $start = intval(time());
+            if (auth()->user()->current_test()->first()) {
+                $pivot = auth()->user()->current_test()->first()->pivot;
+                if ($pivot) {
+                    $start = $pivot->start_time;
+                }
 
+            }
+            $endtime = intval($start + $timeoutorg);
+            $now = time();
+            $timecomp = ($endtime - $now);
             if ($lesson) {
                 $latestTest = TestsResult::where('test_id', $lesson->id)
                     ->where('user_id', \Auth::id())
                     ->orderBy('created_at', 'desc')
                     ->first();
-                $prevTests = TestsResult::where('test_id', $lesson->id)
+                $prevTests = TestsResult::where('test_id', $lesson->id)->with('answers')
                     ->where('user_id', \Auth::id())
                     ->orderBy('created_at', 'asc')
                     ->get();
                 $questionsToAnswer = $lesson->questions()->inRandomOrder()->limit($lesson->no_questoins)->get();
 
-                if ($latestTest && $latestTest->test_result < $lesson->min_grade) {
-                    $canEnterNextChapter = false;
-                    $canReTest = true;
+                if ($latestTest && $latestTest->test_result >= $lesson->min_grade) {
+                    $canEnterNextChapter = true;
+                    $canReTest = false;
                 }
                 if ($latestTest && $latestTest->attempts < 3) {
                     $prevTestQuestions = $latestTest->answers()->pluck('question_id');
@@ -133,20 +145,19 @@ class LessonsController extends Controller
                     ->get()
                     ->pluck('model_id')
                     ->toArray();
-                $start_time = time();
-                if (auth()->user()->current_test()->first()) {
-                    $pivot = auth()->user()->current_test()->first()->pivot->where('test_id', $lesson->id)->first();
-                    if ($pivot) {
-                        $start_time = $pivot->start_time;
-                    }
-
+                $start_time = intval(time());
+            if (auth()->user()->current_test()->first()) {
+                $pivot = auth()->user()->current_test()->first()->pivot;
+                if ($pivot) {
+                    $start_time = $pivot->start_time;
                 }
+
+            }
             }
 
             $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();
-
             return view('frontend.courses.lesson', compact('chapters', 'lesson', 'previous_lesson', 'next_lesson', 'questionsToAnswer', 'latestTest', 'prevTests',
-                'canReTest', 'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time', 'notes', 'canEnterNextChapter'));
+                'canReTest', 'purchased_course', 'test_exists', 'lessons', 'completed_lessons', 'start_time', 'notes', 'canEnterNextChapter', 'timecomp'));
         } else {
             return abort(403);
 

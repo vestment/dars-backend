@@ -146,10 +146,10 @@ class CoursesController extends Controller
                 }
                 return $teachers;
             })
-            ->addColumn('lessons', function ($q) {
-                $lesson = '<a href="' . route('admin.lessons.create', ['course_id' => $q->id]) . '" class="btn btn-success mb-1"><i class="fa fa-plus-circle"></i></a>  <a href="' . route('admin.courses.courseContent', ['course_id' => $q->id]) . '" class="btn mb-1 btn-warning text-white"><i class="fa fa-arrow-circle-right"></a>';
-                return $lesson;
-            })
+//            ->addColumn('lessons', function ($q) {
+//                $lesson = '<a href="' . route('admin.lessons.create', ['course_id' => $q->id]) . '" class="btn btn-success mb-1"><i class="fa fa-plus-circle"></i></a>  <a href="' . route('admin.courses.courseContent', ['course_id' => $q->id]) . '" class="btn mb-1 btn-warning text-white"><i class="fa fa-arrow-circle-right"></a>';
+//                return $lesson;
+//            })
             ->editColumn('course_image', function ($q) {
                 return ($q->course_image != null) ? '<img height="50px" src="' . asset('storage/uploads/' . $q->course_image) . '">' : 'N/A';
             })
@@ -205,6 +205,14 @@ class CoursesController extends Controller
                 }
             }
         }
+        $learned_ar = [];
+        foreach ($coursesRaw as $course) {
+            if ($course->learned_ar && $course->learned_ar != 'null') {
+                foreach (json_decode($course->learned_ar) as $learnItem) {
+                    $learned_ar[$learnItem] = $learnItem;
+                }
+            }
+        }
         $teachersToSelect = [];
         $allTeachers = User::role('teacher')->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
 
@@ -224,7 +232,7 @@ class CoursesController extends Controller
             $videos = ['' => 'No videos available'];
         }
 
-        return view('backend.courses.create', compact('videos', 'teachersToSelect', 'categoriesToSelect', 'courses', 'learned', 'academies'));
+        return view('backend.courses.create', compact('videos', 'teachersToSelect', 'categoriesToSelect', 'courses', 'learned', 'academies', 'learned_ar'));
     }
 
     /**
@@ -245,7 +253,7 @@ class CoursesController extends Controller
         if ($slug_lesson != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
-       
+
         $seats = 0;
         if ($request->offlineData) {
             foreach (json_decode($request->offlineData) as $key => $item) {
@@ -253,11 +261,12 @@ class CoursesController extends Controller
                 $seats += $item['seats-' . $key];
             }
         }
-        $course = Course::create($request->except(['offlineData','duration']));
+        $course = Course::create($request->except(['offlineData', 'duration', 'learned', 'learned_ar', 'opt_courses', 'mand_courses', 'seats']));
         $course->slug = $slug;
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
-        $course->learned = $request->learned ? json_encode($request->learned) : null;
+        $course->learned = $request->learned ? json_encode($request->learned) : json_encode([]);
+        $course->learned_ar = $request->learn_ar ? json_encode($request->learn_ar) : json_encode([]);
         $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
         $course->seats = $seats;
         $course->save();
@@ -339,9 +348,23 @@ class CoursesController extends Controller
             return abort(401);
         }
 
-
-       
-
+        $coursesRaw = Course::all();
+        $allLearned = [];
+        foreach ($coursesRaw as $course) {
+            if ($course->learned && $course->learned != 'null') {
+                foreach (json_decode($course->learned) as $learnItem) {
+                    $allLearned[$learnItem] = $learnItem;
+                }
+            }
+        }
+        $allLearned_ar = [];
+        foreach ($coursesRaw as $course) {
+            if ($course->learned_ar && $course->learned_ar != 'null') {
+                foreach (json_decode($course->learned_ar) as $learnItem) {
+                    $allLearned_ar[$learnItem] = $learnItem;
+                }
+            }
+        }
         $allAcademies = User::role('academy')->with('academy')->get();
         $academies = [];
         foreach ($allAcademies as $academy) {
@@ -362,21 +385,15 @@ class CoursesController extends Controller
         $allCourses = Course::pluck('title', 'id');
 
         $course = Course::findOrFail($id);
+        $date = $course->date ? json_decode($course->date, true) : null;
 
-
-        $date = $course->date ? json_decode($course->date , true ) : null;
-
-        $date = json_decode($date,true);
+        $date = json_decode($date, true);
         //dd($date) ;
         //dd(json_decode($date,true));
-    
+
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
 
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
-
-
-
-        // $allLearned = $course->pluck('learned', 'id');
         $learned = $course->learned ? json_decode($course->learned) : null;
         $prevLearned = [];
         if ($learned != null) {
@@ -384,6 +401,14 @@ class CoursesController extends Controller
                 $prevLearned[$value] = $value;
             }
         }
+        $learned_ar = $course->learned_ar ? json_decode($course->learned_ar) : null;
+        $prevLearned_ar = [];
+        if ($learned_ar != null) {
+            foreach ($learned_ar as $key => $value) {
+                $prevLearned_ar[$value] = $value;
+            }
+        }
+
 
         $timeline = CourseTimeline::where('course_id', $id)->get();
         // dd($timeline->isEmpty());
@@ -392,7 +417,7 @@ class CoursesController extends Controller
                 $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
 
             }
-            $chapterContent =[];
+            $chapterContent = [];
             foreach ($content as $key => $item) {
 
                 foreach ($item as $j => $item) {
@@ -411,8 +436,7 @@ class CoursesController extends Controller
             $videos = ['' => 'No videos available'];
             $notSelectedVideos = ['' => 'No videos available'];
         }
-//        dd($videos);
-        return view('backend.courses.edit', compact('notSelectedVideos','chapterContent', 'videos', 'timeline', 'course', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'learned','academies','date'));
+        return view('backend.courses.edit', compact('notSelectedVideos', 'chapterContent', 'videos', 'timeline', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
 
 
     }
@@ -433,8 +457,8 @@ class CoursesController extends Controller
 
         $slug = str_slug($request->title);
 
-        $slug_lesson = Course::where('slug', '=', $slug)->where('id', '!=', $course->id)->first();
-        if ($slug_lesson != null) {
+        $slug_exits = Course::where('slug', '=', $slug)->where('id', '!=', $course->id)->first();
+        if ($slug_exits) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
         }
         $request = $this->saveFiles($request);
@@ -477,7 +501,7 @@ class CoursesController extends Controller
 
             if ($request->media_type == 'upload') {
                 if ($request->video_file) {
-                    $oldMedia = Media::where('model_id',$id)->where('model_type',$model_type)->first();
+                    $oldMedia = Media::where('model_id', $id)->where('model_type', $model_type)->first();
                     if ($oldMedia) {
                         if ($oldMedia->type == 'upload') {
                             $oldMedia->model_type = '';
@@ -500,30 +524,40 @@ class CoursesController extends Controller
             }
         }
 
-        $course->update($request->all());
-        $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
-        $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
-        $course->learned = $request->learn ? json_encode($request->learn) : null;
-        //dd($request->offlineData);
-        $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
-
-        if ($request->opt_courses && $request->mand_courses) {
-            if (count($request->opt_courses) != 0 || count($request->mand_courses) != 0 || count($request->learned) > 0) {
-                $course->optional_courses = json_encode($request->opt_courses);
-                $course->mandatory_courses = json_encode($request->mand_courses);
-                $course->learned = json_encode($request->learned);
-                $course->save();
+        if ($request->offlineData) {
+            $seats = 0;
+            foreach (json_decode($request->offlineData, true) as $key => $item) {
+                foreach ($item as $SingleDatekey => $value) {
+                    if (substr($SingleDatekey, 0, 4) == 'seat') {
+                        $seats += $value;
+                    }
+                }
             }
+            $course->seats = $seats ? $seats : $course->seats;
+        }
+        $course->update($request->except(['offlineData', 'duration', 'learned', 'learned_ar', 'opt_courses', 'mand_courses', 'seats']));
+        if ($request->offlineData) {
+            $course->date = $request->offlineData ? json_encode($request->offlineData) : Null;
+        }
+        if ($request->opt_courses && count($request->opt_courses) > 0) {
+            $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : json_encode([]);
+        }
+        if ($request->mand_courses && count($request->mand_courses) > 0) {
+            $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : json_encode([]);
+        }
+        if ($request->learn_ar && count($request->learn_ar) > 0) {
+            $course->learned_ar = $request->learn_ar ? json_encode($request->learn_ar) : json_encode([]);
+        }
+        if ($request->learn && count($request->learn) > 0) {
+            $course->learned = $request->learn ? json_encode($request->learn) : json_encode([]);
         }
         if (($request->slug == "") || $request->slug == null) {
             $course->slug = str_slug($request->title);
-            $course->save();
         }
         if ((int)$request->price == 0) {
             $course->price = NULL;
-            $course->save();
         }
-
+        $course->save();
         $teachers = (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) ? array_filter((array)$request->input('teachers')) : [auth()->user()->id];
         $course->teachers()->sync($teachers);
 
@@ -550,11 +584,19 @@ class CoursesController extends Controller
         $opt_courses = $course->optional_courses ? json_decode($course->optional_courses) : null;
         $mand_courses = $course->mandatory_courses ? json_decode($course->mandatory_courses) : null;
         $learn = $course->learned ? json_decode($course->learned) : null;
+        $learn_ar = $course->learned_ar ? json_decode($course->learned_ar) : null;
+
+        if ($course->learned == 'null') {
+            $learn = [];
+        }
+        if ($course->learned_ar == 'null') {
+            $learn_ar = [];
+        }
 
 
         $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
 
-        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses', 'learn'));
+        return view('backend.courses.show', compact('course', 'lessons', 'tests', 'courseTimeline', 'opt_courses', 'mand_courses', 'learn', 'learn_ar'));
     }
 
 
@@ -644,16 +686,16 @@ class CoursesController extends Controller
     public function saveSequence(Request $request)
     {
 
-    
+
 //    dd($request->all());
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
-       
+
         foreach ($request->list as $item) {
             // dd($item);
 
-            $courseTimeline = CourseTimeline::where('id',$item['id'])->first();
+            $courseTimeline = CourseTimeline::where('id', $item['id'])->first();
             $courseTimeline->sequence = $item['sequence'];
             $courseTimeline->save();
         }
@@ -712,5 +754,13 @@ class CoursesController extends Controller
         return view('backend.courses.courseContent', compact('chapterContent', 'timeline'));
 
 
+    }
+    
+    public function must_finish($id){   
+       
+         $timeline = CourseTimeline::where('model_type', 'App\Models\Test')->where('model_id',$id)->first();
+         $timeline->must_finish = 1;
+         $timeline->save();
+         return redirect()->route('admin.courses.edit', ['course' => $timeline->course_id])->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 }

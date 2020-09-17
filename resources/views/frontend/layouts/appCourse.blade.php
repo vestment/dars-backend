@@ -39,16 +39,57 @@
                 width: 35px;
                 text-align: center;
                 line-height: 30px;
-                border-radius: 100%;
+             
                 color: #fff;
                 margin-left: 10px;
-                border: 2px solid #fff;
                 position: absolute;
                 top: 27%;
+                right:20px;
             }
             .cart-search li a {
                 margin-top: 2px;
             }
+            
+         
+.mean-bar{
+    display: none !important;
+    width:0px;
+    height:0px;
+
+}
+.navbar-header{
+    display: flex;
+
+  
+  align-items: center;
+}
+@media (max-width: 768px) {
+    .y-1{
+        display:none;
+
+    }
+    .y-2{
+        display:block;
+        
+    }
+}
+@media (min-width: 768px) {
+    .y-1{
+        display:inline;
+
+    }
+   
+    .y-2{
+        display:none;
+        
+    }
+     .navbar-default img{
+
+         padding-left:58px;
+     }
+}
+
+
 
         </style>
        
@@ -87,22 +128,28 @@
         <header>
             <div id="main-menu" class="main-menu-container">
                 <div class="main-menu">
-                    <div class="container">
-                        <div class="navbar-default">
-                            <div class="navbar-header float-left logo-lesson">
+                    <div class="">
+                        <div class="row navbar-default p-0 ">
+                            <div class="col-11 row navbar-header float-left logo-lesson">
+                            <div class="col-4 p-0">
                                 <a class="navbar-brand text-uppercase" href="{{url('/')}}">
-                                    {{--<img src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">--}}
-                                    <img style="height: 53px;
-    margin-top: 17px;" src="{{asset("storage/logos/".config('logo_w_image'))}}" alt="logo">
+                                    {{--<img src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">--}}
+                                    <img style="" src="{{asset("storage/logos/".config('logo_b_image'))}}" alt="logo">
                                 </a>
-                                @yield('lesson-title')
+                            </div>
+                            <div class="col-5 p-0">
+                                <span class=" y-1 "> @yield('lesson-title')</span>
+                            </div>
+                            <div class="col-3 p-0">
+                            @yield('progress_bar')
+                            </div>`
                             </div><!-- /.navbar-header -->
+
 
                             <div class="cart-search float-right ul-li">
                                 <ul>
                                     <li>
-                                        <a href="{{route('courses.all')}}"><i class="fa fa-times" aria-hidden="true"></i>
-                                        </a>
+                                    @yield('course_route')
                                     </li>
                                     
                                 </ul>

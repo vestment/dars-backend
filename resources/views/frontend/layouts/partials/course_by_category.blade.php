@@ -37,6 +37,7 @@
             <div class="category-item">
                 <div class="row">
                     @foreach($course_categories->take(8) as $category)
+                    @if ($category->slug != '911')
                         <div class="col-md-3 categ">
                             <a href="{{route('courses.category',['category'=>$category->slug])}}">
                                 <div class=" text-center ">
@@ -49,6 +50,7 @@
                                 </div>
                             </a>
                         </div>
+                        @endif
                 @endforeach
                 <!-- /category -->
                 </div>

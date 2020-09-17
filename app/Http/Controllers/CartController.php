@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\General\EarningHelper;
+use App\Helpers\PayMob;
 use App\Mail\OfflineOrderMail;
 use App\Models\Bundle;
 use App\Models\Auth\User;
@@ -38,36 +39,38 @@ class CartController extends Controller
         $course_ids = [];
         $bundle_ids = [];
         $courseData = [];
+        $total = 0;
         foreach (Cart::session(auth()->user()->id)->getContent() as $item) {
             if ($item->attributes->type == 'bundle') {
                 $bundle_ids[] = $item->id;
             } else {
                 $course_ids[] = $item->id;
                 if ($item->attributes->selectedDate && $item->attributes->selectedTime) {
-                $courseData[$item->id]['selectedDate'] = $item->attributes->selectedDate;
-                $courseData[$item->id]['selectedTime'] = $item->attributes->selectedTime;
+                    $courseData[$item->id]['selectedDate'] = $item->attributes->selectedDate;
+                    $courseData[$item->id]['selectedTime'] = $item->attributes->selectedTime;
+                    $courseData[$item->id]['offlinePrice'] = $item->attributes->offlinePrice;
                 }
             }
         }
-        $courses = new Collection(Course::find($course_ids));
+        $courses = new Collection(Course::withoutGlobalScope('filter')->find($course_ids));
         $bundles = Bundle::find($bundle_ids);
         $courses = $bundles->merge($courses);
 
-        $total = $courses->sum('price');
+        $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
         //Apply Tax
         $taxData = $this->applyTax('total');
-        
-        return view('frontend.cart.checkout', compact('courses', 'bundles', 'total', 'taxData','courseData'));
+
+        return view('frontend.cart.checkout', compact('courses', 'bundles', 'total', 'taxData', 'courseData'));
     }
 
     public function addToCart(Request $request)
     {
-       
+
         $product = "";
         $teachers = "";
         $type = "";
         if ($request->has('course_id')) {
-            $product = Course::findOrFail($request->get('course_id'));
+            $product = Course::withoutGlobalScope('filter')->findOrFail($request->get('course_id'));
             $teachers = $product->teachers->pluck('id', 'name');
             $type = 'course';
 
@@ -86,7 +89,7 @@ class CartController extends Controller
                         'description' => $product->description,
                         'image' => $product->course_image,
                         'type' => $type,
-                        'teachers' => $teachers
+                        'teachers' => $teachers,
                     ]);
         }
         Session::flash('success', trans('labels.frontend.cart.product_added'));
@@ -101,7 +104,7 @@ class CartController extends Controller
         $bundle_ids = [];
         $course_ids = [];
         if ($request->has('course_id')) {
-            $product = Course::findOrFail($request->get('course_id'));
+            $product = Course::withoutGlobalScope('filter')->findOrFail($request->get('course_id'));
             $teachers = $product->teachers->pluck('id', 'name');
             $type = 'course';
 
@@ -129,14 +132,15 @@ class CartController extends Controller
                 $bundle_ids[] = $item->id;
             } else {
                 $course_ids[] = $item->id;
-               
+
             }
         }
-        $courses = new Collection(Course::find($course_ids));
+        $courses = new Collection(Course::withoutGlobalScope('filter')->find($course_ids));
         $bundles = Bundle::find($bundle_ids);
         $courses = $bundles->merge($courses);
 
-        $total = $courses->sum('price');
+        $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
+
 
         //Apply Tax
         $taxData = $this->applyTax('total');
@@ -192,15 +196,56 @@ class CartController extends Controller
             $order->status = 1;
             $order->payment_type = 1;
             $order->save();
+
             (new EarningHelper)->insert($order);
             foreach ($order->items as $orderItem) {
+             $course = $orderItem->item->course;
+                if ($course->offline) {
+                    $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                    if ($date) {
+                        if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                            $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                            foreach ($selectDate as $key => $value) {
+                                if ($key != 'date') {
+                                    if ($value == $orderItem->selectedTime) {
+                                        $incrementKey = explode('-', $key);
+                                        $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                        $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                        $course->date = json_encode(json_encode($date));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 //Bundle Entries
                 if ($orderItem->item_type == Bundle::class) {
                     foreach ($orderItem->item->courses as $course) {
                         $course->students()->attach($order->user_id);
+                        if ($course->offline) {
+                            $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                            if ($date) {
+                                if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                                    $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                                    foreach ($selectDate as $key => $value) {
+                                        if ($key != 'date') {
+                                            if ($value == $orderItem->selectedTime) {
+                                                $incrementKey = explode('-', $key);
+                                                $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                                $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                                $course->date = json_encode(json_encode($date));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-                $orderItem->item->students()->attach($order->user_id);
+
+                if (!$orderItem->item->offline) {
+                    $orderItem->item->students()->attach($order->user_id);
+                }
             }
 
             //Generating Invoice
@@ -221,8 +266,8 @@ class CartController extends Controller
 
     public function paypalPayment(Request $request)
     {
-        
-        
+
+
         if ($this->checkDuplicate()) {
             return $this->checkDuplicate();
         }
@@ -257,103 +302,262 @@ class CartController extends Controller
         return Redirect::route('cart.paypal.status');
     }
 
-    public function fawryPayment(Request $request) 
+    public function fawryPayment(Request $request)
     {
         $user = User::find(auth()->user()->id);
         $number = str_random(8);
         $amount = Cart::session(auth()->user()->id)->getTotal();
-       
-       $merchantRefNum = str_random(8);
-       // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
-       if (strpos($amount, '.') !== false) {
-           $amount = round($amount,2);
-       }else {
-           $amount = $amount.'.00';
-       }
-       $fawryUrl = 'https://atfawry.fawrystaging.com//ECommerceWeb/Fawry/payments/charge';
-       
-       // Generate Fawry Signature
-       $merchantCode = config('fawry.merchant_code');
-       $customerProfileId = auth()->user()->id;
-       $paymentMethod = 'PAYATFAWRY';
-       $secureKey = config('fawry.security_key');
-       $buffer = $merchantCode.$merchantRefNum.$customerProfileId.$paymentMethod.$amount.$secureKey;
-       $signature = hash('sha256', $buffer);
-       $fawryData = [
-           'merchantCode'=>$merchantCode,
-           'customerProfileId'=>$customerProfileId,
-           'customerMobile'=>'01149786203',
-           // 'customerEmail'=>$user->email,
-           //'customerName'=>$user->name,
-           'paymentMethod'=>$paymentMethod,
-           'amount'=>$amount,
-           //'paymentExpiry'=>'72',
-           // 'chargeItems'=> $invoiceDataArray,
-           'signature'=>$signature,
-           'merchantRefNum'=> $merchantRefNum,
-           // 'description'=> $description
-       ];
 
-       $data_string = json_encode($fawryData);                                                                                   
-                                                                                                                    
-       $ch = curl_init($fawryUrl);                                                                      
-       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");     
-       curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);                                                                
-       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-       curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-           'Content-Type: application/json',                                                                                
-           'Content-Length: ' . strlen($data_string))                                                                       
-       );                                                                                                                   
-                          
-       $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
-       if ($coupon != null) {
-           $coupon = Coupon::where('code', '=', $coupon->getName())->first();
-       }
-       $result = curl_exec($ch);
-       $result = json_decode($result,true);
-       $description = $result['statusDescription'];
-       $order = new Order();
-       $order->user_id = $customerProfileId;
-       $order->reference_no =$merchantRefNum;
-       $order->amount = $amount;
-       $order->payment_type = 4;
-       $order->status = 0;
-       $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
-       $order->fawry_status = $result['statusDescription'];
-       if($result['statusCode'] == 200)
-       {
-       $order->fawry_ref_no = $result['referenceNumber'];
-       $order->fawry_expirationTime = $result['expirationTime'];
-       }
-       $order->save();
-       foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
-        if ($cartItem->attributes->type == 'bundle') {
-            $type = Bundle::class;
+        $merchantRefNum = str_random(8);
+        // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
+        if (strpos($amount, '.') !== false) {
+            $amount = round($amount, 2);
         } else {
-            $type = Course::class;
-         
+            $amount = $amount . '.00';
         }
-        $order->items()->create([
-            'item_id' => $cartItem->id,
-            'selectedDate'=>$cartItem->attributes->selectedDate ?? null,
-            'selectedTime'=>$cartItem->attributes->selectedTime ?? null,
-            'item_type' => $type,
-            'price' => $cartItem->price
-        ]);
+        $fawryUrl = 'https://atfawry.fawrystaging.com//ECommerceWeb/Fawry/payments/charge';
+
+        // Generate Fawry Signature
+        $merchantCode = config('fawry.merchant_code');
+        $customerProfileId = auth()->user()->id;
+        $paymentMethod = 'PAYATFAWRY';
+        $secureKey = config('fawry.security_key');
+        $buffer = $merchantCode . $merchantRefNum . $customerProfileId . $paymentMethod . $amount . $secureKey;
+        $signature = hash('sha256', $buffer);
+        $fawryData = [
+            'merchantCode' => $merchantCode,
+            'customerProfileId' => $customerProfileId,
+            'customerMobile' => '01149786203',
+            // 'customerEmail'=>$user->email,
+            //'customerName'=>$user->name,
+            'paymentMethod' => $paymentMethod,
+            'amount' => $amount,
+            //'paymentExpiry'=>'72',
+            // 'chargeItems'=> $invoiceDataArray,
+            'signature' => $signature,
+            'merchantRefNum' => $merchantRefNum,
+            // 'description'=> $description
+        ];
+
+        $data_string = json_encode($fawryData);
+
+        $ch = curl_init($fawryUrl);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string))
+        );
+
+        $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
+        if ($coupon != null) {
+            $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+        }
+        $result = curl_exec($ch);
+        $result = json_decode($result, true);
+        $description = $result['statusDescription'];
+        $order = new Order();
+        $order->user_id = $customerProfileId;
+        $order->reference_no = $merchantRefNum;
+        $order->amount = $amount;
+        $order->payment_type = 4;
+        $order->status = 0;
+        $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
+        $order->fawry_status = $result['statusDescription'];
+        if ($result['statusCode'] == 200) {
+            $order->fawry_ref_no = $result['referenceNumber'];
+            $order->fawry_expirationTime = $result['expirationTime'];
+        }
+        $order->save();
+        foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
+            if ($cartItem->attributes->type == 'bundle') {
+                $type = Bundle::class;
+            } else {
+                $type = Course::class;
+
+            }
+            $order->items()->create([
+                'item_id' => $cartItem->id,
+                'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                'selectedTime' => $cartItem->attributes->selectedTime ?? null,
+                'item_type' => $type,
+                'price' => $cartItem->price
+            ]);
+        }
+
+        return redirect()->route('courses.all');
     }
 
-         return redirect()->route('courses.all');
-    }
-
-    public function acceptPayment(Request $request) 
+    public function payMobPayment(Request $request)
     {
+        $payMob = new PayMob();
+        $amount = Cart::session(auth()->user()->id)->getTotal();
+        $coupon = Cart::session(auth()->user()->id)->getConditionsByType('coupon')->first();
 
-         return redirect()->route('courses.all');
+        if ($coupon != null) {
+            $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+        }
+        $coupon = ($coupon == null) ? 0 : $coupon->id;
+        $items = [];
+        $counter = 0;
+        foreach (Cart::session(auth()->user()->id)->getContent() as $key => $cartItem) {
+            $counter++;
+            if ($cartItem->attributes->type == 'bundle') {
+                $type = Bundle::class;
+            } else {
+                $type = Course::class;
+
+            }
+            $item = (object)[
+                'item_id' => $cartItem->id,
+                'type' => $type,
+                'number' => $counter,
+                'name' => $cartItem->name,
+                'amount_cents' => $cartItem->price * 100,
+                'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                'selectedTime' => $cartItem->attributes->selectedTime ?? null,
+                'quantity' => 1];
+            array_push($items, $item);
+        }
+        if (strpos($amount, '.') !== false) {
+            $amount = round($amount, 2);
+        } else {
+            $amount = $amount . '.00';
+        }
+        $refNumber = str_random(8);
+        // Step 1
+        $payMob->authPaymob();
+        // Step 2
+        $paymobOrder = $payMob->makeOrderPaymob(
+            $payMob->auth->profile->id, // merchant id.
+            $amount * 100, // total amount by cents/piasters.
+            $refNumber, // your (merchant) order id.
+            $items
+        );
+        if (!$request->mobileNumber) {
+            // Step 3
+            $paymentKey = $payMob->getPaymentKeyPaymob(
+                $amount * 100, // total amount by cents/piasters.
+                $paymobOrder->shipping_data->order_id, // paymob order id from step 2.
+                // For billing data
+                auth()->user()->email, // optional
+                auth()->user()->first_name, // optional
+                auth()->user()->last_name, // optional
+                auth()->user()->phone ? auth()->user()->phone : 'no-phone-found', // optional
+                auth()->user()->city ? auth()->user()->city : 'NA' // optional
+            );
+            if ($this->checkDuplicate()) {
+                return response()->json(['message' => 'You already have this course']);
+            }
+            //Making Order
+            $order = new Order();
+            $order->user_id = auth()->user()->id;
+            $order->reference_no = $refNumber;
+            $order->amount = $amount;
+            $order->payment_type = 5;
+            $order->status = 0;
+            $order->coupon_id = $coupon;
+            $order->paymob_orderId = $paymobOrder->shipping_data->order_id;
+            $order->save();
+            foreach ($items as $item) {
+                $order->items()->create([
+                    'item_id' => $item->item_id,
+                    'selectedDate' => $item->selectedDate ?? null,
+                    'selectedTime' => $item->selectedTime ?? null,
+                    'item_type' => $item->type,
+                    'price' => $item->amount_cents / 100
+                ]);
+            }
+            return response()->json(['paymentKey' => $paymentKey->token, 'url' => 'https://accept.paymob.com/api/acceptance/iframes/' . config('paymob.iframe_id') . '?payment_token=' . $paymentKey->token], 200);
+        } else {
+            $vodafonePayment = $payMob->vodafoneCashPayment(
+                $request->mobileNumber,
+                auth()->user()->first_name, // optional
+                auth()->user()->last_name, // optional
+                auth()->user()->email, // optional
+                auth()->user()->phone ? auth()->user()->phone : 'no-phone-found' // optional
+            );
+            return response()->json(['payment' => $vodafonePayment]);
+        }
     }
+
+    public function processedCallback(Request $request)
+    {
+        $orderId = $request['obj']['order']['id'];
+        // Statuses.
+        $isSuccess = $request['obj']['success'];
+        $isVoided = $request['obj']['is_voided'];
+        $isRefunded = $request['obj']['is_refunded'];
+        if ($isSuccess) {
+            $order = Order::where('paymob_orderId', $orderId)->first();
+            $order->transaction_id = $request['obj']['id'];
+            $order->status = 1;
+            $order->save();
+
+            foreach ($order->items as $orderItem) {
+                $course = $orderItem->item;
+                if ($course->offline) {
+                    $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                    if ($date) {
+                        if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                            $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                            foreach ($selectDate as $key => $value) {
+                                if ($key != 'date') {
+                                    if ($value == $orderItem->selectedTime) {
+                                        $incrementKey = explode('-', $key);
+                                        $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                        $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                        $course->date = json_encode(json_encode($date));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //Bundle Entries
+                if ($orderItem->item_type == Bundle::class) {
+                    foreach ($orderItem->item->courses as $course) {
+                        $course->students()->attach($order->user_id);
+                        if ($course->offline) {
+                            $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+                            if ($date) {
+                                if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+                                    $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+                                    foreach ($selectDate as $key => $value) {
+                                        if ($key != 'date') {
+                                            if ($value == $orderItem->selectedTime) {
+                                                $incrementKey = explode('-', $key);
+                                                $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+                                                $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+                                                $course->date = json_encode(json_encode($date));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+               if (!$orderItem->item->offline) {
+                    $orderItem->item->students()->attach($order->user_id);
+                }
+            }
+        }
+        Cart::session(auth()->user()->id)->clear();
+        return response()->json(['success' => true], 200);
+    }
+
+    public function responseCallback(Request $request)
+    {
+        Cart::session(auth()->user()->id)->clear();
+        return redirect()->route('status')->with(['success' => trans('labels.frontend.cart.purchase_successful')]);
+    }
+
     public function offlinePayment(Request $request)
     {
-       
         if ($this->checkDuplicate()) {
             return $this->checkDuplicate();
         }
@@ -379,10 +583,32 @@ class CartController extends Controller
         } catch (\Exception $e) {
             \Log::info($e->getMessage() . ' for order ' . $order->id);
         }
+        $couponFromSession = Cart::session(auth()->user()->id)->getCondition('coupon');
+        if ($couponFromSession) {
+            $coupon_code = $couponFromSession->getAttributes()['code'];
+             $coupon = Coupon::where('code', '=', $coupon_code)
+            ->where('status', '=', 1)
+            ->first();
+            $coupon->status = 2;
+            $coupon->save();
+            $order->status = 1;
+        $order->save();
+        foreach ($order->items as $orderItem) {
+                //Bundle Entries
+                if ($orderItem->item_type == Bundle::class) {
+                    foreach ($orderItem->item->courses as $course) {
+                        $course->students()->attach($order->user_id);
+                    }
+                }
+                $orderItem->item->students()->attach($order->user_id);
+            }
+        }
 
+            //Generating Invoice
+            generateInvoice($order);
         Cart::session(auth()->user()->id)->clear();
         \Session::flash('success', trans('labels.frontend.cart.offline_request'));
-        return redirect()->route('courses.all');
+        return redirect()->route('admin.dashboard');
     }
 
     public function getPaymentStatus()
@@ -408,15 +634,16 @@ class CartController extends Controller
                         $course->students()->attach($order->user_id);
                     }
                 }
-                $orderItem->item->students()->attach($order->user_id);
+               if (!$orderItem->item->offline) {
+                    $orderItem->item->students()->attach($order->user_id);
+                }
             }
 
             //Generating Invoice
             generateInvoice($order);
             Cart::session(auth()->user()->id)->clear();
             return Redirect::route('status');
-        }
-        else {
+        } else {
             \Session::flash('failure', trans('labels.frontend.cart.payment_failed'));
             return Redirect::route('status');
         }
@@ -436,10 +663,13 @@ class CartController extends Controller
         if ($request->course_id) {
             $type = Course::class;
             $id = $request->course_id;
+            $boughtCourse = Course::withoutGlobalScope('filter')->findOrFail($id);
+            $slug = $boughtCourse->slug;
         } else {
             $type = Bundle::class;
             $id = $request->bundle_id;
-
+            $bundle = Bundle::findOrFail($id);
+            $slug = $bundle->slug;
         }
         $order->items()->create([
             'item_id' => $id,
@@ -457,8 +687,11 @@ class CartController extends Controller
             $orderItem->item->students()->attach($order->user_id);
         }
         Session::flash('success', trans('labels.frontend.cart.purchase_successful'));
-        return back();
-
+        if ($type == Course::class) {
+            return redirect()->route('courses.show', [$slug]);
+        } else {
+            return redirect()->route('bundle.show', [$slug]);
+        }
     }
 
     public function getOffers()
@@ -490,7 +723,7 @@ class CartController extends Controller
                     $course_ids[] = $item->id;
                 }
             }
-            $courses = new Collection(Course::find($course_ids));
+            $courses = new Collection(Course::withoutGlobalScope('filter')->find($course_ids));
             $bundles = Bundle::find($bundle_ids);
             $courses = $bundles->merge($courses);
 
@@ -523,14 +756,16 @@ class CartController extends Controller
                     $type = '-' . $coupon->amount;
                 }
 
-                $condition = new \Darryldecode\Cart\CartCondition(array(
-                    'name' => $coupon->code,
+                 $condition = new \Darryldecode\Cart\CartCondition(array(
+                    'name' => 'coupon',
                     'type' => 'coupon',
                     'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
                     'value' => $type,
+                    'attributes' => [
+                        'code' => $coupon->code,
+                    ],
                     'order' => 1
                 ));
-
                 Cart::session(auth()->user()->id)->condition($condition);
                 //Apply Tax
                 $taxData = $this->applyTax('subtotal');
@@ -560,7 +795,7 @@ class CartController extends Controller
                 $course_ids[] = $item->id;
             }
         }
-        $courses = new Collection(Course::find($course_ids));
+        $courses = new Collection(Course::withoutGlobalScope('filter')->find($course_ids));
         $bundles = Bundle::find($bundle_ids);
         $courses = $bundles->merge($courses);
 
@@ -586,7 +821,7 @@ class CartController extends Controller
         $order->reference_no = str_random(8);
         $order->amount = Cart::session(auth()->user()->id)->getTotal();
         $order->status = 1;
-   
+
         $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
         $order->payment_type = 3;
         $order->save();
@@ -596,12 +831,12 @@ class CartController extends Controller
                 $type = Bundle::class;
             } else {
                 $type = Course::class;
-             
+
             }
             $order->items()->create([
                 'item_id' => $cartItem->id,
-                'selectedDate'=>$cartItem->attributes->selectedDate ?? null,
-                'selectedTime'=>$cartItem->attributes->selectedTime ?? null,
+                'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                'selectedTime' => $cartItem->attributes->selectedTime ?? null,
                 'item_type' => $type,
                 'price' => $cartItem->price
             ]);

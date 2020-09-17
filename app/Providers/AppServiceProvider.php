@@ -191,7 +191,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('locale_full_name'));
         });
 
-
     }
 
     function menuList($array)

@@ -94,6 +94,8 @@ return array(
             'backup' =>
                 array(
                     'api_key' => 'مفتاح API',
+                    'integration_id' => 'رقم طريقة الدفع',
+                    'iframe_id' => 'رقم الأطار',
                     'api_secret' => 'سر API',
                     'app_key' => 'مفتاح التطبيق',
                     'app_secret' => 'سر التطبيق',
@@ -207,7 +209,8 @@ return array(
                             'meta_title_ar' => ' عنوان الفوقية بالعربي',
                             'featured_courses' => 'الدورات المميزة',
 
-                            'popular' => 'جمع',
+                            'popular' => 'مشهور',
+                            'offline_price' => 'السعر للفرد',
                             'price' => 'السعر',
                             'published' => 'نشرت',
                             'sidebar' => 'أضف الشريط الجانبي',
@@ -221,7 +224,9 @@ return array(
                             'unpublished' => 'غير منشور',
                             'optional_courses' => 'دورات اختيارية',
                             'mandatory_courses' => 'دورات اجبارية',
-                            'learned' => 'ماذا ستتعلم في هذه الدورة التدريبية ',
+                            'learned' => 'ماذا ستتعلم في هذه الدورة التدريبية  بالانجليزية',
+                            'learned_ar' => ' ماذا ستتعلم في هذه الدورة التدريبية بالعربى',
+
                             'knowledge' => 'ماذا ستتعلم في هذه الدورة',
 
 
@@ -1441,6 +1446,12 @@ return array(
 
                     ),
                     'course_hours' => 'عدد الساعات ',
+                    'minutes' => 'دقيقة ',
+                    'OptionalCourses' => 'الدورات الاختياربة  ',
+                    'MandatoryCourses' => 'الدورات الاجبارية  ',
+
+
+
 
                     'add_review_now' => 'إضافة مراجعة الآن',
                     'add_reviews' => 'أضف <span> مراجعات. </span>',

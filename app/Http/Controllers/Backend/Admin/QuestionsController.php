@@ -129,7 +129,9 @@ class QuestionsController extends Controller
         $lessons = Lesson::with('course')->get();
         $lessonsToShow = ['Select a lesson to refer'];
         foreach ($lessons as $lesson) {
+            if ($lesson->course) {
             $lessonsToShow[$lesson->id] = $lesson->course->title .' - ' . $lesson->title;
+            }
         }
         return view('backend.questions.create', compact('tests','lessonsToShow'));
     }
@@ -191,7 +193,9 @@ class QuestionsController extends Controller
         $lessons = Lesson::with('course')->get();
         $lessonsToShow = ['Select a lesson to refer'];
         foreach ($lessons as $lesson) {
+         if ($lesson->course) {
             $lessonsToShow[$lesson->id] = $lesson->course->title .' - ' . $lesson->title;
+            }
         }
         return view('backend.questions.edit', compact('question', 'tests','lessonsToShow'));
     }

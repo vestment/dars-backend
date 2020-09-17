@@ -171,20 +171,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                @if(count($categories) > 0)
-                    @foreach($categories as $categ)
-                        <div class="col-3 categ">
-                            <a href="{{url('/')}}">
-                                <span class="iconss"><i class="{{$categ->icon}}"></i></span>
-                                <h3>{{$categ->name}}</h3>
-                            </a>
-                        </div>
-                    @endforeach
-                @endif
-
-
-            </div>
+          
 
         </div>
     </section>    <!-- Start of footer section

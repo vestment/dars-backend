@@ -23,6 +23,11 @@ Route::group(['middleware' => 'role:teacher|administrator|academy|parent'], func
     Route::post('orders/complete', ['uses' => 'Admin\OrderController@complete', 'as' => 'orders.complete']);
     Route::delete('orders_perma_del/{id}', ['uses' => 'Admin\OrderController@perma_del', 'as' => 'orders.perma_del']);
 });
+Route::group(['middleware' => 'role:teacher|administrator|academy'], function () {
+    Route::resource('booking', 'Admin\BookingController');
+    //===== Orders Routes =====//
+    Route::get('get-booking-data', ['uses' => 'Admin\BookingController@getData', 'as' => 'booking.get_data']);
+});
 Route::group(['middleware' => 'role:academy|administrator'], function () {
     //====== Coupon Routes =====//
     Route::resource('coupons', 'CouponController');
@@ -161,7 +166,7 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
 
 
 //Common - Shared Routes for Teacher and Administrator
-Route::group(['middleware' => 'role:administrator|teacher'], function () {
+Route::group(['middleware' => 'role:administrator|teacher|academy'], function () {
 
     //====== Reports Routes =====//
     Route::get('report/sales', ['uses' => 'ReportController@getSalesReport', 'as' => 'reports.sales']);
@@ -211,6 +216,7 @@ Route::post('courses/create', 'Admin\CoursesController@store')->name('courses.cr
 Route::resource('video-bank', 'Admin\VideoBankController');
 Route::get('get-videos-data', ['uses' => 'Admin\VideoBankController@getData', 'as' => 'videos.get_data']);
 Route::post('videos_mass_destroy', ['uses' => 'Admin\VideoBankController@massDestroy', 'as' => 'videos.mass_destroy']);
+Route::post('must_finish/{id}', ['uses' => 'Admin\CoursesController@must_finish', 'as' => 'test.must_finish']);
 
 
 //===== Bundles Routes =====//

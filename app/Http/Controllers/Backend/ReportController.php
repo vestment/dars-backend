@@ -9,7 +9,10 @@ use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-
+use App\academy;
+use App\Models\TeacherProfile;
+use App\Models\Category;
+use Yajra\DataTables\Facades\DataTables;
 class ReportController extends Controller
 {
     public function getSalesReport()
@@ -52,22 +55,40 @@ class ReportController extends Controller
 
         $courses = Course::ofTeacher()->pluck('id');
 
+        if (auth()->user()->hasRole('academy')) {
+            $academy = academy::where('user_id', auth()->user()->id)->with('user')->first();
+
+        // Teachers associated with academy
+        $academyTeachersCollection= TeacherProfile::where('academy_id', auth()->user()->id);
+        $academyTeachers = $academyTeachersCollection->with('teacher')->get();
+        $academyTeachersIds = $academyTeachersCollection->pluck('user_id');
+        // Courses associated with academy teachers
+        $coursesCollection = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+            $query->whereIn('user_id', $academyTeachersIds);
+        })->with('category');
+        $courses = $coursesCollection->get();
+        // Categories associated with academy courses
+        $categories = Category::where('name','911')->first();
+        $courses_911 = Course::where('category_id', $categories->id )->with('category')->get();
+        // Merge the courses into 1 variable
+        $courses = $courses->merge($courses_911);
+        }
         $course_orders = OrderItem::whereHas('order',function ($q){
             $q->where('status','=',1);
-        })->where('item_type','=',Course::class)
+        })->with('item')->where('item_type','=',Course::class)
             ->whereIn('item_id',$courses)
             ->join('courses', 'order_items.item_id', '=', 'courses.id')
             ->join('orders', 'orders.id', '=', 'order_items.order_id')
             ->select('item_id', DB::raw('count(*) as orders, sum(orders.amount) as earnings'))
             ->groupBy('item_id')
             ->get();
-
-        return \DataTables::of($course_orders)
+        return DataTables::of($course_orders)
             ->addIndexColumn()
-            ->addColumn('course', function ($q) {
-                $course_name = $q->title;
-                $course_slug = $q->slug;
-                $link = "<a href='".route('courses.show', [$course_slug])."' target='_blank'>".$course_name."</a>";
+            ->editColumn('course', function ($q) {
+                $course = Course::find($q->item_id);
+                $course_name = $course->title;
+                $course_slug = $course->slug;
+                $link = "<a href='".route('courses.show', [$course_slug])."' target='_blank'>".$course_name ? $course_name : $q->item_id."</a>";
                 return $link;
             })
             ->rawColumns(['course'])
