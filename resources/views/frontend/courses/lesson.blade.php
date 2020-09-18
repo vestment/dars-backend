@@ -641,7 +641,7 @@
                     <div id="sidebar" class="sidebar p-0 pt-4">
                         <div class="course-details-category ul-li">
                             @if ($previous_lesson)
-                                <p><a class="btn btn-block gradient-bg font-weight-bold text-white"
+                                <p class="m-2 shadow ml-3"><a class="btn btn-block gradient-bg font-weight-bold text-white"
                                       href="{{ route('lessons.show', [$previous_lesson->course_id, $previous_lesson->model->slug]) }}"><i
                                                 class="fa fa-angle-double-left"></i>
                                         @lang('labels.frontend.course.prev')</a></p>
@@ -649,7 +649,7 @@
 
 
                             @if($next_lesson)
-                                <p id="nextButton">
+                                <p id="nextButton" class="m-2 shadow ml-3">
                                     @if((int)config('lesson_timer') == 1 && $lesson->isCompleted() && $canEnterNextChapter)
                                         <a class="btn btn-block gradient-bg font-weight-bold text-white"
                                            href="{{ route('lessons.show', [$next_lesson->course_id, $next_lesson->model->slug]) }}">@lang('labels.frontend.course.next')
@@ -664,9 +664,9 @@
 
 
 
-                            @if($lesson->course->progress() == 100)
+                            @if($lesson->course->progress() == 100 && ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
                                 @if(!$lesson->course->isUserCertified())
-                                    <form method="post" action="{{route('admin.certificates.generate')}}">
+                                    <form method="post" class="m-2 shadow ml-3" action="{{route('admin.certificates.generate')}}">
                                         @csrf
                                         <input type="hidden" value="{{$lesson->course->id}}" name="course_id">
                                         <button class="btn btn-success btn-block text-white mb-3 text-uppercase font-weight-bold"
@@ -701,12 +701,12 @@
                                                  aria-labelledby="headingOne" data-parent="#accordionExample">
                                                 <div class="card-body border-0">
                                                     <div class="bordered" id="start_test">
-                                                        @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','desc')->get() as $key=>$item)
+                                                        @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get() as $key=>$item)
                                                             @if($item->model && $item->model->published == 1)
                                                                 @if($item->model_type == 'App\Models\Lesson')
                                                                     <div class="bg-active px-2 py-2">
                                                                         <p class="mb-0 subtitle2 test"><a
-                                                                                    @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','desc')->get()[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
+                                                                                    @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
                                                                                     data-test-id="{{$item->model->id}}"
                                                                                     href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
                                                                                     @endif>
@@ -755,7 +755,7 @@
                                                                                             class="fas fa-volume-up "></i>
                                                                                 </a>
                                                                             @endif
-                                                                            @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','desc')->get()[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
+                                                                            @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
                                                                                 <i class="fas fa-unlock-alt text-success"></i>
                                                                             @else
                                                                                   <i class="fas fa-lock text-danger"></i>
@@ -766,7 +766,7 @@
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                     <div class="bg-active px-2 py-2">
                                                                         <a class="mb-0 py-1 text-pink test"
-                                                                           @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','desc')->get()[$key-1]->model->id),$completed_lessons))))
+                                                                           @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))))
                                                                             
                                                                            style="cursor: pointer"
                                                                            onclick="startTest(this)"
@@ -774,7 +774,7 @@
                                                                            data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>{{$item->model->getDataFromColumn('title')}}
                                                                         </a>
                                                                         <p class="float-right">
-                                                                            @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','desc')->get()[$key-1]->model->id),$completed_lessons))))
+                                                                            @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))))
                                                                              
                                                                                  <i class="fas fa-unlock-alt text-success"></i>
                                                                             @else
