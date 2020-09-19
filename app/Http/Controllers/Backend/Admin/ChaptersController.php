@@ -263,6 +263,23 @@ class ChaptersController extends Controller
 
         return view('backend.chapters.show', compact('lesson', 'tests', 'courses'));
     }
+    /**
+     * Remove Lesson from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        if (!Gate::allows('lesson_delete')) {
+            return abort(401);
+        }
+        $chapter = Chapter::findOrFail($id);
+        $chapter->lessons()->where('course_id', $chapter->course_id)->forceDelete();
+        $chapter->test()->forceDelete();
+        $chapter->delete();
 
+        return back()->withFlashSuccess(__('alerts.backend.general.deleted'));
+    }
    
 }
