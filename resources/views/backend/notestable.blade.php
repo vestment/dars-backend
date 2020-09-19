@@ -1,20 +1,20 @@
 @extends('backend.layouts.app')
 
-@section('title', __('labels.backend.certificates.title').' | '.app_name())
+@section('title',' Notes | '.app_name())
 
 @section('content')
-@push('after-styles')
-<style>
-.action{
-    font-size:20px;
-    text-align:center;
+    @push('after-styles')
+        <style>
+            .action{
+                font-size:20px;
+                text-align:center;
 
-}
-</style>
-@endpush
+            }
+        </style>
+    @endpush
     <div class="card">
         <div class="card-header">
-            <h3 class="page-title ">@lang('labels.backend.certificates.title')</h3>
+            <h3 class="page-title ">Notes</h3>
         </div>
         <div class="card-body">
             <div class="row">
@@ -34,21 +34,22 @@
                             <tbody>
                             @if(count($notes) > 0)
                                 @foreach($notes as $key=>$note)
-                                    @php $key++; @endphp
-                                    <tr>
-                                        <td>{{$key}}</td>
-                                        <td>{{$note->lesson->course->title}} / {{$note->lesson->chapter->title}}</td>
-                                        <td class="action "> 
-                                        <form method="post" action="{{route('admin.notes.destroy',['note'=>$note])}}" class="d-inline">
-                                        @csrf
-                                        @Method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                        <i class="far fa-trash-alt"></i>
-                                        </button> 
-                                        </form>
-                                        <a class="btn btn-primary" href="{{route('admin.notes.edit',['note'=>$note])}}"><i class="far fa-edit"></i></a></td>
-                                        
-                                    </tr>
+                                    @if ($note->lesson)
+                                        <tr>
+                                            <td>{{$key}}</td>
+                                            <td>{{$note->lesson->course->title}} / {{$note->lesson->chapter->title}}</td>
+                                            <td class="action ">
+                                                <form method="post" action="{{route('admin.notes.destroy',['note'=>$note])}}" class="d-inline">
+                                                    @csrf
+                                                    @Method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                                <a class="btn btn-primary" href="{{route('admin.notes.edit',['note'=>$note])}}"><i class="far fa-edit"></i></a></td>
+
+                                        </tr>
+                                    @endif
                                 @endforeach
                             @endif
                             </tbody>

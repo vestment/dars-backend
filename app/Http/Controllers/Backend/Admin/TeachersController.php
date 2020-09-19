@@ -335,11 +335,11 @@ class TeachersController extends Controller
 
         $teacher = User::findOrFail($id);
 
-        if ($teacher->courses->count() > 0) {
-            return redirect()->route('admin.teachers.index')->withFlashDanger(trans('alerts.backend.general.teacher_delete_warning'));
-        } else {
-            $teacher->delete();
-        }
+        // if ($teacher->courses->count() > 0) {
+        //     return redirect()->route('admin.teachers.index')->withFlashDanger(trans('alerts.backend.general.teacher_delete_warning'));
+        // } else {
+        $teacher->delete();
+        // }
 
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.deleted'));
     }

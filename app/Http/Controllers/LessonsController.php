@@ -35,8 +35,8 @@ class LessonsController extends Controller
             $lesson->full_text = $lesson->description;
             $timeoutorg = intval($lesson->timer * 60);
             $start = intval(time());
-            if (auth()->user()->current_test()->where('test_id',$lesson->id)->first()) {
-                $pivot = auth()->user()->current_test()->where('test_id',$lesson->id)->first()->pivot;
+            if (auth()->user()->current_test()->where('test_id', $lesson->id)->first()) {
+                $pivot = auth()->user()->current_test()->where('test_id', $lesson->id)->first()->pivot;
                 if ($pivot) {
                     $start = $pivot->start_time;
                 }
@@ -132,13 +132,13 @@ class LessonsController extends Controller
                     ->pluck('model_id')
                     ->toArray();
                 $start_time = intval(time());
-            if (auth()->user()->current_test()->where('test_id',$lesson->id)->first()) {
-                $pivot = auth()->user()->current_test()->where('test_id',$lesson->id)->first()->pivot;
-                if ($pivot) {
-                    $start_time = $pivot->start_time;
-                }
+                if (auth()->user()->current_test()->where('test_id', $lesson->id)->first()) {
+                    $pivot = auth()->user()->current_test()->where('test_id', $lesson->id)->first()->pivot;
+                    if ($pivot) {
+                        $start_time = $pivot->start_time;
+                    }
 
-            }
+                }
             }
 
             $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();

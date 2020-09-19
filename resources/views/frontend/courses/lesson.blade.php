@@ -371,9 +371,11 @@
 
                                                 </h3>
                                             </div>
+                                            @if ($lesson->full_text)
                                             <div class="course-details-content">
-                                                <p> {!! $lesson->full_text !!} </p>
+                                                <p> {{ $lesson->full_text ? $lesson->full_text : '' }} </p>
                                             </div>
+                                                @endif
                                         </div>
                                         <div class="col-6">
                                             <div id="countdown" class="timeTo timeTo-white"
@@ -701,12 +703,15 @@
                                                  aria-labelledby="headingOne" data-parent="#accordionExample">
                                                 <div class="card-body border-0">
                                                     <div class="bordered" id="start_test">
-                                                        @foreach($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get() as $key=>$item)
+                                                        @php
+                                                        $lessons = $lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get();
+                                                        @endphp
+                                                        @foreach($lessons as $key=>$item)
                                                             @if($item->model && $item->model->published == 1)
                                                                 @if($item->model_type == 'App\Models\Lesson')
                                                                     <div class="bg-active px-2 py-2">
                                                                         <p class="mb-0 subtitle2 test"><a
-                                                                                    @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
+                                                                                    @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lessons[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
                                                                                     data-test-id="{{$item->model->id}}"
                                                                                     href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"
                                                                                     @endif>
@@ -755,7 +760,7 @@
                                                                                             class="fas fa-volume-up "></i>
                                                                                 </a>
                                                                             @endif
-                                                                            @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
+                                                                            @if((in_array($item->model->id,$completed_lessons))  || ($key != 0 && (in_array(intval($lessons[$key-1]->model->id),$completed_lessons))) || ($latestTest && $latestTest->test_result >= $latestTest->test->min_grade))
                                                                                 <i class="fas fa-unlock-alt text-success"></i>
                                                                             @else
                                                                                   <i class="fas fa-lock text-danger"></i>
@@ -766,7 +771,7 @@
                                                                 @if($item->model_type == 'App\Models\Test')
                                                                     <div class="bg-active px-2 py-2">
                                                                         <a class="mb-0 py-1 text-pink test"
-                                                                           @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))))
+                                                                           @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lessons[$key-1]->model->id),$completed_lessons))))
                                                                             
                                                                            style="cursor: pointer"
                                                                            onclick="startTest(this)"
@@ -774,7 +779,7 @@
                                                                            data-href="{{route('lessons.show',['id' => $lesson->course->id,'slug'=>$item->model->slug])}}"@endif>{{$item->model->getDataFromColumn('title')}}
                                                                         </a>
                                                                         <p class="float-right">
-                                                                            @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lesson->course->courseTimeline()->where('chapter_id',$chapter->id)->orderBy('sequence','asc')->get()[$key-1]->model->id),$completed_lessons))))
+                                                                            @if(in_array($item->model->id,$completed_lessons) || ($key != 0 && (in_array(intval($lessons[$key-1]->model->id),$completed_lessons))))
                                                                              
                                                                                  <i class="fas fa-unlock-alt text-success"></i>
                                                                             @else

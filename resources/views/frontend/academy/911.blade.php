@@ -109,47 +109,49 @@
             @if(count($academyTeachers)> 0)
                 <div class="owl-carousel custom-owl-theme">
                     @foreach($academyTeachers as $teacher)
-                        <div class="item">
-                            <div class="text-center ">
-                                <div class="bg-card">
-                                    <div>
-                                        <div class="finger-img">
-                                            <img src="/assets/img/banner/01.png" alt="">
+                        @if ($teacher->teacher)
+                            <div class="item">
+                                <div class="text-center ">
+                                    <div class="bg-card">
+                                        <div>
+                                            <div class="finger-img">
+                                                <img src="/assets/img/banner/01.png" alt="">
+                                            </div>
+                                            <div class="prof-img ">
+
+                                                <a href="{{route('teachers.show',['id'=>$teacher->teacher['id']])}}"><img
+                                                            class="teacher-image shadow-lg p-3"
+                                                            src="{{$teacher->teacher['picture']}}"
+                                                            alt=""></a>
+                                            </div>
                                         </div>
-                                        <div class="prof-img ">
-                                           
-                                            <a href="{{route('teachers.show',['id'=>$teacher->teacher['id']])}}"><img
-                                                        class="teacher-image shadow-lg p-3"
-                                                        src="{{$teacher->teacher['picture']}}"
-                                                        alt=""></a>
-                                        </div>
-                                    </div>
-                                    <div class="teacher-social-name ul-li-block pt-3">
-                                        <div class="teacher-name text-dark font-weight-bold">
-                                            <h5>{{$teacher->teacher['full_name']}}</h5>
-                                        </div>
-                                        <div class="teacher-title text-muted font-weight-light">
-                                            {{$teacher->getDataFromColumn('title')}}
-                                        </div>
-                                        <hr>
-                                         <div class="teacher-name text-dark  justify-content-center">
+                                        <div class="teacher-social-name ul-li-block pt-3">
+                                            <div class="teacher-name text-dark font-weight-bold">
+                                                <h5>{{$teacher->teacher['full_name']}}</h5>
+                                            </div>
+                                            <div class="teacher-title text-muted font-weight-light">
+                                                {{$teacher->getDataFromColumn('title')}}
+                                            </div>
+                                            <hr>
+                                            <div class="teacher-name text-dark  justify-content-center">
 
 
-                                            <span>{{Illuminate\Support\Str::words($teacher->getDataFromColumn('description'),10,'...') }}</span>
+                                                <span>{{Illuminate\Support\Str::words($teacher->getDataFromColumn('description'),10,'...') }}</span>
 
+                                            </div>
+                                            <ul>
+                                                <li><a href="{{'mailto:'.$teacher->teacher['email']}}"><i
+                                                                class="fa fa-envelope"></i></a></li>
+                                                <!--<li>-->
+                                            <!--    <a href="{{route('admin.messages',['teacher_id'=>$teacher->teacher['id']])}}"><i-->
+                                                <!--                class="fa fa-comments"></i></a>-->
+                                                <!--</li>-->
+                                            </ul>
                                         </div>
-                                        <ul>
-                                            <li><a href="{{'mailto:'.$teacher->teacher['email']}}"><i
-                                                            class="fa fa-envelope"></i></a></li>
-                                            <li>
-                                                <a href="{{route('admin.messages',['teacher_id'=>$teacher->teacher['id']])}}"><i
-                                                            class="fa fa-comments"></i></a>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif</div>
                     @endforeach
                 </div>
             @else

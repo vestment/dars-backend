@@ -615,10 +615,12 @@ class CoursesController extends Controller
 
         $course = Course::findOrFail($id);
         if ($course->students->count() >= 1) {
-            return redirect()->route('admin.courses.index')->withFlashDanger(trans('alerts.backend.general.delete_warning'));
-        } else {
-            $course->delete();
+            foreach($course->students as $student) {
+                $student->pivot->delete();
+            }
+//            return redirect()->route('admin.courses.index')->withFlashDanger(trans('alerts.backend.general.delete_warning'));
         }
+        $course->delete();
 
 
         return redirect()->route('admin.courses.index')->withFlashSuccess(trans('alerts.backend.general.deleted'));
@@ -755,12 +757,13 @@ class CoursesController extends Controller
 
 
     }
-    
-    public function must_finish($id){   
-       
-         $timeline = CourseTimeline::where('model_type', 'App\Models\Test')->where('model_id',$id)->first();
-         $timeline->must_finish = 1;
-         $timeline->save();
-         return redirect()->route('admin.courses.edit', ['course' => $timeline->course_id])->withFlashSuccess(trans('alerts.backend.general.created'));
+
+    public function must_finish($id)
+    {
+
+        $timeline = CourseTimeline::where('model_type', 'App\Models\Test')->where('model_id', $id)->first();
+        $timeline->must_finish = 1;
+        $timeline->save();
+        return redirect()->route('admin.courses.edit', ['course' => $timeline->course_id])->withFlashSuccess(trans('alerts.backend.general.created'));
     }
 }
