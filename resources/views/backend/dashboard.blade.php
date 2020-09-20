@@ -210,6 +210,7 @@
                     <div class="row m-3">
                         @if(count($purchased_courses) > 0)
                             @foreach($purchased_courses as $item)
+                            @if($item->published == 1)
                                 @php
                                     $orderItem = $item->orderItem()->whereHas('order',function($query) {
                                            $query->where('user_id',  auth()->user()->id)->where('status',1);
@@ -255,7 +256,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+@endif
                             @endforeach
                         @else
                             <div class="col-12 text-center">

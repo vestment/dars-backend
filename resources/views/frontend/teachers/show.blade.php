@@ -169,9 +169,12 @@
                 @if(count($courses) > 0)
                     <div class="row">
                         @foreach($courses as $course)
+                        @if($course->published == 1)
+
                             <div class="col-md-3">
                             @include('frontend.layouts.partials.coursesTemp')
                             </div>
+                            @endif
                         @endforeach
 
 
