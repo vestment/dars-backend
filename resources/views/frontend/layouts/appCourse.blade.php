@@ -120,7 +120,7 @@
     </head>
     <body class="{{config('layout_type')}}">
 
-    <div id="app">
+    <div id="app2">
     {{--<div id="preloader"></div>--}}
 
     <!-- Start of Header section
@@ -256,43 +256,7 @@
     <!-- Scripts -->
 
     @stack('before-scripts')
-
-    <!-- For Js Library -->
-    <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
-    <script src="{{asset('assets/js/popper.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('assets/js/jarallax.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('assets/js/lightbox.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.meanmenu.js')}}"></script>
-    <script src="{{asset('assets/js/scrollreveal.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
-    <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery-ui.js')}}"></script>
-    <script src="{{asset('assets/js/gmap3.min.js')}}"></script>
-
-    <script src="{{asset('assets/js/switch.js')}}"></script>
-
-
-
-    <script src="{{asset('assets/js/script.js')}}"></script>
-    <script>
-        var font_color = "{{config('font_color')}}"
-        setActiveStyleSheet(font_color);
-    </script>
-
-    @yield('js')
-
-    @stack('after-scripts')
-
-    @include('includes.partials.ga')
-
-    @if(!empty(config('custom_js')))
-        <script>
-            {!! config('custom_js') !!}
-        </script>
-    @endif
+    
 
 
 

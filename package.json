@@ -33,7 +33,7 @@
     "popper.js": "^1.12.4",
     "simple-line-icons": "^2.4.1",
     "sweetalert2": "^7.0.7",
-    "vue": "^2.5.16"
+    "vue": "^2.5.12"
   },
   "jest": {
     "testURL": "http://localhost",
@@ -56,6 +56,8 @@
     "imagemin-pngquant": "^5.0.1",
     "jquery-ui-dist": "^1.12.1",
     "npm": "^6.6.0",
-    "vue-router": "^3.4.3"
+    "video-player": "0.0.1",
+    "vue-router": "^3.4.3",
+    "vue-video-player": "^5.0.2"
   }
 }

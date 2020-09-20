@@ -30,7 +30,7 @@ import 'video.js/dist/video-js.css'
 
 
 /* Main component */
-//Vue.component('PlayCourse', PlayCourse)
+Vue.component('player', player)
 
 Vue.component('player', require('./components/player.vue').default);
 
