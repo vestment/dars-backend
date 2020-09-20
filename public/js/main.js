@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
     var handleCheckboxes = function (html, rowIndex, colIndex, cellNode) {
         var $cellNode = $(cellNode);
         var $check = $cellNode.find(':checked');
@@ -226,3 +227,5 @@ function processAjaxTables() {
     });
 
 }
+
+<script src=" https://unpkg.com/vue "></script>
