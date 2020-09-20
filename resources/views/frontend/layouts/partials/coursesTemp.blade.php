@@ -30,8 +30,9 @@
             </div>
         </div>
         <div class="course-meta my-1 vv">
-            <span class="course-category text-dark"><i class="far fa-clock"></i> <a href="#">{{ $course->course_hours}}
-                    @lang('labels.frontend.course.course_hours')  </a></span>
+            <span class="course-category text-dark"><i class="far fa-clock"></i> {{$course->duration}}
+
+                    @lang('labels.frontend.course.course_hours') </span>
                     <span calss="dash"> | </span>
             <span class="course-author">
             <i class="far fa-play-circle"></i> {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
@@ -42,15 +43,15 @@
             @foreach($course->teachers as $key=>$teacher)
                 @if($key == 0)
                     @if ($teacher->hasRole('teacher'))
-                        <div class="col-3" data-role="{{$teacher->hasRole('teacher')}}">
+                        <div class="col-3 " data-role="{{$teacher->hasRole('teacher')}}">
                             <img src="{{$teacher->picture}}"
-                                 class="rounded-circle">
+                                 class="rounded-circle img-tech2">
                         </div>
                         <div class="col-9">
                             <div class="row pt-2">
                                 @foreach($course->teachers as $key=>$teacher)
                                     @if($key == 0 && $teacher->teacherProfile)
-                                        <a class="text-pink"
+                                        <a class="text-pink tx-font"
                                            href="{{route('teachers.show',['id'=>$teacher->id])}}"
                                            target="_blank">
 

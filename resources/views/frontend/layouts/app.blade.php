@@ -104,6 +104,19 @@
                                             </a>
                                         </li>
                                     @endif
+
+                        @if(auth()->check() && (auth()->user()->hasRole('student')))
+                          
+                        <li>
+                                            <a href="{{route('wishlist.index')}}">
+                                                <i
+                                                class="fa fa-heart"
+                                                aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+
+                                        @endif
+                               
                                     <div class="search-form">
             <form action="{{route('search')}}" method="get">
                 <div class="search-bar">

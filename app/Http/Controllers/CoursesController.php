@@ -467,6 +467,11 @@ class CoursesController extends Controller
         return redirect()->back();
     }
 
+    public function player(){
+        return view('frontend.player');
+
+    }
+
 
 
 }
