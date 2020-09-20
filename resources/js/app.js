@@ -66,7 +66,6 @@ Vue.use(Buefy)
 /* This is main entry point */
 
 new Vue({
-  
   router,
   render: h => h(App),
 //   mounted() {

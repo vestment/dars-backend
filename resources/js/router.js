@@ -7,7 +7,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/videoplayer',
+      path: '/player',
       name: 'player',
       component: () => import('./components/player.vue'),
     },

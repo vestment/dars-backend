@@ -39,8 +39,8 @@ class Media extends Model
         }
         return round($percentage,2);
     }
-    public function getDurationsAttribute(){
-        $time = strtotime($this->duration);
+    public function getDurationAttribute(){
+        $time = strtotime($this->attributes['duration']);
         return sprintf("%s Hours %s Minutes", date("H", $time), date("i", $time));
     }
     public function uploader() {

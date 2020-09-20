@@ -273,7 +273,6 @@ class Course extends Model
 
     public function chapters()
     {
-
         return $this->hasMany('App\Models\Chapter');
 
     }

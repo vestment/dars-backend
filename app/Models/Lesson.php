@@ -15,7 +15,7 @@ use Mtownsend\ReadTime\ReadTime;
  * Class Lesson
  *
  * @package App
-// * @property string $course
+ * // * @property string $course
  * @property string $title
  * @property string $slug
  * @property string $lesson_image
@@ -30,9 +30,9 @@ class Lesson extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title','title_ar', 'slug', 'lesson_image', 'short_text', 'full_text', 'short_text_ar', 'full_text_ar', 'position', 'downloadable_files', 'free_lesson', 'published', 'course_id','chapter_id'];
+    protected $fillable = ['title', 'title_ar', 'slug', 'lesson_image', 'short_text', 'full_text', 'short_text_ar', 'full_text_ar', 'position', 'downloadable_files', 'free_lesson', 'published', 'course_id', 'chapter_id'];
 
-    protected $appends = ['image','lesson_readtime'];
+    protected $appends = ['image', 'lesson_readtime'];
 
 
     public static function boot()
@@ -53,11 +53,12 @@ class Lesson extends Model
         });
     }
 
-public function getDataFromColumn($col)
+    public function getDataFromColumn($col)
     {
         // ?? null return if the column not found
         return $this->attributes[app()->getLocale() == 'ar' ? $col . '_ar' : $col] ?? $this->attributes[$col];
     }
+
     /**
      * Set to null if empty
      * @param $input
@@ -70,21 +71,23 @@ public function getDataFromColumn($col)
     public function getImageAttribute()
     {
         if ($this->attributes['lesson_image'] != NULL) {
-            return url('storage/uploads/'.$this->lesson_image);
+            return url('storage/uploads/' . $this->lesson_image);
         }
         return NULL;
     }
 
-    public function getLessonReadtimeAttribute(){
+    public function getLessonReadtimeAttribute()
+    {
 
-        if($this->full_text != null){
+        if ($this->full_text != null) {
             $readTime = (new ReadTime($this->full_text))->toArray();
             return $readTime['minutes'];
         }
         return 0;
     }
 
-    public function lessonMediaAttribute(){
+    public function lessonMediaAttribute()
+    {
 
     }
 
@@ -101,7 +104,7 @@ public function getDataFromColumn($col)
 
     public function readTime()
     {
-        if($this->full_text != null){
+        if ($this->full_text != null) {
             $readTime = (new ReadTime($this->full_text))->toArray();
             return $readTime['minutes'];
         }
@@ -117,9 +120,10 @@ public function getDataFromColumn($col)
     {
         return $this->hasOne('App\Models\Test');
     }
+
     public function notes()
     {
-        return $this->hasMany('App\Models\Note');
+        return $this->hasMany('App\Note');
     }
 
     public function students()
@@ -180,10 +184,10 @@ public function getDataFromColumn($col)
         return false;
 
     }
-    public function chapter(){
 
+    public function chapter()
+    {
         return $this->belongsto('App\Models\Chapter');
-    
     }
 
 }

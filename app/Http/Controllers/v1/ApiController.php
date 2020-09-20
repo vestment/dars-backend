@@ -16,10 +16,12 @@ use App\Models\BlogComment;
 use App\Models\Bundle;
 use App\Models\Category;
 use App\Models\Certificate;
+use App\Models\Chapter;
 use App\Models\Config;
 use App\Models\Contact;
 use App\Models\Coupon;
 use App\Models\Course;
+use App\Models\CourseTimeline;
 use App\Models\Faq;
 use App\Models\Lesson;
 use App\Models\Media;
@@ -38,6 +40,7 @@ use App\Models\Testimonial;
 use App\Models\TestsResult;
 use App\Models\TestsResultsAnswer;
 use App\Models\VideoProgress;
+use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
 use Carbon\Carbon;
@@ -46,6 +49,7 @@ use DevDojo\Chatter\Events\ChatterBeforeNewDiscussion;
 use DevDojo\Chatter\Events\ChatterBeforeNewResponse;
 use DevDojo\Chatter\Mail\ChatterDiscussionUpdated;
 use Harimayco\Menu\Models\MenuItems;
+use http\Client\Response;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -55,6 +59,7 @@ use DevDojo\Chatter\Events\ChatterAfterNewDiscussion;
 use Event;
 use DevDojo\Chatter\Models\Models;
 use DevDojo\Chatter\Helpers\ChatterHelper as Helper;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
@@ -618,12 +623,12 @@ class ApiController extends Controller
             ->where('slug', $request->lesson)
             ->first();
         if ($lesson != null) {
-            if ($lesson->course && !in_array(auth()->user()->id,$lesson->course->students()->pluck('user_id')->toArray())) {
-                return response()->json(['status' => 'failure','message'=>'You need to buy this course first']);
+            if ($lesson->course && !in_array(auth()->user()->id, $lesson->course->students()->pluck('user_id')->toArray())) {
+                return response()->json(['status' => 'failure', 'message' => 'You need to buy this course first']);
             }
             $course = $lesson->course;
-            $courseTimeLine = $lesson->course->courseTimeline;
-            $chapters = $course->chapters()->with(['test','lessons'])->get();
+            $courseTimeLine = $lesson->course->courseTimeline()->with('model')->get();
+            $chapters = $course->chapters()->with(['test'])->get();
             $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->where('model_type', Lesson::class)
                 ->orderBy('sequence', 'desc')
@@ -642,34 +647,44 @@ class ApiController extends Controller
             if ($mediaVideo && $mediaVideo['type'] == 'embed') {
                 preg_match('/src="([^"]+)"/', $mediaVideo['url'], $match);
                 $url = $match[1];
-                $mediaVideo['file_name'] = $url;
+                $lesson->mediaVideo['file_name'] = $url;
+                $lesson->mediaVideo['duration'] = $lesson->mediaVideo->durations;
+            } elseif ($mediaVideo && $mediaVideo['type'] == 'upload') {
+                // Stream Video if uploaded
+                $lesson->mediaVideo['url'] = '' . route('videos.stream', ['encryptedId' => Crypt::encryptString($mediaVideo['id'])]) . '';
+                $lesson->mediaVideo['duration'] = $lesson->mediaVideo->durations;
             }
-
-            $video = $mediaVideo;
-            $pdf = $lesson->mediaPDF;
-            $audio = $lesson->mediaAudio;
-            $lesson_media = [
-                'downloadable_media' => $downloadable_media,
-                'video' => $video,
-                'pdf' => $pdf,
-                'audio' => $audio,
-            ];
-
+            $course_page = route('courses.show', ['slug' => $lesson->course->slug]);
+            foreach ($chapters as $key => $chapter) {
+                $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes'])->get();
+            }
             $results = [
                 'lesson' => $lesson,
-                'lesson_media' => $lesson_media,
                 'previous_lesson' => $previous_lesson,
                 'next_lesson' => $next_lesson,
                 'is_certified' => $is_certified,
                 'course_progress' => $course_progress,
                 'course' => $course,
                 'chapters' => $chapters,
+                'course_page' => $course_page,
+                'course_timeline' => $courseTimeLine,
             ];
             return response()->json(['status' => 'success', 'result' => $results]);
         }
         return response()->json(['status' => 'failure']);
     }
 
+    /**
+     * Save Notes
+     * @return Response JSON
+     */
+    public function saveNote(Request $request)
+    {
+        $note = Note::findorfail($request->id);
+        $note->contentText = $request->contentText;
+        $note->save();
+        return response()->json(['status' => 'success', 'note' => $note]);
+    }
 
     /**
      * Get Test
