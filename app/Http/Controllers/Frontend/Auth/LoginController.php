@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Helpers\Auth\Auth;
+use App\Models\Auth\User;
 use Illuminate\Http\Request;
 use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;
@@ -74,12 +75,14 @@ class LoginController extends Controller
             if($authSuccess) {
                 $request->session()->regenerate();
                 if(auth()->user()->active > 0){
+                    $user = User::findorFail(auth()->user()->id);
+                    $token = $user->createToken('Personal Access Token')->accessToken;
                     if(auth()->user()->isAdmin()){
                         $redirect = 'dashboard';
                     }else{
                         $redirect = 'back';
                     }
-                    return response(['success' => true,'redirect' => $redirect,'message'=>'Login success, redirecting...'], Response::HTTP_OK);
+                    return response(['success' => true,'redirect' => $redirect,'message'=>'Login success, redirecting...','token'=>$token], Response::HTTP_OK);
                 }else{
                     \Illuminate\Support\Facades\Auth::logout();
                     return
@@ -92,7 +95,7 @@ class LoginController extends Controller
                 return
                     response([
                         'success' => false,
-                        'message' => 'Login failed. Account not found'
+                        'message' => 'Login failed. Incorrect credentials'
                     ], Response::HTTP_FORBIDDEN);
             }
 

@@ -228,4 +228,3 @@ function processAjaxTables() {
 
 }
 
-<script src=" https://unpkg.com/vue "></script>

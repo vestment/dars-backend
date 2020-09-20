@@ -212,10 +212,11 @@
                             @endif
                         </div>
                     </div>
+                @endif
             </div>
         </div>
     </section>
-    @endif
+
     @if(@isset($category))
         <section id="search-course" class=" border">
             <div class="container">

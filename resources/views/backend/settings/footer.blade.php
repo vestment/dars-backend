@@ -83,6 +83,24 @@
                           }} </p>
                 </div>
             </div>
+            <div class="form-group row">
+                {{ html()->label(__('labels.backend.general_settings.footer.short_description_ar'))->class('col-md-2 form-control-label')->for('short_description') }}
+                <div class="col-md-8">
+                    {{ html()->textarea()
+                        ->id('short_description_ar')
+                        ->class('form-control')
+                        ->placeholder(__('labels.backend.general_settings.footer.short_description_ar'))
+                        }}
+                </div>
+                <div class="col-md-2">
+                    <p style="line-height: 35px">
+                        <span class="mr-2">{{__('labels.backend.general_settings.contact.show')}}</span> {{ html()->label(html()->checkbox('')
+                                        ->checked()->class('switch-input status')->value(1)->checked()
+                                  . '<span class="switch-label"></span><span class="switch-handle"></span>')
+                              ->class('switch switch-sm switch-3d switch-primary')
+                          }} </p>
+                </div>
+            </div>
             @for($i=1; $i<=3; $i++)
                 <div class="form-group row">
                     {{ html()->label(__('labels.backend.general_settings.footer.section_'.$i))->class('col-md-2 form-control-label')->for('section'.$i) }}
@@ -309,7 +327,11 @@
             //== Preset Short description
             footer.find('#short_description').val(footer_data.short_description.text.replace(/<br>/g,"\n").replace(/amp;/g,""));
             status = (footer_data.short_description.status === 1);
-            footer.find('#short_description').parents('.form-group').find('.status').attr('checked', status);
+            footer.find('#short_description_ar').parents('.form-group').find('.status').attr('checked', status);
+            footer.find('#short_description_ar').val(footer_data.short_description_ar.text.replace(/<br>/g,"\n").replace(/amp;/g,""));
+            status = (footer_data.short_description.status === 1);
+            footer.find('#short_description_ar').parents('.form-group').find('.status').attr('checked', status);
+
 
             //== Preset Section inputs data
             footer.find('.section1[value="' + footer_data.section1.type + '"]').attr('checked', true);
@@ -392,9 +414,10 @@
 
                 var short_description = footer.find('#short_description').val();
                 var description_status = (footer.find('#short_description').parents('.form-group').find('.status').is(':checked')) ? 1 : 0;
-
+                var short_description_ar = footer.find('#short_description_ar').val();
+                var description_status_ar = (footer.find('#short_description_ar').parents('.form-group').find('.status').is(':checked')) ? 1 : 0;
                 footer_data['short_description'] = {text: short_description, status: description_status};
-
+                footer_data['short_description_ar'] = {text: short_description_ar, status: description_status_ar};
                 //== Saving data for Footer links ==//
                 for (i = 0; i <= $('.options').length; i++) {
                     if ($('.options')[i]) {

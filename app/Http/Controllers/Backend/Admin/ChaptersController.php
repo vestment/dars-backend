@@ -141,13 +141,7 @@ class ChaptersController extends Controller
             return abort(401);
         }
 
-        $slug = "";
-        if (($request->slug == "") || $request->slug == null) {
-            $slug = str_slug($request->title);
-        }else if($request->slug != null){
-            $slug = $request->slug;
-        }
-
+        $slug = str_slug($request->title.'-'.$request->course_id);
         $slug_chapter = Chapter::where('slug','=',$slug)->first();
         if($slug_chapter != null){
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
@@ -281,5 +275,16 @@ class ChaptersController extends Controller
 
         return back()->withFlashSuccess(__('alerts.backend.general.deleted'));
     }
-   
+    public function delete(Request $request)
+    {
+        if (!Gate::allows('lesson_delete')) {
+            return abort(401);
+        }
+        $chapter = Chapter::findOrFail($request->id);
+        $chapter->lessons()->where('course_id', $chapter->course_id)->forceDelete();
+        $chapter->test()->forceDelete();
+        $chapter->delete();
+
+        return response()->json('success');
+    }
 }

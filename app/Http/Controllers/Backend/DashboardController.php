@@ -124,11 +124,13 @@ class DashboardController extends Controller
                 $recent_contacts = Contact::orderBy('created_at', 'desc')->take(10)->get();
             } elseif (auth()->user()->hasRole('student')) {
                 $parent = auth()->user()->parents;
+                
             } elseif (auth()->user()->hasRole('parent')) {
                 $parent = auth()->user();
                 $studentsIds = $parent->students->pluck('id');
                 $purchased_courses = Course::whereHas('students', function ($query) use ($studentsIds) {
                     $query->whereIn('user_id', $studentsIds);
+
                 });
                 $recent_reviews = Review::where('reviewable_type', '=', 'App\Models\Course')
                     ->whereIn('reviewable_id', $purchased_courses->pluck('id'))

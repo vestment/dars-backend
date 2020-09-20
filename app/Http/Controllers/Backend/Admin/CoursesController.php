@@ -696,7 +696,6 @@ class CoursesController extends Controller
 
         foreach ($request->list as $item) {
             // dd($item);
-
             $courseTimeline = CourseTimeline::where('id', $item['id'])->first();
             $courseTimeline->sequence = $item['sequence'];
             $courseTimeline->save();

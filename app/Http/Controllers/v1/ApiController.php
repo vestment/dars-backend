@@ -90,16 +90,21 @@ class ApiController extends Controller
             : response()->json(['status' => 'failure', 'message' => 'Unable to send reset link. No Email found.'], 401);
     }
 
-public function index(){
-    return view('frontend.layouts.modals.login');
-}
-public function indexrtl(){
-    return view('frontend-rtl.layouts.modals.login');
-}
+    public function index()
+    {
+        return view('frontend.layouts.modals.login');
+    }
 
-public function registerIndex(){
-    return view('frontend.layouts.modals.register');
-}
+    public function indexrtl()
+    {
+        return view('frontend-rtl.layouts.modals.login');
+    }
+
+    public function registerIndex()
+    {
+        return view('frontend.layouts.modals.register');
+    }
+
     /**
      * Get the Signup Form
      *
@@ -531,7 +536,7 @@ public function registerIndex(){
             }
         }
         $mediaVideo = (!$course->mediaVideo) ? null : $course->mediaVideo->toArray();
-        if($mediaVideo && $mediaVideo['type'] == 'embed'){
+        if ($mediaVideo && $mediaVideo['type'] == 'embed') {
             preg_match('/src="([^"]+)"/', $mediaVideo['url'], $match);
             $url = $match[1];
             $mediaVideo['file_name'] = $url;
@@ -608,15 +613,23 @@ public function registerIndex(){
      */
     public function getLesson(Request $request)
     {
+
         $lesson = Lesson::where('published', '=', 1)
-            ->where('id', '=', $request->lesson_id)
+            ->where('slug', $request->lesson)
             ->first();
         if ($lesson != null) {
+            if ($lesson->course && !in_array(auth()->user()->id,$lesson->course->students()->pluck('user_id')->toArray())) {
+                return response()->json(['status' => 'failure','message'=>'You need to buy this course first']);
+            }
             $course = $lesson->course;
+            $courseTimeLine = $lesson->course->courseTimeline;
+            $chapters = $course->chapters()->with(['test','lessons'])->get();
             $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
+                ->where('model_type', Lesson::class)
                 ->orderBy('sequence', 'desc')
                 ->first();
             $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
+                ->where('model_type', Lesson::class)
                 ->orderBy('sequence', 'asc')
                 ->first();
 
@@ -626,7 +639,7 @@ public function registerIndex(){
             $downloadable_media = $lesson->downloadable_media;
 
             $mediaVideo = (!$lesson->mediaVideo) ? null : $lesson->mediaVideo->toArray();
-            if($mediaVideo && $mediaVideo['type'] == 'embed'){
+            if ($mediaVideo && $mediaVideo['type'] == 'embed') {
                 preg_match('/src="([^"]+)"/', $mediaVideo['url'], $match);
                 $url = $match[1];
                 $mediaVideo['file_name'] = $url;
@@ -642,8 +655,17 @@ public function registerIndex(){
                 'audio' => $audio,
             ];
 
-
-            return response()->json(['status' => 'success', 'result' => ['lesson' => $lesson, 'lesson_media' => $lesson_media, 'previous_lesson' => $previous_lesson, 'next_lesson' => $next_lesson, 'is_certified' => $is_certified, 'course_progress' => $course_progress, 'course' => $course]]);
+            $results = [
+                'lesson' => $lesson,
+                'lesson_media' => $lesson_media,
+                'previous_lesson' => $previous_lesson,
+                'next_lesson' => $next_lesson,
+                'is_certified' => $is_certified,
+                'course_progress' => $course_progress,
+                'course' => $course,
+                'chapters' => $chapters,
+            ];
+            return response()->json(['status' => 'success', 'result' => $results]);
         }
         return response()->json(['status' => 'failure']);
     }
@@ -655,7 +677,8 @@ public function registerIndex(){
      * @return [json] Success message
      */
 
-    public function getTest(Request $request){
+    public function getTest(Request $request)
+    {
         $test = Test::where('published', '=', 1)
             ->where('id', '=', $request->test_id)
             ->where('course_id', '=', $request->course_id)
@@ -663,7 +686,7 @@ public function registerIndex(){
         $questions = [];
         $is_test_given = false;
         //If Retest is being taken
-        if(isset( $request->result_id)){
+        if (isset($request->result_id)) {
             $testResult = TestsResult::where('id', '=', $request->result_id)
                 ->where('user_id', '=', auth()->user()->id)
                 ->delete();
@@ -672,10 +695,10 @@ public function registerIndex(){
         }
 
 
-        if($test->questions && (count($test->questions) > 0)){
-            foreach ($test->questions as $question){
+        if ($test->questions && (count($test->questions) > 0)) {
+            foreach ($test->questions as $question) {
                 $options = [];
-                if($question->options){
+                if ($question->options) {
                     $options = $question->options->toArray();
                 }
 
@@ -690,11 +713,11 @@ public function registerIndex(){
             ->where('user_id', '=', auth()->user()->id)
             ->first();
         $result_data = NULL;
-        if($test_result){
+        if ($test_result) {
             $test_result = $test_result->toArray();
-            $result = TestsResultsAnswer::where('tests_result_id','=',$test_result['id'])->get()->toArray();
+            $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result['id'])->get()->toArray();
             $is_test_given = true;
-            $result_data = ['result_id' => $test_result['id'],'score' => $test_result,'answers' => $result];
+            $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result];
         }
 
         $data['test'] = $test->toArray();
@@ -710,9 +733,10 @@ public function registerIndex(){
      *
      * @return [json] Success message
      */
-    public function saveTest(Request $request){
+    public function saveTest(Request $request)
+    {
         $test = Test::where('id', $request->test_id)->firstOrFail();
-        if(!$test){
+        if (!$test) {
             return response()->json(['status' => 'failure']);
         }
         $answers = [];
@@ -730,7 +754,7 @@ public function registerIndex(){
                 'correct' => $correct
             ];
             if ($correct) {
-                if($question->score) {
+                if ($question->score) {
                     $test_score += $question->score;
                 }
             }
@@ -757,9 +781,9 @@ public function registerIndex(){
             ]);
         }
 
-        $result = TestsResultsAnswer::where('tests_result_id','=',$test_result->id)->get()->toArray();
+        $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result->id)->get()->toArray();
 
-        return response()->json(['status' => 'success','result_id' =>$test_result->id, 'score' => $test_score,'result' => $result]);
+        return response()->json(['status' => 'success', 'result_id' => $test_result->id, 'score' => $test_score, 'result' => $result]);
 
     }
 
@@ -895,7 +919,7 @@ public function registerIndex(){
             ->where('id', '=', $request->bundle_id)
             ->first();
 
-        $purchased_bundle = \Auth::check() &&  $result['bundle']->students()->where('user_id', \Auth::id())->count() > 0;
+        $purchased_bundle = \Auth::check() && $result['bundle']->students()->where('user_id', \Auth::id())->count() > 0;
 
 
         if ($result['bundle'] == null) {
@@ -1092,7 +1116,7 @@ public function registerIndex(){
             $order->remarks = $request->remarks;
             $order->transaction_id = $request->transaction_id;
             $order->save();
-            if($order->status == 1){
+            if ($order->status == 1) {
                 (new EarningHelper())->insert($order);
             }
             if ((int)$request->payment_type == 3) {
@@ -1322,7 +1346,7 @@ public function registerIndex(){
 
         $pagination_results = config('chatter.paginate.num_of_results');
 
-        $discussions = Models::discussion()->with('user')->with(['post','post.user'])->with('postsCount')->with('category')->orderBy(config('chatter.order_by.discussions.order'), config('chatter.order_by.discussions.by'));
+        $discussions = Models::discussion()->with('user')->with(['post', 'post.user'])->with('postsCount')->with('category')->orderBy(config('chatter.order_by.discussions.order'), config('chatter.order_by.discussions.by'));
         if (isset($slug)) {
             $category = Models::category()->where('slug', '=', $slug)->first();
 
@@ -1569,7 +1593,7 @@ public function registerIndex(){
      * Delete Response.
      *
      * @param string $id
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] success message
      */
@@ -1605,7 +1629,7 @@ public function registerIndex(){
     /**
      * Get Conversations.
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] messages
      */
@@ -1614,7 +1638,7 @@ public function registerIndex(){
     {
         $thread = "";
 
-        $teachers = User::role('teacher')->select('id','first_name','last_name')->get();
+        $teachers = User::role('teacher')->select('id', 'first_name', 'last_name')->get();
 
         auth()->user()->load('threads.messages.sender');
 
@@ -1654,7 +1678,7 @@ public function registerIndex(){
     /**
      * Create Message
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] Success Message
      */
@@ -1672,7 +1696,7 @@ public function registerIndex(){
     /**
      * Reply Message
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] Success Message
      */
@@ -1690,7 +1714,7 @@ public function registerIndex(){
     /**
      * Get Unread Messages
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] Success Message
      */
@@ -1716,7 +1740,7 @@ public function registerIndex(){
     /**
      * Get My Certificates
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] certificates object
      */
@@ -1731,7 +1755,7 @@ public function registerIndex(){
     /**
      * Get My Courses / Bundles / Purchases
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] certificates object
      */
@@ -1747,7 +1771,7 @@ public function registerIndex(){
     /**
      * Get My Account
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] Loggedin user object
      */
@@ -1761,7 +1785,7 @@ public function registerIndex(){
     /**
      * Update My Account
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] Update account
      */
@@ -1795,7 +1819,7 @@ public function registerIndex(){
     /**
      * Update Password
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] Update password
      */
@@ -1814,7 +1838,7 @@ public function registerIndex(){
     /**
      * Update Pages (About-us)
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] Update password
      */
@@ -1833,7 +1857,7 @@ public function registerIndex(){
     /**
      * Subscribe newsletter
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] response
      */
@@ -1919,7 +1943,7 @@ public function registerIndex(){
     /**
      * Get Offers
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] response
      */
@@ -1933,7 +1957,7 @@ public function registerIndex(){
     /**
      * Apply Coupon
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return [json] response
      */

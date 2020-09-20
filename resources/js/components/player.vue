@@ -9,7 +9,6 @@
                  :options="playerOptions"
                  :playsinline="true"
                  customEventName="customstatechangedeventname"
- 
                  @play="onPlayerPlay($event)"
                  @pause="onPlayerPause($event)"
                  @ended="onPlayerEnded($event)"

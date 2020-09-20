@@ -244,6 +244,7 @@ Route::resource('chapters', 'Admin\ChaptersController');
 Route::get('get-chapters-data', ['uses' => 'Admin\ChaptersController@getData', 'as' => 'chapters.get_data']);
 Route::post('chapters_mass_destroy', ['uses' => 'Admin\ChaptersController@massDestroy', 'as' => 'chapters.mass_destroy']);
 Route::post('chapters_restore/{id}', ['uses' => 'Admin\ChaptersController@restore', 'as' => 'chapters.restore']);
+Route::post('chapters/remove', ['uses' => 'Admin\ChaptersController@delete', 'as' => 'chapters.remove']);
 Route::delete('chapters_perma_del/{id}', ['uses' => 'Admin\ChaptersController@perma_del', 'as' => 'chapters.perma_del']);
 
 //===== Questions Routes =====//

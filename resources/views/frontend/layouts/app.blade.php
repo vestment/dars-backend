@@ -138,7 +138,7 @@
                                                 @endcan
 
                                                 <li>
-                                                    <a href="{{ route('frontend.auth.logout') }}">@lang('navs.general.logout')</a>
+                                                    <a onclick="localStorage.removeItem('token')"  href="{{ route('frontend.auth.logout') }}">@lang('navs.general.logout')</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -192,38 +192,40 @@
                             <ul >
                                 <li class="nav-item dropdown">
                             	    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">@lang('navs.general.courses')</a>
-                            	    <div class="dropdown-menu dropdown-large">
+                            	    <div class="dropdown-menu dropdown-large ">
                             	           <div class="row">
                             	               @php
                             	               $categories_1 = array_slice($categories->toArray(), 0, count($categories) / 2);
                                                $categories_2 = array_slice($categories->toArray(),  count($categories) / 2);
                             	               @endphp
-                            	                <div class="col-md-6">
+                            	                <div class="col-md-3">
                                                 <ul class="courses-menu">
                                          @foreach($categories_1 as $category)
                                          @php $category = json_decode(json_encode($category), FALSE); @endphp
                                                 <li>
                                                     <a href="{{route('courses.category',['category'=>$category->slug])}}">
-                                                    <i class="{{$category->icon}} p-2"></i>{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}}
+                                                    <i class="text-pink p-2 {{$category->icon}} "></i><span class="pl-3 d-block text-secondary" >{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}}</span>
                                                 </a>
                                                 </li>
                                         @endforeach
                                          </ul>
                                         </div>
-                                          <div class="col-md-6">
+                                          <div class="col-md-3">
                                                 <ul class="courses-menu">
                                          @foreach($categories_2 as $category)
                                           @php $category = json_decode(json_encode($category), FALSE); @endphp
                                                 <li>
                                                     <a href="{{route('courses.category',['category'=>$category->slug])}}">
-                                                    <i class="{{$category->icon}} p-2"></i>{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}}
+                                                    <i class="text-pink p-2 {{$category->icon}} "></i>  <span class="pl-3 d-block text-secondary" >{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}} </span>
                                                 </a>
                                                 </li>
                                         @endforeach
                                          </ul>
                                         </div>
+                                        
                                         </div> <!-- dropdown-large.// -->
                                          </div>
+                                         
                             	</li>
                                 <!--<li class="menu-item-has-children ul-li-block">-->
                                 <!--    <a href="#!"> @lang('navs.general.courses') <i class="fa fa-caret-{{app()->getLocale() == 'ar' ? 'left': 'right'}}"></i> </a>-->
