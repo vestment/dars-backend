@@ -35,8 +35,8 @@ class LessonsController extends Controller
             $lesson->full_text = $lesson->description;
             $timeoutorg = intval($lesson->timer * 60);
             $start = intval(time());
-            if (auth()->user()->current_test()->first()) {
-                $pivot = auth()->user()->current_test()->first()->pivot;
+            if (auth()->user()->current_test()->where('test_id', $lesson->id)->first()) {
+                $pivot = auth()->user()->current_test()->where('test_id', $lesson->id)->first()->pivot;
                 if ($pivot) {
                     $start = $pivot->start_time;
                 }
@@ -106,27 +106,13 @@ class LessonsController extends Controller
                     ->where('model_type', Lesson::class)
                     ->orderBy('sequence', 'desc')
                     ->first();
-                $previousChapter = $lesson->course->courseTimeline()
-                    ->where('sequence', '<', $lesson->courseTimeline->sequence)
-                    ->whereIn('model_id', $course_lessons)
-                    ->where('model_type', Chapter::class)
-                    ->orderBy('sequence', 'desc')
-                    ->first();
-                if ($previousChapter && $previousChapter->model->test) {
-                    $previousChapterTestResult = TestsResult::where('test_id', $previousChapter->model->test->id)
-                        ->where('user_id', \Auth::id())
-                        ->orderBy('created_at', 'desc')
-                        ->first();
 
-                    if ($previousChapterTestResult && $previousChapterTestResult->test_result >= $previousChapter->model->test->min_grade) {
-                        $next_lesson = $lesson->course->courseTimeline()
-                            ->whereIn('model_id', $course_lessons)
-                            ->where('sequence', '>', $lesson->courseTimeline->sequence)
-                            ->where('model_type', Lesson::class)
-                            ->orderBy('sequence', 'asc')
-                            ->first();
-                    }
-                }
+                $next_lesson = $lesson->course->courseTimeline()
+                    ->whereIn('model_id', $course_lessons)
+                    ->where('sequence', '>', $lesson->courseTimeline->sequence)
+                    ->where('model_type', Lesson::class)
+                    ->orderBy('sequence', 'asc')
+                    ->first();
                 $lessons = $lesson->course->courseTimeline()
                     ->whereIn('model_id', $course_lessons)
                     ->where('model_type', Lesson::class)
@@ -146,13 +132,13 @@ class LessonsController extends Controller
                     ->pluck('model_id')
                     ->toArray();
                 $start_time = intval(time());
-            if (auth()->user()->current_test()->first()) {
-                $pivot = auth()->user()->current_test()->first()->pivot;
-                if ($pivot) {
-                    $start_time = $pivot->start_time;
-                }
+                if (auth()->user()->current_test()->where('test_id', $lesson->id)->first()) {
+                    $pivot = auth()->user()->current_test()->where('test_id', $lesson->id)->first()->pivot;
+                    if ($pivot) {
+                        $start_time = $pivot->start_time;
+                    }
 
-            }
+                }
             }
 
             $notes = Note::where(['lesson_id' => $lesson->id, 'user_id' => \Auth::id()])->get();

@@ -55,10 +55,10 @@
                                                 <ul>
                                                     <li><a href="{{'mailto:'.$item->email}}"><i
                                                                     class="fa fa-envelope"></i></a></li>
-                                                    <li>
-                                                        <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i
-                                                                    class="fa fa-comments"></i></a>
-                                                    </li>
+{{--                                                    <li>--}}
+{{--                                                        <a href="{{route('admin.messages',['teacher_id'=>$item->id])}}"><i--}}
+{{--                                                                    class="fa fa-comments"></i></a>--}}
+{{--                                                    </li>--}}
                                                 </ul>
                                             </div>
                                         </div>

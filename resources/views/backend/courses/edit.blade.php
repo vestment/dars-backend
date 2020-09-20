@@ -337,7 +337,7 @@
                                                         <div class="wrap">
                                                             <div id="nav-menus-frame" class="row">
 
-                                                                <div class="col-lg-9 col-12"
+                                                                <div class="col-lg-12 col-12"
                                                                      id="menu-management-liquid">
                                                                     <div id="menu-management">
                                                                         <form id="update-nav-menu" action=""
@@ -364,7 +364,7 @@
                                                                                                                 class="menu-item menu-item-depth-0  menu-item-page menu-item-edit-inactive pending"
                                                                                                                 style="display: list-item;">
                                                                                                                 <dl class="menu-item-bar">
-                                                                                                                    <div class="menu-item-handle col-12 col-lg-7">
+                                                                                                                    <div class="menu-item-handle col-12 col-lg-12">
                                                                                                                     <span class="item-title"> <span
                                                                                                                                 class="menu-item-title"> <span
                                                                                                                                     id="{{$item->id}}">{{$item->title}} | {{$singleTimeline->sequence}}</span> </span>
@@ -377,10 +377,10 @@
                                                                                                                     </div>
                                                                                                                 </dl>
 
-                                                                                                                <div class="menu-item-settings col-12 col-lg-7"
+                                                                                                                <div class="menu-item-settings col-12 col-lg-12"
                                                                                                                      id="menu-item-settings-{{$item->id}}">
                                                                                                                     <div class="row">
-                                                                                                                        <div class="col-6">
+                                                                                                                        <div class="col-4">
                                                                                                                             @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                                                 <button onclick="$('#chapter_id_lesson').val({{$item->id}});"
                                                                                                                                         type="button"
@@ -392,7 +392,7 @@
                                                                                                                                 </button>
                                                                                                                             @endif
                                                                                                                         </div>
-                                                                                                                        <div class="col-6">
+                                                                                                                        <div class="col-4">
                                                                                                                             @if($singleTimeline->model_type == 'App\Models\Chapter')
                                                                                                                                 <button onclick="$('#chapter_id_test').val({{$item->id}});"
                                                                                                                                         type="button"
@@ -402,6 +402,19 @@
                                                                                                                                     Create
                                                                                                                                     Test
                                                                                                                                 </button>
+                                                                                                                            @endif
+                                                                                                                        </div>
+                                                                                                                        <div class="col-4">
+                                                                                                                            @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                                                                <form method="post"
+                                                                                                                                      action="{{route('admin.chapters.destroy', ['chapter' => $item->id])}}">
+                                                                                                                                    @csrf
+                                                                                                                                    @method('DELETE')
+                                                                                                                                    <button type="submit"
+                                                                                                                                            class="btn btn-danger">
+                                                                                                                                        <i class="fa fa-trash"></i>
+                                                                                                                                    </button>
+                                                                                                                                </form>
                                                                                                                             @endif
                                                                                                                         </div>
                                                                                                                     </div>
@@ -467,8 +480,7 @@
                                                                                                 @else
                                                                                                     @if($lesson->model_type == \App\Models\Test::class)
                                                                                                     @if($lesson->must_finish == 0)
-                                                                                                    <form method="post"
-                                                                                                              class="d-inline"
+                                                                                                    <form method="post"  class="d-inline"
                                                                                                                action="{{route('admin.test.must_finish', ['test' => $lesson->model_id])}}">
                                                                                                             @csrf
                                                                                                             @method('post')
@@ -478,14 +490,9 @@
                                                                                                             </button>
                                                                                                         </form>
                                                                                                         @else
-                                                                                                        <form 
-                                                                                                              class="d-inline"
-                                                                                                               >
-                                                                                                            
-                                                                                                            
-                                                                                                                <p   class="btn btn-light float-right ml-1">
-                                                                                                                <i
-                                                                                                                        class="fa fa-check"></i> Must Pass this test  before certificate
+                                                                                                        <form class="d-inline">
+                                                                                                                <p class="btn btn-light float-right ml-1">
+                                                                                                                <i class="fa fa-check"></i> Must Pass this test  before certificate
                                                                                                                 </p>
                                                                                                             
                                                                                                         </form>
@@ -576,9 +583,7 @@
 
         @endif
     </div>
-    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        ...
-    </div>
+
     <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

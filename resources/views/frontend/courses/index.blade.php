@@ -20,7 +20,7 @@
                         </h1>
                         <h3>
                         @lang('labels.backend.courses.courses_to_start')
-                            <!-- Courses to get you started
+                        <!-- Courses to get you started
                             دورات لتبدأ بها -->
                         </h3>
                     </div>
@@ -40,11 +40,12 @@
     <!-- Start of course section
         ============================================= -->
     <!-- Check if there is any courses in trending or popular -->
-    @if(count($popular_course) > 0 || count($trending_courses) > 0)
-        <section id="course-page" class="course-page-section pt-5">
-            <div class="container">
-                <div class="row">
-                    @if(@isset($category))
+
+    <section id="course-page" class="course-page-section pt-5">
+        <div class="container">
+            <div class="row">
+                @if(@isset($category))
+                    @if(count($popular_course) > 0 || count($trending_courses) > 0)
                         <div class="col-xl-12 categories-container border-bottom">
                             @if(count($popular_course) > 0)
                                 <button onclick="showTab($('#popular-course'),$(this))"
@@ -84,139 +85,139 @@
                             </div>
 
                         </div>
-                    @else
-                        <div class="col-12 col-md-9 col-xl-9">
-                            @if($courses->count() > 0)
-                                <div class="row">
-                                    @foreach($courses as $course)
+                    @endif
+                @else
+                    <div class="col-12 col-md-9 col-xl-9">
+                        @if($courses->count() > 0)
+                            <div class="row">
+                                @foreach($courses as $course)
 
-                                        <div class="col-12 col-xl-3 col-md-3 col-sm-6">
-                                            @include('frontend.layouts.partials.coursesTemp')
+                                    <div class="col-12 col-xl-3 col-md-3 col-sm-6">
+                                        @include('frontend.layouts.partials.coursesTemp')
+                                    </div>
+
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-md-3">
+                        <div class="side-bar">
+
+                            <div class="side-bar-widget  first-widget">
+                                <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.find_your_course')</h2>
+                                <div class="listing-filter-form pb30">
+                                    <form action="{{route('search-course')}}" method="get">
+
+                                        <div class="filter-search mb20">
+                                            <label class="text-uppercase">@lang('labels.frontend.course.category')</label>
+                                            <select name="category"
+                                                    class="form-control listing-filter-form select">
+                                                <option value="">@lang('labels.frontend.course.select_category')</option>
+                                                @if(count($categories) > 0)
+                                                    @foreach($categories as $allCategory)
+                                                        <option value="{{$allCategory->id}}">{{$allCategory->getDataFromColumn('name')}}</option>
+
+                                                    @endforeach
+                                                @endif
+
+                                            </select>
                                         </div>
 
-                                    @endforeach
+
+                                        <div class="filter-search mb20">
+                                            <label>@lang('labels.frontend.course.full_text')</label>
+                                            <input type="text" class="" name="q"
+                                                   placeholder="{{trans('labels.frontend.course.looking_for')}}">
+                                        </div>
+                                        <button class="genius-btn gradient-bg text-center text-uppercase btn-block text-white font-weight-bold"
+                                                type="submit">@lang('labels.frontend.course.find_courses')
+                                            <i
+                                                    class="fas fa-caret-right"></i></button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            @if($recent_news->count() > 0)
+                                <div class="side-bar-widget">
+                                    <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.recent_news')</h2>
+                                    <div class="latest-news-posts">
+                                        @foreach($recent_news as $item)
+                                            <div class="latest-news-area">
+
+                                                @if($item->image != "")
+                                                    <div class="latest-news-thumbnile relative-position"
+                                                         style="background-image: url({{asset('storage/uploads/'.$item->image)}})">
+                                                        <div class="blakish-overlay"></div>
+                                                    </div>
+                                                @endif
+                                                <div class="date-meta">
+                                                    <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}}
+                                                </div>
+                                                <h3 class="latest-title bold-font"><a
+                                                            href="{{route('blogs.index',['slug'=>$item->slug.'-'.$item->id])}}">{{$item->title}}</a>
+                                                </h3>
+                                            </div>
+                                            <!-- /post -->
+                                        @endforeach
+
+
+                                        <div class="view-all-btn bold-font">
+                                            <a href="{{route('blogs.index')}}">@lang('labels.frontend.course.view_all_news')
+                                                <i class="fas fa-chevron-circle-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            @endif
+
+
+                            @if($global_featured_course != "")
+                                <div class="side-bar-widget">
+                                    <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.featured_course')</h2>
+                                    <div class="featured-course">
+                                        <div class="best-course-pic-text relative-position pt-0">
+                                            <div class="best-course-pic relative-position "
+                                                 @if($global_featured_course->image != "") style="background-image: url({{$global_featured_course->image}})" @endif>
+
+                                                @if($global_featured_course->trending == 1)
+                                                    <div class="trend-badge-2 text-center text-uppercase">
+                                                        <i class="fas fa-bolt"></i>
+                                                        <span>@lang('labels.frontend.badges.trending')</span>
+                                                    </div>
+                                                @endif
+                                                @if($global_featured_course->free == 1)
+                                                    <div class="trend-badge-3 text-center text-uppercase">
+                                                        <i class="fas fa-bolt"></i>
+                                                        <span>@lang('labels.backend.courses.fields.free')</span>
+                                                    </div>
+                                                @endif
+
+                                            </div>
+                                            <div class="best-course-text" style="left: 0;right: 0;">
+                                                <div class="course-title mb20 headline relative-position">
+                                                    <h3>
+                                                        <a href="{{ route('courses.show', [$global_featured_course->slug]) }}">{{$global_featured_course->title}}</a>
+                                                    </h3>
+                                                </div>
+                                                <div class="course-meta">
+                                            <span class="course-category"><a
+                                                        href="{{route('courses.category',['category'=>$global_featured_course->category->slug])}}">{{$global_featured_course->category->name}}</a></span>
+                                                    <span class="course-author">{{ $global_featured_course->students()->count() }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                         </div>
-                        <div class="col-md-3">
-                            <div class="side-bar">
-
-                                <div class="side-bar-widget  first-widget">
-                                    <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.find_your_course')</h2>
-                                    <div class="listing-filter-form pb30">
-                                        <form action="{{route('search-course')}}" method="get">
-
-                                            <div class="filter-search mb20">
-                                                <label class="text-uppercase">@lang('labels.frontend.course.category')</label>
-                                                <select name="category"
-                                                        class="form-control listing-filter-form select">
-                                                    <option value="">@lang('labels.frontend.course.select_category')</option>
-                                                    @if(count($categories) > 0)
-                                                        @foreach($categories as $allCategory)
-                                                            <option value="{{$allCategory->id}}">{{$allCategory->getDataFromColumn('name')}}</option>
-
-                                                        @endforeach
-                                                    @endif
-
-                                                </select>
-                                            </div>
-
-
-                                            <div class="filter-search mb20">
-                                                <label>@lang('labels.frontend.course.full_text')</label>
-                                                <input type="text" class="" name="q"
-                                                       placeholder="{{trans('labels.frontend.course.looking_for')}}">
-                                            </div>
-                                            <button class="genius-btn gradient-bg text-center text-uppercase btn-block text-white font-weight-bold"
-                                                    type="submit">@lang('labels.frontend.course.find_courses')
-                                                <i
-                                                        class="fas fa-caret-right"></i></button>
-                                        </form>
-
-                                    </div>
-                                </div>
-
-                                @if($recent_news->count() > 0)
-                                    <div class="side-bar-widget">
-                                        <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.recent_news')</h2>
-                                        <div class="latest-news-posts">
-                                            @foreach($recent_news as $item)
-                                                <div class="latest-news-area">
-
-                                                    @if($item->image != "")
-                                                        <div class="latest-news-thumbnile relative-position"
-                                                             style="background-image: url({{asset('storage/uploads/'.$item->image)}})">
-                                                            <div class="blakish-overlay"></div>
-                                                        </div>
-                                                    @endif
-                                                    <div class="date-meta">
-                                                        <i class="fas fa-calendar-alt"></i> {{$item->created_at->format('d M Y')}}
-                                                    </div>
-                                                    <h3 class="latest-title bold-font"><a
-                                                                href="{{route('blogs.index',['slug'=>$item->slug.'-'.$item->id])}}">{{$item->title}}</a>
-                                                    </h3>
-                                                </div>
-                                                <!-- /post -->
-                                            @endforeach
-
-
-                                            <div class="view-all-btn bold-font">
-                                                <a href="{{route('blogs.index')}}">@lang('labels.frontend.course.view_all_news')
-                                                    <i class="fas fa-chevron-circle-right"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                @endif
-
-
-                                @if($global_featured_course != "")
-                                    <div class="side-bar-widget">
-                                        <h2 class="widget-title text-capitalize">@lang('labels.frontend.course.featured_course')</h2>
-                                        <div class="featured-course">
-                                            <div class="best-course-pic-text relative-position pt-0">
-                                                <div class="best-course-pic relative-position "
-                                                     @if($global_featured_course->image != "") style="background-image: url({{$global_featured_course->image}})" @endif>
-
-                                                    @if($global_featured_course->trending == 1)
-                                                        <div class="trend-badge-2 text-center text-uppercase">
-                                                            <i class="fas fa-bolt"></i>
-                                                            <span>@lang('labels.frontend.badges.trending')</span>
-                                                        </div>
-                                                    @endif
-                                                    @if($global_featured_course->free == 1)
-                                                        <div class="trend-badge-3 text-center text-uppercase">
-                                                            <i class="fas fa-bolt"></i>
-                                                            <span>@lang('labels.backend.courses.fields.free')</span>
-                                                        </div>
-                                                    @endif
-
-                                                </div>
-                                                <div class="best-course-text" style="left: 0;right: 0;">
-                                                    <div class="course-title mb20 headline relative-position">
-                                                        <h3>
-                                                            <a href="{{ route('courses.show', [$global_featured_course->slug]) }}">{{$global_featured_course->title}}</a>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="course-meta">
-                                            <span class="course-category"><a
-                                                        href="{{route('courses.category',['category'=>$global_featured_course->category->slug])}}">{{$global_featured_course->category->name}}</a></span>
-                                                        <span class="course-author">{{ $global_featured_course->students()->count() }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-                </div>
+                    </div>
             </div>
-        </section>
+        </div>
+    </section>
     @endif
     @if(@isset($category))
-    <section id="search-course" class=" border">
+        <section id="search-course" class=" border">
             <div class="container">
                 <div class="row ">
                     <div class="col-12">
@@ -270,7 +271,7 @@
                                             <div class="course-list-img-text course-page-sec">
                                                 <a href="{{ route('courses.show', [$course->slug]) }}">
                                                     <div class="course-li-img"
-                                                        @if($course->image != "") style="background-image: url({{$course->image}})" @endif >
+                                                         @if($course->image != "") style="background-image: url({{$course->image}})" @endif >
                                                     </div>
                                                 </a>
                                             </div>
@@ -297,11 +298,11 @@
                                             </div>
                                             <div class="course-meta my-2">
                                                 <small><i class="far fa-clock"></i> {{ $course->course_hours }}
-                                                @lang('labels.backend.courses.fields.hours') |
+                                                    @lang('labels.backend.courses.fields.hours') |
                                                 </small>
                                                 <small><i
                                                             class="fab fa-youtube"></i> {{ $course->chapters()->count() }}
-                                                            @lang('labels.backend.courses.fields.lectures')
+                                                    @lang('labels.backend.courses.fields.lectures')
                                                 </small>
                                             </div>
                                             <div class="row  tech-height">
@@ -436,8 +437,8 @@
     @endif
     <!-- End of course section
         ============================================= -->
-        @if(@isset($category))
-    @include('frontend.layouts.partials.teachers')
+    @if(@isset($category))
+        @include('frontend.layouts.partials.teachers')
 
     @endif
 
@@ -456,115 +457,115 @@
 
                             <!-- Section: Average -->
                             <section class="p-3 pb-0 border-bottom rating-filter">
-                               
+
                                 <h5 class="font-weight-bold mb-3 " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">@lang('labels.frontend.course.filters.rating') <i class="fas fa-chevron-down arrowDown"></i></h5>
-                               
+
                                 <div class="collapse" id="collapseExample">
-                                
-                                <div class="form-group form-check" >
-                                    <input name="rate" type="radio" data-value="4" class="form-check-input" id="4+">
-                                    <label class="form-check-label" for="4+">
-                                        <ul class="small rating-list">
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
-                                            </li>
-                                        </ul>
-                                    </label>
+
+                                    <div class="form-group form-check" >
+                                        <input name="rate" type="radio" data-value="4" class="form-check-input" id="4+">
+                                        <label class="form-check-label" for="4+">
+                                            <ul class="small rating-list">
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
+                                                </li>
+                                            </ul>
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group form-check">
+                                        <input name="rate" type="radio" data-value="3" class="form-check-input" id="3+">
+                                        <label class="form-check-label" for="3+">
+                                            <ul class="small rating-list">
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
+                                                </li>
+                                            </ul>
+                                        </label>
+                                    </div>
+                                    <div class="form-group form-check">
+                                        <input name="rate" type="radio" data-value="2" class="form-check-input" id="2+">
+                                        <label class="form-check-label" for="2+">
+                                            <ul class="small rating-list">
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
+                                                </li>
+                                            </ul>
+                                        </label>
+                                    </div>
+                                    <div class="form-group form-check">
+                                        <input name="rate" type="radio" data-value="1" class="form-check-input" id="1+">
+                                        <label class="form-check-label" for="1+">
+                                            <ul class="small rating-list">
+                                                <li>
+                                                    <i class="fas fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <i class="far fa-star fa-sm text-warning"></i>
+                                                </li>
+                                                <li>
+                                                    <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
+                                                </li>
+                                            </ul>
+                                        </label>
+                                    </div>
+
 
                                 </div>
-                                <div class="form-group form-check">
-                                    <input name="rate" type="radio" data-value="3" class="form-check-input" id="3+">
-                                    <label class="form-check-label" for="3+">
-                                        <ul class="small rating-list">
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
-                                            </li>
-                                        </ul>
-                                    </label>
-                                </div>
-                                <div class="form-group form-check">
-                                    <input name="rate" type="radio" data-value="2" class="form-check-input" id="2+">
-                                    <label class="form-check-label" for="2+">
-                                        <ul class="small rating-list">
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
-                                            </li>
-                                        </ul>
-                                    </label>
-                                </div>
-                                <div class="form-group form-check">
-                                    <input name="rate" type="radio" data-value="1" class="form-check-input" id="1+">
-                                    <label class="form-check-label" for="1+">
-                                        <ul class="small rating-list">
-                                            <li>
-                                                <i class="fas fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <i class="far fa-star fa-sm text-warning"></i>
-                                            </li>
-                                            <li>
-                                                <p class=" px-2">& @lang('labels.frontend.course.filters.up')</p>
-                                            </li>
-                                        </ul>
-                                    </label>
-                                </div>
-
-                          
-                        </div>
                             </section>
                             <!-- Section: Average -->
 
@@ -573,31 +574,31 @@
 
                                 <h5 class="font-weight-bold mb-3"  data-toggle="collapse" href="#collapseExampl" role="button" aria-expanded="false" aria-controls="collapseExampl">@lang('labels.frontend.course.filters.duration')  <i class="fas fa-chevron-down arrowDown"></i></h5>
                                 <div class="collapse" id="collapseExampl">
-                                <div class="form-check pl-0 mb-3">
-                                    <input type="radio" class="form-check-input" id="under2" data-value="0-2"
-                                           name="duration">
-                                    <label class="form-check-label small font-weight-bold" for="under2">0-2
-                                        @lang('labels.frontend.course.filters.hours')</label>
+                                    <div class="form-check pl-0 mb-3">
+                                        <input type="radio" class="form-check-input" id="under2" data-value="0-2"
+                                               name="duration">
+                                        <label class="form-check-label small font-weight-bold" for="under2">0-2
+                                            @lang('labels.frontend.course.filters.hours')</label>
+                                    </div>
+                                    <div class="form-check pl-0 mb-3">
+                                        <input type="radio" class="form-check-input" data-value="3-6" id="3-6"
+                                               name="duration">
+                                        <label class="form-check-label small font-weight-bold" for="3-6">3-6
+                                            @lang('labels.frontend.course.filters.hours')</label>
+                                    </div>
+                                    <div class="form-check pl-0 mb-3">
+                                        <input type="radio" class="form-check-input" data-value="7-16" id="7-16"
+                                               name="duration">
+                                        <label class="form-check-label small font-weight-bold" for="7-16">7-16
+                                            @lang('labels.frontend.course.filters.hours')</label>
+                                    </div>
+                                    <div class="form-check pl-0 mb-3">
+                                        <input type="radio" class="form-check-input" data-value="20-26" id="20-26"
+                                               name="duration">
+                                        <label class="form-check-label small font-weight-bold" for="20-26">20-26
+                                            @lang('labels.frontend.course.filters.hours')</label>
+                                    </div>
                                 </div>
-                                <div class="form-check pl-0 mb-3">
-                                    <input type="radio" class="form-check-input" data-value="3-6" id="3-6"
-                                           name="duration">
-                                    <label class="form-check-label small font-weight-bold" for="3-6">3-6
-                                         @lang('labels.frontend.course.filters.hours')</label>
-                                </div>
-                                <div class="form-check pl-0 mb-3">
-                                    <input type="radio" class="form-check-input" data-value="7-16" id="7-16"
-                                           name="duration">
-                                    <label class="form-check-label small font-weight-bold" for="7-16">7-16
-                                         @lang('labels.frontend.course.filters.hours')</label>
-                                </div>
-                                <div class="form-check pl-0 mb-3">
-                                    <input type="radio" class="form-check-input" data-value="20-26" id="20-26"
-                                           name="duration">
-                                    <label class="form-check-label small font-weight-bold" for="20-26">20-26
-                                         @lang('labels.frontend.course.filters.hours')</label>
-                                </div>
-                            </div>
                             </section>
                             <!-- Section: Price -->
 
@@ -605,16 +606,16 @@
                             <section class="pb-0 p-3 border-bottom price-filter">
                                 <h5 class="font-weight-bold mb-3" data-toggle="collapse" href="#collapseExamp" role="button" aria-expanded="false" aria-controls="collapseExamp">@lang('labels.frontend.course.filters.price')  <i class="fas fa-chevron-down arrowDown"></i></h5>
                                 <div class="collapse" id="collapseExamp">
-                                <div class="form-check pl-0 mb-3">
-                                    <input type="checkbox" class="form-check-input" id="isFree">
-                                    <label class="form-check-label small font-weight-bold" for="isFree">@lang('labels.backend.courses.fields.free')</label>
-                                </div>
-                                <input class="price-filter-input" type="range" name="price" id="price" value="0"
-                                       step="10"
-                                       min="0"
-                                       max="10000">
-                                <span class="text-muted font-weight-light float-right"><span id="current-price">0</span>  EGP</span>
-                                {{--                                <span class="text-muted font-weight-light float-right">10000 EGP</span>--}}
+                                    <div class="form-check pl-0 mb-3">
+                                        <input type="checkbox" class="form-check-input" id="isFree">
+                                        <label class="form-check-label small font-weight-bold" for="isFree">@lang('labels.backend.courses.fields.free')</label>
+                                    </div>
+                                    <input class="price-filter-input" type="range" name="price" id="price" value="0"
+                                           step="10"
+                                           min="0"
+                                           max="10000">
+                                    <span class="text-muted font-weight-light float-right"><span id="current-price">0</span>  EGP</span>
+                                    {{--                                <span class="text-muted font-weight-light float-right">10000 EGP</span>--}}
                                 </div>
                             </section>
                             <!-- Section: Price -->
@@ -668,8 +669,8 @@
     @endif
 
 
-   
-          
+
+
 
     {{-- end myyy of course section --}}
     <!-- End of course section

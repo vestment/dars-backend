@@ -167,7 +167,7 @@
                                                         </div>
                                                         <div class="course-meta my-3 vv">
 
-                                                            <span class="course-author"><a href="#">{{ $course->count() }}
+                                                            <span class="course-author"><a href="#">{{ $total_bundle->count() }}
                                                                     @lang('labels.frontend.course.courses')</a></span>
 
                                                         </div>
