@@ -66,7 +66,7 @@
             </a>
 
             <div class="divider"></div>
-            <a class="dropdown-item" href="{{ route('frontend.auth.logout') }}">
+            <a class="dropdown-item" onclick="localStorage.removeItem('token')" href="{{ route('frontend.auth.logout') }}">
                 <i class="fas fa-lock"></i> @lang('navs.general.logout')
             </a>
           </div>

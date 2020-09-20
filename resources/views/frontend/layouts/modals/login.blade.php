@@ -15,6 +15,7 @@
             font-family: Cairo;
         {{app()->getLocale() == 'ar' ? 'direction:rtl;': ''}}
 
+
         }
 
         .imgDiv {
@@ -26,7 +27,7 @@
         }
 
         .text-md-left {
-            text-align: {{app()->getLocale() == 'ar' ? 'right': 'left'}} !important;
+            text-align: {{app()->getLocale() == 'ar' ? 'right': 'left'}}  !important;
         }
 
         .formDiv {
@@ -58,7 +59,8 @@
                 <div class="row col-lg-8">
 
                     <div class="col-md-10 offset-md-1">
-                        <a href="{{url('/')}}"> <img class="img-fluid" src="{{ asset('img/frontend/course/E-Council.png') }}"></a>
+                        <a href="{{url('/')}}"> <img class="img-fluid"
+                                                     src="{{ asset('img/frontend/course/E-Council.png') }}"></a>
                     </div>
                     <div class="col-md-10 offset-md-1 mb-3">
                         <h2>@lang('labels.frontend.login.welcome')</h2>
@@ -120,7 +122,8 @@
                                 </a>
                             </div>
                             <div class="col-md-6 mt-3 mt-md-0">
-                                <a href="{{ route('frontend.auth.social.login',['provider'=> 'google']) }}" class="btn btn-danger btn-block btn-lg text-white"><i
+                                <a href="{{ route('frontend.auth.social.login',['provider'=> 'google']) }}"
+                                   class="btn btn-danger btn-block btn-lg text-white"><i
                                             class="fa fa-google mr-2"></i> @lang('labels.frontend.login.google')</a>
                             </div>
                         </div>
@@ -205,6 +208,7 @@
                             } else {
                                 window.location.href = "{{route('admin.dashboard')}}"
                             }
+                            localStorage.setItem('token', response.token);
                             $('.response-error').hide().html('');
                             $('.response-success').show().html(response.message);
 

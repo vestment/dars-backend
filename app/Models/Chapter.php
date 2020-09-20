@@ -25,7 +25,7 @@ class Chapter extends Model
 
     public function lessons(){
 
-        return $this->hasmany('App\Models\Lesson');
+        return $this->hasMany('App\Models\Lesson');
     
     }
     public function getDataFromColumn($col) {

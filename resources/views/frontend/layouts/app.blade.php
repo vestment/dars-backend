@@ -125,7 +125,7 @@
                                                 @endcan
 
                                                 <li>
-                                                    <a href="{{ route('frontend.auth.logout') }}">@lang('navs.general.logout')</a>
+                                                    <a onclick="localStorage.removeItem('token')"  href="{{ route('frontend.auth.logout') }}">@lang('navs.general.logout')</a>
                                                 </li>
                                             </ul>
                                         </li>
