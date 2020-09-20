@@ -578,7 +578,9 @@ return array(
                         ),
                     'footer' =>
                         array(
-                            'short_description' => 'Short Description',
+                            'short_description' => 'Short Description in english',
+                            'short_description_ar' => 'Short Description in arabic',
+
                             'popular_categories' => 'Popular categories',
                             'featured_courses' => 'Featured courses',
                             'trending_courses' => 'Trending courses',

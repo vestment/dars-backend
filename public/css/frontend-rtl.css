@@ -7159,14 +7159,14 @@ hr {
 .custom-owl-theme .owl-nav .owl-prev {
     position: absolute;
     background-color: transparent;
-    left: 0;
+    left: -75px;
     top: 50%;
 }
 
 .custom-owl-theme .owl-nav .owl-next {
     position: absolute;
     background-color: transparent;
-    right: 0;
+    right:-75px;
     top: 50%;
 }
 

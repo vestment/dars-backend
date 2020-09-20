@@ -19,7 +19,12 @@
                             </div>
                             @if($footer_data->short_description->status == 1)
                                 <div class="footer-about-text">
+                                    @if(App::getLocale() == 'en')
                                     <p>{!! $footer_data->short_description->text !!} </p>
+                                    @endif
+                                    @if(App::getLocale() == 'ar')
+                                    <p>{!! $footer_data->short_description_ar->text !!} </p>
+                                    @endif
                                 </div>
                             @endif
                         </div>

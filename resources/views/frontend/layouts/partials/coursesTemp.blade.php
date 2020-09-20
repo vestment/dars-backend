@@ -29,6 +29,12 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+         <p class="pl-3" style="font-size:15px;">
+         {{Illuminate\Support\Str::words($course->getDataFromColumn('description'),10,'...') }}
+        </p>
+
+        </div>
         <div class="course-meta my-1 vv">
             <span class="course-category text-dark"><i class="far fa-clock"></i> {{$course->duration}}
 
