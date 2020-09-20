@@ -192,7 +192,8 @@
 
 
                                     @if($course->mediavideo && ($course->mediavideo->type == 'upload'))
-                                        <video width="300" class="mt-2 d-none video-player" controls  controlsList="nodownload">
+                                        <video width="300" class="mt-2 d-none video-player" controls
+                                               controlsList="nodownload">
                                             <source src="{{route('videos.stream',['encryptedId'=>\Illuminate\Support\Facades\Crypt::encryptString($course->mediavideo->id)])}}"/>
                                             Your browser does not support HTML5 video.
                                         </video>
@@ -352,9 +353,9 @@
                                                                                             id="menu-to-edit">
                                                                                             @foreach($chapterContent as $item)
                                                                                                 @foreach ($timeline as  $singleTimeline)
-                                                                                                @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                    @if($singleTimeline->model_id == $item->id)
-                                                                                                        
+                                                                                                    @if($singleTimeline->model_type == 'App\Models\Chapter')
+                                                                                                        @if($singleTimeline->model_id == $item->id)
+
                                                                                                             @php
                                                                                                                 $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type','!=','App\Models\Chapter')->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
                                                                                                             @endphp
@@ -406,15 +407,11 @@
                                                                                                                         </div>
                                                                                                                         <div class="col-4">
                                                                                                                             @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                                                <form method="post"
-                                                                                                                                      action="{{route('admin.chapters.destroy', ['chapter' => $item->id])}}">
-                                                                                                                                    @csrf
-                                                                                                                                    @method('DELETE')
-                                                                                                                                    <button type="submit"
-                                                                                                                                            class="btn btn-danger">
-                                                                                                                                        <i class="fa fa-trash"></i>
-                                                                                                                                    </button>
-                                                                                                                                </form>
+                                                                                                                                <button type="button"
+                                                                                                                                        class="btn btn-danger"
+                                                                                                                                        onclick="removeChapter({{$item->id}})">
+                                                                                                                                    <i class="fa fa-trash"></i>
+                                                                                                                                </button>
                                                                                                                             @endif
                                                                                                                         </div>
                                                                                                                     </div>
@@ -479,28 +476,39 @@
                                                                                                     </form>
                                                                                                 @else
                                                                                                     @if($lesson->model_type == \App\Models\Test::class)
-                                                                                                    @if($lesson->must_finish == 0)
-                                                                                                    <form method="post"  class="d-inline"
-                                                                                                               action="{{route('admin.test.must_finish', ['test' => $lesson->model_id])}}">
-                                                                                                            @csrf
-                                                                                                            @method('post')
-                                                                                                            <button type="submit"
-                                                                                                                    class="btn btn-light float-right ml-1">
-                                                                                                                make this test Must Pass
-                                                                                                            </button>
-                                                                                                        </form>
+                                                                                                        @if($lesson->must_finish == 0)
+                                                                                                            <form method="post"
+                                                                                                                  class="d-inline"
+                                                                                                                  action="{{route('admin.test.must_finish', ['test' => $lesson->model_id])}}">
+                                                                                                                @csrf
+                                                                                                                @method('post')
+                                                                                                                <button type="submit"
+                                                                                                                        class="btn btn-light float-right ml-1">
+                                                                                                                    make
+                                                                                                                    this
+                                                                                                                    test
+                                                                                                                    Must
+                                                                                                                    Pass
+                                                                                                                </button>
+                                                                                                            </form>
                                                                                                         @else
-                                                                                                        <form class="d-inline">
+                                                                                                            <form class="d-inline">
                                                                                                                 <p class="btn btn-light float-right ml-1">
-                                                                                                                <i class="fa fa-check"></i> Must Pass this test  before certificate
+                                                                                                                    <i class="fa fa-check"></i>
+                                                                                                                    Must
+                                                                                                                    Pass
+                                                                                                                    this
+                                                                                                                    test
+                                                                                                                    before
+                                                                                                                    certificate
                                                                                                                 </p>
-                                                                                                            
-                                                                                                        </form>
-                                                                                                        
+
+                                                                                                            </form>
+
                                                                                                         @endif
-                                                                                                        
-                                                                                                        
-                                                                                                        
+
+
+
                                                                                                         <form method="post"
                                                                                                               class="d-inline"
                                                                                                               action="{{route('admin.tests.destroy', ['test' => $lesson->model_id])}}">
@@ -512,8 +520,8 @@
                                                                                                                         class="fa fa-trash"></i>
                                                                                                             </button>
                                                                                                         </form>
-                                                                                                          
-                                                                                                        
+
+
                                                                                                     @elseif ($lesson->model_type == \App\Models\Lesson::class)
                                                                                                         <form method="post"
                                                                                                               class="d-inline"
@@ -526,9 +534,9 @@
                                                                                                                         class="fa fa-trash"></i>
                                                                                                             </button>
                                                                                                         </form>
-                                                                                                        
-                                                                                                          
-                                                                                                        
+
+
+
                                                                                                     @endif
                                                                                                     <a @if($lesson->model_type == \App\Models\Test::class) onclick="editTest({{$lesson->model_id}})"
                                                                                                        @else onclick="editLesson({{$lesson->model_id}})"
@@ -1125,6 +1133,22 @@
             })
         }
 
+        function removeChapter(id) {
+            if (confirm('Are your sure you want to delete this chapter?')) {
+                $.ajax({
+                    type: "post",
+                    url: '{{route('admin.chapters.remove')}}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        'id': id
+                    },
+                    success: function (resp) {
+                        console.log(resp)
+                    }
+                })
+            }
+        }
+
         function editLesson(id) {
             $('#editTestForm').hide();
             $.ajax({
@@ -1294,7 +1318,6 @@
         @endif
 
 
-
     </script>
 
     <script>
@@ -1324,7 +1347,7 @@
                     console.log(resp);
                 }
             }).done(function () {
-                location.reload();
+                // location.reload();
             });
         })
 

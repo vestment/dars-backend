@@ -175,12 +175,7 @@ class LessonsController extends Controller
             return abort(401);
         }
 
-        $slug = "";
-        if (($request->slug == "") || $request->slug == null) {
-            $slug = str_slug($request->title);
-        } else if ($request->slug != null) {
-            $slug = $request->slug;
-        }
+        $slug = str_slug($request->title.'-'.$request->chapter_id);
 
         $slug_lesson = Lesson::where('slug', '=', $slug)->first();
         if ($slug_lesson != null) {
@@ -315,7 +310,7 @@ class LessonsController extends Controller
         }
 
 
-        $slug = str_slug($request->title);
+        $slug = str_slug($request->title.'-'.$request->chapter_id);
 
         $slug_lesson = Lesson::where('slug', '=', $slug)->where('id', '!=', $id)->first();
         if ($slug_lesson != null) {
@@ -324,7 +319,7 @@ class LessonsController extends Controller
 
         $lesson = Lesson::findOrFail($id);
         $lesson->update($request->except('downloadable_files', 'lesson_image','course_id','chapter_id'));
-        $lesson->slug = $slug;
+        $lesson->slug = str_slug($request->title.'-'.$request->chapter_id);
         $lesson->save();
 
         //Saving  videos

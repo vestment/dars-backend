@@ -167,7 +167,7 @@ class TestsController extends Controller
         if (! Gate::allows('test_create')) {
             return abort(401);
         }
-        $slug = str_slug($request->title);
+        $slug = str_slug($request->title.'-'.$request->chapter_id);
         $slug_test = Test::where('slug', $slug)->first();
         if ($slug_test != null) {
             return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
@@ -233,9 +233,15 @@ class TestsController extends Controller
         if (! Gate::allows('test_edit')) {
             return abort(401);
         }
+        $slug = str_slug($request->title.'-'.$request->chapter_id);
+
+        $slug_test = Test::where('slug', '=', $slug)->where('id', '!=', $id)->first();
+        if ($slug_test != null) {
+            return back()->withFlashDanger(__('alerts.backend.general.slug_exist'));
+        }
         $test = Test::findOrFail($id);
         $test->update($request->all());
-        $test->slug = str_slug($request->title);
+        $test->slug = str_slug($request->title.'-'.$request->chapter_id);
         $test->save();
 
 

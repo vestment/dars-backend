@@ -615,15 +615,21 @@ class ApiController extends Controller
     {
 
         $lesson = Lesson::where('published', '=', 1)
-            ->where('id', '=', $request->lesson_id)
+            ->where('slug', $request->lesson)
             ->first();
         if ($lesson != null) {
+            if ($lesson->course && !in_array(auth()->user()->id,$lesson->course->students()->pluck('user_id')->toArray())) {
+                return response()->json(['status' => 'failure','message'=>'You need to buy this course first']);
+            }
             $course = $lesson->course;
+            $courseTimeLine = $lesson->course->courseTimeline;
             $chapters = $course->chapters()->with(['test','lessons'])->get();
             $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
+                ->where('model_type', Lesson::class)
                 ->orderBy('sequence', 'desc')
                 ->first();
             $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
+                ->where('model_type', Lesson::class)
                 ->orderBy('sequence', 'asc')
                 ->first();
 
