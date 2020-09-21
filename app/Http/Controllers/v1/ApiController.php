@@ -627,7 +627,12 @@ class ApiController extends Controller
                 return response()->json(['status' => 'failure', 'message' => 'You need to buy this course first']);
             }
             $course = $lesson->course;
-            $courseTimeLine = $lesson->course->courseTimeline()->with('model')->get();
+            $courseTimeLine = $lesson->course->courseTimeline()->with(['model'])->get();
+            foreach ($courseTimeLine as $key => $item) {
+                if ($item->model_type == Lesson::class) {
+                    $courseTimeLine[$key]->model['data'] = $item->model()->with(['downloadableMedia', 'notes','mediaPDF','mediaAudio'])->get();
+                }
+            }
             $chapters = $course->chapters()->with(['test'])->get();
             $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->where('model_type', Lesson::class)
