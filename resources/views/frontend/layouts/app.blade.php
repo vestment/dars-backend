@@ -257,7 +257,7 @@
                                                 <li class="">
                                                     <a href="{{asset($menu->link)}}" @if($menu->label == '911') style="width: 85px;margin-top: -20px;"  @endif
                                                        class="nav-link @if($menu->label == 'courses') d-lg-none @endif {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
-                                                       id="menu-{{$menu->id}}">@if($menu->label == '911') <img style="width: 40px;" src="{{asset('1.png')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
+                                                       id="menu-{{$menu->id}}">@if($menu->label == '911') <img style="width: 60px;" src="{{asset('1.png')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
                                                 </li>
                                                 @else
                                                 <li class="menu-item-has-children ul-li-block">
