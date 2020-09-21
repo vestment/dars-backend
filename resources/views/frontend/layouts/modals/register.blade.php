@@ -54,7 +54,8 @@
         <div class="formDiv col-lg-6 text-md-left text-center">
             <div class="row col-lg-8">
                 <div class="col-md-10 offset-md-1">
-                    <a href="{{url('/')}}"> <img class="img-fluid" src="{{ asset('img/frontend/course/E-Council.png') }}"></a>
+                    <a href="{{url('/')}}">  <img class="py-5" src="{{asset("storage/logos/".config('logo_b_image'))}}"
+                                    alt="{{env('APP_NAME')}}"></a>
                 </div>
 
                 <div class="col-md-10 offset-md-1">

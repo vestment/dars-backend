@@ -449,6 +449,7 @@ class PageController extends Controller
 
         return redirect()->route('admin.pages.index')->withFlashSuccess(trans('alerts.backend.general.deleted'));
     }
+   
 
 
 
