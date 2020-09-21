@@ -204,7 +204,7 @@
                                          @php $category = json_decode(json_encode($category), FALSE); @endphp
                                                 <li>
                                                     <a href="{{route('courses.category',['category'=>$category->slug])}}">
-                                                    <i class="text-pink p-2 {{$category->icon}} "></i><span class="pl-3 d-block text-secondary" >{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}}</span>
+                                                    <i class="text-pink p-2 {{$category->icon}} " style="font-size:20px"></i><span class="pl-4 d-block text-secondary" >{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}}</span>
                                                 </a>
                                                 </li>
                                         @endforeach
@@ -216,12 +216,14 @@
                                           @php $category = json_decode(json_encode($category), FALSE); @endphp
                                                 <li>
                                                     <a href="{{route('courses.category',['category'=>$category->slug])}}">
-                                                    <i class="text-pink p-2 {{$category->icon}} "></i>  <span class="pl-3 d-block text-secondary" >{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}} </span>
+                                                    <i class="text-pink p-2 {{$category->icon}} " style="font-size:20px"></i>  <span class="pl-4 d-block text-secondary" >{{app()->getLocale() == 'ar' ? $category->ar_name : $category->name}} </span>
                                                 </a>
                                                 </li>
                                         @endforeach
                                          </ul>
                                         </div>
+                                        
+                                        
                                         
                                         </div> <!-- dropdown-large.// -->
                                          </div>
@@ -255,7 +257,7 @@
                                                 <li class="">
                                                     <a href="{{asset($menu->link)}}" @if($menu->label == '911') style="width: 85px;margin-top: -20px;"  @endif
                                                        class="nav-link @if($menu->label == 'courses') d-lg-none @endif {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}"
-                                                       id="menu-{{$menu->id}}">@if($menu->label == '911') <img style="width: 50px;" src="{{asset('1.png')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
+                                                       id="menu-{{$menu->id}}">@if($menu->label == '911') <img style="width: 40px;" src="{{asset('1.png')}}"> @else {{trans('custom-menu.'.$menu_name.'.'.str_slug($menu->label))}} @endif</a>
                                                 </li>
                                                 @else
                                                 <li class="menu-item-has-children ul-li-block">
