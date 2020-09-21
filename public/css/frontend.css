@@ -6642,9 +6642,9 @@ ul.product-tab li.active:after {
 }
 
 
-.titleofcard{
-  font-size: 1.5VW;
-}
+/*.titleofcard{*/
+/*  font-size: 1.5VW;*/
+/*}*/
 
 
 @media (max-width: 768px) {

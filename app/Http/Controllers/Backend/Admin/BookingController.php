@@ -34,9 +34,9 @@ class BookingController extends Controller
             if (!Gate::allows('course_delete')) {
                 return abort(401);
             }
-            $offlineCourses = Course::where('offline', 1)->onlyTrashed()->ofTeacher();
+            $offlineCourses = Course::withoutGlobalScope('filter')->where('offline', 1)->onlyTrashed()->ofTeacher();
         } else {
-            $offlineCourses = Course::where('offline', 1)->ofTeacher();
+            $offlineCourses = Course::withoutGlobalScope('filter')->where('offline', 1);
         }
         $offlineCourses = $offlineCourses->get();
         if (Auth::user()->hasRole('academy')) {
@@ -49,14 +49,16 @@ class BookingController extends Controller
             // Categories associated with academy courses
             $categories = Category::where('name', '911')->first();
             if ($categories) {
-                $courses_911 = Course::where('category_id', $categories->id)->with('category')->get();
+                $courses_911 = Course::withoutGlobalScope('filter')->where('category_id', $categories->id)->where('offline', 1)->with('category')->get();
                 $offlineCourses = $offlineCourses->merge($courses_911);
             }
         } elseif (Auth::user()->hasRole('teacher')) {
             $offlineCourses = Course::ofTeacher()
+                ->where('offline', 1)
                 ->whereHas('category')
                 ->orderBy('created_at', 'desc')->get();
         }
+
         return view('backend.bookings.index', compact('offlineCourses'));
     }
 
@@ -102,10 +104,11 @@ class BookingController extends Controller
             // Categories associated with academy courses
             $categories = Category::where('name', '911')->first();
             if ($categories) {
-                $courses_911 = Course::where('category_id', $categories->id)->with('category')->get();
+                $courses_911 = Course::where('category_id', $categories->id)->with('category')->where('offline', 1)->get();
             }
         } elseif (Auth::user()->hasRole('teacher')) {
             $courses = Course::ofTeacher()
+                ->where('offline', 1)
                 ->whereHas('category');
         }
         if ($courses_911 && $academyCourses) {
@@ -168,9 +171,9 @@ class BookingController extends Controller
                 return $teachers;
             })
             ->editColumn('bookingData', function ($q) {
-               $studentsOrders = OrderItem::where(['item_type'=>Course::class,'item_id'=>$q->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->pluck('order_id');
-        $studentCount = Order::whereIn('id', $studentsOrders)->where('status',1)->pluck('id')->count();
-        $availableSeats = $q->seats - $studentCount;
+                $studentsOrders = OrderItem::where(['item_type'=>Course::class,'item_id'=>$q->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->pluck('order_id');
+                $studentCount = Order::whereIn('id', $studentsOrders)->where('status',1)->pluck('id')->count();
+                $availableSeats = $q->seats - $studentCount;
                 $bookingData = '<span class="text-dark"> ('.$studentCount.') Students Booked</span><br><span class="text-dark"> ('.$availableSeats.') Available Seats</span>';
                 return $bookingData;
             })

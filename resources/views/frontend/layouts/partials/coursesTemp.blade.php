@@ -49,12 +49,12 @@
             @foreach($course->teachers as $key=>$teacher)
                 @if($key == 0)
                     @if ($teacher->hasRole('teacher'))
-                        <div class="col-3 " data-role="{{$teacher->hasRole('teacher')}}">
+                        <div class="col-lg-3 " data-role="{{$teacher->hasRole('teacher')}}">
                             <img src="{{$teacher->picture}}"
                                  class="rounded-circle img-tech2">
                         </div>
-                        <div class="col-9">
-                            <div class="row pt-2">
+                        <div class="col-lg-9">
+                            <div class="row pt-2 pt-lg-2 pl-lg-0 p-3">
                                 @foreach($course->teachers as $key=>$teacher)
                                     @if($key == 0 && $teacher->teacherProfile)
                                         <a class="text-pink tx-font"

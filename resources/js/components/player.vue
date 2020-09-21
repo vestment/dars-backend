@@ -45,18 +45,66 @@
                       {{ lesson.media_video ? lesson.media_video.duration : 'error getting duration' }}
                     </p>
                     <ul class="float-right list-inline">
-                      <li v-if="lesson.notes"><a href="#notesModal" @click="()=> {notes = lesson.notes}" data-toggle="modal"
-                                                 data-target="#notesModal"><i class="far fa-sticky-note"></i></a></li>
+                      <li class="list-inline-item" v-if="lesson.notes.length > 0"><a href="#notesModal"
+                                                                                     @click="()=> {notes = lesson.notes}"
+                                                                                     data-toggle="modal"
+                                                                                     data-target="#notesModal"><i
+                          class="far fa-sticky-note"></i></a>
+                      </li> <li class="list-inline-item" v-if="lesson.media_p_d_f">
+                      <a :href="'/storage/uploads/'+lesson.media_p_d_f.name">
+                        <i class="far fa-file-pdf"></i>
+                      </a>
+                      </li>
+                      <li class="list-inline-item" v-if="lesson.downloadable_media.length > 0">
+                        <a @click="setDownloadableMedia(lesson)" data-toggle="modal"
+                           data-target="#downloadableMediaModal" href="#downloadableMediaModal"><i
+                            class="fa fa-download"></i></a>
+                      </li>
                     </ul>
                   </li>
                   <li class="pt-2" v-if="chapter.test">
                     <a class="text-danger " :href="'./test/'+chapter.test.slug">{{ chapter.test.title }}</a>
-
                   </li>
                 </ul>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card mt-5">
+          <div class="card-header">New Note</div>
+          <div class="card-body">
+            <Vueditor ref="newNote" v-model="newNote.contentText"></Vueditor>
+          </div>
+          <div class="card-footer">
+            <button @click="addNewNote()" type="button" class="btn btn-success">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="downloadableMediaModal" tabindex="-2" aria-labelledby="downloadableMediaModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="downloadableMediaModalLabel">Lesson Media</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card shadow-c" :data-length="downloadableMedia.length">
+              <div v-for="(media,index) in downloadableMedia.data" class="card-body">
+                <a class="text-center" :href="'/download?filename='+media.name+'&lesson='+downloadableMedia.lesson.id">{{ media.name.replace(/\.[^/.]+$/, "") }} <i
+                    class="fa fa-download"></i></a>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -70,14 +118,17 @@
             </button>
           </div>
           <div class="modal-body" id="notes-container">
-            <div class="card shadow-c ">
+            <div class="card shadow-c" :data-length="notes.length">
               <div v-for="note in notes" class="card-body">
-                {{ note.contentText.replace(/<[^>]*>?/gm, '') }}
-                <a class="float-right text-pink "
-                   @click="()=> {current_note = note;setEditorContent();}"
+                <p>{{ note.contentText.replace(/<[^>]*>?/gm, '') }}</p>
+                <a class="float-right font-weight-light ml-1 text-white btn btn-primary btn-sm "
+                   @click="setEditorContent(note)"
                    data-toggle="modal"
                    data-target="#edit-note-modal"><i
                     class="far fa-edit"></i> </a>
+                <a class="float-right btn font-weight-light text-white btn-danger btn-sm"
+                   @click="removeNote(note.id)"><i
+                    class="fa fa-trash"></i> </a>
               </div>
 
             </div>
@@ -97,17 +148,17 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-            <div class="modal-body p-2">
-              <Vueditor ref="Vueditor" v-model="current_note.contentText"></Vueditor>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary"
-                      data-dismiss="modal">Close
-              </button>
-              <button @click="saveNote()" type="button" class="btn btn-primary">Save changes
-              </button>
+          <div class="modal-body p-2">
+            <Vueditor ref="noteEdit" v-model="current_note.contentText"></Vueditor>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Close
+            </button>
+            <button @click="saveNote()" type="button" class="btn btn-primary">Save changes
+            </button>
 
-            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -141,7 +192,9 @@ export default {
       },
       courseData: [],
       notes: [],
-      current_note: {}
+      newNote: {contentText: ''},
+      current_note: {contentText: ''},
+      downloadableMedia: {data: '', lesson: ''},
     }
   },
   components: {
@@ -158,21 +211,54 @@ export default {
     }
   },
   methods: {
-    setEditorContent() {
+    setDownloadableMedia(lesson) {
+      this.downloadableMedia.data = lesson.downloadable_media;
+      this.downloadableMedia.lesson = lesson;
+    },
+    setEditorContent(note) {
       $('#notesModal').modal('hide');
-      let editor = this.$refs.Vueditor;
+      this.current_note = note;
+      let editor = this.$refs.noteEdit;
       editor.setContent(this.current_note.contentText);
     },
     saveNote() {
-      let editor = this.$refs.Vueditor;
+      let editor = this.$refs.noteEdit;
       this.current_note.contentText = editor.getContent();
-      console.log(this.current_note);
       axios.post('/api/v1/save-note', this.current_note)
           .then(res => {
-
+            if (res.data.status == 'success') {
+              $('#edit-note-modal').modal('hide');
+              $('#notesModal').modal('show');
+            }
           }).catch(err => {
         console.log(err)
       })
+    },
+    addNewNote() {
+      let editor = this.$refs.newNote;
+      this.newNote.contentText = editor.getContent();
+      this.newNote.lesson_id = this.courseData.lesson.id
+      axios.post('/api/v1/add-note', this.newNote)
+          .then(res => {
+            if (res.data.status == 'success') {
+              editor.setContent('')
+              this.notes.push(res.data.note);
+            }
+          }).catch(err => {
+        console.log(err)
+      })
+    },
+    removeNote(id) {
+      if (confirm('Are you sure you want to delete this note?')) {
+        axios.post('/api/v1/remove-note', {id: id})
+            .then(res => {
+              if (res.data.status == 'success') {
+                this.notes.splice(this.notes.findIndex(note => note.id === id), 1)
+              }
+            }).catch(err => {
+          console.log(err)
+        })
+      }
     },
     getData(slug) {
       axios.post('/api/v1/single-lesson', {lesson: slug})

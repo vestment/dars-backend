@@ -656,7 +656,7 @@ class ApiController extends Controller
             }
             $course_page = route('courses.show', ['slug' => $lesson->course->slug]);
             foreach ($chapters as $key => $chapter) {
-                $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes'])->get();
+                $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes','mediaAudio','mediaPDF','downloadableMedia'])->get();
             }
             $results = [
                 'lesson' => $lesson,
@@ -687,6 +687,28 @@ class ApiController extends Controller
     }
 
     /**
+     * Add New Note
+     */
+    public function AddNewNote(Request $request)
+    {
+        $data = $request->all();
+        $data['user_id'] = auth()->user()->id;
+        $note = Note::create($data);
+        return response()->json(['status' => 'success', 'note' => $note]);
+    }
+    /**
+     * Remove Note
+     */
+    public function removeNote(Request $request)
+    {
+        $note = Note::findorFail($request->id);
+        if ($note) {
+            $note->delete();
+            return response()->json(['status' => 'success', 'note' => $note]);
+        }
+        return response()->json(['status' => 'failure']);
+    }
+    /**
      * Get Test
      *
      * @return [json] Success message
@@ -695,9 +717,9 @@ class ApiController extends Controller
     public function getTest(Request $request)
     {
         $test = Test::where('published', '=', 1)
-            ->where('id', '=', $request->test_id)
-            ->where('course_id', '=', $request->course_id)
+            ->where('slug', '=', $request->test)
             ->first();
+
         $questions = [];
         $is_test_given = false;
         //If Retest is being taken
@@ -708,8 +730,6 @@ class ApiController extends Controller
             $is_test_given = false;
 
         }
-
-
         if ($test->questions && (count($test->questions) > 0)) {
             foreach ($test->questions as $question) {
                 $options = [];
@@ -734,7 +754,11 @@ class ApiController extends Controller
             $is_test_given = true;
             $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result];
         }
-
+        $chapters = $test->course()->with('chapters')->first()->chapters;
+        foreach ($chapters as $key => $chapter) {
+            $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes','mediaAudio','mediaPDF','downloadableMedia'])->get();
+        }
+        $data['chapters'] = $chapters;
         $data['test'] = $test->toArray();
         $data['is_test_given'] = $is_test_given;
         $data['test_result'] = $result_data;
