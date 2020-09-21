@@ -1573,7 +1573,7 @@ return array(
                 array(
                     'partials' =>
                         array(
-                            'view_plans' => 'اعرض الخطط',
+                            'view_offline_courses' => 'اعرض الدورات',
                             'Offline Booking Center' => ' مركز الحجز دون اتصال بالإنترنت',
                             'Offline Booking' => '
         نرى بأنفسنا كل يوم كيف تجعل التكنولوجيا المستحيل ممكناً. هذا هو السبب

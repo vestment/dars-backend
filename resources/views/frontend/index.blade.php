@@ -272,12 +272,25 @@
                 
                 <div class="">
                     <div class="p-5 ">
-                        <img src="/img/backend/brand/Council-logo-100px.png" alt="">
-                    </div>
+                        
+                                <img src="{{asset("storage/logos/".config('logo_b_image'))}}"
+                                    alt="{{env('APP_NAME')}}">
+                                   
+                     </div>
                     <div class="cont text-white pl-5 pb-5">
-                        <h1>@lang('labels.frontend.layouts.partials.Offline Booking Center').</h1>
-                        <p class="">@lang('labels.frontend.layouts.partials.Offline Booking')</p>
-                         <div class="pl-5 pb-5">
+                    @if(App::getLocale() == 'en')
+                        <h1>{{$offline->title}}</h1>
+                        @endif
+                        @if(App::getLocale() == 'ar')
+                        <h1>{{$offline->title_ar}}</h1>
+                        @endif
+                        @if(App::getLocale() == 'en')
+                        <p class="">{!!$offline->content!!}</p>
+                        @endif
+                        @if(App::getLocale() == 'ar')
+                        <p class="">{!!$offline->content_ar!!}</p>
+                        @endif
+                         <div class="pl-3 pt-3 pb-5">
                     
                             <a href="{{ route('offlineBooking.index') }}"class="btn btn-outline-info">
                             @lang('labels.frontend.layouts.partials.view_offline_courses')

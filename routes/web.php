@@ -76,6 +76,7 @@ Route::get('teachers/{id}/show', 'Frontend\HomeController@showTeacher')->name('t
 
 Route::post('newsletter/subscribe', 'Frontend\HomeController@subscribe')->name('subscribe');
 
+
 //============Course Routes=================//
 Route::get('courses', ['uses' => 'CoursesController@all', 'as' => 'courses.all']);
 Route::get('player/{slug}', 'CoursesController@player');
