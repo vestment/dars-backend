@@ -3,7 +3,7 @@
     <div class="row ">
       <div class="col-lg-9">
   <section v-if="type=='test'" class="container">
-  <test/>
+  <test slug="testtt"/>
 
 </section>
         <div v-else class="player-video">
@@ -63,11 +63,11 @@
                 <ul class="list-group">
   <li v-for="lesson in chapter.lessons" :key="lesson.id" class="list-group-item ">
     <div class="md-v-line"></div><a href="#notesModal" @click="()=> {notes = lesson.notes}" data-toggle="modal"
-                                                 data-target="#notesModal"><i class="far fa-sticky-note mr-4 pr-3"></i></a> <a :to="'./'+lesson.slug">{{ lesson.title }}</a>
+                                                 data-target="#notesModal"><i class="far fa-sticky-note mr-4 pr-3"></i></a> <a :href="'./'+lesson.slug">{{ lesson.title }}</a>
   </li>
 
   <li v-if="chapter.test" class="list-group-item ">
-    <div class="md-v-line"></div><i class="fas fa-laptop mr-4 pr-3"></i> <a :to="{name: 'Test'}">{{ chapter.test.title }}</a>
+    <div class="md-v-line"></div><i class="fas fa-laptop mr-4 pr-3"></i> <a :href="'/player/'+chapter.test.slug+'/test'">{{ chapter.test.title }}</a>
   </li>
   
 </ul>
@@ -75,22 +75,6 @@
             </div>
           </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
       </div>

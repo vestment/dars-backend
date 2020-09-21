@@ -174,22 +174,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
@@ -414,6 +398,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
+// const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
 // const Vue = window.vue;
 
@@ -462,12 +447,17 @@ var quiz = {
     userResponseSkelaton = Array(quiz.questions.length).fill(null);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+   props: ['slug', 'type'],
+
    data: function data() {
       return {
+         testData: [],
          quiz: quiz,
          questionIndex: 0,
          userResponses: userResponseSkelaton,
-         isActive: false
+         isActive: false,
+         token: localStorage.getItem('token') ? localStorage.getItem('token') : ''
       };
    },
 
@@ -476,6 +466,10 @@ var quiz = {
          return String.fromCharCode(97 + i);
       }
    },
+   mounted: function mounted() {
+      this.getData(this.slug, this.token);
+   },
+
    methods: {
       restart: function restart() {
          this.questionIndex = 0;
@@ -505,6 +499,21 @@ var quiz = {
          return score;
 
          //return this.userResponses.filter(function(val) { return val }).length;
+      },
+      getData: function getData(slug, token) {
+         axios.post('/api/v1/single-test', { test: slug, token: this.token }).then(function (res) {
+            if (res.data.result) {
+               //   this.testData = res.data.result
+               //   this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
+               console.log("testinfo", res);
+               //   $('.course-title-header').text(this.courseData.course.title)
+               //   $('.close-lesson').attr('href', this.courseData.course_page)
+               //   $('.course-progress').text(this.courseData.course_progress + ' %')
+               //   $('.progress-bar').css('width', this.courseData.course_progress + '%')
+            }
+         }).catch(function (err) {
+            console.log(err);
+         });
       }
    }
 });
@@ -551,7 +560,7 @@ exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Mon
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700);", ""]);
 
 // module
-exports.push([module.i, "body {\n  font-family: \"Open Sans\", sans-serif;\n  font-size: 14px;\n  height: 100vh;\n  /* mocking native UI */\n  cursor: default !important;\n  /* remove text selection cursor */\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /* remove text selection */\n  user-drag: none;\n  /* disbale element dragging */\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n\n.button {\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.title,\n.subtitle {\n  font-family: Montserrat, sans-serif;\n  font-weight: normal;\n}\n\n.animated {\n  -webkit-transition-duration: 0.15s;\n          transition-duration: 0.15s;\n}\n\n.container {\n  margin: 0 0.5rem;\n}\n\n.questionBox {\n  width: 49rem;\n  min-height: 30rem;\n  background: #FAFAFA;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 0.5rem;\n  overflow: hidden;\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n}\n\n.questionBox header {\n  background: rgba(0, 0, 0, 0.025);\n  padding: 1.5rem;\n  text-align: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.questionBox header h1 {\n  font-weight: bold;\n  margin-bottom: 1rem !important;\n}\n\n.questionBox header .progressContainer {\n  width: 60%;\n  margin: 0 auto;\n}\n\n.questionBox header .progressContainer > progress {\n  margin: 0;\n  border-radius: 5rem;\n  overflow: hidden;\n  border: none;\n  color: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-moz-progress-bar {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-webkit-progress-value {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > p {\n  margin: 0;\n  margin-top: 0.5rem;\n}\n\n.questionBox .titleContainer {\n  text-align: center;\n  margin: 0 auto;\n  padding: 1.5rem;\n}\n\n.questionBox .quizForm {\n  display: block;\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .quizForm .quizFormContainer {\n  height: 100%;\n  margin: 15px 18px;\n}\n\n.questionBox .quizForm .quizFormContainer .field-label {\n  text-align: left;\n  margin-bottom: 0.5rem;\n}\n\n.questionBox .quizCompleted {\n  width: 100%;\n  padding: 1rem;\n  text-align: center;\n}\n\n.questionBox .quizCompleted > .icon {\n  color: #FF5252;\n  font-size: 5rem;\n}\n\n.questionBox .quizCompleted > .icon .is-active {\n  color: #00E676;\n}\n\n.questionBox .questionContainer {\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .questionContainer .optionContainer {\n  margin-top: 12px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\n.questionBox .questionContainer .optionContainer .option {\n  border-radius: 290486px;\n  padding: 9px 18px;\n  margin: 0 18px;\n  margin-bottom: 12px;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  cursor: pointer;\n  background-color: rgba(0, 0, 0, 0.05);\n  color: rgba(0, 0, 0, 0.85);\n  border: transparent 1px solid;\n}\n\n.questionBox .questionContainer .optionContainer .option.is-selected {\n  border-color: rgba(0, 0, 0, 0.25);\n  background-color: white;\n}\n\n.questionBox .questionContainer .optionContainer .option:hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n\n.questionBox .questionContainer .optionContainer .option:active {\n  -webkit-transform: scaleX(0.9);\n          transform: scaleX(0.9);\n}\n\n.questionBox .questionContainer .questionFooter {\n  background: rgba(0, 0, 0, 0.025);\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  width: 100%;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n}\n\n.questionBox .questionContainer .questionFooter .pagination {\n  margin: 15px 25px;\n}\n\n.pagination {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n\n.button {\n  padding: 0.5rem 1rem;\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  border-radius: 5rem;\n  margin: 0 0.25rem;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.button:hover {\n  cursor: pointer;\n  background: #ECEFF1;\n  border-color: rgba(0, 0, 0, 0.25);\n}\n\n.button.is-active {\n  background: #3D5AFE;\n  color: white;\n  border-color: transparent;\n}\n\n.button.is-active:hover {\n  background: #0a2ffe;\n}\n\n@media screen and (min-width: 769px) {\n  .questionBox {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n  }\n  .questionBox .questionContainer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n}\n\n.md-v-line {\n  position: absolute;\n  border-left: 1px solid rgba(0,0,0,.125);\n  height: 50px;\n  top:0px;\n  left:54px;\n  }\n  .video-js{\n    width: 100%;\n  }", ""]);
+exports.push([module.i, ".button {\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.title,\n.subtitle {\n  font-family: Montserrat, sans-serif;\n  font-weight: normal;\n}\n\n.animated {\n  -webkit-transition-duration: 0.15s;\n          transition-duration: 0.15s;\n}\n\n.container {\n  margin: 0 0.5rem;\n}\n\n.questionBox {\n  width: 49rem;\n  min-height: 30rem;\n  background: #FAFAFA;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 0.5rem;\n  overflow: hidden;\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n}\n\n.questionBox header {\n  background: rgba(0, 0, 0, 0.025);\n  padding: 1.5rem;\n  text-align: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.questionBox header h1 {\n  font-weight: bold;\n  margin-bottom: 1rem !important;\n}\n\n.questionBox header .progressContainer {\n  width: 60%;\n  margin: 0 auto;\n}\n\n.questionBox header .progressContainer > progress {\n  margin: 0;\n  border-radius: 5rem;\n  overflow: hidden;\n  border: none;\n  color: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-moz-progress-bar {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-webkit-progress-value {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > p {\n  margin: 0;\n  margin-top: 0.5rem;\n}\n\n.questionBox .titleContainer {\n  text-align: center;\n  margin: 0 auto;\n  padding: 1.5rem;\n}\n\n.questionBox .quizForm {\n  display: block;\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .quizForm .quizFormContainer {\n  height: 100%;\n  margin: 15px 18px;\n}\n\n.questionBox .quizForm .quizFormContainer .field-label {\n  text-align: left;\n  margin-bottom: 0.5rem;\n}\n\n.questionBox .quizCompleted {\n  width: 100%;\n  padding: 1rem;\n  text-align: center;\n}\n\n.questionBox .quizCompleted > .icon {\n  color: #FF5252;\n  font-size: 5rem;\n}\n\n.questionBox .quizCompleted > .icon .is-active {\n  color: #00E676;\n}\n\n.questionBox .questionContainer {\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .questionContainer .optionContainer {\n  margin-top: 12px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\n.questionBox .questionContainer .optionContainer .option {\n  border-radius: 290486px;\n  padding: 9px 18px;\n  margin: 0 18px;\n  margin-bottom: 12px;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  cursor: pointer;\n  background-color: rgba(0, 0, 0, 0.05);\n  color: rgba(0, 0, 0, 0.85);\n  border: transparent 1px solid;\n}\n\n.questionBox .questionContainer .optionContainer .option.is-selected {\n  border-color: rgba(0, 0, 0, 0.25);\n  background-color: white;\n}\n\n.questionBox .questionContainer .optionContainer .option:hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n\n.questionBox .questionContainer .optionContainer .option:active {\n  -webkit-transform: scaleX(0.9);\n          transform: scaleX(0.9);\n}\n\n.questionBox .questionContainer .questionFooter {\n  background: rgba(0, 0, 0, 0.025);\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  width: 100%;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n}\n\n.questionBox .questionContainer .questionFooter .pagination {\n  margin: 15px 25px;\n}\n\n.pagination {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n\n.button {\n  padding: 0.5rem 1rem;\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  border-radius: 5rem;\n  margin: 0 0.25rem;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.button:hover {\n  cursor: pointer;\n  background: #ECEFF1;\n  border-color: rgba(0, 0, 0, 0.25);\n}\n\n.button.is-active {\n  background: #3D5AFE;\n  color: white;\n  border-color: transparent;\n}\n\n.button.is-active:hover {\n  background: #0a2ffe;\n}\n\n@media screen and (min-width: 769px) {\n  .questionBox {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n  }\n  .questionBox .questionContainer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n}\n\n.md-v-line {\n  position: absolute;\n  border-left: 1px solid rgba(0,0,0,.125);\n  height: 50px;\n  top:0px;\n  left:54px;\n  }\n  .video-js{\n    width: 100%;\n  }", ""]);
 
 // exports
 
@@ -46331,7 +46340,12 @@ var render = function() {
     _c("div", { staticClass: "row " }, [
       _c("div", { staticClass: "col-lg-9" }, [
         _vm.type == "test"
-          ? _c("section", { staticClass: "container" }, [_c("test")], 1)
+          ? _c(
+              "section",
+              { staticClass: "container" },
+              [_c("test", { attrs: { slug: "testtt" } })],
+              1
+            )
           : _c(
               "div",
               { staticClass: "player-video" },
@@ -46468,9 +46482,11 @@ var render = function() {
                                   ]
                                 ),
                                 _vm._v(" "),
-                                _c("a", { attrs: { to: "./" + lesson.slug } }, [
-                                  _vm._v(_vm._s(lesson.title))
-                                ])
+                                _c(
+                                  "a",
+                                  { attrs: { href: "./" + lesson.slug } },
+                                  [_vm._v(_vm._s(lesson.title))]
+                                )
                               ]
                             )
                           }),
@@ -46482,9 +46498,16 @@ var render = function() {
                                   staticClass: "fas fa-laptop mr-4 pr-3"
                                 }),
                                 _vm._v(" "),
-                                _c("a", { attrs: { to: { name: "Test" } } }, [
-                                  _vm._v(_vm._s(chapter.test.title))
-                                ])
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      href:
+                                        "/player/" + chapter.test.slug + "/test"
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(chapter.test.title))]
+                                )
                               ])
                             : _vm._e()
                         ],

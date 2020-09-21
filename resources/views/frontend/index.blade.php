@@ -277,6 +277,7 @@
                                     alt="{{env('APP_NAME')}}">
                                    
                      </div>
+                     @if($offline)
                     <div class="cont text-white pl-5 pb-5">
                     @if(App::getLocale() == 'en')
                         <h1>{{$offline->title}}</h1>
@@ -297,6 +298,7 @@
                             </a>
                     </div>
                     </div>
+                    @endif
                    
                 </div>
             </div>

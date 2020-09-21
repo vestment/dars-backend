@@ -89,6 +89,7 @@
 
 <script>
 import './lesson.css'
+// const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
 // const Vue = window.vue;
 
@@ -201,19 +202,28 @@ var quiz = {
 
 
   export default {
+     
+       props: ['slug','type'],
+
  
   data() {
     return {
+       testData:[],
       quiz: quiz,
       questionIndex: 0,
       userResponses: userResponseSkelaton,
-      isActive: false
+      isActive: false,
+      token:localStorage.getItem('token') ? localStorage.getItem('token') : ''
     }
    },
    filters: {
       charIndex: function(i) {
          return String.fromCharCode(97 + i);
       }
+   },
+   mounted(){
+      this.getData(this.slug , this.token)
+
    },
    methods: {
 		 restart: function(){
@@ -250,7 +260,23 @@ var quiz = {
          return score;
 
          //return this.userResponses.filter(function(val) { return val }).length;
-      }
+      },
+        getData(slug,token) {
+      axios.post('/api/v1/single-test', {test: slug ,token:this.token})
+          .then(res => {
+            if (res.data.result) {
+            //   this.testData = res.data.result
+            //   this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
+              console.log("testinfo", res)
+            //   $('.course-title-header').text(this.courseData.course.title)
+            //   $('.close-lesson').attr('href', this.courseData.course_page)
+            //   $('.course-progress').text(this.courseData.course_progress + ' %')
+            //   $('.progress-bar').css('width', this.courseData.course_progress + '%')
+            }
+          }).catch(err => {
+        console.log(err)
+      })
+    },
    }
    }
 
