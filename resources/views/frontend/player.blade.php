@@ -138,7 +138,10 @@
     <div class="container-fluid">
         <div class="main-content">
             <div id="app" class="content">
-                <player slug="{{$slug}}"></player>
+          
+        
+                <player slug="{{$slug}}" type="{{$type}}"></player>
+              
             </div>
         </div>
     </div>

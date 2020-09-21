@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-   <player></player>
+   <router-view></router-view>
   </div>
 </template>
 
 <script>
 import player from './components/player.vue'
 export default {
-    components:{
-        player
-    }
+  name: 'app',
 }
 </script>

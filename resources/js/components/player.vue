@@ -2,7 +2,11 @@
   <div class="container ">
     <div class="row ">
       <div class="col-lg-9">
-        <div class="player-video">
+  <section v-if="type=='test'" class="container">
+  <test/>
+
+</section>
+        <div v-else class="player-video">
           <video-player class="video-player-box"
                         ref="videoPlayer"
                         :options="playerOptions"
@@ -22,9 +26,11 @@
                         @ready="playerReadied">
           </video-player>
         </div>
+        
       </div>
       <div class="col-md-3 ">
         <div class="accordion" id="accordionExample">
+
           <div v-for="chapter in courseData.chapters" :key="chapter.id" class="card shadow mb-3">
             <div class="card-header" id="headingOne">
               <h2 class="mb-0">
@@ -37,7 +43,7 @@
             <div :id="'chapter-'+chapter.id" class="collapse show" aria-labelledby="headingOne"
                  data-parent="#accordionExample">
               <div class="card-body">
-                <ul class="list-unstyled">
+                <!-- <ul class="list-unstyled">
                   <li class="border-bottom border-dark" v-for="lesson in chapter.lessons" :key="lesson.id">
                     <p class="p-0 m-0"><a :href="'./'+lesson.slug">{{ lesson.title }}</a></p>
                     <p class="play p-0 m-0">
@@ -50,14 +56,43 @@
                     </ul>
                   </li>
                   <li class="pt-2" v-if="chapter.test">
-                    <a class="text-danger " :href="'./test/'+chapter.test.slug">{{ chapter.test.title }}</a>
+                    <a class="text-danger " :href="'/player/'+chapter.test.slug+'/test'">{{ chapter.test.title }}</a>
 
                   </li>
-                </ul>
+                </ul> -->
+                <ul class="list-group">
+  <li v-for="lesson in chapter.lessons" :key="lesson.id" class="list-group-item ">
+    <div class="md-v-line"></div><a href="#notesModal" @click="()=> {notes = lesson.notes}" data-toggle="modal"
+                                                 data-target="#notesModal"><i class="far fa-sticky-note mr-4 pr-3"></i></a> <a :to="'./'+lesson.slug">{{ lesson.title }}</a>
+  </li>
+
+  <li v-if="chapter.test" class="list-group-item ">
+    <div class="md-v-line"></div><i class="fas fa-laptop mr-4 pr-3"></i> <a :to="{name: 'Test'}">{{ chapter.test.title }}</a>
+  </li>
+  
+</ul>
               </div>
             </div>
           </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
     </div>
     <div class="modal fade" id="notesModal" tabindex="-2" aria-labelledby="notesModalLabel" aria-hidden="true">
@@ -71,7 +106,7 @@
           </div>
           <div class="modal-body" id="notes-container">
             <div class="card shadow-c ">
-              <div v-for="note in notes" class="card-body">
+              <div v-for="note in notes" class="card-body" :key="note.id">
                 {{ note.contentText.replace(/<[^>]*>?/gm, '') }}
                 <a class="float-right text-pink "
                    @click="()=> {current_note = note;setEditorContent();}"
@@ -115,6 +150,7 @@
 
 </template>
 
+
 <script>
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
@@ -122,11 +158,14 @@ import 'video.js/dist/video-js.css'
 import axios from '../axios'
 import {videoPlayer} from 'vue-video-player'
 import 'vueditor/dist/style/vueditor.min.css'
+import test from './test'
+import './lesson.css'
 
 export default {
-  props: ['slug'],
+  props: ['slug','type'],
   data() {
     return {
+    
       playerOptions: {
         // videojs options
         muted: true,
@@ -144,8 +183,10 @@ export default {
       current_note: {}
     }
   },
+   
   components: {
     videoPlayer,
+    test
   },
 
   mounted() {
@@ -158,6 +199,7 @@ export default {
     }
   },
   methods: {
+    
     setEditorContent() {
       $('#notesModal').modal('hide');
       let editor = this.$refs.Vueditor;
@@ -232,10 +274,3 @@ export default {
   }
 }
 </script>
-<style>
-
-
-.video-js {
-  width: 100%;
-}
-</style>

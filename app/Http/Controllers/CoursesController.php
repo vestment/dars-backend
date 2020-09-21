@@ -467,9 +467,9 @@ class CoursesController extends Controller
         return redirect()->back();
     }
 
-    public function player($slug){
+    public function player($slug,$type = null){
 
-        return view('frontend.player',compact('slug'));
+        return view('frontend.player',compact('slug','type'));
 
     }
 

@@ -2,14 +2,21 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
+import player from './components/player.vue'
+import test from './components/test.vue'
 
-export default new Router({
+const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/player',
       name: 'player',
-      component: () => import('./components/player.vue'),
+      component: player,
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: test,
     },
     
 
@@ -22,3 +29,4 @@ export default new Router({
     }
   }
 })
+export default router

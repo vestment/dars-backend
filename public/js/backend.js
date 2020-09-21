@@ -1,4 +1,4 @@
-webpackJsonp([1],{
+webpackJsonp([2],{
 
 /***/ "./node_modules/@coreui/coreui/dist/js/coreui.js":
 /***/ (function(module, exports, __webpack_require__) {
@@ -22537,7 +22537,7 @@ $(function () {
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__("./resources/js/backend/before.js");
@@ -22547,4 +22547,4 @@ module.exports = __webpack_require__("./resources/js/backend/after.js");
 
 /***/ })
 
-},[1]);
+},[2]);
