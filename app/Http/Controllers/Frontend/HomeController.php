@@ -20,6 +20,7 @@ use App\Models\TeacherProfile;
 use App\academy;
 
 
+
 use App\Models\System\Session;
 use App\Models\Tag;
 use App\Models\Testimonial;
@@ -115,8 +116,9 @@ class HomeController extends Controller
         $acadimies = User::role('academy')->with('academy')->where('active', '=', 1)->take(7)->get();
 
         $trending = Course::where('trending', '=', 1)->whereNotIn('id',$this->hidden_data['courses'])->with(['teachers', 'reviews'])->get();
+        $offline = page::where('title', 'offline courses')->first();
 
-        return view('frontend.index', compact('popular_courses', 'trending', 'total_bundle', 'acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data', 'total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections', 'categories'));
+        return view('frontend.index', compact('popular_courses', 'offline','trending', 'total_bundle', 'acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data', 'total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections', 'categories'));
     }
 
     public function getFaqs()
@@ -393,5 +395,7 @@ class HomeController extends Controller
         $q = $request->q;
         return view('frontend.search-result.blogs', compact('blogs', 'q', 'categories', 'popular_tags'));
     }
+    
+   
 }
 

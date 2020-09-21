@@ -36,6 +36,8 @@ Vue.component('player', require('../components/player.vue').default);
 Vue.component('player', player)
 import Vuex from 'vuex'
 import Vueditor from 'vueditor'
+import router from '../router'
+
 
 import 'vueditor/dist/style/vueditor.min.css'
 
@@ -56,10 +58,10 @@ let config = {
   uploadUrl: ''
 };
 Vue.use(Vuex);
-
 Vue.use(Vueditor, config);
 /* This is main entry point */
 new Vue({
+  router,
   render: h => h(App),
 })
 

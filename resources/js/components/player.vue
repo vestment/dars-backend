@@ -2,7 +2,11 @@
   <div class="container ">
     <div class="row ">
       <div class="col-lg-9">
-        <div class="player-video">
+  <section v-if="type=='test'" class="container">
+  <test/>
+
+</section>
+        <div v-else class="player-video">
           <video-player class="video-player-box"
                         ref="videoPlayer"
                         :options="playerOptions"
@@ -22,9 +26,11 @@
                         @ready="playerReadied">
           </video-player>
         </div>
+
       </div>
       <div class="col-md-3 ">
         <div class="accordion" id="accordionExample">
+
           <div v-for="chapter in courseData.chapters" :key="chapter.id" class="card shadow mb-3">
             <div class="card-header" id="headingOne">
               <h2 class="mb-0">
@@ -119,7 +125,7 @@
           </div>
           <div class="modal-body" id="notes-container">
             <div class="card shadow-c" :data-length="notes.length">
-              <div v-for="note in notes" class="card-body">
+              <div v-for="note in notes"  :key="note.id" class="card-body">
                 <p>{{ note.contentText.replace(/<[^>]*>?/gm, '') }}</p>
                 <a class="float-right font-weight-light ml-1 text-white btn btn-primary btn-sm "
                    @click="setEditorContent(note)"
@@ -166,6 +172,7 @@
 
 </template>
 
+
 <script>
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
@@ -173,11 +180,14 @@ import 'video.js/dist/video-js.css'
 import axios from '../axios'
 import {videoPlayer} from 'vue-video-player'
 import 'vueditor/dist/style/vueditor.min.css'
+import test from './test'
+import './lesson.css'
 
 export default {
-  props: ['slug'],
+  props: ['slug','type'],
   data() {
     return {
+
       playerOptions: {
         // videojs options
         muted: true,
@@ -197,8 +207,10 @@ export default {
       downloadableMedia: {data: '', lesson: ''},
     }
   },
+
   components: {
     videoPlayer,
+    test
   },
 
   mounted() {
