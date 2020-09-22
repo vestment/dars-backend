@@ -180,15 +180,14 @@ export default {
       axios.post('/api/v1/single-test', {test: slug})
           .then(res => {
             this.testData = res.data.response.test
-            this.$parent.courseData=res.data.response.course_timeline
+            this.$parent.courseData=res.data.response
+            console.log(res)
             for (var i = 0; i <= this.testData.questions.length - 1; i++) {
               let obj = {
                 text: this.testData.questions[i].question,
                 responses: []
               };
-              var text = this.testData.questions[i].question
-
-              //  quiz.questions[i].text = this.testData.questions[i].question
+              console.log(this.testData.questions[i].options)
 
               for (var j = 0; j <= this.testData.questions[i].options.length - 1; j++) {
                 var responses =
@@ -199,6 +198,7 @@ export default {
                     };
                 obj.responses.push(responses)
               }
+
               quiz.questions.push(obj);
             }
             //   this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url

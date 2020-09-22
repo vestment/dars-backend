@@ -790,13 +790,13 @@ class ApiController extends Controller
         $result_data = NULL;
         if ($test_result) {
             $questionsToAnswer = [];
-            $questionsToAnswer = $test->questions()->inRandomOrder()->limit($test->no_questoins)->get();
+            $questionsToAnswer = $test->questions()->with('options')->inRandomOrder()->limit($test->no_questoins)->get();
             if ($test_result->attempts == 2) {
                 $prevTestQuestions = $test_result->answers()->pluck('question_id');
-                $questionsToAnswer = $test->questions()->whereNotIn('id', $prevTestQuestions)->inRandomOrder()->limit($test->no_questoins)->get();
+                $questionsToAnswer = $test->questions()->with('options')->whereNotIn('id', $prevTestQuestions)->inRandomOrder()->limit($test->no_questoins)->get();
             }
             elseif ($test_result->attempts == 3) {
-                $questionsToAnswer = $test->questions()->inRandomOrder()->get();
+                $questionsToAnswer = $test->questions()->with('options')->inRandomOrder()->get();
             }
             $test_result = $test_result->toArray();
             $test->questions = $questionsToAnswer;
@@ -810,11 +810,9 @@ class ApiController extends Controller
         }
 
         $dt = time()+intval($test->timer * 60);
-        $timer = $test->timer;
         $test = $test->toArray();
         $test['questions'] = $questionsToAnswer;
-        $test['timer1'] = date("Y-m-d H:i:s");
-        $test['timer2'] = Carbon::createFromTimestamp($dt,'Africa/Cairo');
+        $test['timer'] = Carbon::createFromTimestamp($dt,'Africa/Cairo');
         $data['chapters'] = $chapters;
         $data['test'] = $test;
         $data['course_timeline'] = $courseTimeLine;
