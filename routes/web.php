@@ -79,7 +79,9 @@ Route::post('newsletter/subscribe', 'Frontend\HomeController@subscribe')->name('
 
 //============Course Routes=================//
 Route::get('courses', ['uses' => 'CoursesController@all', 'as' => 'courses.all']);
-Route::get('player/{slug}/{type?}', 'CoursesController@player');
+Route::get('player/{slug}', 'CoursesController@player');
+Route::get('test/{slug}', 'CoursesController@player');
+
 
 Route::get('course/{slug}', ['uses' => 'CoursesController@show', 'as' => 'courses.show']);
 //Route::post('course/payment', ['uses' => 'CoursesController@payment', 'as' => 'courses.payment']);

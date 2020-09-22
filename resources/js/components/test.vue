@@ -1,7 +1,10 @@
 <template>
 
+<div>	<!--questionBox-->
+ <div>
+    <flip-countdown v-bind:deadline="this.testData.timer.date"></flip-countdown>
+  </div>
 
-  <!--questionBox-->
   <div class="questionBox">
 
     <!-- transition -->
@@ -90,11 +93,14 @@
 
   </div>
   <!--/questionBox-->
+</div>
 
 </template>
 
 <script>
 import './lesson.css'
+  import FlipCountdown from 'vue2-flip-countdown'
+
 // const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
 // const Vue = window.vue;
@@ -113,6 +119,8 @@ export default {
 
   data() {
     return {
+       showDays : false,
+     testTimer:"",
       testData: [],
       quiz: quiz,
       questionIndex: 0,
@@ -122,6 +130,9 @@ export default {
       resultData: 0,
       question_data: [],
       slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
+      testDate:'',
+      finalFormat:'',
+
     }
   },
   filters: {
@@ -141,7 +152,10 @@ export default {
     console.log(this.slug)
     this.getData(this.slug)
   },
+   components: { FlipCountdown },
   methods: {
+
+
     restart: function () {
       this.questionIndex = 0;
       this.userResponses = Array(quiz.questions.length).fill(null);
@@ -154,6 +168,8 @@ export default {
       // this.$root.set(this.userResponses, this.questionIndex, index);
       this.$forceUpdate();
     },
+
+
 
 
     prev: function () {
@@ -182,7 +198,12 @@ export default {
             this.testData = res.data.response.test
             this.$parent.courseData=res.data.response
             console.log(res)
-            for (var i = 0; i <= this.testData.questions.length - 1; i++) {
+            this.testDate = new Date().toJSON().slice(0,10);
+            this.testTimer = this.testData.timer.date
+            console.log( this.testTimer);
+
+            for(var i=0; i<=this.testData.questions.length-1; i++ )
+            {
               let obj = {
                 text: this.testData.questions[i].question,
                 responses: []
@@ -198,7 +219,6 @@ export default {
                     };
                 obj.responses.push(responses)
               }
-
               quiz.questions.push(obj);
             }
             //   this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
@@ -212,6 +232,7 @@ export default {
         console.log(err)
       })
     },
+
     next: function () {
       if (this.questionIndex < quiz.questions.length - 1) {
 
@@ -236,6 +257,8 @@ export default {
             }
         )
             .then(res => {
+              this.testScore = res.data.score
+
               this.resultData = res.data.resultData
             })
       }

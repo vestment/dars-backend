@@ -1,6 +1,6 @@
 <template>
 
-  <div v-else class="player-video">
+  <div class="player-video">
     <video-player class="video-player-box"
                   ref="videoPlayer"
                   :options="playerOptions"

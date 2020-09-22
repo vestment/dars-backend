@@ -7,16 +7,269 @@ webpackJsonp([0],{
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_player_vue__ = __webpack_require__("./resources/js/components/player.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_player_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_player_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_test_vue__ = __webpack_require__("./resources/js/components/test.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_test_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_test_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__axios__ = __webpack_require__("./resources/js/axios.js");
 //
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'app'
+  name: 'app',
+  data: function data() {
+    return {
+      type: '',
+      courseData: [],
+      notes: [],
+      newNote: { contentText: '' },
+      current_note: { contentText: '' },
+      downloadableMedia: { data: '', lesson: '' }
+    };
+  },
+
+  components: {
+    player: __WEBPACK_IMPORTED_MODULE_0__components_player_vue___default.a,
+    test: __WEBPACK_IMPORTED_MODULE_1__components_test_vue__["test"]
+  },
+  watch: {
+    $route: function $route() {
+      this.type = this.$route.name;
+    }
+  },
+  mounted: function mounted() {
+    console.log(this);
+  },
+
+  methods: {
+    setDownloadableMedia: function setDownloadableMedia(lesson) {
+      this.downloadableMedia.data = lesson.downloadable_media;
+      this.downloadableMedia.lesson = lesson;
+    },
+    setEditorContent: function setEditorContent(note) {
+      $('#notesModal').modal('hide');
+      this.current_note = note;
+      var editor = this.$refs.noteEdit;
+      editor.setContent(this.current_note.contentText);
+    },
+    saveNote: function saveNote() {
+      var editor = this.$refs.noteEdit;
+      this.current_note.contentText = editor.getContent();
+      __WEBPACK_IMPORTED_MODULE_2__axios__["a" /* default */].post('/api/v1/save-note', this.current_note).then(function (res) {
+        if (res.data.status == 'success') {
+          $('#edit-note-modal').modal('hide');
+          $('#notesModal').modal('show');
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    addNewNote: function addNewNote() {
+      var _this = this;
+
+      var editor = this.$refs.newNote;
+      this.newNote.contentText = editor.getContent();
+      this.newNote.lesson_id = this.courseData.lesson.id;
+      __WEBPACK_IMPORTED_MODULE_2__axios__["a" /* default */].post('/api/v1/add-note', this.newNote).then(function (res) {
+        if (res.data.status == 'success') {
+          editor.setContent('');
+          _this.notes.push(res.data.note);
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    removeNote: function removeNote(id) {
+      var _this2 = this;
+
+      if (confirm('Are you sure you want to delete this note?')) {
+        __WEBPACK_IMPORTED_MODULE_2__axios__["a" /* default */].post('/api/v1/remove-note', { id: id }).then(function (res) {
+          if (res.data.status == 'success') {
+            _this2.notes.splice(_this2.notes.findIndex(function (note) {
+              return note.id === id;
+            }), 1);
+          }
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -63,165 +316,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
@@ -233,10 +327,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['slug', 'type'],
+  name: 'player',
+  // props: ['type','slug','data'],
   data: function data() {
     return {
-
       playerOptions: {
         // videojs options
         muted: true,
@@ -253,17 +347,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       notes: [],
       newNote: { contentText: '' },
       current_note: { contentText: '' },
-      downloadableMedia: { data: '', lesson: '' }
+      downloadableMedia: { data: '', lesson: '' },
+      slug: this.$route.params.slug ? this.$route.params.slug : this.slug
     };
   },
 
 
   components: {
-    videoPlayer: __WEBPACK_IMPORTED_MODULE_2_vue_video_player__["videoPlayer"],
-    test: __WEBPACK_IMPORTED_MODULE_4__test___default.a
+    videoPlayer: __WEBPACK_IMPORTED_MODULE_2_vue_video_player__["videoPlayer"]
   },
-
-  mounted: function mounted() {
+  watch: {
+    $route: function $route() {
+      this.slug = this.$route.params.slug;
+    },
+    slug: function slug() {
+      this.getData(this.slug);
+    }
+  },
+  created: function created() {
+    console.log(this.slug);
     this.getData(this.slug);
   },
 
@@ -273,70 +375,68 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
-    setDownloadableMedia: function setDownloadableMedia(lesson) {
-      this.downloadableMedia.data = lesson.downloadable_media;
-      this.downloadableMedia.lesson = lesson;
-    },
-    setEditorContent: function setEditorContent(note) {
-      $('#notesModal').modal('hide');
-      this.current_note = note;
-      var editor = this.$refs.noteEdit;
-      editor.setContent(this.current_note.contentText);
-    },
-    saveNote: function saveNote() {
-      var editor = this.$refs.noteEdit;
-      this.current_note.contentText = editor.getContent();
-      __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/save-note', this.current_note).then(function (res) {
-        if (res.data.status == 'success') {
-          $('#edit-note-modal').modal('hide');
-          $('#notesModal').modal('show');
-        }
-      }).catch(function (err) {
-        console.log(err);
-      });
-    },
-    addNewNote: function addNewNote() {
-      var _this = this;
-
-      var editor = this.$refs.newNote;
-      this.newNote.contentText = editor.getContent();
-      this.newNote.lesson_id = this.courseData.lesson.id;
-      __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/add-note', this.newNote).then(function (res) {
-        if (res.data.status == 'success') {
-          editor.setContent('');
-          _this.notes.push(res.data.note);
-        }
-      }).catch(function (err) {
-        console.log(err);
-      });
-    },
-    removeNote: function removeNote(id) {
-      var _this2 = this;
-
-      if (confirm('Are you sure you want to delete this note?')) {
-        __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/remove-note', { id: id }).then(function (res) {
-          if (res.data.status == 'success') {
-            _this2.notes.splice(_this2.notes.findIndex(function (note) {
-              return note.id === id;
-            }), 1);
-          }
-        }).catch(function (err) {
-          console.log(err);
-        });
-      }
-    },
+    // setDownloadableMedia(lesson) {
+    //   this.downloadableMedia.data = lesson.downloadable_media;
+    //   this.downloadableMedia.lesson = lesson;
+    // },
+    // setEditorContent(note) {
+    //   $('#notesModal').modal('hide');
+    //   this.current_note = note;
+    //   let editor = this.$refs.noteEdit;
+    //   editor.setContent(this.current_note.contentText);
+    // },
+    // saveNote() {
+    //   let editor = this.$refs.noteEdit;
+    //   this.current_note.contentText = editor.getContent();
+    //   axios.post('/api/v1/save-note', this.current_note)
+    //       .then(res => {
+    //         if (res.data.status == 'success') {
+    //           $('#edit-note-modal').modal('hide');
+    //           $('#notesModal').modal('show');
+    //         }
+    //       }).catch(err => {
+    //     console.log(err)
+    //   })
+    // },
+    // addNewNote() {
+    //   let editor = this.$refs.newNote;
+    //   this.newNote.contentText = editor.getContent();
+    //   this.newNote.lesson_id = this.courseData.lesson.id
+    //   axios.post('/api/v1/add-note', this.newNote)
+    //       .then(res => {
+    //         if (res.data.status == 'success') {
+    //           editor.setContent('')
+    //           this.notes.push(res.data.note);
+    //         }
+    //       }).catch(err => {
+    //     console.log(err)
+    //   })
+    // },
+    // removeNote(id) {
+    //   if (confirm('Are you sure you want to delete this note?')) {
+    //     axios.post('/api/v1/remove-note', {id: id})
+    //         .then(res => {
+    //           if (res.data.status == 'success') {
+    //             this.notes.splice(this.notes.findIndex(note => note.id === id), 1)
+    //           }
+    //         }).catch(err => {
+    //       console.log(err)
+    //     })
+    //   }
+    // },
     getData: function getData(slug) {
-      var _this3 = this;
+      var _this = this;
 
       __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/single-lesson', { lesson: slug }).then(function (res) {
         if (res.data.result) {
-          _this3.courseData = res.data.result;
-          _this3.playerOptions.sources[0].src = _this3.courseData.lesson.media_video.url;
-          console.log("info", res);
-          $('.course-title-header').text(_this3.courseData.course.title);
-          $('.close-lesson').attr('href', _this3.courseData.course_page);
-          $('.course-progress').text(_this3.courseData.course_progress + ' %');
-          $('.progress-bar').css('width', _this3.courseData.course_progress + '%');
+          _this.courseData = res.data.result;
+          _this.$parent.courseData = _this.courseData;
+          _this.playerOptions.sources[0].src = _this.courseData.lesson.media_video.url;
+          console.log("Lesson", res);
+          $('.course-title-header').text(_this.courseData.course.title);
+          $('.close-lesson').attr('href', _this.courseData.course_page);
+          $('.course-progress').text(_this.courseData.course_progress + ' %');
+          $('.progress-bar').css('width', _this.courseData.course_progress + '%');
         }
       }).catch(function (err) {
         console.log(err);
@@ -396,7 +496,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lesson_css__ = __webpack_require__("./resources/js/components/lesson.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lesson_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lesson_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__axios__ = __webpack_require__("./resources/js/axios.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_flip_countdown__ = __webpack_require__("./node_modules/vue2-flip-countdown/dist/vue2-flip-countdown.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_flip_countdown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue2_flip_countdown__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__axios__ = __webpack_require__("./resources/js/axios.js");
 //
 //
 //
@@ -483,6 +585,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+
+
 
 
 // const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
@@ -496,12 +605,10 @@ var quiz = {
     userResponseSkelaton = Array(quiz.questions.length).fill(null);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-
-   props: ['slug', 'type'],
-
    data: function data() {
       return {
-
+         showDays: false,
+         testTimer: "",
          testData: [],
          quiz: quiz,
          questionIndex: 0,
@@ -509,7 +616,11 @@ var quiz = {
          isActive: false,
          test_id: '',
          testScore: 0,
-         question_data: []
+         question_data: [],
+         slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
+         testDate: '',
+         finalFormat: ''
+
       };
    },
 
@@ -518,11 +629,23 @@ var quiz = {
          return String.fromCharCode(97 + i);
       }
    },
-   mounted: function mounted() {
-      this.getData('testttt');
+   watch: {
+      $route: function $route() {
+         this.slug = this.$route.params.slug;
+      },
+      slug: function slug() {
+         this.getData(this.slug);
+      }
+   },
+   created: function created() {
+
+      console.log(this.slug);
+      this.getData(this.slug);
    },
 
+   components: { FlipCountdown: __WEBPACK_IMPORTED_MODULE_1_vue2_flip_countdown___default.a },
    methods: {
+
       restart: function restart() {
          this.questionIndex = 0;
          this.userResponses = Array(quiz.questions.length).fill(null);
@@ -551,11 +674,26 @@ var quiz = {
 
          //return this.userResponses.filter(function(val) { return val }).length;
       },
+      //       sec2time(timeInSeconds) {
+
+      //     var pad = function(num, size) { return ('000' + num).slice(size * -1); },
+      //     time = parseFloat(timeInSeconds).toFixed(3),
+      //     hours = Math.floor(time / 60 / 60),
+      //     minutes = Math.floor(time / 60) % 60,
+      //     seconds = Math.floor(time - minutes * 60),
+      //     milliseconds = time.slice(-3);
+      //     this.finalFormat = pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2) + ',' + pad(milliseconds, 3);
+
+      //     return this.finalFormat;
+      // },
       getData: function getData(slug) {
          var _this = this;
 
-         __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/single-test', { test: 'testttt' }).then(function (res) {
+         __WEBPACK_IMPORTED_MODULE_2__axios__["a" /* default */].post('/api/v1/single-test', { test: slug }).then(function (res) {
             _this.testData = res.data.response.test;
+            _this.testDate = new Date().toJSON().slice(0, 10);
+            _this.testTimer = _this.testData.timer.date;
+            console.log(_this.testTimer);
 
             for (var i = 0; i <= _this.testData.questions.length - 1; i++) {
                var obj = {
@@ -587,6 +725,7 @@ var quiz = {
          });
       },
 
+
       next: function next() {
          var _this2 = this;
 
@@ -605,7 +744,7 @@ var quiz = {
                this.question_data.push(questionObject);
             }
 
-            __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/save-test', {
+            __WEBPACK_IMPORTED_MODULE_2__axios__["a" /* default */].post('/api/v1/save-test', {
                test_id: this.testData.id,
                question_data: this.question_data
 
@@ -675,7 +814,7 @@ exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Mon
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700);", ""]);
 
 // module
-exports.push([module.i, ".button {\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.title,\n.subtitle {\n  font-family: Montserrat, sans-serif;\n  font-weight: normal;\n}\n\n.animated {\n  -webkit-transition-duration: 0.15s;\n          transition-duration: 0.15s;\n}\n\n\n.questionBox {\n  width: 49rem;\n  min-height: 30rem;\n  background: #FAFAFA;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 0.5rem;\n  overflow: hidden;\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n}\n\n.questionBox header {\n  background: rgba(0, 0, 0, 0.025);\n  padding: 1.5rem;\n  text-align: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.questionBox header h1 {\n  font-weight: bold;\n  margin-bottom: 1rem !important;\n}\n\n.questionBox header .progressContainer {\n  width: 60%;\n  margin: 0 auto;\n}\n\n.questionBox header .progressContainer > progress {\n  margin: 0;\n  border-radius: 5rem;\n  overflow: hidden;\n  border: none;\n  color: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-moz-progress-bar {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-webkit-progress-value {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > p {\n  margin: 0;\n  margin-top: 0.5rem;\n}\n\n.questionBox .titleContainer {\n  text-align: center;\n  margin: 0 auto;\n  padding: 1.5rem;\n}\n\n.questionBox .quizForm {\n  display: block;\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .quizForm .quizFormContainer {\n  height: 100%;\n  margin: 15px 18px;\n}\n\n.questionBox .quizForm .quizFormContainer .field-label {\n  text-align: left;\n  margin-bottom: 0.5rem;\n}\n\n.questionBox .quizCompleted {\n  width: 100%;\n  padding: 1rem;\n  text-align: center;\n}\n\n.questionBox .quizCompleted > .icon {\n  color: #FF5252;\n  font-size: 5rem;\n}\n\n.questionBox .quizCompleted > .icon .is-active {\n  color: #00E676;\n}\n\n.questionBox .questionContainer {\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .questionContainer .optionContainer {\n  margin-top: 12px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\n.questionBox .questionContainer .optionContainer .option {\n  border-radius: 290486px;\n  padding: 9px 18px;\n  margin: 0 18px;\n  margin-bottom: 12px;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  cursor: pointer;\n  background-color: rgba(0, 0, 0, 0.05);\n  color: rgba(0, 0, 0, 0.85);\n  border: transparent 1px solid;\n}\n\n.questionBox .questionContainer .optionContainer .option.is-selected {\n  border-color: rgba(0, 0, 0, 0.25);\n  background-color: white;\n}\n\n.questionBox .questionContainer .optionContainer .option:hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n\n.questionBox .questionContainer .optionContainer .option:active {\n  -webkit-transform: scaleX(0.9);\n          transform: scaleX(0.9);\n}\n\n.questionBox .questionContainer .questionFooter {\n  background: rgba(0, 0, 0, 0.025);\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  width: 100%;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n}\n\n.questionBox .questionContainer .questionFooter .pagination {\n  margin: 15px 25px;\n}\n\n.pagination {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n\n.button {\n  padding: 0.5rem 1rem;\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  border-radius: 5rem;\n  margin: 0 0.25rem;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.button:hover {\n  cursor: pointer;\n  background: #ECEFF1;\n  border-color: rgba(0, 0, 0, 0.25);\n}\n\n.button.is-active {\n  background: #3D5AFE;\n  color: white;\n  border-color: transparent;\n}\n\n.button.is-active:hover {\n  background: #0a2ffe;\n}\n\n@media screen and (min-width: 769px) {\n  .questionBox {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n  }\n  .questionBox .questionContainer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n}\n\n.md-v-line {\n  position: absolute;\n  border-left: 1px solid rgba(0,0,0,.125);\n  height: 50px;\n  top:0px;\n  left:54px;\n  }\n  .video-js{\n    width: 100%;\n  }\n", ""]);
+exports.push([module.i, ".button {\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.title,\n.subtitle {\n  font-family: Montserrat, sans-serif;\n  font-weight: normal;\n}\n\n.animated {\n  -webkit-transition-duration: 0.15s;\n          transition-duration: 0.15s;\n}\n\n.container {\n  margin: 0 0.5rem;\n}\n\n.questionBox {\n  width: 49rem;\n  min-height: 30rem;\n  background: #FAFAFA;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 0.5rem;\n  overflow: hidden;\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n}\n\n.questionBox header {\n  background: rgba(0, 0, 0, 0.025);\n  padding: 1.5rem;\n  text-align: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.questionBox header h1 {\n  font-weight: bold;\n  margin-bottom: 1rem !important;\n}\n\n.questionBox header .progressContainer {\n  width: 60%;\n  margin: 0 auto;\n}\n\n.questionBox header .progressContainer > progress {\n  margin: 0;\n  border-radius: 5rem;\n  overflow: hidden;\n  border: none;\n  color: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-moz-progress-bar {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-webkit-progress-value {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > p {\n  margin: 0;\n  margin-top: 0.5rem;\n}\n\n.questionBox .titleContainer {\n  text-align: center;\n  margin: 0 auto;\n  padding: 1.5rem;\n}\n\n.questionBox .quizForm {\n  display: block;\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .quizForm .quizFormContainer {\n  height: 100%;\n  margin: 15px 18px;\n}\n\n.questionBox .quizForm .quizFormContainer .field-label {\n  text-align: left;\n  margin-bottom: 0.5rem;\n}\n\n.questionBox .quizCompleted {\n  width: 100%;\n  padding: 1rem;\n  text-align: center;\n}\n\n.questionBox .quizCompleted > .icon {\n  color: #FF5252;\n  font-size: 5rem;\n}\n\n.questionBox .quizCompleted > .icon .is-active {\n  color: #00E676;\n}\n\n.questionBox .questionContainer {\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .questionContainer .optionContainer {\n  margin-top: 12px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\n.questionBox .questionContainer .optionContainer .option {\n  border-radius: 290486px;\n  padding: 9px 18px;\n  margin: 0 18px;\n  margin-bottom: 12px;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  cursor: pointer;\n  background-color: rgba(0, 0, 0, 0.05);\n  color: rgba(0, 0, 0, 0.85);\n  border: transparent 1px solid;\n}\n\n.questionBox .questionContainer .optionContainer .option.is-selected {\n  border-color: rgba(0, 0, 0, 0.25);\n  background-color: white;\n}\n\n.questionBox .questionContainer .optionContainer .option:hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n\n.questionBox .questionContainer .optionContainer .option:active {\n  -webkit-transform: scaleX(0.9);\n          transform: scaleX(0.9);\n}\n\n.questionBox .questionContainer .questionFooter {\n  background: rgba(0, 0, 0, 0.025);\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  width: 100%;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n}\n\n.questionBox .questionContainer .questionFooter .pagination {\n  margin: 15px 25px;\n}\n\n.pagination {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n\n.button {\n  padding: 0.5rem 1rem;\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  border-radius: 5rem;\n  margin: 0 0.25rem;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.button:hover {\n  cursor: pointer;\n  background: #ECEFF1;\n  border-color: rgba(0, 0, 0, 0.25);\n}\n\n.button.is-active {\n  background: #3D5AFE;\n  color: white;\n  border-color: transparent;\n}\n\n.button.is-active:hover {\n  background: #0a2ffe;\n}\n\n@media screen and (min-width: 769px) {\n  .questionBox {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n  }\n  .questionBox .questionContainer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n}\n\nsection.section {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding-top: 140px;\n  background: transparent;\n}\n\nh3.is-3, p.time {\n  color: white;\n}\n\nh3.is-3:not(:last-child) {\n  margin: 0;\n  padding: 0;\n}\n\n.time {\n  font-size: 7em;\n}\n\n.shadow {\n  text-shadow: 0 0 15px rgba(100, 100, 100, 0.35);\n}", ""]);
 
 // exports
 
@@ -46175,754 +46314,514 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "app" } }, [_c("router-view")], 1)
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-23235493", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b6abe5d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/test.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "questionBox", attrs: { id: "app" } },
-    [
-      _c(
-        "transition",
-        {
-          attrs: {
-            duration: { enter: 500, leave: 300 },
-            "enter-active-class": "animated zoomIn",
-            "leave-active-class": "animated zoomOut",
-            mode: "out-in"
-          }
-        },
-        [
-          _vm.questionIndex < _vm.quiz.questions.length
-            ? _c(
+  return _c("div", { attrs: { id: "app" } }, [
+    _c("div", { staticClass: "container " }, [
+      _c("div", { staticClass: "row " }, [
+        _c("div", { staticClass: "col-lg-8" }, [_c("router-view")], 1),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-4 " }, [
+          _c(
+            "div",
+            { staticClass: "accordion", attrs: { id: "accordionExample" } },
+            _vm._l(_vm.courseData.course_timeline, function(chapter) {
+              return _c(
                 "div",
-                { key: _vm.questionIndex, staticClass: "questionContainer" },
+                { key: chapter.id, staticClass: "card shadow mb-3" },
                 [
-                  _c("header", [
-                    _c("h1", { staticClass: "title is-6" }, [
-                      _vm._v(_vm._s(this.testData.title))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "progressContainer" }, [
-                      _c(
-                        "progress",
-                        {
-                          staticClass: "progress is-info is-small",
-                          attrs: { max: "100" },
-                          domProps: {
-                            value:
-                              (_vm.questionIndex / _vm.quiz.questions.length) *
-                              100
-                          }
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(
-                              (_vm.questionIndex / _vm.quiz.questions.length) *
-                                100
-                            ) + "%"
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("p", [
-                        _vm._v(
-                          _vm._s(
-                            (_vm.questionIndex / _vm.quiz.questions.length) *
-                              100
-                          ) + "% complete"
+                  _c(
+                    "div",
+                    { staticClass: "card-header", attrs: { id: "headingOne" } },
+                    [
+                      _c("h2", { staticClass: "mb-0" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-link btn-block text-left",
+                            attrs: {
+                              type: "button",
+                              "data-toggle": "collapse",
+                              "data-target": "#chapter-" + chapter.id,
+                              "aria-expanded": "true",
+                              "aria-controls": "collapseOne"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                  " +
+                                _vm._s(chapter.title) +
+                                "\n                "
+                            )
+                          ]
                         )
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("h2", { staticClass: "titleContainer title" }, [
-                    _vm._v(_vm._s(_vm.quiz.questions[_vm.questionIndex].text))
-                  ]),
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "optionContainer" },
-                    _vm._l(
-                      _vm.quiz.questions[_vm.questionIndex].responses,
-                      function(response, index) {
-                        return _c(
-                          "div",
-                          {
-                            key: response.id,
-                            staticClass: "option",
-                            class: {
-                              "is-selected":
-                                _vm.userResponses[_vm.questionIndex] ==
-                                response.id
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.selectOption(index, response.id)
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n\t\t\t\t\t\t" +
-                                _vm._s(_vm._f("charIndex")(index)) +
-                                ". " +
-                                _vm._s(response.text) +
-                                "\n\t\t\t\t\t"
-                            )
-                          ]
-                        )
-                      }
-                    ),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c("footer", { staticClass: "questionFooter" }, [
-                    _c(
-                      "nav",
-                      {
-                        staticClass: "pagination",
-                        attrs: {
-                          role: "navigation",
-                          "aria-label": "pagination"
-                        }
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "button",
-                            attrs: { disabled: _vm.questionIndex < 1 },
-                            on: {
-                              click: function($event) {
-                                return _vm.prev()
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    Back\n                  "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "button",
-                            class:
-                              _vm.userResponses[_vm.questionIndex] == null
-                                ? ""
-                                : "is-active",
-                            attrs: {
-                              disabled:
-                                _vm.questionIndex >= _vm.quiz.questions.length
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.next()
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(
-                                  _vm.userResponses[_vm.questionIndex] == null
-                                    ? "skip"
-                                    : "Next"
-                                ) +
-                                "\n                  "
-                            )
-                          ]
-                        )
-                      ]
-                    )
-                  ])
-                ]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.questionIndex >= _vm.quiz.questions.length
-            ? _c(
-                "div",
-                {
-                  key: _vm.questionIndex,
-                  staticClass: "quizCompleted has-text-centered"
-                },
-                [
-                  _c("span", { staticClass: "icon" }, [
-                    _c("i", {
-                      staticClass: "fa",
-                      class:
-                        _vm.score() > 3
-                          ? "fa-check-circle-o is-active"
-                          : "fa-times-circle"
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("h2", { staticClass: "title" }, [
-                    _vm._v(
-                      "\n\t\t\t\t\tYou did " +
-                        _vm._s(
-                          _vm.score() > 7
-                            ? "an amazing"
-                            : _vm.score() <= 1
-                            ? "a poor"
-                            : "a good"
-                        ) +
-                        " job!\n\t\t\t\t"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "subtitle" }, [
-                    _vm._v(
-                      "\n\t\t\t\t\tTotal score: " +
-                        _vm._s(this.testScore) +
-                        " / " +
-                        _vm._s(_vm.quiz.questions.length) +
-                        "\n\t\t\t\t"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c(
-                    "a",
                     {
-                      staticClass: "button",
-                      on: {
-                        click: function($event) {
-                          return _vm.restart()
-                        }
+                      staticClass: "collapse show",
+                      attrs: {
+                        id: "chapter-" + chapter.id,
+                        "aria-labelledby": "headingOne",
+                        "data-parent": "#accordionExample"
                       }
                     },
                     [
-                      _vm._v("restart "),
-                      _c("i", { staticClass: "fa fa-refresh" })
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("table", { staticClass: "table table-bordered" }, [
+                          _c(
+                            "tbody",
+                            [
+                              _vm._l(chapter.lessons, function(lesson) {
+                                return _c("tr", { key: lesson.model.id }, [
+                                  _c(
+                                    "td",
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          attrs: {
+                                            to: {
+                                              name: "player",
+                                              params: {
+                                                slug: lesson.model.slug
+                                              }
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(lesson.model.title) +
+                                              "\n                      "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("p", { staticClass: "m-0" }, [
+                                        lesson.model.media_video
+                                          ? _c(
+                                              "small",
+                                              { staticClass: "text-sm" },
+                                              [
+                                                _c("i", {
+                                                  staticClass:
+                                                    "fa fa-play-circle"
+                                                }),
+                                                _vm._v(
+                                                  "\n                        " +
+                                                    _vm._s(
+                                                      lesson.model.media_video
+                                                        .duration
+                                                    ) +
+                                                    "\n                      "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e()
+                                      ])
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", {}, [
+                                    lesson.model.media_audio
+                                      ? _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              target: "_blank",
+                                              href:
+                                                "/storage/uploads/" +
+                                                lesson.model.media_audio.name
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "far fa-file-audio"
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    lesson.model.media_p_d_f
+                                      ? _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              target: "_blank",
+                                              href:
+                                                "/storage/uploads/" +
+                                                lesson.model.media_p_d_f.name
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "far fa-file-pdf"
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    lesson.model.downloadable_media.length > 0
+                                      ? _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              "data-toggle": "modal",
+                                              "data-target":
+                                                "#downloadableMediaModal",
+                                              href: "#downloadableMediaModal"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.setDownloadableMedia(
+                                                  lesson.model
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-download"
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    lesson.model.notes.length > 0
+                                      ? _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href: "#notesModal",
+                                              "data-toggle": "modal",
+                                              "data-target": "#notesModal"
+                                            },
+                                            on: {
+                                              click: function() {
+                                                _vm.notes = lesson.model.notes
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "far fa-sticky-note mr-4 pr-3"
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e()
+                                  ])
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _vm._l(chapter.tests, function(test) {
+                                return chapter.tests.length > 0
+                                  ? _c("tr", { key: test.id }, [
+                                      _c(
+                                        "td",
+                                        [
+                                          _c(
+                                            "router-link",
+                                            {
+                                              attrs: {
+                                                to: {
+                                                  name: "test",
+                                                  params: {
+                                                    slug: test.model.slug
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(test.model.title) +
+                                                  "\n                      "
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._m(0, true)
+                                    ])
+                                  : _vm._e()
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ])
                     ]
                   )
                 ]
               )
-            : _vm._e()
-        ]
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5b6abe5d", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-fecbd728\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/player.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container " }, [
-    _c("div", { staticClass: "row " }, [
-      _c("div", { staticClass: "col-lg-9" }, [
-        _vm.type == "test"
-          ? _c("div", [_c("test")], 1)
-          : _c(
-              "div",
-              { staticClass: "player-video" },
-              [
-                _c("video-player", {
-                  ref: "videoPlayer",
-                  staticClass: "video-player-box",
-                  attrs: {
-                    options: _vm.playerOptions,
-                    playsinline: true,
-                    customEventName: "customstatechangedeventname"
-                  },
-                  on: {
-                    play: function($event) {
-                      return _vm.onPlayerPlay($event)
-                    },
-                    pause: function($event) {
-                      return _vm.onPlayerPause($event)
-                    },
-                    ended: function($event) {
-                      return _vm.onPlayerEnded($event)
-                    },
-                    waiting: function($event) {
-                      return _vm.onPlayerWaiting($event)
-                    },
-                    playing: function($event) {
-                      return _vm.onPlayerPlaying($event)
-                    },
-                    loadeddata: function($event) {
-                      return _vm.onPlayerLoadeddata($event)
-                    },
-                    timeupdate: function($event) {
-                      return _vm.onPlayerTimeupdate($event)
-                    },
-                    canplay: function($event) {
-                      return _vm.onPlayerCanplay($event)
-                    },
-                    canplaythrough: function($event) {
-                      return _vm.onPlayerCanplaythrough($event)
-                    },
-                    statechanged: function($event) {
-                      return _vm.playerStateChanged($event)
-                    },
-                    ready: _vm.playerReadied
-                  }
-                })
-              ],
-              1
-            )
+            }),
+            0
+          )
+        ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-3 " }, [
-        _c(
-          "div",
-          { staticClass: "accordion", attrs: { id: "accordionExample" } },
-          _vm._l(_vm.courseData.chapters, function(chapter) {
-            return _c(
-              "div",
-              { key: chapter.id, staticClass: "card shadow mb-3" },
-              [
+      _vm.type == "player"
+        ? _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-12" }, [
+              _c("div", { staticClass: "card mt-5" }, [
+                _c("div", { staticClass: "card-header" }, [_vm._v("New Note")]),
+                _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "card-header", attrs: { id: "headingOne" } },
+                  { staticClass: "card-body" },
                   [
-                    _c("h2", { staticClass: "mb-0" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-link btn-block text-left",
-                          attrs: {
-                            type: "button",
-                            "data-toggle": "collapse",
-                            "data-target": "#chapter-" + chapter.id,
-                            "aria-expanded": "true",
-                            "aria-controls": "collapseOne"
-                          }
+                    _c("Vueditor", {
+                      ref: "newNote",
+                      model: {
+                        value: _vm.newNote.contentText,
+                        callback: function($$v) {
+                          _vm.$set(_vm.newNote, "contentText", $$v)
                         },
-                        [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(chapter.title) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    ])
-                  ]
+                        expression: "newNote.contentText"
+                      }
+                    })
+                  ],
+                  1
                 ),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "collapse show",
-                    attrs: {
-                      id: "chapter-" + chapter.id,
-                      "aria-labelledby": "headingOne",
-                      "data-parent": "#accordionExample"
-                    }
-                  },
-                  [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "list-group" },
-                        [
-                          _vm._l(chapter.lessons, function(lesson) {
-                            return _c(
-                              "li",
-                              {
-                                key: lesson.id,
-                                staticClass: "list-group-item "
-                              },
-                              [
-                                _c("div", { staticClass: "md-v-line" }),
-                                _vm._v(" "),
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: {
-                                      href:
-                                        "/storage/uploads/" +
-                                        lesson.media_p_d_f.name
-                                    }
-                                  },
-                                  [_c("i", { staticClass: "far fa-file-pdf" })]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: {
-                                      "data-toggle": "modal",
-                                      "data-target": "#downloadableMediaModal",
-                                      href: "#downloadableMediaModal"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.setDownloadableMedia(lesson)
-                                      }
-                                    }
-                                  },
-                                  [_c("i", { staticClass: "fa fa-download" })]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: {
-                                      href: "#notesModal",
-                                      "data-toggle": "modal",
-                                      "data-target": "#notesModal"
-                                    },
-                                    on: {
-                                      click: function() {
-                                        _vm.notes = lesson.notes
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass:
-                                        "far fa-sticky-note mr-4 pr-3"
-                                    })
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "a",
-                                  { attrs: { href: "./" + lesson.slug } },
-                                  [_vm._v(_vm._s(lesson.title))]
-                                )
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          chapter.test
-                            ? _c("li", { staticClass: "list-group-item " }, [
-                                _c("div", { staticClass: "md-v-line" }),
-                                _c("i", {
-                                  staticClass: "fas fa-laptop mr-4 pr-3"
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: {
-                                      href:
-                                        "/player/" + chapter.test.slug + "/test"
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(chapter.test.title))]
-                                )
-                              ])
-                            : _vm._e()
-                        ],
-                        2
-                      )
-                    ])
-                  ]
-                )
-              ]
-            )
-          }),
-          0
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.type !== "test"
-      ? _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-lg-12" }, [
-            _c("div", { staticClass: "card mt-5" }, [
-              _c("div", { staticClass: "card-header" }, [_vm._v("New Note")]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "card-body" },
-                [
-                  _c("Vueditor", {
-                    ref: "newNote",
-                    model: {
-                      value: _vm.newNote.contentText,
-                      callback: function($$v) {
-                        _vm.$set(_vm.newNote, "contentText", $$v)
-                      },
-                      expression: "newNote.contentText"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.addNewNote()
-                      }
-                    }
-                  },
-                  [_vm._v("Save")]
-                )
-              ])
-            ])
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.type !== "test"
-      ? _c(
-          "div",
-          {
-            staticClass: "modal fade",
-            attrs: {
-              id: "downloadableMediaModal",
-              tabindex: "-2",
-              "aria-labelledby": "downloadableMediaModalLabel",
-              "aria-hidden": "true"
-            }
-          },
-          [
-            _c("div", { staticClass: "modal-dialog" }, [
-              _c("div", { staticClass: "modal-content" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "card-footer" }, [
                   _c(
-                    "div",
+                    "button",
                     {
-                      staticClass: "card shadow-c",
-                      attrs: { "data-length": _vm.downloadableMedia.length }
+                      staticClass: "btn btn-success",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.addNewNote()
+                        }
+                      }
                     },
-                    _vm._l(_vm.downloadableMedia.data, function(media, index) {
-                      return _c("div", { staticClass: "card-body" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "text-center",
-                            attrs: {
-                              href:
-                                "/download?filename=" +
-                                media.name +
-                                "&lesson=" +
-                                _vm.downloadableMedia.lesson.id
-                            }
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(media.name.replace(/\.[^/.]+$/, "")) + " "
-                            ),
-                            _c("i", { staticClass: "fa fa-download" })
-                          ]
-                        )
-                      ])
-                    }),
-                    0
+                    [_vm._v("Save")]
                   )
                 ])
               ])
             ])
-          ]
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.type !== "test"
-      ? _c(
-          "div",
-          {
-            staticClass: "modal fade",
-            attrs: {
-              id: "notesModal",
-              tabindex: "-2",
-              "aria-labelledby": "notesModalLabel",
-              "aria-hidden": "true"
-            }
-          },
-          [
-            _c("div", { staticClass: "modal-dialog" }, [
-              _c("div", { staticClass: "modal-content" }, [
-                _vm._m(1),
-                _vm._v(" "),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "downloadableMediaModal",
+            tabindex: "-2",
+            "aria-labelledby": "downloadableMediaModalLabel",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
                 _c(
                   "div",
                   {
-                    staticClass: "modal-body",
-                    attrs: { id: "notes-container" }
+                    staticClass: "card shadow-c",
+                    attrs: { "data-length": _vm.downloadableMedia.length }
                   },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card shadow-c",
-                        attrs: { "data-length": _vm.notes.length }
-                      },
-                      _vm._l(_vm.notes, function(note) {
-                        return _c(
-                          "div",
-                          { key: note.id, staticClass: "card-body" },
-                          [
-                            _c("p", [
-                              _vm._v(
-                                _vm._s(
-                                  note.contentText.replace(/<[^>]*>?/gm, "")
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "float-right font-weight-light ml-1 text-white btn btn-primary btn-sm ",
-                                attrs: {
-                                  "data-toggle": "modal",
-                                  "data-target": "#edit-note-modal"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.setEditorContent(note)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "far fa-edit" })]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "float-right btn font-weight-light text-white btn-danger btn-sm",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.removeNote(note.id)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-trash" })]
-                            )
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  ]
+                  _vm._l(_vm.downloadableMedia.data, function(media, index) {
+                    return _c("div", { staticClass: "card-body" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "text-center",
+                          attrs: {
+                            href:
+                              "/download?filename=" +
+                              media.name +
+                              "&lesson=" +
+                              _vm.downloadableMedia.lesson.id
+                          }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(media.name.replace(/\.[^/.]+$/, "")) + " "
+                          ),
+                          _c("i", { staticClass: "fa fa-download" })
+                        ]
+                      )
+                    ])
+                  }),
+                  0
                 )
               ])
             ])
-          ]
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.type !== "test"
-      ? _c(
-          "div",
-          {
-            staticClass: "modal fade",
-            attrs: {
-              id: "edit-note-modal",
-              tabindex: "-1",
-              role: "dialog",
-              "aria-labelledby": "edit-note-modallLabel",
-              "aria-hidden": "true"
-            }
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "modal-dialog modal-lg",
-                attrs: { role: "document" }
-              },
-              [
-                _c("div", { staticClass: "modal-content my-4" }, [
-                  _vm._m(2),
-                  _vm._v(" "),
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "notesModal",
+            tabindex: "-2",
+            "aria-labelledby": "notesModalLabel",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-body", attrs: { id: "notes-container" } },
+                [
                   _c(
                     "div",
-                    { staticClass: "modal-body p-2" },
-                    [
-                      _c("Vueditor", {
-                        ref: "noteEdit",
-                        model: {
-                          value: _vm.current_note.contentText,
-                          callback: function($$v) {
-                            _vm.$set(_vm.current_note, "contentText", $$v)
-                          },
-                          expression: "current_note.contentText"
-                        }
-                      })
-                    ],
-                    1
+                    {
+                      staticClass: "card shadow-c",
+                      attrs: { "data-length": _vm.notes.length }
+                    },
+                    _vm._l(_vm.notes, function(note) {
+                      return _c(
+                        "div",
+                        { key: note.id, staticClass: "card-body" },
+                        [
+                          _c("p", [
+                            _vm._v(
+                              _vm._s(note.contentText.replace(/<[^>]*>?/gm, ""))
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "float-right font-weight-light ml-1 text-white btn btn-primary btn-sm ",
+                              attrs: {
+                                "data-toggle": "modal",
+                                "data-target": "#edit-note-modal"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.setEditorContent(note)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "far fa-edit" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "float-right btn font-weight-light text-white btn-danger btn-sm",
+                              on: {
+                                click: function($event) {
+                                  return _vm.removeNote(note.id)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-trash" })]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ]
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "edit-note-modal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "edit-note-modallLabel",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-lg",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content my-4" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "modal-body p-2" },
+                  [
+                    _c("Vueditor", {
+                      ref: "noteEdit",
+                      model: {
+                        value: _vm.current_note.contentText,
+                        callback: function($$v) {
+                          _vm.$set(_vm.current_note, "contentText", $$v)
+                        },
+                        expression: "current_note.contentText"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Close\n            ")]
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Close\n            ")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.saveNote()
-                          }
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.saveNote()
                         }
-                      },
-                      [_vm._v("Save changes\n            ")]
-                    )
-                  ])
+                      }
+                    },
+                    [_vm._v("Save changes\n            ")]
+                  )
                 ])
-              ]
-            )
-          ]
-        )
-      : _vm._e()
+              ])
+            ]
+          )
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("i", { staticClass: "fas fa-laptop" })])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -47012,6 +46911,337 @@ var staticRenderFns = [
     )
   }
 ]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-23235493", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b6abe5d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/test.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      [_c("flip-countdown", { attrs: { deadline: this.testData.timer.date } })],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "questionBox" },
+      [
+        _c(
+          "transition",
+          {
+            attrs: {
+              duration: { enter: 500, leave: 300 },
+              "enter-active-class": "animated zoomIn",
+              "leave-active-class": "animated zoomOut",
+              mode: "out-in"
+            }
+          },
+          [
+            _vm.questionIndex < _vm.quiz.questions.length
+              ? _c(
+                  "div",
+                  { key: _vm.questionIndex, staticClass: "questionContainer" },
+                  [
+                    _c("header", [
+                      _c("h1", { staticClass: "title is-6" }, [
+                        _vm._v(_vm._s(this.testData.title))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "progressContainer" }, [
+                        _c(
+                          "progress",
+                          {
+                            staticClass: "progress is-info is-small",
+                            attrs: { max: "100" },
+                            domProps: {
+                              value:
+                                (_vm.questionIndex /
+                                  _vm.quiz.questions.length) *
+                                100
+                            }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                (_vm.questionIndex /
+                                  _vm.quiz.questions.length) *
+                                  100
+                              ) + "%"
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(
+                              (_vm.questionIndex / _vm.quiz.questions.length) *
+                                100
+                            ) + "% complete"
+                          )
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("h2", { staticClass: "titleContainer title" }, [
+                      _vm._v(_vm._s(_vm.quiz.questions[_vm.questionIndex].text))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "optionContainer" },
+                      _vm._l(
+                        _vm.quiz.questions[_vm.questionIndex].responses,
+                        function(response, index) {
+                          return _c(
+                            "div",
+                            {
+                              key: response.id,
+                              staticClass: "option",
+                              class: {
+                                "is-selected":
+                                  _vm.userResponses[_vm.questionIndex] ==
+                                  response.id
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.selectOption(index, response.id)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t" +
+                                  _vm._s(_vm._f("charIndex")(index)) +
+                                  ". " +
+                                  _vm._s(response.text) +
+                                  "\n\t\t\t\t\t"
+                              )
+                            ]
+                          )
+                        }
+                      ),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _c("footer", { staticClass: "questionFooter" }, [
+                      _c(
+                        "nav",
+                        {
+                          staticClass: "pagination",
+                          attrs: {
+                            role: "navigation",
+                            "aria-label": "pagination"
+                          }
+                        },
+                        [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "button",
+                              attrs: { disabled: _vm.questionIndex < 1 },
+                              on: {
+                                click: function($event) {
+                                  return _vm.prev()
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                    Back\n                  "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "button",
+                              class:
+                                _vm.userResponses[_vm.questionIndex] == null
+                                  ? ""
+                                  : "is-active",
+                              attrs: {
+                                disabled:
+                                  _vm.questionIndex >= _vm.quiz.questions.length
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.next()
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(
+                                    _vm.userResponses[_vm.questionIndex] == null
+                                      ? "skip"
+                                      : "Next"
+                                  ) +
+                                  "\n                  "
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.questionIndex >= _vm.quiz.questions.length
+              ? _c(
+                  "div",
+                  {
+                    key: _vm.questionIndex,
+                    staticClass: "quizCompleted has-text-centered"
+                  },
+                  [
+                    _c("span", { staticClass: "icon" }, [
+                      _c("i", {
+                        staticClass: "fa",
+                        class:
+                          _vm.score() > 3
+                            ? "fa-check-circle-o is-active"
+                            : "fa-times-circle"
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("h2", { staticClass: "title" }, [
+                      _vm._v(
+                        "\n\t\t\t\t\tYou did " +
+                          _vm._s(
+                            _vm.score() > 7
+                              ? "an amazing"
+                              : _vm.score() <= 1
+                              ? "a poor"
+                              : "a good"
+                          ) +
+                          " job!\n\t\t\t\t"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "subtitle" }, [
+                      _vm._v(
+                        "\n\t\t\t\t\tTotal score: " +
+                          _vm._s(this.testScore) +
+                          " / " +
+                          _vm._s(_vm.quiz.questions.length) +
+                          "\n\t\t\t\t"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button",
+                        on: {
+                          click: function($event) {
+                            return _vm.restart()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("restart "),
+                        _c("i", { staticClass: "fa fa-refresh" })
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e()
+          ]
+        )
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5b6abe5d", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-fecbd728\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/player.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "player-video" },
+    [
+      _c("video-player", {
+        ref: "videoPlayer",
+        staticClass: "video-player-box",
+        attrs: {
+          options: _vm.playerOptions,
+          playsinline: true,
+          customEventName: "customstatechangedeventname"
+        },
+        on: {
+          play: function($event) {
+            return _vm.onPlayerPlay($event)
+          },
+          pause: function($event) {
+            return _vm.onPlayerPause($event)
+          },
+          ended: function($event) {
+            return _vm.onPlayerEnded($event)
+          },
+          waiting: function($event) {
+            return _vm.onPlayerWaiting($event)
+          },
+          playing: function($event) {
+            return _vm.onPlayerPlaying($event)
+          },
+          loadeddata: function($event) {
+            return _vm.onPlayerLoadeddata($event)
+          },
+          timeupdate: function($event) {
+            return _vm.onPlayerTimeupdate($event)
+          },
+          canplay: function($event) {
+            return _vm.onPlayerCanplay($event)
+          },
+          canplaythrough: function($event) {
+            return _vm.onPlayerCanplaythrough($event)
+          },
+          statechanged: function($event) {
+            return _vm.playerStateChanged($event)
+          },
+          ready: _vm.playerReadied
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -62361,6 +62591,13 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue2-flip-countdown/dist/vue2-flip-countdown.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define("vue2-flip-countdown",[],t):"object"==typeof exports?exports["vue2-flip-countdown"]=t():e["vue2-flip-countdown"]=t()}("undefined"!=typeof self?self:this,function(){return function(e){function t(a){if(n[a])return n[a].exports;var i=n[a]={i:a,l:!1,exports:{}};return e[a].call(i.exports,i,i.exports,t),i.l=!0,i.exports}var n={};return t.m=e,t.c=n,t.d=function(e,n,a){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:a})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=1)}([function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var a=n(7);t.default={name:"flipCountdown",props:{deadline:{type:String},stop:{type:Boolean},showDays:{type:Boolean,required:!1,default:!0},showHours:{type:Boolean,required:!1,default:!0},showMinutes:{type:Boolean,required:!1,default:!0},showSeconds:{type:Boolean,required:!1,default:!0},labels:{type:Object,required:!1,default:function(){return{days:"Days",hours:"Hours",minutes:"Minutes",seconds:"Seconds"}}}},data:function(){var e=a();return{now:Math.trunc((new Date).getTime()/1e3),date:null,interval:null,diff:0,show:!1,timeData:[{current:0,previous:0,label:this.labels.days,elementId:"flip-card-days-"+e,show:this.showDays},{current:0,previous:0,label:this.labels.hours,elementId:"flip-card-hours-"+e,show:this.showHours},{current:0,previous:0,label:this.labels.minutes,elementId:"flip-card-minutes-"+e,show:this.showMinutes},{current:0,previous:0,label:this.labels.seconds,elementId:"flip-card-seconds-"+e,show:this.showSeconds}]}},created:function(){var e=this;if(!this.deadline)throw new Error("Missing props 'deadline'");var t=this.deadline;if(this.date=Math.trunc(Date.parse(t.replace(/-/g,"/"))/1e3),!this.date)throw new Error("Invalid props value, correct the 'deadline'");this.interval=setInterval(function(){e.now=Math.trunc((new Date).getTime()/1e3)},1e3)},mounted:function(){0!==this.diff&&(this.show=!0)},computed:{seconds:function(){return Math.trunc(this.diff)%60},minutes:function(){return Math.trunc(this.diff/60)%60},hours:function(){return Math.trunc(this.diff/60/60)%24},days:function(){return Math.trunc(this.diff/60/60/24)}},watch:{deadline:function(e,t){var n=this.deadline;if(this.date=Math.trunc(Date.parse(n.replace(/-/g,"/"))/1e3),!this.date)throw new Error("Invalid props value, correct the 'deadline'")},now:function(e){this.diff=this.date-this.now,this.diff<=0||this.stop?(this.diff=0,this.updateTime(3,0)):this.updateAllCards()},diff:function(e){0===e&&(this.$emit("timeElapsed"),this.updateAllCards())}},filters:{twoDigits:function(e){return e.toString().length<=1?"0"+e.toString():e.toString()}},methods:{updateAllCards:function(){this.updateTime(0,this.days),this.updateTime(1,this.hours),this.updateTime(2,this.minutes),this.updateTime(3,this.seconds)},updateTime:function(e,t){if(!(e>=this.timeData.length||void 0===t)){window.requestAnimationFrame&&(this.frame=requestAnimationFrame(this.updateTime.bind(this)));var n=this.timeData[e],a=t<0?0:t,i=document.querySelector("#"+n.elementId);if(a!==n.current&&(n.previous=n.current,n.current=a,i&&(i.classList.remove("flip"),i.offsetWidth,i.classList.add("flip")),0===e)){var r=i.querySelectorAll("span b");if(r){var o=!0,s=!1,f=void 0;try{for(var d,c=r[Symbol.iterator]();!(o=(d=c.next()).done);o=!0){var l=d.value,u=l.classList[0];if(t/1e3>=1){if(!u.includes("-4digits")){var p=u+"-4digits";l.classList.add(p),l.classList.remove(u)}}else if(u.includes("-4digits")){var v=u.replace("-4digits","");l.classList.add(v),l.classList.remove(u)}}}catch(e){s=!0,f=e}finally{try{!o&&c.return&&c.return()}finally{if(s)throw f}}}}}}},beforeDestroy:function(){window.cancelAnimationFrame&&cancelAnimationFrame(this.frame)},destroyed:function(){clearInterval(null)}}},function(e,t,n){"use strict";function a(e){n(2)}Object.defineProperty(t,"__esModule",{value:!0});var i=n(0),r=n.n(i);for(var o in i)"default"!==o&&function(e){n.d(t,e,function(){return i[e]})}(o);var s=n(10),f=n(11),d=a,c=Object(f.a)(r.a,s.a,s.b,!1,d,"data-v-78efe7f6",null);t.default=c.exports},function(e,t,n){var a=n(3);"string"==typeof a&&(a=[[e.i,a,""]]),a.locals&&(e.exports=a.locals);var i=n(5).default;i("6cb6a1b9",a,!0,{})},function(e,t,n){t=e.exports=n(4)(!1),t.push([e.i,"\n.flip-clock[data-v-78efe7f6] {\n  text-align: center;\n  perspective: 600px;\n  margin: 0 auto;\n}\n.flip-clock *[data-v-78efe7f6],\n.flip-clock *[data-v-78efe7f6]:before,\n.flip-clock *[data-v-78efe7f6]:after {\n  box-sizing: border-box;\n}\n.flip-clock__piece[data-v-78efe7f6] {\n  display: inline-block;\n  margin: 0 0.2vw;\n}\n@media (min-width: 1000px) {\n.flip-clock__piece[data-v-78efe7f6] {\n    margin: 0 5px;\n}\n}\n.flip-clock__slot[data-v-78efe7f6] {\n  font-size: 1rem;\n  line-height: 1.5;\n  display: block;\n}\n.flip-card[data-v-78efe7f6] {\n  display: block;\n  position: relative;\n  padding-bottom: 0.72em;\n  font-size: 2.25rem;\n  line-height: 0.95;\n}\n@media (min-width: 1000px) {\n.flip-clock__slot[data-v-78efe7f6] {\n    font-size: 1.2rem;\n}\n.flip-card[data-v-78efe7f6] {\n    font-size: 3rem;\n}\n}\n.flip-card__top[data-v-78efe7f6],\n.flip-card__bottom[data-v-78efe7f6],\n.flip-card__back-bottom[data-v-78efe7f6],\n.flip-card__back[data-v-78efe7f6]::before,\n.flip-card__back[data-v-78efe7f6]::after {\n  display: block;\n  color: #cca900;\n  background: #222;\n  padding: 0.23em 0.15em 0.4em;\n  border-radius: 0.15em 0.15em 0 0;\n  backface-visibility: hidden;\n  -webkit-backface-visibility: hidden;\n  transform-style: preserve-3d;\n  width: 2.1em;\n  height: 0.72em;\n}\n.flip-card__top-4digits[data-v-78efe7f6],\n.flip-card__bottom-4digits[data-v-78efe7f6],\n.flip-card__back-bottom-4digits[data-v-78efe7f6],\n.flip-card__back-4digits[data-v-78efe7f6]::before,\n.flip-card__back-4digits[data-v-78efe7f6]::after {\n  display: block;\n  color: #cca900;\n  background: #222;\n  padding: 0.23em 0.15em 0.4em;\n  border-radius: 0.15em 0.15em 0 0;\n  backface-visibility: hidden;\n  -webkit-backface-visibility: hidden;\n  transform-style: preserve-3d;\n  width: 2.65em;\n  height: 0.72em;\n}\n.flip-card__bottom[data-v-78efe7f6],\n.flip-card__back-bottom[data-v-78efe7f6],\n.flip-card__bottom-4digits[data-v-78efe7f6],\n.flip-card__back-bottom-4digits[data-v-78efe7f6] {\n  color: #ffdc00;\n  position: absolute;\n  top: 50%;\n  left: 0;\n  border-top: solid 1px #000;\n  background: #393939;\n  border-radius: 0 0 0.15em 0.15em;\n  pointer-events: none;\n  overflow: hidden;\n  z-index: 2;\n}\n.flip-card__back-bottom[data-v-78efe7f6],\n.flip-card__back-bottom-4digits[data-v-78efe7f6] {\n  z-index: 1;\n}\n.flip-card__bottom[data-v-78efe7f6]::after,\n.flip-card__back-bottom[data-v-78efe7f6]::after,\n.flip-card__bottom-4digits[data-v-78efe7f6]::after,\n.flip-card__back-bottom-4digits[data-v-78efe7f6]::after {\n  display: block;\n  margin-top: -0.72em;\n}\n.flip-card__back[data-v-78efe7f6]::before,\n.flip-card__bottom[data-v-78efe7f6]::after,\n.flip-card__back-bottom[data-v-78efe7f6]::after,\n.flip-card__back-4digits[data-v-78efe7f6]::before,\n.flip-card__bottom-4digits[data-v-78efe7f6]::after,\n.flip-card__back-bottom-4digits[data-v-78efe7f6]::after {\n  content: attr(data-value);\n}\n.flip-card__back[data-v-78efe7f6],\n.flip-card__back-4digits[data-v-78efe7f6] {\n  position: absolute;\n  top: 0;\n  height: 100%;\n  left: 0%;\n  pointer-events: none;\n}\n.flip-card__back[data-v-78efe7f6]::before,\n.flip-card__back-4digits[data-v-78efe7f6]::before {\n  position: relative;\n  overflow: hidden;\n  z-index: -1;\n}\n.flip .flip-card__back[data-v-78efe7f6]::before,\n.flip .flip-card__back-4digits[data-v-78efe7f6]::before {\n  z-index: 1;\n  animation: flipTop-data-v-78efe7f6 0.3s cubic-bezier(0.37, 0.01, 0.94, 0.35);\n  animation-fill-mode: both;\n  transform-origin: center bottom;\n}\n.flip .flip-card__bottom[data-v-78efe7f6],\n.flip .flip-card__bottom-4digits[data-v-78efe7f6] {\n  transform-origin: center top;\n  animation-fill-mode: both;\n  animation: flipBottom-data-v-78efe7f6 0.6s cubic-bezier(0.15, 0.45, 0.28, 1);\n}\n@keyframes flipTop-data-v-78efe7f6 {\n0% {\n    transform: rotateX(0deg);\n    z-index: 2;\n}\n0%,\n  99% {\n    opacity: 1;\n}\n100% {\n    transform: rotateX(-90deg);\n    opacity: 0;\n}\n}\n@keyframes flipBottom-data-v-78efe7f6 {\n0%,\n  50% {\n    z-index: -1;\n    transform: rotateX(90deg);\n    opacity: 0;\n}\n51% {\n    opacity: 1;\n}\n100% {\n    opacity: 1;\n    transform: rotateX(0deg);\n    z-index: 5;\n}\n}\n",""])},function(e,t,n){"use strict";function a(e,t){var n=e[1]||"",a=e[3];if(!a)return n;if(t&&"function"==typeof btoa){var r=i(a);return[n].concat(a.sources.map(function(e){return"/*# sourceURL=".concat(a.sourceRoot).concat(e," */")})).concat([r]).join("\n")}return[n].join("\n")}function i(e){return"/*# ".concat("sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(e)))))," */")}e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var n=a(t,e);return t[2]?"@media ".concat(t[2],"{").concat(n,"}"):n}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var a={},i=0;i<this.length;i++){var r=this[i][0];null!=r&&(a[r]=!0)}for(var o=0;o<e.length;o++){var s=e[o];null!=s[0]&&a[s[0]]||(n&&!s[2]?s[2]=n:n&&(s[2]="(".concat(s[2],") and (").concat(n,")")),t.push(s))}},t}},function(e,t,n){"use strict";function a(e,t,n,a){h=n,b=a||{};var r=Object(d.a)(e,t);return i(r),function(t){for(var n=[],a=0;a<r.length;a++){var o=r[a],s=l[o.id];s.refs--,n.push(s)}t?(r=Object(d.a)(e,t),i(r)):r=[];for(var a=0;a<n.length;a++){var s=n[a];if(0===s.refs){for(var f=0;f<s.parts.length;f++)s.parts[f]();delete l[s.id]}}}}function i(e){for(var t=0;t<e.length;t++){var n=e[t],a=l[n.id];if(a){a.refs++;for(var i=0;i<a.parts.length;i++)a.parts[i](n.parts[i]);for(;i<n.parts.length;i++)a.parts.push(o(n.parts[i]));a.parts.length>n.parts.length&&(a.parts.length=n.parts.length)}else{for(var r=[],i=0;i<n.parts.length;i++)r.push(o(n.parts[i]));l[n.id]={id:n.id,refs:1,parts:r}}}}function r(){var e=document.createElement("style");return e.type="text/css",u.appendChild(e),e}function o(e){var t,n,a=document.querySelector("style["+_+'~="'+e.id+'"]');if(a){if(h)return m;a.parentNode.removeChild(a)}if(g){var i=v++;a=p||(p=r()),t=s.bind(null,a,i,!1),n=s.bind(null,a,i,!0)}else a=r(),t=f.bind(null,a),n=function(){a.parentNode.removeChild(a)};return t(e),function(a){if(a){if(a.css===e.css&&a.media===e.media&&a.sourceMap===e.sourceMap)return;t(e=a)}else n()}}function s(e,t,n,a){var i=n?"":a.css;if(e.styleSheet)e.styleSheet.cssText=y(t,i);else{var r=document.createTextNode(i),o=e.childNodes;o[t]&&e.removeChild(o[t]),o.length?e.insertBefore(r,o[t]):e.appendChild(r)}}function f(e,t){var n=t.css,a=t.media,i=t.sourceMap;if(a&&e.setAttribute("media",a),b.ssrId&&e.setAttribute(_,t.id),i&&(n+="\n/*# sourceURL="+i.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(i))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}Object.defineProperty(t,"__esModule",{value:!0}),t.default=a;var d=n(6),c="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!c)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var l={},u=c&&(document.head||document.getElementsByTagName("head")[0]),p=null,v=0,h=!1,m=function(){},b=null,_="data-vue-ssr-id",g="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase()),y=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t,n){"use strict";function a(e,t){for(var n=[],a={},i=0;i<t.length;i++){var r=t[i],o=r[0],s=r[1],f=r[2],d=r[3],c={id:e+":"+i,css:s,media:f,sourceMap:d};a[o]?a[o].parts.push(c):n.push(a[o]={id:o,parts:[c]})}return n}t.a=a},function(e,t,n){function a(e,t,n){var a=t&&n||0;"string"==typeof e&&(t="binary"===e?new Array(16):null,e=null),e=e||{};var o=e.random||(e.rng||i)();if(o[6]=15&o[6]|64,o[8]=63&o[8]|128,t)for(var s=0;s<16;++s)t[a+s]=o[s];return t||r(o)}var i=n(8),r=n(9);e.exports=a},function(e,t){var n="undefined"!=typeof crypto&&crypto.getRandomValues&&crypto.getRandomValues.bind(crypto)||"undefined"!=typeof msCrypto&&"function"==typeof window.msCrypto.getRandomValues&&msCrypto.getRandomValues.bind(msCrypto);if(n){var a=new Uint8Array(16);e.exports=function(){return n(a),a}}else{var i=new Array(16);e.exports=function(){for(var e,t=0;t<16;t++)0==(3&t)&&(e=4294967296*Math.random()),i[t]=e>>>((3&t)<<3)&255;return i}}},function(e,t){function n(e,t){var n=t||0,i=a;return[i[e[n++]],i[e[n++]],i[e[n++]],i[e[n++]],"-",i[e[n++]],i[e[n++]],"-",i[e[n++]],i[e[n++]],"-",i[e[n++]],i[e[n++]],"-",i[e[n++]],i[e[n++]],i[e[n++]],i[e[n++]],i[e[n++]],i[e[n++]]].join("")}for(var a=[],i=0;i<256;++i)a[i]=(i+256).toString(16).substr(1);e.exports=n},function(e,t,n){"use strict";n.d(t,"a",function(){return a}),n.d(t,"b",function(){return i});var a=function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"container flip-clock"},[e._l(e.timeData,function(t){return[n("span",{directives:[{name:"show",rawName:"v-show",value:t.show,expression:"data.show"}],key:t.label,staticClass:"flip-clock__piece",attrs:{id:t.elementId}},[n("span",{staticClass:"flip-clock__card flip-card"},[n("b",{staticClass:"flip-card__top"},[e._v(e._s(e._f("twoDigits")(t.current)))]),e._v(" "),n("b",{staticClass:"flip-card__bottom",attrs:{"data-value":e._f("twoDigits")(t.current)}}),e._v(" "),n("b",{staticClass:"flip-card__back",attrs:{"data-value":e._f("twoDigits")(t.previous)}}),e._v(" "),n("b",{staticClass:"flip-card__back-bottom",attrs:{"data-value":e._f("twoDigits")(t.previous)}})]),e._v(" "),n("span",{staticClass:"flip-clock__slot"},[e._v(e._s(t.label))])])]})],2)},i=[]},function(e,t,n){"use strict";function a(e,t,n,a,i,r,o,s){e=e||{};var f=typeof e.default;"object"!==f&&"function"!==f||(e=e.default);var d="function"==typeof e?e.options:e;t&&(d.render=t,d.staticRenderFns=n,d._compiled=!0),a&&(d.functional=!0),r&&(d._scopeId=r);var c;if(o?(c=function(e){e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,e||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),i&&i.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(o)},d._ssrRegister=c):i&&(c=s?function(){i.call(this,this.$root.$options.shadowRoot)}:i),c)if(d.functional){d._injectStyles=c;var l=d.render;d.render=function(e,t){return c.call(t),l(e,t)}}else{var u=d.beforeCreate;d.beforeCreate=u?[].concat(u,c):[c]}return{exports:e,options:d}}t.a=a}])});
+
+/***/ }),
+
 /***/ "./node_modules/vueditor/dist/script/vueditor.min.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -64268,16 +64505,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__("./resources/js/bootstrap.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_vue__ = __webpack_require__("./resources/js/app.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_player_vue__ = __webpack_require__("./resources/js/components/player.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_player_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_player_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vueditor__ = __webpack_require__("./node_modules/vueditor/dist/script/vueditor.min.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vueditor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vueditor__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__router__ = __webpack_require__("./resources/js/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vueditor_dist_style_vueditor_min_css__ = __webpack_require__("./node_modules/vueditor/dist/style/vueditor.min.css");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vueditor_dist_style_vueditor_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vueditor_dist_style_vueditor_min_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_player_vue__ = __webpack_require__("./resources/js/components/player.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_player_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_player_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vueditor__ = __webpack_require__("./node_modules/vueditor/dist/script/vueditor.min.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vueditor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vueditor__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__router__ = __webpack_require__("./resources/js/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vueditor_dist_style_vueditor_min_css__ = __webpack_require__("./node_modules/vueditor/dist/style/vueditor.min.css");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vueditor_dist_style_vueditor_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vueditor_dist_style_vueditor_min_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_vue__ = __webpack_require__("./resources/js/app.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__app_vue__);
 
 // Axios & Echo global
 // require('./bootstrap');
@@ -64288,15 +64525,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-// import VueVideoPlayer from 'vue-video-player'
 
-// require videojs style
-// import 'video.js/dist/video-js.css'
-// import 'vue-video-player/src/custom-theme.css'
-
-
-/* Vue. Main component */
-//import PlayCourse from './website/PlayCourse.vue'
 
 
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.config.productionTip = false;
@@ -64311,12 +64540,7 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.config.productionTip = false;
 /* Main component */
 //Vue.component('PlayCourse', PlayCourse)
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('player', __webpack_require__("./resources/js/components/player.vue").default);
-
-__WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('player', __WEBPACK_IMPORTED_MODULE_3__components_player_vue___default.a);
-
-
-
-
+__WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('test', __webpack_require__("./resources/js/components/test.vue").default);
 
 
 // your config here
@@ -64326,19 +64550,18 @@ var config = {
   fontSize: ['12px', '14px', '16px', '18px', '0.8rem', '1.0rem', '1.2rem', '1.5rem', '2.0rem'],
   uploadUrl: ''
 };
-__WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vuex__["default"]);
-__WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vueditor___default.a, config);
+__WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_vuex__["default"]);
+__WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vueditor___default.a, config);
 /* This is main entry point */
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
-  router: __WEBPACK_IMPORTED_MODULE_6__router__["a" /* default */],
+  router: __WEBPACK_IMPORTED_MODULE_5__router__["a" /* default */],
   render: function render(h) {
-    return h(__WEBPACK_IMPORTED_MODULE_2__app_vue___default.a);
+    return h(__WEBPACK_IMPORTED_MODULE_7__app_vue___default.a);
   }
-});
-
-var app = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
-  el: '#app'
-});
+}).$mount('#app');
+// const app = new Vue({
+//   el: '#app'
+// });
 
 /***/ }),
 
@@ -64359,18 +64582,19 @@ var app = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 
 
-
+var routes = [{
+  path: '/player/:slug',
+  name: 'player',
+  component: __WEBPACK_IMPORTED_MODULE_2__components_player_vue___default.a
+}, {
+  path: '/test/:slug',
+  name: 'test',
+  component: __WEBPACK_IMPORTED_MODULE_3__components_test_vue___default.a
+}];
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
   base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
-  routes: [{
-    path: '/player',
-    name: 'player',
-    component: __WEBPACK_IMPORTED_MODULE_2__components_player_vue___default.a
-  }, {
-    path: '/test',
-    name: 'Test',
-    component: __WEBPACK_IMPORTED_MODULE_3__components_test_vue___default.a
-  }],
+  mode: 'history',
+  routes: routes,
   scrollBehavior: function scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
@@ -64378,6 +64602,10 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
       return { x: 0, y: 0 };
     }
   }
+});
+router.beforeEach(function (to, from, next) {
+  // console.log('To',to)
+  return next();
 });
 /* harmony default export */ __webpack_exports__["a"] = (router);
 
