@@ -102,8 +102,7 @@ var quiz = {
 
 
   export default {
- 
-  props: ['slug', 'type'],
+
 
 
   data() {
@@ -115,7 +114,7 @@ var quiz = {
       isActive: false,
       test_id:'',
      testScore:0,
-      question_data:[]
+      question_data:[],
       slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
     }
    },
@@ -174,7 +173,7 @@ var quiz = {
          //return this.userResponses.filter(function(val) { return val }).length;
     },
     getData(slug) {
-      axios.post('/api/v1/single-test', {test: 'testttt'})
+      axios.post('/api/v1/single-test', {test: slug})
           .then(res => {
             this.testData = res.data.response.test
 
