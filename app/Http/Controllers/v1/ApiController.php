@@ -655,7 +655,11 @@ class ApiController extends Controller
                         $chapterLesson['canView'] = true;
                         if ($prevChapter) {
                             $chapterTest = $prevChapter->test;
-                            if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                            if ($chapterTest->testResult && count($chapterTest->testResult) >0) {
+                                if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                                    $chapterLesson['canView'] = false;
+                                }
+                            } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                                 $chapterLesson['canView'] = false;
                             }
                         }
@@ -790,7 +794,11 @@ class ApiController extends Controller
                     $chapterLesson['canView'] = true;
                     if ($prevChapter) {
                         $chapterTest = $prevChapter->test;
-                        if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                        if ($chapterTest->testResult && count($chapterTest->testResult) >0) {
+                            if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                                $chapterLesson['canView'] = false;
+                            }
+                        } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                             $chapterLesson['canView'] = false;
                         }
                     }
@@ -949,7 +957,7 @@ class ApiController extends Controller
         }
         if ($chapter) {
             if ($chapter->chapterStudents()->where('user_id', auth()->user()->id)->get()->count() == 0) {
-                
+
                 $chapter->chapterStudents()->create([
                     'model_type' => $model_type,
                     'model_id' => $request->model_id,

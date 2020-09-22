@@ -83,7 +83,7 @@ export default {
   methods: {
     onPlayerEnded($event){
       axios.post('/api/v1/course-progress',
-      {model_type:"lesson",model_id:this.courseData.lesson.id}
+          {model_type:"lesson",model_id:this.courseData.lesson.id}
       )
           .then(res => {
             console.log(this.courseData.next_lesson)
@@ -92,20 +92,20 @@ export default {
             //   console.log("index",i)
             //   }
             // }
-      
+
 
           })
 
-       
+
     },
-    
+
     getData(slug) {
       axios.post('/api/v1/single-lesson', {lesson: slug})
           .then(res => {
             if (res.data.result) {
               this.courseData = res.data.result
               this.$parent.courseData = this.courseData
-              this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
+              this.playerOptions.sources[0].src = this.courseData.lesson.media_video ? this.courseData.lesson.media_video.url : ''
               console.log("Lesson", res)
               $('.course-title-header').text(this.courseData.course.title)
               $('.close-lesson').attr('href', this.courseData.course_page)

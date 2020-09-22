@@ -5,13 +5,13 @@
 
         <div class="col-lg-8">
           <div class="card">
-          <router-view></router-view>
+            <router-view></router-view>
           </div>
         </div>
         <div class="col-md-4 ">
           <div class="accordion" id="accordionExample">
 
-            <div v-for="chapter in courseData.course_timeline" :key="chapter.data.id" class="card shadow mb-3">
+            <div v-for="chapter in courseData.course_timeline" v-if="chapter.data" :key="chapter.data.id" class="card shadow mb-3">
               <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
                   <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
@@ -61,7 +61,7 @@
                       </td>
 
                     </tr>
-                    <tr  v-if="chapter.test" :key="chapter.test.model.id">
+                    <tr  v-if="chapter.test && chapter.test.model" :key="chapter.test.model.id">
 
                       <td>
                         <router-link :to="{name:'test',params:{slug:chapter.test.model.slug}}">

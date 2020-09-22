@@ -164,7 +164,7 @@
 
                             @if($continue_course)
                             
-                                <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
+                                <a href="{{route('player.show',['slug'=>$continue_course->model->slug])}}">
                                     <button class="btn btn-outline-light  addcart" type="submit">
                                         @lang('labels.frontend.course.continue_course')
                                         <i class="fa fa-arrow-right"></i>

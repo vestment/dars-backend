@@ -109,7 +109,7 @@
                         <i class="fa fa-shopping-bag ml-1"></i>
                         </a>
                        
-                @elseif((auth()->check()) && (auth()->user()->hasRole('student')) && (in_array($course->id,$courses_id)) )
+                @elseif((auth()->check()) && (auth()->user()->hasRole('student')) && (in_array($course->id,auth()->user()->courses()->pluck('course_id')->toArray())) )
                         
                             
                                 <a href="{{ route('courses.show', [$course->slug]) }}"
