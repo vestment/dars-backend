@@ -190,6 +190,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
@@ -219,7 +246,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       courseData: [],
       notes: [],
-      current_note: {}
+      newNote: { contentText: '' },
+      current_note: { contentText: '' },
+      downloadableMedia: { data: '', lesson: '' }
     };
   },
 
@@ -239,31 +268,70 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
-    setEditorContent: function setEditorContent() {
+    setDownloadableMedia: function setDownloadableMedia(lesson) {
+      this.downloadableMedia.data = lesson.downloadable_media;
+      this.downloadableMedia.lesson = lesson;
+    },
+    setEditorContent: function setEditorContent(note) {
       $('#notesModal').modal('hide');
-      var editor = this.$refs.Vueditor;
+      this.current_note = note;
+      var editor = this.$refs.noteEdit;
       editor.setContent(this.current_note.contentText);
     },
     saveNote: function saveNote() {
-      var editor = this.$refs.Vueditor;
+      var editor = this.$refs.noteEdit;
       this.current_note.contentText = editor.getContent();
-      console.log(this.current_note);
-      __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/save-note', this.current_note).then(function (res) {}).catch(function (err) {
+      __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/save-note', this.current_note).then(function (res) {
+        if (res.data.status == 'success') {
+          $('#edit-note-modal').modal('hide');
+          $('#notesModal').modal('show');
+        }
+      }).catch(function (err) {
         console.log(err);
       });
     },
-    getData: function getData(slug) {
+    addNewNote: function addNewNote() {
       var _this = this;
+
+      var editor = this.$refs.newNote;
+      this.newNote.contentText = editor.getContent();
+      this.newNote.lesson_id = this.courseData.lesson.id;
+      __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/add-note', this.newNote).then(function (res) {
+        if (res.data.status == 'success') {
+          editor.setContent('');
+          _this.notes.push(res.data.note);
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    removeNote: function removeNote(id) {
+      var _this2 = this;
+
+      if (confirm('Are you sure you want to delete this note?')) {
+        __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/remove-note', { id: id }).then(function (res) {
+          if (res.data.status == 'success') {
+            _this2.notes.splice(_this2.notes.findIndex(function (note) {
+              return note.id === id;
+            }), 1);
+          }
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+    },
+    getData: function getData(slug) {
+      var _this3 = this;
 
       __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/single-lesson', { lesson: slug }).then(function (res) {
         if (res.data.result) {
-          _this.courseData = res.data.result;
-          _this.playerOptions.sources[0].src = _this.courseData.lesson.media_video.url;
+          _this3.courseData = res.data.result;
+          _this3.playerOptions.sources[0].src = _this3.courseData.lesson.media_video.url;
           console.log("info", res);
-          $('.course-title-header').text(_this.courseData.course.title);
-          $('.close-lesson').attr('href', _this.courseData.course_page);
-          $('.course-progress').text(_this.courseData.course_progress + ' %');
-          $('.progress-bar').css('width', _this.courseData.course_progress + '%');
+          $('.course-title-header').text(_this3.courseData.course.title);
+          $('.close-lesson').attr('href', _this3.courseData.course_page);
+          $('.course-progress').text(_this3.courseData.course_progress + ' %');
+          $('.progress-bar').css('width', _this3.courseData.course_progress + '%');
         }
       }).catch(function (err) {
         console.log(err);
@@ -303,7 +371,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
               divWidth = $div.width(),
               heightMax = docHeight - divHeight,
               widthMax = docWidth - divWidth;
-
+          $div.show();
           $div.css({
             left: Math.floor(Math.random() * widthMax),
             top: Math.floor(Math.random() * heightMax)
@@ -323,9 +391,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lesson_css__ = __webpack_require__("./resources/js/components/lesson.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lesson_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lesson_css__);
-//
-//
-//
 //
 //
 //
@@ -527,6 +592,21 @@ exports.push([module.i, ".video-js .vjs-big-play-button .vjs-icon-placeholder:be
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fecbd728\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/player.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.video-js {\n  width: 100%;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js!./node_modules/vueditor/dist/style/vueditor.min.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -551,7 +631,7 @@ exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Mon
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700);", ""]);
 
 // module
-exports.push([module.i, "body {\n  font-family: \"Open Sans\", sans-serif;\n  font-size: 14px;\n  height: 100vh;\n  /* mocking native UI */\n  cursor: default !important;\n  /* remove text selection cursor */\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  /* remove text selection */\n  user-drag: none;\n  /* disbale element dragging */\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n\n.button {\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.title,\n.subtitle {\n  font-family: Montserrat, sans-serif;\n  font-weight: normal;\n}\n\n.animated {\n  -webkit-transition-duration: 0.15s;\n          transition-duration: 0.15s;\n}\n\n.container {\n  margin: 0 0.5rem;\n}\n\n.questionBox {\n  width: 49rem;\n  min-height: 30rem;\n  background: #FAFAFA;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 0.5rem;\n  overflow: hidden;\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n}\n\n.questionBox header {\n  background: rgba(0, 0, 0, 0.025);\n  padding: 1.5rem;\n  text-align: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.questionBox header h1 {\n  font-weight: bold;\n  margin-bottom: 1rem !important;\n}\n\n.questionBox header .progressContainer {\n  width: 60%;\n  margin: 0 auto;\n}\n\n.questionBox header .progressContainer > progress {\n  margin: 0;\n  border-radius: 5rem;\n  overflow: hidden;\n  border: none;\n  color: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-moz-progress-bar {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-webkit-progress-value {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > p {\n  margin: 0;\n  margin-top: 0.5rem;\n}\n\n.questionBox .titleContainer {\n  text-align: center;\n  margin: 0 auto;\n  padding: 1.5rem;\n}\n\n.questionBox .quizForm {\n  display: block;\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .quizForm .quizFormContainer {\n  height: 100%;\n  margin: 15px 18px;\n}\n\n.questionBox .quizForm .quizFormContainer .field-label {\n  text-align: left;\n  margin-bottom: 0.5rem;\n}\n\n.questionBox .quizCompleted {\n  width: 100%;\n  padding: 1rem;\n  text-align: center;\n}\n\n.questionBox .quizCompleted > .icon {\n  color: #FF5252;\n  font-size: 5rem;\n}\n\n.questionBox .quizCompleted > .icon .is-active {\n  color: #00E676;\n}\n\n.questionBox .questionContainer {\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .questionContainer .optionContainer {\n  margin-top: 12px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\n.questionBox .questionContainer .optionContainer .option {\n  border-radius: 290486px;\n  padding: 9px 18px;\n  margin: 0 18px;\n  margin-bottom: 12px;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  cursor: pointer;\n  background-color: rgba(0, 0, 0, 0.05);\n  color: rgba(0, 0, 0, 0.85);\n  border: transparent 1px solid;\n}\n\n.questionBox .questionContainer .optionContainer .option.is-selected {\n  border-color: rgba(0, 0, 0, 0.25);\n  background-color: white;\n}\n\n.questionBox .questionContainer .optionContainer .option:hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n\n.questionBox .questionContainer .optionContainer .option:active {\n  -webkit-transform: scaleX(0.9);\n          transform: scaleX(0.9);\n}\n\n.questionBox .questionContainer .questionFooter {\n  background: rgba(0, 0, 0, 0.025);\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  width: 100%;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n}\n\n.questionBox .questionContainer .questionFooter .pagination {\n  margin: 15px 25px;\n}\n\n.pagination {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n\n.button {\n  padding: 0.5rem 1rem;\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  border-radius: 5rem;\n  margin: 0 0.25rem;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.button:hover {\n  cursor: pointer;\n  background: #ECEFF1;\n  border-color: rgba(0, 0, 0, 0.25);\n}\n\n.button.is-active {\n  background: #3D5AFE;\n  color: white;\n  border-color: transparent;\n}\n\n.button.is-active:hover {\n  background: #0a2ffe;\n}\n\n@media screen and (min-width: 769px) {\n  .questionBox {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n  }\n  .questionBox .questionContainer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n}\n\n.md-v-line {\n  position: absolute;\n  border-left: 1px solid rgba(0,0,0,.125);\n  height: 50px;\n  top:0px;\n  left:54px;\n  }\n  .video-js{\n    width: 100%;\n  }", ""]);
+exports.push([module.i, ".button {\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.title,\n.subtitle {\n  font-family: Montserrat, sans-serif;\n  font-weight: normal;\n}\n\n.animated {\n  -webkit-transition-duration: 0.15s;\n          transition-duration: 0.15s;\n}\n\n\n.questionBox {\n  width: 49rem;\n  min-height: 30rem;\n  background: #FAFAFA;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 0.5rem;\n  overflow: hidden;\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n}\n\n.questionBox header {\n  background: rgba(0, 0, 0, 0.025);\n  padding: 1.5rem;\n  text-align: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.questionBox header h1 {\n  font-weight: bold;\n  margin-bottom: 1rem !important;\n}\n\n.questionBox header .progressContainer {\n  width: 60%;\n  margin: 0 auto;\n}\n\n.questionBox header .progressContainer > progress {\n  margin: 0;\n  border-radius: 5rem;\n  overflow: hidden;\n  border: none;\n  color: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-moz-progress-bar {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-webkit-progress-value {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > p {\n  margin: 0;\n  margin-top: 0.5rem;\n}\n\n.questionBox .titleContainer {\n  text-align: center;\n  margin: 0 auto;\n  padding: 1.5rem;\n}\n\n.questionBox .quizForm {\n  display: block;\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .quizForm .quizFormContainer {\n  height: 100%;\n  margin: 15px 18px;\n}\n\n.questionBox .quizForm .quizFormContainer .field-label {\n  text-align: left;\n  margin-bottom: 0.5rem;\n}\n\n.questionBox .quizCompleted {\n  width: 100%;\n  padding: 1rem;\n  text-align: center;\n}\n\n.questionBox .quizCompleted > .icon {\n  color: #FF5252;\n  font-size: 5rem;\n}\n\n.questionBox .quizCompleted > .icon .is-active {\n  color: #00E676;\n}\n\n.questionBox .questionContainer {\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .questionContainer .optionContainer {\n  margin-top: 12px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\n.questionBox .questionContainer .optionContainer .option {\n  border-radius: 290486px;\n  padding: 9px 18px;\n  margin: 0 18px;\n  margin-bottom: 12px;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  cursor: pointer;\n  background-color: rgba(0, 0, 0, 0.05);\n  color: rgba(0, 0, 0, 0.85);\n  border: transparent 1px solid;\n}\n\n.questionBox .questionContainer .optionContainer .option.is-selected {\n  border-color: rgba(0, 0, 0, 0.25);\n  background-color: white;\n}\n\n.questionBox .questionContainer .optionContainer .option:hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n\n.questionBox .questionContainer .optionContainer .option:active {\n  -webkit-transform: scaleX(0.9);\n          transform: scaleX(0.9);\n}\n\n.questionBox .questionContainer .questionFooter {\n  background: rgba(0, 0, 0, 0.025);\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  width: 100%;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n}\n\n.questionBox .questionContainer .questionFooter .pagination {\n  margin: 15px 25px;\n}\n\n.pagination {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n\n.button {\n  padding: 0.5rem 1rem;\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  border-radius: 5rem;\n  margin: 0 0.25rem;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.button:hover {\n  cursor: pointer;\n  background: #ECEFF1;\n  border-color: rgba(0, 0, 0, 0.25);\n}\n\n.button.is-active {\n  background: #3D5AFE;\n  color: white;\n  border-color: transparent;\n}\n\n.button.is-active:hover {\n  background: #0a2ffe;\n}\n\n@media screen and (min-width: 769px) {\n  .questionBox {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n  }\n  .questionBox .questionContainer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n}\n\n.md-v-line {\n  position: absolute;\n  border-left: 1px solid rgba(0,0,0,.125);\n  height: 50px;\n  top:0px;\n  left:54px;\n  }\n  .video-js{\n    width: 100%;\n  }\n", ""]);
 
 // exports
 
@@ -46072,241 +46152,237 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "container" }, [
-    _c(
-      "div",
-      { staticClass: "questionBox", attrs: { id: "app" } },
-      [
-        _c(
-          "transition",
-          {
-            attrs: {
-              duration: { enter: 500, leave: 300 },
-              "enter-active-class": "animated zoomIn",
-              "leave-active-class": "animated zoomOut",
-              mode: "out-in"
-            }
-          },
-          [
-            _vm.questionIndex < _vm.quiz.questions.length
-              ? _c(
-                  "div",
-                  { key: _vm.questionIndex, staticClass: "questionContainer" },
-                  [
-                    _c("header", [
-                      _c("h1", { staticClass: "title is-6" }, [
-                        _vm._v("VueQuiz")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "progressContainer" }, [
-                        _c(
-                          "progress",
-                          {
-                            staticClass: "progress is-info is-small",
-                            attrs: { max: "100" },
-                            domProps: {
-                              value:
-                                (_vm.questionIndex /
-                                  _vm.quiz.questions.length) *
-                                100
-                            }
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                (_vm.questionIndex /
-                                  _vm.quiz.questions.length) *
-                                  100
-                              ) + "%"
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("p", [
+  return _c(
+    "div",
+    { staticClass: "questionBox", attrs: { id: "app" } },
+    [
+      _c(
+        "transition",
+        {
+          attrs: {
+            duration: { enter: 500, leave: 300 },
+            "enter-active-class": "animated zoomIn",
+            "leave-active-class": "animated zoomOut",
+            mode: "out-in"
+          }
+        },
+        [
+          _vm.questionIndex < _vm.quiz.questions.length
+            ? _c(
+                "div",
+                { key: _vm.questionIndex, staticClass: "questionContainer" },
+                [
+                  _c("header", [
+                    _c("h1", { staticClass: "title is-6" }, [
+                      _vm._v("VueQuiz")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "progressContainer" }, [
+                      _c(
+                        "progress",
+                        {
+                          staticClass: "progress is-info is-small",
+                          attrs: { max: "100" },
+                          domProps: {
+                            value:
+                              (_vm.questionIndex / _vm.quiz.questions.length) *
+                              100
+                          }
+                        },
+                        [
                           _vm._v(
                             _vm._s(
                               (_vm.questionIndex / _vm.quiz.questions.length) *
                                 100
-                            ) + "% complete"
-                          )
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("h2", { staticClass: "titleContainer title" }, [
-                      _vm._v(_vm._s(_vm.quiz.questions[_vm.questionIndex].text))
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "optionContainer" },
-                      _vm._l(
-                        _vm.quiz.questions[_vm.questionIndex].responses,
-                        function(response, index) {
-                          return _c(
-                            "div",
-                            {
-                              key: index,
-                              staticClass: "option",
-                              class: {
-                                "is-selected":
-                                  _vm.userResponses[_vm.questionIndex] == index
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.selectOption(index)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n\t\t\t\t\t\t" +
-                                  _vm._s(_vm._f("charIndex")(index)) +
-                                  ". " +
-                                  _vm._s(response.text) +
-                                  "\n\t\t\t\t\t"
-                              )
-                            ]
-                          )
-                        }
-                      ),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c("footer", { staticClass: "questionFooter" }, [
-                      _c(
-                        "nav",
-                        {
-                          staticClass: "pagination",
-                          attrs: {
-                            role: "navigation",
-                            "aria-label": "pagination"
-                          }
-                        },
-                        [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "button",
-                              attrs: { disabled: _vm.questionIndex < 1 },
-                              on: {
-                                click: function($event) {
-                                  return _vm.prev()
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                    Back\n                  "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass: "button",
-                              class:
-                                _vm.userResponses[_vm.questionIndex] == null
-                                  ? ""
-                                  : "is-active",
-                              attrs: {
-                                disabled:
-                                  _vm.questionIndex >= _vm.quiz.questions.length
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.next()
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                    " +
-                                  _vm._s(
-                                    _vm.userResponses[_vm.questionIndex] == null
-                                      ? "Skip"
-                                      : "Next"
-                                  ) +
-                                  "\n                  "
-                              )
-                            ]
+                            ) + "%"
                           )
                         ]
-                      )
-                    ])
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.questionIndex >= _vm.quiz.questions.length
-              ? _c(
-                  "div",
-                  {
-                    key: _vm.questionIndex,
-                    staticClass: "quizCompleted has-text-centered"
-                  },
-                  [
-                    _c("span", { staticClass: "icon" }, [
-                      _c("i", {
-                        staticClass: "fa",
-                        class:
-                          _vm.score() > 3
-                            ? "fa-check-circle-o is-active"
-                            : "fa-times-circle"
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("h2", { staticClass: "title" }, [
-                      _vm._v(
-                        "\n\t\t\t\t\tYou did " +
+                      ),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v(
                           _vm._s(
-                            _vm.score() > 7
-                              ? "an amazing"
-                              : _vm.score() < 4
-                              ? "a poor"
-                              : "a good"
-                          ) +
-                          " job!\n\t\t\t\t"
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "subtitle" }, [
-                      _vm._v(
-                        "\n\t\t\t\t\tTotal score: " +
-                          _vm._s(_vm.score()) +
-                          " / " +
-                          _vm._s(_vm.quiz.questions.length) +
-                          "\n\t\t\t\t"
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
+                            (_vm.questionIndex / _vm.quiz.questions.length) *
+                              100
+                          ) + "% complete"
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("h2", { staticClass: "titleContainer title" }, [
+                    _vm._v(_vm._s(_vm.quiz.questions[_vm.questionIndex].text))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "optionContainer" },
+                    _vm._l(
+                      _vm.quiz.questions[_vm.questionIndex].responses,
+                      function(response, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: index,
+                            staticClass: "option",
+                            class: {
+                              "is-selected":
+                                _vm.userResponses[_vm.questionIndex] == index
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.selectOption(index)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t" +
+                                _vm._s(_vm._f("charIndex")(index)) +
+                                ". " +
+                                _vm._s(response.text) +
+                                "\n\t\t\t\t\t"
+                            )
+                          ]
+                        )
+                      }
+                    ),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c("footer", { staticClass: "questionFooter" }, [
                     _c(
-                      "a",
+                      "nav",
                       {
-                        staticClass: "button",
-                        on: {
-                          click: function($event) {
-                            return _vm.restart()
-                          }
+                        staticClass: "pagination",
+                        attrs: {
+                          role: "navigation",
+                          "aria-label": "pagination"
                         }
                       },
                       [
-                        _vm._v("restart "),
-                        _c("i", { staticClass: "fa fa-refresh" })
+                        _c(
+                          "a",
+                          {
+                            staticClass: "button",
+                            attrs: { disabled: _vm.questionIndex < 1 },
+                            on: {
+                              click: function($event) {
+                                return _vm.prev()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Back\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "button",
+                            class:
+                              _vm.userResponses[_vm.questionIndex] == null
+                                ? ""
+                                : "is-active",
+                            attrs: {
+                              disabled:
+                                _vm.questionIndex >= _vm.quiz.questions.length
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.next()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(
+                                  _vm.userResponses[_vm.questionIndex] == null
+                                    ? "Skip"
+                                    : "Next"
+                                ) +
+                                "\n                  "
+                            )
+                          ]
+                        )
                       ]
                     )
-                  ]
-                )
-              : _vm._e()
-          ]
-        )
-      ],
-      1
-    )
-  ])
+                  ])
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.questionIndex >= _vm.quiz.questions.length
+            ? _c(
+                "div",
+                {
+                  key: _vm.questionIndex,
+                  staticClass: "quizCompleted has-text-centered"
+                },
+                [
+                  _c("span", { staticClass: "icon" }, [
+                    _c("i", {
+                      staticClass: "fa",
+                      class:
+                        _vm.score() > 3
+                          ? "fa-check-circle-o is-active"
+                          : "fa-times-circle"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("h2", { staticClass: "title" }, [
+                    _vm._v(
+                      "\n\t\t\t\t\tYou did " +
+                        _vm._s(
+                          _vm.score() > 7
+                            ? "an amazing"
+                            : _vm.score() < 4
+                            ? "a poor"
+                            : "a good"
+                        ) +
+                        " job!\n\t\t\t\t"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "subtitle" }, [
+                    _vm._v(
+                      "\n\t\t\t\t\tTotal score: " +
+                        _vm._s(_vm.score()) +
+                        " / " +
+                        _vm._s(_vm.quiz.questions.length) +
+                        "\n\t\t\t\t"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "button",
+                      on: {
+                        click: function($event) {
+                          return _vm.restart()
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("restart "),
+                      _c("i", { staticClass: "fa fa-refresh" })
+                    ]
+                  )
+                ]
+              )
+            : _vm._e()
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -46331,7 +46407,7 @@ var render = function() {
     _c("div", { staticClass: "row " }, [
       _c("div", { staticClass: "col-lg-9" }, [
         _vm.type == "test"
-          ? _c("section", { staticClass: "container" }, [_c("test")], 1)
+          ? _c("div", [_c("test")], 1)
           : _c(
               "div",
               { staticClass: "player-video" },
@@ -46411,9 +46487,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                  " +
+                            "\n                " +
                               _vm._s(chapter.title) +
-                              "\n                "
+                              "\n              "
                           )
                         ]
                       )
@@ -46445,47 +46521,142 @@ var render = function() {
                                 staticClass: "list-group-item "
                               },
                               [
-                                _c("div", { staticClass: "md-v-line" }),
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: {
-                                      href: "#notesModal",
-                                      "data-toggle": "modal",
-                                      "data-target": "#notesModal"
-                                    },
-                                    on: {
-                                      click: function() {
-                                        _vm.notes = lesson.notes
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass:
-                                        "far fa-sticky-note mr-4 pr-3"
-                                    })
-                                  ]
-                                ),
+                                _c("p", { staticClass: "p-0 m-0" }, [
+                                  _c(
+                                    "a",
+                                    { attrs: { href: "./" + lesson.slug } },
+                                    [_vm._v(_vm._s(lesson.title))]
+                                  )
+                                ]),
                                 _vm._v(" "),
-                                _c("a", { attrs: { to: "./" + lesson.slug } }, [
-                                  _vm._v(_vm._s(lesson.title))
-                                ])
+                                _c("p", { staticClass: "play p-0 m-0" }, [
+                                  _c("i", {
+                                    staticClass: "far fa-play-circle "
+                                  }),
+                                  _vm._v(
+                                    "\n                    " +
+                                      _vm._s(
+                                        lesson.media_video
+                                          ? lesson.media_video.duration
+                                          : "error getting duration"
+                                      ) +
+                                      "\n                  "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "ul",
+                                  { staticClass: "float-right list-inline" },
+                                  [
+                                    lesson.notes.length > 0
+                                      ? _c(
+                                          "li",
+                                          { staticClass: "list-inline-item" },
+                                          [
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  href: "#notesModal",
+                                                  "data-toggle": "modal",
+                                                  "data-target": "#notesModal"
+                                                },
+                                                on: {
+                                                  click: function() {
+                                                    _vm.notes = lesson.notes
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("i", {
+                                                  staticClass:
+                                                    "far fa-sticky-note"
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    lesson.media_p_d_f
+                                      ? _c(
+                                          "li",
+                                          { staticClass: "list-inline-item" },
+                                          [
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  href:
+                                                    "/storage/uploads/" +
+                                                    lesson.media_p_d_f.name
+                                                }
+                                              },
+                                              [
+                                                _c("i", {
+                                                  staticClass: "far fa-file-pdf"
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    lesson.downloadable_media.length > 0
+                                      ? _c(
+                                          "li",
+                                          { staticClass: "list-inline-item" },
+                                          [
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  "data-toggle": "modal",
+                                                  "data-target":
+                                                    "#downloadableMediaModal",
+                                                  href:
+                                                    "#downloadableMediaModal"
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.setDownloadableMedia(
+                                                      lesson
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("i", {
+                                                  staticClass: "fa fa-download"
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e()
+                                  ]
+                                )
                               ]
                             )
                           }),
                           _vm._v(" "),
                           chapter.test
-                            ? _c("li", { staticClass: "list-group-item " }, [
-                                _c("div", { staticClass: "md-v-line" }),
-                                _c("i", {
-                                  staticClass: "fas fa-laptop mr-4 pr-3"
-                                }),
-                                _vm._v(" "),
-                                _c("a", { attrs: { to: { name: "Test" } } }, [
-                                  _vm._v(_vm._s(chapter.test.title))
-                                ])
-                              ])
+                            ? _c(
+                                "li",
+                                { staticClass: "pt-2 list-group-item" },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "text-danger ",
+                                      attrs: {
+                                        href: "./" + chapter.test.slug + "/test"
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(chapter.test.title))]
+                                  )
+                                ]
+                              )
                             : _vm._e()
                         ],
                         2
@@ -46501,138 +46672,296 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "notesModal",
-          tabindex: "-2",
-          "aria-labelledby": "notesModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c("div", { staticClass: "modal-dialog" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "modal-body", attrs: { id: "notes-container" } },
-              [
-                _c(
-                  "div",
-                  { staticClass: "card shadow-c " },
-                  _vm._l(_vm.notes, function(note) {
-                    return _c(
-                      "div",
-                      { key: note.id, staticClass: "card-body" },
-                      [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(note.contentText.replace(/<[^>]*>?/gm, "")) +
-                            "\n                "
-                        ),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "float-right text-pink ",
-                            attrs: {
-                              "data-toggle": "modal",
-                              "data-target": "#edit-note-modal"
-                            },
-                            on: {
-                              click: function() {
-                                _vm.current_note = note
-                                _vm.setEditorContent()
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "far fa-edit" })]
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                )
-              ]
-            )
-          ])
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "edit-note-modal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "edit-note-modallLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content my-4" }, [
-              _vm._m(1),
+    _vm.type !== "test"
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "card mt-5" }, [
+              _c("div", { staticClass: "card-header" }, [_vm._v("New Note")]),
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "modal-body p-2" },
+                { staticClass: "card-body" },
                 [
                   _c("Vueditor", {
-                    ref: "Vueditor",
+                    ref: "newNote",
                     model: {
-                      value: _vm.current_note.contentText,
+                      value: _vm.newNote.contentText,
                       callback: function($$v) {
-                        _vm.$set(_vm.current_note, "contentText", $$v)
+                        _vm.$set(_vm.newNote, "contentText", $$v)
                       },
-                      expression: "current_note.contentText"
+                      expression: "newNote.contentText"
                     }
                   })
                 ],
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
+              _c("div", { staticClass: "card-footer" }, [
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close\n              ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
+                    staticClass: "btn btn-success",
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.saveNote()
+                        return _vm.addNewNote()
                       }
                     }
                   },
-                  [_vm._v("Save changes\n              ")]
+                  [_vm._v("Save")]
+                )
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.type !== "test"
+      ? _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "downloadableMediaModal",
+              tabindex: "-2",
+              "aria-labelledby": "downloadableMediaModalLabel",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c("div", { staticClass: "modal-dialog" }, [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "card shadow-c",
+                      attrs: { "data-length": _vm.downloadableMedia.length }
+                    },
+                    _vm._l(_vm.downloadableMedia.data, function(media, index) {
+                      return _c("div", { staticClass: "card-body" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "text-center",
+                            attrs: {
+                              href:
+                                "/download?filename=" +
+                                media.name +
+                                "&lesson=" +
+                                _vm.downloadableMedia.lesson.id
+                            }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(media.name.replace(/\.[^/.]+$/, "")) + " "
+                            ),
+                            _c("i", { staticClass: "fa fa-download" })
+                          ]
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.type !== "test"
+      ? _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "notesModal",
+              tabindex: "-2",
+              "aria-labelledby": "notesModalLabel",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c("div", { staticClass: "modal-dialog" }, [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "modal-body",
+                    attrs: { id: "notes-container" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card shadow-c",
+                        attrs: { "data-length": _vm.notes.length }
+                      },
+                      _vm._l(_vm.notes, function(note) {
+                        return _c(
+                          "div",
+                          { key: note.id, staticClass: "card-body" },
+                          [
+                            _c("p", [
+                              _vm._v(
+                                _vm._s(
+                                  note.contentText.replace(/<[^>]*>?/gm, "")
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "float-right font-weight-light ml-1 text-white btn btn-primary btn-sm ",
+                                attrs: {
+                                  "data-toggle": "modal",
+                                  "data-target": "#edit-note-modal"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.setEditorContent(note)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "far fa-edit" })]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "float-right btn font-weight-light text-white btn-danger btn-sm",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.removeNote(note.id)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-trash" })]
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ]
                 )
               ])
             ])
           ]
         )
-      ]
-    )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.type !== "test"
+      ? _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "edit-note-modal",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "edit-note-modallLabel",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog modal-lg",
+                attrs: { role: "document" }
+              },
+              [
+                _c("div", { staticClass: "modal-content my-4" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "modal-body p-2" },
+                    [
+                      _c("Vueditor", {
+                        ref: "noteEdit",
+                        model: {
+                          value: _vm.current_note.contentText,
+                          callback: function($$v) {
+                            _vm.$set(_vm.current_note, "contentText", $$v)
+                          },
+                          expression: "current_note.contentText"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Close\n          ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.saveNote()
+                          }
+                        }
+                      },
+                      [_vm._v("Save changes\n          ")]
+                    )
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        {
+          staticClass: "modal-title",
+          attrs: { id: "downloadableMediaModalLabel" }
+        },
+        [_vm._v("Lesson Media")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -49762,6 +50091,296 @@ if (inBrowser && window.Vue) {
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (VueRouter);
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fecbd728\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/player.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fecbd728\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/player.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0dc96253", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fecbd728\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./player.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fecbd728\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./player.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/addStylesClient.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__("./node_modules/vue-style-loader/lib/listToStyles.js")
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/listToStyles.js":
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
 
 
 /***/ }),
@@ -63556,6 +64175,10 @@ if(false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fecbd728\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/components/player.vue")
+}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/player.vue")
@@ -63564,7 +64187,7 @@ var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/templa
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */

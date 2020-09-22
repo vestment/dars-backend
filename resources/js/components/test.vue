@@ -1,6 +1,5 @@
 <template>
-    <!--container-->
-<section class="container">
+
 
 	<!--questionBox-->
 	<div class="questionBox" id="app">
@@ -83,8 +82,6 @@
 	</div>
 	<!--/questionBox-->
 
-</section>
-<!--/container-->
 </template>
 
 <script>
