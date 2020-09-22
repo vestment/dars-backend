@@ -233,14 +233,11 @@ class HomeController extends Controller
     public function getDownload(Request $request)
     {
         if (auth()->check()) {
-
             $lesson = Lesson::findOrfail($request->lesson);
             $course_id = $lesson->course_id;
             $course = Course::withoutGlobalScope('filter')->findOrfail($course_id);
             $purchased_course = \Auth::check() && $course->students()->where('user_id',auth()->user()->id)->count() > 0;
-
             if ($purchased_course) {
-
                 $file = public_path() . "/storage/uploads/" . $request->filename;
 
                 return Response::download($file);
@@ -248,7 +245,7 @@ class HomeController extends Controller
             return abort(404);
 
         }
-//        return abort(404);
+        return abort(404);
 
     }
 

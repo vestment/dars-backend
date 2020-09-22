@@ -139,7 +139,7 @@ class VideoBankController extends Controller
                     $filename = str_replace(' ', '-', $filename);
                     $file->move($path, $filename);
                     $url = 'storage/uploads/' . $filename;
-                    $getID3 = new \getID3;
+                    $getID3 = new getID3();
                     $video_file = $getID3->analyze($url);
                     // Get the duration in string, e.g.: 4:37 (minutes:seconds)
                     $duration_string = $video_file['playtime_string'];
