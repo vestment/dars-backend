@@ -32,6 +32,12 @@
         .in-total:not(:first-child):not(:last-child) {
             font-size: 15px;
         }
+        @media (max-width: 425px) {
+            .breadcrumb {
+            background-color: unset;
+            margin-top: 40%;
+        }
+        }
 
         .breadcrumb {
             background-color: unset;

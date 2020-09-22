@@ -135,13 +135,13 @@
 
                     <div class="row justify-content-center">
                             <button type="submit"
-                                    class="btn btn-primary btn-lg text-white col-5 mt-5 ">@lang('labels.frontend.sign_up.sign_up')</button>
+                                    class="btn btn-primary btn-lg text-white col-10 mt-5 ">@lang('labels.frontend.sign_up.sign_up')</button>
                             <button type="submit" id="parent_value"
-                                    class="btn btn-primary text-white col-5 ml-3 mt-5"  > @lang('labels.frontend.login.register_as_parent')</button>
+                                    class="btn btn-primary btn-lg text-white col-10 mt-5 "  > @lang('labels.frontend.login.register_as_parent')</button>
                     </div>
 
 
-                            <a href="{{ route('frontend.auth.teacher.register') }}" class="btn btn-info btn-lg text-white col-12 mt-5">
+                            <a href="{{ route('frontend.auth.teacher.register') }}" class="btn btn-info btn-lg text-white col-9 mt-5 ml-5">
                                 @lang('labels.frontend.login.register_as_teacher')
                             </a>
                     

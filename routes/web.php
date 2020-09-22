@@ -194,6 +194,7 @@ Route::get('certificates/download', ['uses' => 'Backend\CertificateController@do
 
 
 Route::get('offers',['uses' => 'CartController@getOffers', 'as' => 'frontend.offers']);
+Route::get('countinue/{id}','CoursesController@hascourse')->name('countinue');
 
 
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {

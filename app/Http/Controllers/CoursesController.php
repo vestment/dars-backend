@@ -472,6 +472,15 @@ class CoursesController extends Controller
         return view('frontend.player',compact('slug','type'));
 
     }
+    public function hascourse($course_id){
+     $courses =  Auth::user()->courses;
+   
+
+        return view('frontend.layouts.partials.coursesTemp',compact('slug','type'));
+
+    }
+    
+
 
 
 
