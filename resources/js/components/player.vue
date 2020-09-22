@@ -26,10 +26,11 @@
                         @ready="playerReadied">
           </video-player>
         </div>
-
+        
       </div>
       <div class="col-md-3 ">
         <div class="accordion" id="accordionExample">
+
           <div v-for="chapter in courseData.chapters" :key="chapter.id" class="card shadow mb-3">
             <div class="card-header" id="headingOne">
               <h2 class="mb-0">
@@ -42,37 +43,41 @@
             <div :id="'chapter-'+chapter.id" class="collapse show" aria-labelledby="headingOne"
                  data-parent="#accordionExample">
               <div class="card-body">
-                <ul class="list-group">
-                  <li class="list-group-item " v-for="lesson in chapter.lessons" :key="lesson.id">
+                <!-- <ul class="list-unstyled">
+                  <li class="border-bottom border-dark" v-for="lesson in chapter.lessons" :key="lesson.id">
                     <p class="p-0 m-0"><a :href="'./'+lesson.slug">{{ lesson.title }}</a></p>
                     <p class="play p-0 m-0">
                       <i class="far fa-play-circle "></i>
                       {{ lesson.media_video ? lesson.media_video.duration : 'error getting duration' }}
                     </p>
                     <ul class="float-right list-inline">
-                      
-                      <li class="list-inline-item" v-if="lesson.notes.length > 0"><a href="#notesModal"
-                                                                                     @click="()=> {notes = lesson.notes}"
-                                                                                     data-toggle="modal"
-                                                                                     data-target="#notesModal"><i
-                          class="far fa-sticky-note"></i></a>
-                      </li>
-                      <li class="list-inline-item" v-if="lesson.media_p_d_f">
-                        <a :href="'/storage/uploads/'+lesson.media_p_d_f.name">
-                          <i class="far fa-file-pdf"></i>
-                        </a>
-                      </li>
-                      <li class="list-inline-item" v-if="lesson.downloadable_media.length > 0">
-                        <a @click="setDownloadableMedia(lesson)" data-toggle="modal"
-                           data-target="#downloadableMediaModal" href="#downloadableMediaModal"><i
-                            class="fa fa-download"></i></a>
-                      </li>
+                      <li v-if="lesson.notes"><a href="#notesModal" @click="()=> {notes = lesson.notes}" data-toggle="modal"
+                                                 data-target="#notesModal"><i class="far fa-sticky-note"></i></a></li>
                     </ul>
                   </li>
-                  <li class="pt-2 list-group-item" v-if="chapter.test">
-                    <a class="text-danger " :href="'./'+chapter.test.slug+'/test'">{{ chapter.test.title }}</a>
+                  <li class="pt-2" v-if="chapter.test">
+                    <a class="text-danger " :href="'/player/'+chapter.test.slug+'/test'">{{ chapter.test.title }}</a>
+
                   </li>
-                </ul>
+                </ul> -->
+                <ul class="list-group">
+  <li v-for="lesson in chapter.lessons" :key="lesson.id" class="list-group-item ">
+    <div class="md-v-line"></div>
+    <a :href="'/storage/uploads/'+lesson.media_p_d_f.name">
+      <i class="far fa-file-pdf"></i>
+    </a>
+    <a @click="setDownloadableMedia(lesson)" data-toggle="modal"
+       data-target="#downloadableMediaModal" href="#downloadableMediaModal"><i
+        class="fa fa-download"></i></a>
+    <a href="#notesModal" @click="()=> {notes = lesson.notes}" data-toggle="modal"
+                                                 data-target="#notesModal"><i class="far fa-sticky-note mr-4 pr-3"></i></a> <a :href="'./'+lesson.slug">{{ lesson.title }}</a>
+  </li>
+
+  <li v-if="chapter.test" class="list-group-item ">
+    <div class="md-v-line"></div><i class="fas fa-laptop mr-4 pr-3"></i> <a :href="'/player/'+chapter.test.slug+'/test'">{{ chapter.test.title }}</a>
+  </li>
+  
+</ul>
               </div>
             </div>
           </div>
@@ -189,10 +194,10 @@ import test from './test'
 import './lesson.css'
 
 export default {
-  props: ['slug', 'type'],
+  props: ['slug','type'],
   data() {
     return {
-
+    
       playerOptions: {
         // videojs options
         muted: true,
