@@ -203,11 +203,8 @@ class Course extends Model
     {
         $lessonsIds = $this->lessons()->where('published', 1)->pluck('id');
         $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->sum('duration');
-//        $duration = strtotime($duration);
-        $duration = date("H", $duration);
+        return sprintf("%s Hours %s Minutes", date("H", $duration), date("i", $duration));
 
-
-        return $duration;
     }
 
     public function reviews()

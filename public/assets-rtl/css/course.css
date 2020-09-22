@@ -75,7 +75,7 @@ ul.pagination {
 }
 .course-meta span {
     font-size: 71%;
-    margin-right: 8%;
+    margin-right: 1%;
 }
 .piclip{
     clip-path: polygon(0 0, 100% 0, 100% 93%, 0 76%);

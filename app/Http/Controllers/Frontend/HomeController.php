@@ -21,8 +21,10 @@ use App\academy;
 
 
 
+
 use App\Models\System\Session;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -117,8 +119,14 @@ class HomeController extends Controller
 
         $trending = Course::where('trending', '=', 1)->whereNotIn('id',$this->hidden_data['courses'])->with(['teachers', 'reviews'])->get();
         $offline = page::where('title', 'offline courses')->first();
-
-        return view('frontend.index', compact('popular_courses', 'offline','trending', 'total_bundle', 'acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data', 'total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections', 'categories'));
+        if( auth()->user()){
+        $id= auth()->user()->id;
+        $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
+        return view('frontend.index', compact('popular_courses', 'offline','trending','courses_id', 'total_bundle', 'acadimies', 'featured_courses', 'sponsors', 'total_students', 'teacher_data', 'total_courses', 'total_teachers', 'testimonials', 'news', 'trending_courses', 'teachers', 'faqs', 'course_categories', 'reasons', 'sections', 'categories'));
     }
 
     public function getFaqs()
