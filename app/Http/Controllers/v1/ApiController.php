@@ -940,16 +940,16 @@ class ApiController extends Controller
      */
     public function courseProgress(Request $request)
     {
-
         if ($request->model_type == 'test') {
             $model_type = Test::class;
             $chapter = Test::find((int)$request->model_id);
         } else {
             $model_type = Lesson::class;
-            $chapter = Lesson::find((int)$request->model_id);
+            $chapter = Lesson::findorFail((int)$request->model_id);
         }
-        if ($chapter != null) {
-            if ($chapter->chapterStudents()->where('user_id', \Auth::id())->get()->count() == 0) {
+        if ($chapter) {
+            if ($chapter->chapterStudents()->where('user_id', auth()->user()->id)->get()->count() == 0) {
+                
                 $chapter->chapterStudents()->create([
                     'model_type' => $model_type,
                     'model_id' => $request->model_id,

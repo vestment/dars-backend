@@ -315,7 +315,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
@@ -331,6 +330,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   // props: ['type','slug','data'],
   data: function data() {
     return {
+      lessonIndex: '',
       playerOptions: {
         // videojs options
         muted: true,
@@ -375,68 +375,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
-    // setDownloadableMedia(lesson) {
-    //   this.downloadableMedia.data = lesson.downloadable_media;
-    //   this.downloadableMedia.lesson = lesson;
-    // },
-    // setEditorContent(note) {
-    //   $('#notesModal').modal('hide');
-    //   this.current_note = note;
-    //   let editor = this.$refs.noteEdit;
-    //   editor.setContent(this.current_note.contentText);
-    // },
-    // saveNote() {
-    //   let editor = this.$refs.noteEdit;
-    //   this.current_note.contentText = editor.getContent();
-    //   axios.post('/api/v1/save-note', this.current_note)
-    //       .then(res => {
-    //         if (res.data.status == 'success') {
-    //           $('#edit-note-modal').modal('hide');
-    //           $('#notesModal').modal('show');
-    //         }
-    //       }).catch(err => {
-    //     console.log(err)
-    //   })
-    // },
-    // addNewNote() {
-    //   let editor = this.$refs.newNote;
-    //   this.newNote.contentText = editor.getContent();
-    //   this.newNote.lesson_id = this.courseData.lesson.id
-    //   axios.post('/api/v1/add-note', this.newNote)
-    //       .then(res => {
-    //         if (res.data.status == 'success') {
-    //           editor.setContent('')
-    //           this.notes.push(res.data.note);
-    //         }
-    //       }).catch(err => {
-    //     console.log(err)
-    //   })
-    // },
-    // removeNote(id) {
-    //   if (confirm('Are you sure you want to delete this note?')) {
-    //     axios.post('/api/v1/remove-note', {id: id})
-    //         .then(res => {
-    //           if (res.data.status == 'success') {
-    //             this.notes.splice(this.notes.findIndex(note => note.id === id), 1)
-    //           }
-    //         }).catch(err => {
-    //       console.log(err)
-    //     })
-    //   }
-    // },
-    getData: function getData(slug) {
+    onPlayerEnded: function onPlayerEnded($event) {
       var _this = this;
+
+      __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/course-progress', { model_type: "lesson", model_id: this.courseData.lesson.id }).then(function (res) {
+        console.log(_this.courseData.next_lesson);
+        //     for(var i =0;i<=this.courseData.chapters.lessons.length;i++){
+        //   if(this.courseData.chapters.lesson[i].slug == this.slug){
+        //   console.log("index",i)
+        //   }
+        // }
+
+      });
+    },
+    getData: function getData(slug) {
+      var _this2 = this;
 
       __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/single-lesson', { lesson: slug }).then(function (res) {
         if (res.data.result) {
-          _this.courseData = res.data.result;
-          _this.$parent.courseData = _this.courseData;
-          _this.playerOptions.sources[0].src = _this.courseData.lesson.media_video.url;
+          _this2.courseData = res.data.result;
+          _this2.$parent.courseData = _this2.courseData;
+          _this2.playerOptions.sources[0].src = _this2.courseData.lesson.media_video.url;
           console.log("Lesson", res);
-          $('.course-title-header').text(_this.courseData.course.title);
-          $('.close-lesson').attr('href', _this.courseData.course_page);
-          $('.course-progress').text(_this.courseData.course_progress + ' %');
-          $('.progress-bar').css('width', _this.courseData.course_progress + '%');
+          $('.course-title-header').text(_this2.courseData.course.title);
+          $('.close-lesson').attr('href', _this2.courseData.course_page);
+          $('.course-progress').text(_this2.courseData.course_progress + ' %');
+          $('.progress-bar').css('width', _this2.courseData.course_progress + '%');
         }
       }).catch(function (err) {
         console.log(err);

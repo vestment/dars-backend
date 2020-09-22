@@ -15,7 +15,6 @@
                   @timeupdate="onPlayerTimeupdate($event)"
                   @canplay="onPlayerCanplay($event)"
                   @canplaythrough="onPlayerCanplaythrough($event)"
-
                   @statechanged="playerStateChanged($event)"
                   @ready="playerReadied">
     </video-player>
@@ -39,6 +38,7 @@ export default {
   // props: ['type','slug','data'],
   data() {
     return {
+      lessonIndex:'',
       playerOptions: {
         // videojs options
         muted: true,
@@ -81,55 +81,24 @@ export default {
     }
   },
   methods: {
-    // setDownloadableMedia(lesson) {
-    //   this.downloadableMedia.data = lesson.downloadable_media;
-    //   this.downloadableMedia.lesson = lesson;
-    // },
-    // setEditorContent(note) {
-    //   $('#notesModal').modal('hide');
-    //   this.current_note = note;
-    //   let editor = this.$refs.noteEdit;
-    //   editor.setContent(this.current_note.contentText);
-    // },
-    // saveNote() {
-    //   let editor = this.$refs.noteEdit;
-    //   this.current_note.contentText = editor.getContent();
-    //   axios.post('/api/v1/save-note', this.current_note)
-    //       .then(res => {
-    //         if (res.data.status == 'success') {
-    //           $('#edit-note-modal').modal('hide');
-    //           $('#notesModal').modal('show');
-    //         }
-    //       }).catch(err => {
-    //     console.log(err)
-    //   })
-    // },
-    // addNewNote() {
-    //   let editor = this.$refs.newNote;
-    //   this.newNote.contentText = editor.getContent();
-    //   this.newNote.lesson_id = this.courseData.lesson.id
-    //   axios.post('/api/v1/add-note', this.newNote)
-    //       .then(res => {
-    //         if (res.data.status == 'success') {
-    //           editor.setContent('')
-    //           this.notes.push(res.data.note);
-    //         }
-    //       }).catch(err => {
-    //     console.log(err)
-    //   })
-    // },
-    // removeNote(id) {
-    //   if (confirm('Are you sure you want to delete this note?')) {
-    //     axios.post('/api/v1/remove-note', {id: id})
-    //         .then(res => {
-    //           if (res.data.status == 'success') {
-    //             this.notes.splice(this.notes.findIndex(note => note.id === id), 1)
-    //           }
-    //         }).catch(err => {
-    //       console.log(err)
-    //     })
-    //   }
-    // },
+    onPlayerEnded($event){
+      axios.post('/api/v1/course-progress',
+      {model_type:"lesson",model_id:this.courseData.lesson.id}
+      )
+          .then(res => {
+            console.log(this.courseData.next_lesson)
+            //     for(var i =0;i<=this.courseData.chapters.lessons.length;i++){
+            //   if(this.courseData.chapters.lesson[i].slug == this.slug){
+            //   console.log("index",i)
+            //   }
+            // }
+      
+
+          })
+
+       
+    },
+    
     getData(slug) {
       axios.post('/api/v1/single-lesson', {lesson: slug})
           .then(res => {
