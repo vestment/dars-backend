@@ -55,7 +55,7 @@
                       </td>
 
                     </tr>
-                    <tr v-if="chapter.tests.length > 0" v-for="test in chapter.tests" >
+                    <tr v-if="chapter.tests.length > 0" v-for="test in chapter.tests" :key="test.id">
 
                       <td>
                         <router-link :to="{name:'test',params:{slug:test.model.slug}}">{{

@@ -1,9 +1,13 @@
 <template>
 
+<div>	<!--questionBox-->
+ <div>
+    <flip-countdown deadline="2020-10-01  00:00:05"></flip-countdown>
+  </div>
 
-	<!--questionBox-->
   <div class="questionBox">
 
+    
 		<!-- transition -->
 		<transition :duration="{ enter: 500, leave: 300 }" enter-active-class="animated zoomIn" leave-active-class="animated zoomOut" mode="out-in">
 
@@ -81,21 +85,21 @@
 
 	</div>
 	<!--/questionBox-->
+</div>
 
 </template>
 
 <script>
 import './lesson.css'
+  import FlipCountdown from 'vue2-flip-countdown'
+
 // const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
 // const Vue = window.vue;
 import axios from "../axios";
 var quiz = {
       user: "Dave",
-      questions: [
-
-
-      ]
+      questions: []
    },
 
    userResponseSkelaton = Array(quiz.questions.length).fill(null);
@@ -107,6 +111,8 @@ var quiz = {
 
   data() {
     return {
+       showDays : false,
+     testTimer:0,
       testData: [],
       quiz: quiz,
       questionIndex: 0,
@@ -116,6 +122,9 @@ var quiz = {
      testScore:0,
       question_data:[],
       slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
+      testDate:'',
+      finalFormat:'',
+      testTimer22:''
     }
    },
    filters: {
@@ -132,10 +141,15 @@ var quiz = {
     }
   },
   created() {
+ 
+    
     console.log(this.slug)
     this.getData(this.slug)
    },
+   components: { FlipCountdown },
    methods: {
+     
+  
 		 restart: function(){
 			 	this.questionIndex=0;
 		 		this.userResponses=Array(quiz.questions.length).fill(null);
@@ -172,11 +186,27 @@ var quiz = {
 
          //return this.userResponses.filter(function(val) { return val }).length;
     },
+      sec2time(timeInSeconds) {
+       
+    var pad = function(num, size) { return ('000' + num).slice(size * -1); },
+    time = parseFloat(timeInSeconds).toFixed(3),
+    hours = Math.floor(time / 60 / 60),
+    minutes = Math.floor(time / 60) % 60,
+    seconds = Math.floor(time - minutes * 60),
+    milliseconds = time.slice(-3);
+    this.finalFormat = pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2) + ',' + pad(milliseconds, 3);
+
+    return this.finalFormat;
+},
     getData(slug) {
       axios.post('/api/v1/single-test', {test: slug})
           .then(res => {
             this.testData = res.data.response.test
+            this.testDate = new Date().toJSON().slice(0,10);
+            this.testTimer = this.testData.timer
 
+            this.testTimer22 = this.sec2time(this.testTimer*60)
+            console.log("testdate",this.testTimer22)
 
             for(var i=0; i<=this.testData.questions.length-1; i++ )
             {
@@ -211,6 +241,7 @@ var quiz = {
         console.log(err)
       })
     },
+   
         next: function() {
          if (this.questionIndex < quiz.questions.length-1)
          {
@@ -250,3 +281,4 @@ var quiz = {
 
 
 </script>
+

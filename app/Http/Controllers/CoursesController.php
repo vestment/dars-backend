@@ -472,6 +472,8 @@ class CoursesController extends Controller
         return view('frontend.player',compact('slug','type'));
 
     }
+  
+
 
 
 
