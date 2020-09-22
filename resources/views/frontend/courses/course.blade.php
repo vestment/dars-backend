@@ -161,7 +161,6 @@
                                 </div>
                             @endif
                         @else
-                        <div class="row">
 
                             @if($continue_course)
                             
@@ -177,7 +176,6 @@
                                     <i class="fa fa-arrow-right"></i>
                                 </button>
                             @endif
-    </div>
                         @endif
 
 
@@ -320,7 +318,7 @@
                     @endif</h3>
                 <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
                 <p class="smpara"><i class="fa fa-play-circle"
-                                     aria-hidden="true"></i> {{ $course->duration}} @lang('labels.frontend.course.hours')
+                                     aria-hidden="true"></i> {{ $course->duration}}
                 </p>
                 <p class="smpara"><i class="fa fa-file" aria-hidden="true"></i>
                     <span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters')</p>
@@ -380,7 +378,7 @@
             <div class="row smpara d-block m-2">
                 <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->duration }} @lang('labels.frontend.course.hours')</p>
+                    • {{ $course->duration }} </p>
             </div>
 
             @foreach($chapters as $chapter)
@@ -436,11 +434,7 @@
             <div class="row  coursecontent d-block m-2">
                 <h2>@lang('labels.frontend.course.related_courses') </h2>
             </div>
-            <div class="row smpara d-block m-2">
-                <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
-                    <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->course_hours }} @lang('labels.frontend.course.hours')</p>
-            </div>
+
             @foreach ($related_courses as $related_course)
 
                 <div class="card col-12 col-md-12 col-lg-6 col-xl-6 mb-2">
@@ -478,11 +472,11 @@
                                 </div>
                                 <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $related_course->duration }} @lang('labels.frontend.course.hours')
+                            <i class="far fa-clock font12"></i> {{ $related_course->duration }}
 
                             </span>
                                     <span>
-                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> @lang('labels.frontend.course.lessons') 
+                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> {{count($related_course->lessons)}} @lang('labels.frontend.course.lessons')
 
                             </span>
 

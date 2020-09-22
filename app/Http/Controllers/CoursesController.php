@@ -96,7 +96,7 @@ class CoursesController extends Controller
     public function show($course_slug)
     {
         $continue_course = NULL;
-        $course_id = Course::where('slug', $course_slug)->value('id');
+        $course_id = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->value('id');
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with(['publishedLessons', 'academy', 'reviews'])->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
@@ -132,7 +132,7 @@ class CoursesController extends Controller
         foreach ($lessonsMedia as $lesson) {
             $fileCount += count($lesson->downloadableMedia);
         }
-        $course_hours = Course::where('course_hours', $course_slug);
+        $course_hours = Course::withoutGlobalScope('filter')->where('course_hours', $course_slug);
 
         if (\Auth::check()) {
 

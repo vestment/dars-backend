@@ -34,7 +34,7 @@
                             <tbody>
                             @if(count($notes) > 0)
                                 @foreach($notes as $key=>$note)
-                                    @if ($note->lesson)
+                                    @if ($note->lesson && $note->lesson->course)
                                         <tr>
                                             <td>{{$key}}</td>
                                             <td>{{$note->lesson->course->title}} / {{$note->lesson->chapter->title}}</td>

@@ -36,10 +36,8 @@
 
         </div>
         <div class="course-meta my-1 vv">
-            <span class="course-category text-dark"><i class="far fa-clock"></i> {{$course->duration}}
-
-                    @lang('labels.frontend.course.course_hours') </span>
-                    <span calss="dash"> | </span>
+            <span class="course-category text-dark"><i class="far fa-clock"></i> {{$course->duration}}</span>
+                    <span class="dash"> | </span>
             <span class="course-author">
             <i class="far fa-play-circle"></i> {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
             </span>
