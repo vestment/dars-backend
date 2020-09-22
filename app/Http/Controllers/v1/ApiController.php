@@ -690,8 +690,7 @@ class ApiController extends Controller
         $note->save();
         return response()->json(['status' => 'success', 'note' => $note]);
     }
-
-    /**
+/**
      * Add New Note
      */
     public function AddNewNote(Request $request)

@@ -27,7 +27,7 @@
                             <tbody>
                             @if(count($certificates) > 0)
                                 @foreach($certificates as $key=>$certificate)
-                                    @php $key++; @endphp
+                                    @if ($certificate->course)
                                     <tr>
                                         <td>{{$key}}</td>
                                         <td>{{$certificate->course->title}}</td>
@@ -42,6 +42,7 @@
                                             @endif
                                         </th>
                                     </tr>
+                                    @endif
                                 @endforeach
                             @endif
                             </tbody>

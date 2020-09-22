@@ -151,9 +151,10 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif</div>
+                        @endif
                     @endforeach
-                </div>
+                     </div>
+                
             @else
                 <div class="alert alert-dark">
                     <span>@lang('labels.general.no_data_available')</span>

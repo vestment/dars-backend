@@ -328,7 +328,8 @@
             footer.find('#short_description').val(footer_data.short_description.text.replace(/<br>/g,"\n").replace(/amp;/g,""));
             status = (footer_data.short_description.status === 1);
             footer.find('#short_description_ar').parents('.form-group').find('.status').attr('checked', status);
-            footer.find('#short_description_ar').val(footer_data.short_description_ar.text.replace(/<br>/g,"\n").replace(/amp;/g,""));
+            var short_desc_ar = footer_data.short_description_ar ? footer_data.short_description_ar.text.replace(/<br>/g,"\n").replace(/amp;/g,"") : ''
+            footer.find('#short_description_ar').val(short_desc_ar);
             status = (footer_data.short_description.status === 1);
             footer.find('#short_description_ar').parents('.form-group').find('.status').attr('checked', status);
 

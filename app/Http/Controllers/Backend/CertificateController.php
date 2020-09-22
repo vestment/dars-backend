@@ -93,7 +93,7 @@ class CertificateController extends Controller
      */
     public function getVerificationForm()
     {
-        return view($this->path.'.certificate-verification');
+        return view('frontend.certificate-verification');
     }
 
 

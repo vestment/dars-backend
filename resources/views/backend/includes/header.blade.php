@@ -33,20 +33,20 @@
 
     <ul class="nav navbar-nav ml-auto mr-4">
         
-        <li class="nav-item d-md-down-none">
-            <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="icon-envelope"></i>
-                <span class="badge badge-pill d-none badge-success unreadMessageCounter"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
+        <!--<li class="nav-item d-md-down-none">-->
+        <!--    <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">-->
+        <!--        <i class="icon-envelope"></i>-->
+        <!--        <span class="badge badge-pill d-none badge-success unreadMessageCounter"></span>-->
+        <!--    </a>-->
+        <!--    <div class="dropdown-menu dropdown-menu-right">-->
                
-                <div class="unreadMessages">
-                   <p class="mb-0 text-center py-2">@lang('navs.general.no_messages')</p>
-                </div>
+        <!--        <div class="unreadMessages">-->
+        <!--           <p class="mb-0 text-center py-2">@lang('navs.general.no_messages')</p>-->
+        <!--        </div>-->
 
 
-            </div>
-        </li>
+        <!--    </div>-->
+        <!--</li>-->
 
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -56,10 +56,10 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right ">
             
-            <a class="dropdown-item" href="{{route('admin.messages')}}">
-              <i class="fa fa-envelope"></i> @lang('navs.general.messages')
-              <span class="badge unreadMessageCounter d-none badge-success">5</span>
-            </a>
+            <!--<a class="dropdown-item" href="{{route('admin.messages')}}">-->
+            <!--  <i class="fa fa-envelope"></i> @lang('navs.general.messages')-->
+            <!--  <span class="badge unreadMessageCounter d-none badge-success">5</span>-->
+            <!--</a>-->
 
             <a class="dropdown-item" href="{{ route('admin.account') }}">
               <i class="fa fa-user"></i> @lang('navs.general.profile')
