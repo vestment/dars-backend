@@ -627,11 +627,23 @@ class ApiController extends Controller
                 return response()->json(['status' => 'failure', 'message' => 'You need to buy this course first']);
             }
             $course = $lesson->course;
-            $courseTimeLine = $lesson->course->courseTimeline()->with(['model'])->get();
+            $courseTimeLine = $lesson->course->courseTimeline()->with(['model'])->orderBy('sequence', 'asc')->get();
+            $courseSequence = [];
             foreach ($courseTimeLine as $key => $item) {
-                if ($item->model_type == Lesson::class) {
-                    $courseTimeLine[$key]->model['data'] = $item->model()->with(['downloadableMedia', 'notes','mediaPDF','mediaAudio'])->get();
+                if ($item->model_type == Chapter::class) {
+                    $courseChapter= $item->model;
+                    $courseChapter['lessons'] = $lesson->course->courseTimeline()
+                        ->with(['model','model.downloadableMedia', 'model.notes','model.mediaPDF','model.mediaAudio','model.mediaVideo'])
+                        ->where('chapter_id',$item->model_id)
+                        ->where('model_type',Lesson::class)
+                        ->orderBy('sequence', 'asc')->get();
+                    $courseChapter['tests'] = $lesson->course->courseTimeline()->with(['model'])
+                        ->where('chapter_id',$item->model_id)
+                        ->where('model_type',Test::class)
+                        ->orderBy('sequence', 'asc')->get();
+                    array_push($courseSequence,$courseChapter);
                 }
+
             }
             $chapters = $course->chapters()->with(['test'])->get();
             $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
@@ -672,7 +684,7 @@ class ApiController extends Controller
                 'course' => $course,
                 'chapters' => $chapters,
                 'course_page' => $course_page,
-                'course_timeline' => $courseTimeLine,
+                'course_timeline' => $courseSequence,
             ];
             return response()->json(['status' => 'success', 'result' => $results]);
         }
@@ -721,8 +733,8 @@ class ApiController extends Controller
     public function getTest(Request $request)
     {
         $test = Test::where('published', '=', 1)
-            ->where('slug', '=', $request->test)
-            ->first();
+            ->where('slug', '=', $request->test)->with('questions')
+            ->firstOrfail();
 
         $questions = [];
         $is_test_given = false;
@@ -756,7 +768,7 @@ class ApiController extends Controller
             $test_result = $test_result->toArray();
             $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result['id'])->get()->toArray();
             $is_test_given = true;
-            $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result];
+            $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result,'attempts'=>$test_result['attempts']];
         }
         $chapters = $test->course()->with('chapters')->first()->chapters;
         foreach ($chapters as $key => $chapter) {
@@ -781,6 +793,13 @@ class ApiController extends Controller
         $test = Test::where('id', $request->test_id)->firstOrFail();
         if (!$test) {
             return response()->json(['status' => 'failure']);
+        }
+        $attempts = 0;
+        $testResult = TestsResult::where('test_id', '=', $request->test_id)
+            ->where('user_id', '=', auth()->user()->id)
+            ->first();
+        if ($testResult) {
+            $attempts = $testResult->attempts;
         }
         $answers = [];
         $test_score = 0;
@@ -811,6 +830,7 @@ class ApiController extends Controller
             'test_id' => $test->id,
             'user_id' => \Auth::id(),
             'test_result' => $test_score,
+            'attempts'=>$attempts
         ]);
         $test_result->answers()->createMany($answers);
 

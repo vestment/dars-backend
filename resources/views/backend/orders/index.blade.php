@@ -43,7 +43,7 @@
                         <th>@lang('labels.backend.orders.fields.fawry_ref_no')</th>
                         <th>@lang('labels.backend.orders.fields.fawry_expirationTime')</th>
 
-                        <th>@lang('labels.backend.orders.fields.payment_type')</th>
+                        <th>@lang('labels.backend.orders.fields.payment_type.title')</th>
                         
 
 

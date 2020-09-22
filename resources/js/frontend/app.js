@@ -5,21 +5,13 @@ import '../bootstrap';
 /* Core */
 import Vue from 'vue'
 
-import App from '../app.vue'
 import player from '../components/player.vue'
-
-// import VueVideoPlayer from 'vue-video-player'
- 
-// require videojs style
-// import 'video.js/dist/video-js.css'
-// import 'vue-video-player/src/custom-theme.css'
- 
+import Vuex from 'vuex'
+import Vueditor from 'vueditor'
+import router from '../router'
 
 
-/* Vue. Main component */
-//import PlayCourse from './website/PlayCourse.vue'
-
-
+import 'vueditor/dist/style/vueditor.min.css'
 Vue.config.productionTip = false
 
 // import VueVideoPlayer from 'vue-video-player'
@@ -32,14 +24,8 @@ Vue.config.productionTip = false
 /* Main component */
 //Vue.component('PlayCourse', PlayCourse)
 Vue.component('player', require('../components/player.vue').default);
-
-Vue.component('player', player)
-import Vuex from 'vuex'
-import Vueditor from 'vueditor'
-import router from '../router'
-
-
-import 'vueditor/dist/style/vueditor.min.css'
+Vue.component('test', require('../components/test.vue').default)
+import app from '../app.vue'
 
 // your config here
 let config = {
@@ -62,9 +48,8 @@ Vue.use(Vueditor, config);
 /* This is main entry point */
 new Vue({
   router,
-  render: h => h(App),
-})
-
-const app = new Vue({
-  el: '#app'
-});
+  render: h => h(app),
+}).$mount('#app')
+// const app = new Vue({
+//   el: '#app'
+// });
