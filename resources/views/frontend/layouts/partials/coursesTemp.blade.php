@@ -104,10 +104,24 @@
         <div class="row">
             <div class="col-xl-9 col-9 p-0 pl-2">
                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                    <button type="submit"
-                            class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart')
+                   <a href="{{route('cart.index')}}"
+                            class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.added_to_cart')
                         <i class="fa fa-shopping-bag ml-1"></i>
-                    </button>
+                        </a>
+                       
+                @elseif((auth()->check()) && (auth()->user()->hasRole('student')) && (in_array($course->id,$courses_id)) )
+                        
+                            
+                                <a href="{{ route('courses.show', [$course->slug]) }}"
+                                class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.continue_course')
+
+                                <i class="fa fa-shopping-bag ml-1"></i>
+                                </a>
+                
+                          
+                 
+                            
+              
 
                 @elseif(!auth()->check())
                     @if($course->free == 1)
@@ -115,12 +129,14 @@
                            href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now')
                             <i
                                     class="fas fa-caret-right"></i></a>
+                                  
                     @else
 
                         <a class="btn btn-info btnAddCard btn-block"
                            href="{{ route('login.index') }}">@lang('labels.frontend.course.add_to_cart')
                             <i class="fa fa-shopping-bag"></i>
                         </a>
+                       
                     @endif
                 @elseif(auth()->check() && (auth()->user()->hasRole('student')))
 
