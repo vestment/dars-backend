@@ -631,27 +631,48 @@ class ApiController extends Controller
             $courseSequence = [];
             foreach ($courseTimeLine as $key => $item) {
                 if ($item->model_type == Chapter::class) {
-                    $courseChapter = $item->model;
-                    $courseChapter['lessons'] = $lesson->course->courseTimeline()
+                    $courseChapter[$item->id]['data'] = $item->model;
+                    $courseChapter[$item->id]['lessons'] = $lesson->course->courseTimeline()
                         ->with(['model', 'model.downloadableMedia', 'model.notes', 'model.mediaPDF', 'model.mediaAudio', 'model.mediaVideo'])
                         ->where('chapter_id', $item->model_id)
                         ->where('model_type', Lesson::class)
                         ->orderBy('sequence', 'asc')->get();
-                    $courseChapter['tests'] = $lesson->course->courseTimeline()->with(['model'])
+                    $courseChapter[$item->id]['test'] = $lesson->course->courseTimeline()
+                        ->with(['model', 'model.testResult', 'model.questions'])
                         ->where('chapter_id', $item->model_id)
                         ->where('model_type', Test::class)
-                        ->orderBy('sequence', 'asc')->get();
-                    array_push($courseSequence, $courseChapter);
+                        ->orderBy('sequence', 'asc')->first();
+                    $prev_Chapter = $lesson->course->courseTimeline()->where('sequence', '<', $item->sequence)
+                        ->where('model_type', Chapter::class)
+                        ->where('course_id', $item->course_id)
+                        ->orderBy('sequence', 'asc')
+                        ->value('model_id');
+//                    return $next_chapter;
+
+                    $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
+
+                    foreach ($courseChapter[$item->id]['lessons'] as $chapterLesson) {
+                        $chapterLesson['canView'] = true;
+                        if ($prevChapter) {
+                            $chapterTest = $prevChapter->test;
+                            if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                                $chapterLesson['canView'] = false;
+                            }
+                        }
+                    }
+                    array_push($courseSequence, $courseChapter[$item->id]);
                 }
 
             }
             $chapters = $course->chapters()->with(['test'])->get();
             $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->where('model_type', Lesson::class)
+                ->with('model')
                 ->orderBy('sequence', 'desc')
                 ->first();
             $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
                 ->where('model_type', Lesson::class)
+                ->with('model')
                 ->orderBy('sequence', 'asc')
                 ->first();
 
@@ -745,17 +766,36 @@ class ApiController extends Controller
         $courseSequence = [];
         foreach ($courseTimeLine as $key => $item) {
             if ($item->model_type == Chapter::class) {
-                $courseChapter = $item->model;
-                $courseChapter['lessons'] = $test->course->courseTimeline()
+                $courseChapter[$item->id]['data'] = $item->model;
+                $courseChapter[$item->id]['lessons'] = $test->course->courseTimeline()
                     ->with(['model', 'model.downloadableMedia', 'model.notes', 'model.mediaPDF', 'model.mediaAudio', 'model.mediaVideo'])
                     ->where('chapter_id', $item->model_id)
                     ->where('model_type', Lesson::class)
                     ->orderBy('sequence', 'asc')->get();
-                $courseChapter['tests'] = $test->course->courseTimeline()->with(['model'])
+                $courseChapter[$item->id]['test'] = $test->course->courseTimeline()
+                    ->with(['model', 'model.testResult', 'model.questions'])
                     ->where('chapter_id', $item->model_id)
                     ->where('model_type', Test::class)
-                    ->orderBy('sequence', 'asc')->get();
-                array_push($courseSequence, $courseChapter);
+                    ->orderBy('sequence', 'asc')->first();
+                $prev_Chapter = $test->course->courseTimeline()->where('sequence', '<', $item->sequence)
+                    ->where('model_type', Chapter::class)
+                    ->where('course_id', $item->course_id)
+                    ->orderBy('sequence', 'asc')
+                    ->value('model_id');
+//                    return $next_chapter;
+
+                $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
+
+                foreach ($courseChapter[$item->id]['lessons'] as $chapterLesson) {
+                    $chapterLesson['canView'] = true;
+                    if ($prevChapter) {
+                        $chapterTest = $prevChapter->test;
+                        if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                            $chapterLesson['canView'] = false;
+                        }
+                    }
+                }
+                array_push($courseSequence, $courseChapter[$item->id]);
             }
 
         }
@@ -785,37 +825,38 @@ class ApiController extends Controller
         }
 
         $test_result = TestsResult::where('test_id', $test->id)
-            ->where('user_id', '=', auth()->user()->id)
+            ->where('user_id', '=', auth()->user()->id)->orderBy('created_at', 'desc')
             ->first();
         $result_data = NULL;
+        $questionsToAnswer = $test->questions()->with('options')->inRandomOrder()->limit($test->no_questoins);
         if ($test_result) {
-            $questionsToAnswer = [];
-            $questionsToAnswer = $test->questions()->with('options')->inRandomOrder()->limit($test->no_questoins)->get();
-            if ($test_result->attempts == 2) {
+            if ($test_result->attempts == 1) {
                 $prevTestQuestions = $test_result->answers()->pluck('question_id');
-                $questionsToAnswer = $test->questions()->with('options')->whereNotIn('id', $prevTestQuestions)->inRandomOrder()->limit($test->no_questoins)->get();
+                $questionsToAnswer = $test->questions()->with('options')->whereNotIn('id', $prevTestQuestions)->inRandomOrder()->limit($test->no_questoins);
+            } elseif ($test_result->attempts == 2) {
+                $questionsToAnswer = $test->questions()->with('options')->inRandomOrder();
             }
-            elseif ($test_result->attempts == 3) {
-                $questionsToAnswer = $test->questions()->with('options')->inRandomOrder()->get();
-            }
+
             $test_result = $test_result->toArray();
             $test->questions = $questionsToAnswer;
             $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result['id'])->get()->toArray();
             $is_test_given = true;
             $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result, 'attempts' => $test_result['attempts']];
         }
+        $test['totalScore'] = $questionsToAnswer->sum('score');
+        $questionsToAnswer = $questionsToAnswer->get();
         $chapters = $test->course()->with('chapters')->first()->chapters;
         foreach ($chapters as $key => $chapter) {
             $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes', 'mediaAudio', 'mediaPDF', 'downloadableMedia'])->get();
         }
 
-        $dt = time()+intval($test->timer * 60);
+        $dt = time() + intval($test->timer * 60);
         $test = $test->toArray();
         $test['questions'] = $questionsToAnswer;
-        $test['timer'] = Carbon::createFromTimestamp($dt,'Africa/Cairo');
+        $test['timer'] = Carbon::createFromTimestamp($dt, 'Africa/Cairo');
         $data['chapters'] = $chapters;
         $data['test'] = $test;
-        $data['course_timeline'] = $courseTimeLine;
+        $data['course_timeline'] = $courseSequence;
         $data['is_test_given'] = $is_test_given;
         $data['test_result'] = $result_data;
         return response()->json(['status' => 'success', 'response' => $data]);
@@ -837,6 +878,7 @@ class ApiController extends Controller
         $attempts = 0;
         $testResult = TestsResult::where('test_id', '=', $request->test_id)
             ->where('user_id', '=', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
             ->first();
         if ($testResult) {
             $attempts = $testResult->attempts;

@@ -1,24 +1,26 @@
 <template>
   <div id="app">
-    <div class="container ">
+    <div class=" ">
       <div class="row ">
 
         <div class="col-lg-8">
+          <div class="card">
           <router-view></router-view>
+          </div>
         </div>
         <div class="col-md-4 ">
           <div class="accordion" id="accordionExample">
 
-            <div v-for="chapter in courseData.course_timeline" :key="chapter.id" class="card shadow mb-3">
+            <div v-for="chapter in courseData.course_timeline" :key="chapter.data.id" class="card shadow mb-3">
               <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
                   <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                          :data-target="'#chapter-'+chapter.id" aria-expanded="true" aria-controls="collapseOne">
-                    {{ chapter.title }}
+                          :data-target="'#chapter-'+chapter.data.id" aria-expanded="true" aria-controls="collapseOne">
+                    {{ chapter.data.title }}
                   </button>
                 </h2>
               </div>
-              <div :id="'chapter-'+chapter.id" class="collapse show" aria-labelledby="headingOne"
+              <div :id="'chapter-'+chapter.data.id" class="collapse show" aria-labelledby="headingOne"
                    data-parent="#accordionExample">
                 <div class="card-body">
 
@@ -26,8 +28,12 @@
                     <tbody>
                     <tr v-for="lesson in chapter.lessons" :key="lesson.model.id">
                       <td>
-                        <router-link :to="{name:'player',params:{slug:lesson.model.slug}}">{{ lesson.model.title }}
+                        <router-link v-if="lesson.canView" :to="{name:'player',params:{slug:lesson.model.slug}}">
+                          <i v-if="lesson.canView" class="fas fa-unlock text-success"></i>
+                          <i v-else class="text-danger fa fa-lock"></i> {{ lesson.model.title }}
                         </router-link>
+                        <a v-else> <i v-if="lesson.canView" class="fas fa-unlock text-success"></i>
+                          <i v-else class="text-danger fa fa-lock"></i> {{ lesson.model.title }}</a>
                         <p class="m-0"><small class="text-sm" v-if="lesson.model.media_video">
                           <i class="fa fa-play-circle"></i>
                           {{lesson.model.media_video.duration}}
@@ -50,20 +56,25 @@
                         <a v-if="lesson.model.notes.length > 0" href="#notesModal"
                            @click="()=> {notes = lesson.model.notes}"
                            data-toggle="modal"
-                           data-target="#notesModal"><i class="far fa-sticky-note mr-4 pr-3"></i></a>
+                           data-target="#notesModal"><i class="far fa-sticky-note"></i></a>
 
                       </td>
 
                     </tr>
-                    <tr v-if="chapter.tests.length > 0" v-for="test in chapter.tests" :key="test.id">
+                    <tr  v-if="chapter.test" :key="chapter.test.model.id">
 
                       <td>
-                        <router-link :to="{name:'test',params:{slug:test.model.slug}}">{{
-                          test.model.title
-                          }}
+                        <router-link :to="{name:'test',params:{slug:chapter.test.model.slug}}">
+                          <i v-if="chapter.test && chapter.test.model.test_result.length > 0 && (chapter.test.model.test_result[chapter.test.model.test_result.length-1].test_result >= chapter.test.model.min_grade)" class="fas fa-check text-success"></i>
+                          <i v-else-if="chapter.test && chapter.test.model.test_result.length == 0" class="text-warning fas fa-hourglass-start"></i>
+
+                          <i v-else class="text-danger fa fa-times"></i>
+                          {{ chapter.test.model.title}}
                         </router-link>
                       </td>
-                      <td><i class="fas fa-laptop"></i></td>
+                      <td>
+                        <i class="fas fa-laptop"></i>
+                      </td>
                     </tr>
                     </tbody>
                   </table>

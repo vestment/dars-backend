@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -15,18 +16,18 @@ use Mtownsend\ReadTime\ReadTime;
  * @property string $title
  * @property text $description
  * @property tinyInteger $published
-*/
+ */
 class Test extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'description','title_ar', 'description_ar','slug', 'published', 'course_id', 'lesson_id','chapter_id','no_questions','timer','min_grade'];
+    protected $fillable = ['title', 'description', 'title_ar', 'description_ar', 'slug', 'published', 'course_id', 'lesson_id', 'chapter_id', 'no_questions', 'timer', 'min_grade'];
 
 
     protected static function boot()
     {
         parent::boot();
-        if(auth()->check()) {
+        if (auth()->check()) {
             if (auth()->user()->hasRole('teacher')) {
                 static::addGlobalScope('filter', function (Builder $builder) {
                     $builder->whereHas('course', function ($q) {
@@ -59,17 +60,17 @@ class Test extends Model
     {
         $this->attributes['lesson_id'] = $input ? $input : null;
     }
-    
+
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id')->withTrashed();
     }
-    
+
     public function lesson()
     {
         return $this->belongsTo(Lesson::class, 'lesson_id')->withTrashed();
     }
-    
+
     public function questions()
     {
         return $this->belongsToMany(Question::class, 'question_test')->withTrashed();
@@ -77,29 +78,37 @@ class Test extends Model
 
     public function chapterStudents()
     {
-        return $this->morphMany(ChapterStudent::class,'model');
+        return $this->morphMany(ChapterStudent::class, 'model');
     }
 
     public function courseTimeline()
     {
-        return $this->morphOne(CourseTimeline::class,'model');
+        return $this->morphOne(CourseTimeline::class, 'model');
     }
 
-    public function isCompleted(){
+    public function isCompleted()
+    {
         $isCompleted = $this->chapterStudents()->where('user_id', \Auth::id())->count();
-        if($isCompleted > 0){
+        if ($isCompleted > 0) {
             return true;
         }
         return false;
 
     }
-    public function getDataFromColumn($col) {
+
+    public function getDataFromColumn($col)
+    {
         // ?? null return if the column not found
-        return $this->attributes[app()->getLocale() =='ar' ? $col.'_ar' : $col] ?? null;
+        return $this->attributes[app()->getLocale() == 'ar' ? $col . '_ar' : $col] ?? null;
     }
+
     public function chapter()
     {
         return $this->belongsTo(Chapter::class, 'chapter_id')->withTrashed();
     }
 
+    public function testResult()
+    {
+        return $this->hasMany(TestsResult::class, 'test_id')->where('user_id',auth()->user()->id);
+    }
 }

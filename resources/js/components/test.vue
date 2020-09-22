@@ -1,105 +1,106 @@
 <template>
 
-<div>	<!--questionBox-->
- <div>
-    <flip-countdown v-bind:deadline="this.testData.timer.date"></flip-countdown>
-  </div>
+  <div>  <!--questionBox-->
+    <div>
+      <flip-countdown v-if="!testComplelete && attempts <= 2 " v-bind:deadline="this.testData.timer.date"></flip-countdown>
+    </div>
 
-  <div class="questionBox">
+    <div class="questionBox">
 
-    <!-- transition -->
-    <transition :duration="{ enter: 500, leave: 300 }" enter-active-class="animated zoomIn"
-                leave-active-class="animated zoomOut" mode="out-in">
+      <!-- transition -->
+      <transition :duration="{ enter: 500, leave: 300 }" enter-active-class="animated zoomIn"
+                        leave-active-class="animated zoomOut" mode="out-in">
 
-      <!--qusetionContainer-->
-      <div class="questionContainer" v-if="questionIndex<quiz.questions.length" v-bind:key="questionIndex">
+        <!--qusetionContainer-->
+        <div class="questionContainer" v-if="questionIndex<quiz.questions.length && attempts <= 2" v-bind:key="questionIndex">
 
-        <header>
-          <h1 class="title is-6">{{ this.testData.title }}</h1>
-          <!--progress-->
-          <div class="progressContainer">
-            <progress class="progress is-info is-small" :value="(questionIndex/quiz.questions.length)*100" max="100">
-              {{ (questionIndex / quiz.questions.length) * 100 }}%
-            </progress>
-            <p>{{ (questionIndex / quiz.questions.length) * 100 }}% complete</p>
+          <header>
+            <h1 class="title is-6">{{ this.testData.title }}</h1>
+            <!--progress-->
+            <div class="progressContainer">
+              <progress class="progress is-info is-small" :value="(questionIndex/quiz.questions.length)*100" max="100">
+                {{ (questionIndex / quiz.questions.length) * 100 }}%
+              </progress>
+              <p>{{ (questionIndex / quiz.questions.length) * 100 }}% complete</p>
+            </div>
+            <!--/progress-->
+          </header>
+
+          <!-- questionTitle -->
+          <h2 class="titleContainer title">{{ quiz.questions[questionIndex].text }}</h2>
+
+          <!-- quizOptions -->
+          <div class="optionContainer">
+            <div class="option" v-for="(response, index) in quiz.questions[questionIndex].responses"
+                 @click="selectOption(index,response.id)"
+                 :class="{ 'is-selected': userResponses[questionIndex] == response.id}" :key="response.id">
+              {{ index | charIndex }}. {{ response.text }}
+            </div>
           </div>
-          <!--/progress-->
-        </header>
 
-        <!-- questionTitle -->
-        <h2 class="titleContainer title">{{ quiz.questions[questionIndex].text }}</h2>
+          <!--quizFooter: navigation and progress-->
+          <footer class="questionFooter">
 
-        <!-- quizOptions -->
-        <div class="optionContainer">
-          <div class="option" v-for="(response, index) in quiz.questions[questionIndex].responses"
-               @click="selectOption(index,response.id)"
-               :class="{ 'is-selected': userResponses[questionIndex] == response.id}" :key="response.id">
-            {{ index | charIndex }}. {{ response.text }}
-          </div>
+            <!--pagination-->
+            <nav class="pagination" role="navigation" aria-label="pagination">
+
+              <!-- back button -->
+              <a class="button" v-on:click="prev();" :disabled="questionIndex < 1">
+                Back
+              </a>
+
+              <!-- next button -->
+              <a class="button" :class="(userResponses[questionIndex]==null)?'':'is-active'" v-on:click="next();"
+                 :disabled="questionIndex>=quiz.questions.length">
+                {{ (userResponses[questionIndex] == null) ? 'skip' : 'Next' }}
+              </a>
+
+            </nav>
+            <!--/pagination-->
+
+          </footer>
+          <!--/quizFooter-->
+
         </div>
+        <!--/questionContainer-->
 
-        <!--quizFooter: navigation and progress-->
-        <footer class="questionFooter">
+        <!--quizCompletedResult-->
+        <div v-if="questionIndex>=quiz.questions.length || attempts >= 3" v-bind:key="questionIndex"
+             class="quizCompleted has-text-centered">
 
-          <!--pagination-->
-          <nav class="pagination" role="navigation" aria-label="pagination">
-
-            <!-- back button -->
-            <a class="button" v-on:click="prev();" :disabled="questionIndex < 1">
-              Back
-            </a>
-
-            <!-- next button -->
-            <a class="button" :class="(userResponses[questionIndex]==null)?'':'is-active'" v-on:click="next();"
-               :disabled="questionIndex>=quiz.questions.length">
-              {{ (userResponses[questionIndex] == null) ? 'skip' : 'Next' }}
-            </a>
-
-          </nav>
-          <!--/pagination-->
-
-        </footer>
-        <!--/quizFooter-->
-
-      </div>
-      <!--/questionContainer-->
-
-      <!--quizCompletedResult-->
-      <div v-if="resultData " v-bind:key="questionIndex" class="quizCompleted has-text-centered">
-
-        <!-- quizCompletedIcon: Achievement Icon -->
-        <span class="icon">
+          <!-- quizCompletedIcon: Achievement Icon -->
+          <span class="icon">
                 <i class="fa"
-                   :class="resultData.test_result>testData.min_grade?'fa-check-circle-o is-active':'fa-times-circle'"></i>
+                   :class="resultData.test_result >= testData.min_grade ? 'fa-check-circle is-active':'fa-times-circle'"></i>
               </span>
 
-        <!--resultTitleBlock-->
-        <h2 class="title">
-          You did {{
-            (resultData.test_result > testData.min_grade ? 'an amazing' : (resultData.test_result <= testData.min_grade ? 'a poor' : 'a good'))
-          }} job!
-        </h2>
-        <p class="subtitle">
-          Total score: {{ resultData.test_result }} / {{ quiz.questions.length }}
-        </p>
-        <br>
-        <a class="button" @click="restart()">restart <i class="fa fa-refresh"></i></a>
-        <!--/resultTitleBlock-->
+          <!--resultTitleBlock-->
+          <h2 class="title">
+            You did {{
+              (resultData.test_result >= testData.min_grade ? 'an amazing' : (resultData.test_result < testData.min_grade ? 'a poor' : 'a good'))
+            }} job!
+          </h2>
+          <p class="subtitle">
+            Total score: {{ resultData.test_result }} / {{ testData.totalScore }}
+          </p>
+          <br>
+          <a class="button" v-if="attempts < 3" @click="restart()">restart <i class="fa fa-refresh"></i></a>
+          <!--/resultTitleBlock-->
 
-      </div>
-      <!--/quizCompetedResult-->
+        </div>
+        <!--/quizCompetedResult-->
 
-    </transition>
+      </transition>
 
+    </div>
+    <!--/questionBox-->
   </div>
-  <!--/questionBox-->
-</div>
 
 </template>
 
 <script>
 import './lesson.css'
-  import FlipCountdown from 'vue2-flip-countdown'
+import FlipCountdown from 'vue2-flip-countdown'
 
 // const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
@@ -119,19 +120,21 @@ export default {
 
   data() {
     return {
-       showDays : false,
-     testTimer:"",
+      showDays: false,
+      testTimer: "",
       testData: [],
       quiz: quiz,
+      attempts: 0,
+      testComplelete: false,
       questionIndex: 0,
       userResponses: userResponseSkelaton,
       isActive: false,
       test_id: '',
-      resultData: 0,
+      resultData: {test_result:0},
       question_data: [],
       slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
-      testDate:'',
-      finalFormat:'',
+      testDate: '',
+      finalFormat: '',
 
     }
   },
@@ -149,15 +152,15 @@ export default {
     }
   },
   created() {
-    console.log(this.slug)
     this.getData(this.slug)
   },
-   components: { FlipCountdown },
+  components: {FlipCountdown},
   methods: {
 
 
     restart: function () {
       this.questionIndex = 0;
+      this.attempts++;
       this.userResponses = Array(quiz.questions.length).fill(null);
     },
     selectOption: function (index, id) {
@@ -168,8 +171,6 @@ export default {
       // this.$root.set(this.userResponses, this.questionIndex, index);
       this.$forceUpdate();
     },
-
-
 
 
     prev: function () {
@@ -196,14 +197,13 @@ export default {
       axios.post('/api/v1/single-test', {test: slug})
           .then(res => {
             this.testData = res.data.response.test
-            this.$parent.courseData=res.data.response
-            console.log(res)
-            this.testDate = new Date().toJSON().slice(0,10);
+            this.attempts = res.data.response.test_result ? res.data.response.test_result.attempts : 0
+            this.resultData = res.data.response.test_result ? res.data.response.test_result.score : 0
+            this.$parent.courseData = res.data.response
+            this.testDate = new Date().toJSON().slice(0, 10);
             this.testTimer = this.testData.timer.date
-            console.log( this.testTimer);
 
-            for(var i=0; i<=this.testData.questions.length-1; i++ )
-            {
+            for (var i = 0; i <= this.testData.questions.length - 1; i++) {
               let obj = {
                 text: this.testData.questions[i].question,
                 responses: []
@@ -244,7 +244,6 @@ export default {
           let questionObject = {
             question_id: this.testData.questions[i].id,
             ans_id: this.userResponses[i]
-
           }
           this.question_data.push(questionObject)
         }
@@ -257,8 +256,9 @@ export default {
             }
         )
             .then(res => {
-              this.testScore = res.data.score
-
+              this.questionIndex++;
+              this.attempts++;
+              this.testComplelete = true;
               this.resultData = res.data.resultData
             })
       }
