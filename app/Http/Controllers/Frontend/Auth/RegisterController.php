@@ -91,7 +91,7 @@ class RegisterController extends Controller
             $authSuccess = \Illuminate\Support\Facades\Auth::attempt($credentials);
             if($authSuccess) {
                 $request->session()->regenerate();
-                return redirect()->back()->with(['message' =>'Account registered successfully']);
+                return redirect()->to('/')->with(['message' =>'Account registered successfully']);
             }
 
         }
