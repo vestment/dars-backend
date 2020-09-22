@@ -608,7 +608,7 @@ var quiz = {
    data: function data() {
       return {
          showDays: false,
-         testTimer: 0,
+         testTimer: "",
          testData: [],
          quiz: quiz,
          questionIndex: 0,
@@ -619,8 +619,8 @@ var quiz = {
          question_data: [],
          slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
          testDate: '',
-         finalFormat: '',
-         testTimer22: ''
+         finalFormat: ''
+
       };
    },
 
@@ -674,30 +674,26 @@ var quiz = {
 
          //return this.userResponses.filter(function(val) { return val }).length;
       },
-      sec2time: function sec2time(timeInSeconds) {
+      //       sec2time(timeInSeconds) {
 
-         var pad = function pad(num, size) {
-            return ('000' + num).slice(size * -1);
-         },
-             time = parseFloat(timeInSeconds).toFixed(3),
-             hours = Math.floor(time / 60 / 60),
-             minutes = Math.floor(time / 60) % 60,
-             seconds = Math.floor(time - minutes * 60),
-             milliseconds = time.slice(-3);
-         this.finalFormat = pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2) + ',' + pad(milliseconds, 3);
+      //     var pad = function(num, size) { return ('000' + num).slice(size * -1); },
+      //     time = parseFloat(timeInSeconds).toFixed(3),
+      //     hours = Math.floor(time / 60 / 60),
+      //     minutes = Math.floor(time / 60) % 60,
+      //     seconds = Math.floor(time - minutes * 60),
+      //     milliseconds = time.slice(-3);
+      //     this.finalFormat = pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2) + ',' + pad(milliseconds, 3);
 
-         return this.finalFormat;
-      },
+      //     return this.finalFormat;
+      // },
       getData: function getData(slug) {
          var _this = this;
 
          __WEBPACK_IMPORTED_MODULE_2__axios__["a" /* default */].post('/api/v1/single-test', { test: slug }).then(function (res) {
             _this.testData = res.data.response.test;
             _this.testDate = new Date().toJSON().slice(0, 10);
-            _this.testTimer = _this.testData.timer;
-
-            _this.testTimer22 = _this.sec2time(_this.testTimer * 60);
-            console.log("testdate", _this.testTimer22);
+            _this.testTimer = _this.testData.timer.date;
+            console.log(_this.testTimer);
 
             for (var i = 0; i <= _this.testData.questions.length - 1; i++) {
                var obj = {
@@ -46936,7 +46932,7 @@ var render = function() {
   return _c("div", [
     _c(
       "div",
-      [_c("flip-countdown", { attrs: { deadline: "2020-10-01  00:00:05" } })],
+      [_c("flip-countdown", { attrs: { deadline: this.testData.timer.date } })],
       1
     ),
     _vm._v(" "),

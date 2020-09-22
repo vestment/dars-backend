@@ -813,8 +813,7 @@ class ApiController extends Controller
         $timer = $test->timer;
         $test = $test->toArray();
         $test['questions'] = $questionsToAnswer;
-        $test['timer1'] = date("Y-m-d H:i:s");
-        $test['timer2'] = Carbon::createFromTimestamp($dt,'Africa/Cairo');
+        $test['timer'] = Carbon::createFromTimestamp($dt,'Africa/Cairo');
         $data['chapters'] = $chapters;
         $data['test'] = $test;
         $data['course_timeline'] = $courseTimeLine;

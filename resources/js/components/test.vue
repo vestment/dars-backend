@@ -2,7 +2,7 @@
 
 <div>	<!--questionBox-->
  <div>
-    <flip-countdown :deadline="testTimer"></flip-countdown>
+    <flip-countdown v-bind:deadline="this.testData.timer.date"></flip-countdown>
   </div>
 
   <div class="questionBox">
@@ -112,7 +112,7 @@ var quiz = {
   data() {
     return {
        showDays : false,
-     testTimer:0,
+     testTimer:"",
       testData: [],
       quiz: quiz,
       questionIndex: 0,
@@ -203,7 +203,8 @@ var quiz = {
           .then(res => {
             this.testData = res.data.response.test
             this.testDate = new Date().toJSON().slice(0,10);
-            this.testTimer = this.testData.timer
+            this.testTimer = this.testData.timer.date
+            console.log( this.testTimer);
 
             for(var i=0; i<=this.testData.questions.length-1; i++ )
             {
