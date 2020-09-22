@@ -260,7 +260,6 @@
             <div class="row  coursesec d-block m-3">
                 <h2>@lang('labels.frontend.course.requirements')</h2>
             </div>
-            {{$course->duration}}
             <div class="row m-3">
                 @if(count($optional_courses) >0 || count($mandatory_courses) >0)
                     <div class="col-lg-3">
