@@ -733,8 +733,8 @@ class ApiController extends Controller
     public function getTest(Request $request)
     {
         $test = Test::where('published', '=', 1)
-            ->where('slug', '=', $request->test)
-            ->first();
+            ->where('slug', '=', $request->test)->with('questions')
+            ->firstOrfail();
 
         $questions = [];
         $is_test_given = false;
