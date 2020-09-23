@@ -176,7 +176,7 @@
 
                         
 
-                                    <form action="{{ route('wishlist.addToCart') }}" method="POST">
+                                    <form action="{{ route('cart.addToCart') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="course_id" value="{{ $course->id }}"/>
                                         <input type="hidden" name="amount"

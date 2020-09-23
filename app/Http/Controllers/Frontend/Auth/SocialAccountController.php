@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auth\User;
 use Illuminate\Http\Request;
 use Socialite;
 use App\Events\Frontend\Auth\UserLoggedIn;
@@ -79,8 +80,10 @@ class SocialAccountController extends Controller
 
         event(new UserLoggedIn(auth()->user()));
 
-        // Return to the intended url or default to the class property
-        return redirect()->intended(route(home_route()));
+       $user = User::findorFail(auth()->user()->id);
+       $token = $user->createToken('Personal Access Token')->accessToken;
+       // Return to the intended url or default to the class property
+       return redirect()->intended(route(home_route()))->with(['socialToken'=>$token]);
    }
    /**
      * @param $provider

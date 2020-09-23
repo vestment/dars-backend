@@ -85,7 +85,7 @@ export default {
             if (res.data.result) {
               this.courseData = res.data.result
               this.$parent.courseData = this.courseData
-              this.$parent.type = 'player '
+              this.$parent.type = 'player'
               if (this.courseData.lesson.media_video) {
                 this.lessonVideo.type = this.courseData.lesson.media_video.type
                 if (this.lessonVideo.type == 'youtube' || this.lessonVideo.type == 'vimeo' ) {
@@ -94,7 +94,6 @@ export default {
                   this.lessonVideo.src = this.courseData.lesson.media_video.url
                 }
               }
-              this.$forceUpdate();
               console.log("Lesson", this.lessonVideo)
               $('.course-title-header').text(this.courseData.course.title)
               $('.close-lesson').attr('href', this.courseData.course_page)
