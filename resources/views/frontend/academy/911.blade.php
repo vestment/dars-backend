@@ -98,7 +98,18 @@
         ============================================= -->
     <!-- Start of Teacher section
            ============================================= -->
-
+@if(session()->has('alert'))
+        <div class="alert alert-light alert-dismissible fade my-alert show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{session('alert')}}</strong>
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade my-alert show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{session('success')}}</strong>
+        </div>
+    @endif
     <section id="course-teacher" class="course-teacher-section mt-5">
         <div class="container ">
             <div class=" mb20 headline pl-3">
@@ -151,9 +162,10 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif</div>
+                        @endif
                     @endforeach
-                </div>
+                     </div>
+                
             @else
                 <div class="alert alert-dark">
                     <span>@lang('labels.general.no_data_available')</span>

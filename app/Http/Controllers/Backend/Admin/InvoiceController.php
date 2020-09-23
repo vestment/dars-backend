@@ -19,7 +19,7 @@ class InvoiceController extends Controller
     public function getIndex(){
 
         $invoices = auth()->user()->invoices()->whereHas('order')->get();
-       
+
         return view('backend.invoices.index',compact('invoices'));
     }
 
@@ -40,9 +40,10 @@ class InvoiceController extends Controller
 
             $order = Order::findOrFail($order_id);
             if (auth()->user()->isAdmin() || ($order->user_id == auth()->user()->id)) {
-                return Storage::download('invoices/' . $order->invoice->url);
-                // $file = public_path() . "/storage/invoices/" . $order->invoice->url;
-                // return Response::download($file);
+                if (Storage::exists('invoices/' . $order->invoice->url)) {
+                    return Storage::download('invoices/' . $order->invoice->url);
+                }
+                return abort(404);
             }
         }
         return abort(404);
@@ -58,7 +59,10 @@ class InvoiceController extends Controller
 
             $order = Order::findOrFail($order_id);
             if (auth()->user()->isAdmin() || ($order->user_id == auth()->user()->id)) {
-                return response()->file(Storage::path('invoices/' . $order->invoice->url));
+                if (Storage::exists('invoices/' . $order->invoice->url)) {
+                    return response()->file(Storage::path('invoices/' . $order->invoice->url));
+                }
+                return abort(404);
             }
         }
         return abort(404);

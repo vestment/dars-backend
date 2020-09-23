@@ -306,10 +306,10 @@ Route::group(['middleware' => 'role:student'], function () {
 
 
 //==== Messages Routes =====//
-Route::get('messages', ['uses' => 'MessagesController@index', 'as' => 'messages']);
-Route::post('messages/unread', ['uses' => 'MessagesController@getUnreadMessages', 'as' => 'messages.unread']);
-Route::post('messages/send', ['uses' => 'MessagesController@send', 'as' => 'messages.send']);
-Route::post('messages/reply', ['uses' => 'MessagesController@reply', 'as' => 'messages.reply']);
+Route::get('messanger', ['uses' => 'MessagesController@index', 'as' => 'messages']);
+Route::post('messanger/unread', ['uses' => 'MessagesController@getUnreadMessages', 'as' => 'messages.unread']);
+Route::post('messanger/send', ['uses' => 'MessagesController@send', 'as' => 'messages.send']);
+Route::post('messanger/reply', ['uses' => 'MessagesController@reply', 'as' => 'messages.reply']);
 
 
 //=== Invoice Routes =====//

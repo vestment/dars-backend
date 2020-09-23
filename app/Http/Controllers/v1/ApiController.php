@@ -626,20 +626,57 @@ class ApiController extends Controller
             if ($lesson->course && !in_array(auth()->user()->id, $lesson->course->students()->pluck('user_id')->toArray())) {
                 return response()->json(['status' => 'failure', 'message' => 'You need to buy this course first']);
             }
-            $course = $lesson->course;
-            $courseTimeLine = $lesson->course->courseTimeline()->with(['model'])->get();
+            $course = Course::withoutGlobalScope('filter')->findOrFail($lesson->course_id);
+            $courseTimeLine = $lesson->course->courseTimeline()->with(['model'])->orderBy('sequence', 'asc')->get();
+            $courseSequence = [];
             foreach ($courseTimeLine as $key => $item) {
-                if ($item->model_type == Lesson::class) {
-                    $courseTimeLine[$key]->model['data'] = $item->model()->with(['downloadableMedia', 'notes','mediaPDF','mediaAudio'])->get();
+                if ($item->model_type == Chapter::class) {
+                    $courseChapter[$item->id]['data'] = $item->model;
+                    $courseChapter[$item->id]['lessons'] = $lesson->course->courseTimeline()
+                        ->with(['model', 'model.downloadableMedia', 'model.notes', 'model.mediaPDF', 'model.mediaAudio', 'model.mediaVideo'])
+                        ->where('chapter_id', $item->model_id)
+                        ->where('model_type', Lesson::class)
+                        ->orderBy('sequence', 'asc')->get();
+                    $courseChapter[$item->id]['test'] = $lesson->course->courseTimeline()
+                        ->with(['model', 'model.testResult', 'model.questions'])
+                        ->where('chapter_id', $item->model_id)
+                        ->where('model_type', Test::class)
+                        ->orderBy('sequence', 'asc')->first();
+                    $prev_Chapter = $lesson->course->courseTimeline()->where('sequence', '<', $item->sequence)
+                        ->where('model_type', Chapter::class)
+                        ->where('course_id', $item->course_id)
+                        ->orderBy('sequence', 'asc')
+                        ->value('model_id');
+//                    return $next_chapter;
+
+                    $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
+
+                    foreach ($courseChapter[$item->id]['lessons'] as $chapterLesson) {
+                        $chapterLesson['canView'] = true;
+                        if ($prevChapter) {
+                            $chapterTest = $prevChapter->test;
+                            if ($chapterTest->testResult && count($chapterTest->testResult) >0) {
+                                if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                                    $chapterLesson['canView'] = false;
+                                }
+                            } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
+                                $chapterLesson['canView'] = false;
+                            }
+                        }
+                    }
+                    array_push($courseSequence, $courseChapter[$item->id]);
                 }
+
             }
             $chapters = $course->chapters()->with(['test'])->get();
             $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
                 ->where('model_type', Lesson::class)
+                ->with('model')
                 ->orderBy('sequence', 'desc')
                 ->first();
             $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
                 ->where('model_type', Lesson::class)
+                ->with('model')
                 ->orderBy('sequence', 'asc')
                 ->first();
 
@@ -661,7 +698,7 @@ class ApiController extends Controller
             }
             $course_page = route('courses.show', ['slug' => $lesson->course->slug]);
             foreach ($chapters as $key => $chapter) {
-                $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes'])->get();
+                $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes', 'mediaAudio', 'mediaPDF', 'downloadableMedia'])->get();
             }
             $results = [
                 'lesson' => $lesson,
@@ -672,7 +709,7 @@ class ApiController extends Controller
                 'course' => $course,
                 'chapters' => $chapters,
                 'course_page' => $course_page,
-                'course_timeline' => $courseTimeLine,
+                'course_timeline' => $courseSequence,
             ];
             return response()->json(['status' => 'success', 'result' => $results]);
         }
@@ -692,6 +729,30 @@ class ApiController extends Controller
     }
 
     /**
+     * Add New Note
+     */
+    public function AddNewNote(Request $request)
+    {
+        $data = $request->all();
+        $data['user_id'] = auth()->user()->id;
+        $note = Note::create($data);
+        return response()->json(['status' => 'success', 'note' => $note]);
+    }
+
+    /**
+     * Remove Note
+     */
+    public function removeNote(Request $request)
+    {
+        $note = Note::findorFail($request->id);
+        if ($note) {
+            $note->delete();
+            return response()->json(['status' => 'success', 'note' => $note]);
+        }
+        return response()->json(['status' => 'failure']);
+    }
+
+    /**
      * Get Test
      *
      * @return [json] Success message
@@ -700,9 +761,52 @@ class ApiController extends Controller
     public function getTest(Request $request)
     {
         $test = Test::where('published', '=', 1)
-            ->where('id', '=', $request->test_id)
-            ->where('course_id', '=', $request->course_id)
-            ->first();
+            ->where('slug', '=', $request->test)->with('questions')
+            ->firstOrfail();
+        if (!$test) {
+            return response()->json(['status' => 'failure']);
+        }
+        $courseTimeLine = $test->course->courseTimeline()->with(['model'])->orderBy('sequence', 'asc')->get();
+        $courseSequence = [];
+        foreach ($courseTimeLine as $key => $item) {
+            if ($item->model_type == Chapter::class) {
+                $courseChapter[$item->id]['data'] = $item->model;
+                $courseChapter[$item->id]['lessons'] = $test->course->courseTimeline()
+                    ->with(['model', 'model.downloadableMedia', 'model.notes', 'model.mediaPDF', 'model.mediaAudio', 'model.mediaVideo'])
+                    ->where('chapter_id', $item->model_id)
+                    ->where('model_type', Lesson::class)
+                    ->orderBy('sequence', 'asc')->get();
+                $courseChapter[$item->id]['test'] = $test->course->courseTimeline()
+                    ->with(['model', 'model.testResult', 'model.questions'])
+                    ->where('chapter_id', $item->model_id)
+                    ->where('model_type', Test::class)
+                    ->orderBy('sequence', 'asc')->first();
+                $prev_Chapter = $test->course->courseTimeline()->where('sequence', '<', $item->sequence)
+                    ->where('model_type', Chapter::class)
+                    ->where('course_id', $item->course_id)
+                    ->orderBy('sequence', 'asc')
+                    ->value('model_id');
+//                    return $next_chapter;
+
+                $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
+
+                foreach ($courseChapter[$item->id]['lessons'] as $chapterLesson) {
+                    $chapterLesson['canView'] = true;
+                    if ($prevChapter) {
+                        $chapterTest = $prevChapter->test;
+                        if ($chapterTest->testResult && count($chapterTest->testResult) >0) {
+                            if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
+                                $chapterLesson['canView'] = false;
+                            }
+                        } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
+                            $chapterLesson['canView'] = false;
+                        }
+                    }
+                }
+                array_push($courseSequence, $courseChapter[$item->id]);
+            }
+
+        }
         $questions = [];
         $is_test_given = false;
         //If Retest is being taken
@@ -713,7 +817,6 @@ class ApiController extends Controller
             $is_test_given = false;
 
         }
-
 
         if ($test->questions && (count($test->questions) > 0)) {
             foreach ($test->questions as $question) {
@@ -730,17 +833,38 @@ class ApiController extends Controller
         }
 
         $test_result = TestsResult::where('test_id', $test->id)
-            ->where('user_id', '=', auth()->user()->id)
+            ->where('user_id', '=', auth()->user()->id)->orderBy('created_at', 'desc')
             ->first();
         $result_data = NULL;
+        $questionsToAnswer = $test->questions()->with('options')->inRandomOrder()->limit($test->no_questoins);
         if ($test_result) {
+            if ($test_result->attempts == 1) {
+                $prevTestQuestions = $test_result->answers()->pluck('question_id');
+                $questionsToAnswer = $test->questions()->with('options')->whereNotIn('id', $prevTestQuestions)->inRandomOrder()->limit($test->no_questoins);
+            } elseif ($test_result->attempts == 2) {
+                $questionsToAnswer = $test->questions()->with('options')->inRandomOrder();
+            }
+
             $test_result = $test_result->toArray();
+            $test->questions = $questionsToAnswer;
             $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result['id'])->get()->toArray();
             $is_test_given = true;
-            $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result];
+            $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result, 'attempts' => $test_result['attempts']];
+        }
+        $test['totalScore'] = $questionsToAnswer->sum('score');
+        $questionsToAnswer = $questionsToAnswer->get();
+        $chapters = $test->course()->with('chapters')->first()->chapters;
+        foreach ($chapters as $key => $chapter) {
+            $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes', 'mediaAudio', 'mediaPDF', 'downloadableMedia'])->get();
         }
 
-        $data['test'] = $test->toArray();
+        $dt = time() + intval($test->timer * 60);
+        $test = $test->toArray();
+        $test['questions'] = $questionsToAnswer;
+        $test['timer'] = Carbon::createFromTimestamp($dt, 'Africa/Cairo');
+        $data['chapters'] = $chapters;
+        $data['test'] = $test;
+        $data['course_timeline'] = $courseSequence;
         $data['is_test_given'] = $is_test_given;
         $data['test_result'] = $result_data;
         return response()->json(['status' => 'success', 'response' => $data]);
@@ -758,6 +882,14 @@ class ApiController extends Controller
         $test = Test::where('id', $request->test_id)->firstOrFail();
         if (!$test) {
             return response()->json(['status' => 'failure']);
+        }
+        $attempts = 0;
+        $testResult = TestsResult::where('test_id', '=', $request->test_id)
+            ->where('user_id', '=', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if ($testResult) {
+            $attempts = $testResult->attempts;
         }
         $answers = [];
         $test_score = 0;
@@ -788,6 +920,7 @@ class ApiController extends Controller
             'test_id' => $test->id,
             'user_id' => \Auth::id(),
             'test_result' => $test_score,
+            'attempts' => $attempts + 1
         ]);
         $test_result->answers()->createMany($answers);
 
@@ -803,7 +936,7 @@ class ApiController extends Controller
 
         $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result->id)->get()->toArray();
 
-        return response()->json(['status' => 'success', 'result_id' => $test_result->id, 'score' => $test_score, 'result' => $result]);
+        return response()->json(['status' => 'success', 'resultData' => $test_result, 'score' => $test_score, 'result' => $result]);
 
     }
 
@@ -815,16 +948,16 @@ class ApiController extends Controller
      */
     public function courseProgress(Request $request)
     {
-
         if ($request->model_type == 'test') {
             $model_type = Test::class;
             $chapter = Test::find((int)$request->model_id);
         } else {
             $model_type = Lesson::class;
-            $chapter = Lesson::find((int)$request->model_id);
+            $chapter = Lesson::findorFail((int)$request->model_id);
         }
-        if ($chapter != null) {
-            if ($chapter->chapterStudents()->where('user_id', \Auth::id())->get()->count() == 0) {
+        if ($chapter) {
+            if ($chapter->chapterStudents()->where('user_id', auth()->user()->id)->get()->count() == 0) {
+
                 $chapter->chapterStudents()->create([
                     'model_type' => $model_type,
                     'model_id' => $request->model_id,

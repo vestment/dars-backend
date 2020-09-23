@@ -13,6 +13,9 @@
     text-align:center;
 
 }
+a[href="https://www.froala.com/wysiwyg-editor?k=u"] {
+    display:none !important;
+}
 </style>
 @endpush
                                
@@ -46,10 +49,6 @@
     <script src="{{asset('froala_editor_3.2.1/js/froala_editor.pkgd.min.js')}}"></script>
     <script src="{{asset('froala_editor_3.2.1/js/plugins.pkgd.min.js')}}"></script>
 
-
-
-    <link href="{{asset('froala_editor_3.2.1/css/froala_style.min.css')}}" rel="stylesheet">
-
 <script>
         $(document).ready(function () {
             new FroalaEditor(".edit-froala", {
@@ -77,10 +76,8 @@
                 $('#print-2').remove();
                 $('#logo').remove();
 
-
+                $('a[href="https://www.froala.com/wysiwyg-editor?k=u"]').parent().remove()
             })
-
-
         })
 
     </script>

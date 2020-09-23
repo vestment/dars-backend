@@ -43,11 +43,11 @@
 
     <!-- Start of slider section
             ============================================= -->
-    @if(session()->has('alert'))
-        <div class="alert alert-light alert-dismissible fade my-alert show">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>{{session('alert')}}</strong>
-        </div>
+    
+    @if(session()->has('socialToken'))
+        <script>
+            localStorage.setItem('token','{{session('socialToken')}}')
+        </script>
     @endif
     @include('frontend.layouts.partials.slider')
 

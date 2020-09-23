@@ -7,6 +7,7 @@ use Socialite;
 use App\Events\Frontend\Auth\UserLoggedIn;
 use App\Repositories\Frontend\Auth\UserRepository;
 use App\Helpers\Frontend\Auth\Socialite as SocialiteHelper;
+use App\Models\Auth\User;
 class SocialAccountController extends Controller
 {
      /**
@@ -79,8 +80,10 @@ class SocialAccountController extends Controller
 
         event(new UserLoggedIn(auth()->user()));
 
-        // Return to the intended url or default to the class property
-        return redirect()->intended(route(home_route()));
+        $user = User::findorFail(auth()->user()->id);
+       $token = $user->createToken('Personal Access Token')->accessToken;
+       // Return to the intended url or default to the class property
+       return redirect()->intended(route(home_route()))->with(['socialToken'=>$token]);
    }
    /**
      * @param $provider

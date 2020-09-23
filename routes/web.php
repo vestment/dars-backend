@@ -79,7 +79,9 @@ Route::post('newsletter/subscribe', 'Frontend\HomeController@subscribe')->name('
 
 //============Course Routes=================//
 Route::get('courses', ['uses' => 'CoursesController@all', 'as' => 'courses.all']);
-Route::get('player/{slug}/{type?}', 'CoursesController@player');
+Route::get('player/{slug}', 'CoursesController@player')->name('player.show');
+Route::get('test/{slug}', 'CoursesController@player');
+
 
 Route::get('course/{slug}', ['uses' => 'CoursesController@show', 'as' => 'courses.show']);
 //Route::post('course/payment', ['uses' => 'CoursesController@payment', 'as' => 'courses.payment']);
@@ -194,6 +196,7 @@ Route::get('certificates/download', ['uses' => 'Backend\CertificateController@do
 
 
 Route::get('offers',['uses' => 'CartController@getOffers', 'as' => 'frontend.offers']);
+Route::get('countinue/{id}','CoursesController@hascourse')->name('countinue');
 
 
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {

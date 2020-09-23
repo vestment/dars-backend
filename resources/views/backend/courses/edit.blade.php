@@ -412,6 +412,15 @@
                                                                                                                                         onclick="removeChapter({{$item->id}})">
                                                                                                                                     <i class="fa fa-trash"></i>
                                                                                                                                 </button>
+                                                                                                                                <button type="button"
+                                                                                                                                        class="btn btn-info"
+                                                                                                                                        data-toggle="modal"
+                                                                                                                                        data-target="#edit-chapter"
+                                                                                                                                        onclick="editChapter({{$item->id}})">
+                                                                                                                                    <i
+                                                                                                                                            class="fa fa-edit"></i>
+                                                                                                                                </button>
+
                                                                                                                             @endif
                                                                                                                         </div>
                                                                                                                     </div>
@@ -777,6 +786,49 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="edit-chapter" tabindex="-1" aria-labelledby="editChapterModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editChapterModalLabel">Edit Chapter</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {!! Form::open(['method' => 'POST','id'=>'editChapterForm','style'=>'display: none', 'files' => true,]) !!}
+                {!! Form::hidden('course_id',$course->id)!!}
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-12 col-lg-6 form-group">
+                            {!! Form::label('title', trans('labels.backend.chapters.fields.title').'*', ['class' => 'control-label']) !!}
+                            {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title'), 'required' => '']) !!}
+                        </div>
+                        <div class="col-12 col-lg-6 form-group">
+                            {!! Form::label('title_ar', trans('labels.backend.chapters.fields.title_ar').'*', ['class' => 'control-label']) !!}
+                            {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title_ar'), 'required' => '']) !!}
+                        </div>
+                        <div class="col-12 col-lg-6 form-group">
+                            <div class="checkbox d-inline mr-3">
+                                {!! Form::hidden('published', 0) !!}
+                                {!! Form::checkbox('published', 1, false, []) !!}
+                                {!! Form::label('published',  trans('labels.backend.courses.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer pb-0">
+                    {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
+                </div>
+                {!! Form::close() !!}
+
+
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="create-test" tabindex="-1" aria-labelledby="create-test"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -1131,6 +1183,35 @@
                     console.log(resp)
                 }
             })
+        };
+
+        function editChapter(id) {
+            $('#editChapterForm').hide();
+            var editUrl = "{{ route('admin.chapters.edit',":id") }}";
+            editUrl = editUrl.replace(':id', id);
+            $.ajax({
+                type: "get",
+                url: editUrl,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function (resp) {
+                    $('#editChapterForm').show();
+                    var url = "{{ route('admin.chapters.update',":id") }}";
+                    url = url.replace(':id', id);
+
+                    $('#editChapterForm').attr('action', url)
+                    var inputName = Object.keys(resp);
+                    $(inputName).each(function (key, value) {
+                        $('#editChapterForm input[name="' + value + '"]').val(resp[value])
+                    })
+                    if (resp.published) {
+                        $('#editChapterForm input[name="published"]').prop('checked', true);
+                    }
+                    console.log(resp)
+                }
+            })
         }
 
         function removeChapter(id) {
@@ -1343,8 +1424,15 @@
                     _token: '{{csrf_token()}}',
                     list: list
                 },
+                error: function (err) {
+                    var errorCard = '<div class="alert alert-danger">Failed to save Sequence: '+err+'</div>'
+                    $('#v-pills-messages .card-body').append(errorCard)
+                },
                 success: function (resp) {
-                    console.log(resp);
+                    if (resp == 'success') {
+                        var successCard = '<div class="alert alert-success">Sequence Saved</div>'
+                        $('#v-pills-messages .card-body').append(successCard)
+                    }
                 }
             }).done(function () {
                 // location.reload();

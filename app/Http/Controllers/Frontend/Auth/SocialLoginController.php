@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Auth;
 
+use App\Models\Auth\User;
 use Illuminate\Http\Request;
 use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;
@@ -98,9 +99,10 @@ class SocialLoginController extends Controller
         session([config('access.socialite_session_name') => $provider]);
 
         event(new UserLoggedIn(auth()->user()));
-
+        $user = User::findorFail(auth()->user()->id);
+        $token = $user->createToken('Personal Access Token')->accessToken;
         // Return to the intended url or default to the class property
-        return redirect()->intended(route(home_route()));
+        return redirect()->intended(route(home_route()))->with(['socialToken'=>$token]);
     }
 
     /**

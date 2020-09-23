@@ -29,17 +29,12 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-         <p class="pl-3" style="font-size:15px;">
+         <p class="" style="font-size:15px;min-height: 20px;">
          {{Illuminate\Support\Str::words($course->getDataFromColumn('description'),10,'...') }}
         </p>
-
-        </div>
         <div class="course-meta my-1 vv">
-            <span class="course-category text-dark"><i class="far fa-clock"></i> {{$course->duration}}
-
-                    @lang('labels.frontend.course.course_hours') </span>
-                    <span calss="dash"> | </span>
+            <span class="course-category text-dark"><i class="far fa-clock"></i> {{$course->duration}}</span>
+                    <span class="dash"> | </span>
             <span class="course-author">
             <i class="far fa-play-circle"></i> {{ $course->lessons()->count() }} @lang('labels.frontend.course.lessons')
             </span>
@@ -49,12 +44,12 @@
             @foreach($course->teachers as $key=>$teacher)
                 @if($key == 0)
                     @if ($teacher->hasRole('teacher'))
-                        <div class="col-3 " data-role="{{$teacher->hasRole('teacher')}}">
+                        <div class="col-lg-3 " data-role="{{$teacher->hasRole('teacher')}}">
                             <img src="{{$teacher->picture}}"
                                  class="rounded-circle img-tech2">
                         </div>
-                        <div class="col-9">
-                            <div class="row pt-2">
+                        <div class="col-lg-9">
+                            <div class="row pt-2 pt-lg-2 pl-lg-0 p-3">
                                 @foreach($course->teachers as $key=>$teacher)
                                     @if($key == 0 && $teacher->teacherProfile)
                                         <a class="text-pink tx-font"
@@ -106,23 +101,32 @@
         <div class="row">
             <div class="col-xl-9 col-9 p-0 pl-2">
                 @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                    <button type="submit"
-                            class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.add_to_cart')
+                   <a href="{{route('cart.index')}}"
+                            class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.added_to_cart')
                         <i class="fa fa-shopping-bag ml-1"></i>
-                    </button>
+                        </a>
+                       
+                @elseif((auth()->check()) && (auth()->user()->hasRole('student')) && (in_array($course->id,$courses_id)) )
+                            
+                    <a href="{{ route('courses.show', [$course->slug]) }}"
+                    class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.continue_course')
 
+                    <i class="fa fa-shopping-bag ml-1"></i>
+                    </a>
                 @elseif(!auth()->check())
                     @if($course->free == 1)
                         <a class="btn btn-info btn-block btnAddCard"
                            href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now')
                             <i
                                     class="fas fa-caret-right"></i></a>
+                                  
                     @else
 
                         <a class="btn btn-info btnAddCard btn-block"
                            href="{{ route('login.index') }}">@lang('labels.frontend.course.add_to_cart')
                             <i class="fa fa-shopping-bag"></i>
                         </a>
+                       
                     @endif
                 @elseif(auth()->check() && (auth()->user()->hasRole('student')))
 

@@ -1,26 +1,27 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 import player from './components/player.vue'
 import test from './components/test.vue'
+const routes = [
+  {
+    path: '/player/:slug',
+    name: 'player',
+    component: player,
+  },
+  {
+    path: '/test/:slug',
+    name: 'test',
+    component: test,
+  },
 
-const router = new Router({
+
+];
+const router = new VueRouter({
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/player',
-      name: 'player',
-      component: player,
-    },
-    {
-      path: '/test',
-      name: 'Test',
-      component: test,
-    },
-    
-
-  ],
+  mode:'history',
+  routes: routes,
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -28,5 +29,9 @@ const router = new Router({
       return { x: 0, y: 0 }
     }
   }
+})
+router.beforeEach((to, from, next) => {
+  // console.log('To',to)
+  return next();
 })
 export default router

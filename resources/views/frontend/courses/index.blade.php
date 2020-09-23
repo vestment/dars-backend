@@ -36,7 +36,18 @@
     <!-- End of breadcrumb section
         ============================================= -->
 
-
+@if(session()->has('alert'))
+        <div class="alert alert-light alert-dismissible fade my-alert show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{session('alert')}}</strong>
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade my-alert show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{session('success')}}</strong>
+        </div>
+    @endif
     <!-- Start of course section
         ============================================= -->
     <!-- Check if there is any courses in trending or popular -->

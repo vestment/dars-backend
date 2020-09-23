@@ -376,6 +376,7 @@
 
 
     @yield('content')
+    
     @include('cookieConsent::index')
 
 

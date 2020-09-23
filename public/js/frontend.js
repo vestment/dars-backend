@@ -174,6 +174,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
@@ -214,7 +218,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   mounted: function mounted() {
-    this.getData(this.slug);
+    if (this.type == 'test') {} else {
+      this.getLessonData(this.slug);
+    }
   },
 
   computed: {
@@ -236,7 +242,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(err);
       });
     },
-    getData: function getData(slug) {
+    getLessonData: function getLessonData(slug) {
       var _this = this;
 
       __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/single-lesson', { lesson: slug }).then(function (res) {
@@ -307,6 +313,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lesson_css__ = __webpack_require__("./resources/js/components/lesson.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lesson_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lesson_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__axios__ = __webpack_require__("./resources/js/axios.js");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -403,119 +417,118 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // const Vue = window.vue;
 
 var quiz = {
-   user: "Dave",
-   questions: [{
-      text: "What is the full form of HTTP?",
-      responses: [{ text: "Hyper text transfer package" }, { text: "Hyper text transfer protocol", correct: true }, { text: "Hyphenation text test program" }, { text: "None of the above" }]
-   }, {
-      text: "HTML document start and end with which tag pairs?",
-      responses: [{ text: "HTML", correct: true }, { text: "WEB" }, { text: "HEAD" }, { text: "BODY" }]
-   }, {
-      text: "Which tag is used to create body text in HTML?",
-      responses: [{ text: "HEAD" }, { text: "BODY", correct: true }, { text: "TITLE" }, { text: "TEXT" }]
-   }, {
-      text: "Outlook Express is _________",
-      responses: [{ text: "E-Mail Client", correct: true }, { text: "Browser" }, {
-         text: "Search Engine"
-      }, { text: "None of the above" }]
-   }, {
-      text: "What is a search engine?",
-      responses: [{ text: "A hardware component " }, {
-         text: "A machinery engine that search data"
-      }, { text: "A web site that searches anything", correct: true }, { text: "A program that searches engines" }]
-   }, {
-      text: "What does the .com domain represents?",
-      responses: [{ text: "Network" }, { text: "Education" }, { text: "Commercial", correct: true }, { text: "None of the above" }]
-   }, {
-      text: "In Satellite based communication, VSAT stands for? ",
-      responses: [{ text: " Very Small Aperture Terminal", correct: true }, { text: "Varying Size Aperture Terminal " }, {
-         text: "Very Small Analog Terminal"
-      }, { text: "None of the above" }]
-   }, {
-      text: "What is the full form of TCP/IP? ",
-      responses: [{ text: "Telephone call protocol / international protocol" }, { text: "Transmission control protocol / internet protocol", correct: true }, { text: "Transport control protocol / internet protocol " }, { text: "None of the above" }]
-   }, {
-      text: "What is the full form of HTML?",
-      responses: [{
-         text: "Hyper text marking language"
-      }, { text: "Hyphenation text markup language " }, { text: "Hyper text markup language", correct: true }, { text: "Hyphenation test marking language" }]
-   }, {
-      text: "\"Yahoo\", \"Infoseek\" and \"Lycos\" are _________?",
-      responses: [{ text: "Browsers " }, { text: "Search Engines", correct: true }, { text: "News Group" }, { text: "None of the above" }]
-   }]
+  user: "Dave",
+  questions: [{
+    text: "What is the full form of HTTP?",
+    responses: [{ text: "Hyper text transfer package" }, { text: "Hyper text transfer protocol", correct: true }, { text: "Hyphenation text test program" }, { text: "None of the above" }]
+  }, {
+    text: "HTML document start and end with which tag pairs?",
+    responses: [{ text: "HTML", correct: true }, { text: "WEB" }, { text: "HEAD" }, { text: "BODY" }]
+  }, {
+    text: "Which tag is used to create body text in HTML?",
+    responses: [{ text: "HEAD" }, { text: "BODY", correct: true }, { text: "TITLE" }, { text: "TEXT" }]
+  }, {
+    text: "Outlook Express is _________",
+    responses: [{ text: "E-Mail Client", correct: true }, { text: "Browser" }, {
+      text: "Search Engine"
+    }, { text: "None of the above" }]
+  }, {
+    text: "What is a search engine?",
+    responses: [{ text: "A hardware component " }, {
+      text: "A machinery engine that search data"
+    }, { text: "A web site that searches anything", correct: true }, { text: "A program that searches engines" }]
+  }, {
+    text: "What does the .com domain represents?",
+    responses: [{ text: "Network" }, { text: "Education" }, { text: "Commercial", correct: true }, { text: "None of the above" }]
+  }, {
+    text: "In Satellite based communication, VSAT stands for? ",
+    responses: [{ text: " Very Small Aperture Terminal", correct: true }, { text: "Varying Size Aperture Terminal " }, {
+      text: "Very Small Analog Terminal"
+    }, { text: "None of the above" }]
+  }, {
+    text: "What is the full form of TCP/IP? ",
+    responses: [{ text: "Telephone call protocol / international protocol" }, { text: "Transmission control protocol / internet protocol", correct: true }, { text: "Transport control protocol / internet protocol " }, { text: "None of the above" }]
+  }, {
+    text: "What is the full form of HTML?",
+    responses: [{
+      text: "Hyper text marking language"
+    }, { text: "Hyphenation text markup language " }, { text: "Hyper text markup language", correct: true }, { text: "Hyphenation test marking language" }]
+  }, {
+    text: "\"Yahoo\", \"Infoseek\" and \"Lycos\" are _________?",
+    responses: [{ text: "Browsers " }, { text: "Search Engines", correct: true }, { text: "News Group" }, { text: "None of the above" }]
+  }]
 },
     userResponseSkelaton = Array(quiz.questions.length).fill(null);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-   props: ['slug', 'type'],
+  props: ['slug', 'type'],
 
-   data: function data() {
-      return {
-         testData: [],
-         quiz: quiz,
-         questionIndex: 0,
-         userResponses: userResponseSkelaton,
-         isActive: false,
-         token: localStorage.getItem('token') ? localStorage.getItem('token') : ''
-      };
-   },
+  data: function data() {
+    return {
+      testData: [],
+      quiz: quiz,
+      questionIndex: 0,
+      userResponses: userResponseSkelaton,
+      isActive: false
+    };
+  },
 
-   filters: {
-      charIndex: function charIndex(i) {
-         return String.fromCharCode(97 + i);
+  filters: {
+    charIndex: function charIndex(i) {
+      return String.fromCharCode(97 + i);
+    }
+  },
+  mounted: function mounted() {
+    this.getData(this.slug);
+  },
+
+  methods: {
+    restart: function restart() {
+      this.questionIndex = 0;
+      this.userResponses = Array(this.quiz.questions.length).fill(null);
+    },
+    selectOption: function selectOption(index) {
+      // console.log(this)
+      this.userResponses[this.questionIndex] = index;
+      // this.$root.set(this.userResponses, this.questionIndex, index);
+      console.log(this.userResponses);
+    },
+    next: function next() {
+      if (this.questionIndex < this.quiz.questions.length) this.questionIndex++;
+    },
+
+    prev: function prev() {
+      if (this.quiz.questions.length > 0) this.questionIndex--;
+    },
+    // Return "true" count in userResponses
+    score: function score() {
+      var score = 0;
+      for (var i = 0; i < this.userResponses.length; i++) {
+        if (typeof this.quiz.questions[i].responses[this.userResponses[i]] !== "undefined" && this.quiz.questions[i].responses[this.userResponses[i]].correct) {
+          score = score + 1;
+        }
       }
-   },
-   mounted: function mounted() {
-      this.getData(this.slug, this.token);
-   },
+      return score;
 
-   methods: {
-      restart: function restart() {
-         this.questionIndex = 0;
-         this.userResponses = Array(this.quiz.questions.length).fill(null);
-      },
-      selectOption: function selectOption(index) {
-         // console.log(this)
-         this.userResponses[this.questionIndex] = index;
-         // this.$root.set(this.userResponses, this.questionIndex, index);
-         console.log(this.userResponses);
-      },
-      next: function next() {
-         if (this.questionIndex < this.quiz.questions.length) this.questionIndex++;
-      },
-
-      prev: function prev() {
-         if (this.quiz.questions.length > 0) this.questionIndex--;
-      },
-      // Return "true" count in userResponses
-      score: function score() {
-         var score = 0;
-         for (var i = 0; i < this.userResponses.length; i++) {
-            if (typeof this.quiz.questions[i].responses[this.userResponses[i]] !== "undefined" && this.quiz.questions[i].responses[this.userResponses[i]].correct) {
-               score = score + 1;
-            }
-         }
-         return score;
-
-         //return this.userResponses.filter(function(val) { return val }).length;
-      },
-      getData: function getData(slug, token) {
-         axios.post('/api/v1/single-test', { test: slug, token: this.token }).then(function (res) {
-            if (res.data.result) {
-               //   this.testData = res.data.result
-               //   this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
-               console.log("testinfo", res);
-               //   $('.course-title-header').text(this.courseData.course.title)
-               //   $('.close-lesson').attr('href', this.courseData.course_page)
-               //   $('.course-progress').text(this.courseData.course_progress + ' %')
-               //   $('.progress-bar').css('width', this.courseData.course_progress + '%')
-            }
-         }).catch(function (err) {
-            console.log(err);
-         });
-      }
-   }
+      //return this.userResponses.filter(function(val) { return val }).length;
+    },
+    getData: function getData(slug) {
+      __WEBPACK_IMPORTED_MODULE_1__axios__["a" /* default */].post('/api/v1/single-test', { test: slug }).then(function (res) {
+        if (res.data.result) {
+          //   this.testData = res.data.result
+          //   this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
+          console.log("testinfo", res);
+          //   $('.course-title-header').text(this.courseData.course.title)
+          //   $('.close-lesson').attr('href', this.courseData.course_page)
+          //   $('.course-progress').text(this.courseData.course_progress + ' %')
+          //   $('.progress-bar').css('width', this.courseData.course_progress + '%')
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -560,7 +573,7 @@ exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Mon
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700);", ""]);
 
 // module
-exports.push([module.i, ".button {\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.title,\n.subtitle {\n  font-family: Montserrat, sans-serif;\n  font-weight: normal;\n}\n\n.animated {\n  -webkit-transition-duration: 0.15s;\n          transition-duration: 0.15s;\n}\n\n.container {\n  margin: 0 0.5rem;\n}\n\n.questionBox {\n  width: 49rem;\n  min-height: 30rem;\n  background: #FAFAFA;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 0.5rem;\n  overflow: hidden;\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\n}\n\n.questionBox header {\n  background: rgba(0, 0, 0, 0.025);\n  padding: 1.5rem;\n  text-align: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.questionBox header h1 {\n  font-weight: bold;\n  margin-bottom: 1rem !important;\n}\n\n.questionBox header .progressContainer {\n  width: 60%;\n  margin: 0 auto;\n}\n\n.questionBox header .progressContainer > progress {\n  margin: 0;\n  border-radius: 5rem;\n  overflow: hidden;\n  border: none;\n  color: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-moz-progress-bar {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > progress::-webkit-progress-value {\n  background: #3D5AFE;\n}\n\n.questionBox header .progressContainer > p {\n  margin: 0;\n  margin-top: 0.5rem;\n}\n\n.questionBox .titleContainer {\n  text-align: center;\n  margin: 0 auto;\n  padding: 1.5rem;\n}\n\n.questionBox .quizForm {\n  display: block;\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .quizForm .quizFormContainer {\n  height: 100%;\n  margin: 15px 18px;\n}\n\n.questionBox .quizForm .quizFormContainer .field-label {\n  text-align: left;\n  margin-bottom: 0.5rem;\n}\n\n.questionBox .quizCompleted {\n  width: 100%;\n  padding: 1rem;\n  text-align: center;\n}\n\n.questionBox .quizCompleted > .icon {\n  color: #FF5252;\n  font-size: 5rem;\n}\n\n.questionBox .quizCompleted > .icon .is-active {\n  color: #00E676;\n}\n\n.questionBox .questionContainer {\n  white-space: normal;\n  height: 100%;\n  width: 100%;\n}\n\n.questionBox .questionContainer .optionContainer {\n  margin-top: 12px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\n.questionBox .questionContainer .optionContainer .option {\n  border-radius: 290486px;\n  padding: 9px 18px;\n  margin: 0 18px;\n  margin-bottom: 12px;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  cursor: pointer;\n  background-color: rgba(0, 0, 0, 0.05);\n  color: rgba(0, 0, 0, 0.85);\n  border: transparent 1px solid;\n}\n\n.questionBox .questionContainer .optionContainer .option.is-selected {\n  border-color: rgba(0, 0, 0, 0.25);\n  background-color: white;\n}\n\n.questionBox .questionContainer .optionContainer .option:hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n\n.questionBox .questionContainer .optionContainer .option:active {\n  -webkit-transform: scaleX(0.9);\n          transform: scaleX(0.9);\n}\n\n.questionBox .questionContainer .questionFooter {\n  background: rgba(0, 0, 0, 0.025);\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  width: 100%;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n}\n\n.questionBox .questionContainer .questionFooter .pagination {\n  margin: 15px 25px;\n}\n\n.pagination {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n\n.button {\n  padding: 0.5rem 1rem;\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  border-radius: 5rem;\n  margin: 0 0.25rem;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n\n.button:hover {\n  cursor: pointer;\n  background: #ECEFF1;\n  border-color: rgba(0, 0, 0, 0.25);\n}\n\n.button.is-active {\n  background: #3D5AFE;\n  color: white;\n  border-color: transparent;\n}\n\n.button.is-active:hover {\n  background: #0a2ffe;\n}\n\n@media screen and (min-width: 769px) {\n  .questionBox {\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n  }\n  .questionBox .questionContainer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n  }\n}\n\n.md-v-line {\n  position: absolute;\n  border-left: 1px solid rgba(0,0,0,.125);\n  height: 50px;\n  top:0px;\n  left:54px;\n  }\n  .video-js{\n    width: 100%;\n  }", ""]);
+exports.push([module.i, ".button {\r\n  -webkit-transition: 0.3s;\r\n  transition: 0.3s;\r\n}\r\n\r\n.title,\r\n.subtitle {\r\n  font-family: Montserrat, sans-serif;\r\n  font-weight: normal;\r\n}\r\n\r\n.animated {\r\n  -webkit-transition-duration: 0.15s;\r\n          transition-duration: 0.15s;\r\n}\r\n\r\n.container {\r\n  margin: 0 0.5rem;\r\n}\r\n\r\n.questionBox {\r\n  width: 49rem;\r\n  min-height: 30rem;\r\n  background: #FAFAFA;\r\n  position: relative;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  border-radius: 0.5rem;\r\n  overflow: hidden;\r\n  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\r\n          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);\r\n}\r\n\r\n.questionBox header {\r\n  background: rgba(0, 0, 0, 0.025);\r\n  padding: 1.5rem;\r\n  text-align: center;\r\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.questionBox header h1 {\r\n  font-weight: bold;\r\n  margin-bottom: 1rem !important;\r\n}\r\n\r\n.questionBox header .progressContainer {\r\n  width: 60%;\r\n  margin: 0 auto;\r\n}\r\n\r\n.questionBox header .progressContainer > progress {\r\n  margin: 0;\r\n  border-radius: 5rem;\r\n  overflow: hidden;\r\n  border: none;\r\n  color: #3D5AFE;\r\n}\r\n\r\n.questionBox header .progressContainer > progress::-moz-progress-bar {\r\n  background: #3D5AFE;\r\n}\r\n\r\n.questionBox header .progressContainer > progress::-webkit-progress-value {\r\n  background: #3D5AFE;\r\n}\r\n\r\n.questionBox header .progressContainer > p {\r\n  margin: 0;\r\n  margin-top: 0.5rem;\r\n}\r\n\r\n.questionBox .titleContainer {\r\n  text-align: center;\r\n  margin: 0 auto;\r\n  padding: 1.5rem;\r\n}\r\n\r\n.questionBox .quizForm {\r\n  display: block;\r\n  white-space: normal;\r\n  height: 100%;\r\n  width: 100%;\r\n}\r\n\r\n.questionBox .quizForm .quizFormContainer {\r\n  height: 100%;\r\n  margin: 15px 18px;\r\n}\r\n\r\n.questionBox .quizForm .quizFormContainer .field-label {\r\n  text-align: left;\r\n  margin-bottom: 0.5rem;\r\n}\r\n\r\n.questionBox .quizCompleted {\r\n  width: 100%;\r\n  padding: 1rem;\r\n  text-align: center;\r\n}\r\n\r\n.questionBox .quizCompleted > .icon {\r\n  color: #FF5252;\r\n  font-size: 5rem;\r\n}\r\n\r\n.questionBox .quizCompleted > .icon .is-active {\r\n  color: #00E676;\r\n}\r\n\r\n.questionBox .questionContainer {\r\n  white-space: normal;\r\n  height: 100%;\r\n  width: 100%;\r\n}\r\n\r\n.questionBox .questionContainer .optionContainer {\r\n  margin-top: 12px;\r\n  -webkit-box-flex: 1;\r\n      -ms-flex-positive: 1;\r\n          flex-grow: 1;\r\n}\r\n\r\n.questionBox .questionContainer .optionContainer .option {\r\n  border-radius: 290486px;\r\n  padding: 9px 18px;\r\n  margin: 0 18px;\r\n  margin-bottom: 12px;\r\n  -webkit-transition: 0.3s;\r\n  transition: 0.3s;\r\n  cursor: pointer;\r\n  background-color: rgba(0, 0, 0, 0.05);\r\n  color: rgba(0, 0, 0, 0.85);\r\n  border: transparent 1px solid;\r\n}\r\n\r\n.questionBox .questionContainer .optionContainer .option.is-selected {\r\n  border-color: rgba(0, 0, 0, 0.25);\r\n  background-color: white;\r\n}\r\n\r\n.questionBox .questionContainer .optionContainer .option:hover {\r\n  background-color: rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.questionBox .questionContainer .optionContainer .option:active {\r\n  -webkit-transform: scaleX(0.9);\r\n          transform: scaleX(0.9);\r\n}\r\n\r\n.questionBox .questionContainer .questionFooter {\r\n  background: rgba(0, 0, 0, 0.025);\r\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\r\n  width: 100%;\r\n  -ms-flex-item-align: end;\r\n      align-self: flex-end;\r\n}\r\n\r\n.questionBox .questionContainer .questionFooter .pagination {\r\n  margin: 15px 25px;\r\n}\r\n\r\n.pagination {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n}\r\n\r\n.button {\r\n  padding: 0.5rem 1rem;\r\n  border: 1px solid rgba(0, 0, 0, 0.25);\r\n  border-radius: 5rem;\r\n  margin: 0 0.25rem;\r\n  -webkit-transition: 0.3s;\r\n  transition: 0.3s;\r\n}\r\n\r\n.button:hover {\r\n  cursor: pointer;\r\n  background: #ECEFF1;\r\n  border-color: rgba(0, 0, 0, 0.25);\r\n}\r\n\r\n.button.is-active {\r\n  background: #3D5AFE;\r\n  color: white;\r\n  border-color: transparent;\r\n}\r\n\r\n.button.is-active:hover {\r\n  background: #0a2ffe;\r\n}\r\n\r\n@media screen and (min-width: 769px) {\r\n  .questionBox {\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n  }\r\n  .questionBox .questionContainer {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n  }\r\n}\r\n\r\n.md-v-line {\r\n  position: absolute;\r\n  border-left: 1px solid rgba(0,0,0,.125);\r\n  height: 50px;\r\n  top:0px;\r\n  left:54px;\r\n  }\r\n  .video-js{\r\n    width: 100%;\r\n  }", ""]);
 
 // exports
 
@@ -18164,7 +18177,7 @@ function SafeParseTuple(obj, reviver) {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"), __webpack_require__("./node_modules/process/browser.js")))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"), __webpack_require__("./node_modules/node-libs-browser/node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -46122,11 +46135,13 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              _vm._s(
-                                (_vm.questionIndex /
-                                  _vm.quiz.questions.length) *
-                                  100
-                              ) + "%"
+                              "\n              " +
+                                _vm._s(
+                                  (_vm.questionIndex /
+                                    _vm.quiz.questions.length) *
+                                    100
+                                ) +
+                                "%\n            "
                             )
                           ]
                         ),
@@ -46169,11 +46184,11 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n\t\t\t\t\t\t" +
+                                "\n            " +
                                   _vm._s(_vm._f("charIndex")(index)) +
                                   ". " +
                                   _vm._s(response.text) +
-                                  "\n\t\t\t\t\t"
+                                  "\n          "
                               )
                             ]
                           )
@@ -46204,11 +46219,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [
-                              _vm._v(
-                                "\n                    Back\n                  "
-                              )
-                            ]
+                            [_vm._v("\n              Back\n            ")]
                           ),
                           _vm._v(" "),
                           _c(
@@ -46231,13 +46242,13 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n              " +
                                   _vm._s(
                                     _vm.userResponses[_vm.questionIndex] == null
                                       ? "Skip"
                                       : "Next"
                                   ) +
-                                  "\n                  "
+                                  "\n            "
                               )
                             ]
                           )
@@ -46268,7 +46279,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("h2", { staticClass: "title" }, [
                       _vm._v(
-                        "\n\t\t\t\t\tYou did " +
+                        "\n          You did " +
                           _vm._s(
                             _vm.score() > 7
                               ? "an amazing"
@@ -46276,17 +46287,17 @@ var render = function() {
                               ? "a poor"
                               : "a good"
                           ) +
-                          " job!\n\t\t\t\t"
+                          " job!\n        "
                       )
                     ]),
                     _vm._v(" "),
                     _c("p", { staticClass: "subtitle" }, [
                       _vm._v(
-                        "\n\t\t\t\t\tTotal score: " +
+                        "\n          Total score: " +
                           _vm._s(_vm.score()) +
                           " / " +
                           _vm._s(_vm.quiz.questions.length) +
-                          "\n\t\t\t\t"
+                          "\n        "
                       )
                     ]),
                     _vm._v(" "),
@@ -46425,9 +46436,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                  " +
+                            "\n                " +
                               _vm._s(chapter.title) +
-                              "\n                "
+                              "\n              "
                           )
                         ]
                       )
@@ -46460,6 +46471,7 @@ var render = function() {
                               },
                               [
                                 _c("div", { staticClass: "md-v-line" }),
+                                _vm._v(" "),
                                 _c(
                                   "a",
                                   {
@@ -46494,6 +46506,7 @@ var render = function() {
                           chapter.test
                             ? _c("li", { staticClass: "list-group-item " }, [
                                 _c("div", { staticClass: "md-v-line" }),
+                                _vm._v(" "),
                                 _c("i", {
                                   staticClass: "fas fa-laptop mr-4 pr-3"
                                 }),
@@ -46553,9 +46566,9 @@ var render = function() {
                       { key: note.id, staticClass: "card-body" },
                       [
                         _vm._v(
-                          "\n                " +
+                          "\n              " +
                             _vm._s(note.contentText.replace(/<[^>]*>?/gm, "")) +
-                            "\n                "
+                            "\n              "
                         ),
                         _c(
                           "a",
@@ -46631,7 +46644,7 @@ var render = function() {
                     staticClass: "btn btn-secondary",
                     attrs: { type: "button", "data-dismiss": "modal" }
                   },
-                  [_vm._v("Close\n              ")]
+                  [_vm._v("Close\n          ")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -46645,7 +46658,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Save changes\n              ")]
+                  [_vm._v("Save changes\n          ")]
                 )
               ])
             ])
@@ -63772,7 +63785,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/player',
     name: 'player',

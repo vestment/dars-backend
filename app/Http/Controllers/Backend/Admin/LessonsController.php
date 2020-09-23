@@ -235,6 +235,9 @@ class LessonsController extends Controller
                     $media->user_id = auth()->user()->id;
                     $media->file_name = $video_id;
                     $media->size = 0;
+                    $duration = strtotime($request->duration);
+                    $media->duration= date('H:i:s',$duration);
+
                     $media->save();
                 }
             }
@@ -354,6 +357,8 @@ class LessonsController extends Controller
                 $media->type = $request->media_type;
                 $media->file_name = $video_id;
                 $media->size = 0;
+                $duration = strtotime($request->duration);
+                $media->duration= date('H:i:s',$duration);
                 $media->save();
             }
 

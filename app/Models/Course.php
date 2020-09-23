@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\academy;
 use App\Models\Media;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Course
@@ -202,12 +203,10 @@ class Course extends Model
     public function getDurationAttribute()
     {
         $lessonsIds = $this->lessons()->where('published', 1)->pluck('id');
-        $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->sum('duration');
-//        $duration = strtotime($duration);
-        $duration = date("H", $duration);
+        
+        $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->sum(DB::raw("TIME_TO_SEC(duration)"));
+        return sprintf("%s Hours %s Minutes", date("H", $duration), date("i", $duration));
 
-
-        return $duration;
     }
 
     public function reviews()

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\TeacherProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AcademyController extends Controller
 {
@@ -30,8 +31,14 @@ class AcademyController extends Controller
         // Categories associated with academy courses
         $categories = array_unique($coursesCollection->pluck('category_id')->toArray());
         $categories = Category::whereIn('id',$categories)->get();
-
-        return view('frontend.academy.show', compact('academy', 'academyTeachers','categories','courses'));
+        if( auth()->user()){
+            $id= auth()->user()->id;
+            $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
+        return view('frontend.academy.show', compact('courses_id','academy', 'academyTeachers','categories','courses'));
     }
     public function show911()
     {
@@ -53,6 +60,13 @@ class AcademyController extends Controller
         $courses_911 = Course::withoutGlobalScope('filter')->where('category_id', $categories->id )->where('published', 1)->with('category')->get();
         // Merge the courses into 1 variable
         $courses = $courses->merge($courses_911);
-        return view('frontend.academy.911', compact('academy', 'academyTeachers','courses'));
+        if( auth()->user()){
+            $id= auth()->user()->id;
+            $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
+        return view('frontend.academy.911', compact('courses_id','academy', 'academyTeachers','courses'));
     }
 }

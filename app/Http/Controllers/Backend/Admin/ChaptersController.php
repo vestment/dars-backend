@@ -257,6 +257,25 @@ class ChaptersController extends Controller
 
         return view('backend.chapters.show', compact('lesson', 'tests', 'courses'));
     }
+    public function edit($id)
+    {
+        if (!Gate::allows('lesson_view')) {
+            return abort(401);
+        }
+        $chapter = Chapter::findorFail($id);
+        return response()->json($chapter);
+    }
+    public function update(UpdateLessonsRequest $request, $id)
+    {
+        if (!Gate::allows('lesson_edit')) {
+            return abort(401);
+        }
+        $chapter = Chapter::findorFail($id);
+        if ($chapter) {
+            $chapter = $chapter->update($request->all());
+            return redirect()->back()->withFlashSuccess(__('alerts.backend.general.updated'));
+        }
+    }
     /**
      * Remove Lesson from storage.
      *

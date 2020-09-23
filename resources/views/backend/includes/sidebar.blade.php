@@ -1,7 +1,7 @@
 @inject('request', 'Illuminate\Http\Request')
 
 
-<div class="sidebar ">
+<div class="sidebar " data-roles="{{auth()->user()->rolesLabel}}">
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-title ">
@@ -245,13 +245,13 @@
                 @endcan
             @endif
 
-            <li class="nav-item ">
-                <a class="nav-link {{ $request->segment(1) == 'messages' ? 'active' : '' }}"
-                   href="{{ route('admin.messages') }}">
-                    <i class="nav-icon icon-envelope-open"></i> <span
-                            class="title">@lang('menus.backend.sidebar.messages.title')</span>
-                </a>
-            </li>
+            <!--<li class="nav-item ">-->
+            <!--    <a class="nav-link {{ $request->segment(1) == 'messages' ? 'active' : '' }}"-->
+            <!--       href="{{ route('admin.messages') }}">-->
+            <!--        <i class="nav-icon icon-envelope-open"></i> <span-->
+            <!--                class="title">@lang('menus.backend.sidebar.messages.title')</span>-->
+            <!--    </a>-->
+            <!--</li>-->
             @if (auth()->user()->hasRole('student'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'invoices' ? 'active' : '' }}"

@@ -104,8 +104,7 @@
 @endsection
 
 @push('after-scripts')
-    <script src="{{asset('plugins/amigo-sorter/js/amigo-sorter.min.js')}}"></script>
-
+ 
     <script>
 
 
@@ -133,10 +132,6 @@
             });
         });
 
-        $('ul.sorter').amigoSorter({
-            li_helper: "li_helper",
-            li_empty: "empty",
-        });
     </script>
 @endpush
 

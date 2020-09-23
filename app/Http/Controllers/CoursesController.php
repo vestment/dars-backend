@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\Review;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
 use Stripe\Charge;
@@ -89,14 +90,21 @@ class CoursesController extends Controller
         $course_lessons = null; // Not Used but exported in the return
         $teacher_dat = TeacherProfile::get();
         $teachers = User::get();
+        if( auth()->user()){
+            $id= auth()->user()->id;
+            $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
         $popular_course = Course::withoutGlobalScope('filter')->whereNotIn('id', $this->hidden_data['courses'])->with(['teachers', 'reviews'])->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
-        return view('frontend.courses.index', compact('teacher_dat', 'trending_courses','teachers', 'popular_course', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
+        return view('frontend.courses.index', compact('courses_id','teacher_dat', 'trending_courses','teachers', 'popular_course', 'course_lessons', 'courses', 'purchased_courses', 'recent_news', 'featured_courses', 'categories'));
     }
 
     public function show($course_slug)
     {
         $continue_course = NULL;
-        $course_id = Course::where('slug', $course_slug)->value('id');
+        $course_id = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->value('id');
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
         $course = Course::withoutGlobalScope('filter')->where('slug', $course_slug)->with(['publishedLessons', 'academy', 'reviews'])->firstOrFail();
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
@@ -132,7 +140,7 @@ class CoursesController extends Controller
         foreach ($lessonsMedia as $lesson) {
             $fileCount += count($lesson->downloadableMedia);
         }
-        $course_hours = Course::where('course_hours', $course_slug);
+        $course_hours = Course::withoutGlobalScope('filter')->where('course_hours', $course_slug);
 
         if (\Auth::check()) {
 
@@ -169,7 +177,14 @@ class CoursesController extends Controller
        $studentsOrders = OrderItem::where(['item_type'=>Course::class,'item_id'=>$course->id])->where('selectedTime','!=','')->where('selectedDate','!=','')->pluck('order_id');
         $studentCount = Order::whereIn('id', $studentsOrders)->where('status',1)->pluck('id')->count();
         $availableSeats = $course->seats - $studentCount;
-        return view('frontend.courses.course', compact('availableSeats','academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
+        if( auth()->user()){
+            $id= auth()->user()->id;
+            $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
+        return view('frontend.courses.course', compact('courses_id','availableSeats','academy', 'course_review', 'fileCount', 'course_hours', 'related_courses', 'optional_courses', 'mandatory_courses', 'chaptercount', 'chapter_lessons', 'lessoncount', 'chapters', 'course', 'purchased_course', 'recent_news', 'course_rating', 'completed_lessons', 'total_ratings', 'is_reviewed', 'lessons', 'continue_course','course_date'));
     }
 
     public function filerCoursesByCategory(Request $request)
@@ -311,6 +326,7 @@ class CoursesController extends Controller
         } else {
             $html = '<div class="col-12  d-flex justify-content-center"><div class=""><div class="alert-danger alert"> No courses found </div><img src="' . url('img/frontend/user/lost.svg') . '"></div></div>  ';
         }
+
         return $html;
     }
 
@@ -360,8 +376,15 @@ class CoursesController extends Controller
             }
             $teachers = User::role('teacher')->whereIn('id',$categoryTeachers)->get();
             $teacher_data = TeacherProfile::get();
+            if( auth()->user()){
+                $id= auth()->user()->id;
+                $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+            }
+            else{
+                $courses_id=null;
+            }
             $cour = Course::with('teachers')->whereNotIn('id', $this->hidden_data['courses'])->get();
-            return view('frontend.courses.index', compact('courses', 'teacher_data', 'teachers', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
+            return view('frontend.courses.index', compact('courses_id','courses', 'teacher_data', 'teachers', 'cour', 'popular_course', 'trending_courses', 'category', 'recent_news', 'featured_courses', 'categories'));
         }
         return abort(404);
     }
@@ -472,6 +495,15 @@ class CoursesController extends Controller
         return view('frontend.player',compact('slug','type'));
 
     }
+    public function hascourse($course_id){
+     $courses =  Auth::user()->courses;
+   
+
+        return view('frontend.layouts.partials.coursesTemp',compact('slug','type'));
+
+    }
+    
+
 
 
 

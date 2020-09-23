@@ -23,7 +23,7 @@
                                     <p>{!! $footer_data->short_description->text !!} </p>
                                     @endif
                                     @if(App::getLocale() == 'ar')
-                                    <p>{!! $footer_data->short_description_ar->text !!} </p>
+                                    <p>{!! $footer_data->short_description_ar ? $footer_data->short_description_ar->text : $footer_data->short_description->text !!} </p>
                                     @endif
                                 </div>
                             @endif

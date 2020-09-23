@@ -75,7 +75,7 @@
                     @if($course->offline )
                         <div class="ml-4 mt-1 text-white" data-offline="{{$course->offline}}">
                             <i class="fas fa-chair"></i> @lang('labels.frontend.course.availiable_seats')
-                            ({{$course->seats}}/100)
+                            ({{number_format($availableSeats)}}/{{number_format($course->seats)}})
                         </div>
 
                         <div class="ml-4 mt-1 text-white">
@@ -161,11 +161,10 @@
                                 </div>
                             @endif
                         @else
-                        <div class="row">
 
                             @if($continue_course)
                             
-                                <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$continue_course->model->slug])}}">
+                                <a href="{{route('player.show',['slug'=>$continue_course->model->slug])}}">
                                     <button class="btn btn-outline-light  addcart" type="submit">
                                         @lang('labels.frontend.course.continue_course')
                                         <i class="fa fa-arrow-right"></i>
@@ -177,7 +176,6 @@
                                     <i class="fa fa-arrow-right"></i>
                                 </button>
                             @endif
-    </div>
                         @endif
 
 
@@ -227,7 +225,18 @@
     <!-- End of breadcrumb section
         ============================================= -->
 
-
+@if(session()->has('alert'))
+        <div class="alert alert-light alert-dismissible fade my-alert show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{session('alert')}}</strong>
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade my-alert show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{session('success')}}</strong>
+        </div>
+    @endif
     <!-- Start of what you will learn content section
         ============================================= -->
     <section id="course-page" class="course-page-section">
@@ -260,7 +269,6 @@
             <div class="row  coursesec d-block m-3">
                 <h2>@lang('labels.frontend.course.requirements')</h2>
             </div>
-            {{$course->duration}}
             <div class="row m-3">
                 @if(count($optional_courses) >0 || count($mandatory_courses) >0)
                     <div class="col-lg-3">
@@ -321,7 +329,7 @@
                     @endif</h3>
                 <h6 class="font20">@lang('labels.frontend.course.This_course_includes') </h6>
                 <p class="smpara"><i class="fa fa-play-circle"
-                                     aria-hidden="true"></i> {{ $course->duration}} @lang('labels.frontend.course.hours')
+                                     aria-hidden="true"></i> {{ $course->duration}}
                 </p>
                 <p class="smpara"><i class="fa fa-file" aria-hidden="true"></i>
                     <span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters')</p>
@@ -338,7 +346,7 @@
 
                 @if (!$purchased_course)
                     @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                        <button class="btn btn-primary"
+                        <button class="btn btn-info btn-block"
                                 type="submit">@lang('labels.frontend.course.added_to_cart')
                         </button>
                     @elseif(!auth()->check())
@@ -381,7 +389,7 @@
             <div class="row smpara d-block m-2">
                 <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
                     <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->duration }} @lang('labels.frontend.course.hours')</p>
+                    • {{ $course->duration }} </p>
             </div>
 
             @foreach($chapters as $chapter)
@@ -437,11 +445,7 @@
             <div class="row  coursecontent d-block m-2">
                 <h2>@lang('labels.frontend.course.related_courses') </h2>
             </div>
-            <div class="row smpara d-block m-2">
-                <p><span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters') •
-                    <span>  {{$lessoncount}} </span> @lang('labels.frontend.course.lessons')
-                    • {{ $course->course_hours }} @lang('labels.frontend.course.hours')</p>
-            </div>
+
             @foreach ($related_courses as $related_course)
 
                 <div class="card col-12 col-md-12 col-lg-6 col-xl-6 mb-2">
@@ -479,11 +483,11 @@
                                 </div>
                                 <div class="course-meta ">
                             <span>
-                            <i class="far fa-clock font12"></i> {{ $related_course->duration }} @lang('labels.frontend.course.hours')
+                            <i class="far fa-clock font12"></i> {{ $related_course->duration }}
 
                             </span>
                                     <span>
-                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> @lang('labels.frontend.course.lessons') 
+                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> {{count($related_course->lessons)}} @lang('labels.frontend.course.lessons')
 
                             </span>
 
@@ -504,6 +508,10 @@
                                     @endforeach
                                 </div>
 
+
+
+                            </div>
+                            <div class="card-footer bg-white">
                                 <div class="row">
                                     <div class="col-xl-10 col-9">
                                         @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
@@ -516,8 +524,7 @@
                                             @if($related_course->free == 1)
                                                 <a class="btn btn-info btn-block btnAddCard"
                                                    href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now')
-                                                    <i
-                                                            class="fas fa-caret-right"></i></a>
+                                                    <i class="fas fa-caret-right"></i></a>
                                             @else
 
                                                 <a class="btn btn-info btnAddCard btn-block"
@@ -566,7 +573,6 @@
                                         </a>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -701,7 +707,7 @@
                     <div class="row col-lg-3">
                         <div class="col-lg-1 col-md-2 col-sm-3">
                             <img style="max-width:50px;height:50px" class="rounded-circle"
-                                 src="{{$teacher->picture}}"
+                                 src="{{$review->user->picture}}"
                                  alt="">
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-3 ml-5 mt-2">

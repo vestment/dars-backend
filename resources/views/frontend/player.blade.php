@@ -119,9 +119,10 @@
 
     }
 </style>
-<div class="svg-embedded">{{auth()->user()->full_name}} - {{auth()->user()->id}}</div>
-
-<section id="breadcrumb" class="breadcrumb-section relative-position d-none">
+@if (auth()->check())
+<div class="svg-embedded" style="display: none">{{auth()->user()->full_name}} - {{auth()->user()->id}}</div>
+@endif
+<section id="breadcrumb" class="breadcrumb-section relative-position">
     <div class="blakish-overlay"></div>
     <div class="container">
         <div class="page-breadcrumb-content text-center">
@@ -138,10 +139,7 @@
     <div class="container-fluid">
         <div class="main-content">
             <div id="app" class="content">
-          
-        
-                <player slug="{{$slug}}" type="{{$type}}"></player>
-              
+
             </div>
         </div>
     </div>

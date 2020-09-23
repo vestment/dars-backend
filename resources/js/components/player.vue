@@ -1,212 +1,101 @@
 <template>
-  <div class="container ">
-    <div class="row ">
-      <div class="col-lg-9">
-  <section v-if="type=='test'" class="container">
-  <test slug="testtt"/>
 
-</section>
-        <div v-else class="player-video">
-          <video-player class="video-player-box"
-                        ref="videoPlayer"
-                        :options="playerOptions"
-                        :playsinline="true"
-                        customEventName="customstatechangedeventname"
-                        @play="onPlayerPlay($event)"
-                        @pause="onPlayerPause($event)"
-                        @ended="onPlayerEnded($event)"
-                        @waiting="onPlayerWaiting($event)"
-                        @playing="onPlayerPlaying($event)"
-                        @loadeddata="onPlayerLoadeddata($event)"
-                        @timeupdate="onPlayerTimeupdate($event)"
-                        @canplay="onPlayerCanplay($event)"
-                        @canplaythrough="onPlayerCanplaythrough($event)"
-
-                        @statechanged="playerStateChanged($event)"
-                        @ready="playerReadied">
-          </video-player>
-        </div>
-        
+  <div class="player-video">
+    <vue-plyr v-if="lessonVideo.src" :key="lessonVideo.src" ref="plyr" :emit="['ended','playing']" @playing="playerReadied" @ended="onPlayerEnded">
+      <video :src="lessonVideo.src" v-if="lessonVideo.type == 'upload'" type="video/mp4">
+      </video>
+      <div v-else-if="lessonVideo.type == 'youtube'" data-plyr-provider="youtube"
+           :data-plyr-embed-id="lessonVideo.src"></div>
+      <div v-else-if="lessonVideo.type == 'vimeo'" data-plyr-provider="vimeo"
+           :data-plyr-embed-id="lessonVideo.src"></div>
+      <div v-else class="plyr__video-embed">
+          {{lessonVideo.src}}
       </div>
-      <div class="col-md-3 ">
-        <div class="accordion" id="accordionExample">
+    </vue-plyr>
 
-          <div v-for="chapter in courseData.chapters" :key="chapter.id" class="card shadow mb-3">
-            <div class="card-header" id="headingOne">
-              <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                        :data-target="'#chapter-'+chapter.id" aria-expanded="true" aria-controls="collapseOne">
-                  {{ chapter.title }}
-                </button>
-              </h2>
-            </div>
-            <div :id="'chapter-'+chapter.id" class="collapse show" aria-labelledby="headingOne"
-                 data-parent="#accordionExample">
-              <div class="card-body">
-                <!-- <ul class="list-unstyled">
-                  <li class="border-bottom border-dark" v-for="lesson in chapter.lessons" :key="lesson.id">
-                    <p class="p-0 m-0"><a :href="'./'+lesson.slug">{{ lesson.title }}</a></p>
-                    <p class="play p-0 m-0">
-                      <i class="far fa-play-circle "></i>
-                      {{ lesson.media_video ? lesson.media_video.duration : 'error getting duration' }}
-                    </p>
-                    <ul class="float-right list-inline">
-                      <li v-if="lesson.notes"><a href="#notesModal" @click="()=> {notes = lesson.notes}" data-toggle="modal"
-                                                 data-target="#notesModal"><i class="far fa-sticky-note"></i></a></li>
-                    </ul>
-                  </li>
-                  <li class="pt-2" v-if="chapter.test">
-                    <a class="text-danger " :href="'/player/'+chapter.test.slug+'/test'">{{ chapter.test.title }}</a>
-
-                  </li>
-                </ul> -->
-                <ul class="list-group">
-  <li v-for="lesson in chapter.lessons" :key="lesson.id" class="list-group-item ">
-    <div class="md-v-line"></div><a href="#notesModal" @click="()=> {notes = lesson.notes}" data-toggle="modal"
-                                                 data-target="#notesModal"><i class="far fa-sticky-note mr-4 pr-3"></i></a> <a :href="'./'+lesson.slug">{{ lesson.title }}</a>
-  </li>
-
-  <li v-if="chapter.test" class="list-group-item ">
-    <div class="md-v-line"></div><i class="fas fa-laptop mr-4 pr-3"></i> <a :href="'/player/'+chapter.test.slug+'/test'">{{ chapter.test.title }}</a>
-  </li>
-  
-</ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-    <div class="modal fade" id="notesModal" tabindex="-2" aria-labelledby="notesModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="notesModalLabel">Lesson Notes</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" id="notes-container">
-            <div class="card shadow-c ">
-              <div v-for="note in notes" class="card-body" :key="note.id">
-                {{ note.contentText.replace(/<[^>]*>?/gm, '') }}
-                <a class="float-right text-pink "
-                   @click="()=> {current_note = note;setEditorContent();}"
-                   data-toggle="modal"
-                   data-target="#edit-note-modal"><i
-                    class="far fa-edit"></i> </a>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="edit-note-modal" tabindex="-1" role="dialog"
-         aria-labelledby="edit-note-modallLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content my-4">
-          <div class="modal-header m-3 " style="background: unset;">
-            <h5 class="modal-title" id="edit-note-modallLabel">Edit note</h5>
-            <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <div class="modal-body p-2">
-              <Vueditor ref="Vueditor" v-model="current_note.contentText"></Vueditor>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary"
-                      data-dismiss="modal">Close
-              </button>
-              <button @click="saveNote()" type="button" class="btn btn-primary">Save changes
-              </button>
-
-            </div>
-        </div>
-      </div>
-    </div>
   </div>
-
 </template>
 
 
 <script>
 // Similarly, you can also introduce the plugin resource pack you want to use within the component
 // import 'some-videojs-plugin'
-import 'video.js/dist/video-js.css'
+
 import axios from '../axios'
-import {videoPlayer} from 'vue-video-player'
 import 'vueditor/dist/style/vueditor.min.css'
-import test from './test'
 import './lesson.css'
 
+
 export default {
-  props: ['slug','type'],
+  name: 'player',
   data() {
     return {
-    
-      playerOptions: {
-        // videojs options
-        muted: true,
-        language: 'en',
-        playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [{
-          type: "video/mp4",
-          // src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-          src: ''
-        }],
-        poster: "/static/images/author.jpg",
+      lessonIndex: '',
+      lessonVideo: {
+        type: 'video/mp4',
+        src: ''
       },
       courseData: [],
       notes: [],
-      current_note: {}
+      newNote: {contentText: ''},
+      current_note: {contentText: ''},
+      downloadableMedia: {data: '', lesson: ''},
+      slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
+      video: ''
     }
   },
-   
-  components: {
-    videoPlayer,
-    test
+
+  watch: {
+    $route() {
+      this.slug = this.$route.params.slug
+      this.$refs.plyr.player.restart()
+      this.$forceUpdate();
+    },
+    slug() {
+      this.getData(this.slug)
+    },
   },
-
-  mounted() {
+  created() {
     this.getData(this.slug)
-
   },
   computed: {
     player() {
-      return this.$refs.videoPlayer.player
+      return this.$refs.plyr.player
     }
   },
   methods: {
-    
-    setEditorContent() {
-      $('#notesModal').modal('hide');
-      let editor = this.$refs.Vueditor;
-      editor.setContent(this.current_note.contentText);
-    },
-    saveNote() {
-      let editor = this.$refs.Vueditor;
-      this.current_note.contentText = editor.getContent();
-      console.log(this.current_note);
-      axios.post('/api/v1/save-note', this.current_note)
-          .then(res => {
-
-          }).catch(err => {
-        console.log(err)
+    onPlayerEnded($event) {
+      axios.post('/api/v1/course-progress', {
+        model_type: "lesson", model_id: this.courseData.lesson.id
+      }).then(res => {
+        this.courseData.course_timeline.map(chapter => {
+          chapter.lessons.filter(lesson => {
+            if (this.courseData.next_lesson.model_id == lesson.model_id && lesson.canView == true) {
+              this.$router.push({name: 'player', params: {slug: lesson.model.slug}})
+            }
+          })
+        })
       })
+
+
     },
     getData(slug) {
       axios.post('/api/v1/single-lesson', {lesson: slug})
           .then(res => {
             if (res.data.result) {
               this.courseData = res.data.result
-              this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
-              console.log("info", res)
+              this.$parent.courseData = this.courseData
+              this.$parent.type = 'player'
+              if (this.courseData.lesson.media_video) {
+                this.lessonVideo.type = this.courseData.lesson.media_video.type
+                if (this.lessonVideo.type == 'youtube' || this.lessonVideo.type == 'vimeo' ) {
+                  this.lessonVideo.src = this.courseData.lesson.media_video.file_name
+                } else {
+                  this.lessonVideo.src = this.courseData.lesson.media_video.url
+                }
+              }
+              this.$forceUpdate();
+              console.log("Lesson", this.lessonVideo)
               $('.course-title-header').text(this.courseData.course.title)
               $('.close-lesson').attr('href', this.courseData.course_page)
               $('.course-progress').text(this.courseData.course_progress + ' %')
@@ -216,21 +105,6 @@ export default {
         console.log(err)
       })
     },
-
-    // listen event
-    onPlayerPlay(player) {
-      // console.log('player play!', player)
-    },
-    onPlayerPause(player) {
-      // console.log('player pause!', player)
-    },
-    // ...player event
-
-    // or listen state event
-    playerStateChanged(playerCurrentState) {
-      // console.log('player current update state', playerCurrentState)
-    },
-
     // player is ready
     playerReadied(player) {
       console.log('the player is readied', player)
@@ -238,7 +112,7 @@ export default {
       // player.[methods]
       let myPluginCollection = document.getElementsByClassName('svg-embedded')
       if (myPluginCollection) {
-        player.el_.appendChild(myPluginCollection[0]);
+        player.target.appendChild(myPluginCollection[0]);
         setInterval(function () {
           var $div = $('.svg-embedded'),
               docHeight = $div.parent().height(),
@@ -247,7 +121,7 @@ export default {
               divWidth = $div.width(),
               heightMax = docHeight - divHeight,
               widthMax = docWidth - divWidth;
-
+          $div.show();
           $div.css({
             left: Math.floor(Math.random() * widthMax),
             top: Math.floor(Math.random() * heightMax)
@@ -258,3 +132,10 @@ export default {
   }
 }
 </script>
+<style>
+
+
+.video-js {
+  width: 100%;
+}
+</style>
