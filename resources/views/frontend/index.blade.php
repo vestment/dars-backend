@@ -49,6 +49,11 @@
             localStorage.setItem('token','{{session('socialToken')}}')
         </script>
     @endif
+    @if(session()->has('socialToken'))
+        <script>
+            localStorage.setItem('token','{{session('socialToken')}}')
+        </script>
+    @endif
     @include('frontend.layouts.partials.slider')
 
     @if($sections->search_section->status == 1)

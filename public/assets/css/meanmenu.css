@@ -29,7 +29,7 @@ a.meanmenu-reveal {
 	top: 22px;
 	left: 10px !important;
 	/* right: 20px !important; */
-
+	z-index: 500;
 	cursor: pointer;
 	/* color: #ffffff; */
 	/* background-color: black !important; */

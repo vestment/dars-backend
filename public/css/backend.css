@@ -84,9 +84,10 @@ section {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: Cairo;
   font-size: 0.875rem;
   font-weight: 400;
+  letter-spacing: .5px;
   line-height: 1.5;
   color: #23282c;
   text-align: left;
@@ -361,6 +362,7 @@ progress {
 
 [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
+  
 }
 
 ::-webkit-file-upload-button {
@@ -2916,19 +2918,11 @@ textarea.form-control.is-invalid {
           box-shadow: 0 0 0 0.2rem rgba(32, 168, 216, 0.25);
 }
 
-.btn.disabled,
-.btn:disabled {
-  opacity: 0.65;
-}
 
-.btn:not(:disabled):not(.disabled) {
-  cursor: pointer;
-}
 
-a.btn.disabled,
-fieldset:disabled a.btn {
-  pointer-events: none;
-}
+
+
+
 
 .btn-primary {
   color: #fff;
@@ -3676,12 +3670,12 @@ input[type="button"].btn-block {
   padding: 0 0;
   margin: 0.125rem 0 0;
   font-size: 0.875rem;
-  color: #23282c;
+  color: #fff;
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--navbarbg);
   background-clip: padding-box;
-  border: 1px solid #c8ced3;
+  border: 1px solid var(--navbarbg);
   border-radius: 0.25rem;
 }
 
@@ -3858,7 +3852,7 @@ input[type="button"].btn-block {
   padding: 0.25rem 1.5rem;
   clear: both;
   font-weight: 400;
-  color: #23282c;
+  color: #dae0e6;
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
@@ -3905,14 +3899,15 @@ input[type="button"].btn-block {
   padding: 0 1.5rem;
   margin-bottom: 0;
   font-size: 0.765625rem;
-  color: #73818f;
+  color: #e6e9ec;
   white-space: nowrap;
+  background-color: var(--navbarbg);
 }
 
 .dropdown-item-text {
   display: block;
   padding: 0.25rem 1.5rem;
-  color: #23282c;
+  color: #fff;
 }
 
 .btn-group,
@@ -4748,6 +4743,7 @@ input[type="button"].btn-block {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
+  font-weight: bold;
 }
 
 .nav-link:hover,
@@ -13733,7 +13729,7 @@ canvas {
 .dropdown-item {
   position: relative;
   padding: 10px 20px;
-  border-bottom: 1px solid #c8ced3;
+  border-bottom: 1px solid var(--navbarbg);
 }
 
 .dropdown-item:last-child {
@@ -14317,9 +14313,12 @@ canvas {
 
 .sidebar .nav-title {
   padding: 0.75rem 1rem;
-  font-size: 80%;
+  line-height: 1;
+  font-size: 1rem;
+  letter-spacing: 0.25rem;
   font-weight: 700;
   color: #e4e7ea;
+  background-color: var(--navbarbg);
   text-transform: uppercase;
 }
 
@@ -14372,7 +14371,7 @@ canvas {
 
 .sidebar .nav-link.active {
   color: #fff;
-  background: #3a4248;
+  background: rgba(32, 168, 216, 0.5);
 }
 
 .sidebar .nav-link.active .nav-icon {
@@ -16692,7 +16691,9 @@ button.bg-purple:focus {
 }
 
 .bg-pink {
-  background-color: #e83e8c !important;
+  background-color: #e83e8dde !important;
+}.text-pink{
+  color: #e83e8dde !important;
 }
 
 a.bg-pink:hover,
@@ -21165,10 +21166,12 @@ body {
 button.dt-button,
 div.dt-button,
 a.dt-button {
-  background: #30353a !important;
+  background: var(--navbarbg) !important;
   color: white;
   border: none !important;
   font-weight: bold;
+  border-style: solid;
+  border-radius: 5px;
 }
 
 button.dt-button:hover,
@@ -22007,19 +22010,45 @@ textarea:focus {
   float: left;
   text-align: left;
   margin-left: 25%;
+ 
+
+  
 }
+.dataTables_wrapper .dataTables_filter input{
+
+border-radius: 15px;
+PADDING-top: 3%;
+box-shadow: 1px 3px #c5c3c3;
+border: solid whitesmoke;
+margin-bottom: 10%;
+margin-top: 2%;
+
+
+
+}
+.thead{
+  background-color:#2C28281C;
+color:#00000099;
+font-size:16px
+}
+
 
 div.dt-buttons {
   float: right;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1216px) {
   .dataTables_wrapper .dataTables_filter {
     margin: auto;
-    text-align: center;
-    display: inline-block;
-    width: 100%;
-  }
+    text-align: right; 
+     display: inline-block;
+    width: 100%; 
+  } 
+  .dataTables_wrapper .dataTables_length {
+   
+    text-align: right; 
+    
+  } 
 }
 
 .message-box img {
@@ -22381,8 +22410,50 @@ div.dt-buttons {
 
   .message-box .sent_msg,
   .message-box .received_withd_msg {
-    max-width: 90%;
+    max-width: 100%;
     width: auto;
   }
 }
 
+
+
+ /* dashboard */
+:root{
+ --navbarbg:   #0C0C40;
+--gradientcolor: linear-gradient(to bottom right, #52ADE1, #625CA8 ,#D2498B);
+--pink:#D2498B;
+
+
+
+}
+
+.sidebar{
+  background-color: var(--navbarbg);
+}
+.logo {
+  
+  width: 90%;
+
+  padding: 0px;
+  margin:0px;
+
+}
+.btn-pink{
+  background-color: var(--pink);
+  color:#fff;
+}
+.btn-blue{
+  background-color: var(--navbarbg);
+  color:#fff;
+}
+.icon{
+  font-size: 40px;
+}
+.bg-blue{
+  background-color: var(--navbarbg) !important;
+}
+
+.btn-blue:hover{
+  background-color: grey ;
+  color:white;
+}
