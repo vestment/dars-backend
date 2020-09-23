@@ -1424,8 +1424,15 @@
                     _token: '{{csrf_token()}}',
                     list: list
                 },
+                error: function (err) {
+                    var errorCard = '<div class="alert alert-danger">Failed to save Sequence: '+err+'</div>'
+                    $('#v-pills-messages .card-body').append(errorCard)
+                },
                 success: function (resp) {
-                    console.log(resp);
+                    if (resp == 'success') {
+                        var successCard = '<div class="alert alert-success">Sequence Saved</div>'
+                        $('#v-pills-messages .card-body').append(successCard)
+                    }
                 }
             }).done(function () {
                 // location.reload();

@@ -2,17 +2,19 @@
 
   <div>  <!--questionBox-->
     <div>
-      <flip-countdown v-if="!testComplelete && attempts <= 2 " v-bind:deadline="this.testData.timer.date"></flip-countdown>
+      <flip-countdown @end="testEnded()" v-if="!testComplelete && attempts <= 2 "
+                      v-bind:deadline="this.testData.timer.date"></flip-countdown>
     </div>
 
-    <div class="questionBox">
+    <div class="questionBox w-100">
 
       <!-- transition -->
       <transition :duration="{ enter: 500, leave: 300 }" enter-active-class="animated zoomIn"
-                        leave-active-class="animated zoomOut" mode="out-in">
+                  leave-active-class="animated zoomOut" mode="out-in">
 
         <!--qusetionContainer-->
-        <div class="questionContainer" v-if="questionIndex<quiz.questions.length && attempts <= 2" v-bind:key="questionIndex">
+        <div class="questionContainer" v-if="questionIndex<quiz.questions.length && attempts <= 2"
+             v-bind:key="questionIndex">
 
           <header>
             <h1 class="title is-6">{{ this.testData.title }}</h1>
@@ -100,7 +102,7 @@
 
 <script>
 import './lesson.css'
-import FlipCountdown from 'vue2-flip-countdown'
+import FlipCountdown from './countdown'
 
 // const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
@@ -130,7 +132,7 @@ export default {
       userResponses: userResponseSkelaton,
       isActive: false,
       test_id: '',
-      resultData: {test_result:0},
+      resultData: {test_result: 0},
       question_data: [],
       slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
       testDate: '',
@@ -156,8 +158,9 @@ export default {
   },
   components: {FlipCountdown},
   methods: {
-
-
+    testEnded() {
+      this.submitTest();
+    },
     restart: function () {
       this.questionIndex = 0;
       this.attempts++;
@@ -221,46 +224,44 @@ export default {
               }
               quiz.questions.push(obj);
             }
-            //   this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
-
-            //   $('.course-title-header').text(this.courseData.course.title)
-            //   $('.close-lesson').attr('href', this.courseData.course_page)
-            //   $('.course-progress').text(this.courseData.course_progress + ' %')
-            //   $('.progress-bar').css('width', this.courseData.course_progress + '%')
+              // this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
+              //
+              // $('.course-title-header').text(this.courseData.course.title)
+              // $('.close-lesson').attr('href', this.courseData.course_page)
+              // $('.course-progress').text(this.courseData.course_progress + ' %')
+              // $('.progress-bar').css('width', this.courseData.course_progress + '%')
 
           }).catch(err => {
         console.log(err)
       })
     },
-
+    submitTest() {
+      for (var i = 0; i < this.testData.questions.length; i++) {
+        let questionObject = {
+          question_id: this.testData.questions[i].id,
+          ans_id: this.userResponses[i] ? this.userResponses[i] : null
+        }
+        this.question_data.push(questionObject)
+      }
+      axios.post('/api/v1/save-test', {
+            test_id: this.testData.id,
+            question_data: this.question_data
+          }).then(res => {
+            this.questionIndex++;
+            this.attempts++;
+            this.testComplelete = true;
+            this.resultData = res.data.resultData
+          }).catch((err) => {
+            console.log(err)
+      })
+    },
     next: function () {
       if (this.questionIndex < quiz.questions.length - 1) {
 
         this.questionIndex++;
         console.log(this.questionIndex, quiz.questions.length)
       } else {
-        console.log(this.testData.questions[1].id)
-        for (var i = 0; i < this.testData.questions.length; i++) {
-          let questionObject = {
-            question_id: this.testData.questions[i].id,
-            ans_id: this.userResponses[i]
-          }
-          this.question_data.push(questionObject)
-        }
-
-        axios.post('/api/v1/save-test',
-            {
-              test_id: this.testData.id,
-              question_data: this.question_data
-
-            }
-        )
-            .then(res => {
-              this.questionIndex++;
-              this.attempts++;
-              this.testComplelete = true;
-              this.resultData = res.data.resultData
-            })
+        this.submitTest();
       }
     },
   }

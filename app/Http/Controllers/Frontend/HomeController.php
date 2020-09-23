@@ -235,7 +235,14 @@ class HomeController extends Controller
         if (count($teacher->courses) > 0) {
             $courses = $teacher->courses()->paginate(12);
         }
-        return view('frontend.teachers.show', compact('teacher', 'recent_news', 'courses', 'teacher_data','academy'));
+        if( auth()->user()){
+            $id= auth()->user()->id;
+            $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
+        return view('frontend.teachers.show', compact('courses_id','teacher', 'recent_news', 'courses', 'teacher_data','academy'));
     }
 
     public function getDownload(Request $request)

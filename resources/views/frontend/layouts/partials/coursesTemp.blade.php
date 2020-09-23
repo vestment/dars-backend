@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="row">
-         <p class="pl-3" style="font-size:15px;">
+         <p class="pl-3" style="font-size:15px;min-height: 20px;">
          {{Illuminate\Support\Str::words($course->getDataFromColumn('description'),10,'...') }}
         </p>
 
@@ -109,20 +109,13 @@
                         <i class="fa fa-shopping-bag ml-1"></i>
                         </a>
                        
-                @elseif((auth()->check()) && (auth()->user()->hasRole('student')) && (in_array($course->id,auth()->user()->courses()->pluck('course_id')->toArray())) )
-                        
+                @elseif((auth()->check()) && (auth()->user()->hasRole('student')) && (in_array($course->id,$courses_id)) )
                             
-                                <a href="{{ route('courses.show', [$course->slug]) }}"
-                                class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.continue_course')
+                    <a href="{{ route('courses.show', [$course->slug]) }}"
+                    class="btn btn-info btn-block btnAddCard">   @lang('labels.frontend.course.continue_course')
 
-                                <i class="fa fa-shopping-bag ml-1"></i>
-                                </a>
-                
-                          
-                 
-                            
-              
-
+                    <i class="fa fa-shopping-bag ml-1"></i>
+                    </a>
                 @elseif(!auth()->check())
                     @if($course->free == 1)
                         <a class="btn btn-info btn-block btnAddCard"

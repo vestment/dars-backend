@@ -4,7 +4,7 @@ import '../bootstrap';
 
 /* Core */
 import Vue from 'vue'
-
+// import {VueLoaderPlugin} from 'vue-loader'
 import player from '../components/player.vue'
 import Vuex from 'vuex'
 import Vueditor from 'vueditor'
@@ -25,6 +25,7 @@ Vue.config.productionTip = false
 //Vue.component('PlayCourse', PlayCourse)
 Vue.component('player', require('../components/player.vue').default);
 Vue.component('test', require('../components/test.vue').default)
+import VuePlyr from 'vue-plyr'
 import app from '../app.vue'
 
 // your config here
@@ -44,7 +45,14 @@ let config = {
   uploadUrl: ''
 };
 Vue.use(Vuex);
+// Vue.use(VueLoaderPlugin);
 Vue.use(Vueditor, config);
+Vue.use(VuePlyr, {
+  plyr: {
+    fullscreen: { enabled: false }
+  },
+  emit: ['ended']
+})
 /* This is main entry point */
 new Vue({
   router,

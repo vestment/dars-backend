@@ -325,6 +325,7 @@ class CoursesController extends Controller
 
         if ((int)$request->price == 0) {
             $course->price = NULL;
+            $course->free = 1;
             $course->save();
         }
 
@@ -556,6 +557,7 @@ class CoursesController extends Controller
         }
         if ((int)$request->price == 0) {
             $course->price = NULL;
+            $course->free = 1;
         }
         $course->save();
         $teachers = (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) ? array_filter((array)$request->input('teachers')) : [auth()->user()->id];
@@ -693,10 +695,9 @@ class CoursesController extends Controller
         if (!Gate::allows('course_edit')) {
             return abort(401);
         }
-
         foreach ($request->list as $item) {
-            // dd($item);
-            $courseTimeline = CourseTimeline::where('id', $item['id'])->first();
+
+            $courseTimeline = CourseTimeline::findorfail($item['id']);
             $courseTimeline->sequence = $item['sequence'];
             $courseTimeline->save();
         }

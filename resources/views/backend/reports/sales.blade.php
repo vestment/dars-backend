@@ -10,8 +10,16 @@
         <h1 class="page-title d-inline mb-5">@lang('labels.backend.reports.sales_report')</h1>
 </div>
     <div class="">
-       
+
         <div class="card shadow-lg p-4 mb-5 bg-white rounded">
+            <div class="float-right">
+                <label for="academy">Academy</label>
+                <select id="academy" name="academy_id" class="form-control">
+                    @foreach($allAcadmies as $key => $academy)
+                        <option value="{{$academy}}">{{$key}}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="row my-5 mx-3">
                 <div class="col-12 col-lg-6">
                     <div class="card  bg-light  shadow-lg">

@@ -26,7 +26,7 @@
 
                   <table class="table table-bordered">
                     <tbody>
-                    <tr v-for="lesson in chapter.lessons" :key="lesson.model.id">
+                    <tr v-for="lesson in chapter.lessons" :key="lesson.model.id" :id="'lesson-'+lesson.model.id">
                       <td>
                         <router-link v-if="lesson.canView" :to="{name:'player',params:{slug:lesson.model.slug}}">
                           <i v-if="lesson.canView" class="fas fa-unlock text-success"></i>
@@ -208,10 +208,10 @@ export default {
   watch: {
     $route() {
       this.type = this.$route.name
+      this.$forceUpdate();
     },
   },
   mounted() {
-    console.log(this)
   },
   methods: {
     setDownloadableMedia(lesson) {

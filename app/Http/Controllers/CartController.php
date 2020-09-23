@@ -92,8 +92,7 @@ class CartController extends Controller
                         'teachers' => $teachers,
                     ]);
         }
-        Session::flash('success', trans('labels.frontend.cart.product_added'));
-        return back();
+        return redirect()->back()->with(['success' => trans('labels.frontend.cart.product_added')]);
     }
 
     public function checkout(Request $request)

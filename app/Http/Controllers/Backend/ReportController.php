@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Auth\User;
 use App\Models\Bundle;
 use App\Models\Course;
 use App\Models\Order;
@@ -15,13 +16,39 @@ use App\Models\Category;
 use Yajra\DataTables\Facades\DataTables;
 class ReportController extends Controller
 {
+    public function index() {
+        $acadmies = [];
+        if (auth()->user()->isAdmin()) {
+            $acadmies = User::hasRole('academy')->with('acadmey')->get();
+        }
+    }
     public function getSalesReport()
     {
-
-        $courses = Course::ofTeacher()->pluck('id');
-        $bundles = Bundle::ofTeacher()->pluck('id');
-
-
+        $acadmies = [];
+        $courses = [];
+        $bundles = [];
+        if (auth()->user()->isAdmin()) {
+            $allAcadmies = User::role('academy')->with('academy')->pluck('id','first_name')->toArray();
+            $acadmies = User::role('academy')->with('academy')->get();
+            $academy = $acadmies[0]->user_id;
+            $academyTeachersCollection= TeacherProfile::where('academy_id',$academy);
+            $academyTeachers = $academyTeachersCollection->with('teacher')->get();
+            $academyTeachersIds = $academyTeachersCollection->pluck('user_id');
+            // Courses associated with academy teachers
+            $coursesCollection = Course::withoutGlobalScope('filter')->whereHas('teachers', function ($query) use ($academyTeachersIds) {
+                $query->whereIn('user_id', $academyTeachersIds);
+            })->with('category');
+            $coursesIds = $coursesCollection->pluck('id')->toArray();
+            $academyCourses = Course::withoutGlobalScope('filter')->where('academy_id',$academy)->pluck('id')->toArray();
+            $courses = Course::whereIn('id',$coursesIds)->pluck('id')->toArray();
+            $courses = array_merge($courses,$academyCourses);
+            $bundles = Bundle::whereHas('courses',function ($query) use ($coursesIds) {
+                $query->whereIn('id',$coursesIds);
+            })->pluck('id');
+        } else {
+            $courses = Course::ofTeacher()->pluck('id');
+            $bundles = Bundle::ofTeacher()->pluck('id');
+        }
         $bundle_earnings = Order::with('items')->whereHas('items',function ($q) use ($bundles){
             $q->where('item_type','=',Bundle::class)
                 ->whereIn('item_id',$bundles);
@@ -41,8 +68,7 @@ class ReportController extends Controller
 
         $total_earnings = $course_earnings+$bundle_earnings;
         $total_sales = $course_sales+$bundle_sales;
-
-        return view('backend.reports.sales',compact('total_earnings','total_sales'));
+        return view('backend.reports.sales',compact('total_earnings','total_sales','allAcadmies'));
     }
 
     public function getStudentsReport()
@@ -56,22 +82,26 @@ class ReportController extends Controller
         $courses = Course::ofTeacher()->pluck('id');
 
         if (auth()->user()->hasRole('academy')) {
-            $academy = academy::where('user_id', auth()->user()->id)->with('user')->first();
 
         // Teachers associated with academy
         $academyTeachersCollection= TeacherProfile::where('academy_id', auth()->user()->id);
         $academyTeachers = $academyTeachersCollection->with('teacher')->get();
         $academyTeachersIds = $academyTeachersCollection->pluck('user_id');
         // Courses associated with academy teachers
-        $coursesCollection = Course::whereHas('teachers', function ($query) use ($academyTeachersIds) {
+        $coursesCollection = Course::withoutGlobalScope('filter')->whereHas('teachers', function ($query) use ($academyTeachersIds) {
             $query->whereIn('user_id', $academyTeachersIds);
         })->with('category');
-        $courses = $coursesCollection->get();
-        // Categories associated with academy courses
-        $categories = Category::where('name','911')->first();
-        $courses_911 = Course::where('category_id', $categories->id )->with('category')->get();
-        // Merge the courses into 1 variable
-        $courses = $courses->merge($courses_911);
+        $courses = $coursesCollection->pluck('id')->toArray();
+        } elseif (auth()->user()->isAdmin()) {
+            $academy = $request->acadmey_id ? $request->acadmey_id : academy::first()->user_id;
+            $academyTeachersCollection= TeacherProfile::where('academy_id',$academy);
+            $academyTeachersIds = $academyTeachersCollection->pluck('user_id');
+            // Courses associated with academy teachers
+            $courses = Course::withoutGlobalScope('filter')->whereHas('teachers', function ($query) use ($academyTeachersIds) {
+                $query->whereIn('user_id', $academyTeachersIds);
+            })->with('category')->pluck('id')->toArray();
+            $academyCourses = Course::withoutGlobalScope('filter')->where('academy_id',$academy)->pluck('id')->toArray();
+            $courses = array_merge($courses,$academyCourses);
         }
         $course_orders = OrderItem::whereHas('order',function ($q){
             $q->where('status','=',1);
@@ -85,7 +115,7 @@ class ReportController extends Controller
         return DataTables::of($course_orders)
             ->addIndexColumn()
             ->editColumn('course', function ($q) {
-                $course = Course::find($q->item_id);
+                $course = Course::withoutGlobalScope('filter')->find($q->item_id);
                 $course_name = $course->title;
                 $course_slug = $course->slug;
                 $link = "<a href='".route('courses.show', [$course_slug])."' target='_blank'>".$course_name ? $course_name : $q->item_id."</a>";

@@ -119,8 +119,9 @@
 
     }
 </style>
-<div class="svg-embedded">{{auth()->user()->full_name}} - {{auth()->user()->id}}</div>
-
+@if (auth()->check())
+<div class="svg-embedded" style="display: none">{{auth()->user()->full_name}} - {{auth()->user()->id}}</div>
+@endif
 <section id="breadcrumb" class="breadcrumb-section relative-position d-none">
     <div class="blakish-overlay"></div>
     <div class="container">

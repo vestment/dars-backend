@@ -335,7 +335,7 @@
 
                 @if (!$purchased_course)
                     @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                        <button class="btn btn-primary"
+                        <button class="btn btn-info btn-block"
                                 type="submit">@lang('labels.frontend.course.added_to_cart')
                         </button>
                     @elseif(!auth()->check())
@@ -497,6 +497,10 @@
                                     @endforeach
                                 </div>
 
+
+
+                            </div>
+                            <div class="card-footer bg-white">
                                 <div class="row">
                                     <div class="col-xl-10 col-9">
                                         @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
@@ -509,8 +513,7 @@
                                             @if($related_course->free == 1)
                                                 <a class="btn btn-info btn-block btnAddCard"
                                                    href="{{ route('login.index') }}">@lang('labels.frontend.course.get_now')
-                                                    <i
-                                                            class="fas fa-caret-right"></i></a>
+                                                    <i class="fas fa-caret-right"></i></a>
                                             @else
 
                                                 <a class="btn btn-info btnAddCard btn-block"
@@ -559,7 +562,6 @@
                                         </a>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
