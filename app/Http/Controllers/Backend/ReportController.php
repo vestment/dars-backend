@@ -132,7 +132,7 @@ class ReportController extends Controller
                     $academy = $course->academy->user->full_name;
                 } else {
                     $academyTeacher = $course->teachers()->with('teacherProfile.academy')->first();
-                    if ($academyTeacher->teacherProfile->academy) {
+                    if ($academyTeacher && $academyTeacher->teacherProfile && $academyTeacher->teacherProfile->academy) {
                         $academy = $academyTeacher->teacherProfile->academy->user->full_name;
                     }
                 }
@@ -142,12 +142,15 @@ class ReportController extends Controller
             })->editColumn('teachers', function ($q) {
                 $course = Course::withoutGlobalScope('filter')->with('teachers')->find($q->item_id);
                 $courseTeachers = '';
-                if (count($course->teachers) > 1) {
-                    foreach ($course->teachers as $teacher) {
-                        $courseTeachers .= $teacher->full_name . ', ';
+                if ($course->teachers) {
+                    $courseTeachers= $course->teachers()->first() ? $course->teachers()->first()->full_name : '';
+
+                    if (count($course->teachers) > 1) {
+                        $courseTeachers = '';
+                        foreach ($course->teachers as $teacher) {
+                            $courseTeachers .= $teacher->full_name ? $teacher->full_name . ', ' : '';
+                        }
                     }
-                } else {
-                    $courseTeachers= $course->teachers[0]->full_name;
                 }
                 return $courseTeachers;
             })

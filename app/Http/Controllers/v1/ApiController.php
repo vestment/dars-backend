@@ -654,7 +654,7 @@ class ApiController extends Controller
                         $chapterLesson['canView'] = true;
                         if ($prevChapter) {
                             $chapterTest = $prevChapter->test;
-                            if ($chapterTest->testResult && count($chapterTest->testResult) >0) {
+                            if ($chapterTest && count($chapterTest->testResult) >0) {
                                 if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
                                     $chapterLesson['canView'] = false;
                                 }
@@ -1009,7 +1009,7 @@ class ApiController extends Controller
         $course = Course::whereHas('students', function ($query) {
             $query->where('id', \Auth::id());
         })->where('id', '=', $request->course_id)->first();
-        if (($course != null) && ($course->progress() == 100)) {
+        if (($course != null) && ($course->progress() >= 100)) {
             $certificate = Certificate::firstOrCreate([
                 'user_id' => auth()->user()->id,
                 'course_id' => $request->course_id
