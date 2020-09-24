@@ -21,7 +21,7 @@
 }
 
 .questionBox {
-  width: 49rem;
+  width: 100%;
   min-height: 30rem;
   background: #FAFAFA;
   position: relative;
@@ -246,5 +246,13 @@ h3.is-3:not(:last-child) {
 
 .shadow {
   text-shadow: 0 0 15px rgba(100, 100, 100, 0.35);
+}
+
+tr.active {
+  background: #e1f6fd;
+}
+
+.router-link-active {
+  color: #0056b3;
 }
 /*# sourceMappingURL=lesson.css.map */

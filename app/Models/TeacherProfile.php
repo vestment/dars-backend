@@ -34,9 +34,7 @@ class TeacherProfile extends Model
 
     public function academy()
     {
-//        return $this->belongsTo(academy::class);
-        return $this->belongsTo(academy::class, 'academy_id', 'user_id');
-
+        return $this->belongsto('App\academy','academy_id','user_id');
 
     }
 

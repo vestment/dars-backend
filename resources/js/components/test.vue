@@ -54,7 +54,7 @@
               <!-- next button -->
               <a class="button" :class="(userResponses[questionIndex]==null)?'':'is-active'" v-on:click="next();"
                  :disabled="questionIndex>=quiz.questions.length">
-                {{ (userResponses[questionIndex] == null) ? 'skip' : 'Next' }}
+                {{ (userResponses[questionIndex] == null) ? 'Next' : 'Next' }}
               </a>
 
             </nav>
@@ -86,7 +86,7 @@
             Total score: {{ resultData.test_result }} / {{ testData.totalScore }}
           </p>
           <br>
-          <a class="button" v-if="attempts < 3" @click="restart()">restart <i class="fa fa-refresh"></i></a>
+          <a class="button" v-if="attempts < 3" @click="restart()">Retest <i class="fa fa-refresh"></i></a>
           <!--/resultTitleBlock-->
 
         </div>
@@ -125,6 +125,7 @@ export default {
       showDays: false,
       testTimer: "",
       testData: [],
+      courseData: [],
       quiz: quiz,
       attempts: 0,
       testComplelete: false,
@@ -158,6 +159,15 @@ export default {
   },
   components: {FlipCountdown},
   methods: {
+    finishCourse() {
+      axios.post('/api/v1/generate-certificate', {
+        course_id: this.testData.course.id,
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err.response)
+      })
+    },
     testEnded() {
       this.submitTest();
     },
@@ -167,11 +177,7 @@ export default {
       this.userResponses = Array(quiz.questions.length).fill(null);
     },
     selectOption: function (index, id) {
-
-      // this.userResponses[this.questionIndex] === index
       this.userResponses[this.questionIndex] = id
-      console.log(this.questionIndex)
-      // this.$root.set(this.userResponses, this.questionIndex, index);
       this.$forceUpdate();
     },
 
@@ -200,6 +206,7 @@ export default {
       axios.post('/api/v1/single-test', {test: slug})
           .then(res => {
             this.testData = res.data.response.test
+            this.courseData = res.data.response
             this.attempts = res.data.response.test_result ? res.data.response.test_result.attempts : 0
             this.resultData = res.data.response.test_result ? res.data.response.test_result.score : 0
             this.$parent.courseData = res.data.response
@@ -211,7 +218,6 @@ export default {
                 text: this.testData.questions[i].question,
                 responses: []
               };
-              console.log(this.testData.questions[i].options)
 
               for (var j = 0; j <= this.testData.questions[i].options.length - 1; j++) {
                 var responses =
@@ -224,12 +230,10 @@ export default {
               }
               quiz.questions.push(obj);
             }
-              // this.playerOptions.sources[0].src = this.courseData.lesson.media_video.url
-              //
-              // $('.course-title-header').text(this.courseData.course.title)
-              // $('.close-lesson').attr('href', this.courseData.course_page)
-              // $('.course-progress').text(this.courseData.course_progress + ' %')
-              // $('.progress-bar').css('width', this.courseData.course_progress + '%')
+            $('.course-title-header').text(this.testData.course.title)
+            $('.close-lesson').attr('href', this.courseData.course_page)
+            $('.course-progress').text(this.courseData.course_progress + ' %')
+            $('.progress-bar').css('width', this.courseData.course_progress + '%')
 
           }).catch(err => {
         console.log(err)
@@ -244,22 +248,31 @@ export default {
         this.question_data.push(questionObject)
       }
       axios.post('/api/v1/save-test', {
-            test_id: this.testData.id,
-            question_data: this.question_data
+        test_id: this.testData.id,
+        question_data: this.question_data
+      }).then(res => {
+        this.questionIndex++;
+        this.attempts++;
+        this.testComplelete = true;
+        this.resultData = res.data.resultData
+        if (this.resultData.test_result >= this.testData.min_grade) {
+          axios.post('/api/v1/course-progress', {
+            model_type: "test", model_id: this.testData.id
           }).then(res => {
-            this.questionIndex++;
-            this.attempts++;
-            this.testComplelete = true;
-            this.resultData = res.data.resultData
-          }).catch((err) => {
-            console.log(err)
+            let lastChapter = this.courseData.course_timeline[this.courseData.course_timeline.length - 1];
+            if (!lastChapter && !lastChapter.test) {
+              this.finishCourse();
+            }
+
+          })
+        }
+      }).catch((err) => {
+        console.log(err)
       })
     },
     next: function () {
       if (this.questionIndex < quiz.questions.length - 1) {
-
         this.questionIndex++;
-        console.log(this.questionIndex, quiz.questions.length)
       } else {
         this.submitTest();
       }

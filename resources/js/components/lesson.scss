@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 $trans_duration: 0.3s;
 $primary_color: #3D5AFE;
 
@@ -225,5 +219,9 @@ h3.is-3:not(:last-child) {
 .shadow {
   text-shadow: 0 0 15px rgba(100, 100, 100, .35);
 }
-
-
+tr.active {
+  background: #e1f6fd;
+}
+.router-link-active {
+  color: #0056b3;
+}

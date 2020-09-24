@@ -1318,6 +1318,7 @@ return array(
                         array(
                             'name' => 'Name',
                             'orders' => 'Orders',
+                            'purchase' => 'Purchased Date',
                             'earnings' => 'Earnings',
                             'course' => 'Course',
                             'user' => 'User',

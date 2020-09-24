@@ -188,25 +188,6 @@
                                     </form>
 
                                     @endif
-
-
-                  
-
-
-                                                {{-- <form action="{{ route('cart.addToCart') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                                    <input type="hidden" name="amount"
-                                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                    <button type="submit"
-                                                            class="genius-btn btn-primary text-center text-white text-uppercase ">
-                                                        @lang('labels.frontend.course.add_to_cart') <i
-                                                                class="fa fa-shopping-bag"></i></button>
-                                                </form> --}}
-
-
-
-
                                             </td>
 
                                             <td> <a  class="te-remove "

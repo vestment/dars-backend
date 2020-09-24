@@ -1,7 +1,8 @@
 <template>
 
   <div class="player-video">
-    <vue-plyr v-if="lessonVideo.src" :key="lessonVideo.src" ref="plyr" :emit="['ended','playing']" @playing="playerReadied" @ended="onPlayerEnded">
+    <vue-plyr v-if="lessonVideo.src" :key="lessonVideo.src" ref="plyr" :emit="['ended','playing']"
+              @playing="playerReadied" @ended="onPlayerEnded">
       <video :src="lessonVideo.src" v-if="lessonVideo.type == 'upload'" type="video/mp4">
       </video>
       <div v-else-if="lessonVideo.type == 'youtube'" data-plyr-provider="youtube"
@@ -9,7 +10,7 @@
       <div v-else-if="lessonVideo.type == 'vimeo'" data-plyr-provider="vimeo"
            :data-plyr-embed-id="lessonVideo.src"></div>
       <div v-else class="plyr__video-embed">
-          {{lessonVideo.src}}
+        {{ lessonVideo.src }}
       </div>
     </vue-plyr>
 
@@ -35,6 +36,7 @@ export default {
         type: 'video/mp4',
         src: ''
       },
+      canFinishCourse: '',
       courseData: [],
       notes: [],
       newNote: {contentText: ''},
@@ -68,16 +70,30 @@ export default {
       axios.post('/api/v1/course-progress', {
         model_type: "lesson", model_id: this.courseData.lesson.id
       }).then(res => {
-        this.courseData.course_timeline.map(chapter => {
-          chapter.lessons.filter(lesson => {
-            if (this.courseData.next_lesson.model_id == lesson.model_id && lesson.canView == true) {
-              this.$router.push({name: 'player', params: {slug: lesson.model.slug}})
-            }
+        let lastChapter = this.courseData.course_timeline[this.courseData.course_timeline.length - 1];
+        if (this.courseData.next_lesson) {
+          this.courseData.course_timeline.map(chapter => {
+            chapter.lessons.filter(lesson => {
+              if (this.courseData.next_lesson.model_id == lesson.model_id && lesson.canView == true) {
+                this.$router.push({name: 'player', params: {slug: lesson.model.slug}})
+              }
+            })
           })
-        })
+        }
+        if (!lastChapter.test && !this.courseData.next_lesson) {
+          this.finishCourse();
+        }
+
       })
-
-
+    },
+    finishCourse() {
+      axios.post('/api/v1/generate-certificate', {
+        course_id: this.courseData.course.id,
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err.response)
+      })
     },
     getData(slug) {
       axios.post('/api/v1/single-lesson', {lesson: slug})
@@ -88,14 +104,14 @@ export default {
               this.$parent.type = 'player'
               if (this.courseData.lesson.media_video) {
                 this.lessonVideo.type = this.courseData.lesson.media_video.type
-                if (this.lessonVideo.type == 'youtube' || this.lessonVideo.type == 'vimeo' ) {
+                if (this.lessonVideo.type == 'youtube' || this.lessonVideo.type == 'vimeo') {
                   this.lessonVideo.src = this.courseData.lesson.media_video.file_name
                 } else {
                   this.lessonVideo.src = this.courseData.lesson.media_video.url
                 }
               }
               this.$forceUpdate();
-              console.log("Lesson", this.lessonVideo)
+              console.log("Lesson", this.courseData)
               $('.course-title-header').text(this.courseData.course.title)
               $('.close-lesson').attr('href', this.courseData.course_page)
               $('.course-progress').text(this.courseData.course_progress + ' %')

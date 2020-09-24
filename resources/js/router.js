@@ -30,8 +30,17 @@ const router = new VueRouter({
     }
   }
 })
+router.afterEach((to) => {
+  const appLoading = document.getElementById('loading-bg')
+  if (appLoading) {
+    appLoading.style.display = "none";
+  }
+});
 router.beforeEach((to, from, next) => {
-  // console.log('To',to)
+  const appLoading = document.getElementById('loading-bg')
+  if (appLoading) {
+    appLoading.style.display = "block";
+  }
   return next();
-})
+});
 export default router

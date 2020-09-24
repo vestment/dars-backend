@@ -1065,6 +1065,7 @@ return array(
                             'earnings' => 'أرباح',
                             'name' => 'اسم',
                             'orders' => 'أوامر',
+                            'purchase' => 'تاريخ الشراء',
                             'students' => 'الطلاب',
                             'time' => 'زمن',
                             'user' => 'المستعمل',

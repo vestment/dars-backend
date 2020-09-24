@@ -284,7 +284,7 @@ class Course extends Model
     }
     public function academy()
     {
-        return $this->belongsto('App\academy');
+        return $this->belongsto('App\academy','academy_id','user_id');
     }
 
 

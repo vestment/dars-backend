@@ -12,14 +12,7 @@
     <div class="">
 
         <div class="card shadow-lg p-4 mb-5 bg-white rounded">
-            <div class="float-right">
-                <label for="academy">Academy</label>
-                <select id="academy" name="academy_id" class="form-control">
-                    @foreach($allAcadmies as $key => $academy)
-                        <option value="{{$academy}}">{{$key}}</option>
-                    @endforeach
-                </select>
-            </div>
+
             <div class="row my-5 mx-3">
                 <div class="col-12 col-lg-6">
                     <div class="card  bg-light  shadow-lg">
@@ -59,15 +52,29 @@
                 <h3 class=" mx-3 mb-5 text-primary">@lang('labels.backend.reports.courses')</h3>
            </div>
             <div class="row card  bg-light  shadow-lg p-4 mx-2  mb-5">
-                <div class="col-12 ">
+                <div class="col-lg-12">
+                    @if (auth()->user()->isAdmin())
+                    <div class="mb-2">
+                        <label for="academy">Academy</label>
+                        <select id="selectedAcademy" name="academy_id" class="form-control">
+                            <option value="" selected>Select academy</option>
+                            @foreach($allAcadmies as $key => $academy)
+                                <option value="{{$key}}">{{$key}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                     <div class="table-responsive">
                         <table id="myCourseTable" class="border-0">
                             <thead class="thead">
                             <tr>
                                 <th>@lang('labels.general.sr_no')</th>
                                 <th>@lang('labels.backend.reports.fields.name')</th>
+                                <th>@lang('labels.backend.teachers.fields.academy')</th>
+                                <th>@lang('labels.backend.teachers.title')</th>
                                 <th>@lang('labels.backend.reports.fields.orders')</th>
                                 <th>@lang('labels.backend.reports.fields.earnings') <span style="font-weight: lighter">(in {{$appCurrency['symbol']}})</span></th>
+                                <th>@lang('labels.backend.reports.fields.purchase')</th>
                             </tr>
                             </thead>
 
@@ -91,6 +98,7 @@
                                 <th>@lang('labels.backend.reports.fields.name')</th>
                                 <th>@lang('labels.backend.reports.fields.orders')</th>
                                 <th>@lang('labels.backend.reports.fields.earnings') <span style="font-weight: lighter">(in {{$appCurrency['symbol']}})</span></th>
+
                             </tr>
                             </thead>
 
@@ -112,7 +120,7 @@
             var course_route = '{{route('admin.reports.get_course_data')}}';
             var bundle_route = '{{route('admin.reports.get_bundle_data')}}';
 
-            $('#myCourseTable').DataTable({
+           var table = $('#myCourseTable').DataTable({
                 processing: true,
                 serverSide: true,
                 iDisplayLength: 10,
@@ -137,8 +145,12 @@
                 columns: [
                     {data: "DT_RowIndex", name: 'DT_RowIndex', width: '8%'},
                     {data: "course", name: 'course'},
+                    {data: "academy", name: 'academy'},
+                    {data: "teachers", name: 'teachers'},
                     {data: "orders", name: 'orders'},
                     {data: "earnings", name: 'earnings'},
+                    {data: "updated_at", name: 'updated_at'},
+
                 ],
 
 
@@ -175,6 +187,7 @@
                     {data: "name", name: 'name'},
                     {data: "orders", name: 'orders'},
                     {data: "earnings", name: 'earnings'},
+
                 ],
                 language:{
                     url : "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/{{$locale_full_name}}.json",
@@ -190,6 +203,9 @@
                     $(row).attr('data-entry-id', data.id);
                 },
             });
+            $('#selectedAcademy').on('change',function (){
+                table.column(2).search($(this).val()).draw();
+            })
         });
 
     </script>

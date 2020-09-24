@@ -245,13 +245,13 @@
                 @endcan
             @endif
 
-            <!--<li class="nav-item ">-->
-            <!--    <a class="nav-link {{ $request->segment(1) == 'messages' ? 'active' : '' }}"-->
-            <!--       href="{{ route('admin.messages') }}">-->
-            <!--        <i class="nav-icon icon-envelope-open"></i> <span-->
-            <!--                class="title">@lang('menus.backend.sidebar.messages.title')</span>-->
-            <!--    </a>-->
-            <!--</li>-->
+            <li class="nav-item ">
+                <a class="nav-link {{ $request->segment(1) == 'messages' ? 'active' : '' }}"
+                   href="{{ route('admin.messages') }}">
+                    <i class="nav-icon icon-envelope-open"></i> <span
+                            class="title">@lang('menus.backend.sidebar.messages.title')</span>
+                </a>
+            </li>
             @if (auth()->user()->hasRole('student'))
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'invoices' ? 'active' : '' }}"
@@ -293,15 +293,15 @@
                     </a>
                 </li>
             @endif
-            @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy')) 
-                       <li class="nav-item ">
+            @if (auth()->user()->isAdmin() || auth()->user()->hasRole('academy'))
+                <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'contact-requests' ? 'active' : '' }}"
                        href="{{ route('admin.coupons.index') }}">
                         <i class="nav-icon icon-star"></i>
                         <span class="title">@lang('menus.backend.sidebar.coupons.title')</span>
                     </a>
                 </li>
-                @endif
+            @endif
             @if (auth()->user()->isAdmin())
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'contact-requests' ? 'active' : '' }}"
@@ -310,7 +310,7 @@
                         <span class="title">@lang('menus.backend.sidebar.contacts.title')</span>
                     </a>
                 </li>
-                
+
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'contact-requests' ? 'active' : '' }}"
                        href="{{ route('admin.tax.index') }}">

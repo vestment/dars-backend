@@ -5,13 +5,15 @@
 
         <div class="col-lg-8">
           <div class="card">
+            <div class="ajax-loader" style="display: none" id='loading-bg'></div>
             <router-view></router-view>
           </div>
         </div>
         <div class="col-lg-4 mt-sm-1">
           <div class="accordion" id="accordionExample">
 
-            <div v-for="chapter in courseData.course_timeline" v-if="chapter.data" :key="chapter.data.id" class="card shadow mb-3">
+            <div v-for="chapter in courseData.course_timeline" v-if="chapter.data" :key="chapter.data.id"
+                 class="card shadow mb-3">
               <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
                   <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
@@ -26,7 +28,8 @@
 
                   <table class="table table-bordered">
                     <tbody>
-                    <tr v-for="lesson in chapter.lessons" :key="lesson.model.id" :id="'lesson-'+lesson.model.id">
+                    <tr v-for="lesson in chapter.lessons" :key="lesson.model.id" :id="'lesson-'+lesson.model.id"
+                        :class="{'active': slug== lesson.model.slug}">
                       <td>
                         <router-link v-if="lesson.canView" :to="{name:'player',params:{slug:lesson.model.slug}}">
                           <i v-if="lesson.canView" class="fas fa-unlock text-success"></i>
@@ -36,7 +39,7 @@
                           <i v-else class="text-danger fa fa-lock"></i> {{ lesson.model.title }}</a>
                         <p class="m-0"><small class="text-sm" v-if="lesson.model.media_video">
                           <i class="fa fa-play-circle"></i>
-                          {{lesson.model.media_video.duration}}
+                          {{ lesson.model.media_video.duration }}
                         </small></p>
                       </td>
                       <td class="">
@@ -61,15 +64,17 @@
                       </td>
 
                     </tr>
-                    <tr  v-if="chapter.test && chapter.test.model" :key="chapter.test.model.id">
+                    <tr v-if="chapter.test && chapter.test.model" :key="chapter.test.model.id">
 
                       <td>
                         <router-link :to="{name:'test',params:{slug:chapter.test.model.slug}}">
-                          <i v-if="chapter.test && chapter.test.model.test_result.length > 0 && (chapter.test.model.test_result[chapter.test.model.test_result.length-1].test_result >= chapter.test.model.min_grade)" class="fas fa-check text-success"></i>
-                          <i v-else-if="chapter.test && chapter.test.model.test_result.length == 0" class="text-warning fas fa-hourglass-start"></i>
+                          <i v-if="chapter.test && chapter.test.model.test_result.length > 0 && (chapter.test.model.test_result[chapter.test.model.test_result.length-1].test_result >= chapter.test.model.min_grade)"
+                             class="fas fa-check text-success"></i>
+                          <i v-else-if="chapter.test && chapter.test.model.test_result.length == 0"
+                             class="text-warning fas fa-hourglass-start"></i>
 
                           <i v-else class="text-danger fa fa-times"></i>
-                          {{ chapter.test.model.title}}
+                          {{ chapter.test.model.title }}
                         </router-link>
                       </td>
                       <td>
@@ -113,7 +118,7 @@
                 <div v-for="(media,index) in downloadableMedia.data" class="card-body">
                   <a class="text-center"
                      :href="'/download?filename='+media.name+'&lesson='+downloadableMedia.lesson.id">{{
-                    media.name.replace(/\.[^/.]+$/, "")
+                      media.name.replace(/\.[^/.]+$/, "")
                     }} <i
                         class="fa fa-download"></i></a>
                 </div>
@@ -194,6 +199,7 @@ export default {
   data() {
     return {
       type: '',
+      slug: '',
       courseData: [],
       notes: [],
       newNote: {contentText: ''},
@@ -208,10 +214,12 @@ export default {
   watch: {
     $route() {
       this.type = this.$route.name
+      this.slug = this.$route.params.slug
       this.$forceUpdate();
     },
   },
   mounted() {
+    this.slug = this.$route.params.slug
   },
   methods: {
     setDownloadableMedia(lesson) {

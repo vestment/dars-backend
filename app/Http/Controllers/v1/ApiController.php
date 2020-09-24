@@ -647,7 +647,6 @@ class ApiController extends Controller
                         ->where('course_id', $item->course_id)
                         ->orderBy('sequence', 'asc')
                         ->value('model_id');
-//                    return $next_chapter;
 
                     $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
 
@@ -859,10 +858,12 @@ class ApiController extends Controller
         }
 
         $dt = time() + intval($test->timer * 60);
-        $test = $test->toArray();
+
         $test['questions'] = $questionsToAnswer;
         $test['timer'] = Carbon::createFromTimestamp($dt, 'Africa/Cairo');
-        $data['chapters'] = $chapters;
+        $data['course_progress'] = $test->course->progress();
+        $data['course_page'] = route('courses.show', ['slug' => $test->course->slug]);
+        $test = $test->toArray();
         $data['test'] = $test;
         $data['course_timeline'] = $courseSequence;
         $data['is_test_given'] = $is_test_given;
@@ -1007,8 +1008,7 @@ class ApiController extends Controller
     {
         $course = Course::whereHas('students', function ($query) {
             $query->where('id', \Auth::id());
-        })
-            ->where('id', '=', $request->course_id)->first();
+        })->where('id', '=', $request->course_id)->first();
         if (($course != null) && ($course->progress() == 100)) {
             $certificate = Certificate::firstOrCreate([
                 'user_id' => auth()->user()->id,

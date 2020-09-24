@@ -49,14 +49,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'user', 'as' => 'admin.', 'm
     include_route_files(__DIR__ . '/backend/');
 });
 
-Route::group(['namespace' => 'Backend', 'prefix' => 'user', 'as' => 'admin.', 'middleware' => 'auth'], function () {
 
-//==== Messages Routes =====//
-    Route::get('messages', ['uses' => 'MessagesController@index', 'as' => 'messages']);
-    Route::post('messages/unread', ['uses' => 'MessagesController@getUnreadMessages', 'as' => 'messages.unread']);
-    Route::post('messages/send', ['uses' => 'MessagesController@send', 'as' => 'messages.send']);
-    Route::post('messages/reply', ['uses' => 'MessagesController@reply', 'as' => 'messages.reply']);
-});
 
 
 
