@@ -41,7 +41,7 @@ class HomeController extends Controller
     ];
     public function __construct()
     {
-        $academy_911 = 5;
+        $academy_911 = 29;
         $academy = academy::where('user_id', $academy_911)->with(['user', 'courses', 'teachers'])->first();
 
         if ($academy) {

@@ -38,7 +38,6 @@ class Test extends Model
                 });
             }
         }
-
     }
 
 

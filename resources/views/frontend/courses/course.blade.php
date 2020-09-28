@@ -417,10 +417,11 @@
                                             @if($item->model->chapter_id == $chapter->id)
                                                 <div class="mt-4 bordered border-bottom">
                                                 <p class="subtitle2">
-                                                {{-- <a href="{{route('lessons.show',['id' => $course->id,'slug'=>$item->model->slug])}}">--}}
-                                                <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->getDataFromColumn('title')}}
+                                                    @if($item->model_type == 'App\Models\Lesson')
+                                                        <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->getDataFromColumn('title')}}
+                                                    @endif
                                                     @if($item->model_type == 'App\Models\Test')
-                                                        <p class="mb-0 text-primary"> - @lang('labels.frontend.course.test')</p>
+                                                        <p class="text-primary"><i class="fas fa-paper-plane"></i> {{$item->model->getDataFromColumn('title')}} - @lang('labels.frontend.course.test')</p>
                                                     @endif
                                                  </p>
                                                 </div>

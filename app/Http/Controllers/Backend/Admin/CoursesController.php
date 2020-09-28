@@ -7,8 +7,10 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Chapter;
 use App\Models\CourseTimeline;
+use App\Models\Lesson;
 use App\Models\Media;
 use App\Models\Courses;
+use App\Models\Test;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -411,33 +413,25 @@ class CoursesController extends Controller
         }
 
 
-        $timeline = CourseTimeline::where('course_id', $id)->get();
-        // dd($timeline->isEmpty());
-        if (!$timeline->isEmpty()) {
-            foreach ($timeline as $item) {
-                $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
-
+        $courseTimeLine = CourseTimeline::where('course_id', $id)->with(['model'])->orderBy('sequence', 'asc')->get();
+        $courseSequence = [];
+        foreach ($courseTimeLine as $key => $item) {
+            if ($item->model_type == Chapter::class) {
+                $courseChapter[$item->id] = $item;
+                $courseChapter[$item->id]['childs'] = CourseTimeline::where('course_id', $id)
+                    ->where('chapter_id', $item->model_id)
+                    ->whereIn('model_type', [Lesson::class,Test::class])
+                    ->orderBy('sequence', 'asc')->get();
+                array_push($courseSequence, $courseChapter[$item->id]);
             }
-            $chapterContent = [];
-            foreach ($content as $key => $item) {
-
-                foreach ($item as $j => $item) {
-                    $chapterContent[] = $content[$key][$j];
-                }
-
-            }
-        } else {
-            $chapterContent = [];
-            $timeline = [];
         }
-
         $videos = Media::where('type', 'upload')->where('model_id', null)->orWhere('model_id', $id)->pluck('file_name', 'id');
         $notSelectedVideos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
         if (count($videos) == 0 || count($notSelectedVideos) == 0) {
             $videos = ['' => 'No videos available'];
             $notSelectedVideos = ['' => 'No videos available'];
         }
-        return view('backend.courses.edit', compact('notSelectedVideos', 'chapterContent', 'videos', 'timeline', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
+        return view('backend.courses.edit', compact('notSelectedVideos', 'courseSequence', 'videos', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
 
 
     }
@@ -617,7 +611,7 @@ class CoursesController extends Controller
 
         $course = Course::findOrFail($id);
         if ($course->students->count() >= 1) {
-            foreach($course->students as $student) {
+            foreach ($course->students as $student) {
                 $student->pivot->delete();
             }
 //            return redirect()->route('admin.courses.index')->withFlashDanger(trans('alerts.backend.general.delete_warning'));
@@ -731,29 +725,22 @@ class CoursesController extends Controller
 
     public function courseContent($course_id)
     {
-
-        $timeline = CourseTimeline::where('course_id', $course_id)->get();
-        foreach ($timeline as $item) {
-            $content[] = $item->model_type::where('id', '=', $item->model_id)->get();
-
-        }
-
-
-        foreach ($content as $key => $item) {
-            foreach ($item as $j => $item) {
-                $chapterContent[] = $content[$key][$j];
+        $courseTimeLine = CourseTimeline::where('course_id', $course_id)->with(['model'])->orderBy('sequence', 'asc')->get();
+        $courseSequence = [];
+        foreach ($courseTimeLine as $key => $item) {
+            if ($item->model_type == Chapter::class) {
+                $courseChapter[$item->id]['data'] = $item->model;
+                $courseChapter[$item->id]['childs'] = CourseTimeline::where('course_id', $course_id)
+                    ->where('chapter_id', $item->model_id)
+                    ->where('model_type', Lesson::class)
+                    ->orWhere('model_type', Test::class)
+                    ->orderBy('sequence', 'asc')->get();
+                array_push($courseSequence, $courseChapter[$item->id]);
             }
 
         }
 
-        // $course = Course::findOrFail($course_id);
-        // $courseTimeline = $course->courseTimeline()->orderBy('sequence', 'asc')->get();
-        // $chapters = $courseTimeline->where('model_type','chapter');
-
-        // $chaptersOfCourse = Chapter::where('id',$chapters->model_id);
-
-
-        return view('backend.courses.courseContent', compact('chapterContent', 'timeline'));
+        return view('backend.courses.courseContent', compact('courseSequence'));
 
 
     }

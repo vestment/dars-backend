@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Review;
 use App\Models\Lesson;
+use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -134,7 +135,10 @@ class CoursesController extends Controller
             $course_review = $course->reviews()->where('active', 1)->get();
             $total_ratings = $course->reviews()->where('rating', '!=', "")->where('active', 1)->get()->count();
         }
-        $lessons = $course->courseTimeline()->orderby('sequence', 'asc');
+        $lessons = $course->courseTimeline()->with(['model'=>function($query) {
+            $query->withoutGlobalScope('filter');
+        }])->where('model_type', '!=',Chapter::class)
+            ->orderby('sequence', 'asc');
         $lessonsMedia = Lesson::where('course_id', $course_id)->get();
         $fileCount = 0;
         foreach ($lessonsMedia as $lesson) {
@@ -143,25 +147,25 @@ class CoursesController extends Controller
         $course_hours = Course::withoutGlobalScope('filter')->where('course_hours', $course_slug);
 
         if (\Auth::check()) {
-
             $completed_lessons = \Auth::user()->chapters()->where('course_id', $course->id)->get()->pluck('model_id')->toArray();
             $course_lessons = $course->lessons->pluck('id')->toArray();
-            $continue_course = $course->courseTimeline()
-                ->where('model_type', '!=',Chapter::class)
+            $continue_course = $course->courseTimeline()->with(['model'=>function($query) {
+               $query->withoutGlobalScope('filter');
+            }])->where('model_type', '!=',Chapter::class)
                 ->orderby('sequence', 'asc')
                 ->whereNotIn('model_id', $completed_lessons)
                 ->first();
             if ($continue_course == null) {
-
                 $continue_course = $course->courseTimeline()
+                    ->with(['model'=>function($query) {
+                        $query->withoutGlobalScope('filter');
+                    }])
                     ->whereIn('model_id', $course_lessons)
                     ->where('model_type', '!=',Chapter::class)
                     ->orderby('sequence', 'asc')->first();
 
             }
-
         }
-
         $mandatory_courses = [];
         $optional_courses = [];
         $course_date =json_encode([]);

@@ -316,7 +316,7 @@
                         <h1 class="page-title d-inline mb-5">@lang('labels.backend.courses.content')</h1>
                     </div>
 
-                    @if(count($chapterContent) > 0)
+                    @if(count($courseSequence) > 0)
                         <div class="shadow-lg p-3 mb-5 bg-white rounded">
 
                             <div class="card-body">
@@ -351,221 +351,198 @@
 
                                                                                         <ul class="menu ui-sortable"
                                                                                             id="menu-to-edit">
-                                                                                            @foreach($chapterContent as $item)
-                                                                                                @foreach ($timeline as  $singleTimeline)
-                                                                                                    @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                        @if($singleTimeline->model_id == $item->id)
-
-                                                                                                            @php
-                                                                                                                $lessons = \App\Models\CourseTimeline::where('course_id', $course->id)->where('model_type','!=','App\Models\Chapter')->where('chapter_id',$singleTimeline->model_id)->orderBy('sequence')->get();
-                                                                                                            @endphp
-
-                                                                                                            <li id="menu-item-{{$item->id}}"
-                                                                                                                data-type="{{$singleTimeline->model_type}}"
-                                                                                                                class="menu-item menu-item-depth-0  menu-item-page menu-item-edit-inactive pending"
-                                                                                                                style="display: list-item;">
-                                                                                                                <dl class="menu-item-bar">
-                                                                                                                    <div class="menu-item-handle col-12 col-lg-12">
+                                                                                            @foreach($courseSequence as $item)
+                                                                                                @php
+                                                                                                    $chapter = $item->model;
+                                                                                                @endphp
+                                                                                                @if($item->model)
+                                                                                                <li id="menu-item-{{$chapter->id}}"
+                                                                                                    class="menu-item menu-item-depth-0  menu-item-page menu-item-edit-inactive pending"
+                                                                                                    style="display: list-item;">
+                                                                                                    <dl class="menu-item-bar">
+                                                                                                        <div class="menu-item-handle col-12 col-lg-12">
                                                                                                                     <span class="item-title"> <span
                                                                                                                                 class="menu-item-title"> <p
-                                                                                                                                    data-id="{{$item->id}}">{{$item->title}} | {{$singleTimeline->sequence}}</p> </span>
+                                                                                                                                    data-id="{{$item->id}}">{{$chapter->title}} | {{$chapter->sequence}}</p> </span>
                                                                                                                     <span class="item-controls">
                                                                                                                             <a class="item-edit"
-                                                                                                                               id="edit-{{$item->id}}"
+                                                                                                                               id="edit-{{$chapter->id}}"
                                                                                                                                title=" "
-                                                                                                                               href="{{ url()->current() }}?edit-menu-item=#menu-item-settings-{{$item->id}}"> </a>
+                                                                                                                               href="{{ url()->current() }}?edit-menu-item=#menu-item-settings-{{$chapter->id}}"> </a>
                                                                                                                         </span>  </span>
-                                                                                                                    </div>
-                                                                                                                </dl>
+                                                                                                        </div>
+                                                                                                    </dl>
 
-                                                                                                                <div class="menu-item-settings col-12 col-lg-12"
-                                                                                                                     id="menu-item-settings-{{$item->id}}">
-                                                                                                                    <div class="row">
-                                                                                                                        <div class="col-4">
-                                                                                                                            @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                                                <button onclick="$('#chapter_id_lesson').val({{$item->id}});"
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn btn-primary"
-                                                                                                                                        data-toggle="modal"
-                                                                                                                                        data-target="#exampleModal2">
-                                                                                                                                    Create
-                                                                                                                                    Lesson
-                                                                                                                                </button>
-                                                                                                                            @endif
-                                                                                                                        </div>
-                                                                                                                        <div class="col-4">
-                                                                                                                            @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                                                <button onclick="$('#chapter_id_test').val({{$item->id}});"
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn btn-primary"
-                                                                                                                                        data-toggle="modal"
-                                                                                                                                        data-target="#create-test">
-                                                                                                                                    Create
-                                                                                                                                    Test
-                                                                                                                                </button>
-                                                                                                                            @endif
-                                                                                                                        </div>
-                                                                                                                        <div class="col-4">
-                                                                                                                            @if($singleTimeline->model_type == 'App\Models\Chapter')
-                                                                                                                                <button type="button"
-                                                                                                                                        class="btn btn-danger"
-                                                                                                                                        onclick="removeChapter({{$item->id}})">
-                                                                                                                                    <i class="fa fa-trash"></i>
-                                                                                                                                </button>
-                                                                                                                                <button type="button"
-                                                                                                                                        class="btn btn-info"
-                                                                                                                                        data-toggle="modal"
-                                                                                                                                        data-target="#edit-chapter"
-                                                                                                                                        onclick="editChapter({{$item->id}})">
-                                                                                                                                    <i
-                                                                                                                                            class="fa fa-edit"></i>
-                                                                                                                                </button>
+                                                                                                    <div class="menu-item-settings col-12 col-lg-12"
+                                                                                                         id="menu-item-settings-{{$chapter->id}}">
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-4">
+                                                                                                                <button onclick="$('#chapter_id_lesson').val({{$chapter->id}});"
+                                                                                                                        type="button"
+                                                                                                                        class="btn btn-primary"
+                                                                                                                        data-toggle="modal"
+                                                                                                                        data-target="#exampleModal2">
+                                                                                                                    Create
+                                                                                                                    Lesson
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                            <div class="col-4">
+                                                                                                                <button onclick="$('#chapter_id_test').val({{$chapter->id}});"
+                                                                                                                        type="button"
+                                                                                                                        class="btn btn-primary"
+                                                                                                                        data-toggle="modal"
+                                                                                                                        data-target="#create-test">
+                                                                                                                    Create
+                                                                                                                    Test
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                            <div class="col-4">
+                                                                                                                <button type="button"
+                                                                                                                        class="btn btn-danger"
+                                                                                                                        onclick="removeChapter({{$chapter->id}})">
+                                                                                                                    <i class="fa fa-trash"></i>
+                                                                                                                </button>
+                                                                                                                <button type="button"
+                                                                                                                        class="btn btn-info"
+                                                                                                                        data-toggle="modal"
+                                                                                                                        data-target="#edit-chapter"
+                                                                                                                        onclick="editChapter({{$chapter->id}})">
+                                                                                                                    <i
+                                                                                                                            class="fa fa-edit"></i>
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </li>
 
-                                                                                                                            @endif
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </li>
-
-                                                                                                            @foreach($lessons as $lesson)
-                                                                                                                @php
-                                                                                                                    if($lesson->model_type == \App\Models\Lesson::class) {
-                                                                                                                            $lessonData = \App\Models\Lesson::withTrashed()->find($lesson->model_id);
-                                                                                                                            } elseif ($lesson->model_type == \App\Models\Test::class) {
-                                                                                                                            $lessonData = \App\Models\Test::withTrashed()->find($lesson->model_id);
-                                                                                                                            }
-                                                                                                                @endphp
-                                                                                                                @if($lessonData)
-
-                                                                                                                    <li id="menu-item-{{$lesson->model_id}}"
-                                                                                                                        data-type="{{$lesson->model_type}}"
-                                                                                                                        class="menu-item  menu-item-depth-1  menu-item-page menu-item-edit-inactive pending"
-                                                                                                                        style="display: list-item;">
-                                                                                                                        <dl class="menu-item-bar">
-                                                                                                                            <div class="menu-item-handle col-12 col-lg-7">
+                                                                                                @foreach($item['childs'] as $lesson)
+                                                                                                    @if($lesson->model)
+                                                                                                    <li id="menu-item-{{$lesson->model_id}}"
+                                                                                                        data-type="{{$lesson->model_type}}"
+                                                                                                        class="menu-item  menu-item-depth-1  menu-item-page menu-item-edit-inactive pending"
+                                                                                                        style="display: list-item;">
+                                                                                                        <dl class="menu-item-bar">
+                                                                                                            <div class="menu-item-handle col-12 col-lg-7">
                                                                                                                                 <span class="item-title">
                                                                                                                                     <span class="menu-item-title">
-                                                                                                                                        <p data-id="{{$lesson->id}}">{{$lessonData->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                                        <p data-id="{{$lesson->id}}">{{$lesson->model->title}} | {{$lesson->chapter_id}} @if($lesson->model_type == \App\Models\Test::class)
                                                                                                                                                 |
                                                                                                                                                 Test
                                                                                                                                             @endif
                                                                                                                                          </p>
                                                                                                                                     </span>
                                                                                                                                 </span>
-                                                                                                                                <div class="float-right">
-                                                                                                                                    @if ( !is_null($lessonData->deleted_at))
-                                                                                                                                        <form method="post"
-                                                                                                                                              class="d-inline"
-                                                                                                                                              @if($lesson->model_type == \App\Models\Test::class)
-                                                                                                                                              action="{{route('admin.tests.restore', ['id' => $lesson->model_id])}}"
-                                                                                                                                              @elseif ( $lesson->model_type == \App\Models\Lesson::class)
-                                                                                                                                              action="{{route('admin.lessons.restore', ['id' => $lesson->model_id])}}"
-                                                                                                                                                @endif
-                                                                                                                                        >
-                                                                                                                                            @csrf
-                                                                                                                                            <button type="submit"
-                                                                                                                                                    class="btn btn-dark ml-1">
-                                                                                                                                                <i class="fa fa-repeat"></i>
-                                                                                                                                            </button>
-                                                                                                                                        </form>
-                                                                                                                                        <form method="post"
-                                                                                                                                              class="d-inline"
-                                                                                                                                              @if($lesson->model_type == \App\Models\Test::class)
-                                                                                                                                              action="{{route('admin.tests.perma_del', ['id' => $lesson->model_id])}}"
-                                                                                                                                              @elseif ( $lesson->model_type == \App\Models\Lesson::class)
-                                                                                                                                              action="{{route('admin.lessons.perma_del', ['id' => $lesson->model_id])}}"
-                                                                                                                                                @endif
-                                                                                                                                        >
-                                                                                                                                            @csrf
-                                                                                                                                            @method('DELETE')
-                                                                                                                                            <button type="submit"
-                                                                                                                                                    class="btn btn-danger ml-1">
-                                                                                                                                                <i class="fa fa-times"></i>
-                                                                                                                                            </button>
-                                                                                                                                        </form>
-                                                                                                                                    @else
-                                                                                                                                        @if($lesson->model_type == \App\Models\Test::class)
-                                                                                                                                            @if($lesson->must_finish == 0)
-                                                                                                                                                <form method="post"
-                                                                                                                                                      class="d-inline"
-                                                                                                                                                      action="{{route('admin.test.must_finish', ['test' => $lesson->model_id])}}">
-                                                                                                                                                    @csrf
-                                                                                                                                                    @method('post')
-                                                                                                                                                    <button type="submit"
-                                                                                                                                                            class="btn btn-light float-right ml-1">
-                                                                                                                                                        make
-                                                                                                                                                        this
-                                                                                                                                                        test
-                                                                                                                                                        Must
-                                                                                                                                                        Pass
-                                                                                                                                                    </button>
-                                                                                                                                                </form>
-                                                                                                                                            @else
-                                                                                                                                                <form class="d-inline">
-                                                                                                                                                    <p class="btn btn-light float-right ml-1">
-                                                                                                                                                        <i class="fa fa-check"></i>
-                                                                                                                                                        Must
-                                                                                                                                                        Pass
-                                                                                                                                                        this
-                                                                                                                                                        test
-                                                                                                                                                        before
-                                                                                                                                                        certificate
-                                                                                                                                                    </p>
+                                                                                                                <div class="float-right">
+                                                                                                                    @if ( !is_null($lesson->model->deleted_at))
+                                                                                                                        <form method="post"
+                                                                                                                              class="d-inline"
+                                                                                                                              @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                              action="{{route('admin.tests.restore', ['id' => $lesson->model_id])}}"
+                                                                                                                              @elseif ( $lesson->model_type == \App\Models\Lesson::class)
+                                                                                                                              action="{{route('admin.lessons.restore', ['id' => $lesson->model_id])}}"
+                                                                                                                                @endif
+                                                                                                                        >
+                                                                                                                            @csrf
+                                                                                                                            <button type="submit"
+                                                                                                                                    class="btn btn-dark ml-1">
+                                                                                                                                <i class="fa fa-repeat"></i>
+                                                                                                                            </button>
+                                                                                                                        </form>
+                                                                                                                        <form method="post"
+                                                                                                                              class="d-inline"
+                                                                                                                              @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                              action="{{route('admin.tests.perma_del', ['id' => $lesson->model_id])}}"
+                                                                                                                              @elseif ( $lesson->model_type == \App\Models\Lesson::class)
+                                                                                                                              action="{{route('admin.lessons.perma_del', ['id' => $lesson->model_id])}}"
+                                                                                                                                @endif
+                                                                                                                        >
+                                                                                                                            @csrf
+                                                                                                                            @method('DELETE')
+                                                                                                                            <button type="submit"
+                                                                                                                                    class="btn btn-danger ml-1">
+                                                                                                                                <i class="fa fa-times"></i>
+                                                                                                                            </button>
+                                                                                                                        </form>
+                                                                                                                    @else
+                                                                                                                        @if($lesson->model_type == \App\Models\Test::class)
+                                                                                                                            @if($lesson->must_finish == 0)
+                                                                                                                                <form method="post"
+                                                                                                                                      class="d-inline"
+                                                                                                                                      action="{{route('admin.test.must_finish', ['test' => $lesson->model_id])}}">
+                                                                                                                                    @csrf
+                                                                                                                                    @method('post')
+                                                                                                                                    <button type="submit"
+                                                                                                                                            class="btn btn-light float-right ml-1">
+                                                                                                                                        make
+                                                                                                                                        this
+                                                                                                                                        test
+                                                                                                                                        Must
+                                                                                                                                        Pass
+                                                                                                                                    </button>
+                                                                                                                                </form>
+                                                                                                                            @else
+                                                                                                                                <form class="d-inline">
+                                                                                                                                    <p class="btn btn-light float-right ml-1">
+                                                                                                                                        <i class="fa fa-check"></i>
+                                                                                                                                        Must
+                                                                                                                                        Pass
+                                                                                                                                        this
+                                                                                                                                        test
+                                                                                                                                        before
+                                                                                                                                        certificate
+                                                                                                                                    </p>
 
-                                                                                                                                                </form>
+                                                                                                                                </form>
 
-                                                                                                                                            @endif
-
-
-
-                                                                                                                                            <form method="post"
-                                                                                                                                                  class="d-inline"
-                                                                                                                                                  action="{{route('admin.tests.destroy', ['test' => $lesson->model_id])}}">
-                                                                                                                                                @csrf
-                                                                                                                                                @method('DELETE')
-                                                                                                                                                <button type="submit"
-                                                                                                                                                        class="btn btn-light float-right ml-1">
-                                                                                                                                                    <i
-                                                                                                                                                            class="fa fa-trash"></i>
-                                                                                                                                                </button>
-                                                                                                                                            </form>
-
-
-                                                                                                                                        @elseif ($lesson->model_type == \App\Models\Lesson::class)
-                                                                                                                                            <form method="post"
-                                                                                                                                                  class="d-inline"
-                                                                                                                                                  action="{{route('admin.lessons.destroy', ['lesson' => $lesson->model_id])}}">
-                                                                                                                                                @csrf
-                                                                                                                                                @method('DELETE')
-                                                                                                                                                <button type="submit"
-                                                                                                                                                        class="float-right btn btn-light  ml-1">
-                                                                                                                                                    <i
-                                                                                                                                                            class="fa fa-trash"></i>
-                                                                                                                                                </button>
-                                                                                                                                            </form>
+                                                                                                                            @endif
 
 
 
-                                                                                                                                        @endif
-                                                                                                                                        <a @if($lesson->model_type == \App\Models\Test::class) onclick="editTest({{$lesson->model_id}})"
-                                                                                                                                           @else onclick="editLesson({{$lesson->model_id}})"
-                                                                                                                                           @endif class="btn btn-info float-right"
-                                                                                                                                           href="#editModal"
-                                                                                                                                           data-toggle="modal"
-                                                                                                                                           data-target="#editModal"><i
-                                                                                                                                                    class="fa fa-edit"></i>
-                                                                                                                                        </a>
-                                                                                                                                    @endif
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </dl>
-                                                                                                                    </li>
-                                                                                                                @endif
-                                                                                                            @endforeach
-                                                                                                        @endif
+                                                                                                                            <form method="post"
+                                                                                                                                  class="d-inline"
+                                                                                                                                  action="{{route('admin.tests.destroy', ['test' => $lesson->model_id])}}">
+                                                                                                                                @csrf
+                                                                                                                                @method('DELETE')
+                                                                                                                                <button type="submit"
+                                                                                                                                        class="btn btn-light float-right ml-1">
+                                                                                                                                    <i
+                                                                                                                                            class="fa fa-trash"></i>
+                                                                                                                                </button>
+                                                                                                                            </form>
+
+
+                                                                                                                        @elseif ($lesson->model_type == \App\Models\Lesson::class)
+                                                                                                                            <form method="post"
+                                                                                                                                  class="d-inline"
+                                                                                                                                  action="{{route('admin.lessons.destroy', ['lesson' => $lesson->model_id])}}">
+                                                                                                                                @csrf
+                                                                                                                                @method('DELETE')
+                                                                                                                                <button type="submit"
+                                                                                                                                        class="float-right btn btn-light  ml-1">
+                                                                                                                                    <i
+                                                                                                                                            class="fa fa-trash"></i>
+                                                                                                                                </button>
+                                                                                                                            </form>
+
+
+
+                                                                                                                        @endif
+                                                                                                                        <a @if($lesson->model_type == \App\Models\Test::class) onclick="editTest({{$lesson->model_id}})"
+                                                                                                                           @else onclick="editLesson({{$lesson->model_id}})"
+                                                                                                                           @endif class="btn btn-info float-right"
+                                                                                                                           href="#editModal"
+                                                                                                                           data-toggle="modal"
+                                                                                                                           data-target="#editModal"><i
+                                                                                                                                    class="fa fa-edit"></i>
+                                                                                                                        </a>
+                                                                                                                    @endif
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </dl>
+                                                                                                    </li>
                                                                                                     @endif
-
                                                                                                 @endforeach
+                                                                                                @endif
                                                                                             @endforeach
 
                                                                                         </ul>
@@ -1426,7 +1403,7 @@
                     list: list
                 },
                 error: function (err) {
-                    var errorCard = '<div class="alert alert-danger">Failed to save Sequence: '+err+'</div>'
+                    var errorCard = '<div class="alert alert-danger">Failed to save Sequence: ' + err + '</div>'
                     $('#v-pills-messages .card-body').append(errorCard)
                 },
                 success: function (resp) {
