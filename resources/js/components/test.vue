@@ -175,6 +175,7 @@ export default {
       this.questionIndex = 0;
       this.attempts++;
       this.userResponses = Array(quiz.questions.length).fill(null);
+      this.getData(this.slug);
     },
     selectOption: function (index, id) {
       this.userResponses[this.questionIndex] = id
@@ -205,14 +206,13 @@ export default {
     getData(slug) {
       axios.post('/api/v1/single-test', {test: slug})
           .then(res => {
-            this.testData = res.data.response.test
-            this.courseData = res.data.response
             this.attempts = res.data.response.test_result ? res.data.response.test_result.attempts : 0
-            this.resultData = res.data.response.test_result ? res.data.response.test_result.score : 0
             this.$parent.courseData = res.data.response
+            this.courseData = res.data.response
+            this.resultData = res.data.response.test_result ? res.data.response.test_result.score : 0
+            this.testData = res.data.response.test
             this.testDate = new Date().toJSON().slice(0, 10);
             this.testTimer = this.testData.timer.date
-
             for (var i = 0; i <= this.testData.questions.length - 1; i++) {
               let obj = {
                 text: this.testData.questions[i].question,
@@ -256,6 +256,7 @@ export default {
         this.testComplelete = true;
         this.resultData = res.data.resultData
         if (this.resultData.test_result >= this.testData.min_grade) {
+          this.$parent.courseData = res.data
           axios.post('/api/v1/course-progress', {
             model_type: "test", model_id: this.testData.id
           }).then(res => {

@@ -147,18 +147,21 @@ class CoursesController extends Controller
             $completed_lessons = \Auth::user()->chapters()->where('course_id', $course->id)->get()->pluck('model_id')->toArray();
             $course_lessons = $course->lessons->pluck('id')->toArray();
             $continue_course = $course->courseTimeline()
-                ->whereIn('model_id', $course_lessons)
+                ->where('model_type', '!=',Chapter::class)
                 ->orderby('sequence', 'asc')
                 ->whereNotIn('model_id', $completed_lessons)
                 ->first();
             if ($continue_course == null) {
+
                 $continue_course = $course->courseTimeline()
                     ->whereIn('model_id', $course_lessons)
-                    ->where('model_type', Lesson::class)
+                    ->where('model_type', '!=',Chapter::class)
                     ->orderby('sequence', 'asc')->first();
+
             }
 
         }
+
         $mandatory_courses = [];
         $optional_courses = [];
         $course_date =json_encode([]);
@@ -430,6 +433,7 @@ class CoursesController extends Controller
                 }
 
             }
+
             return view('frontend.courses.course', compact('course', 'purchased_course', 'recent_news', 'completed_lessons', 'continue_course', 'course_rating', 'total_ratings', 'lessons', 'review'));
         }
         return abort(404);
