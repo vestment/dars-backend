@@ -109,14 +109,6 @@ import FlipCountdown from './countdown'
 // const Vue = window.vue;
 import axios from "../axios";
 
-var quiz = {
-      user: "Dave",
-      questions: []
-    },
-
-    userResponseSkelaton = Array(quiz.questions.length).fill(null);
-
-
 export default {
 
 
@@ -126,11 +118,11 @@ export default {
       testTimer: "",
       testData: [],
       courseData: [],
-      quiz: quiz,
+      quiz:  {questions: []},
       attempts: 0,
       testComplelete: false,
       questionIndex: 0,
-      userResponses: userResponseSkelaton,
+      userResponses: [],
       isActive: false,
       test_id: '',
       resultData: {test_result: 0},
@@ -138,7 +130,6 @@ export default {
       slug: this.$route.params.slug ? this.$route.params.slug : this.slug,
       testDate: '',
       finalFormat: '',
-
     }
   },
   filters: {
@@ -155,7 +146,8 @@ export default {
     }
   },
   created() {
-    this.getData(this.slug)
+    this.getData(this.slug);
+    this.userResponses = Array(this.quiz.questions.length).fill(null);
   },
   components: {FlipCountdown},
   methods: {
@@ -172,10 +164,12 @@ export default {
       this.submitTest();
     },
     restart: function () {
-      this.questionIndex = 0;
-      this.attempts++;
-      this.userResponses = Array(quiz.questions.length).fill(null);
+      //   this.questionIndex = 0;
+      //   this.attempts++;
+
+
       this.getData(this.slug);
+      this.$forceUpdate();
     },
     selectOption: function (index, id) {
       this.userResponses[this.questionIndex] = id
@@ -184,7 +178,7 @@ export default {
 
 
     prev: function () {
-      if (quiz.questions.length > 0) this.questionIndex--;
+      if (this.quiz.questions.length > 0) this.questionIndex--;
     },
     // Return "true" count in userResponses
     score: function () {
@@ -204,6 +198,11 @@ export default {
       //return this.userResponses.filter(function(val) { return val }).length;
     },
     getData(slug) {
+      this.questionIndex = 0;
+      this.testComplelete= false;
+      this.testData = {questions:[]};
+      this.resultData = 0;
+      this.question_data = [];
       axios.post('/api/v1/single-test', {test: slug})
           .then(res => {
             this.attempts = res.data.response.test_result ? res.data.response.test_result.attempts : 0
@@ -212,7 +211,8 @@ export default {
             this.resultData = res.data.response.test_result ? res.data.response.test_result.score : 0
             this.testData = res.data.response.test
             this.testDate = new Date().toJSON().slice(0, 10);
-            this.testTimer = this.testData.timer.date
+            this.testTimer = this.testData.timer.date;
+            this.quiz= {questions: []};
             for (var i = 0; i <= this.testData.questions.length - 1; i++) {
               let obj = {
                 text: this.testData.questions[i].question,
@@ -228,12 +228,13 @@ export default {
                     };
                 obj.responses.push(responses)
               }
-              quiz.questions.push(obj);
+              this.quiz.questions.push(obj);
             }
             $('.course-title-header').text(this.testData.course.title)
             $('.close-lesson').attr('href', this.courseData.course_page)
             $('.course-progress').text(this.courseData.course_progress + ' %')
-            $('.progress-bar').css('width', this.courseData.course_progress + '%')
+            $('.progress-bar').css('width', this.courseData.course_progress + '%');
+            this.userResponses = Array(this.quiz.questions.length).fill(null);
 
           }).catch(err => {
         console.log(err)
@@ -272,7 +273,7 @@ export default {
       })
     },
     next: function () {
-      if (this.questionIndex < quiz.questions.length - 1) {
+      if (this.questionIndex < this.quiz.questions.length - 1) {
         this.questionIndex++;
       } else {
         this.submitTest();
