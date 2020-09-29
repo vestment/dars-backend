@@ -13,6 +13,7 @@
             color: #333333 !important;
             font-weight: 700;
         }
+
         .page-link {
             position: relative;
             display: block;
@@ -23,27 +24,39 @@
             background-color: white;
             border: none;
         }
+
         .page-item.active .page-link {
             z-index: 1;
             color: #333333;
             background-color: white;
             border: none;
         }
+
         .listing-filter-form select {
             height: 50px !important;
         }
+
         ul.pagination {
             display: inline;
             text-align: center;
         }
+
         .divider {
             height: 2px;
         }
+
         .teacher-description {
             /*border-bottom: 1px solid;*/
             margin-top: 20px;
             margin-bottom: 20px;
             padding: 10px;
+        }
+
+        @media (max-width: 576px) {
+            .py-es-3 {
+                padding-bottom: 1rem!important;
+                padding-top: 1rem!important;
+            }
         }
     </style>
 @endpush
@@ -90,12 +103,12 @@
                         @php
                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                         @endphp
-                    @if($teacherProfile)
-                        <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
-                        <div class="col-lg-5 col-sm-3 mt-3">
-                            <p class="text-white font12">{{$teacher->full_name}}</p>
-                            <p class="text-white font10">{{$teacherProfile->getDataFromColumn('title')}}</p>
-                        </div>
+                        @if($teacherProfile)
+                            <img style="" class="rounded-circle" src=" {{$teacher->picture}}" alt="">
+                            <div class="col-lg-5 col-sm-3 mt-3">
+                                <p class="text-white font12">{{$teacher->full_name}}</p>
+                                <p class="text-white font10">{{$teacherProfile->getDataFromColumn('title')}}</p>
+                            </div>
                         @endif
                     @endforeach
 
@@ -155,16 +168,17 @@
                                 @endif
 
                             @else
-                            <div class="col-12">
-                                <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
-                              
+                                <div class="col-12">
+                                    <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
+
                                 </div>
                             @endif
                         @else
 
                             @if($continue_course)
-                            
-                                <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}" @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
+
+                                <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}"
+                                   @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
                                     <button class="btn btn-outline-light  addcart" type="submit">
                                         @lang('labels.frontend.course.continue_course')
                                         <i class="fa fa-arrow-right"></i>
@@ -186,7 +200,7 @@
                                 <form action="{{ route('wishlist.add') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                    <button type="submit" class="btn btn-outline-light ml-1"><i
+                                    <button type="submit" class="btn py-es-3 btn-outline-light ml-1"><i
                                                 class="fa fa-heart"
                                                 aria-hidden="true"></i>
                                         @lang('labels.frontend.course.wishlist')
@@ -194,13 +208,13 @@
                                 </form>
                             @else
                                 <a href="{{route('wishlist.remove',['course'=>$course])}}"
-                                   class="btn btn-outline-light ml-1"><i
+                                   class="btn btn-outline-light py-es-3 ml-1"><i
                                             class="fa fa-times"></i> @lang('labels.frontend.course.remove')
                                 </a>
                             @endif
                         @else
                             <a href="{{route('login.index')}}"
-                               class="btn btn-outline-light ml-1"><i
+                               class="btn btn-outline-light  py-es-3 ml-1"><i
                                         class="fa fa-heart"
                                         aria-hidden="true"></i> @lang('labels.frontend.course.wishlist')</a>
                         @endif
@@ -225,7 +239,7 @@
     <!-- End of breadcrumb section
         ============================================= -->
 
-@if(session()->has('alert'))
+    @if(session()->has('alert'))
         <div class="alert alert-light alert-dismissible fade my-alert show">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>{{session('alert')}}</strong>
@@ -394,7 +408,8 @@
 
                     @if($continue_course)
 
-                        <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}" @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
+                        <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}"
+                           @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
                             <button class="btn btn-info btn-block  " type="submit">
                                 @lang('labels.frontend.course.continue_course')
                                 <i class="fa fa-arrow-right"></i>
@@ -440,8 +455,9 @@
                                             data-toggle="collapse" data-target="#chapter-{{$chapter->id}}"
                                             aria-expanded="true"
                                             aria-controls="{{$chapter->id}}">
-                                        {{ $chapter->getDataFromColumn('title')}} <i class="fa fa-angle-down float-right"
-                                                                aria-hidden="true"></i>
+                                        {{ $chapter->getDataFromColumn('title')}} <i
+                                                class="fa fa-angle-down float-right"
+                                                aria-hidden="true"></i>
                                     </button>
 
                                 </h2>
@@ -454,14 +470,17 @@
                                         @if($item->model && $item->model->published == 1)
                                             @if($item->model->chapter_id == $chapter->id)
                                                 <div class="mt-4 bordered border-bottom">
-                                                <p class="subtitle2">
-                                                    @if($item->model_type == 'App\Models\Lesson')
-                                                        <i class="fas fa-play-circle"></i> Video File {{$key}}  - {{$item->model->getDataFromColumn('title')}}
+                                                    <p class="subtitle2">
+                                                        @if($item->model_type == 'App\Models\Lesson')
+                                                            <i class="fas fa-play-circle"></i> Video File {{$key}}
+                                                            - {{$item->model->getDataFromColumn('title')}}
                                                     @endif
                                                     @if($item->model_type == 'App\Models\Test')
-                                                        <p class="text-primary"><i class="fas fa-paper-plane"></i> {{$item->model->getDataFromColumn('title')}} - @lang('labels.frontend.course.test')</p>
-                                                    @endif
-                                                 </p>
+                                                        <p class="text-primary"><i
+                                                                    class="fas fa-paper-plane"></i> {{$item->model->getDataFromColumn('title')}}
+                                                            - @lang('labels.frontend.course.test')</p>
+                                                        @endif
+                                                        </p>
                                                 </div>
                                             @endif
                                         @endif
@@ -526,7 +545,8 @@
 
                             </span>
                                     <span>
-                            <i class="fa fa-play-circle font12" aria-hidden="true"></i> {{count($related_course->lessons)}} @lang('labels.frontend.course.lessons')
+                            <i class="fa fa-play-circle font12"
+                               aria-hidden="true"></i> {{count($related_course->lessons)}} @lang('labels.frontend.course.lessons')
 
                             </span>
 
@@ -538,15 +558,14 @@
                                             $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                                         @endphp
                                         @if($teacherProfile)
-                                        <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
-                                        <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
-                                            <p class="font12">{{$teacher->full_name}}</p>
-                                            <p class="font10">{{$teacherProfile->description}}</p>
-                                        </div>
+                                            <img class="rounded-circle" src=" {{asset($teacher->picture)}}" alt="">
+                                            <div class="col-lg-9 col-sm-3 col-md-6 col-8 mt-3">
+                                                <p class="font12">{{$teacher->full_name}}</p>
+                                                <p class="font10">{{$teacherProfile->description}}</p>
+                                            </div>
                                         @endif
                                     @endforeach
                                 </div>
-
 
 
                             </div>
@@ -795,25 +814,25 @@
                     $teacherProfile = \App\Models\TeacherProfile::where('user_id',$teacher->id)->first();
                 @endphp
                 @if($teacherProfile)
-                <div class="row" data-id="{{$teacher->id}}">
+                    <div class="row" data-id="{{$teacher->id}}">
 
-                    <div class="col-lg-1 col-md-2 col-sm-3">
-                        <img style="max-width: 100px" class="rounded-circle" src="{{$teacher->picture}}"
-                             alt="">
+                        <div class="col-lg-1 col-md-2 col-sm-3">
+                            <img style="max-width: 100px" class="rounded-circle" src="{{$teacher->picture}}"
+                                 alt="">
 
-                    <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
-                    </div>
-                    <div class="col-lg-6 col-md-5 col-sm-3">
-                        @php $key++ @endphp
-                        <p style="font-size:30px;">{{$teacher->full_name}}</p>
-                        <p class="teacher-title">{{$teacherProfile->getDataFromColumn('title')}}</p>
-                        <hr class="ml-0 divider">
+                        <!-- {{-- <img src="{{asset('img/backend/brand/logo.png')}}" alt="logo"> --}} -->
+                        </div>
+                        <div class="col-lg-6 col-md-5 col-sm-3">
+                            @php $key++ @endphp
+                            <p style="font-size:30px;">{{$teacher->full_name}}</p>
+                            <p class="teacher-title">{{$teacherProfile->getDataFromColumn('title')}}</p>
+                            <hr class="ml-0 divider">
 
+                        </div>
+                        <div class="col-12 teacher-description">
+                            <p>{{$teacherProfile->getDataFromColumn('description')}}</p>
+                        </div>
                     </div>
-                    <div class="col-12 teacher-description">
-                        <p>{{$teacherProfile->getDataFromColumn('description')}}</p>
-                    </div>
-                </div>
                 @endif
             @endforeach
         </div>
@@ -900,7 +919,7 @@
 
                             <select class="form-control form-control ml-4" id="datesToSelect">
                                 <option value="m">select date</option>
-                           </select>
+                            </select>
 
 
                         </div>
@@ -961,6 +980,7 @@
     <script>
         const player = new Plyr('#player');
         $('.js-player source').remove();
+
         function selectTime(element) {
             $(element).parent().find('.btn-primary').addClass('btn-outline-dark');
             $(element).parent().find('.btn-primary').removeClass('selectedTime');
@@ -970,6 +990,7 @@
             $(element).addClass('btn-primary');
             $('#selectedTime').val($(element).data('value'));
         }
+
         $(window).load(function () {
             var OfflineDates = JSON.parse('{!!$course_date!!}');
             var dates = [];
@@ -1018,7 +1039,7 @@
         $(document).on('change', 'input[name="stars"]', function () {
             $('#rating').val($(this).val());
         })
-                @if(isset($review))
+        @if(isset($review))
         var rating = "{{$review->rating}}";
         $('input[value="' + rating + '"]').prop("checked", true);
         $('#rating').val(rating);
