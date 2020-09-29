@@ -334,39 +334,77 @@
                 <p class="smpara"><i class="fa fa-file" aria-hidden="true"></i>
                     <span>  {{$chaptercount}} </span> @lang('labels.frontend.course.chapters')</p>
                 <p class="smpara"><i class="fa fa-download" aria-hidden="true"></i>
-
-
                     {{ $fileCount }} Downloadable files
-                    <!-- 65 downloadable resources -->
-
                 </p>
-                <!-- <p class="smpara"> <i class="fa fa-film" aria-hidden="true"></i> Access on mobile and TV</p>
-                <p class="smpara"> <i class="fa fa-certificate" aria-hidden="true"></i> Certificate of completion</p> -->
-
 
                 @if (!$purchased_course)
+
                     @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                        <button class="btn btn-info btn-block"
+                        <button class="btn btn-info btn-block "
                                 type="submit">@lang('labels.frontend.course.added_to_cart')
                         </button>
                     @elseif(!auth()->check())
-                        <a href="{{route('login.index')}}" class="btn btn-info btn-sm btn-block text-white"> <i
-                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
-                            @lang('labels.frontend.course.add_to_cart')
-                        </a>
-                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-                        <form action="{{ route('cart.addToCart') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                            <input type="hidden" name="amount"
-                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                            <button type="submit" class="btn btn-info btn-sm btn-block text-white"><i
+                        @if($course->free == 1)
+                            <a href="{{route('login.index')}}" class="btn btn-info btn-block ">
+                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                @lang('labels.frontend.course.get_now')
+                                <i class="fas fa-caret-right"></i>
+                            </a>
+                        @else
+
+                            <a href="{{route('login.index')}}" class="btn btn-info btn-block "> <i
                                         class="fa fa-shopping-bag" aria-hidden="true"></i>
                                 @lang('labels.frontend.course.add_to_cart')
-                            </button>
-                        </form>
+                            </a>
+                        @endif
+
+                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                        @if($course->free == 1)
+                            <form action="{{ route('cart.getnow') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                <input type="hidden" name="amount"
+                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                <button class="btn btn-info btn-block "
+                                        href="#">@lang('labels.frontend.course.get_now') <i
+                                            class="fas fa-caret-right"></i></button>
+                            </form>
+                        @else
+
+                            <form action="{{ route('cart.addToCart') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                <input type="hidden" name="amount"
+                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                <button type="submit" class="btn btn-info btn-block "><i
+                                            class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.add_to_cart')
+                                </button>
+                            </form>
+                        @endif
+
                     @else
-                        <h6 class="alert alert-danger"> @lang('labels.frontend.course.buy_note')</h6>
+                        <div class="col-12">
+                            <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
+
+                        </div>
+                    @endif
+                @else
+
+                    @if($continue_course)
+
+                        <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}" @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
+                            <button class="btn btn-info btn-block  " type="submit">
+                                @lang('labels.frontend.course.continue_course')
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </a>
+                    @else
+                        <button class="btn btn-info btn-block  " type="submit">
+                            No lessons available
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
                     @endif
 
 
@@ -620,7 +658,7 @@
                                         <span><b>@lang('labels.frontend.course.details')</b></span>
                                         @for($r=5; $r>=1; $r--)
                                             <div class="rating-overview">
-                                                <span class="start-item">{{$r}} @lang('labels.frontend.course.stars')</span>
+                                                <span class="start-item">{{$r}} {{$r == 1 ? substr(__('labels.frontend.course.stars'), 0, -1) : __('labels.frontend.course.stars')}}</span>
                                                 <span class="start-bar"></span>
                                                 <span class="start-count">{{$course->reviews()->where('rating','=',$r)->get()->count()}}</span>
                                             </div>

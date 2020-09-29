@@ -51,13 +51,15 @@
 
     <!-- Start of breadcrumb section
         ============================================= -->
-    <section id="breadcrumb" class="breadcrumb-section relative-position backgroud-style @if($academy->id == 29) bgimage @else bgcolor @endif">
+    <section id="breadcrumb"
+             class="breadcrumb-section relative-position backgroud-style @if($academy->id == 29) bgimage @else bgcolor @endif">
         <div class="blakish-overlay"></div>
         @if($academy->id != 29)
             <div class="container">
                 <div class="col m-sm-5 m-5 m-xl-0 paragraph1 academy-info">
                     <div class="m-1">
-                        <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies') / <b class="text-white">{{$academy->full_name}}</b></p>
+                        <p> @lang('labels.frontend.layouts.partials.explore') / @lang('labels.frontend.home.academies')
+                            / <b class="text-white">{{$academy->full_name}}</b></p>
 
                     </div>
                     <div class="p-1">
@@ -65,13 +67,13 @@
                     </div>
                     <div class="row col-lg-3 flex">
                         @if($academy->academy->facebook_link) <a href="{{$academy->academy->facebook_link}}"
-                                                            class="btn btn-sm btn-outline-light mr-1"><i
+                                                                 class="btn btn-sm btn-outline-light mr-1"><i
                                     class="fab fa-facebook-f"></i> </a> @endif
                         @if($academy->academy->twitter_link)<a href="{{$academy->academy->twitter_link}}"
-                                                          class="btn btn-sm btn-outline-light mr-1"><i
+                                                               class="btn btn-sm btn-outline-light mr-1"><i
                                     class="fab fa-twitter"></i> </a>@endif
                         @if($academy->academy->linkedin_link)<a href="{{$academy->academy->linkedin_link}}"
-                                                           class=" btn btn-sm btn-outline-light mr-1"><i
+                                                                class=" btn btn-sm btn-outline-light mr-1"><i
                                     class="fab fa-linkedin"></i> </a>@endif
 
                     </div>
@@ -93,7 +95,7 @@
     </section>
     <!-- End of breadcrumb section
         ============================================= -->
-@if(session()->has('alert'))
+    @if(session()->has('alert'))
         <div class="alert alert-light alert-dismissible fade my-alert show">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>{{session('alert')}}</strong>
@@ -169,10 +171,10 @@
                                             <ul>
                                                 <li><a href="{{'mailto:'.$teacher->teacher['email']}}"><i
                                                                 class="fa fa-envelope"></i></a></li>
-                                                <!--<li>-->
-                                            <!--    <a href="{{route('admin.messages',['teacher_id'=>$teacher->teacher['id']])}}"><i-->
-                                                <!--                class="fa fa-comments"></i></a>-->
-                                                <!--</li>-->
+                                                <li>
+                                                    <a href="{{route('admin.messages',['teacher_id'=>$teacher->teacher['id']])}}">
+                                                        <i class="fa fa-comments"></i></a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -201,16 +203,16 @@
             @if ($academy->id == 29)
                 @if(count($courses) > 0)
 
-                                    <div class="owl-carousel default-owl-theme p-3 ">
-                                        @foreach($courses as $course)
-                                                <div class="item">
-                                                    <div class="">
-                                                        @include('frontend.layouts.partials.coursesTemp')
-                                                    </div>
-                                                </div>
+                    <div class="owl-carousel default-owl-theme p-3 ">
+                        @foreach($courses as $course)
+                            <div class="item">
+                                <div class="">
+                                    @include('frontend.layouts.partials.coursesTemp')
+                                </div>
+                            </div>
 
-                                        @endforeach
-                                    </div>
+                        @endforeach
+                    </div>
                 @else
                     <div class="alert alert-dark">
                         <span>@lang('labels.general.no_data_available')</span>
@@ -218,40 +220,40 @@
                 @endif
             @else
 
-            @if(count($courses) > 0)
-                <div class="col-md-12">
-                    <div class="col-xl-12 categories-container border-bottom">
-                        @foreach($categories as $key=>$category)
-                            <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
-                                    class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
-                        @endforeach
-                    </div>
-                    <div class="col-xl-12 courses-container">
-                        @foreach($categories as $key=>$category)
-                            <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
-                                 id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
-                                <div class="owl-carousel default-owl-theme p-3 ">
-                                    @foreach($courses as $course)
-                                        @if($course->category_id == $category->id)
-                                            <div class="item">
+                @if(count($courses) > 0)
+                    <div class="col-md-12">
+                        <div class="col-xl-12 categories-container border-bottom">
+                            @foreach($categories as $key=>$category)
+                                <button onclick="showTab($('#content-{{$category->id}}'),$(this))"
+                                        class="tab-button btn @if ($key == 0) active @endif btn-light">{{$category->getDataFromColumn('name')}}</button>
+                            @endforeach
+                        </div>
+                        <div class="col-xl-12 courses-container">
+                            @foreach($categories as $key=>$category)
+                                <div class="course-container fade in @if ($key == 0) show active @else hide @endif"
+                                     id="content-{{$category->id}}" aria-labelledby="content-{{$category->id}}">
+                                    <div class="owl-carousel default-owl-theme p-3 ">
+                                        @foreach($courses as $course)
+                                            @if($course->category_id == $category->id)
+                                                <div class="item">
 
-                                                <div class="">
-                                                    @include('frontend.layouts.partials.coursesTemp')
+                                                    <div class="">
+                                                        @include('frontend.layouts.partials.coursesTemp')
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            @else
-                <div class="alert alert-dark">
-                    <span>@lang('labels.general.no_data_available')</span>
-                </div>
-            @endif
+                @else
+                    <div class="alert alert-dark">
+                        <span>@lang('labels.general.no_data_available')</span>
+                    </div>
                 @endif
+            @endif
         </div>
     </section>
 

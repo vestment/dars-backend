@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Review;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
 use Stripe\Charge;
@@ -38,13 +39,6 @@ class offlineBookingController extends Controller
 
 
         $academy_filter=[];
-        // foreach($courses as $course) {
-        //    $academy = $course->academy->with('user')->first();
-        //         $academy->user->assoc_id = $course->academy_id;
-        //         if (!in_array($academy->user,$academy_filter)){
-        //         array_push($academy_filter,$academy->user);
-        //         }
-        // }
         $ac_filter= $academy_filter;
         
 
@@ -57,21 +51,16 @@ class offlineBookingController extends Controller
                 }
         }
         $cate_filter= $category_filter;
-
-
-
-        foreach ($courses as $course) {
-            foreach ($course->teachers as $teacher) {
-                $teacher_data = TeacherProfile::where('user_id', $teacher->id)->get();
-            }
-
-        }
-
-       
         $teacher_dat = TeacherProfile::get();
         $teachers = User::get();
-
-        return view('frontend.offlineBookingCourse', compact( 'courses','ac_filter','teacher_dat', 'teachers', 'teacher_data','teach_filtering','cate_filter'));
+        if( auth()->user()){
+            $id= auth()->user()->id;
+            $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
+        return view('frontend.offlineBookingCourse', compact( 'courses_id','courses','ac_filter','teacher_dat', 'teachers','teach_filtering','cate_filter'));
 
     }
 

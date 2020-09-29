@@ -16,7 +16,7 @@ setInterval(function()
               $('.mob-notification').removeClass('d-none').html('!');
               $('.unreadMessageCounter').removeClass('d-none').html(data.unreadMessageCount)
               var html = "";
-              var host = $(location).attr('protocol')+'//'+$(location).attr('hostname')+'/user/messages/?thread=';
+              var host = $(location).attr('protocol')+'//'+$(location).attr('hostname')+'/user/messanger/?thread=';
               $(data.threads).each(function (key,value) {
                  html+= '<a class="dropdown-item" href="'+host+value.thread_id+'"> ' +
               '<p class="font-weight-bold mb-0">'+value.title+' <span class="badge badge-success">'+value.unreadMessagesCount+'</span></p>' +

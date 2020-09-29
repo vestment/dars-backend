@@ -179,9 +179,7 @@
 
 
                     </div>
-                    <div class="couse-pagination text-center ul-li">
-                        {{ $courses->links() }}
-                    </div>
+
 
                 @else
                     <p>@lang('labels.general.no_data_available')</p>

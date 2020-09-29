@@ -284,7 +284,7 @@
                     </a>
                 </li>
             @endif
-            @if(auth()->user()->hasRole('teacher') || auth()->user()->isAdmin())
+            @if(auth()->user()->hasRole('academy') || auth()->user()->isAdmin())
                 <li class="nav-item ">
                     <a class="nav-link {{ $request->segment(1) == 'reviews' ? 'active' : '' }}"
                        href="{{ route('admin.reviews.index') }}">

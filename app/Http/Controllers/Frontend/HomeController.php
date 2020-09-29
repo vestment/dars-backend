@@ -228,12 +228,14 @@ class HomeController extends Controller
     public function showTeacher(Request $request)
     {
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
-        $teacher = User::role('teacher')->where('id', '=', $request->id)->first();
+        $teacher = User::role('teacher')->with(['courses'=>function($query) {
+            $query->withoutGlobalScope('filter');
+        }])->where('id', '=', $request->id)->first();
         $teacher_data = TeacherProfile::where('user_id', '=', $request->id)->with('academy')->first();
         $academy = User::role('academy')->where('id', '=', $teacher_data->academy_id)->first();
         $courses = [];
         if (count($teacher->courses) > 0) {
-            $courses = $teacher->courses()->paginate(12);
+            $courses = $teacher->courses;
         }
         if( auth()->user()){
             $id= auth()->user()->id;
@@ -328,8 +330,14 @@ class HomeController extends Controller
 
         $q = $request->q;
         $recent_news = Blog::orderBy('created_at', 'desc')->take(2)->get();
-
-        return view('frontend.search-result.courses', compact('courses', 'q', 'recent_news', 'categories'));
+        if( auth()->user()){
+            $id= auth()->user()->id;
+            $courses_id = DB::table('course_student')->where('user_id', $id)->pluck('course_id')->toArray();
+        }
+        else{
+            $courses_id=null;
+        }
+        return view('frontend.search-result.courses', compact('courses', 'q', 'recent_news', 'categories','courses_id'));
     }
 
 

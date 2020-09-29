@@ -158,18 +158,7 @@
                         <!-- Section: Filters -->
                     </div>
                     <div class="col-12 col-lg-9 col-xl-9 col-md-8">
-                        {{-- <div class="form-group row filters-category">
-                            <label class="col-sm-2 col-form-label col-form-label-sm " for="sort"><h3
-                                        class="font-weight-bold text-dark">@lang('labels.frontend.search_result.sort_by')</h3></label>
-                            <div class="col">
-                                <select id="sortFilter" class="form-control">
-                                    <option selected value="All">All</option>
-                                    <option value="popular">@lang('labels.frontend.search_result.popular')</option>
-                                    <option value="trending">@lang('labels.frontend.search_result.trending')</option>
-                                    <option value="featured">@lang('labels.frontend.search_result.featured')</option>
-                                </select>
-                            </div>
-                        </div> --}}
+
                         <div class="row all-courses">
                             @if($courses->count() > 0)
 
