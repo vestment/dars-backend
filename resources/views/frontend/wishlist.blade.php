@@ -97,7 +97,7 @@
                         @endif
                         <div class="course-list-view ">
                             @if(count($courses) > 0)
-                                <table class="table table-responsive">
+                                <table class="table">
 
                                     <thead>
                                     <tr class="list-head text-uppercase">
@@ -157,21 +157,12 @@
                                                     <button class="btn btn-info  addcart"
                                                             type="submit">@lang('labels.frontend.course.added_to_cart')
                                                     </button>
-                                                @elseif(!auth()->check())
-                                                    @if($course->free == 1)
-                                                        <a href="{{route('login.index')}}" class="btn btn-info addcart">
-                                                            @lang('labels.frontend.course.get_now')
-                                                            <i class="fas fa-caret-right"></i>
-                                                        </a>
-                                                    @else
-
-                                                        <a href="{{route('login.index')}}" class="btn btn-info addcart">
-                                                            <i
-                                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                                            @lang('labels.frontend.course.add_to_cart')
-                                                        </a>
-                                                    @endif
-
+                                                @elseif( auth()->check() && (auth()->user()->hasRole('student')) && $course->students()->where('user_id', auth()->user()->id)->count())
+                                                    
+                                                <a class="btn btn-info btn-block " href="{{ route('courses.show', [$course->slug]) }}">
+                                                    @lang('labels.frontend.course.continue_course')
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </a>
                                                 @elseif(auth()->check() && (auth()->user()->hasRole('student')))
 
                                                     @if($course->free == 1)
@@ -193,14 +184,29 @@
                                                                    value="{{ $course->id }}"/>
                                                             <input type="hidden" name="amount"
                                                                    value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                                            <button type="submit" class="btn btn-info btn-block "><i
+                                                            <button type="submit" class="btn btn-info btn-block " data-check="{{$course->students()->where('user_id', auth()->user()->id)->count()}}"><i
                                                                         class="fa fa-shopping-bag"
                                                                         aria-hidden="true"></i>
                                                                 @lang('labels.frontend.course.add_to_cart')
                                                             </button>
                                                         </form>
                                                     @endif
+                                                @elseif(!auth()->check())
+                                                    @if($course->free == 1)
+                                                        <a href="{{route('login.index')}}" class="btn btn-info addcart">
+                                                            @lang('labels.frontend.course.get_now')
+                                                            <i class="fas fa-caret-right"></i>
+                                                        </a>
+                                                    @else
 
+                                                        <a href="{{route('login.index')}}" class="btn btn-info addcart">
+                                                            <i
+                                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                                            @lang('labels.frontend.course.add_to_cart')
+                                                        </a>
+                                                    @endif
+
+                                        
                                                 @endif
                                             </td>
 
