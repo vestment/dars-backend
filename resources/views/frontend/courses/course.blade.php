@@ -125,6 +125,32 @@
                                 <button class="btn btn-outline-light  addcart"
                                         type="submit">@lang('labels.frontend.course.added_to_cart')
                                 </button>
+
+
+                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                                @if($course->free == 1)
+                                    <form action="{{ route('cart.getnow') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                        <input type="hidden" name="amount"
+                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                        <button class="btn btn-outline-light addcart"
+                                                href="#">@lang('labels.frontend.course.get_now') <i
+                                                    class="fas fa-caret-right"></i></button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('cart.addToCart') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                        <input type="hidden" name="amount"
+                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                        <button type="submit" class="btn btn-outline-light addcart"><i
+                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                            @lang('labels.frontend.course.add_to_cart')
+                                        </button>
+                                    </form>
+                                @endif
                             @elseif(!auth()->check())
                                 @if($course->free == 1)
                                     <a href="{{route('login.index')}}" class="btn btn-outline-light addcart">
@@ -140,33 +166,6 @@
                                         @lang('labels.frontend.course.add_to_cart')
                                     </a>
                                 @endif
-
-                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                                @if($course->free == 1)
-                                    <form action="{{ route('cart.getnow') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                        <input type="hidden" name="amount"
-                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button class="btn btn-outline-light addcart"
-                                                href="#">@lang('labels.frontend.course.get_now') <i
-                                                    class="fas fa-caret-right"></i></button>
-                                    </form>
-                                @else
-
-                                    <form action="{{ route('cart.addToCart') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                        <input type="hidden" name="amount"
-                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button type="submit" class="btn btn-outline-light addcart"><i
-                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                            @lang('labels.frontend.course.add_to_cart')
-                                        </button>
-                                    </form>
-                                @endif
-
                             @else
                                 <div class="col-12">
                                     <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>

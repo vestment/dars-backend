@@ -621,7 +621,9 @@ class ApiController extends Controller
 
         $lesson = Lesson::where('published', '=', 1)
             ->where('slug', $request->lesson)
+            ->with(['chapterStudents'])
             ->first();
+
         if ($lesson != null) {
             if ($lesson->course && !in_array(auth()->user()->id, $lesson->course->students()->pluck('user_id')->toArray())) {
                 return response()->json(['status' => 'failure', 'message' => 'You need to buy this course first']);
@@ -649,9 +651,26 @@ class ApiController extends Controller
                         ->value('model_id');
 
                     $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
-
-                    foreach ($courseChapter[$item->id]['lessons'] as $chapterLesson) {
+                    $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
+                        ->where('model_type', Lesson::class)
+                        ->with('model')
+                        ->orderBy('sequence', 'desc')
+                        ->first();
+                    $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
+                        ->where('model_type', Lesson::class)
+                        ->with('model')
+                        ->orderBy('sequence', 'asc')
+                        ->first();
+                    foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
                         $chapterLesson['canView'] = true;
+                        if ($index != 0) {
+                            $prevLesson = $courseChapter[$item->id]['lessons'][$index-1];
+                            $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
+                            if (!$LessonCompleted) {
+                                $chapterLesson['key'] = $index;
+                                $chapterLesson['canView'] = false;
+                            }
+                        }
                         if ($prevChapter) {
                             $chapterTest = $prevChapter->test;
                             if ($chapterTest && count($chapterTest->testResult) >0) {
@@ -668,16 +687,6 @@ class ApiController extends Controller
 
             }
             $chapters = $course->chapters()->with(['test'])->get();
-            $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
-                ->where('model_type', Lesson::class)
-                ->with('model')
-                ->orderBy('sequence', 'desc')
-                ->first();
-            $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
-                ->where('model_type', Lesson::class)
-                ->with('model')
-                ->orderBy('sequence', 'asc')
-                ->first();
 
             $is_certified = $lesson->course->isUserCertified();
             $course_progress = $lesson->course->progress();

@@ -201,7 +201,7 @@
                                                                     @if($course->free == 1)
                                                                         <form action="{{ route('cart.getnow') }}" method="POST">
                                                                             @csrf
-                                                                            <input type="hidden" name="course_id"
+                                                                            <input type="hidden" name="bundle_id"
                                                                                    value="{{ $course->id }}"/>
                                                                             <input type="hidden" name="amount"
                                                                                    value="{{($course->free == 1) ? 0 : $course->price}}"/>
@@ -211,7 +211,7 @@
                                                                     @else
                                                                         <form action="{{ route('cart.addToCart') }}" method="POST">
                                                                             @csrf
-                                                                            <input type="hidden" name="course_id"
+                                                                            <input type="hidden" name="bundle_id"
                                                                                    value="{{ $course->id }}"/>
                                                                             <input type="hidden" name="amount"
                                                                                    value="{{($course->free == 1) ? 0 : $course->price}}"/>

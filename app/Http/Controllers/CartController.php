@@ -690,7 +690,7 @@ class CartController extends Controller
         if ($type == Course::class) {
             return redirect()->route('courses.show', [$slug]);
         } else {
-            return redirect()->route('bundle.show', [$slug]);
+            return redirect()->route('bundles.show', [$slug]);
         }
     }
 

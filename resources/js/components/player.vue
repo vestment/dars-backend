@@ -71,20 +71,26 @@ export default {
         model_type: "lesson", model_id: this.courseData.lesson.id
       }).then(res => {
         let lastChapter = this.courseData.course_timeline[this.courseData.course_timeline.length - 1];
-        if (this.courseData.next_lesson) {
-          this.courseData.course_timeline.map(chapter => {
-            chapter.lessons.filter(lesson => {
-              if (this.courseData.next_lesson.model_id == lesson.model_id && lesson.canView == true) {
-                this.$router.push({name: 'player', params: {slug: lesson.model.slug}})
-              }
-            })
-          })
-        }
-        if (!lastChapter.test && !this.courseData.next_lesson) {
-          this.finishCourse();
-        }
+        this.getData(this.slug)
+        this.$on('updateLesson', (courseData) => {
+          console.log('updated info',courseData);
+          if (courseData.next_lesson) {
+            // console.log(courseData)
+            courseData.course_timeline.map(chapter => {
+              chapter.lessons.filter(lesson => {
 
-      })
+                if (courseData.next_lesson.model_id == lesson.model_id && lesson.canView == true) {
+                  this.$router.push({name: 'player', params: {slug: lesson.model.slug}})
+                }
+                if (!lastChapter.test && !courseData.next_lesson) {
+                  this.finishCourse();
+                }
+              })
+            });
+          }
+        });
+
+      });
     },
     finishCourse() {
       axios.post('/api/v1/generate-certificate', {
@@ -110,8 +116,8 @@ export default {
                   this.lessonVideo.src = this.courseData.lesson.media_video.url
                 }
               }
+              this.$emit('updateLesson',this.courseData)
               this.$forceUpdate();
-              console.log("Lesson", this.courseData)
               $('.course-title-header').text(this.courseData.course.title)
               $('.close-lesson').attr('href', this.courseData.course_page)
               $('.course-progress').text(this.courseData.course_progress + ' %')
@@ -123,14 +129,13 @@ export default {
     },
     // player is ready
     playerReadied(player) {
-      console.log('the player is readied', player)
-      // you can use it to do something...
-      // player.[methods]
+
       let myPluginCollection = document.getElementsByClassName('svg-embedded')
-      if (myPluginCollection) {
-        player.target.appendChild(myPluginCollection[0]);
+      let clonedDiv = myPluginCollection[0].cloneNode(true);
+      if (clonedDiv) {
+        player.target.appendChild(clonedDiv);
         setInterval(function () {
-          var $div = $('.svg-embedded'),
+          var $div = $(clonedDiv),
               docHeight = $div.parent().height(),
               docWidth = $div.parent().width(),
               divHeight = $div.height(),

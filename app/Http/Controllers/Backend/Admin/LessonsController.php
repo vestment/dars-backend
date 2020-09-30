@@ -245,19 +245,10 @@ class LessonsController extends Controller
 
         $request = $this->saveAllFiles($request, 'downloadable_files', Lesson::class, $lesson);
 
-        if (($request->slug == "") || $request->slug == null) {
-            $lesson->slug = str_slug($request->title);
-            $lesson->save();
-        }
-
-            // dd($request->all());
-
-            // $chapterSeq = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
         $sequence = 1;
         if (count($lesson->course->courseTimeline) > 0) {
 
             $sequence = $lesson->course->courseTimeline->max('sequence');
-            // $sequence = CourseTimeline::where('model_id',$request->chapter_id)->value('sequence');
 
             $sequence = $sequence + 1;
         }
@@ -313,7 +304,7 @@ class LessonsController extends Controller
         }
 
 
-        $slug = str_slug($request->title.'-'.$request->chapter_id);
+        $slug = str_slug($request->title).'-'.$request->chapter_id;
 
         $slug_lesson = Lesson::where('slug', '=', $slug)->where('id', '!=', $id)->first();
         if ($slug_lesson != null) {
@@ -322,7 +313,7 @@ class LessonsController extends Controller
 
         $lesson = Lesson::findOrFail($id);
         $lesson->update($request->except('downloadable_files', 'lesson_image','course_id','chapter_id'));
-        $lesson->slug = str_slug($request->title.'-'.$request->chapter_id);
+        $lesson->slug = $slug;
         $lesson->save();
 
         //Saving  videos
