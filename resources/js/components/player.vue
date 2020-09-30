@@ -99,7 +99,15 @@ export default {
       axios.post('/api/v1/generate-certificate', {
         course_id: this.courseData.course.id,
       }).then(res => {
-        console.log(res)
+        if (res.data.status == 'success') {
+          this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Your certificate is available in your dashboard',
+            duration: 5000,
+            dismissible: true
+          });
+        }
       }).catch(err => {
         console.log(err.response)
       })

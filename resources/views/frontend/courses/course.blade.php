@@ -118,80 +118,80 @@
                 <div class="row mt-1 flex">
 
                     <div class="row col-lg-6 buttoncart">
+                        @if ($course->online)
+                            @if (!$purchased_course)
 
-                        @if (!$purchased_course)
-
-                            @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                                <button class="btn btn-outline-light  addcart"
-                                        type="submit">@lang('labels.frontend.course.added_to_cart')
-                                </button>
+                                @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                                    <button class="btn btn-outline-light  addcart"
+                                            type="submit">@lang('labels.frontend.course.added_to_cart')
+                                    </button>
 
 
-                            @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+                                @elseif(auth()->check() && (auth()->user()->hasRole('student')))
 
-                                @if($course->free == 1)
-                                    <form action="{{ route('cart.getnow') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                        <input type="hidden" name="amount"
-                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button class="btn btn-outline-light addcart"
-                                                href="#">@lang('labels.frontend.course.get_now') <i
-                                                    class="fas fa-caret-right"></i></button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('cart.addToCart') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                        <input type="hidden" name="amount"
-                                               value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                        <button type="submit" class="btn btn-outline-light addcart"><i
+                                    @if($course->free == 1)
+                                        <form action="{{ route('cart.getnow') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                            <input type="hidden" name="amount"
+                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                            <button class="btn btn-outline-light addcart"
+                                                    href="#">@lang('labels.frontend.course.get_now') <i
+                                                        class="fas fa-caret-right"></i></button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('cart.addToCart') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                            <input type="hidden" name="amount"
+                                                   value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                            <button type="submit" class="btn btn-outline-light addcart"><i
+                                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                                @lang('labels.frontend.course.add_to_cart')
+                                            </button>
+                                        </form>
+                                    @endif
+                                @elseif(!auth()->check())
+                                    @if($course->free == 1)
+                                        <a href="{{route('login.index')}}" class="btn btn-outline-light addcart">
+                                            <i
+                                                    class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                            @lang('labels.frontend.course.get_now')
+                                            <i class="fas fa-caret-right"></i>
+                                        </a>
+                                    @else
+
+                                        <a href="{{route('login.index')}}" class="btn btn-outline-light addcart"> <i
                                                     class="fa fa-shopping-bag" aria-hidden="true"></i>
                                             @lang('labels.frontend.course.add_to_cart')
-                                        </button>
-                                    </form>
+                                        </a>
+                                    @endif
+                                @else
+                                    <div class="col-12">
+                                        <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
+
+                                    </div>
                                 @endif
-                            @elseif(!auth()->check())
-                                @if($course->free == 1)
-                                    <a href="{{route('login.index')}}" class="btn btn-outline-light addcart">
-                                        <i
-                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                        @lang('labels.frontend.course.get_now')
-                                        <i class="fas fa-caret-right"></i>
+                            @else
+
+                                @if($continue_course)
+
+                                    <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}"
+                                       @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
+                                        <button class="btn btn-outline-light  addcart" type="submit">
+                                            @lang('labels.frontend.course.continue_course')
+                                            <i class="fa fa-arrow-right"></i>
+                                        </button>
                                     </a>
                                 @else
-
-                                    <a href="{{route('login.index')}}" class="btn btn-outline-light addcart"> <i
-                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                        @lang('labels.frontend.course.add_to_cart')
-                                    </a>
-                                @endif
-                            @else
-                                <div class="col-12">
-                                    <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
-
-                                </div>
-                            @endif
-                        @else
-
-                            @if($continue_course)
-
-                                <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}"
-                                   @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
                                     <button class="btn btn-outline-light  addcart" type="submit">
-                                        @lang('labels.frontend.course.continue_course')
+                                        No lessons available
                                         <i class="fa fa-arrow-right"></i>
                                     </button>
-                                </a>
-                            @else
-                                <button class="btn btn-outline-light  addcart" type="submit">
-                                    No lessons available
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
+                                @endif
                             @endif
+
                         @endif
-
-
 
                         @if(auth()->check() && (auth()->user()->hasRole('student')))
                             @if(!auth()->user()->wishList->where('id',$course->id)->first())
@@ -349,81 +349,81 @@
                 <p class="smpara"><i class="fa fa-download" aria-hidden="true"></i>
                     {{ $fileCount }} Downloadable files
                 </p>
+                @if ($course->online)
+                    @if (!$purchased_course)
 
-                @if (!$purchased_course)
+                        @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
+                            <button class="btn btn-info btn-block "
+                                    type="submit">@lang('labels.frontend.course.added_to_cart')
+                            </button>
+                        @elseif(!auth()->check())
+                            @if($course->free == 1)
+                                <a href="{{route('login.index')}}" class="btn btn-info btn-block ">
+                                    <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    @lang('labels.frontend.course.get_now')
+                                    <i class="fas fa-caret-right"></i>
+                                </a>
+                            @else
 
-                    @if(auth()->check() && (auth()->user()->hasRole('student')) && (Cart::session(auth()->user()->id)->get( $course->id)))
-                        <button class="btn btn-info btn-block "
-                                type="submit">@lang('labels.frontend.course.added_to_cart')
-                        </button>
-                    @elseif(!auth()->check())
-                        @if($course->free == 1)
-                            <a href="{{route('login.index')}}" class="btn btn-info btn-block ">
-                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                @lang('labels.frontend.course.get_now')
-                                <i class="fas fa-caret-right"></i>
-                            </a>
-                        @else
-
-                            <a href="{{route('login.index')}}" class="btn btn-info btn-block "> <i
-                                        class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                @lang('labels.frontend.course.add_to_cart')
-                            </a>
-                        @endif
-
-                    @elseif(auth()->check() && (auth()->user()->hasRole('student')))
-
-                        @if($course->free == 1)
-                            <form action="{{ route('cart.getnow') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                <input type="hidden" name="amount"
-                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                <button class="btn btn-info btn-block "
-                                        href="#">@lang('labels.frontend.course.get_now') <i
-                                            class="fas fa-caret-right"></i></button>
-                            </form>
-                        @else
-
-                            <form action="{{ route('cart.addToCart') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="course_id" value="{{ $course->id }}"/>
-                                <input type="hidden" name="amount"
-                                       value="{{($course->free == 1) ? 0 : $course->price}}"/>
-                                <button type="submit" class="btn btn-info btn-block "><i
+                                <a href="{{route('login.index')}}" class="btn btn-info btn-block "> <i
                                             class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     @lang('labels.frontend.course.add_to_cart')
-                                </button>
-                            </form>
+                                </a>
+                            @endif
+
+                        @elseif(auth()->check() && (auth()->user()->hasRole('student')))
+
+                            @if($course->free == 1)
+                                <form action="{{ route('cart.getnow') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                    <input type="hidden" name="amount"
+                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                    <button class="btn btn-info btn-block "
+                                            href="#">@lang('labels.frontend.course.get_now') <i
+                                                class="fas fa-caret-right"></i></button>
+                                </form>
+                            @else
+
+                                <form action="{{ route('cart.addToCart') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="course_id" value="{{ $course->id }}"/>
+                                    <input type="hidden" name="amount"
+                                           value="{{($course->free == 1) ? 0 : $course->price}}"/>
+                                    <button type="submit" class="btn btn-info btn-block "><i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        @lang('labels.frontend.course.add_to_cart')
+                                    </button>
+                                </form>
+                            @endif
+
+                        @else
+                            <div class="col-12">
+                                <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
+
+                            </div>
                         @endif
-
                     @else
-                        <div class="col-12">
-                            <h6 class="text-warning"> @lang('labels.frontend.course.buy_note')</h6>
 
-                        </div>
-                    @endif
-                @else
+                        @if($continue_course)
 
-                    @if($continue_course)
-
-                        <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}"
-                           @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
+                            <a @if ($continue_course->model_type == \App\Models\Lesson::class) href="{{route('player.show',['slug'=>$continue_course->model->slug])}}"
+                               @endif @if ($continue_course->model_type == \App\Models\Test::class) href="{{route('testVue.show',['slug'=>$continue_course->model->slug])}}" @endif>
+                                <button class="btn btn-info btn-block  " type="submit">
+                                    @lang('labels.frontend.course.continue_course')
+                                    <i class="fa fa-arrow-right"></i>
+                                </button>
+                            </a>
+                        @else
                             <button class="btn btn-info btn-block  " type="submit">
-                                @lang('labels.frontend.course.continue_course')
+                                No lessons available
                                 <i class="fa fa-arrow-right"></i>
                             </button>
-                        </a>
-                    @else
-                        <button class="btn btn-info btn-block  " type="submit">
-                            No lessons available
-                            <i class="fa fa-arrow-right"></i>
-                        </button>
+                        @endif
+
+
                     @endif
-
-
                 @endif
-
             </div>
         </div>
     </section>

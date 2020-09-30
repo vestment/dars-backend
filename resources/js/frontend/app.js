@@ -27,7 +27,7 @@ Vue.component('player', require('../components/player.vue').default);
 Vue.component('test', require('../components/test.vue').default)
 import VuePlyr from 'vue-plyr'
 import app from '../app.vue'
-
+import VueToast from 'vue-toast-notification';
 // your config here
 let config = {
   toolbar: [
@@ -45,6 +45,7 @@ let config = {
   uploadUrl: ''
 };
 Vue.use(Vuex);
+Vue.use(VueToast);
 // Vue.use(VueLoaderPlugin);
 Vue.use(Vueditor, config);
 Vue.use(VuePlyr, {

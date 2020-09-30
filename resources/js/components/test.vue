@@ -163,6 +163,8 @@ export default {
     }
   },
   created() {
+
+
     this.getData(this.slug);
     this.userResponses = Array(this.quiz.questions.length).fill(null);
   },
@@ -172,7 +174,15 @@ export default {
       axios.post('/api/v1/generate-certificate', {
         course_id: this.testData.course.id,
       }).then(res => {
-        console.log(res)
+        if (res.data.status == 'success') {
+          this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Your certificate is available in your dashboard',
+            duration: 5000,
+            dismissible: true
+          });
+        }
       }).catch(err => {
         console.log(err.response)
       })
