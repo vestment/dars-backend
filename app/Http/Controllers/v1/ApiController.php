@@ -647,20 +647,11 @@ class ApiController extends Controller
                     $prev_Chapter = $lesson->course->courseTimeline()->where('sequence', '<', $item->sequence)
                         ->where('model_type', Chapter::class)
                         ->where('course_id', $item->course_id)
-                        ->orderBy('sequence', 'asc')
-                        ->value('model_id');
-
-                    $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
-                    $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
-                        ->where('model_type', Lesson::class)
-                        ->with('model')
-                        ->orderBy('sequence', 'desc')
-                        ->first();
-                    $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
-                        ->where('model_type', Lesson::class)
-                        ->with('model')
-                        ->orderBy('sequence', 'asc')
-                        ->first();
+                        ->orderBy('sequence', 'desc')->first();
+                    $prevChapter = null;
+                    if($prev_Chapter) {
+                        $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
+                    }
                     foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
                         $chapterLesson['canView'] = true;
                         if ($index != 0) {
@@ -672,13 +663,16 @@ class ApiController extends Controller
                             }
                         }
                         if ($prevChapter) {
+                            $chapterLesson['key'] = $prev_Chapter->model_id;
                             $chapterTest = $prevChapter->test;
                             if ($chapterTest && count($chapterTest->testResult) >0) {
                                 if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
                                     $chapterLesson['canView'] = false;
+                                    $chapterLesson['key'] = $index.'- Failed';
                                 }
                             } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                                 $chapterLesson['canView'] = false;
+                                $chapterLesson['key'] = $index.'- No result';
                             }
                         }
                     }
@@ -687,7 +681,16 @@ class ApiController extends Controller
 
             }
             $chapters = $course->chapters()->with(['test'])->get();
-
+            $previous_lesson = $lesson->course->courseTimeline()->where('sequence', '<', $lesson->courseTimeline->sequence)
+                ->where('model_type', Lesson::class)
+                ->with('model')
+                ->orderBy('sequence', 'desc')
+                ->first();
+            $next_lesson = $lesson->course->courseTimeline()->where('sequence', '>', $lesson->courseTimeline->sequence)
+                ->where('model_type', Lesson::class)
+                ->with('model')
+                ->orderBy('sequence', 'asc')
+                ->first();
             $is_certified = $lesson->course->isUserCertified();
             $course_progress = $lesson->course->progress();
 
@@ -792,22 +795,32 @@ class ApiController extends Controller
                 $prev_Chapter = $test->course->courseTimeline()->where('sequence', '<', $item->sequence)
                     ->where('model_type', Chapter::class)
                     ->where('course_id', $item->course_id)
-                    ->orderBy('sequence', 'asc')
-                    ->value('model_id');
-//                    return $next_chapter;
-
-                $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
-
-                foreach ($courseChapter[$item->id]['lessons'] as $chapterLesson) {
+                    ->orderBy('sequence', 'desc')->first();
+                $prevChapter = null;
+                if($prev_Chapter) {
+                    $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
+                }
+                foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
                     $chapterLesson['canView'] = true;
+                    if ($index != 0) {
+                        $prevLesson = $courseChapter[$item->id]['lessons'][$index-1];
+                        $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
+                        if (!$LessonCompleted) {
+                            $chapterLesson['key'] = $index;
+                            $chapterLesson['canView'] = false;
+                        }
+                    }
                     if ($prevChapter) {
+                        $chapterLesson['key'] = $prev_Chapter->model_id;
                         $chapterTest = $prevChapter->test;
-                        if ($chapterTest->testResult && count($chapterTest->testResult) >0) {
+                        if ($chapterTest && count($chapterTest->testResult) >0) {
                             if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
                                 $chapterLesson['canView'] = false;
+                                $chapterLesson['key'] = $index.'- Failed';
                             }
                         } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                             $chapterLesson['canView'] = false;
+                            $chapterLesson['key'] = $index.'- No result';
                         }
                     }
                 }
@@ -961,22 +974,32 @@ class ApiController extends Controller
                 $prev_Chapter = $test->course->courseTimeline()->where('sequence', '<', $item->sequence)
                     ->where('model_type', Chapter::class)
                     ->where('course_id', $item->course_id)
-                    ->orderBy('sequence', 'asc')
-                    ->value('model_id');
-//                    return $next_chapter;
-
-                $prevChapter = Chapter::where('id', $prev_Chapter)->with(['test', 'test.testResult'])->first();
-
-                foreach ($courseChapter[$item->id]['lessons'] as $chapterLesson) {
+                    ->orderBy('sequence', 'desc')->first();
+                $prevChapter = null;
+                if($prev_Chapter) {
+                    $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
+                }
+                foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
                     $chapterLesson['canView'] = true;
+                    if ($index != 0) {
+                        $prevLesson = $courseChapter[$item->id]['lessons'][$index-1];
+                        $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
+                        if (!$LessonCompleted) {
+                            $chapterLesson['key'] = $index;
+                            $chapterLesson['canView'] = false;
+                        }
+                    }
                     if ($prevChapter) {
+                        $chapterLesson['key'] = $prev_Chapter->model_id;
                         $chapterTest = $prevChapter->test;
-                        if ($chapterTest->testResult && count($chapterTest->testResult) >0) {
+                        if ($chapterTest && count($chapterTest->testResult) >0) {
                             if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
                                 $chapterLesson['canView'] = false;
+                                $chapterLesson['key'] = $index.'- Failed';
                             }
                         } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                             $chapterLesson['canView'] = false;
+                            $chapterLesson['key'] = $index.'- No result';
                         }
                     }
                 }
@@ -1000,14 +1023,14 @@ class ApiController extends Controller
     {
         if ($request->model_type == 'test') {
             $model_type = Test::class;
-            $chapter = Test::find((int)$request->model_id);
+            $chapter = Test::findorFail((int)$request->model_id);
         } else {
             $model_type = Lesson::class;
             $chapter = Lesson::findorFail((int)$request->model_id);
         }
         if ($chapter) {
-            if ($chapter->chapterStudents()->where('user_id', auth()->user()->id)->get()->count() == 0) {
-
+            $modelExsits = auth()->user()->chapters()->where('model_id', $request->model_id)->first();
+            if (!$modelExsits) {
                 $chapter->chapterStudents()->create([
                     'model_type' => $model_type,
                     'model_id' => $request->model_id,
@@ -1016,6 +1039,7 @@ class ApiController extends Controller
                 ]);
                 return response()->json(['status' => 'success']);
             }
+            return response()->json(['status' => 'error while adding the model'.$modelExsits]);
         }
         return response()->json(['status' => 'failure']);
     }

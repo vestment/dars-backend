@@ -222,7 +222,7 @@
                                                              aria-hidden="true"></i>
                             @lang('labels.frontend.course.Share')
                         </button>
-                        @if($course->offline)
+                        @if($course->offline && number_format($availableSeats) != 0)
                             <button type="submit" id="bookNowButton" data-target="#bookNowModal" data-toggle="modal"
                                     class="btn btn-outline-light ml-1 btnbook btn-sm-block">
                                 <i class="fas fa-chair"></i> @lang('labels.frontend.course.booknow')

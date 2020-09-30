@@ -11,7 +11,24 @@
       <!-- transition -->
       <transition :duration="{ enter: 500, leave: 300 }" enter-active-class="animated zoomIn"
                   leave-active-class="animated zoomOut" mode="out-in">
+        <div v-if="(quiz.questions.length === 0)" v-bind:key="questionIndex"
+             class="quizCompleted quizHasNoQuestions has-text-centered">
 
+          <!-- quizCompletedIcon: Achievement Icon -->
+          <span class="icon">
+                <i class="fa fa-times-circle"></i>
+              </span>
+
+          <!--resultTitleBlock-->
+          <h2 class="title">
+          Something went wrong
+          </h2>
+          <p class="subtitle">
+            There are no questions found in this test
+          </p>
+          <!--/resultTitleBlock-->
+
+        </div>
         <!--qusetionContainer-->
         <div class="questionContainer" v-if="questionIndex<quiz.questions.length && attempts <= 2"
              v-bind:key="questionIndex">
@@ -67,7 +84,7 @@
         <!--/questionContainer-->
 
         <!--quizCompletedResult-->
-        <div v-if="questionIndex>=quiz.questions.length || attempts >= 3" v-bind:key="questionIndex"
+        <div v-if="(quiz.questions.length > 0 && questionIndex>=quiz.questions.length) || attempts >= 3" v-bind:key="questionIndex"
              class="quizCompleted has-text-centered">
 
           <!-- quizCompletedIcon: Achievement Icon -->
@@ -262,7 +279,7 @@ export default {
             model_type: "test", model_id: this.testData.id
           }).then(res => {
             let lastChapter = this.courseData.course_timeline[this.courseData.course_timeline.length - 1];
-            if (!lastChapter && !lastChapter.test) {
+            if (lastChapter && lastChapter.test.model.slug === this.slug) {
               this.finishCourse();
             }
 

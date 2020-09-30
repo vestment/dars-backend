@@ -70,23 +70,26 @@ export default {
       axios.post('/api/v1/course-progress', {
         model_type: "lesson", model_id: this.courseData.lesson.id
       }).then(res => {
-        let lastChapter = this.courseData.course_timeline[this.courseData.course_timeline.length - 1];
+
         this.getData(this.slug)
         this.$on('updateLesson', (courseData) => {
           console.log('updated info',courseData);
+          let lastChapter = this.courseData.course_timeline[this.courseData.course_timeline.length - 1];
           if (courseData.next_lesson) {
-            // console.log(courseData)
+
             courseData.course_timeline.map(chapter => {
               chapter.lessons.filter(lesson => {
 
                 if (courseData.next_lesson.model_id == lesson.model_id && lesson.canView == true) {
                   this.$router.push({name: 'player', params: {slug: lesson.model.slug}})
                 }
-                if (!lastChapter.test && !courseData.next_lesson) {
-                  this.finishCourse();
-                }
+
+
               })
             });
+          }
+          if (!lastChapter.test && !courseData.next_lesson) {
+            this.finishCourse();
           }
         });
 
@@ -129,9 +132,11 @@ export default {
     },
     // player is ready
     playerReadied(player) {
-
+      // this.$refs.plyr.player.restart()
+      this.$forceUpdate();
       let myPluginCollection = document.getElementsByClassName('svg-embedded')
-      let clonedDiv = myPluginCollection[0].cloneNode(true);
+
+      let clonedDiv = myPluginCollection[0];
       if (clonedDiv) {
         player.target.appendChild(clonedDiv);
         setInterval(function () {
