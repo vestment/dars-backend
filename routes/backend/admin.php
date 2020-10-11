@@ -195,6 +195,9 @@ Route::group(['middleware' => 'role:administrator|teacher|academy'], function ()
 
 //===== Categories Routes =====//
 Route::resource('categories', 'Admin\CategoriesController');
+// Route::get('addcategory', 'Admin\CategoriesController@addCategory');
+Route::get('addcategory', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addcategory']);
+
 Route::get('get-categories-data', ['uses' => 'Admin\CategoriesController@getData', 'as' => 'categories.get_data']);
 Route::post('categories_mass_destroy', ['uses' => 'Admin\CategoriesController@massDestroy', 'as' => 'categories.mass_destroy']);
 Route::post('categories_restore/{id}', ['uses' => 'Admin\CategoriesController@restore', 'as' => 'categories.restore']);

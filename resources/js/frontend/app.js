@@ -5,7 +5,6 @@ import '../bootstrap';
 /* Core */
 import Vue from 'vue'
 // import {VueLoaderPlugin} from 'vue-loader'
-import player from '../components/player.vue'
 import Vuex from 'vuex'
 import Vueditor from 'vueditor'
 import router from '../router'
@@ -23,9 +22,11 @@ Vue.config.productionTip = false
 
 /* Main component */
 //Vue.component('PlayCourse', PlayCourse)
-Vue.component('player', require('../components/player.vue').default);
-Vue.component('test', require('../components/test.vue').default)
-import VuePlyr from 'vue-plyr'
+// Vue.component('player', require('../components/player.vue').default);
+// Vue.component('test', require('../components/test.vue').default)
+
+Vue.component('addCategory', require('../components/Categories/add.vue').default);
+
 import app from '../app.vue'
 import VueToast from 'vue-toast-notification';
 // your config here
@@ -48,12 +49,12 @@ Vue.use(Vuex);
 Vue.use(VueToast);
 // Vue.use(VueLoaderPlugin);
 Vue.use(Vueditor, config);
-Vue.use(VuePlyr, {
-  plyr: {
-    fullscreen: { enabled: false }
-  },
-  emit: ['ended']
-})
+// Vue.use(VuePlyr, {
+//   plyr: {
+//     fullscreen: { enabled: false }
+//   },
+//   emit: ['ended']
+// })
 /* This is main entry point */
 new Vue({
   router,

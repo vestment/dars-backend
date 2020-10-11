@@ -30,9 +30,9 @@ import 'video.js/dist/video-js.css'
 
 
 /* Main component */
-Vue.component('player', player)
+Vue.component('addCategory', addCategory)
 
-Vue.component('player', require('./components/player.vue').default);
+Vue.component('addCategory', require('./components/Categories/add.vue').default);
 
 
 /* This is main entry point */

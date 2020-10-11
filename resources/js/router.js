@@ -1,19 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import addCategory from './components/Categories/add.vue'
 
 Vue.use(VueRouter)
-import player from './components/player.vue'
-import test from './components/test.vue'
+
 const routes = [
+ 
   {
-    path: '/player/:slug',
-    name: 'player',
-    component: player,
-  },
-  {
-    path: '/test/:slug',
-    name: 'test',
-    component: test,
+    path: '/categories/add',
+    name: 'addCategory',
+    component: addCategory,
   },
 
 

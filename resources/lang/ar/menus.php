@@ -81,6 +81,10 @@ return array (
       array (
         'title' => 'الأكاديميات',
       ),
+      'addCategory' => 
+      array (
+        'title' => 'Add Category',
+      ),
       'footer' => 
       array (
         'title' => 'تذييل',

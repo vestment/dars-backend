@@ -315,4 +315,9 @@ class CategoriesController extends Controller
 
         return redirect()->route('admin.categories.index')->withFlashSuccess(trans('alerts.backend.general.deleted'));
     }
+
+    public function addCategory(){
+
+        return view('backend.indexvue');
+    }
 }

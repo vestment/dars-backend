@@ -74,6 +74,10 @@ return array(
                         array(
                             'title' => 'Categories',
                         ),
+                        'addCategory' => 
+                        array (
+                          'title' => 'Add Category',
+                        ),
                     'teachers' =>
                         array(
                             'title' => 'Teachers',
