@@ -13,6 +13,7 @@ import router from './router'
 
 /* Vue. Main component */
 import App from './App.vue'
+import addCategory from './components/Categories/add.vue'
 // Axios & Echo global
 
 
@@ -41,9 +42,9 @@ Vue.component('addCategory', require('./components/Categories/add.vue').default)
   render: h => h(PlayCourse),
 }).$mount('#playcourse')*/
 
-const app = new Vue({
-  el: '#app'
-});
+// const app = new Vue({
+//   el: '#app'
+// });
 
 
 /* Vue. Component in recursion */
@@ -59,7 +60,9 @@ Vue.component('App', App)
 
 /* Buefy */
 Vue.use(Buefy)
+import VueSimpleAlert from "vue-simple-alert";
 
+Vue.use(VueSimpleAlert);
 
 
 

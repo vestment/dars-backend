@@ -28,7 +28,7 @@ Route::group(['middleware' => 'role:teacher|administrator|academy'], function ()
     //===== Orders Routes =====//
     Route::get('get-booking-data', ['uses' => 'Admin\BookingController@getData', 'as' => 'booking.get_data']);
 });
-Route::group(['middleware' => 'role:academy|administrator'], function () {
+Route::group(['middleware' => 'role:administrator'], function () {
     //====== Coupon Routes =====//
     Route::resource('coupons', 'CouponController');
     Route::get('coupons/status/{id}', 'CouponController@status')->name('coupons.status', 'id');
@@ -40,6 +40,7 @@ Route::group(['middleware' => 'role:academy|administrator'], function () {
     Route::post('teachers_restore/{id}', ['uses' => 'Admin\TeachersController@restore', 'as' => 'teachers.restore']);
     Route::delete('teachers_perma_del/{id}', ['uses' => 'Admin\TeachersController@perma_del', 'as' => 'teachers.perma_del']);
     Route::post('teacher/status', ['uses' => 'Admin\TeachersController@updateStatus', 'as' => 'teachers.status']);
+
 });
 
 Route::group(['middleware' => 'role:administrator'], function () {
@@ -56,7 +57,7 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
     //===== FORUMS Routes =====//
     Route::resource('forums-category', 'Admin\ForumController');
     Route::get('forums-category/status/{id}', 'Admin\ForumController@status')->name('forums-category.status');
-
+    Route::get('addcategory', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addcategory']);
 
 
 
@@ -195,9 +196,6 @@ Route::group(['middleware' => 'role:administrator|teacher|academy'], function ()
 
 //===== Categories Routes =====//
 Route::resource('categories', 'Admin\CategoriesController');
-// Route::get('addcategory', 'Admin\CategoriesController@addCategory');
-Route::get('addcategory', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addcategory']);
-
 Route::get('get-categories-data', ['uses' => 'Admin\CategoriesController@getData', 'as' => 'categories.get_data']);
 Route::post('categories_mass_destroy', ['uses' => 'Admin\CategoriesController@massDestroy', 'as' => 'categories.mass_destroy']);
 Route::post('categories_restore/{id}', ['uses' => 'Admin\CategoriesController@restore', 'as' => 'categories.restore']);

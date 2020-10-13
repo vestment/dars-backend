@@ -8,6 +8,10 @@ return array(
                     'general' => 'General',
                     'dashboard' => 'Dashboard',
                     'bookings' => 'Booking',
+                    'add-category' => 
+                    array (
+                      'title' => 'Add Category',
+                    ),
                     'courses' =>
                         array(
                             'management' => 'Courses Management',
@@ -74,10 +78,7 @@ return array(
                         array(
                             'title' => 'Categories',
                         ),
-                        'addCategory' => 
-                        array (
-                          'title' => 'Add Category',
-                        ),
+                       
                     'teachers' =>
                         array(
                             'title' => 'Teachers',

@@ -53,13 +53,15 @@
     }
   },
   "dependencies": {
+    "buefy": "^0.9.3",
     "jquery-ui-dist": "^1.12.1",
     "npm": "^6.6.0",
     "plyr": "^3.6.2",
     "video-player": "0.0.1",
-    "vue-toast-notification": "^0.5.4",
     "vue-plyr": "^4.0.0",
     "vue-router": "^3.4.3",
+    "vue-simple-alert": "^1.1.1",
+    "vue-toast-notification": "^0.5.4",
     "vue-video-player": "^5.0.2",
     "vue2-flip-countdown": "^0.11.1",
     "vueditor": "^0.3.1"

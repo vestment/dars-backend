@@ -19,9 +19,12 @@ use App\Models\Certificate;
 use App\Models\Chapter;
 use App\Models\Config;
 use App\Models\Contact;
+use App\Models\Country;
 use App\Models\Coupon;
 use App\Models\Course;
 use App\Models\CourseTimeline;
+use App\Models\EduStage;
+use App\Models\EduSystem;
 use App\Models\Faq;
 use App\Models\Lesson;
 use App\Models\Media;
@@ -32,6 +35,7 @@ use App\Models\QuestionsOption;
 use App\Models\Reason;
 use App\Models\Review;
 use App\Models\Sponsor;
+use App\Models\Semester;
 use App\Models\System\Session;
 use App\Models\Tag;
 use App\Models\Tax;
@@ -64,6 +68,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Purifier;
 use Messenger;
 use Newsletter;
@@ -445,7 +450,8 @@ class ApiController extends Controller
      */
     public function getSponsors()
     {
-        $sponsors = Sponsor::where('status', '=', 1)->paginate(10);
+        
+        $sponsors = Sponsor::where('status', '=', 1)->get();
         return response()->json(['status' => 'success', 'result' => $sponsors]);
     }
 
@@ -649,13 +655,13 @@ class ApiController extends Controller
                         ->where('course_id', $item->course_id)
                         ->orderBy('sequence', 'desc')->first();
                     $prevChapter = null;
-                    if($prev_Chapter) {
+                    if ($prev_Chapter) {
                         $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
                     }
                     foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
                         $chapterLesson['canView'] = true;
                         if ($index != 0) {
-                            $prevLesson = $courseChapter[$item->id]['lessons'][$index-1];
+                            $prevLesson = $courseChapter[$item->id]['lessons'][$index - 1];
                             $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
                             if (!$LessonCompleted) {
                                 $chapterLesson['key'] = $index;
@@ -665,14 +671,14 @@ class ApiController extends Controller
                         if ($prevChapter) {
                             $chapterLesson['key'] = $prev_Chapter->model_id;
                             $chapterTest = $prevChapter->test;
-                            if ($chapterTest && count($chapterTest->testResult) >0) {
+                            if ($chapterTest && count($chapterTest->testResult) > 0) {
                                 if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
                                     $chapterLesson['canView'] = false;
-                                    $chapterLesson['key'] = $index.'- Failed';
+                                    $chapterLesson['key'] = $index . '- Failed';
                                 }
                             } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                                 $chapterLesson['canView'] = false;
-                                $chapterLesson['key'] = $index.'- No result';
+                                $chapterLesson['key'] = $index . '- No result';
                             }
                         }
                     }
@@ -797,13 +803,13 @@ class ApiController extends Controller
                     ->where('course_id', $item->course_id)
                     ->orderBy('sequence', 'desc')->first();
                 $prevChapter = null;
-                if($prev_Chapter) {
+                if ($prev_Chapter) {
                     $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
                 }
                 foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
                     $chapterLesson['canView'] = true;
                     if ($index != 0) {
-                        $prevLesson = $courseChapter[$item->id]['lessons'][$index-1];
+                        $prevLesson = $courseChapter[$item->id]['lessons'][$index - 1];
                         $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
                         if (!$LessonCompleted) {
                             $chapterLesson['key'] = $index;
@@ -813,14 +819,14 @@ class ApiController extends Controller
                     if ($prevChapter) {
                         $chapterLesson['key'] = $prev_Chapter->model_id;
                         $chapterTest = $prevChapter->test;
-                        if ($chapterTest && count($chapterTest->testResult) >0) {
+                        if ($chapterTest && count($chapterTest->testResult) > 0) {
                             if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
                                 $chapterLesson['canView'] = false;
-                                $chapterLesson['key'] = $index.'- Failed';
+                                $chapterLesson['key'] = $index . '- Failed';
                             }
                         } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                             $chapterLesson['canView'] = false;
-                            $chapterLesson['key'] = $index.'- No result';
+                            $chapterLesson['key'] = $index . '- No result';
                         }
                     }
                 }
@@ -976,13 +982,13 @@ class ApiController extends Controller
                     ->where('course_id', $item->course_id)
                     ->orderBy('sequence', 'desc')->first();
                 $prevChapter = null;
-                if($prev_Chapter) {
+                if ($prev_Chapter) {
                     $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
                 }
                 foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
                     $chapterLesson['canView'] = true;
                     if ($index != 0) {
-                        $prevLesson = $courseChapter[$item->id]['lessons'][$index-1];
+                        $prevLesson = $courseChapter[$item->id]['lessons'][$index - 1];
                         $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
                         if (!$LessonCompleted) {
                             $chapterLesson['key'] = $index;
@@ -992,14 +998,14 @@ class ApiController extends Controller
                     if ($prevChapter) {
                         $chapterLesson['key'] = $prev_Chapter->model_id;
                         $chapterTest = $prevChapter->test;
-                        if ($chapterTest && count($chapterTest->testResult) >0) {
+                        if ($chapterTest && count($chapterTest->testResult) > 0) {
                             if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
                                 $chapterLesson['canView'] = false;
-                                $chapterLesson['key'] = $index.'- Failed';
+                                $chapterLesson['key'] = $index . '- Failed';
                             }
                         } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
                             $chapterLesson['canView'] = false;
-                            $chapterLesson['key'] = $index.'- No result';
+                            $chapterLesson['key'] = $index . '- No result';
                         }
                     }
                 }
@@ -1009,7 +1015,7 @@ class ApiController extends Controller
         }
         $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result->id)->get()->toArray();
 
-        return response()->json(['status' => 'success', 'resultData' => $test_result, 'score' => $test_score, 'result' => $result,'course_timeline'=>$courseSequence]);
+        return response()->json(['status' => 'success', 'resultData' => $test_result, 'score' => $test_score, 'result' => $result, 'course_timeline' => $courseSequence]);
 
     }
 
@@ -1039,7 +1045,7 @@ class ApiController extends Controller
                 ]);
                 return response()->json(['status' => 'success']);
             }
-            return response()->json(['status' => 'error while adding the model'.$modelExsits]);
+            return response()->json(['status' => 'error while adding the model' . $modelExsits]);
         }
         return response()->json(['status' => 'failure']);
     }
@@ -2574,5 +2580,338 @@ class ApiController extends Controller
             return $taxData;
         }
         return false;
+    }
+
+    public function getCountries()
+    {
+        $countries = Country::with('eduSystems')->get();
+        return response()->json($countries);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function saveCountry(Request $request)
+    {
+        
+        $validator = Validator::make($request->all(), [
+            
+            'key' => 'required|unique:countries',
+        ]);
+        if ($validator->passes()) {
+            $country = new Country();
+            $country->ar_name = $request->ar_name;
+            $country->en_name = $request->en_name;
+            $country->key = $request->key;
+            $country->save();
+            return response()->json(['success' => true, 'data' => $country]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getCountry($id)
+    {
+        
+        $country = Country::where('id',$id)->with('eduSystems')->first();
+        return response()->json($country);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateCountry(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'name' => 'required', Rule::unique('countries')->ignore($id),
+            // 'key' => 'required', Rule::unique('countries')->ignore($id),
+        ]);
+        if ($validator->passes()) {
+            $country = Country::findorfail($id);
+            $country->update($request->all());
+            return response()->json(['success' => true, 'data' => $country]);
+        }
+        return response(['success' => $request->all(), 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteCountry($id)
+    {
+        $country = Country::findorfail($id);
+        $country->delete();
+        return response()->json(['success' => true, 'data' => $country]);
+    }
+
+    public function getEduSystems($country)
+    {
+        $EduSystem = EduSystem::where('country_id', $country)->with('country')->get();
+        return response()->json($EduSystem);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function saveEduSystem(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            
+            'country_id' => 'required|exists:countries,id'
+        ]);
+        if ($validator->passes()) {
+            $EduSystem = new EduSystem();
+            $EduSystem = $EduSystem->fill($request->all());
+            $EduSystem->save();
+            return response()->json(['success' => true, 'data' => $EduSystem]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getEduSystem($id)
+    {
+        $EduSystem = EduSystem::findOrFail($id)->with('country')->first();
+        return response()->json($EduSystem);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateEduSystem(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required', Rule::unique('edu_systems')->ignore($id),
+            'country_id' => 'required|exists:countries,id'
+        ]);
+        if ($validator->passes()) {
+            $EduSystem = EduSystem::findOrFail($id)->with('country')->first();
+            $EduSystem->update($request->all());
+            return response()->json(['success' => true, 'data' => $EduSystem]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteEduSystem($id)
+    {
+        $EduSystem = EduSystem::findorfail($id);
+        $EduSystem->delete();
+        return response()->json(['success' => true, 'data' => $EduSystem]);
+    }
+
+    public function getEduStages($eduSystem)
+    {
+        $EduStage = EduStage::where('edu_system_id', $eduSystem)->with(['system', 'system.country'])->get();
+        return response()->json($EduStage);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function saveEduStage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'name' => 'required|unique:edu_stages',
+            'edu_system_id' => 'required|exists:edu_systems,id'
+        ]);
+        if ($validator->passes()) {
+            $EduStage = new EduStage();
+            $EduStage = $EduStage->fill($request->all());
+            $EduStage->save();
+            return response()->json(['success' => true, 'data' => $EduStage]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getEduStage($id)
+    {
+        $EduStage = EduStage::findOrFail($id)->with(['system', 'system.country'])->first();
+        return response()->json($EduStage);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateEduStage(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required', Rule::unique('edu_stages')->ignore($id),
+            'edu_system_id' => 'required|exists:edu_systems,id'
+        ]);
+        if ($validator->passes()) {
+            $EduStage = EduStage::findOrFail($id)->with(['system', 'system.country'])->first();
+            $EduStage->update($request->all());
+            return response()->json(['success' => true, 'data' => $EduStage]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    public function assignSemesters(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'edu_stage_id' => 'required|exists:edu_stages,id',
+            'semesters' => 'required',
+        ]);
+        if ($validator->passes()) {
+            $EduStage = EduStage::findOrFail($request->edu_stage_id)->with(['system', 'system.country', 'semesters'])->first();
+
+            $EduStage->semesters()->attach($request->semesters);
+
+            return response()->json(['success' => true, 'data' => $EduStage]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+    public function removeSemestersFromStage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'edu_stage_id' => 'required|exists:edu_stages,id',
+            'semesters' => 'required',
+        ]);
+        if ($validator->passes()) {
+            $EduStage = EduStage::findOrFail($request->edu_stage_id)->with(['system', 'system.country', 'semesters'])->first();
+
+            $EduStage->semesters()->detach($request->semesters);
+
+            return response()->json(['success' => true, 'data' => $EduStage]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteEduStage($id)
+    {
+        $EduStage = EduStage::findorfail($id);
+        $EduStage->delete();
+        return response()->json(['success' => true, 'data' => $EduStage]);
+    }
+
+    public function getSemesters()
+    {
+        $Semester = Semester::with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->get();
+        return response()->json($Semester);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function saveSemester(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'name' => 'required|unique:subjects',
+        ]);
+        if ($validator->passes()) {
+            $semester = new Semester();
+            $semester = $semester->fill($request->all());
+            $semester->save();
+            return response()->json(['success' => true, 'data' => $semester]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getSemester($id)
+    {
+        $Semester = Semester::findOrFail($id)->with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->first();
+        return response()->json($Semester);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateSemester(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'name' => 'required', Rule::unique('subjects')->ignore($id),
+        ]);
+        if ($validator->passes()) {
+
+            $semester = Semester::findOrFail($id)->with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->first();
+            $semester->update($request->all());
+            return response()->json(['success' => true, 'data' => $semester]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteSemester($id)
+    {
+        $semester = Semester::findorfail($id);
+        $semester->delete();
+        return response()->json(['success' => true, 'data' => $semester]);
     }
 }

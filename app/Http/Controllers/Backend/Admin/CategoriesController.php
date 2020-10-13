@@ -320,4 +320,6 @@ class CategoriesController extends Controller
 
         return view('backend.indexvue');
     }
+
+  
 }

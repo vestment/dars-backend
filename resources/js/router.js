@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
  
   {
-    path: '/categories/add',
+    path: '/user/addcategory',
     name: 'addCategory',
     component: addCategory,
   },

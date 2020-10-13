@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropForginkeyOptionIdTestsResultsAnswersTable extends Migration
+class CreateSemestersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class DropForginkeyOptionIdTestsResultsAnswersTable extends Migration
      */
     public function up()
     {
-        Schema::table('tests_results_answers', function (Blueprint $table) {
-//           $table->dropForeign('tests_results_answers_option_id_foreign');
+        Schema::create('semesters', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('ar_name');
+            $table->string('en_name');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,6 +29,6 @@ class DropForginkeyOptionIdTestsResultsAnswersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('semesters');
     }
 }
