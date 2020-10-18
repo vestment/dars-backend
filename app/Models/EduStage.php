@@ -11,6 +11,6 @@ class EduStage extends Model
         return $this->belongsTo(EduSystem::class,'edu_system_id');
     }
     public function semesters(){
-        return $this->belongsToMany(Subject::class,'edu_stage_semester');
+        return $this->belongsToMany(Semester::class,'edu_stage_semester');
     }
 }

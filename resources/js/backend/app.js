@@ -11,7 +11,8 @@ import Vueditor from 'vueditor'
 import router from '../router'
 import Buefy from 'buefy'
 Vue.use(Buefy)
-
+import Multiselect from 'vue-multiselect'
+Vue.component('multiselect', Multiselect)
 
 
 import 'vueditor/dist/style/vueditor.min.css'
@@ -28,8 +29,13 @@ Vue.config.productionTip = false
 //Vue.component('PlayCourse', PlayCourse)
 import addCategory from '../components/Categories/add.vue'
 Vue.component('addCategory', require('../components/Categories/add.vue').default);
+Vue.component('semesters', require('../components/Categories/Semesters.vue').default);
+
 import VueSimpleAlert from "vue-simple-alert";
 Vue.use(VueSimpleAlert);
+// import VueSimpleAlert from "vue-simple-alert";
+
+// Vue.use(VueSimpleAlert);
 
 import app from '../app.vue'
 import VueToast from 'vue-toast-notification';

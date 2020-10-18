@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import addCategory from './components/Categories/add.vue'
+import semesters from './components/Categories/Semesters.vue'
+
 
 Vue.use(VueRouter)
 
@@ -10,6 +12,11 @@ const routes = [
     path: '/user/addcategory',
     name: 'addCategory',
     component: addCategory,
+  },
+  {
+    path: '/user/semesters',
+    name: 'semesters',
+    component: semesters,
   },
 
 

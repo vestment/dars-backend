@@ -58,6 +58,8 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
     Route::resource('forums-category', 'Admin\ForumController');
     Route::get('forums-category/status/{id}', 'Admin\ForumController@status')->name('forums-category.status');
     Route::get('addcategory', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addcategory']);
+    Route::get('semesters', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'semesters']);
+
 
 
 

@@ -60,9 +60,7 @@ Vue.component('App', App)
 
 /* Buefy */
 Vue.use(Buefy)
-import VueSimpleAlert from "vue-simple-alert";
 
-Vue.use(VueSimpleAlert);
 
 
 

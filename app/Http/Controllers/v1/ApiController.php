@@ -2697,7 +2697,7 @@ class ApiController extends Controller
      */
     public function getEduSystem($id)
     {
-        $EduSystem = EduSystem::findOrFail($id)->with('country')->first();
+        $EduSystem = EduSystem::where('id',$id)->with('country')->first();
         return response()->json($EduSystem);
     }
 
@@ -2712,11 +2712,11 @@ class ApiController extends Controller
     public function updateEduSystem(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required', Rule::unique('edu_systems')->ignore($id),
+            // 'name' => 'required', Rule::unique('edu_systems')->ignore($id),
             'country_id' => 'required|exists:countries,id'
         ]);
         if ($validator->passes()) {
-            $EduSystem = EduSystem::findOrFail($id)->with('country')->first();
+            $EduSystem = EduSystem::where('id',$id)->with('country')->first();
             $EduSystem->update($request->all());
             return response()->json(['success' => true, 'data' => $EduSystem]);
         }
@@ -2772,7 +2772,7 @@ class ApiController extends Controller
      */
     public function getEduStage($id)
     {
-        $EduStage = EduStage::findOrFail($id)->with(['system', 'system.country'])->first();
+        $EduStage = EduStage::where('id',$id)->with(['system', 'system.country'])->first();
         return response()->json($EduStage);
     }
 
@@ -2787,11 +2787,11 @@ class ApiController extends Controller
     public function updateEduStage(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required', Rule::unique('edu_stages')->ignore($id),
+            // 'name' => 'required', Rule::unique('edu_stages')->ignore($id),
             'edu_system_id' => 'required|exists:edu_systems,id'
         ]);
         if ($validator->passes()) {
-            $EduStage = EduStage::findOrFail($id)->with(['system', 'system.country'])->first();
+            $EduStage = EduStage::where('id',$id)->with(['system', 'system.country'])->first();
             $EduStage->update($request->all());
             return response()->json(['success' => true, 'data' => $EduStage]);
         }
@@ -2876,7 +2876,7 @@ class ApiController extends Controller
      */
     public function getSemester($id)
     {
-        $Semester = Semester::findOrFail($id)->with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->first();
+        $Semester = Semester::where('id',$id)->with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->first();
         return response()->json($Semester);
     }
 
@@ -2895,7 +2895,7 @@ class ApiController extends Controller
         ]);
         if ($validator->passes()) {
 
-            $semester = Semester::findOrFail($id)->with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->first();
+            $semester = Semester::where('id',$id)->with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->first();
             $semester->update($request->all());
             return response()->json(['success' => true, 'data' => $semester]);
         }

@@ -47,6 +47,7 @@
                                             <div  class="add_button ml-10">
                                                 <a  href="#" data-toggle="modal" data-target="#saveCat" class="btn_1">Add Country</a>
                                                 <a  href="#" data-toggle="modal" data-target="#saveSubCat" class="btn_1">Add Education System</a>
+                                                <router-link class="btn_1" to="/user/semesters" >All Semesters</router-link>
                                             </div>
                                         </div>
                                     </div> 
@@ -62,7 +63,7 @@
                                                     </div> 
                                                     <div  class="category_right">
                                                         <a href="#" v-on:click="showCountry(countryObj.id)" data-toggle="modal" data-target="#editCat" class="white_btn">Edit</a> 
-                                                        <a  href="#" v-on:click="confirmDelete(countryObj.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
+                                                        <a  href="#" v-on:click="DeleteCountry(countryObj.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
                                                         <!-- <a  href="#" class="red_btn" style="display: none;">Enable</a> -->
                                                     </div>
                                                 </div> 
@@ -73,10 +74,12 @@
                                                         </div> 
                                                         <div  class="category_option">
                                                             <!-- <span  class="status_btn">Active</span>  -->
-                                                            <a  href="#" data-toggle="modal" data-target="#edit_subCat" class="white_btn">Edit</a>
+                                                            <a  href="#" data-toggle="modal" data-target="#edit_subCat" v-on:click="ShowEduSys(eduSys.id)" class="white_btn">Edit</a>
                                                             <a v-on:click="openModal(eduSys.id)" data-placement="top" title="Add Education Stage" href="#" data-toggle="modal" data-target="#add_edu_stage" class="white_btn"> 
                                                                 <i  class="fas fa-plus-circle"></i>
                                                             </a>
+                                                        <a  href="#" v-on:click="DeleteEduSys(eduSys.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
+
 
                                                            
                                                         </div>
@@ -227,54 +230,31 @@
                         <div  id="edit_subCat" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
                            <div  role="document" class="modal-dialog modal-dialog-centered">
                               <div  class="modal-content">
-                                 <form >
+                                 <form  >
                                             <div  class="modal-body">
                                                 <div  class="input_wrap">
-                                                    <input  type="hidden" name="id" value="2"> 
-                                                    <label  for="#"></label> 
-                                                    <input  name="name" class="input_form form-control"> <!----></div> 
-                                                    <div  class="form-row">
-                                                        <div  class="col-4">
-                                                            <div  class="input_wrap">
-                                                                <label  for="#">Status</label> 
-                                                                <div  class="Select_50px">
-                                                                    <select  name="status" class="form-control">
-                                                                        <option  value="1">Active</option> 
-                                                                        <option  value="0">Disable</option> <!---->
-                                                                        </select>
-                                                                 </div>
-                                                            </div>
-                                                         </div>
-                                                         <div  class="col-4">
-                                                               <div  class="input_wrap">
-                                                                   <label  for="#">Show Home Page</label> 
-                                                                   <div  class="Select_50px">
-                                                                        <select  name="show_home" class="form-control">
-                                                                                <option  value="0">No</option> 
-                                                                                <option  value="1">Yes</option> <!---->
-                                                                        </select>
-                                                                   </div>
-                                                              </div>
-                                                         </div> 
-                                                         <div  class="col-4">
-                                                            <div  class="input_wrap">
-                                                                <label  for="#">Position Order</label> 
-                                                                <div  class="Select_50px">
-                                                                    <select  name="position_order" class="form-control">
-                                                                        <option  value="0" selected="selected">Select Position Order</option> 
-                                                                        <option  value="6"> 6</option>
-                                                                        <option  value="8"> 7</option> 
-                                                                        <option  value="9"> 9</option> 
-                                                                        <option  value="9"> 10</option>
-                                                                    </select> <!---->
-                                                                </div>
-                                                            </div>
-                                                         </div>
-                                                    </div>
-                                            </div>
+                                                   <div  class="input_wrap">
+                                                        <label  >Select Country</label> 
+                                                        <div  class="Select_50px height_51">
+                                                            <select v-model="Showcountry_id" class="form-control">
+                                                                <option v-for="country in countries" :key="country.id" :value="country.id"  > {{country.en_name}} </option>
+                                                                 
+                                                            </select> <!---->
+                                                        </div>
+                                                   </div>
+                                                    <label>English Education System Name</label> 
+                                                    <input  v-model="ShowEneduSysName" class="input_form form-control">
+                                                    <label>Arabic Education System Name</label> 
+                                                    <input  v-model="ShowAreduSysName" class="input_form form-control">
+
+                                                </div> 
+                                                     
+                                            </div> 
+                                                   
+                                         
                                             <div  class="modal-footer modal_btn">
                                                <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2">Cancel</button>
-                                               <button  type="submit" class="btn_1 m-0">Submit</button>
+                                               <button  v-on:click="UpdateEduSys" type="submit" class="btn_1 m-0">Update</button>
                                             </div>
                                   </form>
                               </div>
@@ -293,13 +273,17 @@
                                                     <div  class="input_wrap">
                                                         <div v-for="eduStage in eduStages" :key="eduStage.id" class="card">
                                                             <div class="card-body row">
-                                                                <p class="col-md-6">{{eduStage.en_name}}</p>
-                                                                 <div  class="category_option col-md-6">
+                                                                <p class="col-md-4">{{eduStage.en_name}}</p>
+                                                                 <div  class="category_option col-md-8">
                                                                     <!-- <span  class="status_btn">Active</span>  -->
-                                                                    <a  href="#" data-toggle="modal" data-target="#edit_semester" class="white_btn">Edit</a>
+
+                                                                    <a v-on:click="ShowEduStage(eduStage.id)" href="#" data-toggle="modal" data-target="#edit_edu_stage"  class="white_btn">Edit</a>
                                                                     <a v-on:click="openSemModal(eduStage.id)" data-placement="top" title="Add Semester" href="#" data-toggle="modal" data-target="#add_semester" class="white_btn"> 
                                                                         <i  class="fas fa-plus-circle"></i>
                                                                     </a>
+                                                        <a  href="#" v-on:click="DeleteEduStage(eduStage.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
+
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -329,7 +313,47 @@
                         </div>
                     </div>
 
-
+    <div id="edit_edu_stage" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
+                           <div  role="document" class="modal-dialog modal-dialog-centered">
+                              <div  class="modal-content">
+                                     <form >
+                                        <div  class="modal-header">
+                                            <h5 >Edit Education Stage</h5>
+                                        </div> 
+                                        <div  class="modal-body">
+                                            <div  class="form-row">
+                                               
+                                                <div  class="col-12">
+                                                      <!-- <div  class="input_wrap">
+                                                        <label  >Select Country</label> 
+                                                        <div  class="Select_50px height_51">
+                                                            <select v-model="ShowEduSysId" class="form-control">
+                                                                <option v-for="country in countries" :key="country.id" :value="country.id"  > {{country.en_name}} </option>
+                                                                 
+                                                            </select>
+                                                        </div>
+                                                   </div> -->
+                                                    <div  class="input_wrap">
+                                                        <label >Arabic Education Stage Name </label> 
+                                                        <input v-model="ShowArStageName" placeholder="Education Stage Name" class="input_form form-control"> 
+                                                        <label >English Education Stage Name </label> 
+                                                        <input v-model="ShowEnStageName" placeholder="Education Stage Name" class="input_form form-control">
+                                                       
+                                                    </div>
+                                                    <button  v-on:click="UpdateEduStage" aria-label="Close" data-dismiss="modal" class="btn_1 m-0" >Update</button>
+                                                </div> 
+                                             
+                                              
+                                        </div>
+                                       </div> 
+                                        <div  class="modal-footer modal_btn">
+                                                <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Close </button> 
+                                                <!-- <button  v-on:click="createCountry" class="btn_1 m-0" type="submit">Add</button> -->
+                                        </div>
+                                  </form>
+                              </div>
+                        </div>
+                    </div>
 
                     <div v-if="smesterModal" id="add_semester" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
                            <div  role="document" class="modal-dialog modal-dialog-centered">
@@ -343,12 +367,9 @@
                                                 
                                                 <div  class="col-12">
                                                     <div  class="input_wrap">
-                                                        <label >Arabic Semester Name </label> 
-                                                        <input v-model="ArSemesterName" placeholder="Semester Name" class="input_form form-control"> 
-                                                        <label >English Semester Name </label> 
-                                                        <input v-model="EnSemesterName" placeholder="Semester Name" class="input_form form-control">
-                                                       
-                                                    </div>
+                                                        <label  >Select Semesters</label> 
+                                                         <multiselect  v-model="semesters" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="en_name" track-by="id" :closeOnSelect="false" :options="AllSemesters" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                                                   </div>
                                                   
                                                 </div> 
                                              
@@ -357,7 +378,7 @@
                                        </div> 
                                         <div  class="modal-footer modal_btn">
                                                 <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Close </button> 
-                                                <button  v-on:click="SaveSmester" class="btn_1 m-0" type="submit">Add</button>
+                                                <button  v-on:click="AssignSmesters" class="btn_1 m-0" type="submit">Add</button>
                                         </div>
                                   </form>
                               </div>
@@ -369,11 +390,16 @@
       </div>
    </div>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <script>
 import axios from '../../axios'
 import VueSimpleAlert from "vue-simple-alert";
-import { Dialog } from 'buefy'
+ import Multiselect from 'vue-multiselect'
+
+
 import '../lesson.css'
+
+
 export default {
 name:'addCategory',
 data(){
@@ -385,6 +411,11 @@ data(){
             country_id:'',
             AreduSysName:'',
             EneduSysName:'',
+            Showcountry_id:'',
+            ShowAreduSysName:'',
+            ShowEneduSysName:'',
+            ShowArStageName:'',
+            ShowEnStageName:'',
             ArStageName:'',
             EnStageName:'',
             eduSysId:'',
@@ -392,16 +423,33 @@ data(){
             EnSemesterName:'',
             eduStageId:'',
             countryId:'',
+            edu_system_id:'',
             countries:[],
             eduStages:[],
+            semesters:[],
+            AllSemesters:[],
+            approvers:[],
+            semestersid:[],
             stageModal: false,
             smesterModal:false,
-            showCountryModal:false
+            showCountryModal:false,
+            showEduSysModal:false,
+    
+
 
         
     }
 },
+components: { Multiselect },
 methods:{
+      addTag (newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+      }
+      this.options.push(tag)
+      this.value.push(tag)
+    },
      openSemModal(id){
        this.smesterModal = true
     //    this.stageModal = false
@@ -434,6 +482,7 @@ methods:{
             dismissible: true
           });
         }
+        this.reload()
       }).catch(err => {
         console.log(err.response)
       })
@@ -441,7 +490,7 @@ methods:{
    getCountries(){
         axios.get('/api/v1/get-countries').then(res => {
             this.countries = res.data
-            console.log(this.countries)
+            
         })
 
    },
@@ -526,22 +575,156 @@ methods:{
           });
          
         }
+this.reload()
+       })
+
+   },
+   DeleteCountry(id){
+
+this.$confirm("Are you sure?").then(() => {
+    
+    axios.delete('/api/v1/remove/country/'+id).then(res=>{
+
+         this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Country Deleted Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+
+        this.reload()
+
+    })
+});
+           
+   },
+   ShowEduSys(id){
+       this.showEduSysModal = true
+       this.EduSysId = id
+       axios.get('/api/v1/edu-system/show/'+id).then(res=>{
+           this.ShowAreduSysName = res.data.ar_name
+           this.ShowEneduSysName = res.data.en_name
+           this.Showcountry_id = res.data.country_id
+       })
+           
+
+   },
+   
+   DeleteEduSys(id){
+       
+
+this.$confirm("Are you sure?").then(() => {
+    
+    axios.delete('/api/v1/edu-system/remove/'+id).then(res=>{
+
+         this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Education System Deleted Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+
+        this.reload()
+
+    })
+});
+   },
+   UpdateEduSys(){
+       axios.post('/api/v1/edu-system/edit/'+this.EduSysId ,{
+           ar_name:this.ShowAreduSysName,
+           en_name:this.ShowEneduSysName,
+           country_id:this.Showcountry_id
+       }).then(res=>{
+
+           this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Updated Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+            this.reload()
+       })
+     
+     
+
+   },
+   DeleteEduStage(id){
+
+
+this.$confirm("Are you sure?").then(() => {
+    
+    axios.delete('/api/v1/edu-stage/remove/'+id).then(res=>{
+
+         this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Education System Deleted Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+
+         this.openModal(this.eduSysId)
+    })
+});
+
+   },
+   ShowEduStage(id){
+       this.eduStageId = id 
+       axios.get('/api/v1/edu-stage/show/'+id).then(res=>{
+          
+           this.ShowEnStageName= res.data.en_name
+           this.ShowArStageName= res.data.ar_name
+           this.edu_system_id  = res.data.edu_system_id
 
        })
 
    },
-   confirmDelete(id){
+   UpdateEduStage(){
+      
+       axios.post('/api/v1/edu-stage/edit/'+this.eduStageId,{
 
+           ar_name:this.ShowArStageName,
+           en_name:this.ShowEnStageName,
+           edu_system_id:this.edu_system_id
 
-                this.$buefy.dialog({
-                    title: 'Deleting account',
-                    message: 'Are you sure you want to <b>delete</b> your account? This action cannot be undone.',
-                    confirmText: 'Delete Account',
-                    type: 'is-danger',
-                    hasIcon: true,
-                    onConfirm: () => this.$buefy.toast.open('Account deleted!')
-                })
-            }
+       }).then(res=>{
+           this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Updated Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+          this.openModal(this.edu_system_id)
+       })
+
+   },
+   getSemesters(){
+      
+      axios.get('/api/v1/get-semesters').then(res=>{
+          this.AllSemesters = res.data
+      })
+   },
+        
+   AssignSmesters(){
+        this.semesters.forEach((semester) => {
+                     this.semestersid.push(semester.id);
+                });
+       
+       axios.post('/api/v1/edu-stage/semesters',{
+           semesters:this.semestersid,
+           edu_stage_id:this.eduStageId
+       })
+
+   },
+
+   reload(){
+       window.location.reload()
+   }
+          
         
       
  
@@ -553,6 +736,7 @@ methods:{
 },
 mounted(){
     this.getCountries()
+    this.getSemesters()
 }
 }
 </script>
