@@ -13,7 +13,7 @@ class CreateEduStageSemesterTable extends Migration
      */
     public function up()
     {
-        Schema::create('edu_stage_semester', function (Blueprint $table) {
+        Schema::create('edu_stage_semesters', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('edu_stage_id');
             $table->foreign('edu_stage_id')->references('id')->on('edu_stages')->onDelete('cascade');
@@ -31,6 +31,6 @@ class CreateEduStageSemesterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('edu_stage_semester');
+        Schema::dropIfExists('edu_stage_semesters');
     }
 }

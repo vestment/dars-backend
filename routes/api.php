@@ -66,6 +66,15 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::get('semester/{id}', 'ApiController@getSemester');
         Route::post('semester/edit/{id}', 'ApiController@updateSemester');
         Route::delete('semester/remove/{id}', 'ApiController@deleteSemester');
+
+
+        Route::get('get-subjects', 'ApiController@getSubjects');
+        Route::post('create/subject', 'ApiController@saveSubject');
+        Route::get('subject/{id}', 'ApiController@getSubject');
+        Route::post('subject/edit/{id}', 'ApiController@updateSubject');
+        Route::delete('subject/remove/{id}', 'ApiController@deleteSubject');
+
+
         Route::post('courses','ApiController@getCourses');
         Route::post('bundles','ApiController@getBundles');
         Route::post('search','ApiController@search');

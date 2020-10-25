@@ -26,6 +26,11 @@ return array(
                     'title' => 'Courses',
                     'fields' =>
                         array(
+                            'country' => 'Country',
+                            'eduSys' => 'Education System',
+                             'eduStatge' => 'Education Statge',
+                             'semester' => 'Semester',
+                             
                             'knowledge' => 'What You will learn',
                             'published' => 'Published',
                             'unpublished' => 'Not Published',

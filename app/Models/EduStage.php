@@ -11,6 +11,10 @@ class EduStage extends Model
         return $this->belongsTo(EduSystem::class,'edu_system_id');
     }
     public function semesters(){
-        return $this->belongsToMany(Semester::class,'edu_stage_semester');
+        return $this->belongsToMany(Semester::class,'edu_stage_semesters');
+    }
+    public function getDataFromColumn($col) {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() =='ar' ? 'ar_'.$col : 'en_'.$col] ?? $this->attributes[$col];
     }
 }

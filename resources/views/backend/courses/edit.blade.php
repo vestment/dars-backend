@@ -95,6 +95,60 @@
                         <div class="card-body">
 
                             @if (Auth::user()->isAdmin() || auth()->user()->hasRole('academy'))
+
+
+                            <div class="row">
+                                <div class="col-10 form-group">
+                                    {!! Form::label('country_id',trans('labels.backend.courses.fields.country'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('country_id', $countriesToSelect, $country_id, ['class' => 'form-control select2 js-example-placeholder-single', 'id' => 'countryID','multiple' => false, 'required' => true]) !!}
+
+
+                                </div>
+                               
+                            </div>
+
+                           
+                  
+                            <div class="row">
+                                <div class="col-10 form-group ">
+                                    {!! Form::label('edusystems',trans('labels.backend.courses.fields.eduSys'), ['class' => 'control-label']) !!}
+                                    <select name="edusystems[]"  class="form-control select2" id = 'C_ES' multiple = 'multiple' required = true >
+
+                                    </select>
+
+                                </div>
+                               
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-10 form-group ">
+                                    {!! Form::label('eduStatge',trans('labels.backend.courses.fields.eduStatge'), ['class' => 'control-label']) !!}
+                                    <select name="eduStatge[]"  class="form-control select2" id = 'C_Estages' multiple = 'multiple' required = true >
+                                    </select>
+
+                                </div>
+                               
+                            </div>
+
+                            
+                         
+                            <div class="row">
+                                <div class="col-10 form-group ">
+                                    {!! Form::label('semesters',trans('labels.backend.courses.fields.semester'), ['class' => 'control-label']) !!}
+                                    <select name="semesters[]"  class="form-control select2" id = 'ES_Semesters' multiple = 'multiple' required = true >
+                                    </select>
+
+                                </div>
+                               
+                            </div>
+
+
+
+
+
+
                                 <div class="row">
 
                                     <div class="col-10 form-group">
@@ -1135,6 +1189,101 @@
 
 @push('after-scripts')
     <script>
+        $(document).ready(function () {
+   
+   var allEduSystems = {{$allEduSystems}} ;
+   console.log(allEduSystems)
+        })
+
+
+   $('#countryID').change(function(e) {
+    var country =  $(this).val();
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.country.eduSys')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id:country
+                    
+                },
+                success: function (resp) {
+                    $('#C_ES').empty();
+                 for( var i=0; i < resp.length; i ++){
+                
+
+                        var option = '<option   value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                   
+                      
+                   
+                    $('#C_ES').append(option);
+                 }
+                 
+                }
+            })
+    
+
+ 
+   });
+
+
+
+
+
+$(function(){
+   $('#C_ES').change(function(e) {
+    var Country_ESID =  $(this).val();
+
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.eduSys.eduStatges')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ids:Country_ESID
+                    
+                },
+                success: function (resp) {
+                    $('#C_Estages').empty();
+                 for( var i=0; i < resp.length; i ++){
+                   
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                    $('#C_Estages').append(option);
+                 }
+                 
+                }
+            })
+    
+   
+});
+});
+
+
+
+$(function(){
+   $('#C_Estages').change(function(e) {
+    var EStatgeIDs =  $(this).val();
+
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.eduStatges.semesters')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ids:EStatgeIDs
+                    
+                },
+                success: function (resp) {
+                    $('#ES_Semesters').empty();
+                 for( var i=0; i < resp.length; i ++){
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                    $('#ES_Semesters').append(option);
+                 }
+                 
+                }
+            })
+    
+   
+});
+});
+
         function editTest(id) {
             $('#editLessonForm').hide();
             $.ajax({
@@ -1238,6 +1387,31 @@
         }
 
         $(document).ready(function () {
+ var eduSystemIds = {{$eduSystemIds}};
+ var allEduSystems = {{$allEduSystems}} ;
+ var idArray = [];
+ for(var i =0; i<allEduSystems.length; i++){
+    // idArray = allEduSystems[i].id
+ }
+
+ console.log(allEduSystems[0]);
+
+
+    $(function(){
+
+        // for(var i =0; i < allEduSystems.length ; i++){
+
+        //     if(eduSystemIds.includes(allEduSystems[i])){
+        //         var option = '<option selected  value="'+allEduSystems[i]+'">'+allEduSystems[i]+'</option>';
+                        
+                            
+                        
+        //                 $('#C_ES').append(option);
+
+        //     }
+
+        // }
+    });
 
 
             $('.date-input').datepicker({

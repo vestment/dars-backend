@@ -26,10 +26,6 @@ Vue.config.productionTip = false
 
 
 /* Main component */
-//Vue.component('PlayCourse', PlayCourse)
-import addCategory from '../components/Categories/add.vue'
-Vue.component('addCategory', require('../components/Categories/add.vue').default);
-Vue.component('semesters', require('../components/Categories/Semesters.vue').default);
 
 import VueSimpleAlert from "vue-simple-alert";
 Vue.use(VueSimpleAlert);

@@ -48,6 +48,8 @@
                                                 <a  href="#" data-toggle="modal" data-target="#saveCat" class="btn_1">Add Country</a>
                                                 <a  href="#" data-toggle="modal" data-target="#saveSubCat" class="btn_1">Add Education System</a>
                                                 <router-link class="btn_1" to="/user/semesters" >All Semesters</router-link>
+                                                <router-link class="btn_1" to="/user/subjects" >All Subjects</router-link>
+
                                             </div>
                                         </div>
                                     </div> 
@@ -281,11 +283,17 @@
                                                                     <a v-on:click="openSemModal(eduStage.id)" data-placement="top" title="Add Semester" href="#" data-toggle="modal" data-target="#add_semester" class="white_btn"> 
                                                                         <i  class="fas fa-plus-circle"></i>
                                                                     </a>
-                                                        <a  href="#" v-on:click="DeleteEduStage(eduStage.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
+                                                                   <a  href="#" v-on:click="DeleteEduStage(eduStage.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
 
 
                                                                 </div>
+                                                                <span v-for="sem in eduStage.semesters " :key="sem.id" class="badge badge-pill badge-danger mt-4 ml-3" v-on:click="openModal(eduSys.id)" data-placement="top" title="Assign Subjects To Tjis Semester" href="#" data-toggle="modal" data-target="#add_edu_stage">{{sem.en_name}}</span>
+
+                                                                 
                                                             </div>
+                                                            
+                                                           
+
                                                         </div>
                                                         
                                                     </div>
@@ -547,6 +555,7 @@ methods:{
    getEduStages(){
        axios.get('/api/v1/edu-stage/'+this.eduSysId).then( res => {
            this.eduStages = res.data
+          
        })
    },
   

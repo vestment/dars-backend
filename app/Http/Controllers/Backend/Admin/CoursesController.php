@@ -11,6 +11,13 @@ use App\Models\Lesson;
 use App\Models\Media;
 use App\Models\Courses;
 use App\Models\Test;
+use App\Models\Country;
+use App\Models\EduSystem;
+use App\Models\EduStage;
+use App\Models\Semester;
+use App\Models\EduStageSemester;
+use App\Models\CourseEduStatgeSem;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -226,16 +233,42 @@ class CoursesController extends Controller
         foreach ($allCategories as $key => $category) {
             $categoriesToSelect[$category->id] = $category->getDataFromColumn('name');
         }
-
-
+        $countriesToSelect = [];
+        $countries = Country::get();
+        foreach ($countries as $key => $country) {
+            $countriesToSelect[$country->id] = $country->getDataFromColumn('name');
+        }
+       
         $videos = Media::where('type', 'upload')->where('model_id', null)->pluck('file_name', 'id');
 
         if (count($videos) == 0) {
             $videos = ['' => 'No videos available'];
         }
+        // $EduSystem = [];
 
-        return view('backend.courses.create', compact('videos', 'teachersToSelect', 'categoriesToSelect', 'courses', 'learned', 'academies', 'learned_ar'));
+        return view('backend.courses.create', compact('countriesToSelect','videos', 'teachersToSelect', 'categoriesToSelect', 'courses', 'learned', 'academies', 'learned_ar'));
     }
+public function getCountryedusys(Request $request ){
+
+    $EduSystem = EduSystem::where('country_id', $request->id)->with('country')->get();
+    return $EduSystem;
+    
+}
+
+public function getEduStatgesOfES (Request $request){
+    $eduStatges = EduStage::wherein('edu_system_id',$request->ids)->get();
+    return $eduStatges;
+}
+
+public function getSemestersOfES(Request $request){
+
+    $semesterIDs = EduStageSemester::wherein('edu_stage_id',$request->ids)->pluck('semester_id');
+    $semesters = Semester::wherein('id',$semesterIDs)->get();
+    return $semesters;
+
+
+}
+
 
     /**
      * Store a newly created Course in storage.
@@ -245,6 +278,7 @@ class CoursesController extends Controller
      */
     public function store(StoreCoursesRequest $request)
     {
+        // dd($request->all());
         if (!Gate::allows('course_create')) {
             return abort(401);
         }
@@ -263,6 +297,18 @@ class CoursesController extends Controller
                 $seats += $item['seats-' . $key];
             }
         }
+        // dd($request->all());
+
+
+
+        foreach ($request->eduStatge as $i => $statge) {
+            foreach($request->semesters as $j => $semester) {
+               $ids[] = EduStageSemester::where('edu_stage_id',$request->eduStatge [$i])->where('semester_id',$request->semesters [$j])->pluck('id');
+            }
+
+        }
+            $statgeSemestersIDS = Arr::collapse($ids);
+      
         $course = Course::create($request->except(['offlineData', 'duration', 'learned', 'learned_ar', 'opt_courses', 'mand_courses', 'seats']));
         $course->slug = $slug;
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
@@ -272,6 +318,14 @@ class CoursesController extends Controller
         $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
         $course->seats = $seats;
         $course->save();
+foreach($statgeSemestersIDS as $i=>$semID){
+
+ $courseSemester = new CourseEduStatgeSem();
+ $courseSemester->course_id = $course->id;
+ $courseSemester->edu_statge_sem_id = $statgeSemestersIDS[$i];
+ $courseSemester->save();
+}
+
 
         //Saving  videos
         if ($request->media_type != "") {
@@ -374,12 +428,22 @@ class CoursesController extends Controller
             $academies[$academy->id] = $academy->full_name;
         }
         $teachersToSelect = [];
+        $status = true;
+        $selectedTeachers = $course->teachers->pluck('id')->toArray();
+
+        
 
         $allTeachers = User::role('teacher')->select('ar_first_name', 'ar_last_name', 'first_name', 'last_name', 'id')->get();
+        
+        foreach ($allTeachers as $key => $teacher) {
 
-        foreach ($allTeachers as $key => $teachers) {
-            $teachersToSelect[$teachers->id] = $teachers->full_name;
+            $teachersToSelect[$teacher->id] = $teacher->full_name;
+           
+            if( in_array( $teacher->id, $selectedTeachers)){
+                
+            }
         }
+      
         $allCategories = Category::where('status', '=', 1)->get();
         $categoriesToSelect = [];
         foreach ($allCategories as $key => $category) {
@@ -412,7 +476,33 @@ class CoursesController extends Controller
             }
         }
 
+        $courseEduSemIDs = CourseEduStatgeSem::where('course_id',$id)->pluck('edu_statge_sem_id');
 
+        $semesterIds = EduStageSemester::wherein('id',$courseEduSemIDs)->pluck('semester_id');
+
+        // $semesters = Semester::wherein('id',$semesterIds)->get();
+
+        $eduStatgeIDs = EduStageSemester::wherein('id',$courseEduSemIDs)->pluck('edu_stage_id');
+
+        $eduStatges = EduStage::wherein('id',$eduStatgeIDs)->get();
+
+        $allEducationStatges = EduStage::get();
+
+        $eduSystemIds = $eduStatges->pluck('edu_system_id');
+        $allEduSystems = EduSystem::select('id','en_name')->first();
+        return $allEduSystems;
+        [$keys, $values] = Arr::divide($allEduSystems);
+        $allEduSystems2 = $values;
+        return $values;
+
+        $edusystemdata = EduSystem::wherein('id',$eduSystemIds)->get();
+        $country_id =  $edusystemdata->pluck('country_id');
+        $country = Country::where('id',$country_id)->get();
+        $countriesToSelect = [];
+        $countries = Country::get();
+        foreach ($countries as $key => $country) {
+            $countriesToSelect[$country->id] = $country->getDataFromColumn('name');
+        }
         $courseTimeLine = CourseTimeline::where('course_id', $id)->with(['model'])->orderBy('sequence', 'asc')->get();
         $courseSequence = [];
         foreach ($courseTimeLine as $key => $item) {
@@ -431,7 +521,7 @@ class CoursesController extends Controller
             $videos = ['' => 'No videos available'];
             $notSelectedVideos = ['' => 'No videos available'];
         }
-        return view('backend.courses.edit', compact('notSelectedVideos', 'courseSequence', 'videos', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
+        return view('backend.courses.edit', compact('eduSystemIds','allEducationStatges','courseEduSemIDs','allEduSystems','allEduSystems2','eduStatgeIDs','countriesToSelect','country_id','notSelectedVideos', 'courseSequence', 'videos', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
 
 
     }

@@ -53,18 +53,63 @@
 
                         <div class="card-body">
                             @if (Auth::user()->isAdmin() || auth()->user()->hasRole('academy'))
-                                <div class="row">
-                                    <div class="col-10 form-group">
-                                        {!! Form::label('teachers',trans('labels.backend.courses.fields.teachers'), ['class' => 'control-label']) !!}
-                                        {!! Form::select('teachers[]', $teachersToSelect, old('teachers'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
 
-                                    </div>
-                                    <div class="col-2 d-flex form-group flex-column">
-                                        OR <a target="_blank" class="btn btn-primary mt-auto"
-                                              href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
-                                    </div>
+
+                            <div class="row">
+                                <div class="col-10 form-group">
+                                    {!! Form::label('country_id',trans('labels.backend.courses.fields.country'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('country_id', $countriesToSelect, old('country_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'id' => 'countryID','multiple' => false, 'required' => true]) !!}
+
+
                                 </div>
+                               
+                            </div>
+
+                           
+                  
+                            <div class="row">
+                                <div class="col-10 form-group ">
+                                    {!! Form::label('edusystems',trans('labels.backend.courses.fields.eduSys'), ['class' => 'control-label']) !!}
+                                    <select name="edusystems[]"  class="form-control select2" id = 'C_ES' multiple = 'multiple' required = true >
+                                    </select>
+
+                                </div>
+                               
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-10 form-group ">
+                                    {!! Form::label('eduStatge',trans('labels.backend.courses.fields.eduStatge'), ['class' => 'control-label']) !!}
+                                    <select name="eduStatge[]"  class="form-control select2" id = 'C_Estages' multiple = 'multiple' required = true >
+                                    </select>
+
+                                </div>
+                               
+                            </div>
+
+                            
+                         
+                            <div class="row">
+                                <div class="col-10 form-group ">
+                                    {!! Form::label('semesters',trans('labels.backend.courses.fields.semester'), ['class' => 'control-label']) !!}
+                                    <select name="semesters[]"  class="form-control select2" id = 'ES_Semesters' multiple = 'multiple' required = true >
+                                    </select>
+
+                                </div>
+                               
+                            </div>
+
+                            
+                              
                             @endif
+
+
+        
+
+     
+                            
 
                             <div class="row">
                                 <div class="col-10 form-group">
@@ -78,6 +123,18 @@
                                           href="{{route('admin.categories.index').'?create'}}">{{trans('labels.backend.courses.add_categories')}}</a>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                    <div class="col-10 form-group">
+                                        {!! Form::label('teachers',trans('labels.backend.courses.fields.teachers'), ['class' => 'control-label']) !!}
+                                        {!! Form::select('teachers[]', $teachersToSelect, old('teachers'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => 'multiple', 'required' => true]) !!}
+
+                                    </div>
+                                    <div class="col-2 d-flex form-group flex-column">
+                                        OR <a target="_blank" class="btn btn-primary mt-auto"
+                                              href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
+                                    </div>
+                                </div>
 
                             <div class="row">
                                 <div class="col-6 col-lg-6 form-group">
@@ -340,6 +397,113 @@
                 @stop
                 @push('after-scripts')
                     <script>
+
+
+// function getedusys(country_id) {
+//             console.log(country_id)
+//     $.ajax({
+//                 type: "get",
+//                 url: '{{route('admin.country.eduSys')}}',
+//                 data: {
+//                     _token: '{{ csrf_token() }}',
+//                     id:country_id
+                    
+//                 },
+//                 success: function (resp) {
+                  
+//                     console.log(resp)
+//                 }
+//             })
+//         }
+
+        $(function(){
+   $('#countryID').change(function(e) {
+    var country =  $(this).val();
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.country.eduSys')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id:country
+                    
+                },
+                success: function (resp) {
+                    $('#C_ES').empty();
+                 for( var i=0; i < resp.length; i ++){
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                    $('#C_ES').append(option);
+                 }
+                 
+                }
+            })
+    
+
+ 
+   });
+});
+
+
+
+$(function(){
+   $('#C_ES').change(function(e) {
+    var Country_ESID =  $(this).val();
+
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.eduSys.eduStatges')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ids:Country_ESID
+                    
+                },
+                success: function (resp) {
+                    $('#C_Estages').empty();
+                 for( var i=0; i < resp.length; i ++){
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                    $('#C_Estages').append(option);
+                 }
+                 
+                }
+            })
+    
+   
+});
+});
+
+
+
+$(function(){
+   $('#C_Estages').change(function(e) {
+    var EStatgeIDs =  $(this).val();
+
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.eduStatges.semesters')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ids:EStatgeIDs
+                    
+                },
+                success: function (resp) {
+                    $('#ES_Semesters').empty();
+                 for( var i=0; i < resp.length; i ++){
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                    $('#ES_Semesters').append(option);
+                 }
+                 
+                }
+            })
+    
+   
+});
+});
+
+
+
+
+
+
+
                         $(document).ready(function () {
 
                             $('#start_date').datepicker({

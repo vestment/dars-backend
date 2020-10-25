@@ -36,6 +36,7 @@ use App\Models\Reason;
 use App\Models\Review;
 use App\Models\Sponsor;
 use App\Models\Semester;
+use App\Models\Subject;
 use App\Models\System\Session;
 use App\Models\Tag;
 use App\Models\Tax;
@@ -69,6 +70,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Repositories\SemesterRepositoryInterface;
+
 use Purifier;
 use Messenger;
 use Newsletter;
@@ -80,10 +83,13 @@ class ApiController extends Controller
     use SendsPasswordResetEmails;
 
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository )
     {
         $this->userRepository = $userRepository;
+      
+       
     }
+ 
 
 
     public function __invoke(Request $request)
@@ -2738,7 +2744,7 @@ class ApiController extends Controller
 
     public function getEduStages($eduSystem)
     {
-        $EduStage = EduStage::where('edu_system_id', $eduSystem)->with(['system', 'system.country'])->get();
+        $EduStage = EduStage::where('edu_system_id', $eduSystem)->with(['system', 'system.country','semesters'])->get();
         return response()->json($EduStage);
     }
 
@@ -2800,12 +2806,13 @@ class ApiController extends Controller
 
     public function assignSemesters(Request $request)
     {
+        // return $request;
         $validator = Validator::make($request->all(), [
             'edu_stage_id' => 'required|exists:edu_stages,id',
             'semesters' => 'required',
         ]);
         if ($validator->passes()) {
-            $EduStage = EduStage::findOrFail($request->edu_stage_id)->with(['system', 'system.country', 'semesters'])->first();
+            $EduStage = EduStage::where('id',$request->edu_stage_id)->with(['system', 'system.country', 'semesters'])->first();
 
             $EduStage->semesters()->attach($request->semesters);
 
@@ -2843,6 +2850,8 @@ class ApiController extends Controller
 
     public function getSemesters()
     {
+
+      
         $Semester = Semester::with(['eduStages', 'eduStages.system', 'eduStages.system.country'])->get();
         return response()->json($Semester);
     }
@@ -2913,5 +2922,81 @@ class ApiController extends Controller
         $semester = Semester::findorfail($id);
         $semester->delete();
         return response()->json(['success' => true, 'data' => $semester]);
+    }
+
+
+
+    public function getSubjects()
+    {
+        $subject = Subject::get();
+        return response()->json($subject);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function saveSubject(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'name' => 'required|unique:subjects',
+        ]);
+        if ($validator->passes()) {
+            $subject = new Subject();
+            $subject = $subject->fill($request->all());
+            $subject->save();
+            return response()->json(['success' => true, 'data' => $subject]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getSubject($id)
+    {
+        $subject = Subject::where('id',$id)->first();
+        return response()->json($subject);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateSubject(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'name' => 'required', Rule::unique('subjects')->ignore($id),
+        ]);
+        if ($validator->passes()) {
+
+            $subject = Subject::where('id',$id)->first();
+            $subject->update($request->all());
+            return response()->json(['success' => true, 'data' => $subject]);
+        }
+        return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteSubject($id)
+    {
+        $subject = Subject::findorfail($id);
+        $subject->delete();
+        return response()->json(['success' => true, 'data' => $subject]);
     }
 }

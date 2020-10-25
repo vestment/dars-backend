@@ -59,6 +59,18 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
     Route::get('forums-category/status/{id}', 'Admin\ForumController@status')->name('forums-category.status');
     Route::get('addcategory', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addcategory']);
     Route::get('semesters', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'semesters']);
+    Route::get('subjects', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'subjects']);
+    Route::get('addCourse', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addCourse']);
+    Route::get('edusys', 'Admin\CoursesController@getCountryedusys')->name('country.eduSys');
+    Route::get('ES-edustatges', 'Admin\CoursesController@getEduStatgesOfES')->name('eduSys.eduStatges');
+    Route::get('ES-semesters', 'Admin\CoursesController@getSemestersOfES')->name('eduStatges.semesters');
+
+
+
+    // Route::get('edusys/{{country_id}}', 'Admin\CoursesController@getCountryedusys');
+
+
+
 
 
 

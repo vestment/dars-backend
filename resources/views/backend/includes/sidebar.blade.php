@@ -5,7 +5,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-title ">
-                <a href="{{ route('admin.dashboard') }}"> <img class="logo" src="{{url('img/backend/brand/logo.png')}}"></a>
+                <a href="{{ route('admin.dashboard') }}"> <img class="logo"  src="{{url('img/backend/brand/logo.png')}}"></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ active_class(Active::checkUriPattern('admin/dashboard')) }}"
@@ -85,6 +85,7 @@
                         <span class="title">@lang('menus.backend.sidebar.add-category.title')</span>
                     </a>
                 </li>
+               
             @endcan
             @if((!auth()->user()->hasRole('student')) && (auth()->user()->hasRole('teacher') || auth()->user()->isAdmin() || auth()->user()->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access'])))
                 @can('question_access')

@@ -2,6 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import addCategory from './components/Categories/add.vue'
 import semesters from './components/Categories/Semesters.vue'
+import subjects from './components/Categories/subjects.vue'
+import addCourse from './components/Courses/add.vue'
+
+
 
 
 Vue.use(VueRouter)
@@ -17,6 +21,16 @@ const routes = [
     path: '/user/semesters',
     name: 'semesters',
     component: semesters,
+  },
+  {
+    path: '/user/subjects',
+    name: 'subjects',
+    component: subjects,
+  },
+  {
+    path: '/user/addCourse',
+    name: 'addCourse',
+    component: addCourse,
   },
 
 

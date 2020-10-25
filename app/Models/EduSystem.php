@@ -13,4 +13,8 @@ class EduSystem extends Model
     public function country(){
         return $this->belongsTo(Country::class);
     }
+    public function getDataFromColumn($col) {
+        // ?? null return if the column not found
+        return $this->attributes[app()->getLocale() =='ar' ? 'ar_'.$col : 'en_'.$col] ?? $this->attributes[$col];
+    }
 }
