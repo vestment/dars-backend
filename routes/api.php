@@ -20,11 +20,14 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::get('sponsors','ApiController@getSponsors');
-
+    Route::get('get-countries', 'ApiController@getCountries');
+    Route::get('edu-system/{country}', 'ApiController@getEduSystems');
+    Route::post('login','ApiController@login');
+    Route::post('sign-up','ApiController@signup');
 
     Route::get('login/en', 'ApiController@index')->name('login.index');
     Route::get('signup', 'ApiController@registerIndex')->name('register.index');
-    
+
     Route::get('login/ar', 'ApiController@indexrtl')->name('loginrtl.indexrtl');
     
     Route::group([
@@ -44,12 +47,10 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     });
 
     Route::group(['middleware' => 'auth:api'],function (){
-        Route::get('get-countries', 'ApiController@getCountries');
         Route::post('create-country', 'ApiController@saveCountry');
         Route::get('country/{id}', 'ApiController@getCountry');
         Route::post('edit/country/{id}', 'ApiController@updateCountry');
         Route::delete('remove/country/{id}', 'ApiController@deleteCountry');
-        Route::get('edu-system/{country}', 'ApiController@getEduSystems');
         Route::post('create/edu-system', 'ApiController@saveEduSystem');
         Route::get('edu-system/show/{id}', 'ApiController@getEduSystem');
         Route::post('edu-system/edit/{id}', 'ApiController@updateEduSystem');

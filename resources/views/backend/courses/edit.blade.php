@@ -1191,9 +1191,11 @@
     <script>
         $(document).ready(function () {
    
-   var allEduSystems = {{$allEduSystems}} ;
+   var allEduSystems = {{$allEduSystems2}} ;
    console.log(allEduSystems)
-        })
+
+   00
+        });
 
 
    $('#countryID').change(function(e) {
@@ -1387,31 +1389,6 @@ $(function(){
         }
 
         $(document).ready(function () {
- var eduSystemIds = {{$eduSystemIds}};
- var allEduSystems = {{$allEduSystems}} ;
- var idArray = [];
- for(var i =0; i<allEduSystems.length; i++){
-    // idArray = allEduSystems[i].id
- }
-
- console.log(allEduSystems[0]);
-
-
-    $(function(){
-
-        // for(var i =0; i < allEduSystems.length ; i++){
-
-        //     if(eduSystemIds.includes(allEduSystems[i])){
-        //         var option = '<option selected  value="'+allEduSystems[i]+'">'+allEduSystems[i]+'</option>';
-                        
-                            
-                        
-        //                 $('#C_ES').append(option);
-
-        //     }
-
-        // }
-    });
 
 
             $('.date-input').datepicker({

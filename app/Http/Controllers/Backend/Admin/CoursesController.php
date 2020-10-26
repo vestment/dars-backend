@@ -489,11 +489,15 @@ foreach($statgeSemestersIDS as $i=>$semID){
         $allEducationStatges = EduStage::get();
 
         $eduSystemIds = $eduStatges->pluck('edu_system_id');
-        $allEduSystems = EduSystem::select('id','en_name')->first();
-        return $allEduSystems;
-        [$keys, $values] = Arr::divide($allEduSystems);
-        $allEduSystems2 = $values;
-        return $values;
+        $allEduSystems = EduSystem::select('id','en_name')->get();
+        $allEduSystems =$allEduSystems;
+        $allEduSystems2 = [];
+        foreach($allEduSystems as $index => $EduSystem){
+            $allEduSystems2[]=[$allEduSystems[$index]->id,$allEduSystems[$index]->en_name];
+
+        }
+        $allEduSystems->toJson();
+        // return $allEduSystems;
 
         $edusystemdata = EduSystem::wherein('id',$eduSystemIds)->get();
         $country_id =  $edusystemdata->pluck('country_id');
