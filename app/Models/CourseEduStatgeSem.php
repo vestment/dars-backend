@@ -7,4 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CourseEduStatgeSem extends Model
 {
     //
+
+
+   
 }

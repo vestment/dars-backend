@@ -45,6 +45,11 @@ use App\Models\Testimonial;
 use App\Models\TestsResult;
 use App\Models\TestsResultsAnswer;
 use App\Models\VideoProgress;
+use App\Models\EduStageSemester;
+use App\Models\CourseEduStatgeSem;
+
+
+
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
@@ -287,6 +292,20 @@ class ApiController extends Controller
 
     }
 
+    public function coursesOfStatge(Request $request){
+
+       $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
+       $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
+    //    $coursesIds = CourseEduStatgeSem::wherein('edu_statge_sem_id',$statgeSemIds)->pluck('course_id');
+    //    $courses = Course::wherein('id',$coursesIds)->with('eduStatgeSem')->get();
+
+       return $statgeSemIds;
+
+
+
+
+    }
+
     /**
      * Search Basic
      *
@@ -500,12 +519,19 @@ class ApiController extends Controller
     {
         $continue_course = NULL;
         $course_timeline = NULL;
-        $course = Course::withoutGlobalScope('filter')->with('teachers', 'category')->where('id', '=', $request->course_id)->with('publishedLessons')->first();
+        $course = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->where('id', '=', $request->course_id)->with('publishedLessons')->first();
         if ($course == null) {
             return response()->json(['status' => 'failure', 'result' => NULL]);
         }
+        $course->learned = json_decode($course->learned) ;
+        $course->learned_ar = json_decode($course->learned_ar) ;
+
 
         $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+        $chapters = $course->chapters()->where('course_id', $course->id)->get();
+        $chapter_lessons = Lesson::where('course_id', $course->id)->where('published', '=', 1);
+
+
         $course_rating = 0;
         $total_ratings = 0;
         $completed_lessons = NULL;
@@ -518,6 +544,7 @@ class ApiController extends Controller
             $total_ratings = $course->reviews()->where('rating', '!=', "")->get()->count();
         }
         $lessons = $course->courseTimeline()->orderby('sequence', 'asc')->get();
+        
 
 
         if (\Auth::check()) {
@@ -533,10 +560,12 @@ class ApiController extends Controller
             $timeline = $course->courseTimeline()->orderBy('sequence')->get();
             foreach ($timeline as $item) {
                 $completed = false;
+                if($completed_lessons){
                 if (in_array($item->model_id, $completed_lessons)) {
                     $completed = true;
                 }
-                $type = 'lesson';
+            }
+                $type = '';
                 $description = "";
                 if ($item->model_type == 'App\Models\Test') {
                     $type = 'test';
@@ -566,12 +595,13 @@ class ApiController extends Controller
             'course_rating' => $course_rating,
             'total_ratings' => $total_ratings,
             'is_reviewed' => $is_reviewed,
-            'lessons' => $lessons,
-            'course_timeline' => $course_timeline,
+            // 'lessons' => $lessons,
+            // 'course_timeline' => $course_timeline,
             'completed_lessons' => $completed_lessons,
             'continue_course' => $continue_course,
-            'is_certified' => $course->isUserCertified(),
-            'course_process' => $course->progress()
+            // 'chapters' => $chapters
+            // 'is_certified' => $course->isUserCertified(),
+            // 'course_process' => $course->progress()
         ];
         return response()->json(['status' => 'success', 'result' => $result]);
     }

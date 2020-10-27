@@ -22,14 +22,16 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::get('sponsors','ApiController@getSponsors');
     Route::get('get-countries', 'ApiController@getCountries');
     Route::get('edu-system/{country}', 'ApiController@getEduSystems');
+    Route::get('edu-stage/{eduSystem}', 'ApiController@getEduStages');
+    Route::post('single-course','ApiController@getSingleCourse');
+    Route::post('single-teacher','ApiController@getSingleTeacher');
+    Route::post('all-courses','ApiController@coursesOfStatge');
+
     Route::post('login','ApiController@login');
     Route::post('sign-up','ApiController@signup');
-
     Route::get('login/en', 'ApiController@index')->name('login.index');
     Route::get('signup', 'ApiController@registerIndex')->name('register.index');
-
     Route::get('login/ar', 'ApiController@indexrtl')->name('loginrtl.indexrtl');
-    
     Route::group([
         'prefix' => 'auth'
     ], function () {
@@ -55,7 +57,6 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::get('edu-system/show/{id}', 'ApiController@getEduSystem');
         Route::post('edu-system/edit/{id}', 'ApiController@updateEduSystem');
         Route::delete('edu-system/remove/{id}', 'ApiController@deleteEduSystem');
-        Route::get('edu-stage/{eduSystem}', 'ApiController@getEduStages');
         Route::post('create/edu-stage', 'ApiController@saveEduStage');
         Route::get('edu-stage/show/{id}', 'ApiController@getEduStage');
         Route::post('edu-stage/edit/{id}', 'ApiController@updateEduStage');
@@ -67,28 +68,22 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::get('semester/{id}', 'ApiController@getSemester');
         Route::post('semester/edit/{id}', 'ApiController@updateSemester');
         Route::delete('semester/remove/{id}', 'ApiController@deleteSemester');
-
-
-        Route::get('get-subjects', 'ApiController@getSubjects');
-        Route::post('create/subject', 'ApiController@saveSubject');
-        Route::get('subject/{id}', 'ApiController@getSubject');
-        Route::post('subject/edit/{id}', 'ApiController@updateSubject');
-        Route::delete('subject/remove/{id}', 'ApiController@deleteSubject');
-
-
+        // Route::get('get-subjects', 'ApiController@getSubjects');
+        // Route::post('create/subject', 'ApiController@saveSubject');
+        // Route::get('subject/{id}', 'ApiController@getSubject');
+        // Route::post('subject/edit/{id}', 'ApiController@updateSubject');
+        // Route::delete('subject/remove/{id}', 'ApiController@deleteSubject');
         Route::post('courses','ApiController@getCourses');
         Route::post('bundles','ApiController@getBundles');
         Route::post('search','ApiController@search');
         Route::post('latest-news','ApiController@getLatestNews');
         Route::post('testimonials','ApiController@getTestimonials');
         Route::post('teachers','ApiController@getTeachers');
-        Route::post('single-teacher','ApiController@getSingleTeacher');
         Route::post('teacher-courses','ApiController@getTeacherCourses');
         Route::post('teacher-bundles','ApiController@getTeacherBundles');
         Route::post('get-faqs','ApiController@getFaqs');
         Route::post('why-us','ApiController@getWhyUs');
         Route::post('contact-us','ApiController@saveContactUs');
-        Route::post('single-course','ApiController@getSingleCourse');
         Route::post('submit-review','ApiController@submitReview');
         Route::post('update-review','ApiController@updateReview');
         Route::post('single-lesson','ApiController@getLesson');

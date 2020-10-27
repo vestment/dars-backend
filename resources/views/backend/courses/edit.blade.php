@@ -1191,8 +1191,7 @@
     <script>
         $(document).ready(function () {
    
-   var allEduSystems = {{$allEduSystems2}} ;
-   console.log(allEduSystems)
+
 
    00
         });
