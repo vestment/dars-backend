@@ -47,8 +47,7 @@ use App\Models\TestsResultsAnswer;
 use App\Models\VideoProgress;
 use App\Models\EduStageSemester;
 use App\Models\CourseEduStatgeSem;
-
-
+use App\Models\studentData;
 
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
@@ -76,7 +75,6 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Repositories\SemesterRepositoryInterface;
-
 use Purifier;
 use Messenger;
 use Newsletter;
@@ -164,6 +162,8 @@ class ApiController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
+      
+
         $user->dob = isset($request->dob) ? $request->dob : NULL;
         $user->phone = isset($request->phone) ? $request->phone : NULL;
         $user->gender = isset($request->gender) ? $request->gender : NULL;
@@ -174,6 +174,15 @@ class ApiController extends Controller
         $user->country = isset($request->country) ? $request->country : NULL;
         $user->save();
 
+        $userData = new studentData([
+            'user_id' => $user->id,
+            'country_id' => $request->country_id,
+            'edu_system_id' => $request->eduSystemId,
+            'edu_stage_id' => $request->eduStatgeId,
+            
+        ]);
+        $userData->save();
+
         $userForRole = User::find($user->id);
         $userForRole->confirmed = 1;
         $userForRole->save();
@@ -181,7 +190,9 @@ class ApiController extends Controller
         $user->save();
         return response()->json([
             'status' => 'success',
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully created user!',
+            'user' => $user,
+            'userData' => $userData
         ], 201);
     }
 
@@ -294,13 +305,39 @@ class ApiController extends Controller
 
     public function coursesOfStatge(Request $request){
 
+
        $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
        $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
-    //    $coursesIds = CourseEduStatgeSem::wherein('edu_statge_sem_id',$statgeSemIds)->pluck('course_id');
-    //    $courses = Course::wherein('id',$coursesIds)->with('eduStatgeSem')->get();
+        // dd(Carbon::today()->subDays(3));
+        // return $statgeSemIds;
+        $newCourses = [];
+        foreach($statgeSemIds as $key=> $course){
+            foreach($statgeSemIds[$key]->courses as $index=> $element){
+                // dd($statgeSemIds[$key]->courses[$index]['created_at']);
+                // return [Carbon::today()->subDays(3),$statgeSemIds[$key]->courses[$index]['created_at']] ;
 
-       return $statgeSemIds;
+                if($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3) )
+                {
+                   $newCourses[]=$statgeSemIds[$key]->courses[$index];
 
+                }
+
+                //    dd($statgeSemIds[0]->courses[3]->updated_at);
+                // $newCourses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->where($statgeSemIds[$key]->courses[$index]['updated_at'],Carbon::today()->subDays(3))->get();
+
+
+            }
+        }
+
+
+
+    // return $newCourses;
+    //    return   $statgeSemIds;
+    //    $coursesIds = CourseEduStatgeSem::wherein('edu_statge_sem_id',$statgeSemIds->semester_id)->pluck('course_id');
+    //    return $coursesIds;
+    //    $courses = Course::wherein('id',$coursesIds)->with('eduStatgeSem','categories')->get();
+
+       return response()->json(['status' => 'success', 'semesters' => $statgeSemIds , 'newCourses' => $newCourses]);
 
 
 
@@ -661,6 +698,7 @@ class ApiController extends Controller
      */
     public function getLesson(Request $request)
     {
+        // dd(auth()->user());
 
         $lesson = Lesson::where('published', '=', 1)
             ->where('slug', $request->lesson)
@@ -2030,6 +2068,7 @@ class ApiController extends Controller
      */
     public function getMyPurchases()
     {
+       
         $purchased_courses = auth()->user()->purchasedCourses();
         $purchased_bundles = auth()->user()->purchasedBundles();
 
@@ -2046,7 +2085,9 @@ class ApiController extends Controller
      */
     public function getMyAccount()
     {
-        $user = auth()->user();
+        $id = auth('api')->user()->id;
+        $user = User::with('roles', 'permissions', 'providers')
+        ->where('id', $id)->first();
         return response()->json(['status' => 'success', 'result' => $user]);
     }
 
@@ -2644,6 +2685,12 @@ class ApiController extends Controller
             $country->ar_name = $request->ar_name;
             $country->en_name = $request->en_name;
             $country->key = $request->key;
+            $image = $request->image;
+            // $request->file('file'); 
+            // $file_name = $image->getClientOriginalName(); 
+            // $destination = 'public/assets/img/flags';		
+            // $filename->move($destination, $filename);
+            // $country->image = strtolower($filename);
             $country->save();
             return response()->json(['success' => true, 'data' => $country]);
         }

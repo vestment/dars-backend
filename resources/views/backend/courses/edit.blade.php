@@ -1430,7 +1430,7 @@ $(function(){
                 if ($(this).val() != 'upload') {
                     $(this).parent().find('.video').removeClass('d-none').attr('required', true)
                     $(this).parent().find('.video_file').addClass('d-none').attr('required', false)
-                    $(this).parent().parent().find('#duration').removeClass('d-none').attr('required', true)
+                    $(this).parent().parent().find('#duration').removeClass('d-none').attr('required', false)
                 } else if ($(this).val() == 'upload') {
                     $(this).parent().find('.video').addClass('d-none').attr('required', false)
                     $(this).parent().find('.video_file').removeClass('d-none').attr('required', true)

@@ -126,7 +126,7 @@
                         <div  id="saveCat" tabindex="-1" class="modal fade medium_modal_width cs_modal" aria-hidden="true" style="display: none;">
                             <div  role="document" class="modal-dialog modal-dialog-centered">
                                 <div  class="modal-content">
-                                    <form  >
+                                    <form  onsubmit="return false"  enctype="multipart/form-data" >
                                         <div  class="modal-header">
                                             <h5 >Add Country</h5>
                                         </div> 
@@ -140,6 +140,18 @@
                                                         <input v-model="en_name" placeholder="Country Name" class="input_form form-control">
                                                         <label >Key </label> 
                                                         <input v-model="key" placeholder="Country Key" class="input_form form-control">
+                                                         <input type="file" accept="image/*" @change="onChange" />
+                                                         <!-- <b-field class="file is-primary" :class="{'has-name': !!file}">
+        <b-upload v-model="file" class="file-label">
+            <span class="file-cta">
+                <b-icon class="file-icon" icon="upload"></b-icon>
+                <span class="file-label">Click to upload</span>
+            </span>
+            <span class="file-name" v-if="file">
+                {{ file.name }}
+            </span>
+        </b-upload>
+    </b-field> -->
                                                     </div>
                                                 </div> 
                                              
@@ -402,7 +414,7 @@
 <script>
 import axios from '../../axios'
 import VueSimpleAlert from "vue-simple-alert";
- import Multiselect from 'vue-multiselect'
+import Multiselect from 'vue-multiselect'
 
 
 import '../lesson.css'
@@ -442,6 +454,7 @@ data(){
             smesterModal:false,
             showCountryModal:false,
             showEduSysModal:false,
+            file: ''
     
 
 
@@ -450,6 +463,12 @@ data(){
 },
 components: { Multiselect },
 methods:{
+    onChange(e) {
+      const file = e.target.files[0]
+      this.file = file
+    //   console.log(this.file)
+    //   this.file = URL.createObjectURL(file)
+    },
       addTag (newTag) {
       const tag = {
         name: newTag,
@@ -479,7 +498,8 @@ methods:{
         axios.post('/api/v1/create-country',{
             ar_name:this.ar_name,
             en_name:this.en_name,
-            key:this.key
+            key:this.key,
+            image:this.file.name
         }).then(res => {
              if (res.data.success == true) {
           this.$toast.open({
@@ -490,7 +510,7 @@ methods:{
             dismissible: true
           });
         }
-        this.reload()
+        // this.reload()
       }).catch(err => {
         console.log(err.response)
       })

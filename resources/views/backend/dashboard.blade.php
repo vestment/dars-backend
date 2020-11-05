@@ -348,9 +348,7 @@
                                                             <a href="{{route('admin.students.edit',[$student])}}"
                                                                class="btn btn-blue mb-1"><i class="icon-pencil"></i></a>
                                                         </td>
-                                                        {{--
-                                                        <td>{{$item->created_at->diffforhumans()}}</td>
-                                                        --}}
+                                                       
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -382,9 +380,7 @@
                                                            href="{{route('courses.show',[$item->reviewable->slug])}}">{{$item->reviewable->title}}</a>
                                                     </td>
                                                     <td>{{$item->content}}</td>
-                                                    {{--
-                                                    <td>{{$item->created_at->diffforhumans()}}</td>
-                                                    --}}
+                                                   
                                                 </tr>
                                             @endforeach
                                         @else
@@ -494,9 +490,7 @@
                                                            href="{{route('courses.show',[$item->reviewable->slug])}}">{{$item->reviewable->title}}</a>
                                                     </td>
                                                     <td>{{$item->content}}</td>
-                                                    {{--
-                                                    <td>{{$item->created_at->diffforhumans()}}</td>
-                                                    --}}
+                                                 
                                                 </tr>
                                             @endforeach
                                         @else
@@ -531,7 +525,7 @@
                                                            href="{{asset('/user/messages/?thread='.$item->id)}}">{{$item->title}}</a>
                                                     </td>
                                                     <td>{{$item->lastMessage->body}}</td>
-                                                    <td>{{$item->lastMessage->created_at->diffForHumans() }}</td>
+                                                
                                                 </tr>
                                             @endforeach
                                         @else
@@ -591,9 +585,7 @@
                                                            href="{{route('courses.show',[$item->reviewable->slug])}}">{{$item->reviewable->title}}</a>
                                                     </td>
                                                     <td>{{$item->content}}</td>
-                                                    {{--
-                                                    <td>{{$item->created_at->diffforhumans()}}</td>
-                                                    --}}
+                                                 
                                                 </tr>
                                             @endforeach
                                         @else
@@ -629,7 +621,7 @@
                                                     </td>
                                                     @if($item->lastMessage)
                                                         <td>{{$item->lastMessage->body}}</td>
-                                                        <td>{{$item->lastMessage->created_at->diffForHumans() }}</td>
+                                                       
                                                     @endif
                                                 </tr>
                                             @endforeach
@@ -712,7 +704,7 @@
                                                     {{$item->user ? $item->user->full_name : html_entity_decode("<span class='text-danger'>error showing user data</span>")}}
                                                 </td>
                                                 <td>{{$item->amount.' '.$appCurrency['symbol']}}</td>
-                                                <td>{{$item->created_at->diffforhumans()}}</td>
+                                               
                                                 <td><a class="btn btn-sm btn-primary"
                                                        href="{{route('admin.orders.show', $item->id)}}" target="_blank"><i
                                                                 class="fa fa-arrow-right"></i></a></td>
@@ -753,7 +745,7 @@
                                                 </td>
                                                 <td>{{$item->email}}</td>
                                                 <td>{{$item->message}}</td>
-                                                <td>{{$item->created_at->diffforhumans()}}</td>
+                                              
                                             </tr>
                                         @endforeach
                                     @else

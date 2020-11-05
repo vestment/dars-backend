@@ -30,6 +30,9 @@ use App\Models\Auth\Traits\Relationship\UserRelationship;
 use App\Models\Earning;
 use App\Models\TeacherProfile;
 use App\Models\Test;
+use App\Models\studentData;
+
+
 
 use App\academy;
 
@@ -306,6 +309,12 @@ class User extends Authenticatable implements MessageableInterface
             });
         }
         return $query;
+    }
+
+
+    public function studentData()
+    {
+        return $this->hasOne(studentData::class);
     }
 
 

@@ -26,7 +26,10 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('single-course','ApiController@getSingleCourse');
     Route::post('single-teacher','ApiController@getSingleTeacher');
     Route::post('all-courses','ApiController@coursesOfStatge');
+    // Route::post('my-purchases','ApiController@getMyPurchases');
 
+
+    Route::get('get-user','ApiController@getMyAccount');
     Route::post('login','ApiController@login');
     Route::post('sign-up','ApiController@signup');
     Route::get('login/en', 'ApiController@index')->name('login.index');
@@ -49,6 +52,9 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     });
 
     Route::group(['middleware' => 'auth:api'],function (){
+    Route::post('single-lesson','ApiController@getLesson');
+    Route::post('add-to-cart','ApiController@addToCart');
+
         Route::post('create-country', 'ApiController@saveCountry');
         Route::get('country/{id}', 'ApiController@getCountry');
         Route::post('edit/country/{id}', 'ApiController@updateCountry');
@@ -86,7 +92,6 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::post('contact-us','ApiController@saveContactUs');
         Route::post('submit-review','ApiController@submitReview');
         Route::post('update-review','ApiController@updateReview');
-        Route::post('single-lesson','ApiController@getLesson');
         Route::post('save-note','ApiController@saveNote');
         Route::post('add-note','ApiController@AddNewNote');
         Route::post('remove-note','ApiController@removeNote');
@@ -96,7 +101,6 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::post('course-progress','ApiController@courseProgress');
         Route::post('generate-certificate','ApiController@generateCertificate');
         Route::post('single-bundle','ApiController@getSingleBundle');
-        Route::post('add-to-cart','ApiController@addToCart');
         Route::post('getnow','ApiController@getNow');
         Route::post('remove-from-cart','ApiController@removeFromCart');
         Route::post('get-cart-data','ApiController@getCartData');

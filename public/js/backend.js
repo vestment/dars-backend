@@ -3434,6 +3434,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3474,13 +3486,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             stageModal: false,
             smesterModal: false,
             showCountryModal: false,
-            showEduSysModal: false
+            showEduSysModal: false,
+            file: ''
 
         };
     },
 
     components: { Multiselect: __WEBPACK_IMPORTED_MODULE_2_vue_multiselect___default.a },
     methods: {
+        onChange: function onChange(e) {
+            var file = e.target.files[0];
+            this.file = file;
+            //   console.log(this.file)
+            //   this.file = URL.createObjectURL(file)
+        },
         addTag: function addTag(newTag) {
             var tag = {
                 name: newTag,
@@ -3512,7 +3531,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create-country', {
                 ar_name: this.ar_name,
                 en_name: this.en_name,
-                key: this.key
+                key: this.key,
+                image: this.file.name
             }).then(function (res) {
                 if (res.data.success == true) {
                     _this2.$toast.open({
@@ -3523,7 +3543,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         dismissible: true
                     });
                 }
-                _this2.reload();
+                // this.reload()
             }).catch(function (err) {
                 console.log(err.response);
             });
@@ -41437,116 +41457,139 @@ var render = function() {
                     },
                     [
                       _c("div", { staticClass: "modal-content" }, [
-                        _c("form", [
-                          _vm._m(3),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "modal-body" }, [
-                            _c("div", { staticClass: "form-row" }, [
-                              _c("div", { staticClass: "col-12" }, [
-                                _c("div", { staticClass: "input_wrap" }, [
-                                  _c("label", [_vm._v("Arabic Country Name ")]),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.ar_name,
-                                        expression: "ar_name"
-                                      }
-                                    ],
-                                    staticClass: "input_form form-control",
-                                    attrs: { placeholder: "Country Name" },
-                                    domProps: { value: _vm.ar_name },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
+                        _c(
+                          "form",
+                          {
+                            attrs: {
+                              onsubmit: "return false",
+                              enctype: "multipart/form-data"
+                            }
+                          },
+                          [
+                            _vm._m(3),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "modal-body" }, [
+                              _c("div", { staticClass: "form-row" }, [
+                                _c("div", { staticClass: "col-12" }, [
+                                  _c("div", { staticClass: "input_wrap" }, [
+                                    _c("label", [
+                                      _vm._v("Arabic Country Name ")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.ar_name,
+                                          expression: "ar_name"
                                         }
-                                        _vm.ar_name = $event.target.value
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("label", [
-                                    _vm._v("English Country Name ")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.en_name,
-                                        expression: "en_name"
-                                      }
-                                    ],
-                                    staticClass: "input_form form-control",
-                                    attrs: { placeholder: "Country Name" },
-                                    domProps: { value: _vm.en_name },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
+                                      ],
+                                      staticClass: "input_form form-control",
+                                      attrs: { placeholder: "Country Name" },
+                                      domProps: { value: _vm.ar_name },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.ar_name = $event.target.value
                                         }
-                                        _vm.en_name = $event.target.value
                                       }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("label", [_vm._v("Key ")]),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.key,
-                                        expression: "key"
-                                      }
-                                    ],
-                                    staticClass: "input_form form-control",
-                                    attrs: { placeholder: "Country Key" },
-                                    domProps: { value: _vm.key },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
+                                    }),
+                                    _vm._v(" "),
+                                    _c("label", [
+                                      _vm._v("English Country Name ")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.en_name,
+                                          expression: "en_name"
                                         }
-                                        _vm.key = $event.target.value
+                                      ],
+                                      staticClass: "input_form form-control",
+                                      attrs: { placeholder: "Country Name" },
+                                      domProps: { value: _vm.en_name },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.en_name = $event.target.value
+                                        }
                                       }
-                                    }
-                                  })
+                                    }),
+                                    _vm._v(" "),
+                                    _c("label", [_vm._v("Key ")]),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.key,
+                                          expression: "key"
+                                        }
+                                      ],
+                                      staticClass: "input_form form-control",
+                                      attrs: { placeholder: "Country Key" },
+                                      domProps: { value: _vm.key },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.key = $event.target.value
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "file",
+                                        accept: "image/*"
+                                      },
+                                      on: { change: _vm.onChange }
+                                    })
+                                  ])
                                 ])
                               ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "modal-footer modal_btn" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "close white_btn2",
-                                attrs: {
-                                  type: "button",
-                                  "data-dismiss": "modal",
-                                  "aria-label": "Close"
-                                }
-                              },
-                              [_vm._v(" Cancel ")]
-                            ),
+                            ]),
                             _vm._v(" "),
                             _c(
-                              "button",
-                              {
-                                staticClass: "btn_1 m-0",
-                                attrs: { type: "submit" },
-                                on: { click: _vm.createCountry }
-                              },
-                              [_vm._v("Add")]
+                              "div",
+                              { staticClass: "modal-footer modal_btn" },
+                              [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "close white_btn2",
+                                    attrs: {
+                                      type: "button",
+                                      "data-dismiss": "modal",
+                                      "aria-label": "Close"
+                                    }
+                                  },
+                                  [_vm._v(" Cancel ")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn_1 m-0",
+                                    attrs: { type: "submit" },
+                                    on: { click: _vm.createCountry }
+                                  },
+                                  [_vm._v("Add")]
+                                )
+                              ]
                             )
-                          ])
-                        ])
+                          ]
+                        )
                       ])
                     ]
                   )
