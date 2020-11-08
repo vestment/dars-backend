@@ -54,6 +54,9 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::group(['middleware' => 'auth:api'],function (){
     Route::post('single-lesson','ApiController@getLesson');
     Route::post('add-to-cart','ApiController@addToCart');
+    Route::post('add-to-wishlist','ApiController@addToWishlist');
+    Route::get('get-myWishlist','ApiController@getMyWishlist');
+    Route::post('remove-from-Wishlist','ApiController@removeFromWishlist');
 
         Route::post('create-country', 'ApiController@saveCountry');
         Route::get('country/{id}', 'ApiController@getCountry');

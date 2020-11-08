@@ -219,6 +219,7 @@ class ApiController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         $user = $request->user();
+        $userData  = $request->user()->with('studentData');
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
@@ -226,6 +227,7 @@ class ApiController extends Controller
         $token->save();
         return response()->json([
             'user' => $user,
+            'userData' =>$userData,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
@@ -3076,5 +3078,39 @@ class ApiController extends Controller
         $subject = Subject::findorfail($id);
         $subject->delete();
         return response()->json(['success' => true, 'data' => $subject]);
+    }
+
+    public function addToWishlist(Request $request){
+        $courseData = Course::findOrFail($request->course_id);
+        $wishlist = auth()->user()->wishList->where('id', $request->course_id)->first();
+        if ($wishlist) {
+            $wishlist->pivot->wishlist = 1;
+            $wishlist->pivot->save();
+        } else {
+            auth()->user()->wishList()->attach($request->course_id, ['wishlist' => 1]);
+        }
+        if (app()->getLocale() == 'ar') {
+            $msg = 'تم أضافة  ' . $courseData->getDataFromColumn('title') . ' ألي قائمتك المفضلة';
+        } else {
+            $msg = 'Item, ' . $courseData->getDataFromColumn('title') . ' Added to your wishlist.';
+        }
+
+        return response()->json(['msg' => $msg]);
+    }
+
+    public function getMyWishlist(){
+
+        $courses = auth()->user()->wishList;
+
+        return response()->json(["courses" => $courses]);
+    }
+
+    public function removeFromWishlist(Request $request){
+
+        $course_id = $request->course_id;
+        $wishlist = auth()->user()->wishList->where('id', $course_id)->first();
+        $wishlist->pivot->delete();
+        return response()->json(['msg' => "Item Removed"]);
+
     }
 }
