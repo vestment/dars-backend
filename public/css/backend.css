@@ -14320,6 +14320,7 @@ canvas {
   color: #e4e7ea;
   background-color: var(--navbarbg);
   text-transform: uppercase;
+  text-align: center;
 }
 
 .sidebar .nav-divider {

@@ -151,6 +151,7 @@ class ChaptersController extends Controller
             + ['position' => Chapter::where('course_id', $request->course_id)->max('position') + 1]);
 
         $chapter->slug = $slug;
+        $chapter->published = 1;
         $chapter->save();
 
 

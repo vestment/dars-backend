@@ -193,6 +193,6 @@ Route::get('offers',['uses' => 'CartController@getOffers', 'as' => 'frontend.off
 Route::get('countinue/{id}','CoursesController@hascourse')->name('countinue');
 
 
-Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
-    Route::get('/{page?}', [HomeController::class, 'index'])->name('index');
-});
+
+Route::get('/{page?}', 'loginController@index')->name('login.index');
+

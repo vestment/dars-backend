@@ -5,7 +5,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-title ">
-                <a href="{{ route('admin.dashboard') }}"> <img class="logo"  src="{{url('img/backend/brand/logo.png')}}"></a>
+                <a href="{{ route('admin.dashboard') }}"> <img class=""  src="{{url('img/backend/brand/logo2.png')}}"></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ active_class(Active::checkUriPattern('admin/dashboard')) }}"
@@ -59,15 +59,7 @@
                         <span class="title">@lang('menus.backend.sidebar.teachers.title')</span>
                     </a>
                 </li>
-                @if (auth()->user()->isAdmin())
-                    <li class="nav-item ">
-                        <a class="nav-link {{ $request->segment(2) == 'academies' ? 'active' : '' }}"
-                           href="{{ route('admin.academies.index') }}">
-                            <i class="nav-icon icon-directions"></i>
-                            <span class="title">@lang('menus.backend.sidebar.academies.title')</span>
-                        </a>
-                    </li>
-                @endif
+               
             @endif
 
             @can('category_access')

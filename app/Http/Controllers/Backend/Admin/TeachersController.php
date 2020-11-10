@@ -186,11 +186,9 @@ class TeachersController extends Controller
      */
     public function create()
     {
-        $academies = User::whereHas('roles', function ($q) {
-            $q->where('role_id', 5);
-        })->get()->pluck('name', 'id');
+       
 
-        return view('backend.teachers.create', compact('academies'));
+        return view('backend.teachers.create');
         // return view('backend.teachers.create');
     }
 
@@ -213,17 +211,7 @@ class TeachersController extends Controller
         $teacher = User::create($request->all());
         $teacher->confirmed = 1;
         $teacher->active = isset($request->active) ? 1 : 0;
-
-        if (auth()->user()->hasRole('academy')) {
-            $academy_id = auth()->user()->id;
-            request()->type = 'academy';
-        } else {
-            if (request()->type == "individual") {
-                $academy_id = 0;
-            } else {
-                $academy_id = request()->academy_id;
-            }
-        }
+      
         $teacher->save();
         $teacher->assignRole('teacher');
         $payment_details = [
@@ -242,11 +230,10 @@ class TeachersController extends Controller
             'payment_details' => json_encode($payment_details),
             'description' => request()->description,
             'ar_description' => request()->ar_description,
-            'type' => request()->type,
             'percentage' => request()->percentage,
             'title' => request()->title,
             'ar_title' => request()->ar_title,
-            'academy_id' => $academy_id,
+            
         ];
         TeacherProfile::create($data);
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.created'));

@@ -77,10 +77,16 @@ class LoginController extends Controller
                 if(auth()->user()->active > 0){
                     $user = User::findorFail(auth()->user()->id);
                     $token = $user->createToken('Personal Access Token')->accessToken;
-                    if(auth()->user()->isAdmin()){
-                        $redirect = 'dashboard';
+                    if(! auth()->user()->isAdmin()){
+                        \Illuminate\Support\Facades\Auth::logout();
+                    return
+                        response([
+                            'success' => false,
+                            'message' => 'Login failed. Incorrect credentials'
+                        ], Response::HTTP_FORBIDDEN);
+                      
                     }else{
-                        $redirect = 'back';
+                        $redirect = 'dashboard';
                     }
                     return response(['success' => true,'redirect' => $redirect,'message'=>'Login success, redirecting...','token'=>$token], Response::HTTP_OK);
                 }else{
@@ -182,7 +188,7 @@ class LoginController extends Controller
         $this->guard()->logout();
         $request->session()->invalidate();
 
-        return redirect()->route('frontend.index');
+        return redirect()->route('login.index');
     }
 
     /**

@@ -17,6 +17,7 @@ use App\Models\EduStage;
 use App\Models\Semester;
 use App\Models\EduStageSemester;
 use App\Models\CourseEduStatgeSem;
+use App\Models\Year;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -233,6 +234,12 @@ class CoursesController extends Controller
         foreach ($allCategories as $key => $category) {
             $categoriesToSelect[$category->id] = $category->getDataFromColumn('name');
         }
+        $allYears = Year::get();
+        $yearsToSelect = [];
+        foreach ($allYears as $key => $year) {
+            $yearsToSelect[$year->id] = $year->year;
+        }
+       
         $countriesToSelect = [];
         $countries = Country::get();
         foreach ($countries as $key => $country) {
@@ -246,7 +253,7 @@ class CoursesController extends Controller
         }
         // $EduSystem = [];
 
-        return view('backend.courses.create', compact('countriesToSelect','videos', 'teachersToSelect', 'categoriesToSelect', 'courses', 'learned', 'academies', 'learned_ar'));
+        return view('backend.courses.create', compact('yearsToSelect','countriesToSelect','videos', 'teachersToSelect', 'categoriesToSelect', 'courses', 'learned', 'academies', 'learned_ar'));
     }
 public function getCountryedusys(Request $request ){
 
@@ -291,12 +298,12 @@ public function getSemestersOfES(Request $request){
         }
 
         $seats = 0;
-        if ($request->offlineData) {
-            foreach (json_decode($request->offlineData) as $key => $item) {
-                $item = json_decode(json_encode($item), true);
-                $seats += $item['seats-' . $key];
-            }
-        }
+        // if ($request->offlineData) {
+        //     foreach (json_decode($request->offlineData) as $key => $item) {
+        //         $item = json_decode(json_encode($item), true);
+        //         $seats += $item['seats-' . $key];
+        //     }
+        // }
         // dd($request->all());
 
 
@@ -317,6 +324,10 @@ public function getSemestersOfES(Request $request){
         $course->learned_ar = $request->learn_ar ? json_encode($request->learn_ar) : json_encode([]);
         $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
         $course->seats = $seats;
+        $course->published = 1;
+        $course->online = 1;
+
+
         $course->save();
 foreach($statgeSemestersIDS as $i=>$semID){
 
@@ -498,7 +509,12 @@ foreach($statgeSemestersIDS as $i=>$semID){
         }
         $allEduSystems->toJson();
         // return $allEduSystems;
-
+        $allYears = Year::get();
+        $yearsToSelect = [];
+        foreach ($allYears as $key => $year) {
+            $yearsToSelect[$year->id] = $year->year;
+        }
+       
         $edusystemdata = EduSystem::wherein('id',$eduSystemIds)->get();
         $country_id =  $edusystemdata->pluck('country_id');
         $country = Country::where('id',$country_id)->get();
@@ -525,7 +541,7 @@ foreach($statgeSemestersIDS as $i=>$semID){
             $videos = ['' => 'No videos available'];
             $notSelectedVideos = ['' => 'No videos available'];
         }
-        return view('backend.courses.edit', compact('eduSystemIds','allEducationStatges','courseEduSemIDs','allEduSystems','allEduSystems2','eduStatgeIDs','countriesToSelect','country_id','notSelectedVideos', 'courseSequence', 'videos', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
+        return view('backend.courses.edit', compact('yearsToSelect','eduSystemIds','allEducationStatges','courseEduSemIDs','allEduSystems','allEduSystems2','eduStatgeIDs','countriesToSelect','country_id','notSelectedVideos', 'courseSequence', 'videos', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
 
 
     }

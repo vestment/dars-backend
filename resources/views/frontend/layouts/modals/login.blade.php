@@ -12,28 +12,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Cairo;
-        {{app()->getLocale() == 'ar' ? 'direction:rtl;': ''}}
 
-
-        }
-
-        .imgDiv {
-            background-image: url("{{ asset('img/frontend/course/01.svg') }}");
+            background-image: url("{{ asset('img/frontend/course/Group 2001.png') }}");
             background-repeat: no-repeat;
             background-size: 100% 100%;
-            margin- {{app()->getLocale() == 'ar' ? 'right': 'left'}}: -3.5%;
-
+            font-family: Cairo;
+        {{app()->getLocale() == 'ar' ? 'direction:rtl;': ''}}
         }
+        .layer2{
+        
+            background-image: url("{{ asset('img/frontend/course/Group 775.svg') }}");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+           
+        }
+        .img-style{
+
+            margin:5%
+        }
+        
 
         .text-md-left {
             text-align: {{app()->getLocale() == 'ar' ? 'right': 'left'}}  !important;
         }
 
         .formDiv {
+
             height: 100vh;
             margin- {{app()->getLocale() == 'ar' ? 'right': 'left'}}: 3%;
 
+        }
+        .form-design{
+            background: #f7fafc 100% 0% no-repeat padding-box !important;
+            margin-top: 20%;
+            width:60%;
+            margin-left:20%
+
+        }
+        .btn-style{
+            margin-left:30%
         }
 
         .form-check-label {
@@ -51,22 +68,20 @@
 <body>
 @if(!auth()->check())
 
-    <div class="container-fluid">
+    <div class="container-fluid layer2">
         <div class="row">
-            <div class="col-md-6 imgDiv">
+            <div class="col-md-6 ">
+            <img class="img-style" src="{{ asset('img/frontend/course/Group 239.png') }}" />
             </div>
             <div class="formDiv col-lg-6 text-md-left text-center">
-                <div class="row col-lg-8">
+                <div class="row col-lg-8 form-design card">
 
-                    <div class="col-md-10 offset-md-1">
-                        <a href="{{url('/')}}"> <img class="py-5" src="{{asset("storage/logos/".config('logo_b_image'))}}"
-                                    alt="{{env('APP_NAME')}}"></a>
+                    
+                    <div class="col-md-10 offset-md-1 mb-2 mt-3  text-center">
+                        <p class="">@lang('labels.frontend.login.welcome')</p>
+                        <p class="text-muted">@lang('labels.frontend.login.please_login')</p>
                     </div>
-                    <div class="col-md-10 offset-md-1 mb-3">
-                        <h2>@lang('labels.frontend.login.welcome')</h2>
-                        <h6 class="text-muted">@lang('labels.frontend.login.please_login')</h6>
-                    </div>
-                    <div class="col-md-10 offset-md-1">
+                    <div class="col-md-10 offset-md-1 card-body">
                         <div class="alert alert-success response-success" style="display: none">
                             <h5><span class="response-success">{{(session()->get('flash_success'))}}</span></h5>
                         </div>
@@ -78,61 +93,25 @@
                               method="POST">
                             @csrf
                             <div class="form-group ">
-                                <label for="exampleInputEmail1">@lang('labels.frontend.login.user_name')</label>
-                                <input name="email" type="text" class="form-control" id="exampleInputEmail1"
+                               
+                                <input placeholder="@lang('labels.frontend.login.user_name')" name="email" type="text" class="form-control" id="exampleInputEmail1"
                                        aria-describedby="emailHelp">
                                 <span id="login-email-error" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">@lang('labels.frontend.login.password')</label>
-                                <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+                              
+                                <input placeholder="@lang('labels.frontend.login.password')" name="password" type="password" class="form-control" id="exampleInputPassword1">
                                 <span id="login-password-error" class="text-danger"></span>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label"
-                                               for="exampleCheck1">@lang('labels.frontend.login.remember')</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="{{ route('frontend.auth.password.reset') }}"
-                                       class="text-muted">@lang('labels.frontend.login.forgot')</a>
-                                </div>
-                                @if(config('access.captcha.registration'))
-                                    <div class="contact-info mb-2 text-center">
-                                        {!! Captcha::display() !!}
-                                        {{ html()->hidden('captcha_status', 'true') }}
-                                        <span id="login-captcha-error" class="text-danger"></span>
-
-                                    </div><!--col-->
-                                @endif
-                            </div>
+                          
                             <button type="submit" value="Submit"
-                                    class="btn btn-info btn-lg text-white col-12 mt-5">@lang('labels.frontend.login.login')</button>
+                                    class="btn btn-info  text-white col-4 mt-2 btn-style">@lang('labels.frontend.login.login')</button>
 
                         </form>
-                        <h5 class="mt-5"> @lang('labels.frontend.login.login_with') </h5>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <a href="{{ route('frontend.auth.social.login',['provider'=> 'facebook']) }}"
-                                   class="btn btn-block btn-primary btn-lg text-white"><i
-                                            class="fa fa-facebook-f mr-2"></i> @lang('labels.frontend.login.facebook')
-                                </a>
-                            </div>
-                            <div class="col-md-6 mt-3 mt-md-0">
-                                <a href="{{ route('frontend.auth.social.login',['provider'=> 'google']) }}"
-                                   class="btn btn-danger btn-block btn-lg text-white"><i
-                                            class="fa fa-google mr-2"></i> @lang('labels.frontend.login.google')</a>
-                            </div>
-                        </div>
-                        <div><a href="{{ route('register.index') }}"
-                                class="text-dark font-weight-bold col-12 d-flex justify-content-center mt-5">@lang('labels.frontend.login.sign_up')</a>
-                        </div>
-                        <div class="mb-2"><a href="{{route('frontend.index',['page'=>'privacy-policy'])}}"
-                                             class="text-dark col-12 d-flex justify-content-center mt-3">@lang('labels.frontend.login.terms_of_use')</a>
-                        </div>
+                       
+                      
+                       
+                       
 
 
                     </div>

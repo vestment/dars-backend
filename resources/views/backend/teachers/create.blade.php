@@ -199,44 +199,19 @@
                                             ->placeholder(__('labels.teacher.linkedin_link')) }}
                         </div><!--col-->
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row " hidden>
                         {{ html()->label(__('labels.teacher.type'))->class('col-md-2 form-control-label')->for('type') }}
-                        <div class="col-md-10">
-                            @if (auth()->user()->hasRole('academy'))
-                                {{ html()->text('type')
-                                ->class('form-control')
-                                ->placeholder(__('labels.teacher.type'))
-                                ->attributes(['maxlength'=> 191,'readonly'=>true])
-                                ->value('academy')}}
-                            @else
-                                <select class="form-control" name="type" id="type" required>
-                                    <option value="academy" {{ old('type') == 'academy'?'selected':'' }}>{{ trans('labels.teacher.academy') }}</option>
+                        <div class="col-md-10 ">
+                         
+                                <select class="form-control" name="type" id="type" hidden>
                                     <option value="individual" {{ old('type') == 'individual'?'selected':'' }}>{{ trans('labels.teacher.individual') }}</option>
-
                                 </select>
-                            @endif
+                           
                         </div>
 
                     </div>
 
-                    <div class="row academy">
-                        <div class="col-10 form-group">
-                            {!! Form::label('teachers',trans('labels.backend.teachers.fields.academy'), ['class' => 'control-label']) !!}
-                            @if (auth()->user()->hasRole('academy'))
-                                {{ html()->text('academy_id')
-                                ->class('form-control')
-                                ->placeholder(auth()->user()->full_name)
-                                ->attributes(['maxlength'=> 191,'readonly'=>true])
-                                ->value(auth()->user()->full_name)}}
-                            @else
-                                {!! Form::select('academy_id', $academies, old('academy_id'), ['class' => 'form-control select2 js-example-placeholder-multiple', 'multiple' => false]) !!}
-                            @endif
-                        </div>
-                    <!-- <div class="col-2 d-flex form-group flex-column">
-                        OR <a target="_blank" class="btn btn-primary mt-auto"
-                              href="{{route('admin.teachers.create')}}">{{trans('labels.backend.courses.add_teachers')}}</a>
-                    </div> -->
-                    </div>
+                   
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.teacher.payment_details'))->class('col-md-2 form-control-label')->for('payment_details') }}
@@ -374,19 +349,5 @@
             }
         });
 
-        @if(old('type') && old('type') == 'individual')
-        $('.academy').hide();
-        @elseif(old('type')&& old('type')  == 'academy')
-        $('.academy').show();
-        @endif
-        $(document).on('change', '#type', function () {
-            if ($(this).val() === 'individual') {
-                $('.academy').hide();
-
-            } else {
-                $('.academy').show();
-
-            }
-        });
     </script>
 @endpush

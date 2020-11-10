@@ -58,6 +58,7 @@
                             <div class="row">
                                 <div class="col-10 form-group">
                                     {!! Form::label('country_id',trans('labels.backend.courses.fields.country'), ['class' => 'control-label']) !!}
+                                    
                                     {!! Form::select('country_id', $countriesToSelect, old('country_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'id' => 'countryID','multiple' => false, 'required' => true]) !!}
 
 
@@ -88,8 +89,13 @@
                                 </div>
                                
                             </div>
+                            <div class="row">
+                            <div class="col-10 form-group">
+                                    {!! Form::label('year_id',trans('labels.backend.courses.fields.year'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('year_id', $yearsToSelect, old('year_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
 
-                            
+                                    </div>
+                                </div>
                          
                             <div class="row">
                                 <div class="col-10 form-group ">
@@ -187,11 +193,7 @@
 
                             <div class="row">
                                 <div class="col-12 form-group">
-                                    <div class="checkbox d-inline mr-3">
-                                        {!! Form::hidden('published', 0) !!}
-                                        {!! Form::checkbox('published', 1, false, []) !!}
-                                        {!! Form::label('published',  trans('labels.backend.courses.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                    </div>
+                                    
 
                                     @if (Auth::user()->isAdmin())
 
@@ -221,16 +223,8 @@
                                         {!! Form::checkbox('free', 1, false, []) !!}
                                         {!! Form::label('free',  trans('labels.backend.courses.fields.free'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
-                                    <div class="checkbox d-inline mr-3">
-                                        {!! Form::hidden('online', 0) !!}
-                                        {!! Form::checkbox('online', 1 , false, ['id'=>'online']) !!}
-                                        {!! Form::label('online',  trans('labels.backend.courses.fields.online_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                    </div>
-                                    <div class="checkbox d-inline mr-3">
-                                        {!! Form::hidden('offline', 0) !!}
-                                        {!! Form::checkbox('offline', 1 , false, ['id'=>'offline','onclick'=>'toggleOfflineMode()']) !!}
-                                        {!! Form::label('offline',  trans('labels.backend.courses.fields.offline_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                    </div>
+                                   
+                                 
 
 
                                 </div>
@@ -498,14 +492,28 @@ $(function(){
 });
 });
 
-
-
-
-
-
-
                         $(document).ready(function () {
 
+                            var country =   $('#countryID').val();
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.country.eduSys')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id:country
+                    
+                },
+                success: function (resp) {
+                    $('#C_ES').empty();
+                 for( var i=0; i < resp.length; i ++){
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                    $('#C_ES').append(option);
+                 }
+                 
+                }
+            })
+
+                          
                             $('#start_date').datepicker({
                                 autoclose: true,
                                 dateFormat: "{{ config('app.date_format_js') }}"
