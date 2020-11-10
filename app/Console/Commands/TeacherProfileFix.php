@@ -43,8 +43,6 @@ class TeacherProfileFix extends Command
             if (!$teacher->teacherProfile) {
                 $profile = new TeacherProfile();
                 $profile->user_id = $teacher->id;
-                $profile->payment_method = 'paypal';
-                $profile->payment_details = '{"bank_name":null,"ifsc_code":null,"account_number":null,"account_name":null,"paypal_email":"'.$teacher->email.'"}';
                 $profile->save();
             }
         }

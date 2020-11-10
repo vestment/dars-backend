@@ -214,20 +214,9 @@ class TeachersController extends Controller
       
         $teacher->save();
         $teacher->assignRole('teacher');
-        $payment_details = [
-            'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
-            'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
-            'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
-            'account_name' => request()->payment_method == 'bank' ? request()->account_name : '',
-            'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
-        ];
+        
         $data = [
             'user_id' => $teacher->id,
-            'facebook_link' => request()->facebook_link,
-            'twitter_link' => request()->twitter_link,
-            'linkedin_link' => request()->linkedin_link,
-            'payment_method' => request()->payment_method,
-            'payment_details' => json_encode($payment_details),
             'description' => request()->description,
             'ar_description' => request()->ar_description,
             'percentage' => request()->percentage,
@@ -271,20 +260,13 @@ class TeachersController extends Controller
         $teacher->active = isset($request->active) ? 1 : 0;
         $teacher->save();
 
-        $payment_details = [
-            'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
-            'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
-            'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
-            'account_name' => request()->payment_method == 'bank' ? request()->account_name : '',
-            'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
-        ];
+       
         $data = [
             // 'user_id'           => $user->id,
             'facebook_link' => request()->facebook_link,
             'twitter_link' => request()->twitter_link,
             'linkedin_link' => request()->linkedin_link,
-            'payment_method' => request()->payment_method,
-            'payment_details' => json_encode($payment_details),
+           
             'description' => request()->description,
             'title' => request()->title,
             'ar_description' => request()->ar_description,

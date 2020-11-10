@@ -62,50 +62,10 @@
                                 ->required() }}
                         </div><!--col-->
                     </div><!--form-group-->
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.backend.teachers.fields.address'))->class('col-md-2 form-control-label')->for('address') }}
-
-                        <div class="col-md-10">
-                            {{ html()->text('address')
-                                ->class('form-control')
-                                ->placeholder(__('labels.backend.teachers.fields.address'))
-                                ->attribute('maxlength', 191)
-                                ->required() }}
-                        </div><!--col-->
-                    </div><!--form-group-->
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.backend.teachers.fields.ar_address'))->class('col-md-2 form-control-label')->for('ar_address') }}
-
-                        <div class="col-md-10">
-                            {{ html()->text('ar_address')
-                                ->class('form-control')
-                                ->placeholder(__('labels.backend.teachers.fields.ar_address'))
-                                ->attribute('maxlength', 191)
-                                ->required() }}
-                        </div><!--col-->
-                    </div><!--form-group-->
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.backend.teachers.fields.city'))->class('col-md-2 form-control-label')->for('city') }}
-
-                        <div class="col-md-10">
-                            {{ html()->text('city')
-                                ->class('form-control')
-                                ->placeholder(__('labels.backend.teachers.fields.city'))
-                                ->attribute('maxlength', 191)
-                                ->required() }}
-                        </div><!--col-->
-                    </div><!--form-group-->
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.backend.teachers.fields.ar_city'))->class('col-md-2 form-control-label')->for('ar_city') }}
-
-                        <div class="col-md-10">
-                            {{ html()->text('ar_city')
-                                ->class('form-control')
-                                ->placeholder(__('labels.backend.teachers.fields.ar_city'))
-                                ->attribute('maxlength', 191)
-                                ->required() }}
-                        </div><!--col-->
-                    </div><!--form-group-->
+                    
+                 
+                   
+                   
                     <div class="form-group row">
                         {{ html()->label(__('labels.backend.teachers.fields.phone'))->class('col-md-2 form-control-label')->for('phone') }}
 
@@ -171,105 +131,15 @@
                         $payment_details = $teacher->teacherProfile?json_decode($teacher->teacherProfile->payment_details):new stdClass();
                     @endphp
 
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.teacher.facebook_link'))->class('col-md-2 form-control-label')->for('facebook_link') }}
+                    
 
-                        <div class="col-md-10">
-                            {{ html()->text('facebook_link')
-                                            ->class('form-control')
-                                            ->value($teacherProfile->facebook_link)
-                                            ->placeholder(__('labels.teacher.facebook_link')) }}
-                        </div><!--col-->
-                    </div>
+                  
 
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.teacher.twitter_link'))->class('col-md-2 form-control-label')->for('twitter_link') }}
 
-                        <div class="col-md-10">
-                            {{ html()->text('twitter_link')
-                                            ->class('form-control')
-                                            ->value($teacherProfile->twitter_link)
-                                            ->placeholder(__('labels.teacher.twitter_link')) }}
+                 
 
-                        </div><!--col-->
-                    </div>
 
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.teacher.linkedin_link'))->class('col-md-2 form-control-label')->for('linkedin_link') }}
-
-                        <div class="col-md-10">
-                            {{ html()->text('linkedin_link')
-                                            ->class('form-control')
-                                            ->value($teacherProfile->linkedin_link)
-                                            ->placeholder(__('labels.teacher.linkedin_link')) }}
-                        </div><!--col-->
-                    </div>
-
-                    <div class="form-group row">
-                        {{ html()->label(__('labels.teacher.payment_details'))->class('col-md-2 form-control-label')->for('payment_details') }}
-                        <div class="col-md-10">
-                            <select class="form-control" name="payment_method" id="payment_method" required>
-                                <option value="bank" {{ $teacherProfile->payment_method == 'bank'?'selected':'' }}>{{ trans('labels.teacher.bank') }}</option>
-                                <option value="paypal" {{ $teacherProfile->payment_method == 'paypal'?'selected':'' }}>{{ trans('labels.teacher.paypal') }}</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="bank_details" style="display:{{ $teacher->teacherProfile->payment_method == 'bank'?'':'none' }}">
-                        <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.name'))->class('col-md-2 form-control-label')->for('bank_name') }}
-                            <div class="col-md-10">
-                                {{ html()->text('bank_name')
-                                        ->class('form-control')
-                                        ->value($payment_details->bank_name)
-                                        ->placeholder(__('labels.teacher.bank_details.name')) }}
-                            </div><!--col-->
-                        </div>
-
-                        <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.bank_code'))->class('col-md-2 form-control-label')->for('ifsc_code') }}
-                            <div class="col-md-10">
-                                {{ html()->text('ifsc_code')
-                                        ->class('form-control')
-                                        ->value($payment_details->ifsc_code)
-                                        ->placeholder(__('labels.teacher.bank_details.bank_code')) }}
-                            </div><!--col-->
-                        </div>
-
-                        <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.account'))->class('col-md-2 form-control-label')->for('account_number') }}
-                            <div class="col-md-10">
-                                {{ html()->text('account_number')
-                                        ->class('form-control')
-                                        ->value($payment_details->account_number)
-                                        ->placeholder(__('labels.teacher.bank_details.account')) }}
-                            </div><!--col-->
-                        </div>
-
-                        <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.bank_details.holder_name'))->class('col-md-2 form-control-label')->for('account_name') }}
-                            <div class="col-md-10">
-                                {{ html()->text('account_name')
-                                        ->class('form-control')
-                                        ->value($payment_details->account_name)
-                                        ->placeholder(__('labels.teacher.bank_details.holder_name')) }}
-                            </div><!--col-->
-                        </div>
-                    </div>
-
-                    <div class="paypal_details" style="display:{{ $teacher->teacherProfile->payment_method == 'paypal'?'':'none' }}">
-                        <div class="form-group row">
-                            {{ html()->label(__('labels.teacher.paypal_email'))->class('col-md-2 form-control-label')->for('paypal_email') }}
-                            <div class="col-md-10">
-                                {{ html()->text('paypal_email')
-                                        ->class('form-control')
-                                        ->value($payment_details->paypal_email)
-                                        ->placeholder(__('labels.teacher.paypal_email')) }}
-                            </div><!--col-->
-                        </div>
-                    </div>
-
+                   
                     <div class="form-group row">
                         {{ html()->label(__('labels.teacher.description'))->class('col-md-2 form-control-label')->for('description') }}
 

@@ -873,11 +873,7 @@
                                         {!! Form::label('min_grade', trans('labels.backend.tests.fields.min_grade').'*', ['class' => 'control-label']) !!}
                                         {!! Form::number('min_grade', old('min_grade'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.min_grade'), 'required' => 'required','min'=>0]) !!}
                                     </div>
-                                    <div class="col-12 col-lg-6 form-group">
-                                        <div class="checkbox d-inline mr-3">
-                                            {!! Form::checkbox('published', 1, false, []) !!}
-                                            {!! Form::label('published', trans('labels.backend.tests.fields.published'), ['class' => 'control-label font-weight-bold']) !!}</div>
-                                    </div>
+                                  
                                 </div>
 
 
@@ -930,11 +926,7 @@
                                             {!! Form::label('min_grade', trans('labels.backend.tests.fields.min_grade').'*', ['class' => 'control-label']) !!}
                                             {!! Form::number('min_grade', old('min_grade'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.min_grade'), 'required' => 'required','min'=>0]) !!}
                                         </div>
-                                        <div class="col-12 col-lg-6 form-group">
-                                            <div class="checkbox d-inline mr-3">
-                                                {!! Form::checkbox('published', 1, false, []) !!}
-                                                {!! Form::label('published', trans('labels.backend.tests.fields.published'), ['class' => 'control-label font-weight-bold']) !!}</div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -1021,16 +1013,7 @@
                                     </div>
 
 
-                                    <div class="row">
-
-                                        <div class="col-12 col-lg-3 form-group">
-                                            <div class="checkbox">
-                                                {!! Form::hidden('published', 0) !!}
-                                                {!! Form::checkbox('published', 1, false, []) !!}
-                                                {!! Form::label('published', trans('labels.backend.lessons.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                            </div>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                 <div class="modal-footer">
                                     {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
