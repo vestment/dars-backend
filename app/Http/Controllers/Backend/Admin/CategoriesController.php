@@ -6,10 +6,12 @@ use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Http\Requests\Admin\StoreCategoriesRequest;
 use App\Http\Requests\Admin\UpdateCategoriesRequest;
 use App\Models\Category;
+use App\Models\Media;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\DataTables;
+use Intervention\Image\Facades\Image;
 
 class CategoriesController extends Controller
 {
@@ -160,10 +162,12 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategoriesRequest $request)
     {
+        
         $this->validate($request, [
             'name' => 'required',
         ]);
-
+        // dd($request->all());
+        $request = $this->saveCategoryImage($request);
         if (!Gate::allows('category_create')) {
             return abort(401);
         }
@@ -171,11 +175,24 @@ class CategoriesController extends Controller
         if($category == null){
             $category = new  Category();
         }
+
         $category->name = $request->name;
         $category->ar_name = $request->ar_name;
-
         $category->slug = str_slug($request->name);
         $category->icon = $request->icon;
+        $finalRequest = $request;
+        if ($request->hasFile('category_image')) {
+            $file = $request->file('category_image');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            if (!file_exists(public_path('storage/avatars'))) {
+                mkdir(public_path('storage/avatars'), 0777, true);
+            }
+            Image::make($file)->resize(135, 135)->insert('storage/avatars/' . $filename);
+            $finalRequest = new Request(array_merge($finalRequest->all(), ['avatar_location' => 'storage/avatars/' . $filename,'avatar_type'=>'storage']));
+        }
+       
+        $category->category_image =  $finalRequest;
+        dd($category);
         $category->save();
 
         return redirect()->route('admin.categories.index')->withFlashSuccess(trans('alerts.backend.general.created'));

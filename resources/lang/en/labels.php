@@ -57,6 +57,7 @@ return array(
                             'price' => 'Price',
                             'offline_price' => 'Offline Price',
                             'course_image' => 'Course Image',
+                            'category_image' => 'Category Image',
                             'start_date' => 'Start Date',
                             'meta_title' => 'Meta Title in english',
                             'meta_description' => 'Meta Description in english',

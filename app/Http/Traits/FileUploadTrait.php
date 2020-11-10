@@ -21,6 +21,19 @@ trait FileUploadTrait
         }
         return $finalRequest;
     }
+    public function saveCategoryImage(Request $request) {
+        $finalRequest = $request;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            if (!file_exists(public_path('storage/category'))) {
+                mkdir(public_path('storage/category'), 0777, true);
+            }
+            Image::make($file)->resize(135, 135)->save(public_path('storage/category') . '/' . $filename);
+            $finalRequest = new Request(array_merge($finalRequest->all(), ['avatar_location' => 'storage/category/' . $filename,'avatar_type'=>'storage']));
+        }
+        return $finalRequest;
+    }
 
     /**
      * File upload trait used in controllers to upload files

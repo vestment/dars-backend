@@ -42,6 +42,13 @@
                                 <button class="btn  btn-block btn-default border" id="icon" name="icon"></button>
 
                         </div>
+                        <div class="col-12 col-lg-4 form-group">
+                            {!! Form::label('category_image',  trans('labels.backend.courses.fields.category_image'), ['class' => 'control-label']) !!}
+                            {!! Form::file('category_image',  ['class' => 'form-control', 'accept' => 'image/jpeg,image/gif,image/png']) !!}
+                            {!! Form::hidden('category_image_max_size', 8) !!}
+                            {!! Form::hidden('category_image_max_width', 4000) !!}
+                            {!! Form::hidden('category_image_max_height', 4000) !!}
+                        </div>
 
                         <div class="col-12 form-group text-center">
 
