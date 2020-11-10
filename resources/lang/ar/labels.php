@@ -189,6 +189,7 @@ return array(
                             'category' => 'الفئة',
                             'course' => 'دورة',
                             'course_image' => 'صورة الدورة',
+                            'category_image' =>'صورة فئة',
                             'description' => 'وصف بالنجليزية',
                             'description_ar' => 'وصف بالعربي',
 
