@@ -219,7 +219,8 @@ class ApiController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         $user = $request->user();
-        $userData  = $request->user()->with('studentData');
+       
+        $userData  = studentData::where('user_id',$user->id)->first();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
@@ -306,7 +307,7 @@ class ApiController extends Controller
     }
 
     public function coursesOfStatge(Request $request){
-
+    
 
        $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
        $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
@@ -556,9 +557,12 @@ class ApiController extends Controller
      */
     public function getSingleCourse(Request $request)
     {
+       
+    
+       
         $continue_course = NULL;
         $course_timeline = NULL;
-        $course = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->where('id', '=', $request->course_id)->with('publishedLessons')->first();
+        $course = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->where('year_id' , '=' , $lastYear->id )->with('publishedLessons')->first();
         if ($course == null) {
             return response()->json(['status' => 'failure', 'result' => NULL]);
         }

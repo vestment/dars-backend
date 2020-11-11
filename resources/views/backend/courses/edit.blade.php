@@ -1193,6 +1193,7 @@
 $(function(){
    $('#C_ES').change(function(e) {
     var Country_ESID =  $(this).val();
+    
 
     $.ajax({
                 type: "get",
@@ -1348,6 +1349,137 @@ $(function(){
         }
 
         $(document).ready(function () {
+
+          
+
+
+
+
+
+
+
+
+
+            
+
+var eduSystemIds = {!! json_encode($eduSystemIds) !!};
+
+            var country =   $('#countryID').val();
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.country.eduSys')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id:country
+                    
+                },
+                success: function (resp) {
+                    
+                 for( var i=0; i < resp.length; i ++){
+                       
+                       if(eduSystemIds.includes(resp[i].id))
+                       {
+
+                        var option = '<option selected  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                       }
+                       else
+                       {
+                        var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+
+                       }
+                   
+                      
+                   
+                    $('#C_ES').append(option);
+
+                    var eduStatgeIDs = {!! json_encode($eduStatgeIDs) !!};
+
+var Country_ESID =  $('#C_ES').val();
+
+console.log( "aa", $('#C_ES').val())
+
+$.ajax({
+type: "get",
+url: '{{route('admin.eduSys.eduStatges')}}',
+data: {
+    _token: '{{ csrf_token() }}',
+    ids:Country_ESID
+    
+},
+success: function (resp) {
+    $('#C_Estages').empty();
+ for( var i=0; i < resp.length; i ++){
+    if(eduStatgeIDs.includes(resp[i].id)){
+   
+    var option = '<option selected  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+    }else
+    {
+    var option = '<option   value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+
+
+    }
+    $('#C_Estages').append(option);
+
+
+    var semesterIds =  {!! json_encode($semesterIds) !!};
+    var EStatgeIDs =   $('#C_Estages').val();
+
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.eduStatges.semesters')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ids:EStatgeIDs
+                    
+                },
+                success: function (resp) {
+                    $('#ES_Semesters').empty();
+                 for( var i=0; i < resp.length; i ++){
+                     if(semesterIds.includes(resp[i].id))
+                     {
+                    var option = '<option selected value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                     }
+                     else{
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+
+                     }
+                    $('#ES_Semesters').append(option);
+                 }
+                 
+                }
+            })
+    
+   
+
+
+ }
+ 
+}
+})
+
+                 }
+                 
+                }
+            })
+
+
+
+      
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
 
 
             $('.date-input').datepicker({

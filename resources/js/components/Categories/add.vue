@@ -675,7 +675,7 @@ this.$confirm("Are you sure?").then(() => {
             duration: 9000,
             dismissible: true
           });
-            this.reload()
+           
        })
      
      
@@ -752,7 +752,7 @@ this.$confirm("Are you sure?").then(() => {
    },
 
    reload(){
-       window.location.reload()
+      this.getCountries()
    },
 
  removeSemestersFromStage(statgeID,SemID){

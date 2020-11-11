@@ -914,7 +914,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     duration: 9000,
                     dismissible: true
                 });
-                _this11.reload();
             });
         },
         DeleteEduStage: function DeleteEduStage(id) {
@@ -987,7 +986,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         reload: function reload() {
-            window.location.reload();
+            this.getCountries();
         },
         removeSemestersFromStage: function removeSemestersFromStage(statgeID, SemID) {
 

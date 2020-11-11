@@ -71,10 +71,10 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ $request->segment(2) == 'add-category' ? 'active' : '' }}"
+                    <a class="nav-link {{ $request->segment(2) == 'add-eduSysy' ? 'active' : '' }}"
                        href="{{ route('admin.addcategory') }}">
                         <i class="nav-icon icon-folder-alt"></i>
-                        <span class="title">@lang('menus.backend.sidebar.add-category.title')</span>
+                        <span class="title">@lang('menus.backend.sidebar.add-eduSysy.title')</span>
                     </a>
                 </li>
                

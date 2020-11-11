@@ -541,7 +541,7 @@ foreach($statgeSemestersIDS as $i=>$semID){
             $videos = ['' => 'No videos available'];
             $notSelectedVideos = ['' => 'No videos available'];
         }
-        return view('backend.courses.edit', compact('yearsToSelect','eduSystemIds','allEducationStatges','courseEduSemIDs','allEduSystems','allEduSystems2','eduStatgeIDs','countriesToSelect','country_id','notSelectedVideos', 'courseSequence', 'videos', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
+        return view('backend.courses.edit', compact( 'semesterIds','yearsToSelect','eduSystemIds','allEducationStatges','courseEduSemIDs','allEduSystems','allEduSystems2','eduStatgeIDs','countriesToSelect','country_id','notSelectedVideos', 'courseSequence', 'videos', 'teachersToSelect', 'categoriesToSelect', 'course', 'opt_courses', 'mand_courses', 'allCourses', 'prevLearned', 'prevLearned_ar', 'allLearned', 'allLearned_ar', 'academies', 'date'));
 
 
     }
@@ -628,6 +628,29 @@ foreach($statgeSemestersIDS as $i=>$semID){
 
             }
         }
+
+
+     
+        foreach ($request->eduStatge as $i => $statge) {
+            foreach($request->semesters as $j => $semester) {
+               $ids[] = EduStageSemester::where('edu_stage_id',$request->eduStatge [$i])->where('semester_id',$request->semesters [$j])->pluck('id');
+            }
+
+        }
+            $statgeSemestersIDS = Arr::collapse($ids);
+
+            $oldCourses = CourseEduStatgeSem::where('course_id',$course->id)->delete();
+
+
+            foreach($statgeSemestersIDS as $i=>$semID){
+
+                $courseSemester = new CourseEduStatgeSem();
+                $courseSemester->course_id = $course->id;
+                $courseSemester->edu_statge_sem_id = $statgeSemestersIDS[$i];
+                $courseSemester->save();
+               }
+               
+
 
         if ($request->offlineData) {
             $seats = 0;
