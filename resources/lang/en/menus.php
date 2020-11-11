@@ -8,9 +8,9 @@ return array(
                     'general' => 'General',
                     'dashboard' => 'Dashboard',
                     'bookings' => 'Booking',
-                    'add-category' => 
+                    'add-eduSysy' => 
                     array (
-                      'title' => 'Add Category',
+                      'title' => 'Education System',
                     ),
                     'courses' =>
                         array(

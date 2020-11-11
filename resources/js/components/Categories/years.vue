@@ -1,25 +1,26 @@
 <template>
 <div>
     <div  class="add_button ml-10 mb-5">
-                                                <a  href="#" data-toggle="modal" data-target="#saveSem" class="btn_1">Add subject</a>
+                                                <a  href="#" data-toggle="modal" data-target="#saveYear" class="btn_1">Add Year</a>
                                               
                                             </div>
    <table class="table table-bordered">
   <thead>
     <tr>
       
-      <th scope="col">Arabic Name</th>
-      <th scope="col">English Name</th>
+      <th scope="col">Year</th>
       <th scope="col">Actions</th>
+
+
     </tr>
   </thead>
   <tbody>
-    <tr v-for="subject in subjects" :key="subject.id" >
-      <td>{{subject.ar_name}}</td>
-      <td>{{subject.en_name}}</td>
+    <tr v-for="year in years" :key="year.id" >
+      <td>{{year.year}}</td>
+      
       <td>
-             <a  href="#" data-toggle="modal" data-target="#edit_subject" v-on:click="Showsubject(subject.id)" class="white_btn">Edit</a>
-             <a  href="#" v-on:click="Deletesubject(subject.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
+             <a  href="#" data-toggle="modal" data-target="#edit_year" v-on:click="show(year.id)" class="white_btn">Edit</a>
+             <a  href="#" v-on:click="DeleteYear(year.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
 
       </td>
       
@@ -27,17 +28,16 @@
  
   </tbody>
 </table>
-   <div  id="edit_subject" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
+   <div  id="edit_year" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
                            <div  role="document" class="modal-dialog modal-dialog-centered">
                               <div  class="modal-content">
                                  <form  >
                                             <div  class="modal-body">
                                                 <div  class="input_wrap">
                                                  
-                                                    <label>English subject Name</label> 
-                                                    <input  v-model="ShowEnSubName" class="input_form form-control">
-                                                    <label>Arabic subject Name</label> 
-                                                    <input  v-model="ShowArSubName" class="input_form form-control">
+                                                    
+                                                    <label>Year</label> 
+                                                    <input  v-model="ShowYear" class="input_form form-control">
 
                                                 </div> 
                                                      
@@ -46,23 +46,22 @@
                                          
                                             <div  class="modal-footer modal_btn">
                                                <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2">Cancel</button>
-                                               <button  v-on:click="Updatesubject" data-dismiss="modal" aria-label="Close"  type="submit" class="btn_1 m-0">Update</button>
+                                               <button  v-on:click="UpdateYear" data-dismiss="modal" aria-label="Close"  type="submit" class="btn_1 m-0">Update</button>
                                             </div>
                                   </form>
                               </div>
                         </div>
                     </div>
-                    <div  id="saveSem" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
+                    <div  id="saveYear" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
                            <div  role="document" class="modal-dialog modal-dialog-centered">
                               <div  class="modal-content">
                                  <form  >
                                             <div  class="modal-body">
                                                 <div  class="input_wrap">
                                                  
-                                                    <label>English subject Name</label> 
-                                                    <input  v-model="EnSubName" class="input_form form-control">
-                                                    <label>Arabic subject Name</label> 
-                                                    <input  v-model="ArSubName" class="input_form form-control">
+                                                    <label>Year</label> 
+                                                    <input  v-model="year" class="input_form form-control">
+                                                 
 
                                                 </div> 
                                                      
@@ -71,7 +70,7 @@
                                          
                                             <div  class="modal-footer modal_btn">
                                                <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2">Cancel</button>
-                                               <button  v-on:click="savesubject" type="submit" data-dismiss="modal" aria-label="Close"  class="btn_1 m-0">Save</button>
+                                               <button  v-on:click="saveYear" type="submit" data-dismiss="modal" aria-label="Close"  class="btn_1 m-0">Save</button>
                                             </div>
                                   </form>
                               </div>
@@ -88,34 +87,33 @@ import '../lesson.css'
     export default {
         data() {
             return {
-                subjects: [],
-                ShowEnSubName:'',
-                ShowArSubName:'',
-                subjectId:'',
-                EnSubName:'',
-                ArSubName:''
+                years: [],
+                ShowYear:'',
+                YearId:'',
+                year:''
 
                
             }
         },
         methods:{
-            getsubjects(){
-                axios.get('/api/v1/get-subjects').then(res=>{
-                    this.subjects = res.data
+            getData(){
+                axios.get('/api/v1/get-years').then(res=>{
+                    this.years = res.data
                 })
             },
-            Showsubject(id){
-              this.subjectId = id
-              axios.get('/api/v1/subject/'+id).then(res=>{
-                this.ShowEnSubName = res.data.en_name
-                this.ShowArSubName = res.data.ar_name
+            show(id){
+              this.YearId = id
+              axios.get('/api/v1/year/'+id).then(res=>{
+                console.log(res)
+                this.ShowYear = res.data.year
+            
 
               })
             },
-            Updatesubject(){
-              axios.post('/api/v1/subject/edit/'+this.subjectId ,{
-                en_name : this.ShowEnSubName,
-                ar_name : this.ShowArSubName
+            UpdateYear(){
+              axios.post('/api/v1/year/edit/'+this.YearId ,{
+                year : this.ShowYear,
+              
 
               }).then(res=>{
                  this.$toast.open({
@@ -129,10 +127,10 @@ import '../lesson.css'
               })
 
             },
-            Deletesubject(id){
+            DeleteYear(id){
               this.$confirm("Are you sure?").then(() => {
 
-              axios.delete('/api/v1/subject/remove/'+id).then(res=>{
+              axios.delete('/api/v1/year/remove/'+id).then(res=>{
 
                     this.$toast.open({
             type: 'success',
@@ -146,10 +144,10 @@ this.reload()
             }
 
               )},
-              savesubject(){
-                axios.post('/api/v1/create/subject',{
-                  en_name:this.EnSubName,
-                  ar_name:this.ArSubName
+              saveYear(){
+                axios.post('/api/v1/create/year',{
+                  year:this.year,
+                
                 }).then(res=>{
                   
         this.$toast.open({
@@ -171,7 +169,7 @@ this.reload()
         },
         
         mounted(){
-            this.getsubjects()
+            this.getData()
             
         }
     }

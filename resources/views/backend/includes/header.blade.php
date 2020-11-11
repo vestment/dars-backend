@@ -11,9 +11,7 @@
     </button>
 
     <ul class="nav navbar-nav">
-        <li class="nav-item px-3">
-            <a class="nav-link" href="{{ route('frontend.index') }}"><i class="icon-home"></i></a>
-        </li>
+        
 
         <li class="nav-item px-3">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">@lang('navs.frontend.dashboard')</a>

@@ -175,6 +175,8 @@ class TestsController extends Controller
 //        $chapter = Chapter::findOrFail($request->chapter_id);
         $test = Test::create($request->all());
         $test->slug = $slug;
+        $test->published = 1;
+
         $test->save();
 
         $sequence = 1;
@@ -242,6 +244,7 @@ class TestsController extends Controller
         $test = Test::findOrFail($id);
         $test->update($request->all());
         $test->slug = str_slug($request->title.'-'.$request->chapter_id);
+        $test->published = 1;
         $test->save();
 
 

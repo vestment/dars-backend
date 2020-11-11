@@ -48,7 +48,7 @@
                                                 <a  href="#" data-toggle="modal" data-target="#saveCat" class="btn_1">Add Country</a>
                                                 <a  href="#" data-toggle="modal" data-target="#saveSubCat" class="btn_1">Add Education System</a>
                                                 <router-link class="btn_1" to="/user/semesters" >All Semesters</router-link>
-                                                <router-link class="btn_1" to="/user/subjects" >All Subjects</router-link>
+                                                <router-link class="btn_1" to="/user/years" >All Years</router-link>
 
                                             </div>
                                         </div>
@@ -299,7 +299,7 @@
 
 
                                                                 </div>
-                                                                <span v-for="sem in eduStage.semesters " :key="sem.id" class="badge badge-pill badge-danger mt-4 ml-3" v-on:click="openModal(eduSys.id)" data-placement="top" title="Assign Subjects To Tjis Semester" href="#" data-toggle="modal" data-target="#add_edu_stage">{{sem.en_name}}</span>
+                                                                <span style="cursor:pointer" v-for="sem in eduStage.semesters " :key="sem.id" class="badge badge-pill badge-danger mt-4 ml-3" v-on:click="removeSemestersFromStage(eduStage.id,sem.id)" data-placement="top" title="Delete This Semester" href="#" data-toggle="modal" data-target="#add_edu_stage">{{sem.en_name}}</span>
 
                                                                  
                                                             </div>
@@ -378,7 +378,7 @@
                     <div v-if="smesterModal" id="add_semester" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
                            <div  role="document" class="modal-dialog modal-dialog-centered">
                               <div  class="modal-content">
-                                     <form onsubmit="return false">
+                                     <form >
                                         <div  class="modal-header">
                                             <h5 >Add Semester</h5>
                                         </div> 
@@ -397,6 +397,7 @@
                                         </div>
                                        </div> 
                                         <div  class="modal-footer modal_btn">
+
                                                 <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Close </button> 
                                                 <button  v-on:click="AssignSmesters" class="btn_1 m-0" type="submit">Add</button>
                                         </div>
@@ -674,7 +675,7 @@ this.$confirm("Are you sure?").then(() => {
             duration: 9000,
             dismissible: true
           });
-            this.reload()
+           
        })
      
      
@@ -751,8 +752,19 @@ this.$confirm("Are you sure?").then(() => {
    },
 
    reload(){
-       window.location.reload()
-   }
+      this.getCountries()
+   },
+
+ removeSemestersFromStage(statgeID,SemID){
+
+     axios.post('/api/v1/edu-stage/semesters/remove',{
+         edu_stage_id:statgeID,
+         semesters:[SemID]
+     }).then(res=>{
+     })
+
+
+ }  
           
         
       

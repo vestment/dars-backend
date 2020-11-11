@@ -182,7 +182,8 @@ class CategoriesController extends Controller
         $category->icon = $request->icon;
         $finalRequest = $request;
         if ($request->hasFile('category_image')) {
-            $file = $request->file('category_image');
+            // $file = $request->file('category_image');
+            $file = Image::make($request->file('category_image'));
             $filename = time() . '-' . $file->getClientOriginalName();
             if (!file_exists(public_path('storage/avatars'))) {
                 mkdir(public_path('storage/avatars'), 0777, true);
@@ -192,7 +193,7 @@ class CategoriesController extends Controller
         }
        
         $category->category_image =  $finalRequest;
-        dd($category);
+      
         $category->save();
 
         return redirect()->route('admin.categories.index')->withFlashSuccess(trans('alerts.backend.general.created'));

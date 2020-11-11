@@ -186,11 +186,9 @@ class TeachersController extends Controller
      */
     public function create()
     {
-        $academies = User::whereHas('roles', function ($q) {
-            $q->where('role_id', 5);
-        })->get()->pluck('name', 'id');
+       
 
-        return view('backend.teachers.create', compact('academies'));
+        return view('backend.teachers.create');
         // return view('backend.teachers.create');
     }
 
@@ -213,40 +211,18 @@ class TeachersController extends Controller
         $teacher = User::create($request->all());
         $teacher->confirmed = 1;
         $teacher->active = isset($request->active) ? 1 : 0;
-
-        if (auth()->user()->hasRole('academy')) {
-            $academy_id = auth()->user()->id;
-            request()->type = 'academy';
-        } else {
-            if (request()->type == "individual") {
-                $academy_id = 0;
-            } else {
-                $academy_id = request()->academy_id;
-            }
-        }
+      
         $teacher->save();
         $teacher->assignRole('teacher');
-        $payment_details = [
-            'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
-            'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
-            'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
-            'account_name' => request()->payment_method == 'bank' ? request()->account_name : '',
-            'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
-        ];
+        
         $data = [
             'user_id' => $teacher->id,
-            'facebook_link' => request()->facebook_link,
-            'twitter_link' => request()->twitter_link,
-            'linkedin_link' => request()->linkedin_link,
-            'payment_method' => request()->payment_method,
-            'payment_details' => json_encode($payment_details),
             'description' => request()->description,
             'ar_description' => request()->ar_description,
-            'type' => request()->type,
             'percentage' => request()->percentage,
             'title' => request()->title,
             'ar_title' => request()->ar_title,
-            'academy_id' => $academy_id,
+            
         ];
         TeacherProfile::create($data);
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.created'));
@@ -284,20 +260,13 @@ class TeachersController extends Controller
         $teacher->active = isset($request->active) ? 1 : 0;
         $teacher->save();
 
-        $payment_details = [
-            'bank_name' => request()->payment_method == 'bank' ? request()->bank_name : '',
-            'ifsc_code' => request()->payment_method == 'bank' ? request()->ifsc_code : '',
-            'account_number' => request()->payment_method == 'bank' ? request()->account_number : '',
-            'account_name' => request()->payment_method == 'bank' ? request()->account_name : '',
-            'paypal_email' => request()->payment_method == 'paypal' ? request()->paypal_email : '',
-        ];
+       
         $data = [
             // 'user_id'           => $user->id,
             'facebook_link' => request()->facebook_link,
             'twitter_link' => request()->twitter_link,
             'linkedin_link' => request()->linkedin_link,
-            'payment_method' => request()->payment_method,
-            'payment_details' => json_encode($payment_details),
+           
             'description' => request()->description,
             'title' => request()->title,
             'ar_description' => request()->ar_description,

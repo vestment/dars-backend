@@ -186,6 +186,8 @@ class LessonsController extends Controller
             + ['position' => Lesson::where('course_id', $request->course_id)->max('position') + 1]);
 
         $lesson->slug = $slug;
+        $lesson->published = 1;
+
         $lesson->save();
 
 
@@ -314,6 +316,7 @@ class LessonsController extends Controller
         $lesson = Lesson::findOrFail($id);
         $lesson->update($request->except('downloadable_files', 'lesson_image','course_id','chapter_id'));
         $lesson->slug = $slug;
+        $lesson->published = 1;
         $lesson->save();
 
         //Saving  videos

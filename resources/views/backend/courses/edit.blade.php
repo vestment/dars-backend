@@ -144,7 +144,13 @@
                                
                             </div>
 
+                            <div class="row">
+                            <div class="col-10 form-group">
+                                    {!! Form::label('year_id',trans('labels.backend.courses.fields.year'), ['class' => 'control-label']) !!}
+                                    {!! Form::select('year_id', $yearsToSelect, old('year_id'), ['class' => 'form-control select2 js-example-placeholder-single', 'multiple' => false, 'required' => true]) !!}
+                                </div>
 
+</div>
 
 
 
@@ -260,11 +266,7 @@
 
                             <div class="row">
                                 <div class="col-12 form-group">
-                                    <div class="checkbox d-inline mr-4">
-                                        {!! Form::hidden('published', 0) !!}
-                                        {!! Form::checkbox('published', 1, old('published'), []) !!}
-                                        {!! Form::label('published', trans('labels.backend.courses.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                    </div>
+                                   
 
                                     @if (Auth::user()->isAdmin())
 
@@ -292,16 +294,7 @@
                                         {!! Form::label('free',  trans('labels.backend.courses.fields.free'), ['class' => 'checkbox control-label font-weight-bold']) !!}
                                     </div>
 
-                                    <div class="checkbox d-inline mr-3">
-                                        {!! Form::hidden('online', 0) !!}
-                                        {!! Form::checkbox('online', 1 , old('online'),  ['id'=>'online'], false) !!}
-                                        {!! Form::label('online',  trans('labels.backend.courses.fields.online_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                    </div>
-                                    <div class="checkbox d-inline mr-3">
-                                        {!! Form::hidden('offline', 0) !!}
-                                        {!! Form::checkbox('offline', 1 ,old('offline'), ['id'=>'offline','onclick'=>'toggleOfflineMode()'], false) !!}
-                                        {!! Form::label('offline',  trans('labels.backend.courses.fields.offline_courses'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                    </div>
+
 
                                 </div>
                             </div>
@@ -735,13 +728,7 @@
 
                                         <div class="row">
 
-                                            <div class="col-12 col-lg-3 form-group">
-                                                <div class="checkbox">
-                                                    {!! Form::hidden('published', 0) !!}
-                                                    {!! Form::checkbox('published', 1, false, []) !!}
-                                                    {!! Form::label('published', trans('labels.backend.lessons.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                                </div>
-                                            </div>
+                                            
                                             <div class="col-12  text-left form-group">
                                                 {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
                                             </div>
@@ -791,11 +778,7 @@
                                                 {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title_ar'), 'required' => '']) !!}
                                             </div>
 
-                                            <div class="checkbox d-inline mr-3">
-                                                {!! Form::hidden('published', 0) !!}
-                                                {!! Form::checkbox('published', 1, false, []) !!}
-                                                {!! Form::label('published',  trans('labels.backend.courses.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                            </div>
+                                           
                                         </div>
 
 
@@ -842,13 +825,7 @@
                                         {!! Form::label('title_ar', trans('labels.backend.chapters.fields.title_ar').'*', ['class' => 'control-label']) !!}
                                         {!! Form::text('title_ar', old('title_ar'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.chapters.fields.title_ar'), 'required' => '']) !!}
                                     </div>
-                                    <div class="col-12 col-lg-6 form-group">
-                                        <div class="checkbox d-inline mr-3">
-                                            {!! Form::hidden('published', 0) !!}
-                                            {!! Form::checkbox('published', 1, false, []) !!}
-                                            {!! Form::label('published',  trans('labels.backend.courses.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                             <div class="modal-footer pb-0">
@@ -896,11 +873,7 @@
                                         {!! Form::label('min_grade', trans('labels.backend.tests.fields.min_grade').'*', ['class' => 'control-label']) !!}
                                         {!! Form::number('min_grade', old('min_grade'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.min_grade'), 'required' => 'required','min'=>0]) !!}
                                     </div>
-                                    <div class="col-12 col-lg-6 form-group">
-                                        <div class="checkbox d-inline mr-3">
-                                            {!! Form::checkbox('published', 1, false, []) !!}
-                                            {!! Form::label('published', trans('labels.backend.tests.fields.published'), ['class' => 'control-label font-weight-bold']) !!}</div>
-                                    </div>
+                                  
                                 </div>
 
 
@@ -953,11 +926,7 @@
                                             {!! Form::label('min_grade', trans('labels.backend.tests.fields.min_grade').'*', ['class' => 'control-label']) !!}
                                             {!! Form::number('min_grade', old('min_grade'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.tests.fields.min_grade'), 'required' => 'required','min'=>0]) !!}
                                         </div>
-                                        <div class="col-12 col-lg-6 form-group">
-                                            <div class="checkbox d-inline mr-3">
-                                                {!! Form::checkbox('published', 1, false, []) !!}
-                                                {!! Form::label('published', trans('labels.backend.tests.fields.published'), ['class' => 'control-label font-weight-bold']) !!}</div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -1044,16 +1013,7 @@
                                     </div>
 
 
-                                    <div class="row">
-
-                                        <div class="col-12 col-lg-3 form-group">
-                                            <div class="checkbox">
-                                                {!! Form::hidden('published', 0) !!}
-                                                {!! Form::checkbox('published', 1, false, []) !!}
-                                                {!! Form::label('published', trans('labels.backend.lessons.fields.published'), ['class' => 'checkbox control-label font-weight-bold']) !!}
-                                            </div>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                 <div class="modal-footer">
                                     {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn  btn-danger']) !!}
@@ -1233,6 +1193,7 @@
 $(function(){
    $('#C_ES').change(function(e) {
     var Country_ESID =  $(this).val();
+    
 
     $.ajax({
                 type: "get",
@@ -1388,6 +1349,137 @@ $(function(){
         }
 
         $(document).ready(function () {
+
+          
+
+
+
+
+
+
+
+
+
+            
+
+var eduSystemIds = {!! json_encode($eduSystemIds) !!};
+
+            var country =   $('#countryID').val();
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.country.eduSys')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id:country
+                    
+                },
+                success: function (resp) {
+                    
+                 for( var i=0; i < resp.length; i ++){
+                       
+                       if(eduSystemIds.includes(resp[i].id))
+                       {
+
+                        var option = '<option selected  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                       }
+                       else
+                       {
+                        var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+
+                       }
+                   
+                      
+                   
+                    $('#C_ES').append(option);
+
+                    var eduStatgeIDs = {!! json_encode($eduStatgeIDs) !!};
+
+var Country_ESID =  $('#C_ES').val();
+
+console.log( "aa", $('#C_ES').val())
+
+$.ajax({
+type: "get",
+url: '{{route('admin.eduSys.eduStatges')}}',
+data: {
+    _token: '{{ csrf_token() }}',
+    ids:Country_ESID
+    
+},
+success: function (resp) {
+    $('#C_Estages').empty();
+ for( var i=0; i < resp.length; i ++){
+    if(eduStatgeIDs.includes(resp[i].id)){
+   
+    var option = '<option selected  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+    }else
+    {
+    var option = '<option   value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+
+
+    }
+    $('#C_Estages').append(option);
+
+
+    var semesterIds =  {!! json_encode($semesterIds) !!};
+    var EStatgeIDs =   $('#C_Estages').val();
+
+    $.ajax({
+                type: "get",
+                url: '{{route('admin.eduStatges.semesters')}}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ids:EStatgeIDs
+                    
+                },
+                success: function (resp) {
+                    $('#ES_Semesters').empty();
+                 for( var i=0; i < resp.length; i ++){
+                     if(semesterIds.includes(resp[i].id))
+                     {
+                    var option = '<option selected value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+                     }
+                     else{
+                    var option = '<option  value="'+resp[i].id+'">'+resp[i].en_name+'</option>';
+
+                     }
+                    $('#ES_Semesters').append(option);
+                 }
+                 
+                }
+            })
+    
+   
+
+
+ }
+ 
+}
+})
+
+                 }
+                 
+                }
+            })
+
+
+
+      
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
 
 
             $('.date-input').datepicker({
