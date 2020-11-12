@@ -558,7 +558,7 @@ class ApiController extends Controller
     public function getSingleCourse(Request $request)
     {
        
-    
+   
        
         $continue_course = NULL;
         $course_timeline = NULL;
@@ -582,8 +582,7 @@ class ApiController extends Controller
         $purchased_course = in_array($request->course_id ,$MyCourses );
         $chapters = $course->chapters()->where('course_id', $course->id)->get();
         $chapter_lessons = Lesson::where('course_id', $course->id)->where('published', '=', 1);
-
-
+        $progress = $course->progress();
         $course_rating = 0;
         $total_ratings = 0;
         $completed_lessons = NULL;
@@ -651,6 +650,7 @@ class ApiController extends Controller
             // 'course_timeline' => $course_timeline,
             'completed_lessons' => $completed_lessons,
             'continue_course' => $continue_course,
+            'progress' =>$progress
             // 'chapters' => $chapters
             // 'is_certified' => $course->isUserCertified(),
             // 'course_process' => $course->progress()
@@ -2088,9 +2088,21 @@ class ApiController extends Controller
     {
         
        
+       
         $purchased_courses = auth()->user()->purchasedCourses();
+        $courses = Course::wherein('id', $purchased_courses)->get();
+       
+        foreach( $courses as $i=>$course){
+            if($courses[$i]->progress() < 100){
+                $unCompletedCourses [] = $courses[$i]
+            }
+        
+        }
+
         $purchased_bundles = auth()->user()->purchasedBundles();
-        return response()->json(['status' => 'success', 'result' => ['courses' => $purchased_courses, 'bundles' => $purchased_bundles]]);
+
+        
+        return response()->json(['status' => 'success', 'result' => ['courses' => $purchased_courses, 'bundles' => $purchased_bundles] , 'UnCompletedCourses' => $unCompletedCourses ]);
     }
 
 

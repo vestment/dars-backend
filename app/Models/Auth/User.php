@@ -229,8 +229,7 @@ class User extends Authenticatable implements MessageableInterface
         $courses_id = OrderItem::whereIn('order_id', $orders)
             ->where('item_type', '=', "App\Models\Course")
             ->pluck('item_id');
-        $courses = Course::whereIn('id', $courses_id)
-            ->get();
+        $courses = Course::whereIn('id', $courses_id)->get();
         return $courses;
     }
 
