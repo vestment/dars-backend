@@ -620,40 +620,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -695,19 +661,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             smesterModal: false,
             showCountryModal: false,
             showEduSysModal: false,
-            file: ''
+            file: '',
+            selectedFile: ''
 
         };
     },
 
     components: { Multiselect: __WEBPACK_IMPORTED_MODULE_2_vue_multiselect___default.a },
     methods: {
-        onChange: function onChange(e) {
-            var file = e.target.files[0];
-            this.file = file;
-            //   console.log(this.file)
-            //   this.file = URL.createObjectURL(file)
+        onFileChange: function onFileChange(event) {
+            this.file = event.target.files[0];
+
+            //  let reader  = new FileReader();
+            //    reader.addEventListener("load", function () {
+            //         this.showPreview = true;
+            //         this.imagePreview = reader.result;
+            //     }.bind(this), false);
         },
+
+        // onChange(e) {
+        //   const file = e.target.files[0]
+        //   this.file = file
+        // //   console.log(this.file)
+        // //   this.file = URL.createObjectURL(file)
+        // },
         addTag: function addTag(newTag) {
             var tag = {
                 name: newTag,
@@ -736,12 +713,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         createCountry: function createCountry() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create-country', {
-                ar_name: this.ar_name,
-                en_name: this.en_name,
-                key: this.key,
-                image: this.file.name
-            }).then(function (res) {
+            var formData = new FormData();
+
+            formData.append("image", this.file);
+            formData.append("ar_name", this.ar_name);
+            formData.append("en_name", this.en_name);
+            formData.append("key", this.key);
+            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create-country', formData).then(function (res) {
                 if (res.data.success == true) {
                     _this2.$toast.open({
                         type: 'success',
@@ -19723,9 +19701,7 @@ var render = function() {
                       0
                     )
                   ])
-                ]),
-                _vm._v(" "),
-                _vm._m(2)
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -19757,7 +19733,7 @@ var render = function() {
                             }
                           },
                           [
-                            _vm._m(3),
+                            _vm._m(2),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c("div", { staticClass: "form-row" }, [
@@ -19837,16 +19813,18 @@ var render = function() {
                                           _vm.key = $event.target.value
                                         }
                                       }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "file",
-                                        accept: "image/*"
-                                      },
-                                      on: { change: _vm.onChange }
                                     })
-                                  ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    staticClass: "form-control-file",
+                                    attrs: {
+                                      type: "file",
+                                      name: "image",
+                                      id: "picture"
+                                    },
+                                    on: { change: _vm.onFileChange }
+                                  })
                                 ])
                               ])
                             ]),
@@ -19908,7 +19886,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "modal-content" }, [
                         _c("form", [
-                          _vm._m(4),
+                          _vm._m(3),
                           _vm._v(" "),
                           _c("div", { staticClass: "modal-body" }, [
                             _c("div", { staticClass: "form-row" }, [
@@ -20103,7 +20081,7 @@ var render = function() {
                         [
                           _c("div", { staticClass: "modal-content" }, [
                             _c("form", [
-                              _vm._m(5),
+                              _vm._m(4),
                               _vm._v(" "),
                               _c("div", { staticClass: "modal-body" }, [
                                 _c("div", { staticClass: "form-row" }, [
@@ -20419,7 +20397,7 @@ var render = function() {
                               "form",
                               { attrs: { onsubmit: "return false" } },
                               [
-                                _vm._m(6),
+                                _vm._m(5),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "modal-body" }, [
                                   _c("div", { staticClass: "form-row" }, [
@@ -20674,7 +20652,7 @@ var render = function() {
                                   ])
                                 ]),
                                 _vm._v(" "),
-                                _vm._m(7)
+                                _vm._m(6)
                               ]
                             )
                           ])
@@ -20705,7 +20683,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "modal-content" }, [
                         _c("form", [
-                          _vm._m(8),
+                          _vm._m(7),
                           _vm._v(" "),
                           _c("div", { staticClass: "modal-body" }, [
                             _c("div", { staticClass: "form-row" }, [
@@ -20786,7 +20764,7 @@ var render = function() {
                             ])
                           ]),
                           _vm._v(" "),
-                          _vm._m(9)
+                          _vm._m(8)
                         ])
                       ])
                     ]
@@ -20816,7 +20794,7 @@ var render = function() {
                         [
                           _c("div", { staticClass: "modal-content" }, [
                             _c("form", [
-                              _vm._m(10),
+                              _vm._m(9),
                               _vm._v(" "),
                               _c("div", { staticClass: "modal-body" }, [
                                 _c("div", { staticClass: "form" }, [
@@ -20922,54 +20900,6 @@ var staticRenderFns = [
           ]),
           _vm._v(" "),
           _c("button", [_c("i", { staticClass: "ti-search" })])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-12" }, [
-      _c("div", { staticClass: "lms_pagination_wrap text-center" }, [
-        _c("ul", [
-          _c("li", [
-            _c("ul", { staticClass: "pagination" }, [
-              _c(
-                "li",
-                { staticClass: "page-item pagination-page-nav active" },
-                [
-                  _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-                    _vm._v(
-                      "\n                                                     1\n                                                          "
-                    ),
-                    _c("span", { staticClass: "sr-only" }, [
-                      _vm._v("(current)")
-                    ])
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item pagination-page-nav" }, [
-                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-                  _vm._v(
-                    "\n                                                     2\n                                                     "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item pagination-next-nav" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    attrs: { href: "#", "aria-label": "Next" }
-                  },
-                  [_c("span", [_c("i", { staticClass: "fas fa-caret-right" })])]
-                )
-              ])
-            ])
-          ])
         ])
       ])
     ])

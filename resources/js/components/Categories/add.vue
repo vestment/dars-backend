@@ -96,32 +96,7 @@
                                     </div>
                                 </div>
                             </div> 
-                            <div  class="col-lg-12">
-                                <div  class="lms_pagination_wrap text-center">
-                                        <ul>
-                                            <li>
-                                                <ul  class="pagination"><!---->
-                                                    <li class="page-item pagination-page-nav active">
-                                                        <a href="#" class="page-link">
-                                                        1
-                                                             <span class="sr-only">(current)</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item pagination-page-nav">
-                                                        <a href="#" class="page-link">
-                                                        2
-                                                        <!----></a>
-                                                    </li>
-                                                    <li class="page-item pagination-next-nav">
-                                                        <a href="#" aria-label="Next" class="page-link"><span >
-                                                            <i  class="fas fa-caret-right"></i></span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                            </div>
+                           
                         </div> 
                         <div  id="saveCat" tabindex="-1" class="modal fade medium_modal_width cs_modal" aria-hidden="true" style="display: none;">
                             <div  role="document" class="modal-dialog modal-dialog-centered">
@@ -140,19 +115,10 @@
                                                         <input v-model="en_name" placeholder="Country Name" class="input_form form-control">
                                                         <label >Key </label> 
                                                         <input v-model="key" placeholder="Country Key" class="input_form form-control">
-                                                         <input type="file" accept="image/*" @change="onChange" />
-                                                         <!-- <b-field class="file is-primary" :class="{'has-name': !!file}">
-        <b-upload v-model="file" class="file-label">
-            <span class="file-cta">
-                <b-icon class="file-icon" icon="upload"></b-icon>
-                <span class="file-label">Click to upload</span>
-            </span>
-            <span class="file-name" v-if="file">
-                {{ file.name }}
-            </span>
-        </b-upload>
-    </b-field> -->
-                                                    </div>
+                                                         <!-- <input type="file" name="file" class="form-control" @change="imagePreview($event)">    -->
+                                                                                  </div> 
+                                                            <input type="file" name="image" class="form-control-file" id="picture" @change="onFileChange">
+
                                                 </div> 
                                              
                                               
@@ -455,7 +421,8 @@ data(){
             smesterModal:false,
             showCountryModal:false,
             showEduSysModal:false,
-            file: ''
+            file: '',
+            selectedFile:''
     
 
 
@@ -464,12 +431,21 @@ data(){
 },
 components: { Multiselect },
 methods:{
-    onChange(e) {
-      const file = e.target.files[0]
-      this.file = file
-    //   console.log(this.file)
-    //   this.file = URL.createObjectURL(file)
-    },
+  onFileChange(event){
+    this.file = event.target.files[0];
+    
+//  let reader  = new FileReader();
+//    reader.addEventListener("load", function () {
+//         this.showPreview = true;
+//         this.imagePreview = reader.result;
+//     }.bind(this), false);
+},
+    // onChange(e) {
+    //   const file = e.target.files[0]
+    //   this.file = file
+    // //   console.log(this.file)
+    // //   this.file = URL.createObjectURL(file)
+    // },
       addTag (newTag) {
       const tag = {
         name: newTag,
@@ -496,12 +472,13 @@ methods:{
 
    },
     createCountry(){
-        axios.post('/api/v1/create-country',{
-            ar_name:this.ar_name,
-            en_name:this.en_name,
-            key:this.key,
-            image:this.file.name
-        }).then(res => {
+       let formData = new FormData();
+
+    formData.append("image", this.file);
+    formData.append("ar_name", this.ar_name);
+    formData.append("en_name", this.en_name);
+    formData.append("key", this.key);
+        axios.post('/api/v1/create-country',  formData ).then(res => {
              if (res.data.success == true) {
           this.$toast.open({
             type: 'success',

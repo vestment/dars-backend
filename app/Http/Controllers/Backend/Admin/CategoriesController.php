@@ -182,17 +182,33 @@ class CategoriesController extends Controller
         $category->icon = $request->icon;
         $finalRequest = $request;
         if ($request->hasFile('category_image')) {
+            $file = $request->file('category_image');
+            $name = time() . $file->getClientOriginalName();
+            $file->move( public_path('storage/avatars'));  // absolute destination path
+
+          
+            // $photo = Chart::create(['file'=>$name]);
+            // $input['photo_id'] = $photo->id;
+
+// $image = $request->file('image');
+
+$extension = $file->getClientOriginalExtension(); // Get the extension
+$timestampName = microtime(true) . '.' . $extension;
+//    $extension->move($destination, $filename);
+$url =  'public/images/' .$timestampName;
+
             // $file = $request->file('category_image');
-            $file = Image::make($request->file('category_image'));
-            $filename = time() . '-' . $file->getClientOriginalName();
-            if (!file_exists(public_path('storage/avatars'))) {
-                mkdir(public_path('storage/avatars'), 0777, true);
-            }
-            Image::make($file)->resize(135, 135)->insert('storage/avatars/' . $filename);
-            $finalRequest = new Request(array_merge($finalRequest->all(), ['avatar_location' => 'storage/avatars/' . $filename,'avatar_type'=>'storage']));
+            // $file = Image::make($request->file('category_image'));
+            // dd($file);
+            // $filename = time() . '-' . $file->getClientOriginalName();
+            // if (!file_exists(public_path('storage/avatars'))) {
+            //     mkdir(public_path('storage/avatars'), 0777, true);
+            // }
+            // Image::make($file)->resize(135, 135)->insert('storage/avatars/' . $filename);
+            // $finalRequest = new Request(array_merge($finalRequest->all(), ['avatar_location' => 'storage/avatars/' . $filename,'avatar_type'=>'storage']));
         }
        
-        $category->category_image =  $finalRequest;
+        $category->category_image =  $url;
       
         $category->save();
 

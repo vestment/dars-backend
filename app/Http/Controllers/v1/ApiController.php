@@ -562,15 +562,24 @@ class ApiController extends Controller
        
         $continue_course = NULL;
         $course_timeline = NULL;
-        $course = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->where('year_id' , '=' , $lastYear->id )->with('publishedLessons')->first();
+        $course = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
         if ($course == null) {
             return response()->json(['status' => 'failure', 'result' => NULL]);
         }
         $course->learned = json_decode($course->learned) ;
         $course->learned_ar = json_decode($course->learned_ar) ;
 
-
-        $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+        $singleCourse = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
+        $Coursesss = $singleCourse->students()->get();
+        
+        foreach($Coursesss as $i => $courseee){
+        
+            $MyCourses [] = $Coursesss[$i]->pivot->course_id;
+        // if(in_array(auth('api')->user()->id , $myCourses[$i]->pivot->user_id))
+        
+        }
+        // $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+        $purchased_course = in_array($request->course_id ,$MyCourses );
         $chapters = $course->chapters()->where('course_id', $course->id)->get();
         $chapter_lessons = Lesson::where('course_id', $course->id)->where('published', '=', 1);
 
@@ -2077,10 +2086,10 @@ class ApiController extends Controller
      */
     public function getMyPurchases()
     {
+        
        
         $purchased_courses = auth()->user()->purchasedCourses();
         $purchased_bundles = auth()->user()->purchasedBundles();
-
         return response()->json(['status' => 'success', 'result' => ['courses' => $purchased_courses, 'bundles' => $purchased_bundles]]);
     }
 
@@ -2694,12 +2703,30 @@ class ApiController extends Controller
             $country->ar_name = $request->ar_name;
             $country->en_name = $request->en_name;
             $country->key = $request->key;
-            $image = $request->image;
+            $file = $request->file('image');
+            $name = time() . $file->getClientOriginalName();
+            $file->move( public_path() . '/images/', $name);  // absolute destination path
+
+          
+            // $photo = Chart::create(['file'=>$name]);
+            // $input['photo_id'] = $photo->id;
+
+// $image = $request->file('image');
+
+$extension = $file->getClientOriginalExtension(); // Get the extension
+$timestampName = microtime(true) . '.' . $extension;
+//    $extension->move($destination, $filename);
+$url =  'public/images/' .$timestampName;
+
+// Storage::disk('s3')->put($url, file_get_contents($image));
+            // $image = $request->image;
             // $request->file('file'); 
             // $file_name = $image->getClientOriginalName(); 
             // $destination = 'public/assets/img/flags';		
             // $filename->move($destination, $filename);
             // $country->image = strtolower($filename);
+            $country->image = $url;
+
             $country->save();
             return response()->json(['success' => true, 'data' => $country]);
         }
