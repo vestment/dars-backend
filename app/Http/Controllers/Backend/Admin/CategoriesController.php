@@ -184,18 +184,11 @@ class CategoriesController extends Controller
         if ($request->hasFile('category_image')) {
             $file = $request->file('category_image');
             $name = time() . $file->getClientOriginalName();
-            $file->move( public_path('storage/avatars'));  // absolute destination path
-
-          
-            // $photo = Chart::create(['file'=>$name]);
-            // $input['photo_id'] = $photo->id;
-
-// $image = $request->file('image');
-
-$extension = $file->getClientOriginalExtension(); // Get the extension
-$timestampName = microtime(true) . '.' . $extension;
-//    $extension->move($destination, $filename);
-$url =  'public/images/' .$timestampName;
+            $file->move( public_path('storage/avatars'), $name);  // absolute destination path
+            // $extension = $file->getClientOriginalExtension(); // Get the extension
+            // $timestampName = microtime(true) . '.' . $extension;
+            //    $extension->move($destination, $filename);
+            $url =  'storage/avatars/' .$name;
 
             // $file = $request->file('category_image');
             // $file = Image::make($request->file('category_image'));
@@ -253,9 +246,18 @@ $url =  'public/images/' .$timestampName;
         $category = Category::findOrFail($id);
         $category->name = $request->name;
         $category->ar_name = $request->ar_name;
-
         $category->slug = str_slug($request->name);
         $category->icon = $request->icon;
+
+        if ($request->hasFile('category_image')) {
+
+            $file = $request->file('category_image');
+            $name = time() . $file->getClientOriginalName();
+            $file->move( public_path('storage/avatars'), $name);
+            $url =  env('APP_URL').'/storage/avatars/' .$name;
+           
+            $category->category_image =  $url;
+        }
         $category->save();
 
         return redirect()->route('admin.categories.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
