@@ -3405,15 +3405,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3530,6 +3521,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/get-countries').then(function (res) {
                 _this3.countries = res.data;
+                console.log(_this3.countries);
             });
         },
         saveEduSystem: function saveEduSystem() {
@@ -41204,8 +41196,6 @@ var render = function() {
                       _c("h4", [_vm._v("Category List")]),
                       _vm._v(" "),
                       _c("div", { staticClass: "box_right d-flex lms_block" }, [
-                        _vm._m(1),
-                        _vm._v(" "),
                         _c(
                           "div",
                           { staticClass: "add_button ml-10" },
@@ -41280,7 +41270,15 @@ var render = function() {
                                       _vm._v(_vm._s(countryObj.en_name))
                                     ]),
                                     _vm._v(" "),
-                                    _c("p", [_vm._v("Total 5 Sub Categories")])
+                                    _c("p", [
+                                      _vm._v(
+                                        "Total " +
+                                          _vm._s(
+                                            countryObj.edu_systems.length
+                                          ) +
+                                          "  Education Systems"
+                                      )
+                                    ])
                                   ]),
                                   _vm._v(" "),
                                   _c("div", { staticClass: "category_right" }, [
@@ -41448,7 +41446,7 @@ var render = function() {
                           "form",
                           { attrs: { enctype: "multipart/form-data" } },
                           [
-                            _vm._m(2),
+                            _vm._m(1),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c("div", { staticClass: "form-row" }, [
@@ -41605,7 +41603,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "modal-content" }, [
                         _c("form", [
-                          _vm._m(3),
+                          _vm._m(2),
                           _vm._v(" "),
                           _c("div", { staticClass: "modal-body" }, [
                             _c("div", { staticClass: "form-row" }, [
@@ -41803,7 +41801,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "modal-content" }, [
                         _c("form", [
-                          _vm._m(4),
+                          _vm._m(3),
                           _vm._v(" "),
                           _c("div", { staticClass: "modal-body" }, [
                             _c("div", { staticClass: "form-row" }, [
@@ -41879,6 +41877,16 @@ var render = function() {
                                         _vm.key = $event.target.value
                                       }
                                     }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    staticClass: "form-control-file",
+                                    attrs: {
+                                      type: "file",
+                                      name: "picture",
+                                      id: "picture"
+                                    },
+                                    on: { change: _vm.onFileChange }
                                   })
                                 ])
                               ])
@@ -42119,7 +42127,7 @@ var render = function() {
                               "form",
                               { attrs: { onsubmit: "return false" } },
                               [
-                                _vm._m(5),
+                                _vm._m(4),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "modal-body" }, [
                                   _c("div", { staticClass: "form-row" }, [
@@ -42374,7 +42382,7 @@ var render = function() {
                                   ])
                                 ]),
                                 _vm._v(" "),
-                                _vm._m(6)
+                                _vm._m(5)
                               ]
                             )
                           ])
@@ -42405,7 +42413,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "modal-content" }, [
                         _c("form", [
-                          _vm._m(7),
+                          _vm._m(6),
                           _vm._v(" "),
                           _c("div", { staticClass: "modal-body" }, [
                             _c("div", { staticClass: "form-row" }, [
@@ -42486,7 +42494,7 @@ var render = function() {
                             ])
                           ]),
                           _vm._v(" "),
-                          _vm._m(8)
+                          _vm._m(7)
                         ])
                       ])
                     ]
@@ -42516,7 +42524,7 @@ var render = function() {
                         [
                           _c("div", { staticClass: "modal-content" }, [
                             _c("form", [
-                              _vm._m(9),
+                              _vm._m(8),
                               _vm._v(" "),
                               _c("div", { staticClass: "modal-body" }, [
                                 _c("div", { staticClass: "form" }, [
@@ -42610,24 +42618,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "sidebar_icon d-lg-none" }, [
       _c("i", { staticClass: "ti-menu" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "serach_field_2" }, [
-      _c("div", { staticClass: "search_inner" }, [
-        _c("form", [
-          _c("div", { staticClass: "search_field" }, [
-            _c("input", {
-              attrs: { type: "text", placeholder: "Search Category Here" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("button", [_c("i", { staticClass: "ti-search" })])
-        ])
-      ])
     ])
   },
   function() {

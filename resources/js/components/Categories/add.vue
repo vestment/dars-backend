@@ -32,18 +32,7 @@
                                     <div  class="white_box_tittle list_header">
                                         <h4 >Category List</h4> 
                                         <div  class="box_right d-flex lms_block">
-                                            <div  class="serach_field_2">
-                                                <div  class="search_inner">
-                                                    <form>
-                                                        <div  class="search_field">
-                                                            <input  type="text" placeholder="Search Category Here">
-                                                        </div> 
-                                                        <button >
-                                                            <i  class="ti-search"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div> 
+                                           
                                             <div  class="add_button ml-10">
                                                 <a  href="#" data-toggle="modal" data-target="#saveCat" class="btn_1">Add Country</a>
                                                 <a  href="#" data-toggle="modal" data-target="#saveSubCat" class="btn_1">Add Education System</a>
@@ -61,7 +50,7 @@
                                                 <div  class="category_header lms_block d-flex justify-content-between align-items-center">
                                                     <div  class="category_left">
                                                         <h4 >{{countryObj.en_name}}</h4> 
-                                                        <p >Total 5 Sub Categories</p>
+                                                        <p >Total {{countryObj.edu_systems.length}}  Education Systems</p>
                                                     </div> 
                                                     <div  class="category_right">
                                                         <a href="#" v-on:click="showCountry(countryObj.id)" data-toggle="modal" data-target="#editCat" class="white_btn">Edit</a> 
@@ -195,6 +184,8 @@
                                                         <input v-model="en_name" placeholder="Category Name" class="input_form form-control"> 
                                                          <label >Key</label> 
                                                         <input v-model="key" placeholder="Key" class="input_form form-control"> <!---->
+                                                        <input type="file" name="picture" class="form-control-file" id="picture" @change="onFileChange">
+
                                                     </div>
                                                 </div> 
                                            </div>
@@ -498,6 +489,7 @@ methods:{
    getCountries(){
         axios.get('/api/v1/get-countries').then(res => {
             this.countries = res.data
+            console.log (this.countries)
             
         })
 

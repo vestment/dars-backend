@@ -26,5 +26,9 @@ class studentData extends Model
     {
         return $this->belongsTo(EduSystem::class);
     }
+    public function EduStage()
+    {
+        return $this->belongsTo(EduStage::class);
+    }
 
 }
