@@ -2089,10 +2089,10 @@ class ApiController extends Controller
         
         $purchased_courses = auth()->user()->purchasedCourses();
         $courses = Course::wherein('id', $purchased_courses)->get();
-       
+        $unCompletedCourses = [] ;
         foreach( $courses as $i=>$course){
             if($courses[$i]->progress() < 100){
-                $unCompletedCourses [] = $courses[$i];
+                $unCompletedCourses[]  = $courses[$i];
             }
         
         }
@@ -2100,7 +2100,7 @@ class ApiController extends Controller
         $purchased_bundles = auth()->user()->purchasedBundles();
 
         
-        return response()->json(['status' => 'success', 'result' => ['courses' => $purchased_courses, 'bundles' => $purchased_bundles] , 'UnCompletedCourses' => $unCompletedCourses ]);
+        return response()->json(['status' => 'success', 'result' => ['courses' => $purchased_courses, 'bundles' => $purchased_bundles,'UnCompletedCourses' => $unCompletedCourses]  ]);
     }
 
 
@@ -2113,8 +2113,8 @@ class ApiController extends Controller
      */
     public function getMyAccount()
     {
-        $id = auth('api')->user()->id;
-        $user = User::with('roles', 'permissions', 'providers')
+        $id = auth()->user()->id;
+        $user = User::with('roles', 'permissions', 'providers','studentData')
         ->where('id', $id)->first();
         return response()->json(['status' => 'success', 'result' => $user]);
     }
@@ -2742,28 +2742,9 @@ class ApiController extends Controller
             $country->key = $request->key;
             $file = $request->file('image');
             $name = time() . $file->getClientOriginalName();
-            $file->move( public_path() . '/images/', $name);  // absolute destination path
-
-          
-            // $photo = Chart::create(['file'=>$name]);
-            // $input['photo_id'] = $photo->id;
-
-// $image = $request->file('image');
-
-$extension = $file->getClientOriginalExtension(); // Get the extension
-$timestampName = microtime(true) . '.' . $extension;
-//    $extension->move($destination, $filename);
-$url =  'public/images/' .$timestampName;
-
-// Storage::disk('s3')->put($url, file_get_contents($image));
-            // $image = $request->image;
-            // $request->file('file'); 
-            // $file_name = $image->getClientOriginalName(); 
-            // $destination = 'public/assets/img/flags';		
-            // $filename->move($destination, $filename);
-            // $country->image = strtolower($filename);
+            $file->move( public_path('storage/flags'), $name);
+            $url =  env('APP_URL').'/storage/flags/' .$name;
             $country->image = $url;
-
             $country->save();
             return response()->json(['success' => true, 'data' => $country]);
         }

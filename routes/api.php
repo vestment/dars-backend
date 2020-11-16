@@ -28,7 +28,6 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('all-courses','ApiController@coursesOfStatge');
     // Route::post('my-purchases','ApiController@getMyPurchases');
     Route::post('get-page','ApiController@getPage');
-    Route::get('get-user','ApiController@getMyAccount');
     Route::post('login','ApiController@login');
     Route::post('sign-up','ApiController@signup');
     Route::get('login/en', 'ApiController@index')->name('login.index');
@@ -51,6 +50,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     });
 
     Route::group(['middleware' => 'auth:api'],function (){
+        Route::get('get-user','ApiController@getMyAccount');
 
         Route::post('update-password','ApiController@updatePassword');
         Route::post('invoices','ApiController@getInvoices');

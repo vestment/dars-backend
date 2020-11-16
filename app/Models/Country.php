@@ -15,4 +15,8 @@ class Country extends Model
     // ?? null return if the column not found
     return $this->attributes[app()->getLocale() =='ar' ? 'ar_'.$col : 'en_'.$col] ?? $this->attributes[$col];
 }
+public function studentData()
+{
+    return $this->hasOne(studentData::class);
+}
 }
