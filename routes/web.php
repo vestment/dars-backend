@@ -194,5 +194,5 @@ Route::get('countinue/{id}','CoursesController@hascourse')->name('countinue');
 
 
 
-Route::get('/{page?}', 'loginController@index')->name('login.index');
+Route::get('/', 'loginController@index')->name('login.index');
 

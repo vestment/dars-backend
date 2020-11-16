@@ -78,7 +78,8 @@
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'lobster two' => array(
-    'normal' => $fontDir . '/d74bce80a4578c4055fc3abb06f1a5a8',
+    'normal' => $fontDir . '/lobster-two-normal_ffaf290be99d48d55df259ad75277f1c',
+    'bold' => $fontDir . '/lobster-two-bold_1cb206b3099b51ce9f93674e613790fb',
   ),
   'amiri' => array(
     'normal' => $fontDir . '/7065ab98453d16d0654b4a71c0981392',

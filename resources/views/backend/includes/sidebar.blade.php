@@ -103,7 +103,6 @@
                         <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/*')) }}"
                            href="#">
                             <i class="nav-icon icon-pie-chart"></i>@lang('menus.backend.sidebar.reports.title')
-
                         </a>
                         <ul class="nav-dropdown-items">
                             <li class="nav-item ">

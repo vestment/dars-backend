@@ -621,39 +621,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -695,19 +662,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             smesterModal: false,
             showCountryModal: false,
             showEduSysModal: false,
-            file: ''
+            file: '',
+            selectedFile: ''
 
         };
     },
 
     components: { Multiselect: __WEBPACK_IMPORTED_MODULE_2_vue_multiselect___default.a },
     methods: {
-        onChange: function onChange(e) {
-            var file = e.target.files[0];
-            this.file = file;
-            //   console.log(this.file)
-            //   this.file = URL.createObjectURL(file)
-        },
         addTag: function addTag(newTag) {
             var tag = {
                 name: newTag,
@@ -733,20 +695,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.key = res.data.key;
             });
         },
+        onFileChange: function onFileChange(event) {
+
+            this.file = event.target.files[0];
+        },
         createCountry: function createCountry() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create-country', {
-                ar_name: this.ar_name,
-                en_name: this.en_name,
-                key: this.key,
-                image: this.file.name
-            }).then(function (res) {
+            var formData = new FormData();
+
+            formData.append("image", this.file);
+            formData.append("ar_name", this.ar_name);
+            formData.append("en_name", this.en_name);
+            formData.append("key", this.key);
+            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create-country', formData).then(function (res) {
                 if (res.data.success == true) {
                     _this2.$toast.open({
                         type: 'success',
                         position: 'top-right',
                         message: 'Country Added Succesfully',
+                        duration: 9000,
+                        dismissible: true
+                    });
+                    _this2.getCountries();
+                } else {
+                    _this2.$toast.open({
+                        type: 'success',
+                        position: 'top-right',
+                        message: err.response,
                         duration: 9000,
                         dismissible: true
                     });
@@ -780,7 +756,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         duration: 9000,
                         dismissible: true
                     });
-                    _this4.$router.go(0);
+                    _this4.getCountries();
                 }
             }).catch(function (err) {
                 console.log(err.response);
@@ -846,7 +822,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         dismissible: true
                     });
                 }
-                _this7.reload();
+                // document.getElementsByClassName('modal-dialog').style.display = 'none'
+                // this.showCountryModal = false
+                _this7.getCountries();
             });
         },
         DeleteCountry: function DeleteCountry(id) {
@@ -914,6 +892,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     duration: 9000,
                     dismissible: true
                 });
+
+                _this11.getCountries();
             });
         },
         DeleteEduStage: function DeleteEduStage(id) {
@@ -984,16 +964,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 semesters: this.semestersid,
                 edu_stage_id: this.eduStageId
             });
+
+            this.getEduStages();
         },
         reload: function reload() {
             this.getCountries();
         },
         removeSemestersFromStage: function removeSemestersFromStage(statgeID, SemID) {
+            var _this17 = this;
 
             __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/semesters/remove', {
                 edu_stage_id: statgeID,
                 semesters: [SemID]
-            }).then(function (res) {});
+            }).then(function (res) {
+
+                _this17.getEduStages();
+            });
         }
     },
     mounted: function mounted() {
@@ -19723,9 +19709,7 @@ var render = function() {
                       0
                     )
                   ])
-                ]),
-                _vm._v(" "),
-                _vm._m(2)
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -19750,14 +19734,9 @@ var render = function() {
                       _c("div", { staticClass: "modal-content" }, [
                         _c(
                           "form",
-                          {
-                            attrs: {
-                              onsubmit: "return false",
-                              enctype: "multipart/form-data"
-                            }
-                          },
+                          { attrs: { enctype: "multipart/form-data" } },
                           [
-                            _vm._m(3),
+                            _vm._m(2),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c("div", { staticClass: "form-row" }, [
@@ -19837,16 +19816,18 @@ var render = function() {
                                           _vm.key = $event.target.value
                                         }
                                       }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "file",
-                                        accept: "image/*"
-                                      },
-                                      on: { change: _vm.onChange }
                                     })
-                                  ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    staticClass: "form-control-file",
+                                    attrs: {
+                                      type: "file",
+                                      name: "picture",
+                                      id: "picture"
+                                    },
+                                    on: { change: _vm.onFileChange }
+                                  })
                                 ])
                               ])
                             ]),
@@ -19872,7 +19853,11 @@ var render = function() {
                                   "button",
                                   {
                                     staticClass: "btn_1 m-0",
-                                    attrs: { type: "submit" },
+                                    attrs: {
+                                      "data-dismiss": "modal",
+                                      "aria-label": "Close",
+                                      type: "submit"
+                                    },
                                     on: { click: _vm.createCountry }
                                   },
                                   [_vm._v("Add")]
@@ -19908,7 +19893,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "modal-content" }, [
                         _c("form", [
-                          _vm._m(4),
+                          _vm._m(3),
                           _vm._v(" "),
                           _c("div", { staticClass: "modal-body" }, [
                             _c("div", { staticClass: "form-row" }, [
@@ -20066,7 +20051,11 @@ var render = function() {
                                   "button",
                                   {
                                     staticClass: "btn_1 m-0",
-                                    attrs: { type: "submit" },
+                                    attrs: {
+                                      "data-dismiss": "modal",
+                                      "aria-label": "Close",
+                                      type: "submit"
+                                    },
                                     on: { click: _vm.saveEduSystem }
                                   },
                                   [_vm._v("Add")]
@@ -20081,148 +20070,143 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm.showCountryModal
-                ? _c(
+              _c(
+                "div",
+                {
+                  staticClass: "modal fade medium_modal_width cs_modal",
+                  staticStyle: { display: "none" },
+                  attrs: {
+                    id: "editCat",
+                    tabindex: "-1",
+                    "aria-hidden": "true"
+                  }
+                },
+                [
+                  _c(
                     "div",
                     {
-                      staticClass: "modal fade medium_modal_width cs_modal",
-                      staticStyle: { display: "none" },
-                      attrs: {
-                        id: "editCat",
-                        tabindex: "-1",
-                        "aria-hidden": "true"
-                      }
+                      staticClass: "modal-dialog modal-dialog-centered",
+                      attrs: { role: "document" }
                     },
                     [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "modal-dialog modal-dialog-centered",
-                          attrs: { role: "document" }
-                        },
-                        [
-                          _c("div", { staticClass: "modal-content" }, [
-                            _c("form", [
-                              _vm._m(5),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "modal-body" }, [
-                                _c("div", { staticClass: "form-row" }, [
-                                  _c("div", { staticClass: "col-12" }, [
-                                    _c("div", { staticClass: "input_wrap" }, [
-                                      _c("label", [
-                                        _vm._v("Arabic Country Name")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.ar_name,
-                                            expression: "ar_name"
-                                          }
-                                        ],
-                                        staticClass: "input_form form-control",
-                                        attrs: { placeholder: "Category Name" },
-                                        domProps: { value: _vm.ar_name },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.ar_name = $event.target.value
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("label", [
-                                        _vm._v("English Country Name")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.en_name,
-                                            expression: "en_name"
-                                          }
-                                        ],
-                                        staticClass: "input_form form-control",
-                                        attrs: { placeholder: "Category Name" },
-                                        domProps: { value: _vm.en_name },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.en_name = $event.target.value
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("label", [_vm._v("Key")]),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.key,
-                                            expression: "key"
-                                          }
-                                        ],
-                                        staticClass: "input_form form-control",
-                                        attrs: { placeholder: "Key" },
-                                        domProps: { value: _vm.key },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.key = $event.target.value
-                                          }
-                                        }
-                                      })
-                                    ])
-                                  ])
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "modal-footer modal_btn" },
-                                [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "close white_btn2",
-                                      attrs: {
-                                        type: "button",
-                                        "data-dismiss": "modal",
-                                        "aria-label": "Close"
-                                      }
-                                    },
-                                    [_vm._v("Cancel ")]
-                                  ),
+                      _c("div", { staticClass: "modal-content" }, [
+                        _c("form", [
+                          _vm._m(4),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "modal-body" }, [
+                            _c("div", { staticClass: "form-row" }, [
+                              _c("div", { staticClass: "col-12" }, [
+                                _c("div", { staticClass: "input_wrap" }, [
+                                  _c("label", [_vm._v("Arabic Country Name")]),
                                   _vm._v(" "),
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn_1 m-0",
-                                      on: { click: _vm.updateCountry }
-                                    },
-                                    [_vm._v("Update Country")]
-                                  )
-                                ]
-                              )
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.ar_name,
+                                        expression: "ar_name"
+                                      }
+                                    ],
+                                    staticClass: "input_form form-control",
+                                    attrs: { placeholder: "Category Name" },
+                                    domProps: { value: _vm.ar_name },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.ar_name = $event.target.value
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", [_vm._v("English Country Name")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.en_name,
+                                        expression: "en_name"
+                                      }
+                                    ],
+                                    staticClass: "input_form form-control",
+                                    attrs: { placeholder: "Category Name" },
+                                    domProps: { value: _vm.en_name },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.en_name = $event.target.value
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", [_vm._v("Key")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.key,
+                                        expression: "key"
+                                      }
+                                    ],
+                                    staticClass: "input_form form-control",
+                                    attrs: { placeholder: "Key" },
+                                    domProps: { value: _vm.key },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.key = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ])
+                              ])
                             ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "modal-footer modal_btn" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "close white_btn2",
+                                attrs: {
+                                  type: "button",
+                                  "data-dismiss": "modal",
+                                  "aria-label": "Close"
+                                }
+                              },
+                              [_vm._v("Cancel ")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn_1 m-0",
+                                attrs: {
+                                  "data-dismiss": "modal",
+                                  "aria-label": "Close",
+                                  type: "submit"
+                                },
+                                on: { click: _vm.updateCountry }
+                              },
+                              [_vm._v("Update Country")]
+                            )
                           ])
-                        ]
-                      )
+                        ])
+                      ])
                     ]
                   )
-                : _vm._e(),
+                ]
+              ),
               _vm._v(" "),
               _c(
                 "div",
@@ -20381,7 +20365,11 @@ var render = function() {
                               "button",
                               {
                                 staticClass: "btn_1 m-0",
-                                attrs: { type: "submit" },
+                                attrs: {
+                                  "data-dismiss": "modal",
+                                  "aria-label": "Close",
+                                  type: "submit"
+                                },
                                 on: { click: _vm.UpdateEduSys }
                               },
                               [_vm._v("Update")]
@@ -20419,7 +20407,7 @@ var render = function() {
                               "form",
                               { attrs: { onsubmit: "return false" } },
                               [
-                                _vm._m(6),
+                                _vm._m(5),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "modal-body" }, [
                                   _c("div", { staticClass: "form-row" }, [
@@ -20674,7 +20662,7 @@ var render = function() {
                                   ])
                                 ]),
                                 _vm._v(" "),
-                                _vm._m(7)
+                                _vm._m(6)
                               ]
                             )
                           ])
@@ -20705,7 +20693,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "modal-content" }, [
                         _c("form", [
-                          _vm._m(8),
+                          _vm._m(7),
                           _vm._v(" "),
                           _c("div", { staticClass: "modal-body" }, [
                             _c("div", { staticClass: "form-row" }, [
@@ -20786,7 +20774,7 @@ var render = function() {
                             ])
                           ]),
                           _vm._v(" "),
-                          _vm._m(9)
+                          _vm._m(8)
                         ])
                       ])
                     ]
@@ -20816,7 +20804,7 @@ var render = function() {
                         [
                           _c("div", { staticClass: "modal-content" }, [
                             _c("form", [
-                              _vm._m(10),
+                              _vm._m(9),
                               _vm._v(" "),
                               _c("div", { staticClass: "modal-body" }, [
                                 _c("div", { staticClass: "form" }, [
@@ -20878,7 +20866,11 @@ var render = function() {
                                     "button",
                                     {
                                       staticClass: "btn_1 m-0",
-                                      attrs: { type: "submit" },
+                                      attrs: {
+                                        "data-dismiss": "modal",
+                                        "aria-label": "Close",
+                                        type: "submit"
+                                      },
                                       on: { click: _vm.AssignSmesters }
                                     },
                                     [_vm._v("Add")]
@@ -20922,54 +20914,6 @@ var staticRenderFns = [
           ]),
           _vm._v(" "),
           _c("button", [_c("i", { staticClass: "ti-search" })])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-12" }, [
-      _c("div", { staticClass: "lms_pagination_wrap text-center" }, [
-        _c("ul", [
-          _c("li", [
-            _c("ul", { staticClass: "pagination" }, [
-              _c(
-                "li",
-                { staticClass: "page-item pagination-page-nav active" },
-                [
-                  _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-                    _vm._v(
-                      "\n                                                     1\n                                                          "
-                    ),
-                    _c("span", { staticClass: "sr-only" }, [
-                      _vm._v("(current)")
-                    ])
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item pagination-page-nav" }, [
-                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-                  _vm._v(
-                    "\n                                                     2\n                                                     "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item pagination-next-nav" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    attrs: { href: "#", "aria-label": "Next" }
-                  },
-                  [_c("span", [_c("i", { staticClass: "fas fa-caret-right" })])]
-                )
-              ])
-            ])
-          ])
         ])
       ])
     ])

@@ -96,37 +96,12 @@
                                     </div>
                                 </div>
                             </div> 
-                            <div  class="col-lg-12">
-                                <div  class="lms_pagination_wrap text-center">
-                                        <ul>
-                                            <li>
-                                                <ul  class="pagination"><!---->
-                                                    <li class="page-item pagination-page-nav active">
-                                                        <a href="#" class="page-link">
-                                                        1
-                                                             <span class="sr-only">(current)</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item pagination-page-nav">
-                                                        <a href="#" class="page-link">
-                                                        2
-                                                        <!----></a>
-                                                    </li>
-                                                    <li class="page-item pagination-next-nav">
-                                                        <a href="#" aria-label="Next" class="page-link"><span >
-                                                            <i  class="fas fa-caret-right"></i></span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                            </div>
+                           
                         </div> 
                         <div  id="saveCat" tabindex="-1" class="modal fade medium_modal_width cs_modal" aria-hidden="true" style="display: none;">
                             <div  role="document" class="modal-dialog modal-dialog-centered">
                                 <div  class="modal-content">
-                                    <form  onsubmit="return false"  enctype="multipart/form-data" >
+                                    <form  enctype="multipart/form-data" >
                                         <div  class="modal-header">
                                             <h5 >Add Country</h5>
                                         </div> 
@@ -140,19 +115,10 @@
                                                         <input v-model="en_name" placeholder="Country Name" class="input_form form-control">
                                                         <label >Key </label> 
                                                         <input v-model="key" placeholder="Country Key" class="input_form form-control">
-                                                         <input type="file" accept="image/*" @change="onChange" />
-                                                         <!-- <b-field class="file is-primary" :class="{'has-name': !!file}">
-        <b-upload v-model="file" class="file-label">
-            <span class="file-cta">
-                <b-icon class="file-icon" icon="upload"></b-icon>
-                <span class="file-label">Click to upload</span>
-            </span>
-            <span class="file-name" v-if="file">
-                {{ file.name }}
-            </span>
-        </b-upload>
-    </b-field> -->
-                                                    </div>
+                                                        
+                                                                                  </div> 
+                                                            <input type="file" name="picture" class="form-control-file" id="picture" @change="onFileChange">
+
                                                 </div> 
                                              
                                               
@@ -160,7 +126,7 @@
                                        </div> 
                                         <div  class="modal-footer modal_btn">
                                                 <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Cancel </button> 
-                                                <button  v-on:click="createCountry" class="btn_1 m-0" type="submit">Add</button>
+                                                <button  v-on:click="createCountry" data-dismiss="modal" aria-label="Close" class="btn_1 m-0" type="submit">Add</button>
                                         </div>
                                   </form>
                                 </div>
@@ -204,14 +170,14 @@
                                       
                                         <div  class="modal-footer modal_btn">
                                                 <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Cancel  </button> 
-                                                <button  v-on:click="saveEduSystem" type="submit" class="btn_1 m-0">Add</button>
+                                                <button  v-on:click="saveEduSystem" data-dismiss="modal" aria-label="Close" type="submit" class="btn_1 m-0">Add</button>
                                         </div>
                                      </div>
                                    </form>
                                </div>
                             </div>
                         </div> 
-                         <div  v-if="showCountryModal" id="editCat" tabindex="-1" class="modal fade medium_modal_width cs_modal" style="display: none;" aria-hidden="true">
+                         <div   id="editCat" tabindex="-1" class="modal fade medium_modal_width cs_modal" style="display: none;" aria-hidden="true">
                             <div  role="document" class="modal-dialog modal-dialog-centered">
                                 <div  class="modal-content">
                                     <form >
@@ -235,7 +201,7 @@
                                       </div> 
                                       <div  class="modal-footer modal_btn">
                                           <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2">Cancel </button>
-                                          <button  v-on:click="updateCountry" class="btn_1 m-0">Update Country</button>
+                                          <button  v-on:click="updateCountry" class="btn_1 m-0"  data-dismiss="modal" aria-label="Close" type="submit">Update Country</button>
                                      </div>
                                   </form>
                               </div>
@@ -268,7 +234,7 @@
                                          
                                             <div  class="modal-footer modal_btn">
                                                <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2">Cancel</button>
-                                               <button  v-on:click="UpdateEduSys" type="submit" class="btn_1 m-0">Update</button>
+                                               <button  v-on:click="UpdateEduSys" data-dismiss="modal" aria-label="Close"  type="submit" class="btn_1 m-0">Update</button>
                                             </div>
                                   </form>
                               </div>
@@ -327,6 +293,7 @@
                                         <div  class="modal-footer modal_btn">
                                                 <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Close </button> 
                                                 <!-- <button  v-on:click="createCountry" class="btn_1 m-0" type="submit">Add</button> -->
+                                                
                                         </div>
                                   </form>
                               </div>
@@ -399,7 +366,7 @@
                                         <div  class="modal-footer modal_btn">
 
                                                 <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Close </button> 
-                                                <button  v-on:click="AssignSmesters" class="btn_1 m-0" type="submit">Add</button>
+                                                <button  v-on:click="AssignSmesters" data-dismiss="modal" aria-label="Close" class="btn_1 m-0" type="submit">Add</button>
                                         </div>
                                   </form>
                               </div>
@@ -455,7 +422,8 @@ data(){
             smesterModal:false,
             showCountryModal:false,
             showEduSysModal:false,
-            file: ''
+            file: '',
+            selectedFile:''
     
 
 
@@ -464,12 +432,7 @@ data(){
 },
 components: { Multiselect },
 methods:{
-    onChange(e) {
-      const file = e.target.files[0]
-      this.file = file
-    //   console.log(this.file)
-    //   this.file = URL.createObjectURL(file)
-    },
+
       addTag (newTag) {
       const tag = {
         name: newTag,
@@ -495,13 +458,18 @@ methods:{
        })
 
    },
+   onFileChange(event){
+      
+    this.file = event.target.files[0];
+},
     createCountry(){
-        axios.post('/api/v1/create-country',{
-            ar_name:this.ar_name,
-            en_name:this.en_name,
-            key:this.key,
-            image:this.file.name
-        }).then(res => {
+       let formData = new FormData();
+
+    formData.append("image", this.file);
+    formData.append("ar_name", this.ar_name);
+    formData.append("en_name", this.en_name);
+    formData.append("key", this.key);
+        axios.post('/api/v1/create-country',  formData ).then(res => {
              if (res.data.success == true) {
           this.$toast.open({
             type: 'success',
@@ -510,11 +478,22 @@ methods:{
             duration: 9000,
             dismissible: true
           });
+           this.getCountries()
+        }else{
+  this.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message:err.response ,
+            duration: 9000,
+            dismissible: true
+          });
         }
         // this.reload()
       }).catch(err => {
         console.log(err.response)
+      
       })
+     
     },
    getCountries(){
         axios.get('/api/v1/get-countries').then(res => {
@@ -538,7 +517,7 @@ methods:{
             duration: 9000,
             dismissible: true
           });
-          this.$router.go(0)
+         this.getCountries()
         }
       }).catch(err => {
         console.log(err.response)
@@ -605,7 +584,9 @@ methods:{
           });
          
         }
-this.reload()
+        // document.getElementsByClassName('modal-dialog').style.display = 'none'
+        // this.showCountryModal = false
+this.getCountries()
        })
 
    },
@@ -675,6 +656,8 @@ this.$confirm("Are you sure?").then(() => {
             duration: 9000,
             dismissible: true
           });
+
+          this.getCountries()
            
        })
      
@@ -749,6 +732,8 @@ this.$confirm("Are you sure?").then(() => {
            edu_stage_id:this.eduStageId
        })
 
+       this.getEduStages()
+
    },
 
    reload(){
@@ -761,6 +746,9 @@ this.$confirm("Are you sure?").then(() => {
          edu_stage_id:statgeID,
          semesters:[SemID]
      }).then(res=>{
+
+ this.getEduStages()
+
      })
 
 

@@ -27,10 +27,14 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('single-teacher','ApiController@getSingleTeacher');
     Route::post('all-courses','ApiController@coursesOfStatge');
     // Route::post('my-purchases','ApiController@getMyPurchases');
+<<<<<<< HEAD
     Route::post('teachers','ApiController@getTeachers');
 
 
     Route::get('get-user','ApiController@getMyAccount');
+=======
+    Route::post('get-page','ApiController@getPage');
+>>>>>>> 620268287512dd5dca31e13a0e3433eae4513d39
     Route::post('login','ApiController@login');
     Route::post('sign-up','ApiController@signup');
     Route::get('login/en', 'ApiController@index')->name('login.index');
@@ -53,6 +57,12 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     });
 
     Route::group(['middleware' => 'auth:api'],function (){
+        Route::get('get-user','ApiController@getMyAccount');
+
+        Route::post('update-password','ApiController@updatePassword');
+        Route::post('invoices','ApiController@getInvoices');
+        Route::post('show-invoice','ApiController@showInvoice');
+
     Route::post('single-lesson','ApiController@getLesson');
     Route::post('add-to-cart','ApiController@addToCart');
     Route::post('add-to-wishlist','ApiController@addToWishlist');
@@ -131,7 +141,13 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::post('unread-messages','ApiController@getUnreadMessages');
         Route::post('search-messages','ApiController@searchMessages');
         Route::post('my-certificates','ApiController@getMyCertificates');
+<<<<<<< HEAD
        
+=======
+        Route::post('my-purchases','ApiController@getMyPurchases');
+        Route::post('my-account','ApiController@getMyAccount');
+        Route::post('update-account','ApiController@updateMyAccount');
+>>>>>>> 620268287512dd5dca31e13a0e3433eae4513d39
         Route::post('subscribe-newsletter','ApiController@subscribeNewsletter');
         Route::post('offers','ApiController@getOffers');
         Route::post('apply-coupon','ApiController@applyCoupon');

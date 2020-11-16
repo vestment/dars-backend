@@ -182,17 +182,26 @@ class CategoriesController extends Controller
         $category->icon = $request->icon;
         $finalRequest = $request;
         if ($request->hasFile('category_image')) {
+            $file = $request->file('category_image');
+            $name = time() . $file->getClientOriginalName();
+            $file->move( public_path('storage/avatars'), $name);  // absolute destination path
+            // $extension = $file->getClientOriginalExtension(); // Get the extension
+            // $timestampName = microtime(true) . '.' . $extension;
+            //    $extension->move($destination, $filename);
+            $url =  'storage/avatars/' .$name;
+
             // $file = $request->file('category_image');
-            $file = Image::make($request->file('category_image'));
-            $filename = time() . '-' . $file->getClientOriginalName();
-            if (!file_exists(public_path('storage/avatars'))) {
-                mkdir(public_path('storage/avatars'), 0777, true);
-            }
-            Image::make($file)->resize(135, 135)->insert('storage/avatars/' . $filename);
-            $finalRequest = new Request(array_merge($finalRequest->all(), ['avatar_location' => 'storage/avatars/' . $filename,'avatar_type'=>'storage']));
+            // $file = Image::make($request->file('category_image'));
+            // dd($file);
+            // $filename = time() . '-' . $file->getClientOriginalName();
+            // if (!file_exists(public_path('storage/avatars'))) {
+            //     mkdir(public_path('storage/avatars'), 0777, true);
+            // }
+            // Image::make($file)->resize(135, 135)->insert('storage/avatars/' . $filename);
+            // $finalRequest = new Request(array_merge($finalRequest->all(), ['avatar_location' => 'storage/avatars/' . $filename,'avatar_type'=>'storage']));
         }
        
-        $category->category_image =  $finalRequest;
+        $category->category_image =  $url;
       
         $category->save();
 
@@ -237,9 +246,18 @@ class CategoriesController extends Controller
         $category = Category::findOrFail($id);
         $category->name = $request->name;
         $category->ar_name = $request->ar_name;
-
         $category->slug = str_slug($request->name);
         $category->icon = $request->icon;
+
+        if ($request->hasFile('category_image')) {
+
+            $file = $request->file('category_image');
+            $name = time() . $file->getClientOriginalName();
+            $file->move( public_path('storage/avatars'), $name);
+            $url =  env('APP_URL').'/storage/avatars/' .$name;
+           
+            $category->category_image =  $url;
+        }
         $category->save();
 
         return redirect()->route('admin.categories.index')->withFlashSuccess(trans('alerts.backend.general.updated'));

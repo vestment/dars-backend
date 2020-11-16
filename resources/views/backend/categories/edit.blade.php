@@ -43,6 +43,20 @@
 
             </div>
 
+            <div class="col-12 col-lg-4 form-group">
+                            {!! Form::label('category_image',  trans('labels.backend.courses.fields.category_image'), ['class' => 'control-label']) !!}
+                            {!! Form::file('category_image',  ['class' => 'form-control', 'accept' => 'image/jpeg,image/gif,image/png']) !!}
+                            {!! Form::hidden('category_image_max_size', 8) !!}
+                            {!! Form::hidden('category_image_max_width', 4000) !!}
+                            {!! Form::hidden('category_image_max_height', 4000) !!}
+           </div>
+           @if ($category->category_image)
+                                        <a href="{{ asset($category->category_image) }}" target="_blank"><img
+                                                    height="50px"
+                                                    src="{{ asset($category->category_image) }}"
+                                                    class="mt-1"></a>
+                                    @endif
+
             <div class="col-12 form-group text-center">
 
                 {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn mt-auto  btn-danger']) !!}

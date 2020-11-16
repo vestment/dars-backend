@@ -558,23 +558,31 @@ class ApiController extends Controller
     public function getSingleCourse(Request $request)
     {
        
-    
+   
        
         $continue_course = NULL;
         $course_timeline = NULL;
-        $course = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->where('year_id' , '=' , $lastYear->id )->with('publishedLessons')->first();
+        $course = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
         if ($course == null) {
             return response()->json(['status' => 'failure', 'result' => NULL]);
         }
         $course->learned = json_decode($course->learned) ;
         $course->learned_ar = json_decode($course->learned_ar) ;
 
-
-        $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+        $singleCourse = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
+        $Coursesss = $singleCourse->students()->get();
+        
+        foreach($Coursesss as $i => $courseee){
+        
+            $MyCourses [] = $Coursesss[$i]->pivot->course_id;
+        // if(in_array(auth('api')->user()->id , $myCourses[$i]->pivot->user_id))
+        
+        }
+        // $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+        $purchased_course = in_array($request->course_id ,$MyCourses );
         $chapters = $course->chapters()->where('course_id', $course->id)->get();
         $chapter_lessons = Lesson::where('course_id', $course->id)->where('published', '=', 1);
-
-
+        $progress = $course->progress();
         $course_rating = 0;
         $total_ratings = 0;
         $completed_lessons = NULL;
@@ -642,6 +650,7 @@ class ApiController extends Controller
             // 'course_timeline' => $course_timeline,
             'completed_lessons' => $completed_lessons,
             'continue_course' => $continue_course,
+            'progress' =>$progress
             // 'chapters' => $chapters
             // 'is_certified' => $course->isUserCertified(),
             // 'course_process' => $course->progress()
@@ -2077,11 +2086,21 @@ class ApiController extends Controller
      */
     public function getMyPurchases()
     {
-       
+        
         $purchased_courses = auth()->user()->purchasedCourses();
+        $courses = Course::wherein('id', $purchased_courses)->get();
+        $unCompletedCourses = [] ;
+        foreach( $courses as $i=>$course){
+            if($courses[$i]->progress() < 100){
+                $unCompletedCourses[]  = $courses[$i];
+            }
+        
+        }
+
         $purchased_bundles = auth()->user()->purchasedBundles();
 
-        return response()->json(['status' => 'success', 'result' => ['courses' => $purchased_courses, 'bundles' => $purchased_bundles]]);
+        
+        return response()->json(['status' => 'success', 'result' => ['courses' => $purchased_courses, 'bundles' => $purchased_bundles,'UnCompletedCourses' => $unCompletedCourses]  ]);
     }
 
 
@@ -2094,8 +2113,8 @@ class ApiController extends Controller
      */
     public function getMyAccount()
     {
-        $id = auth('api')->user()->id;
-        $user = User::with('roles', 'permissions', 'providers')
+        $id = auth()->user()->id;
+        $user = User::with('roles', 'permissions', 'providers','studentData')
         ->where('id', $id)->first();
         return response()->json(['status' => 'success', 'result' => $user]);
     }
@@ -2120,7 +2139,7 @@ class ApiController extends Controller
         }
         $output = $this->userRepository->update(
             $request->user()->id,
-            $request->only('first_name', 'last_name', 'dob', 'phone', 'gender', 'address', 'city', 'pincode', 'state', 'country', 'avatar_type', 'avatar_location'),
+            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location'),
             $request->has('avatar_location') ? $request->file('avatar_location') : false
         );
 
@@ -2144,6 +2163,8 @@ class ApiController extends Controller
      */
     public function updatePassword(Request $request)
     {
+
+        
         $user = auth()->user();
 
         if (Hash::check($request->old_password, $user->password)) {
@@ -2170,6 +2191,31 @@ class ApiController extends Controller
         }
         return response()->json(['status' => 'failure', 'result' => NULL]);
 
+    }
+
+    public function getInvoices(){
+
+        $invoices = auth()->user()->invoices()->whereHas('order')->get();
+        return ['status' => 'success', 'invoices' => $invoices];
+    }
+
+    public function showInvoice(Request $request){
+
+
+        if (auth()->check()) {
+            $hashid = new Hashids('',5);
+            $order_id = $hashid->decode($request->code);
+            $order_id = array_first($order_id);
+
+            $order = Order::findOrFail($order_id);
+            if (auth()->user()->isAdmin() || ($order->user_id == auth()->user()->id)) {
+                if (Storage::exists('invoices/' . $order->invoice->url)) {
+                    return response()->file(Storage::path('invoices/' . $order->invoice->url));
+                }
+                return abort(404);
+            }
+        }
+        return abort(404);
     }
 
 
@@ -2694,12 +2740,11 @@ class ApiController extends Controller
             $country->ar_name = $request->ar_name;
             $country->en_name = $request->en_name;
             $country->key = $request->key;
-            $image = $request->image;
-            // $request->file('file'); 
-            // $file_name = $image->getClientOriginalName(); 
-            // $destination = 'public/assets/img/flags';		
-            // $filename->move($destination, $filename);
-            // $country->image = strtolower($filename);
+            $file = $request->file('image');
+            $name = time() . $file->getClientOriginalName();
+            $file->move( public_path('storage/flags'), $name);
+            $url =  env('APP_URL').'/storage/flags/' .$name;
+            $country->image = $url;
             $country->save();
             return response()->json(['success' => true, 'data' => $country]);
         }
