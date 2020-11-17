@@ -2718,7 +2718,7 @@ class ApiController extends Controller
     public function getCountries()
     {
         $countries = Country::with('eduSystems')->get();
-        return response()->json($countries);
+        return response()->json(['status' => 'success', 'result' => $countries]);
     }
 
 
