@@ -2780,7 +2780,16 @@ else{
         ]);
         if ($validator->passes()) {
             $country = Country::findorfail($id);
+           
+            $file = $request->file('image');
+            $name = time() . $file->getClientOriginalName();
+            $file->move( public_path('storage/flags'), $name);
+            $url =  env('APP_URL').'/storage/flags/' .$name;
+           
             $country->update($request->all());
+
+            $country->image = $url;
+            $country->save();
             return response()->json(['success' => true, 'data' => $country]);
         }
         return response(['success' => $request->all(), 'errors' => $validator->errors()]);

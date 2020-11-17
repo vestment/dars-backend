@@ -560,11 +560,13 @@ methods:{
 
    },
    updateCountry(){
-       axios.post('/api/v1/edit/country/'+this.countryId,{
-           ar_name:this.ar_name,
-           en_name:this.en_name,
-           key:this.key
-       }).then(res =>{
+         let formData = new FormData();
+
+    formData.append("image", this.file);
+    formData.append("ar_name", this.ar_name);
+    formData.append("en_name", this.en_name);
+    formData.append("key", this.key);
+       axios.post('/api/v1/edit/country/'+this.countryId,formData).then(res =>{
 
              if (res.data.success == true) {
           this.$toast.open({
