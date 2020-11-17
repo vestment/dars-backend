@@ -48,11 +48,11 @@
                                                 <div  class="category_header lms_block d-flex justify-content-between align-items-center">
                                                     <div  class="category_left">
                                                         <div class="row">
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-4">
                                                                 <img :src="countryObj.image" alt="">
                                                                 <!-- <p>{{countryObj.image}}</p> -->
                                                             </div>
-                                                            <div class="col-md-10">
+                                                            <div class="col-md-8">
                                                                 <h4 >{{countryObj.en_name}}</h4> 
                                                                 <p >Total {{countryObj.edu_systems.length}}  Education Systems</p>
                                                             </div>
