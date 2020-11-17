@@ -307,8 +307,6 @@ class ApiController extends Controller
     }
 
     public function coursesOfStatge(Request $request){
-    
-
        $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
        $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
         // dd(Carbon::today()->subDays(3));
@@ -318,17 +316,12 @@ class ApiController extends Controller
             foreach($statgeSemIds[$key]->courses as $index=> $element){
                 // dd($statgeSemIds[$key]->courses[$index]['created_at']);
                 // return [Carbon::today()->subDays(3),$statgeSemIds[$key]->courses[$index]['created_at']] ;
-
                 if($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3) )
                 {
                    $newCourses[]=$statgeSemIds[$key]->courses[$index];
-
                 }
-
                 //    dd($statgeSemIds[0]->courses[3]->updated_at);
                 // $newCourses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->where($statgeSemIds[$key]->courses[$index]['updated_at'],Carbon::today()->subDays(3))->get();
-
-
             }
         }
 
@@ -2139,7 +2132,7 @@ class ApiController extends Controller
         }
         $output = $this->userRepository->update(
             $request->user()->id,
-            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location'),
+            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type'),
             $request->has('avatar_location') ? $request->file('avatar_location') : false
         );
 
@@ -2169,10 +2162,15 @@ class ApiController extends Controller
 
         if (Hash::check($request->old_password, $user->password)) {
             $user->update(['password' => $request->password]);
+             return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.password_updated')]);
         }
-        return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.password_updated')]);
+else{
+    return response()->json(['status' => 'failed', 'message' => __('Incorrect Password')]);
 
-    }
+}
+        }
+
+    
 
 
     /**
@@ -2718,7 +2716,8 @@ class ApiController extends Controller
     public function getCountries()
     {
         $countries = Country::with('eduSystems')->get();
-        return response()->json($countries);
+        return response()->json(['success' => true, 'data' => $countries]);
+        
     }
 
 
@@ -2761,7 +2760,8 @@ class ApiController extends Controller
     {
         
         $country = Country::where('id',$id)->with('eduSystems')->first();
-        return response()->json($country);
+        return response()->json(['success' => true, 'data' => $country]);
+       
     }
 
 
@@ -2802,7 +2802,8 @@ class ApiController extends Controller
     public function getEduSystems($country)
     {
         $EduSystem = EduSystem::where('country_id', $country)->with('country')->get();
-        return response()->json($EduSystem);
+          return response()->json(['success' => true, 'data' => $EduSystem]);
+        
     }
 
 
@@ -2836,7 +2837,9 @@ class ApiController extends Controller
     public function getEduSystem($id)
     {
         $EduSystem = EduSystem::where('id',$id)->with('country')->first();
-        return response()->json($EduSystem);
+         return response()->json(['success' => true, 'data' => $EduSystem]);
+        
+        
     }
 
 
@@ -2877,7 +2880,8 @@ class ApiController extends Controller
     public function getEduStages($eduSystem)
     {
         $EduStage = EduStage::where('edu_system_id', $eduSystem)->with(['system', 'system.country','semesters'])->get();
-        return response()->json($EduStage);
+        
+         return response()->json(['success' => true, 'data' => $EduStage]);
     }
 
 
@@ -2911,7 +2915,9 @@ class ApiController extends Controller
     public function getEduStage($id)
     {
         $EduStage = EduStage::where('id',$id)->with(['system', 'system.country'])->first();
-        return response()->json($EduStage);
+        
+        
+          return response()->json(['success' => true, 'data' => $EduStage]);
     }
 
 

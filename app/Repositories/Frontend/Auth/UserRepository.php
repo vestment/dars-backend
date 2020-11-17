@@ -162,6 +162,7 @@ class UserRepository extends BaseRepository
             $file->move($path, $filename);
             $user->avatar_location = 'storage/avatars/' . $filename;
         } else {
+          
             // No image being passed
             if ($input['avatar_type'] == 'storage') {
                 // If there is no existing image

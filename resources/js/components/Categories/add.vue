@@ -443,9 +443,9 @@ methods:{
        this.showCountryModal = true
        axios.get('/api/v1/country/'+this.countryId).then(res => {
            
-           this.ar_name = res.data.ar_name
-           this.en_name = res.data.en_name
-           this.key = res.data.key
+           this.ar_name = res.data.data.ar_name
+           this.en_name = res.data.data.en_name
+           this.key = res.data.data.key
        })
 
    },
@@ -488,7 +488,7 @@ methods:{
     },
    getCountries(){
         axios.get('/api/v1/get-countries').then(res => {
-            this.countries = res.data
+            this.countries = res.data.data
             console.log (this.countries)
             
         })
@@ -546,7 +546,7 @@ methods:{
    },
    getEduStages(){
        axios.get('/api/v1/edu-stage/'+this.eduSysId).then( res => {
-           this.eduStages = res.data
+           this.eduStages = res.data.data
           
        })
    },
@@ -606,9 +606,9 @@ this.$confirm("Are you sure?").then(() => {
        this.showEduSysModal = true
        this.EduSysId = id
        axios.get('/api/v1/edu-system/show/'+id).then(res=>{
-           this.ShowAreduSysName = res.data.ar_name
-           this.ShowEneduSysName = res.data.en_name
-           this.Showcountry_id = res.data.country_id
+           this.ShowAreduSysName = res.data.data.ar_name
+           this.ShowEneduSysName = res.data.data.en_name
+           this.Showcountry_id = res.data.data.country_id
        })
            
 
@@ -680,9 +680,9 @@ this.$confirm("Are you sure?").then(() => {
        this.eduStageId = id 
        axios.get('/api/v1/edu-stage/show/'+id).then(res=>{
           
-           this.ShowEnStageName= res.data.en_name
-           this.ShowArStageName= res.data.ar_name
-           this.edu_system_id  = res.data.edu_system_id
+           this.ShowEnStageName= res.data.data.en_name
+           this.ShowArStageName= res.data.data.ar_name
+           this.edu_system_id  = res.data.data.edu_system_id
 
        })
 

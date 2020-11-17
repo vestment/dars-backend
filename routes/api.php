@@ -61,6 +61,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('add-to-wishlist','ApiController@addToWishlist');
     Route::get('get-myWishlist','ApiController@getMyWishlist');
     Route::post('remove-from-Wishlist','ApiController@removeFromWishlist');
+    Route::post('update-account','ApiController@updateMyAccount');
 
         Route::post('create-country', 'ApiController@saveCountry');
         Route::get('country/{id}', 'ApiController@getCountry');
