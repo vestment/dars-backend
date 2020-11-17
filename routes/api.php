@@ -64,12 +64,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('add-to-wishlist','ApiController@addToWishlist');
     Route::get('get-myWishlist','ApiController@getMyWishlist');
     Route::post('remove-from-Wishlist','ApiController@removeFromWishlist');
-    Route::post('my-purchases','ApiController@getMyPurchases');
-    Route::post('my-account','ApiController@getMyAccount');
     Route::post('update-account','ApiController@updateMyAccount');
-    Route::post('update-password','ApiController@updatePassword');
-    Route::post('get-page','ApiController@getPage');
-    Route::post('single-test','ApiController@getTest');
 
         Route::post('create-country', 'ApiController@saveCountry');
         Route::get('country/{id}', 'ApiController@getCountry');

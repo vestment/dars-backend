@@ -32,18 +32,7 @@
                                     <div  class="white_box_tittle list_header">
                                         <h4 >Category List</h4> 
                                         <div  class="box_right d-flex lms_block">
-                                            <div  class="serach_field_2">
-                                                <div  class="search_inner">
-                                                    <form>
-                                                        <div  class="search_field">
-                                                            <input  type="text" placeholder="Search Category Here">
-                                                        </div> 
-                                                        <button >
-                                                            <i  class="ti-search"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div> 
+                                           
                                             <div  class="add_button ml-10">
                                                 <a  href="#" data-toggle="modal" data-target="#saveCat" class="btn_1">Add Country</a>
                                                 <a  href="#" data-toggle="modal" data-target="#saveSubCat" class="btn_1">Add Education System</a>
@@ -61,7 +50,7 @@
                                                 <div  class="category_header lms_block d-flex justify-content-between align-items-center">
                                                     <div  class="category_left">
                                                         <h4 >{{countryObj.en_name}}</h4> 
-                                                        <p >Total 5 Sub Categories</p>
+                                                        <p >Total {{countryObj.edu_systems.length}}  Education Systems</p>
                                                     </div> 
                                                     <div  class="category_right">
                                                         <a href="#" v-on:click="showCountry(countryObj.id)" data-toggle="modal" data-target="#editCat" class="white_btn">Edit</a> 
@@ -195,6 +184,8 @@
                                                         <input v-model="en_name" placeholder="Category Name" class="input_form form-control"> 
                                                          <label >Key</label> 
                                                         <input v-model="key" placeholder="Key" class="input_form form-control"> <!---->
+                                                        <input type="file" name="picture" class="form-control-file" id="picture" @change="onFileChange">
+
                                                     </div>
                                                 </div> 
                                            </div>
@@ -452,9 +443,9 @@ methods:{
        this.showCountryModal = true
        axios.get('/api/v1/country/'+this.countryId).then(res => {
            
-           this.ar_name = res.data.ar_name
-           this.en_name = res.data.en_name
-           this.key = res.data.key
+           this.ar_name = res.data.data.ar_name
+           this.en_name = res.data.data.en_name
+           this.key = res.data.data.key
        })
 
    },
@@ -497,7 +488,8 @@ methods:{
     },
    getCountries(){
         axios.get('/api/v1/get-countries').then(res => {
-            this.countries = res.data
+            this.countries = res.data.data
+            console.log (this.countries)
             
         })
 
@@ -554,7 +546,7 @@ methods:{
    },
    getEduStages(){
        axios.get('/api/v1/edu-stage/'+this.eduSysId).then( res => {
-           this.eduStages = res.data
+           this.eduStages = res.data.data
           
        })
    },
@@ -614,9 +606,9 @@ this.$confirm("Are you sure?").then(() => {
        this.showEduSysModal = true
        this.EduSysId = id
        axios.get('/api/v1/edu-system/show/'+id).then(res=>{
-           this.ShowAreduSysName = res.data.ar_name
-           this.ShowEneduSysName = res.data.en_name
-           this.Showcountry_id = res.data.country_id
+           this.ShowAreduSysName = res.data.data.ar_name
+           this.ShowEneduSysName = res.data.data.en_name
+           this.Showcountry_id = res.data.data.country_id
        })
            
 
@@ -688,9 +680,9 @@ this.$confirm("Are you sure?").then(() => {
        this.eduStageId = id 
        axios.get('/api/v1/edu-stage/show/'+id).then(res=>{
           
-           this.ShowEnStageName= res.data.en_name
-           this.ShowArStageName= res.data.ar_name
-           this.edu_system_id  = res.data.edu_system_id
+           this.ShowEnStageName= res.data.data.en_name
+           this.ShowArStageName= res.data.data.ar_name
+           this.edu_system_id  = res.data.data.edu_system_id
 
        })
 
