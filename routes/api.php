@@ -27,7 +27,10 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('single-teacher','ApiController@getSingleTeacher');
     Route::post('all-courses','ApiController@coursesOfStatge');
     // Route::post('my-purchases','ApiController@getMyPurchases');
-    Route::post('get-page','ApiController@getPage');
+    // Route::post('teachers','ApiController@getTeachers');
+
+
+    Route::get('get-user','ApiController@getMyAccount');
     Route::post('login','ApiController@login');
     Route::post('sign-up','ApiController@signup');
     Route::get('login/en', 'ApiController@index')->name('login.index');
@@ -92,7 +95,6 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::post('search','ApiController@search');
         Route::post('latest-news','ApiController@getLatestNews');
         Route::post('testimonials','ApiController@getTestimonials');
-        Route::post('teachers','ApiController@getTeachers');
         Route::post('teacher-courses','ApiController@getTeacherCourses');
         Route::post('teacher-bundles','ApiController@getTeacherBundles');
         Route::post('get-faqs','ApiController@getFaqs');
@@ -103,7 +105,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::post('save-note','ApiController@saveNote');
         Route::post('add-note','ApiController@AddNewNote');
         Route::post('remove-note','ApiController@removeNote');
-        Route::post('single-test','ApiController@getTest');
+       
         Route::post('save-test','ApiController@saveTest');
         Route::post('video-progress','ApiController@videoProgress');
         Route::post('course-progress','ApiController@courseProgress');
@@ -144,4 +146,3 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('send-reset-link','ApiController');
     Route::post('configs','ApiController@getConfigs');
 });
-

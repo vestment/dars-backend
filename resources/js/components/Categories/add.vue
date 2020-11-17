@@ -43,14 +43,21 @@
                                         </div>
                                     </div> 
                                     <div  class="row">
-
-
                                         <div v-for="countryObj in countries" :key="countryObj.id" class="col-xl-6">
                                             <div  class="lms_category_wrap">
                                                 <div  class="category_header lms_block d-flex justify-content-between align-items-center">
                                                     <div  class="category_left">
-                                                        <h4 >{{countryObj.en_name}}</h4> 
-                                                        <p >Total {{countryObj.edu_systems.length}}  Education Systems</p>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <img :src="countryObj.image" alt="">
+                                                                <!-- <p>{{countryObj.image}}</p> -->
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <h4 >{{countryObj.en_name}}</h4> 
+                                                                <p >Total {{countryObj.edu_systems.length}}  Education Systems</p>
+                                                            </div>
+
+                                                        </div>
                                                     </div> 
                                                     <div  class="category_right">
                                                         <a href="#" v-on:click="showCountry(countryObj.id)" data-toggle="modal" data-target="#editCat" class="white_btn">Edit</a> 
