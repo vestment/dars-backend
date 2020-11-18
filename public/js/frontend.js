@@ -890,11 +890,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //   }
       else {
 
-          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edit/country/' + this.countryId, {
-            ar_name: this.ar_name,
-            en_name: this.en_name,
-            key: this.key
-          }).then(function (res) {
+          var formData = new FormData();
+
+          formData.append("image", this.file);
+          formData.append("ar_name", this.ar_name);
+          formData.append("en_name", this.en_name);
+          formData.append("key", this.key);
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edit/country/' + this.countryId, formData).then(function (res) {
 
             if (res.data.success == true) {
               _this7.$toast.open({
