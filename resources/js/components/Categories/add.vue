@@ -10,13 +10,13 @@
                                     <div  class="sidebar_icon d-lg-none"><i  class="ti-menu"></i>
                                     </div>
                                     <div  class="page_tittle">
-                                        <h3 >Category</h3>
+                                        <h3 >Education System</h3>
                                         <p  class="page_subtitle">Dashboard 
                                             <span  class="page_subtitle_inenr active_subcat">
                                                 <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8px" height="10px">
                                                     <path  fill-rule="evenodd" fill="rgb(254, 23, 36)" d="M-0.000,10.000 L-0.000,-0.000 L8.000,5.000 L-0.000,10.000 Z">
                                                     </path>
-                                                </svg>  Category List
+                                                </svg> Education system
                                            
                                            </span>
                                         </p>
@@ -25,12 +25,21 @@
                             </div>
                         </div>
                     </div> 
+                    <div  class="container-fluid plr_30" v-if="errors.length">
+                        <div  class="row justify-content-center">
+                             <div  class="col-lg-12">
+                                 <div class="alert alert-danger" role="alert" v-for="error in errors">
+                                    {{error}}
+                                </div>
+                             </div>    
+                        </div>
+                    </div>
                     <div  class="container-fluid plr_30">
                         <div  class="row justify-content-center">
                             <div  class="col-lg-12">
                                 <div  class="white_box2">
                                     <div  class="white_box_tittle list_header">
-                                        <h4 >Category List</h4> 
+                                        <h4 >Countries and Education systems</h4> 
                                         <div  class="box_right d-flex lms_block">
                                            
                                             <div  class="add_button ml-10">
@@ -49,7 +58,8 @@
                                                     <div  class="category_left">
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <img :src="countryObj.image" alt="">
+                                                                <img :src="countryObj.image" alt="" style="    width: 62px;
+    height: 64px;">
                                                                 <!-- <p>{{countryObj.image}}</p> -->
                                                             </div>
                                                             <div class="col-md-8">
@@ -97,19 +107,20 @@
                         <div  id="saveCat" tabindex="-1" class="modal fade medium_modal_width cs_modal" aria-hidden="true" style="display: none;">
                             <div  role="document" class="modal-dialog modal-dialog-centered">
                                 <div  class="modal-content">
-                                    <form  enctype="multipart/form-data" >
+                                    <form  enctype="multipart/form-data" novalidate="true">
                                         <div  class="modal-header">
                                             <h5 >Add Country</h5>
+                                            
                                         </div> 
                                         <div  class="modal-body">
                                             <div  class="form-row">
                                                 <div  class="col-12">
                                                     <div  class="input_wrap">
-                                                        <label >Arabic Country Name </label> 
-                                                        <input v-model="ar_name" placeholder="Country Name" class="input_form form-control"> 
-                                                        <label >English Country Name </label> 
+                                                        <label >Arabic Country Name</label> 
+                                                        <input v-model="ar_name" placeholder="Country Name" class="input_form form-control" required> 
+                                                        <label >English Country Name</label> 
                                                         <input v-model="en_name" placeholder="Country Name" class="input_form form-control">
-                                                        <label >Key </label> 
+                                                        <label >Key</label> 
                                                         <input v-model="key" placeholder="Country Key" class="input_form form-control">
                                                         
                                                                                   </div> 
@@ -122,7 +133,7 @@
                                        </div> 
                                         <div  class="modal-footer modal_btn">
                                                 <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2"> Cancel </button> 
-                                                <button  v-on:click="createCountry" data-dismiss="modal" aria-label="Close" class="btn_1 m-0" type="submit">Add</button>
+                                                <button  @click="createCountry" data-dismiss="modal" aria-label="Close" class="btn_1 m-0" type="submit">Add</button>
                                         </div>
                                   </form>
                                 </div>
@@ -186,9 +197,9 @@
                                                     <div  class="input_wrap">
                                                         
                                                         <label >Arabic Country Name</label> 
-                                                        <input v-model="ar_name" placeholder="Category Name" class="input_form form-control"> 
+                                                        <input v-model="ar_name" placeholder="Country Name" class="input_form form-control"> 
                                                          <label >English Country Name</label> 
-                                                        <input v-model="en_name" placeholder="Category Name" class="input_form form-control"> 
+                                                        <input v-model="en_name" placeholder="Country Name" class="input_form form-control"> 
                                                          <label >Key</label> 
                                                         <input v-model="key" placeholder="Key" class="input_form form-control"> <!---->
                                                         <input type="file" name="picture" class="form-control-file" id="picture" @change="onFileChange">
@@ -413,6 +424,7 @@ data(){
             countries:[],
             eduStages:[],
             semesters:[],
+              errors: [],
             AllSemesters:[],
             approvers:[],
             semestersid:[],
@@ -461,12 +473,28 @@ methods:{
     this.file = event.target.files[0];
 },
     createCountry(){
+       
+
+        if (!this.ar_name) {
+        this.errors.push("Arabic Name is Required in Add Country.");
+        
+      }if(!this.en_name){
+        this.errors.push("English Name is Required in Add Country.");
+      }
+      if(!this.key){
+        this.errors.push("key is Required in Add Country.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
+         
        let formData = new FormData();
 
-    formData.append("image", this.file);
-    formData.append("ar_name", this.ar_name);
-    formData.append("en_name", this.en_name);
-    formData.append("key", this.key);
+        formData.append("image", this.file);
+        formData.append("ar_name", this.ar_name);
+        formData.append("en_name", this.en_name);
+        formData.append("key", this.key);
         axios.post('/api/v1/create-country',  formData ).then(res => {
              if (res.data.success == true) {
           this.$toast.open({
@@ -491,7 +519,7 @@ methods:{
         console.log(err.response)
       
       })
-     
+      }
     },
    getCountries(){
         axios.get('/api/v1/get-countries').then(res => {
@@ -502,6 +530,19 @@ methods:{
 
    },
    saveEduSystem(){
+        if (!this.country_id) {
+        this.errors.push("country is Required in Add Education System.");
+        
+      }if(!this.AreduSysName){
+        this.errors.push("Arabic Name is Required in Education System.");
+      }
+      if(!this.EneduSysName){
+        this.errors.push("English Name is Required in Education System.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
       axios.post('/api/v1/create/edu-system',{
             country_id:this.country_id,
             ar_name:this.AreduSysName,
@@ -521,6 +562,7 @@ methods:{
       }).catch(err => {
         console.log(err.response)
       })
+      }
    },
    openModal(id){
        this.stageModal =true
@@ -567,6 +609,22 @@ methods:{
 
    },
    updateCountry(){
+
+
+        if (!this.ar_name) {
+        this.errors.push("Arabic Name is Required in Edit Country.");
+        
+      }if(!this.en_name){
+        this.errors.push("English Name is Required in Edit Country.");
+      }
+      if(!this.key){
+        this.errors.push("key is Required in Edit Country.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
+
          let formData = new FormData();
 
     formData.append("image", this.file);
@@ -589,6 +647,7 @@ methods:{
         // this.showCountryModal = false
 this.getCountries()
        })
+      }
 
    },
    DeleteCountry(id){
@@ -644,6 +703,20 @@ this.$confirm("Are you sure?").then(() => {
 });
    },
    UpdateEduSys(){
+
+       if (!this.Showcountry_id) {
+        this.errors.push("country is Required in Edit Education System.");
+        
+      }if(!this.ShowAreduSysName){
+        this.errors.push("Arabic Name is Required in Edit Education System.");
+      }
+      if(!this.ShowEneduSysName){
+        this.errors.push("English Name is Required in Edit Education System.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
        axios.post('/api/v1/edu-system/edit/'+this.EduSysId ,{
            ar_name:this.ShowAreduSysName,
            en_name:this.ShowEneduSysName,
@@ -662,7 +735,7 @@ this.$confirm("Are you sure?").then(() => {
            
        })
      
-     
+      }
 
    },
    DeleteEduStage(id){
@@ -698,6 +771,17 @@ this.$confirm("Are you sure?").then(() => {
    },
    UpdateEduStage(){
       
+    if(!this.ShowArStageName){
+        this.errors.push("Arabic Name is Required in Edit Education Stage.");
+      }
+      if(!this.ShowEnStageName){
+        this.errors.push("English Name is Required in Edit Education Stage.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
+
        axios.post('/api/v1/edu-stage/edit/'+this.eduStageId,{
 
            ar_name:this.ShowArStageName,
@@ -715,6 +799,8 @@ this.$confirm("Are you sure?").then(() => {
           this.openModal(this.edu_system_id)
        })
 
+
+      }
    },
    getSemesters(){
       

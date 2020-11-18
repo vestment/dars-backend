@@ -130,6 +130,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -142,7 +151,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       ShowArSemName: '',
       semseterId: '',
       EnSemName: '',
-      ArSemName: ''
+      ArSemName: '',
+      errors: []
 
     };
   },
@@ -167,20 +177,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     UpdateSemester: function UpdateSemester() {
       var _this3 = this;
 
-      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/semester/edit/' + this.semseterId, {
-        en_name: this.ShowEnSemName,
-        ar_name: this.ShowArSemName
+      if (!this.ShowArSemName) {
+        this.errors.push("Arabic Name is Required in Edit Semester.");
+      }
+      if (!this.ShowEnSemName) {
+        this.errors.push("English Name is Required in Edit Semester.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/semester/edit/' + this.semseterId, {
+            en_name: this.ShowEnSemName,
+            ar_name: this.ShowArSemName
 
-      }).then(function (res) {
-        _this3.$toast.open({
-          type: 'success',
-          position: 'top-right',
-          message: 'Updated Succesfully',
-          duration: 9000,
-          dismissible: true
-        });
-        _this3.reload();
-      });
+          }).then(function (res) {
+            _this3.$toast.open({
+              type: 'success',
+              position: 'top-right',
+              message: 'Updated Succesfully',
+              duration: 9000,
+              dismissible: true
+            });
+            _this3.reload();
+          });
+        }
     },
     DeleteSemester: function DeleteSemester(id) {
       var _this4 = this;
@@ -202,20 +223,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     saveSemester: function saveSemester() {
       var _this5 = this;
 
-      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/semester', {
-        en_name: this.EnSemName,
-        ar_name: this.ArSemName
-      }).then(function (res) {
+      if (!this.ArSemName) {
+        this.errors.push("Arabic Name is Required in Add Semester.");
+      }
+      if (!this.EnSemName) {
+        this.errors.push("English Name is Required in Add Semester.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/semester', {
+            en_name: this.EnSemName,
+            ar_name: this.ArSemName
+          }).then(function (res) {
 
-        _this5.$toast.open({
-          type: 'success',
-          position: 'top-right',
-          message: 'Added Succesfully',
-          duration: 9000,
-          dismissible: true
-        });
-        _this5.reload();
-      });
+            _this5.$toast.open({
+              type: 'success',
+              position: 'top-right',
+              message: 'Added Succesfully',
+              duration: 9000,
+              dismissible: true
+            });
+            _this5.reload();
+          });
+        }
     },
     reload: function reload() {
       window.location.reload();
@@ -619,6 +651,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -627,366 +670,433 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'addCategory',
-    data: function data() {
-        return {
+  name: 'addCategory',
+  data: function data() {
+    return {
 
-            ar_name: "",
-            en_name: "",
-            key: "",
-            country_id: '',
-            AreduSysName: '',
-            EneduSysName: '',
-            Showcountry_id: '',
-            ShowAreduSysName: '',
-            ShowEneduSysName: '',
-            ShowArStageName: '',
-            ShowEnStageName: '',
-            ArStageName: '',
-            EnStageName: '',
-            eduSysId: '',
-            ArSemesterName: '',
-            EnSemesterName: '',
-            eduStageId: '',
-            countryId: '',
-            edu_system_id: '',
-            countries: [],
-            eduStages: [],
-            semesters: [],
-            AllSemesters: [],
-            approvers: [],
-            semestersid: [],
-            stageModal: false,
-            smesterModal: false,
-            showCountryModal: false,
-            showEduSysModal: false,
-            file: '',
-            selectedFile: ''
+      ar_name: "",
+      en_name: "",
+      key: "",
+      country_id: '',
+      AreduSysName: '',
+      EneduSysName: '',
+      Showcountry_id: '',
+      ShowAreduSysName: '',
+      ShowEneduSysName: '',
+      ShowArStageName: '',
+      ShowEnStageName: '',
+      ArStageName: '',
+      EnStageName: '',
+      eduSysId: '',
+      ArSemesterName: '',
+      EnSemesterName: '',
+      eduStageId: '',
+      countryId: '',
+      edu_system_id: '',
+      countries: [],
+      eduStages: [],
+      semesters: [],
+      errors: [],
+      AllSemesters: [],
+      approvers: [],
+      semestersid: [],
+      stageModal: false,
+      smesterModal: false,
+      showCountryModal: false,
+      showEduSysModal: false,
+      file: '',
+      selectedFile: ''
 
-        };
+    };
+  },
+
+  components: { Multiselect: __WEBPACK_IMPORTED_MODULE_2_vue_multiselect___default.a },
+  methods: {
+    addTag: function addTag(newTag) {
+      var tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000)
+      };
+      this.options.push(tag);
+      this.value.push(tag);
     },
+    openSemModal: function openSemModal(id) {
+      this.smesterModal = true;
+      //    this.stageModal = false
+      this.eduStageId = id;
+    },
+    showCountry: function showCountry(id) {
+      var _this = this;
 
-    components: { Multiselect: __WEBPACK_IMPORTED_MODULE_2_vue_multiselect___default.a },
-    methods: {
-        addTag: function addTag(newTag) {
-            var tag = {
-                name: newTag,
-                code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000)
-            };
-            this.options.push(tag);
-            this.value.push(tag);
-        },
-        openSemModal: function openSemModal(id) {
-            this.smesterModal = true;
-            //    this.stageModal = false
-            this.eduStageId = id;
-        },
-        showCountry: function showCountry(id) {
-            var _this = this;
+      this.countryId = id;
+      this.showCountryModal = true;
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/country/' + this.countryId).then(function (res) {
 
-            this.countryId = id;
-            this.showCountryModal = true;
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/country/' + this.countryId).then(function (res) {
+        _this.ar_name = res.data.data.ar_name;
+        _this.en_name = res.data.data.en_name;
+        _this.key = res.data.data.key;
+      });
+    },
+    onFileChange: function onFileChange(event) {
 
-                _this.ar_name = res.data.data.ar_name;
-                _this.en_name = res.data.data.en_name;
-                _this.key = res.data.data.key;
-            });
-        },
-        onFileChange: function onFileChange(event) {
+      this.file = event.target.files[0];
+    },
+    createCountry: function createCountry() {
+      var _this2 = this;
 
-            this.file = event.target.files[0];
-        },
-        createCountry: function createCountry() {
-            var _this2 = this;
+      if (!this.ar_name) {
+        this.errors.push("Arabic Name is Required in Add Country.");
+      }if (!this.en_name) {
+        this.errors.push("English Name is Required in Add Country.");
+      }
+      if (!this.key) {
+        this.errors.push("key is Required in Add Country.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
 
-            var formData = new FormData();
+          var formData = new FormData();
 
-            formData.append("image", this.file);
-            formData.append("ar_name", this.ar_name);
-            formData.append("en_name", this.en_name);
-            formData.append("key", this.key);
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create-country', formData).then(function (res) {
-                if (res.data.success == true) {
-                    _this2.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: 'Country Added Succesfully',
-                        duration: 9000,
-                        dismissible: true
-                    });
-                    _this2.getCountries();
-                } else {
-                    _this2.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: err.response,
-                        duration: 9000,
-                        dismissible: true
-                    });
-                }
-                // this.reload()
-            }).catch(function (err) {
-                console.log(err.response);
-            });
-        },
-        getCountries: function getCountries() {
-            var _this3 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/get-countries').then(function (res) {
-                _this3.countries = res.data.data;
-                console.log(_this3.countries);
-            });
-        },
-        saveEduSystem: function saveEduSystem() {
-            var _this4 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/edu-system', {
-                country_id: this.country_id,
-                ar_name: this.AreduSysName,
-                en_name: this.EneduSysName
-
-            }).then(function (res) {
-                if (res.data.success == true) {
-                    _this4.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: 'Education System Added Succesfully',
-                        duration: 9000,
-                        dismissible: true
-                    });
-                    _this4.getCountries();
-                }
-            }).catch(function (err) {
-                console.log(err.response);
-            });
-        },
-        openModal: function openModal(id) {
-            this.stageModal = true;
-            this.eduSysId = id;
-            this.getEduStages();
-        },
-        saveEduStage: function saveEduStage() {
-            var _this5 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/edu-stage', {
-                ar_name: this.ArStageName,
-                en_name: this.EnStageName,
-                edu_system_id: this.eduSysId
-            }).then(function (res) {
-                if (res.data.success == true) {
-                    _this5.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: 'Education System Added Succesfully',
-                        duration: 9000,
-                        dismissible: true
-                    });
-                }
-
-                _this5.openModal(_this5.eduSysId);
-            }).catch(function (err) {
-                console.log(err.response);
-            });
-        },
-        getEduStages: function getEduStages() {
-            var _this6 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/edu-stage/' + this.eduSysId).then(function (res) {
-                _this6.eduStages = res.data.data;
-            });
-        },
-        SaveSmester: function SaveSmester() {
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/semester', {
-                ar_name: this.ArSemesterName,
-                en_name: this.EnSemesterName,
-                edu_stage_id: this.eduStageId
-            });
-        },
-        updateCountry: function updateCountry() {
-            var _this7 = this;
-
-            var formData = new FormData();
-
-            formData.append("image", this.file);
-            formData.append("ar_name", this.ar_name);
-            formData.append("en_name", this.en_name);
-            formData.append("key", this.key);
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edit/country/' + this.countryId, formData).then(function (res) {
-
-                if (res.data.success == true) {
-                    _this7.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: 'Country Updated Succesfully',
-                        duration: 9000,
-                        dismissible: true
-                    });
-                }
-                // document.getElementsByClassName('modal-dialog').style.display = 'none'
-                // this.showCountryModal = false
-                _this7.getCountries();
-            });
-        },
-        DeleteCountry: function DeleteCountry(id) {
-            var _this8 = this;
-
-            this.$confirm("Are you sure?").then(function () {
-
-                __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/remove/country/' + id).then(function (res) {
-
-                    _this8.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: 'Country Deleted Succesfully',
-                        duration: 9000,
-                        dismissible: true
-                    });
-
-                    _this8.reload();
-                });
-            });
-        },
-        ShowEduSys: function ShowEduSys(id) {
-            var _this9 = this;
-
-            this.showEduSysModal = true;
-            this.EduSysId = id;
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/edu-system/show/' + id).then(function (res) {
-                _this9.ShowAreduSysName = res.data.data.ar_name;
-                _this9.ShowEneduSysName = res.data.data.en_name;
-                _this9.Showcountry_id = res.data.data.country_id;
-            });
-        },
-        DeleteEduSys: function DeleteEduSys(id) {
-            var _this10 = this;
-
-            this.$confirm("Are you sure?").then(function () {
-
-                __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/edu-system/remove/' + id).then(function (res) {
-
-                    _this10.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: 'Education System Deleted Succesfully',
-                        duration: 9000,
-                        dismissible: true
-                    });
-
-                    _this10.reload();
-                });
-            });
-        },
-        UpdateEduSys: function UpdateEduSys() {
-            var _this11 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-system/edit/' + this.EduSysId, {
-                ar_name: this.ShowAreduSysName,
-                en_name: this.ShowEneduSysName,
-                country_id: this.Showcountry_id
-            }).then(function (res) {
-
-                _this11.$toast.open({
-                    type: 'success',
-                    position: 'top-right',
-                    message: 'Updated Succesfully',
-                    duration: 9000,
-                    dismissible: true
-                });
-
-                _this11.getCountries();
-            });
-        },
-        DeleteEduStage: function DeleteEduStage(id) {
-            var _this12 = this;
-
-            this.$confirm("Are you sure?").then(function () {
-
-                __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/edu-stage/remove/' + id).then(function (res) {
-
-                    _this12.$toast.open({
-                        type: 'success',
-                        position: 'top-right',
-                        message: 'Education System Deleted Succesfully',
-                        duration: 9000,
-                        dismissible: true
-                    });
-
-                    _this12.openModal(_this12.eduSysId);
-                });
-            });
-        },
-        ShowEduStage: function ShowEduStage(id) {
-            var _this13 = this;
-
-            this.eduStageId = id;
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/edu-stage/show/' + id).then(function (res) {
-
-                _this13.ShowEnStageName = res.data.data.en_name;
-                _this13.ShowArStageName = res.data.data.ar_name;
-                _this13.edu_system_id = res.data.data.edu_system_id;
-            });
-        },
-        UpdateEduStage: function UpdateEduStage() {
-            var _this14 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/edit/' + this.eduStageId, {
-
-                ar_name: this.ShowArStageName,
-                en_name: this.ShowEnStageName,
-                edu_system_id: this.edu_system_id
-
-            }).then(function (res) {
-                _this14.$toast.open({
-                    type: 'success',
-                    position: 'top-right',
-                    message: 'Updated Succesfully',
-                    duration: 9000,
-                    dismissible: true
-                });
-                _this14.openModal(_this14.edu_system_id);
-            });
-        },
-        getSemesters: function getSemesters() {
-            var _this15 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/get-semesters').then(function (res) {
-                _this15.AllSemesters = res.data;
-            });
-        },
-        AssignSmesters: function AssignSmesters() {
-            var _this16 = this;
-
-            this.semesters.forEach(function (semester) {
-                _this16.semestersid.push(semester.id);
-            });
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/semesters', {
-                semesters: this.semestersid,
-                edu_stage_id: this.eduStageId
-            });
-
-            this.getEduStages();
-        },
-        reload: function reload() {
-            this.getCountries();
-        },
-        removeSemestersFromStage: function removeSemestersFromStage(statgeID, SemID) {
-            var _this17 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/semesters/remove', {
-                edu_stage_id: statgeID,
-                semesters: [SemID]
-            }).then(function (res) {
-
-                _this17.getEduStages();
-            });
+          formData.append("image", this.file);
+          formData.append("ar_name", this.ar_name);
+          formData.append("en_name", this.en_name);
+          formData.append("key", this.key);
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create-country', formData).then(function (res) {
+            if (res.data.success == true) {
+              _this2.$toast.open({
+                type: 'success',
+                position: 'top-right',
+                message: 'Country Added Succesfully',
+                duration: 9000,
+                dismissible: true
+              });
+              _this2.getCountries();
+            } else {
+              _this2.$toast.open({
+                type: 'success',
+                position: 'top-right',
+                message: err.response,
+                duration: 9000,
+                dismissible: true
+              });
+            }
+            // this.reload()
+          }).catch(function (err) {
+            console.log(err.response);
+          });
         }
     },
-    mounted: function mounted() {
-        this.getCountries();
-        this.getSemesters();
+    getCountries: function getCountries() {
+      var _this3 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/get-countries').then(function (res) {
+        _this3.countries = res.data.data;
+        console.log(_this3.countries);
+      });
+    },
+    saveEduSystem: function saveEduSystem() {
+      var _this4 = this;
+
+      if (!this.country_id) {
+        this.errors.push("country is Required in Add Education System.");
+      }if (!this.AreduSysName) {
+        this.errors.push("Arabic Name is Required in Education System.");
+      }
+      if (!this.EneduSysName) {
+        this.errors.push("English Name is Required in Education System.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/edu-system', {
+            country_id: this.country_id,
+            ar_name: this.AreduSysName,
+            en_name: this.EneduSysName
+
+          }).then(function (res) {
+            if (res.data.success == true) {
+              _this4.$toast.open({
+                type: 'success',
+                position: 'top-right',
+                message: 'Education System Added Succesfully',
+                duration: 9000,
+                dismissible: true
+              });
+              _this4.getCountries();
+            }
+          }).catch(function (err) {
+            console.log(err.response);
+          });
+        }
+    },
+    openModal: function openModal(id) {
+      this.stageModal = true;
+      this.eduSysId = id;
+      this.getEduStages();
+    },
+    saveEduStage: function saveEduStage() {
+      var _this5 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/edu-stage', {
+        ar_name: this.ArStageName,
+        en_name: this.EnStageName,
+        edu_system_id: this.eduSysId
+      }).then(function (res) {
+        if (res.data.success == true) {
+          _this5.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Education System Added Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+        }
+
+        _this5.openModal(_this5.eduSysId);
+      }).catch(function (err) {
+        console.log(err.response);
+      });
+    },
+    getEduStages: function getEduStages() {
+      var _this6 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/edu-stage/' + this.eduSysId).then(function (res) {
+        _this6.eduStages = res.data.data;
+      });
+    },
+    SaveSmester: function SaveSmester() {
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/semester', {
+        ar_name: this.ArSemesterName,
+        en_name: this.EnSemesterName,
+        edu_stage_id: this.eduStageId
+      });
+    },
+    updateCountry: function updateCountry() {
+      var _this7 = this;
+
+      if (!this.ar_name) {
+        this.errors.push("Arabic Name is Required in Edit Country.");
+      }if (!this.en_name) {
+        this.errors.push("English Name is Required in Edit Country.");
+      }
+      if (!this.key) {
+        this.errors.push("key is Required in Edit Country.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+
+          var formData = new FormData();
+
+          formData.append("image", this.file);
+          formData.append("ar_name", this.ar_name);
+          formData.append("en_name", this.en_name);
+          formData.append("key", this.key);
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edit/country/' + this.countryId, formData).then(function (res) {
+
+            if (res.data.success == true) {
+              _this7.$toast.open({
+                type: 'success',
+                position: 'top-right',
+                message: 'Country Updated Succesfully',
+                duration: 9000,
+                dismissible: true
+              });
+            }
+            // document.getElementsByClassName('modal-dialog').style.display = 'none'
+            // this.showCountryModal = false
+            _this7.getCountries();
+          });
+        }
+    },
+    DeleteCountry: function DeleteCountry(id) {
+      var _this8 = this;
+
+      this.$confirm("Are you sure?").then(function () {
+
+        __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/remove/country/' + id).then(function (res) {
+
+          _this8.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Country Deleted Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+
+          _this8.reload();
+        });
+      });
+    },
+    ShowEduSys: function ShowEduSys(id) {
+      var _this9 = this;
+
+      this.showEduSysModal = true;
+      this.EduSysId = id;
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/edu-system/show/' + id).then(function (res) {
+        _this9.ShowAreduSysName = res.data.data.ar_name;
+        _this9.ShowEneduSysName = res.data.data.en_name;
+        _this9.Showcountry_id = res.data.data.country_id;
+      });
+    },
+    DeleteEduSys: function DeleteEduSys(id) {
+      var _this10 = this;
+
+      this.$confirm("Are you sure?").then(function () {
+
+        __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/edu-system/remove/' + id).then(function (res) {
+
+          _this10.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Education System Deleted Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+
+          _this10.reload();
+        });
+      });
+    },
+    UpdateEduSys: function UpdateEduSys() {
+      var _this11 = this;
+
+      if (!this.Showcountry_id) {
+        this.errors.push("country is Required in Edit Education System.");
+      }if (!this.ShowAreduSysName) {
+        this.errors.push("Arabic Name is Required in Edit Education System.");
+      }
+      if (!this.ShowEneduSysName) {
+        this.errors.push("English Name is Required in Edit Education System.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-system/edit/' + this.EduSysId, {
+            ar_name: this.ShowAreduSysName,
+            en_name: this.ShowEneduSysName,
+            country_id: this.Showcountry_id
+          }).then(function (res) {
+
+            _this11.$toast.open({
+              type: 'success',
+              position: 'top-right',
+              message: 'Updated Succesfully',
+              duration: 9000,
+              dismissible: true
+            });
+
+            _this11.getCountries();
+          });
+        }
+    },
+    DeleteEduStage: function DeleteEduStage(id) {
+      var _this12 = this;
+
+      this.$confirm("Are you sure?").then(function () {
+
+        __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/edu-stage/remove/' + id).then(function (res) {
+
+          _this12.$toast.open({
+            type: 'success',
+            position: 'top-right',
+            message: 'Education System Deleted Succesfully',
+            duration: 9000,
+            dismissible: true
+          });
+
+          _this12.openModal(_this12.eduSysId);
+        });
+      });
+    },
+    ShowEduStage: function ShowEduStage(id) {
+      var _this13 = this;
+
+      this.eduStageId = id;
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/edu-stage/show/' + id).then(function (res) {
+
+        _this13.ShowEnStageName = res.data.data.en_name;
+        _this13.ShowArStageName = res.data.data.ar_name;
+        _this13.edu_system_id = res.data.data.edu_system_id;
+      });
+    },
+    UpdateEduStage: function UpdateEduStage() {
+      var _this14 = this;
+
+      if (!this.ShowArStageName) {
+        this.errors.push("Arabic Name is Required in Edit Education Stage.");
+      }
+      if (!this.ShowEnStageName) {
+        this.errors.push("English Name is Required in Edit Education Stage.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/edit/' + this.eduStageId, {
+
+            ar_name: this.ShowArStageName,
+            en_name: this.ShowEnStageName,
+            edu_system_id: this.edu_system_id
+
+          }).then(function (res) {
+            _this14.$toast.open({
+              type: 'success',
+              position: 'top-right',
+              message: 'Updated Succesfully',
+              duration: 9000,
+              dismissible: true
+            });
+            _this14.openModal(_this14.edu_system_id);
+          });
+        }
+    },
+    getSemesters: function getSemesters() {
+      var _this15 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].get('/api/v1/get-semesters').then(function (res) {
+        _this15.AllSemesters = res.data;
+      });
+    },
+    AssignSmesters: function AssignSmesters() {
+      var _this16 = this;
+
+      this.semesters.forEach(function (semester) {
+        _this16.semestersid.push(semester.id);
+      });
+
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/semesters', {
+        semesters: this.semestersid,
+        edu_stage_id: this.eduStageId
+      });
+
+      this.getEduStages();
+    },
+    reload: function reload() {
+      this.getCountries();
+    },
+    removeSemestersFromStage: function removeSemestersFromStage(statgeID, SemID) {
+      var _this17 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/semesters/remove', {
+        edu_stage_id: statgeID,
+        semesters: [SemID]
+      }).then(function (res) {
+
+        _this17.getEduStages();
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getCountries();
+    this.getSemesters();
+  }
 });
 
 /***/ }),
@@ -1080,6 +1190,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1090,7 +1208,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       years: [],
       ShowYear: '',
       YearId: '',
-      year: ''
+      year: '',
+      errors: []
 
     };
   },
@@ -1115,19 +1234,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     UpdateYear: function UpdateYear() {
       var _this3 = this;
 
-      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/year/edit/' + this.YearId, {
-        year: this.ShowYear
+      if (!this.ShowYear) {
+        this.errors.push("year is Required in Edit Year.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/year/edit/' + this.YearId, {
+            year: this.ShowYear
 
-      }).then(function (res) {
-        _this3.$toast.open({
-          type: 'success',
-          position: 'top-right',
-          message: 'Updated Succesfully',
-          duration: 9000,
-          dismissible: true
-        });
-        _this3.reload();
-      });
+          }).then(function (res) {
+            _this3.$toast.open({
+              type: 'success',
+              position: 'top-right',
+              message: 'Updated Succesfully',
+              duration: 9000,
+              dismissible: true
+            });
+            _this3.reload();
+          });
+        }
     },
     DeleteYear: function DeleteYear(id) {
       var _this4 = this;
@@ -1150,20 +1277,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     saveYear: function saveYear() {
       var _this5 = this;
 
-      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/year', {
-        year: this.year
+      if (!this.EnSemName) {
+        this.errors.push("year is Required in Add Year.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/year', {
+            year: this.year
 
-      }).then(function (res) {
+          }).then(function (res) {
 
-        _this5.$toast.open({
-          type: 'success',
-          position: 'top-right',
-          message: 'Added Succesfully',
-          duration: 9000,
-          dismissible: true
-        });
-        _this5.reload();
-      });
+            _this5.$toast.open({
+              type: 'success',
+              position: 'top-right',
+              message: 'Added Succesfully',
+              duration: 9000,
+              dismissible: true
+            });
+            _this5.reload();
+          });
+        }
     },
     reload: function reload() {
       window.location.reload();
@@ -19438,7 +19573,7 @@ var render = function() {
                       _vm._m(0),
                       _vm._v(" "),
                       _c("div", { staticClass: "page_tittle" }, [
-                        _c("h3", [_vm._v("Category")]),
+                        _c("h3", [_vm._v("Education System")]),
                         _vm._v(" "),
                         _c("p", { staticClass: "page_subtitle" }, [
                           _vm._v(
@@ -19473,7 +19608,7 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(
-                                "  Category List\n                                        \n                                        "
+                                " Education system\n                                        \n                                        "
                               )
                             ]
                           )
@@ -19485,12 +19620,40 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
+            _vm.errors.length
+              ? _c("div", { staticClass: "container-fluid plr_30" }, [
+                  _c("div", { staticClass: "row justify-content-center" }, [
+                    _c(
+                      "div",
+                      { staticClass: "col-lg-12" },
+                      _vm._l(_vm.errors, function(error) {
+                        return _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                 " +
+                                _vm._s(error) +
+                                "\n                             "
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c("div", { staticClass: "container-fluid plr_30" }, [
               _c("div", { staticClass: "row justify-content-center" }, [
                 _c("div", { staticClass: "col-lg-12" }, [
                   _c("div", { staticClass: "white_box2" }, [
                     _c("div", { staticClass: "white_box_tittle list_header" }, [
-                      _c("h4", [_vm._v("Category List")]),
+                      _c("h4", [_vm._v("Countries and Education systems")]),
                       _vm._v(" "),
                       _c("div", { staticClass: "box_right d-flex lms_block" }, [
                         _c(
@@ -19566,6 +19729,10 @@ var render = function() {
                                     _c("div", { staticClass: "row" }, [
                                       _c("div", { staticClass: "col-md-4" }, [
                                         _c("img", {
+                                          staticStyle: {
+                                            width: "62px",
+                                            height: "64px"
+                                          },
                                           attrs: {
                                             src: countryObj.image,
                                             alt: ""
@@ -19754,7 +19921,12 @@ var render = function() {
                       _c("div", { staticClass: "modal-content" }, [
                         _c(
                           "form",
-                          { attrs: { enctype: "multipart/form-data" } },
+                          {
+                            attrs: {
+                              enctype: "multipart/form-data",
+                              novalidate: "true"
+                            }
+                          },
                           [
                             _vm._m(1),
                             _vm._v(" "),
@@ -19763,7 +19935,7 @@ var render = function() {
                                 _c("div", { staticClass: "col-12" }, [
                                   _c("div", { staticClass: "input_wrap" }, [
                                     _c("label", [
-                                      _vm._v("Arabic Country Name ")
+                                      _vm._v("Arabic Country Name")
                                     ]),
                                     _vm._v(" "),
                                     _c("input", {
@@ -19776,7 +19948,10 @@ var render = function() {
                                         }
                                       ],
                                       staticClass: "input_form form-control",
-                                      attrs: { placeholder: "Country Name" },
+                                      attrs: {
+                                        placeholder: "Country Name",
+                                        required: ""
+                                      },
                                       domProps: { value: _vm.ar_name },
                                       on: {
                                         input: function($event) {
@@ -19789,7 +19964,7 @@ var render = function() {
                                     }),
                                     _vm._v(" "),
                                     _c("label", [
-                                      _vm._v("English Country Name ")
+                                      _vm._v("English Country Name")
                                     ]),
                                     _vm._v(" "),
                                     _c("input", {
@@ -19814,7 +19989,7 @@ var render = function() {
                                       }
                                     }),
                                     _vm._v(" "),
-                                    _c("label", [_vm._v("Key ")]),
+                                    _c("label", [_vm._v("Key")]),
                                     _vm._v(" "),
                                     _c("input", {
                                       directives: [
@@ -20129,7 +20304,7 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "input_form form-control",
-                                    attrs: { placeholder: "Category Name" },
+                                    attrs: { placeholder: "Country Name" },
                                     domProps: { value: _vm.ar_name },
                                     on: {
                                       input: function($event) {
@@ -20153,7 +20328,7 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "input_form form-control",
-                                    attrs: { placeholder: "Category Name" },
+                                    attrs: { placeholder: "Country Name" },
                                     domProps: { value: _vm.en_name },
                                     on: {
                                       input: function($event) {
@@ -21059,6 +21234,34 @@ var render = function() {
   return _c("div", [
     _vm._m(0),
     _vm._v(" "),
+    _vm.errors.length
+      ? _c("div", { staticClass: "container-fluid plr_30" }, [
+          _c("div", { staticClass: "row justify-content-center" }, [
+            _c(
+              "div",
+              { staticClass: "col-lg-12" },
+              _vm._l(_vm.errors, function(error) {
+                return _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                                    " +
+                        _vm._s(error) +
+                        "\n                                "
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("table", { staticClass: "table table-bordered" }, [
       _vm._m(1),
       _vm._v(" "),
@@ -21376,10 +21579,51 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c("div", { staticClass: "add_button ml-10 mb-5" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn_1",
+          attrs: {
+            href: "#",
+            "data-toggle": "modal",
+            "data-target": "#saveYear"
+          }
+        },
+        [_vm._v("Add Year")]
+      ),
+      _vm._v(" "),
+      _vm.errors.length
+        ? _c("div", { staticClass: "container-fluid plr_30" }, [
+            _c("div", { staticClass: "row justify-content-center" }, [
+              _c(
+                "div",
+                { staticClass: "col-lg-12" },
+                _vm._l(_vm.errors, function(error) {
+                  return _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      attrs: { role: "alert" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                                    " +
+                          _vm._s(error) +
+                          "\n                                "
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
+            ])
+          ])
+        : _vm._e()
+    ]),
     _vm._v(" "),
     _c("table", { staticClass: "table table-bordered" }, [
-      _vm._m(1),
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "tbody",
@@ -21446,7 +21690,7 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _c("form", [
+              _c("form", { attrs: { novalidate: "true" } }, [
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { staticClass: "input_wrap" }, [
                     _c("label", [_vm._v("Year")]),
@@ -21461,6 +21705,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "input_form form-control",
+                      attrs: { required: "" },
                       domProps: { value: _vm.ShowYear },
                       on: {
                         input: function($event) {
@@ -21594,25 +21839,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "add_button ml-10 mb-5" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn_1",
-          attrs: {
-            href: "#",
-            "data-toggle": "modal",
-            "data-target": "#saveYear"
-          }
-        },
-        [_vm._v("Add Year")]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

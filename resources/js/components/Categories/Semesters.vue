@@ -4,6 +4,15 @@
                                                 <a  href="#" data-toggle="modal" data-target="#saveSem" class="btn_1">Add Semester</a>
                                               
                                             </div>
+                                             <div  class="container-fluid plr_30" v-if="errors.length">
+                        <div  class="row justify-content-center">
+                             <div  class="col-lg-12">
+                                 <div class="alert alert-danger" role="alert" v-for="error in errors">
+                                    {{error}}
+                                </div>
+                             </div>    
+                        </div>
+                    </div>
    <table class="table table-bordered">
   <thead>
     <tr>
@@ -93,8 +102,8 @@ import '../lesson.css'
                 ShowArSemName:'',
                 semseterId:'',
                 EnSemName:'',
-                ArSemName:''
-
+                ArSemName:'',
+                errors:[]
                
             }
         },
@@ -113,6 +122,16 @@ import '../lesson.css'
               })
             },
             UpdateSemester(){
+                if(!this.ShowArSemName){
+        this.errors.push("Arabic Name is Required in Edit Semester.");
+      }
+      if(!this.ShowEnSemName){
+        this.errors.push("English Name is Required in Edit Semester.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
               axios.post('/api/v1/semester/edit/'+this.semseterId ,{
                 en_name : this.ShowEnSemName,
                 ar_name : this.ShowArSemName
@@ -128,6 +147,7 @@ import '../lesson.css'
            this.reload()
               })
 
+      }
             },
             DeleteSemester(id){
               this.$confirm("Are you sure?").then(() => {
@@ -147,6 +167,16 @@ import '../lesson.css'
 
               )},
               saveSemester(){
+                if(!this.ArSemName){
+        this.errors.push("Arabic Name is Required in Add Semester.");
+      }
+      if(!this.EnSemName){
+        this.errors.push("English Name is Required in Add Semester.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
                 axios.post('/api/v1/create/semester',{
                   en_name:this.EnSemName,
                   ar_name:this.ArSemName
@@ -161,6 +191,7 @@ import '../lesson.css'
           });
              this.reload()
                 })
+      }
               },
 
    reload(){

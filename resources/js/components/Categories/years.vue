@@ -2,7 +2,15 @@
 <div>
     <div  class="add_button ml-10 mb-5">
                                                 <a  href="#" data-toggle="modal" data-target="#saveYear" class="btn_1">Add Year</a>
-                                              
+                                               <div  class="container-fluid plr_30" v-if="errors.length">
+                        <div  class="row justify-content-center">
+                             <div  class="col-lg-12">
+                                 <div class="alert alert-danger" role="alert" v-for="error in errors">
+                                    {{error}}
+                                </div>
+                             </div>    
+                        </div>
+                    </div>
                                             </div>
    <table class="table table-bordered">
   <thead>
@@ -31,13 +39,13 @@
    <div  id="edit_year" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade medium_modal_width cs_modal">
                            <div  role="document" class="modal-dialog modal-dialog-centered">
                               <div  class="modal-content">
-                                 <form  >
+                                 <form    novalidate="true">
                                             <div  class="modal-body">
                                                 <div  class="input_wrap">
                                                  
                                                     
                                                     <label>Year</label> 
-                                                    <input  v-model="ShowYear" class="input_form form-control">
+                                                    <input  v-model="ShowYear" class="input_form form-control"  required>
 
                                                 </div> 
                                                      
@@ -90,13 +98,15 @@ import '../lesson.css'
                 years: [],
                 ShowYear:'',
                 YearId:'',
-                year:''
+                year:'',
+                errors:[]
 
                
             }
         },
         methods:{
             getData(){
+              
                 axios.get('/api/v1/get-years').then(res=>{
                     this.years = res.data
                 })
@@ -111,6 +121,14 @@ import '../lesson.css'
               })
             },
             UpdateYear(){
+
+if(!this.ShowYear){
+        this.errors.push("year is Required in Edit Year.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
               axios.post('/api/v1/year/edit/'+this.YearId ,{
                 year : this.ShowYear,
               
@@ -126,6 +144,7 @@ import '../lesson.css'
            this.reload()
               })
 
+      }
             },
             DeleteYear(id){
               this.$confirm("Are you sure?").then(() => {
@@ -145,6 +164,13 @@ this.reload()
 
               )},
               saveYear(){
+ if(!this.EnSemName){
+        this.errors.push("year is Required in Add Year.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
                 axios.post('/api/v1/create/year',{
                   year:this.year,
                 
@@ -159,6 +185,7 @@ this.reload()
           });
              this.reload()
                 })
+      }
               },
 
    reload(){
