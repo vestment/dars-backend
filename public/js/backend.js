@@ -3405,8 +3405,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-<<<<<<< HEAD
-=======
 //
 //
 //
@@ -3414,7 +3412,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
->>>>>>> 3a80b7c93531902afb4c153f987f2c47c9e1eded
 
 
 
@@ -3602,7 +3599,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         updateCountry: function updateCountry() {
             var _this7 = this;
 
-<<<<<<< HEAD
             var formData = new FormData();
 
             formData.append("image", this.file);
@@ -3610,13 +3606,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             formData.append("en_name", this.en_name);
             formData.append("key", this.key);
             __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edit/country/' + this.countryId, formData).then(function (res) {
-=======
-            __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edit/country/' + this.countryId, {
-                ar_name: this.ar_name,
-                en_name: this.en_name,
-                key: this.key
-            }).then(function (res) {
->>>>>>> 3a80b7c93531902afb4c153f987f2c47c9e1eded
 
                 if (res.data.success == true) {
                     _this7.$toast.open({
@@ -41286,20 +41275,6 @@ var render = function() {
                                 },
                                 [
                                   _c("div", { staticClass: "category_left" }, [
-<<<<<<< HEAD
-                                    _c("h4", [
-                                      _vm._v(_vm._s(countryObj.en_name))
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("p", [
-                                      _vm._v(
-                                        "Total " +
-                                          _vm._s(
-                                            countryObj.edu_systems.length
-                                          ) +
-                                          "  Education Systems"
-                                      )
-=======
                                     _c("div", { staticClass: "row" }, [
                                       _c("div", { staticClass: "col-md-4" }, [
                                         _c("img", {
@@ -41325,7 +41300,6 @@ var render = function() {
                                           )
                                         ])
                                       ])
->>>>>>> 3a80b7c93531902afb4c153f987f2c47c9e1eded
                                     ])
                                   ]),
                                   _vm._v(" "),
