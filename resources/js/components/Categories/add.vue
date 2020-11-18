@@ -257,6 +257,9 @@
                                             <h5 >Add Education Stage</h5>
                                         </div> 
                                         <div  class="modal-body">
+                                            <div class="alert alert-danger" role="alert" v-for="error in err">
+                                                        {{error}}
+                                            </div>
                                             <div  class="form-row">
                                                 <div  class="col-6">
                                                     <div  class="input_wrap">
@@ -285,7 +288,9 @@
                                                         
                                                     </div>
                                                 </div> 
+                                                  
                                                 <div  class="col-6">
+                                                    
                                                     <div  class="input_wrap">
                                                         <label >Arabic Education Stage Name </label> 
                                                         <input v-model="ArStageName" placeholder="Education Stage Name" class="input_form form-control"> 
@@ -425,6 +430,7 @@ data(){
             eduStages:[],
             semesters:[],
               errors: [],
+               err: [],
             AllSemesters:[],
             approvers:[],
             semestersid:[],
@@ -571,6 +577,16 @@ methods:{
 
    },
    saveEduStage(){
+    if(!this.ArStageName){
+        this.err.push("Arabic Name is Required in Add Education Stage.");
+      }
+      if(!this.EnStageName){
+        this.err.push("English Name is Required in Add Education Stage.");
+      }
+    //   if(!this.image){
+    //     this.errors.push("image  is Required in Add Country.");
+    //   }
+      else{
        axios.post('/api/v1/create/edu-stage',{
            ar_name:this.ArStageName,
            en_name:this.EnStageName,
@@ -592,6 +608,7 @@ methods:{
        }).catch(err => {
         console.log(err.response)
       })
+      }
    },
    getEduStages(){
        axios.get('/api/v1/edu-stage/'+this.eduSysId).then( res => {
@@ -772,10 +789,10 @@ this.$confirm("Are you sure?").then(() => {
    UpdateEduStage(){
       
     if(!this.ShowArStageName){
-        this.errors.push("Arabic Name is Required in Edit Education Stage.");
+        this.err.push("Arabic Name is Required in Edit Education Stage.");
       }
       if(!this.ShowEnStageName){
-        this.errors.push("English Name is Required in Edit Education Stage.");
+        this.err.push("English Name is Required in Edit Education Stage.");
       }
     //   if(!this.image){
     //     this.errors.push("image  is Required in Add Country.");
@@ -810,17 +827,22 @@ this.$confirm("Are you sure?").then(() => {
    },
         
    AssignSmesters(){
-        this.semesters.forEach((semester) => {
+       
+       
+        if(!this.semesters){
+        this.err.push("Semester Name is Required in Add semesters.");
+      }
+      else{
+           this.semesters.forEach((semester) => {
                      this.semestersid.push(semester.id);
                 });
-       
        axios.post('/api/v1/edu-stage/semesters',{
            semesters:this.semestersid,
            edu_stage_id:this.eduStageId
        })
 
        this.getEduStages()
-
+      }
    },
 
    reload(){

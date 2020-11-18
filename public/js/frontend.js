@@ -662,6 +662,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -697,6 +702,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       eduStages: [],
       semesters: [],
       errors: [],
+      err: [],
       AllSemesters: [],
       approvers: [],
       semestersid: [],
@@ -840,25 +846,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     saveEduStage: function saveEduStage() {
       var _this5 = this;
 
-      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/edu-stage', {
-        ar_name: this.ArStageName,
-        en_name: this.EnStageName,
-        edu_system_id: this.eduSysId
-      }).then(function (res) {
-        if (res.data.success == true) {
-          _this5.$toast.open({
-            type: 'success',
-            position: 'top-right',
-            message: 'Education System Added Succesfully',
-            duration: 9000,
-            dismissible: true
+      if (!this.ArStageName) {
+        this.err.push("Arabic Name is Required in Add Education Stage.");
+      }
+      if (!this.EnStageName) {
+        this.err.push("English Name is Required in Add Education Stage.");
+      }
+      //   if(!this.image){
+      //     this.errors.push("image  is Required in Add Country.");
+      //   }
+      else {
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/create/edu-stage', {
+            ar_name: this.ArStageName,
+            en_name: this.EnStageName,
+            edu_system_id: this.eduSysId
+          }).then(function (res) {
+            if (res.data.success == true) {
+              _this5.$toast.open({
+                type: 'success',
+                position: 'top-right',
+                message: 'Education System Added Succesfully',
+                duration: 9000,
+                dismissible: true
+              });
+            }
+
+            _this5.openModal(_this5.eduSysId);
+          }).catch(function (err) {
+            console.log(err.response);
           });
         }
-
-        _this5.openModal(_this5.eduSysId);
-      }).catch(function (err) {
-        console.log(err.response);
-      });
     },
     getEduStages: function getEduStages() {
       var _this6 = this;
@@ -1029,10 +1046,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this14 = this;
 
       if (!this.ShowArStageName) {
-        this.errors.push("Arabic Name is Required in Edit Education Stage.");
+        this.err.push("Arabic Name is Required in Edit Education Stage.");
       }
       if (!this.ShowEnStageName) {
-        this.errors.push("English Name is Required in Edit Education Stage.");
+        this.err.push("English Name is Required in Edit Education Stage.");
       }
       //   if(!this.image){
       //     this.errors.push("image  is Required in Add Country.");
@@ -1067,16 +1084,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     AssignSmesters: function AssignSmesters() {
       var _this16 = this;
 
-      this.semesters.forEach(function (semester) {
-        _this16.semestersid.push(semester.id);
-      });
+      if (!this.semesters) {
+        this.err.push("Semester Name is Required in Add semesters.");
+      } else {
+        this.semesters.forEach(function (semester) {
+          _this16.semestersid.push(semester.id);
+        });
+        __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/semesters', {
+          semesters: this.semestersid,
+          edu_stage_id: this.eduStageId
+        });
 
-      __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/edu-stage/semesters', {
-        semesters: this.semestersid,
-        edu_stage_id: this.eduStageId
-      });
-
-      this.getEduStages();
+        this.getEduStages();
+      }
     },
     reload: function reload() {
       this.getCountries();
@@ -20614,258 +20634,300 @@ var render = function() {
                               [
                                 _vm._m(4),
                                 _vm._v(" "),
-                                _c("div", { staticClass: "modal-body" }, [
-                                  _c("div", { staticClass: "form-row" }, [
-                                    _c("div", { staticClass: "col-6" }, [
-                                      _c(
+                                _c(
+                                  "div",
+                                  { staticClass: "modal-body" },
+                                  [
+                                    _vm._l(_vm.err, function(error) {
+                                      return _c(
                                         "div",
-                                        { staticClass: "input_wrap" },
-                                        _vm._l(_vm.eduStages, function(
-                                          eduStage
-                                        ) {
-                                          return _c(
-                                            "div",
-                                            {
-                                              key: eduStage.id,
-                                              staticClass: "card"
-                                            },
-                                            [
-                                              _c(
-                                                "div",
-                                                {
-                                                  staticClass: "card-body row"
-                                                },
-                                                [
-                                                  _c(
-                                                    "p",
-                                                    { staticClass: "col-md-4" },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(eduStage.en_name)
-                                                      )
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "category_option col-md-8"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "a",
-                                                        {
-                                                          staticClass:
-                                                            "white_btn",
-                                                          attrs: {
-                                                            href: "#",
-                                                            "data-toggle":
-                                                              "modal",
-                                                            "data-target":
-                                                              "#edit_edu_stage"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              return _vm.ShowEduStage(
-                                                                eduStage.id
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [_vm._v("Edit")]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c(
-                                                        "a",
-                                                        {
-                                                          staticClass:
-                                                            "white_btn",
-                                                          attrs: {
-                                                            "data-placement":
-                                                              "top",
-                                                            title:
-                                                              "Add Semester",
-                                                            href: "#",
-                                                            "data-toggle":
-                                                              "modal",
-                                                            "data-target":
-                                                              "#add_semester"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              return _vm.openSemModal(
-                                                                eduStage.id
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("i", {
-                                                            staticClass:
-                                                              "fas fa-plus-circle"
-                                                          })
-                                                        ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c(
-                                                        "a",
-                                                        {
-                                                          staticClass:
-                                                            "red_btn",
-                                                          attrs: { href: "#" },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              return _vm.DeleteEduStage(
-                                                                eduStage.id
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("i", {
-                                                            staticClass:
-                                                              "far fa-trash-alt"
-                                                          })
-                                                        ]
-                                                      )
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _vm._l(
-                                                    eduStage.semesters,
-                                                    function(sem) {
-                                                      return _c(
-                                                        "span",
-                                                        {
-                                                          key: sem.id,
-                                                          staticClass:
-                                                            "badge badge-pill badge-danger mt-4 ml-3",
-                                                          staticStyle: {
-                                                            cursor: "pointer"
-                                                          },
-                                                          attrs: {
-                                                            "data-placement":
-                                                              "top",
-                                                            title:
-                                                              "Delete This Semester",
-                                                            href: "#",
-                                                            "data-toggle":
-                                                              "modal",
-                                                            "data-target":
-                                                              "#add_edu_stage"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              return _vm.removeSemestersFromStage(
-                                                                eduStage.id,
-                                                                sem.id
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            _vm._s(sem.en_name)
-                                                          )
-                                                        ]
-                                                      )
-                                                    }
-                                                  )
-                                                ],
-                                                2
-                                              )
-                                            ]
-                                          )
-                                        }),
-                                        0
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "col-6" }, [
-                                      _c("div", { staticClass: "input_wrap" }, [
-                                        _c("label", [
-                                          _vm._v("Arabic Education Stage Name ")
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.ArStageName,
-                                              expression: "ArStageName"
-                                            }
-                                          ],
-                                          staticClass:
-                                            "input_form form-control",
-                                          attrs: {
-                                            placeholder: "Education Stage Name"
-                                          },
-                                          domProps: { value: _vm.ArStageName },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.ArStageName =
-                                                $event.target.value
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("label", [
+                                        {
+                                          staticClass: "alert alert-danger",
+                                          attrs: { role: "alert" }
+                                        },
+                                        [
                                           _vm._v(
-                                            "English Education Stage Name "
+                                            "\n                                                     " +
+                                              _vm._s(error) +
+                                              "\n                                         "
                                           )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.EnStageName,
-                                              expression: "EnStageName"
-                                            }
-                                          ],
-                                          staticClass:
-                                            "input_form form-control",
-                                          attrs: {
-                                            placeholder: "Education Stage Name"
-                                          },
-                                          domProps: { value: _vm.EnStageName },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.EnStageName =
-                                                $event.target.value
-                                            }
-                                          }
-                                        })
+                                        ]
+                                      )
+                                    }),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "form-row" }, [
+                                      _c("div", { staticClass: "col-6" }, [
+                                        _c(
+                                          "div",
+                                          { staticClass: "input_wrap" },
+                                          _vm._l(_vm.eduStages, function(
+                                            eduStage
+                                          ) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                key: eduStage.id,
+                                                staticClass: "card"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "card-body row"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "p",
+                                                      {
+                                                        staticClass: "col-md-4"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            eduStage.en_name
+                                                          )
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "category_option col-md-8"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "a",
+                                                          {
+                                                            staticClass:
+                                                              "white_btn",
+                                                            attrs: {
+                                                              href: "#",
+                                                              "data-toggle":
+                                                                "modal",
+                                                              "data-target":
+                                                                "#edit_edu_stage"
+                                                            },
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                return _vm.ShowEduStage(
+                                                                  eduStage.id
+                                                                )
+                                                              }
+                                                            }
+                                                          },
+                                                          [_vm._v("Edit")]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "a",
+                                                          {
+                                                            staticClass:
+                                                              "white_btn",
+                                                            attrs: {
+                                                              "data-placement":
+                                                                "top",
+                                                              title:
+                                                                "Add Semester",
+                                                              href: "#",
+                                                              "data-toggle":
+                                                                "modal",
+                                                              "data-target":
+                                                                "#add_semester"
+                                                            },
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                return _vm.openSemModal(
+                                                                  eduStage.id
+                                                                )
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("i", {
+                                                              staticClass:
+                                                                "fas fa-plus-circle"
+                                                            })
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "a",
+                                                          {
+                                                            staticClass:
+                                                              "red_btn",
+                                                            attrs: {
+                                                              href: "#"
+                                                            },
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                return _vm.DeleteEduStage(
+                                                                  eduStage.id
+                                                                )
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("i", {
+                                                              staticClass:
+                                                                "far fa-trash-alt"
+                                                            })
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _vm._l(
+                                                      eduStage.semesters,
+                                                      function(sem) {
+                                                        return _c(
+                                                          "span",
+                                                          {
+                                                            key: sem.id,
+                                                            staticClass:
+                                                              "badge badge-pill badge-danger mt-4 ml-3",
+                                                            staticStyle: {
+                                                              cursor: "pointer"
+                                                            },
+                                                            attrs: {
+                                                              "data-placement":
+                                                                "top",
+                                                              title:
+                                                                "Delete This Semester",
+                                                              href: "#",
+                                                              "data-toggle":
+                                                                "modal",
+                                                              "data-target":
+                                                                "#add_edu_stage"
+                                                            },
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                return _vm.removeSemestersFromStage(
+                                                                  eduStage.id,
+                                                                  sem.id
+                                                                )
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              _vm._s(
+                                                                sem.en_name
+                                                              )
+                                                            )
+                                                          ]
+                                                        )
+                                                      }
+                                                    )
+                                                  ],
+                                                  2
+                                                )
+                                              ]
+                                            )
+                                          }),
+                                          0
+                                        )
                                       ]),
                                       _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass: "btn_1 m-0",
-                                          on: { click: _vm.saveEduStage }
-                                        },
-                                        [_vm._v("Add")]
-                                      )
+                                      _c("div", { staticClass: "col-6" }, [
+                                        _c(
+                                          "div",
+                                          { staticClass: "input_wrap" },
+                                          [
+                                            _c("label", [
+                                              _vm._v(
+                                                "Arabic Education Stage Name "
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.ArStageName,
+                                                  expression: "ArStageName"
+                                                }
+                                              ],
+                                              staticClass:
+                                                "input_form form-control",
+                                              attrs: {
+                                                placeholder:
+                                                  "Education Stage Name"
+                                              },
+                                              domProps: {
+                                                value: _vm.ArStageName
+                                              },
+                                              on: {
+                                                input: function($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.ArStageName =
+                                                    $event.target.value
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c("label", [
+                                              _vm._v(
+                                                "English Education Stage Name "
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.EnStageName,
+                                                  expression: "EnStageName"
+                                                }
+                                              ],
+                                              staticClass:
+                                                "input_form form-control",
+                                              attrs: {
+                                                placeholder:
+                                                  "Education Stage Name"
+                                              },
+                                              domProps: {
+                                                value: _vm.EnStageName
+                                              },
+                                              on: {
+                                                input: function($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.EnStageName =
+                                                    $event.target.value
+                                                }
+                                              }
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "btn_1 m-0",
+                                            on: { click: _vm.saveEduStage }
+                                          },
+                                          [_vm._v("Add")]
+                                        )
+                                      ])
                                     ])
-                                  ])
-                                ]),
+                                  ],
+                                  2
+                                ),
                                 _vm._v(" "),
                                 _vm._m(5)
                               ]
