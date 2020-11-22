@@ -78,7 +78,7 @@
             <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::label('content', trans('labels.backend.pages.fields.content'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('content', old('content'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor']) !!}
+                    {!! Form::text('content', old('content'), ['class' => 'form-control', 'placeholder' => '']) !!}
 
                 </div>
             </div>
@@ -88,7 +88,7 @@
             <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::label('content_ar', trans('labels.backend.pages.fields.content_ar'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('content_ar', old('content_ar'), ['class' => 'form-control editor', 'placeholder' => '','id' => 'editor_ar']) !!}
+                    {!! Form::text('content_ar', old('content_ar'), ['class' => 'form-control', 'placeholder' => '']) !!}
 
                 </div>
             </div>

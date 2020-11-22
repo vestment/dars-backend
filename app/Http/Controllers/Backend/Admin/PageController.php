@@ -133,6 +133,7 @@ class PageController extends Controller
      */
     public function store(StorePagesRequest $request)
     {
+        // dd($request);
         ini_set('memory_limit', '-1');
         if (!Gate::allows('page_create')) {
             return abort(401);
@@ -147,9 +148,11 @@ class PageController extends Controller
         }else{
             $page->slug = $request->slug;
         }
-        $message = $request->get('content');
+      
+        $page->content =$request->content;
+        $page->content_ar = $request->content_ar;
         $dom = new \DOMDocument();
-        $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        // $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images = $dom->getElementsByTagName('img');
 
         // foreach <img> in the submitted message
@@ -177,13 +180,13 @@ class PageController extends Controller
                 $img->setAttribute('src', $new_src);
             } // <!--endif
         } // <!-
-        $page->content = $dom->saveHTML();
+       
 
 
 
-        $message = $request->get('content_ar');
+        // $message = $request->get('content_ar');
         $dom = new \DOMDocument();
-        $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        // $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images = $dom->getElementsByTagName('img');
 
         // foreach <img> in the submitted message
@@ -211,7 +214,7 @@ class PageController extends Controller
                 $img->setAttribute('src', $new_src);
             } // <!--endif
         } // <!-
-        $page->content_ar = $dom->saveHTML();
+        
 
 
 
@@ -291,11 +294,12 @@ class PageController extends Controller
         }else{
             $page->slug = $request->slug;
         }
-
-        $message = $request->get('content');
-        libxml_use_internal_errors(true);
+        $page->content = $request->content;
+        $page->content_ar = $request->content_ar;
+        // $message = $request->get('content');
+        // libxml_use_internal_errors(true);
         $dom = new \DOMDocument();
-        $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'));
+        // $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'));
         $images = $dom->getElementsByTagName('img');
         // foreach <img> in the submited message
         foreach ($images as $img) {
@@ -322,14 +326,14 @@ class PageController extends Controller
             $img->setAttribute('src', $new_src);
         } // <!
         //-
-        $page->content = $dom->saveHTML();
+       
 
 
 
-        $message = $request->get('content_ar');
-        libxml_use_internal_errors(true);
+        // $message = $request->get('content_ar');
+        // libxml_use_internal_errors(true);
         $dom = new \DOMDocument();
-        $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'));
+        // $dom->loadHtml(mb_convert_encoding($message,  'HTML-ENTITIES', 'UTF-8'));
         $images = $dom->getElementsByTagName('img');
         // foreach <img> in the submited message
         foreach ($images as $img) {
@@ -356,7 +360,7 @@ class PageController extends Controller
             $img->setAttribute('src', $new_src);
         } // <!
         //-
-        $page->content_ar = $dom->saveHTML();
+      
 
 
 
