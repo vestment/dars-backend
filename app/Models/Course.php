@@ -291,5 +291,6 @@ class Course extends Model
         return $this->belongsToMany(EduStageSemester::class,'course_edu_statge_sems','edu_statge_sem_id','course_id');
     }
 
+    
 
 }

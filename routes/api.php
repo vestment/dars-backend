@@ -28,6 +28,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('all-courses','ApiController@coursesOfStatge');
     // Route::post('my-purchases','ApiController@getMyPurchases');
     // Route::post('teachers','ApiController@getTeachers');
+    Route::post('CategoryCourse','ApiController@getCategoryCourses');
 
 
     Route::get('get-user','ApiController@getMyAccount');

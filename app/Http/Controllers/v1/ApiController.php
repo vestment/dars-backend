@@ -93,7 +93,7 @@ class ApiController extends Controller
        
     }
  
-
+ 
 
     public function __invoke(Request $request)
     {
@@ -141,6 +141,25 @@ class ApiController extends Controller
         return response()->json(['status' => 'success', 'fields' => $fields]);
     }
 
+    public function getCategoryCourses(Request $request)
+    {
+        $statgeSemIds = EduStageSemester::where(['edu_stage_id'=>$request->statge_id,'semester_id'=>$request->semester_id])->value('id');
+
+
+        $coursesIds = CourseEduStatgeSem::where('edu_statge_sem_id',$statgeSemIds)->get()->pluck('course_id');
+        $courses=[];
+        foreach($coursesIds as $id)
+        {
+            $course=  Course::where(['id'=>$id,'category_id'=>$request->category_id])->with('category')->first();
+            array_push($courses, $course);
+        }
+
+     
+ 
+        return response()->json(['status' => 'success', 'categoryCourses' =>  $courses ]);
+
+       
+    }
     public function signup(Request $request)
     {
         $validation = $request->validate([
