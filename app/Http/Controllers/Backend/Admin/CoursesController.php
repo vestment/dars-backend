@@ -321,7 +321,7 @@ public function getSemestersOfES(Request $request){
         $course->optional_courses = $request->opt_courses ? json_encode($request->opt_courses) : null;
         $course->mandatory_courses = $request->mand_courses ? json_encode($request->mand_courses) : null;
         $course->learned = $request->learned ? json_encode($request->learned) : json_encode([]);
-        $course->learned_ar = $request->learn_ar ? json_encode($request->learn_ar) : json_encode([]);
+        $course->learned_ar = $request->learned_ar ? json_encode($request->learned_ar) : json_encode([]);
         $course->date = $request->offlineData ? json_encode($request->offlineData) : null;
         $course->seats = $seats;
         $course->published = 1;

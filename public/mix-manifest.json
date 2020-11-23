@@ -1,6 +1,13 @@
 {
+<<<<<<< HEAD
+    "/js/backend.js": "/js/backend.js?id=f9b12b7b873a5bb34d7e",
+    "/js/frontend.js": "/js/frontend.js?id=062e6219fa8fb0f9cb66",
+    "/js/vendor.js": "/js/vendor.js?id=579ee7a241701a1fe447",
+    "/js/manifest.js": "/js/manifest.js?id=0225916a5d4fbc86a881"
+=======
     "/js/backend.js": "/js/backend.js?id=60a4bd9e79e47461aaee",
     "/js/frontend.js": "/js/frontend.js?id=dcc4f06b2ce1c42cc06d",
     "/js/vendor.js": "/js/vendor.js?id=9ecf4a29d27689bff3af",
     "/js/manifest.js": "/js/manifest.js?id=7c0a19fb1a3afbe0a6cb"
+>>>>>>> 3eeef67a25eb9d6d519208a85df009d57d31a677
 }

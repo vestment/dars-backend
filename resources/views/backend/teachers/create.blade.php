@@ -174,6 +174,40 @@
                                             ->placeholder(__('labels.teacher.ar_description')) }}
                         </div><!--col-->
                     </div>
+                    
+
+
+
+
+
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.teacher.title'))->class('col-md-2 form-control-label')->for('title') }}
+
+                        <div class="col-md-10">
+                            {{ html()->textarea('title')
+                                            ->class('form-control')
+                                            ->placeholder(__('labels.teacher.en_title')) }}
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.teacher.ar_title'))->class('col-md-2 form-control-label')->for('ar_title') }}
+
+                        <div class="col-md-10">
+                            {{ html()->textarea('ar_title')
+                                            ->class('form-control')
+                                            ->placeholder(__('labels.teacher.ar_title')) }}
+                        </div><!--col-->
+                    </div>
+
+
+
+
+
+
+
+
+
+
 
                     <div class="form-group row">
                         {{ html()->label(__('labels.backend.teachers.fields.status'))->class('col-md-2 form-control-label')->for('active') }}

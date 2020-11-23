@@ -9,4 +9,10 @@ class Year extends Model
     //
     protected $fillable = ['year'];
 
+    public function Courses(){
+        
+        return $this->hasMany(Course::class);
+
+    }
+
 }

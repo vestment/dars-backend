@@ -62,7 +62,7 @@ class Test extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id')->withTrashed()->withoutGlobalScope('filter');
+        return $this->belongsTo(Course::class, 'course_id')->with('teachers')->withTrashed()->withoutGlobalScope('filter');
     }
 
     public function lesson()

@@ -76,7 +76,7 @@ return array(
                         ),
                     'categories' =>
                         array(
-                            'title' => 'Categories',
+                            'title' => 'Subjects',
                         ),
                        
                     'teachers' =>
