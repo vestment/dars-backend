@@ -472,7 +472,7 @@ return array(
                             'status' => 'Status',
                             'blog' => 'Blog',
                         ),
-                    'title' => 'Categories',
+                    'title' => 'Subjects',
                     'create' => 'Create Category',
                     'edit' => 'Edit Category',
                     'view' => 'View Categories',
@@ -1940,6 +1940,8 @@ return array(
             'description' => 'Description',
             'en_description' => 'English Description',
             'ar_description' => 'Arabic Description',
+            'title' => 'English Title',
+            'ar_title' => 'Arabic Title',
 
         ),
     'academy' =>

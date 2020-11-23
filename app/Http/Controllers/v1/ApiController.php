@@ -307,33 +307,27 @@ class ApiController extends Controller
     }
 
     public function coursesOfStatge(Request $request){
-       $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
+    $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
+      
        $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
-        // dd(Carbon::today()->subDays(3));
-        // return $statgeSemIds;
+        
         $newCourses = [];
         foreach($statgeSemIds as $key=> $course){
             foreach($statgeSemIds[$key]->courses as $index=> $element){
-                // dd($statgeSemIds[$key]->courses[$index]['created_at']);
-                // return [Carbon::today()->subDays(3),$statgeSemIds[$key]->courses[$index]['created_at']] ;
+                
                 if($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3) )
                 {
                    $newCourses[]=$statgeSemIds[$key]->courses[$index];
                 }
-                //    dd($statgeSemIds[0]->courses[3]->updated_at);
-                // $newCourses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->where($statgeSemIds[$key]->courses[$index]['updated_at'],Carbon::today()->subDays(3))->get();
             }
         }
-
-
-
-    // return $newCourses;
-    //    return   $statgeSemIds;
-    //    $coursesIds = CourseEduStatgeSem::wherein('edu_statge_sem_id',$statgeSemIds->semester_id)->pluck('course_id');
-    //    return $coursesIds;
-    //    $courses = Course::wherein('id',$coursesIds)->with('eduStatgeSem','categories')->get();
-
-       return response()->json(['status' => 'success', 'semesters' => $statgeSemIds , 'newCourses' => $newCourses]);
+        $semesterNames = [];
+        foreach ($semesters as $i=>$sem)
+        {
+         $semesterNames [] = Semester::where('id',$semesters[$i]->semester_id)->first();
+                 
+        }
+       return response()->json(['status' => 'success', 'semesters' => $statgeSemIds , 'newCourses' => $newCourses , 'semesterNames' => $semesterNames]);
 
 
 
@@ -455,7 +449,7 @@ class ApiController extends Controller
         if ($teacher == null) {
             return response()->json(['status' => 'failure', 'result' => null]);
         }
-        $courses = $teacher->courses()->paginate(10);
+        $courses = $teacher->courses()->get();
         return response()->json(['status' => 'success', 'result' => ['teacher' => $teacher, 'courses' => $courses]]);
     }
 
@@ -564,7 +558,7 @@ class ApiController extends Controller
 
         $singleCourse = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
         $Coursesss = $singleCourse->students()->get();
-        
+        $MyCourses = [];
         foreach($Coursesss as $i => $courseee){
         
             $MyCourses [] = $Coursesss[$i]->pivot->course_id;
@@ -575,7 +569,7 @@ class ApiController extends Controller
         $purchased_course = in_array($request->course_id ,$MyCourses );
         $chapters = $course->chapters()->where('course_id', $course->id)->get();
         $chapter_lessons = Lesson::where('course_id', $course->id)->where('published', '=', 1);
-        $progress = $course->progress();
+        // $progress = $course->progress();
         $course_rating = 0;
         $total_ratings = 0;
         $completed_lessons = NULL;
@@ -643,7 +637,7 @@ class ApiController extends Controller
             // 'course_timeline' => $course_timeline,
             'completed_lessons' => $completed_lessons,
             'continue_course' => $continue_course,
-            'progress' =>$progress
+            // 'progress' =>$progress
             // 'chapters' => $chapters
             // 'is_certified' => $course->isUserCertified(),
             // 'course_process' => $course->progress()

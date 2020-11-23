@@ -171,7 +171,7 @@ class User extends Authenticatable implements MessageableInterface
 
     public function invoices()
     {
-        return $this->hasMany(Invoice::class);
+        return $this->hasMany(Invoice::class)->with('order');
     }
 
 

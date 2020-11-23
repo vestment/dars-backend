@@ -287,9 +287,14 @@ class Course extends Model
         return $this->belongsto('App\academy','academy_id','user_id');
     }
 
-    public function eduStatgeSem(){
+    public function eduStatgeSem()
+    {
         return $this->belongsToMany(EduStageSemester::class,'course_edu_statge_sems','edu_statge_sem_id','course_id');
     }
 
+    public function year(){
+
+        return $this->belongsTo(Year::class);
+    }
 
 }

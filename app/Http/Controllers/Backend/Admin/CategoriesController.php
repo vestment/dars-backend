@@ -254,7 +254,7 @@ class CategoriesController extends Controller
             $file = $request->file('category_image');
             $name = time() . $file->getClientOriginalName();
             $file->move( public_path('storage/avatars'), $name);
-            $url =  env('APP_URL').'/storage/avatars/' .$name;
+            $url =  '/storage/avatars/' .$name;
            
             $category->category_image =  $url;
         }
