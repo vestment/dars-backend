@@ -711,7 +711,7 @@ class ApiController extends Controller
             if ($lesson->course && !in_array(auth()->user()->id, $lesson->course->students()->pluck('user_id')->toArray())) {
                 return response()->json(['status' => 'failure', 'message' => 'You need to buy this course first']);
             }
-            $course = Course::withoutGlobalScope('filter')->findOrFail($lesson->course_id);
+            $course = Course::withoutGlobalScope('filter')->with('teachers')->findOrFail($lesson->course_id);
             $courseTimeLine = $lesson->course->courseTimeline()->with(['model'])->orderBy('sequence', 'asc')->get();
             $courseSequence = [];
             foreach ($courseTimeLine as $key => $item) {
@@ -944,7 +944,9 @@ class ApiController extends Controller
     if ($test_result) {
         if ($test_result->attempts == 1) {
             $prevTestQuestions = $test_result->answers()->pluck('question_id');
-            $questionsToAnswer = $test->questions()->with('options')->whereNotIn('id', $prevTestQuestions)->inRandomOrder()->limit($test->no_questions);
+            // $questionsToAnswer = $test->questions()->with('options')->whereNotIn('id', $prevTestQuestions)->inRandomOrder()->limit($test->no_questions);
+    $questionsToAnswer = $test->questions()->with('options')->inRandomOrder()->take($test->no_questions);
+
         } elseif ($test_result->attempts == 2) {
             $questionsToAnswer = $test->questions()->with('options')->inRandomOrder();
         }
@@ -953,7 +955,7 @@ class ApiController extends Controller
         $test->questions = $questionsToAnswer;
         $result = TestsResultsAnswer::where('tests_result_id', '=', $test_result['id'])->get()->toArray();
         $is_test_given = true;
-        $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result, 'attempts' => $test_result['attempts']];
+        $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result, 'attempts' => 0];
     }
     $test['totalScore'] = $questionsToAnswer->sum('score');
     $questionsToAnswer = $questionsToAnswer->get();
@@ -1244,41 +1246,7 @@ class ApiController extends Controller
      * @return [json] Return cart value
      */
 
-    public function addToCart(Request $request)
-    {
-        $product = "";
-        $teachers = "";
-        $type = "";
-        if ($request->type == 'course') {
-            $product = Course::findOrFail($request->item_id);
-            $teachers = $product->teachers->pluck('id', 'name');
-            $type = 'course';
-
-        } elseif ($request->type == 'bundle') {
-            $product = Bundle::findOrFail($request->item_id);
-            $teachers = $product->user->name;
-            $type = 'bundle';
-        }
-
-        $cart_items = Cart::session(json_decode($request->user_id))->getContent()->keys()->toArray();
-        if (!in_array($product->id, $cart_items)) {
-            Cart::session(json_decode($request->user_id))
-                ->add($product->id, $product->title, $product->price, 1,
-                    [
-                        'user_id' => json_decode($request->user_id),
-                        'description' => $product->description,
-                        'image' => $product->course_image,
-                        'product_id' => $product->id,
-                        'type' => $type,
-                        'teachers' => $teachers
-                    ]);
-
-                    dd( $cart_items);
-        }
-        $this->applyTax('total');
-
-        return response()->json(['status' => 'success']);
-    }
+    
 
 
     /**
@@ -1352,7 +1320,7 @@ class ApiController extends Controller
         $course_ids = [];
         $bundle_ids = [];
         $couponArray = [];
-     
+    //  return session('cart');
         if (count(Cart::session(json_decode($request->user_id))->getContent()) > 0) {
            
             foreach (Cart::session(json_decode($request->user_id))->getContent() as $item) {
@@ -1399,7 +1367,40 @@ class ApiController extends Controller
         }
         return response()->json(['status' => 'failure']);
     }
+    public function addToCart(Request $request)
+    {
+        $product = "";
+        $teachers = "";
+        $type = "";
+        if ($request->has('item_id')) {
+            $product = Course::withoutGlobalScope('filter')->findOrFail($request->get('item_id'));
+            $teachers = $product->teachers->pluck('id', 'name');
+            $type = 'course';
 
+        } elseif ($request->has('bundle_id')) {
+            $product = Bundle::findOrFail($request->get('bundle_id'));
+            $teachers = $product->user->name;
+            $type = 'bundle';
+        }
+        // return auth()->user()->id;
+        $cart_items = Cart::session(auth()->user()->id)->getContent()->keys()->toArray();
+        if (!in_array($product->id, $cart_items)) {
+           
+            Cart::session(auth()->user()->id)
+                ->add($product->id, $product->title, $product->price, 1,
+                    [
+                        'user_id' => auth()->user()->id,
+                        'description' => $product->description,
+                        'image' => $product->course_image,
+                        'type' => $type,
+                        'teachers' => $teachers,
+                    ]);
+                    // return  $cart_items;
+        }
+        return response()->json(['status' => 'success']);
+        
+        // return redirect()->back()->with(['success' => trans('labels.frontend.cart.product_added')]);
+    }
     /**
      * Clear Cart
      *
