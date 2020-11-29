@@ -15,8 +15,12 @@ use Illuminate\Http\Request;
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-
-
+Route::group([],function (){
+    Route::post('sociallogin/{provider}', 'Frontend\Auth\SocialAccountController@SocialSignup');
+    Route::get('auth/{provider}/callback', 'Frontend\Auth\SocialAccountController@index')->where('provider', '.*');
+    Route::get('/redirect/{provider}', 'Frontend\Auth\SocialAccountController@socialLogin');
+    Route::post('/{provider}/callback', 'Frontend\Auth\SocialAccountController@handleProviderCallback');
+});
 
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::get('sponsors','ApiController@getSponsors');
@@ -31,7 +35,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     // Route::post('my-purchases','ApiController@getMyPurchases');
     // Route::post('teachers','ApiController@getTeachers');
     Route::post('CategoryCourse','ApiController@getCategoryCourses');
-
+    Route::post('get-page','ApiController@getPage');
 
     Route::get('get-user','ApiController@getMyAccount');
     Route::post('login','ApiController@login');
@@ -56,6 +60,9 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     });
 
     Route::group(['middleware' => 'auth:api'],function (){
+
+        // Route::post('continue-login' , '')
+
         Route::get('get-user','ApiController@getMyAccount');
 
         Route::post('update-password','ApiController@updatePassword');

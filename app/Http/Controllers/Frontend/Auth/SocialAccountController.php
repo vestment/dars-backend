@@ -36,12 +36,21 @@ class SocialAccountController extends Controller
     *
     * @return response
     */
+    public function SocialSignup($provider)
+    {
+        // Socialite will pick response data automatic
+        $user = Socialite::driver($provider)->stateless()->user();
+
+        return response()->json($user);
+    }
    public function socialLogin($provider)
    {
        // If the provider is not an acceptable third party than kick back
         if (! in_array($provider, $this->socialiteHelper->getAcceptedProviders())) {
-            return redirect()->route(home_route())->withFlashDanger(__('auth.socialite.unacceptable', ['provider' => $provider]));
+            // return redirect()->route(home_route())->withFlashDanger(__('auth.socialite.unacceptable', ['provider' => $provider]));
+            return 1;
         }
+       
        return Socialite::driver($provider)->redirect();
    }
    /**
@@ -81,9 +90,16 @@ class SocialAccountController extends Controller
         event(new UserLoggedIn(auth()->user()));
 
         $user = User::findorFail(auth()->user()->id);
-       $token = $user->createToken('Personal Access Token')->accessToken;
+        $token = $user->createToken('Personal Access Token')->accessToken;
+        return response()->json(['status' => 'success', 'socialToken' => $token]);
+
+         
+
        // Return to the intended url or default to the class property
-       return redirect()->intended(route(home_route()))->with(['socialToken'=>$token]);
+    //    return redirect()->intended(route(home_route()))->with(['socialToken'=>$token]);
+
+
+
    }
    /**
      * @param $provider

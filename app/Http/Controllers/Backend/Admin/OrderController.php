@@ -112,6 +112,7 @@ class OrderController extends Controller
                 return $q->user->email;
             })
             ->addColumn('date', function ($q) {
+               
                 return $q->updated_at->diffforhumans();
             })
             ->addColumn('payment', function ($q) {

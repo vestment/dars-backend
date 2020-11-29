@@ -49,6 +49,8 @@ use App\Models\EduStageSemester;
 use App\Models\CourseEduStatgeSem;
 use App\Models\studentData;
 use App\Models\Year;
+use App\Models\StudentCart;
+
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
@@ -150,12 +152,11 @@ class ApiController extends Controller
         $courses=[];
         foreach($coursesIds as $id)
         {
-            $course=  Course::where(['id'=>$id,'category_id'=>$request->category_id])->with('category')->first();
+            $course=  Course::where(['id'=>$id,'category_id'=>$request->category_id])->with('category','teachers','year')->first();
+            if($course){
             array_push($courses, $course);
+            }
         }
-
-     
- 
         return response()->json(['status' => 'success', 'categoryCourses' =>  $courses ]);
 
        
@@ -329,7 +330,7 @@ class ApiController extends Controller
     $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
       
        $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
-        
+        return  $statgeSemIds ;
         $newCourses = [];
         foreach($statgeSemIds as $key=> $course){
             foreach($statgeSemIds[$key]->courses as $index=> $element){
@@ -1317,17 +1318,7 @@ class ApiController extends Controller
      *
      * @return [json] Remove from cart
      */
-    public function removeFromCart(Request $request)
-    {
-
-        foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
-            if (($cartItem->attributes->type == $request->type) && ($cartItem->attributes->product_id == $request->item_id)) {
-                Cart::session(auth()->user()->id)->remove($request->item_id);
-            }
-        }
-        return response()->json(['status' => 'success']);
-    }
-
+   
 
     /**
      * Show Cart
@@ -1336,90 +1327,71 @@ class ApiController extends Controller
      */
     public function getCartData(Request $request)
     {
-        $course_ids = [];
-        $bundle_ids = [];
-        $couponArray = [];
-    //  return session('cart');
-        if (count(Cart::session(json_decode($request->user_id))->getContent()) > 0) {
-           
-            foreach (Cart::session(json_decode($request->user_id))->getContent() as $item) {
-                if ($item->attributes->type == 'bundle') {
-                    $bundle_ids[] = $item->id;
-                } else {
-                    $course_ids[] = $item->id;
-                }
+        $cartData = StudentCart::where('user_id',$request->user_id)->get();
+     
+        $courses = [];
+        $bundles = [];
+        foreach($cartData as $i=>$cart){
+            if($cartData[$i]->item_type == 'course')
+            {
+               
+                $courses [] = Course::where('id',$cartData[$i]->item_id)->with('teachers')->first();
             }
-            $courses = Course::find($course_ids);
-            $bundles = Bundle::find($bundle_ids);
-            $bundlesData = Bundle::find($bundle_ids);
-
-            $coursesData = $bundlesData->merge($courses);
-            $total = $coursesData->sum('price');
-            $subtotal = $total;
-
-            if (count(Cart::getConditionsByType('coupon')) > 0) {
-                $coupon = Cart::getConditionsByType('coupon')->first();
-                $couponData = Coupon::where('code', '=', $coupon->getName())->first();
-                $couponArray = [
-                    'name' => $couponData->name,
-                    'code' => $couponData->code,
-                    'type' => ($couponData->type == 1) ? trans('labels.backend.coupons.discount_rate') : trans('labels.backend.coupons.flat_rate'),
-                    'value' => $coupon->getValue(),
-                    'amount' => number_format($coupon->getCalculatedValue($total), 2)
-                ];
+            elseif($cartData[$i]->item_type == 'bundle')
+            {
+                $bundles = Bundles::where('id',$cartData[$i]->item_id)->first();
             }
-
-            $taxes = Tax::where('status', '=', 1)->get();
-            $taxData = [];
-            if ($taxes != null) {
-                foreach ($taxes as $tax) {
-                    $total = Cart::session(json_decode($request->user_id))->getTotal();
-                    $amount = number_format($total * $tax->rate / 100, 2);
-                    $taxData[] = ['name' => '+' . $tax->rate . '% ' . $tax->name, 'amount' => $amount];
-                }
-            }
-
-            $total = Cart::session(json_decode($request->user_id))->getTotal();
-
-
-            return response()->json(['status' => 'success', 'result' => ['courses' => $courses, 'bundles' => $bundles, 'coupon' => $couponArray, 'tax' => $taxData, 'subtotal' => $subtotal, 'total' => $total]]);
         }
-        return response()->json(['status' => 'failure']);
+
+        return response()->json(['courses' => $courses , 'bundles' => $bundles]);
+
+
     }
     public function addToCart(Request $request)
     {
+       
         $product = "";
         $teachers = "";
         $type = "";
-        if ($request->has('item_id')) {
+        if ($request->type == 'course') {
             $product = Course::withoutGlobalScope('filter')->findOrFail($request->get('item_id'));
             $teachers = $product->teachers->pluck('id', 'name');
             $type = 'course';
 
-        } elseif ($request->has('bundle_id')) {
-            $product = Bundle::findOrFail($request->get('bundle_id'));
+        } elseif ($request->type == 'bundle') {
+            $product = Bundle::findOrFail($request->get('item_id'));
             $teachers = $product->user->name;
             $type = 'bundle';
         }
-        // return auth()->user()->id;
-        $cart_items = Cart::session(auth()->user()->id)->getContent()->keys()->toArray();
-        if (!in_array($product->id, $cart_items)) {
-           
-            Cart::session(auth()->user()->id)
-                ->add($product->id, $product->title, $product->price, 1,
-                    [
-                        'user_id' => auth()->user()->id,
-                        'description' => $product->description,
-                        'image' => $product->course_image,
-                        'type' => $type,
-                        'teachers' => $teachers,
-                    ]);
-                    // return  $cart_items;
-        }
+
+        $cart = new StudentCart();
+        $cart->user_id = $request->user_id;
+        $cart->item_id = $request->item_id;
+        $cart->item_type = $request->type;
+
+        $cart->save();
+
         return response()->json(['status' => 'success']);
+
+        }
+        public function removeFromCart(Request $request)
+        {
+            $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->item_type)->where('user_id',$request->user_id);
+        //    return $cart;
+            $cart->delete();
+    
+            // foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
+            //     if (($cartItem->attributes->type == $request->type) && ($cartItem->attributes->product_id == $request->item_id)) {
+            //         Cart::session(auth()->user()->id)->remove($request->item_id);
+            //     }
+            // }
+            return response()->json(['status' => 'success']);
+        }
+    
+        // return session('cart');
         
         // return redirect()->back()->with(['success' => trans('labels.frontend.cart.product_added')]);
-    }
+    
     /**
      * Clear Cart
      *
@@ -1432,11 +1404,75 @@ class ApiController extends Controller
     }
 
 
+
     /**
      * Payment Status
      *
      * @return [json] Success Message
      */
+    public function checkout(Request $request)
+    {
+        $product = "";
+        $teachers = "";
+        $type = "";
+        $bundle_ids = [];
+        $course_ids = [];
+        if ($request->type == 'course') {
+            $product = Course::withoutGlobalScope('filter')->findOrFail($request->get('item_id'));
+            $teachers = $product->teachers->pluck('id', 'name');
+            $type = 'course';
+
+        } elseif ($request->type == 'bundle') {
+            $product = Bundle::findOrFail($request->get('item_id'));
+            $teachers = $product->user->name;
+            $type = 'bundle';
+        }
+        // if ($request->has('course_id')) {
+        //     $product = Course::withoutGlobalScope('filter')->findOrFail($request->get('course_id'));
+        //     $teachers = $product->teachers->pluck('id', 'name');
+        //     $type = 'course';
+
+        // } elseif ($request->has('bundle_id')) {
+        //     $product = Bundle::findOrFail($request->get('bundle_id'));
+        //     $teachers = $product->user->name;
+        //     $type = 'bundle';
+        // }
+        $cart_items = StudentCart::where('user_id',$request->user_id)->get();
+
+        // $cart_items = Cart::session(auth()->user()->id)->getContent()->keys()->toArray();
+        // if (!in_array($product->id, $cart_items)) {
+
+        //     Cart::session(auth()->user()->id)
+        //         ->add($product->id, $product->title, $product->price, 1,
+        //             [
+        //                 'user_id' => auth()->user()->id,
+        //                 'description' => $product->description,
+        //                 'image' => $product->course_image,
+        //                 'type' => $type,
+        //                 'teachers' => $teachers
+        //             ]);
+        // }
+        foreach ($cart_items as $item) {
+            if ($item->item_type == 'bundle') {
+                $bundle_ids[] = $item->id;
+            } else {
+                $course_ids[] = $item->id;
+
+            }
+        }
+        $courses = new Collection(Course::withoutGlobalScope('filter')->find($course_ids));
+        $bundles = Bundle::find($bundle_ids);
+        $courses = $bundles->merge($courses);
+
+        $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
+
+
+        //Apply Tax
+        $taxData = $this->applyTax('total');
+
+
+        return view('frontend.cart.checkout', compact('courses', 'total', 'taxData'));
+    }
     public function paymentStatus(Request $request)
     {
         $counter = 0;
