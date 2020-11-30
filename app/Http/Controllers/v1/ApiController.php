@@ -327,10 +327,11 @@ class ApiController extends Controller
     }
 
     public function coursesOfStatge(Request $request){
+
     $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
       
        $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
-        return  $statgeSemIds ;
+       
         $newCourses = [];
         foreach($statgeSemIds as $key=> $course){
             foreach($statgeSemIds[$key]->courses as $index=> $element){
