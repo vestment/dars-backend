@@ -18,11 +18,14 @@ use Illuminate\Http\Request;
 Route::group([],function (){
     Route::post('sociallogin/{provider}', 'Frontend\Auth\SocialAccountController@SocialSignup');
     Route::get('auth/{provider}/callback', 'Frontend\Auth\SocialAccountController@index')->where('provider', '.*');
+    Route::get('get-user','ApiController@getMyAccount');
+
    
 });
 
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::get('sponsors','ApiController@getSponsors');
+    Route::post('send-msg','ApiController@vectorylink');
     Route::get('get-countries', 'ApiController@getCountries');
     Route::get('edu-system/{country}', 'ApiController@getEduSystems');
     Route::get('edu-stage/{eduSystem}', 'ApiController@getEduStages');
@@ -37,7 +40,6 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('CategoryCourse','ApiController@getCategoryCourses');
     Route::post('get-page','ApiController@getPage');
 
-    Route::get('get-user','ApiController@getMyAccount');
     Route::post('login','ApiController@login');
     Route::post('social-login','ApiController@SocialLogin');
 
