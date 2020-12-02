@@ -10,6 +10,7 @@ $factory->define(App\Models\TeacherProfile::class, function (Faker $faker) {
         'twitter_link' => $faker->url,
         'linkedin_link' => $faker->url,
         'payment_method' => 'paypal',
-        'payment_details' => $paymentDetails
+        'payment_details' => $paymentDetails , 
+        'title' => 'title' , 
     ];
 });

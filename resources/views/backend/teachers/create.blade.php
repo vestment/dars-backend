@@ -68,7 +68,7 @@
                         <div class="col-md-10">
                             {{ html()->text('phone')
                                     ->class('form-control')
-                                    ->placeholder(__('labels.teacher.bank_details.phone')) }}
+                                    ->placeholder(__('labels.teacher.bank_details.phone'))->required() }}
                         </div><!--col-->
                     </div>
                    
@@ -99,14 +99,14 @@
                         {{ html()->label(__('labels.backend.teachers.fields.image'))->class('col-md-2 form-control-label')->for('image') }}
 
                         <div class="col-md-10">
-                            {!! Form::file('image', ['class' => 'form-control d-inline-block', 'placeholder' => '']) !!}
+                            {!! Form::file('image', ['class' => 'form-control d-inline-block', 'placeholder' => '' , 'required']) !!}
                         </div><!--col-->
                     </div>
                     <div class="form-group row">
                         {{ html()->label(__('labels.backend.general_settings.user_registration_settings.fields.gender'))->class('col-md-2 form-control-label')->for('gender') }}
                         <div class="col-md-10">
                             <label class="radio-inline mr-3 mb-0">
-                                <input type="radio" name="gender" {{old('gender') == 'male'? 'checked':''}}
+                                <input type="radio" name="gender" {{old('gender') == 'male'|| (old('gender') != 'female' && old('gender') != 'other' ) ? 'checked':''}}
                                 value="male"> {{__('validation.attributes.frontend.male')}}
                             </label>
                             <label class="radio-inline mr-3 mb-0">
@@ -162,7 +162,7 @@
                         <div class="col-md-10">
                             {{ html()->textarea('description')
                                             ->class('form-control')
-                                            ->placeholder(__('labels.teacher.en_description')) }}
+                                            ->placeholder(__('labels.teacher.en_description'))->required() }}
                         </div><!--col-->
                     </div>
                     <div class="form-group row">
@@ -171,7 +171,7 @@
                         <div class="col-md-10">
                             {{ html()->textarea('ar_description')
                                             ->class('form-control')
-                                            ->placeholder(__('labels.teacher.ar_description')) }}
+                                            ->placeholder(__('labels.teacher.ar_description'))->required() }}
                         </div><!--col-->
                     </div>
                     
@@ -186,7 +186,7 @@
                         <div class="col-md-10">
                             {{ html()->textarea('title')
                                             ->class('form-control')
-                                            ->placeholder(__('labels.teacher.en_title')) }}
+                                            ->placeholder(__('labels.teacher.en_title'))->required() }}
                         </div><!--col-->
                     </div>
                     <div class="form-group row">
@@ -195,7 +195,7 @@
                         <div class="col-md-10">
                             {{ html()->textarea('ar_title')
                                             ->class('form-control')
-                                            ->placeholder(__('labels.teacher.ar_title')) }}
+                                            ->placeholder(__('labels.teacher.ar_title'))->required() }}
                         </div><!--col-->
                     </div>
 

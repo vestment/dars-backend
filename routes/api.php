@@ -112,6 +112,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::post('testimonials','ApiController@getTestimonials');
        
         Route::post('get-faqs','ApiController@getFaqs');
+        Route::post('fawry-payment' , 'ApiController@fawryPayment') ; 
         Route::post('why-us','ApiController@getWhyUs');
         Route::post('contact-us','ApiController@saveContactUs');
         Route::post('submit-review','ApiController@submitReview');
