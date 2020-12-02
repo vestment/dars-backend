@@ -51,6 +51,7 @@ use App\Models\studentData;
 use App\Models\Year;
 use App\Models\StudentCart;
 use  App\Models\Auth\SocialAccount;
+use App\Models\SMS;
 
 
 use App\Note;
@@ -200,6 +201,7 @@ class ApiController extends Controller
                 'provider' => $request->provider,
                 'provider_id' => $request->provider_id,
                 'avater' => $request->avater,
+                'token' => $request->token
                 
             ]);
             $socialAccount->save();
@@ -220,12 +222,25 @@ class ApiController extends Controller
             'userData' =>$userData,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
+
         ]);
      
         
         
 
     }
+    public function vectorylink(){
+
+        
+        $f =  SMS::send("welcome To Dars","01025130834"," I Friends","9u89oJ9a0u","I Friends");
+       
+        return response()->json(['status' => 'success']);
+        // return redirect()->back()->with('success', $msg);
+
+
+        
+
+     }
     public function signup(Request $request)
     {
         $validation = $request->validate([
