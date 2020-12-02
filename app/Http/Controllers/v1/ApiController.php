@@ -50,6 +50,8 @@ use App\Models\CourseEduStatgeSem;
 use App\Models\studentData;
 use App\Models\Year;
 use App\Models\StudentCart;
+use  App\Models\Auth\SocialAccount;
+
 
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
@@ -161,6 +163,69 @@ class ApiController extends Controller
 
        
     }
+    public function SocialLogin(Request $request){
+
+        if($request->email){
+        $user = User::findorFail($request->email);
+        }
+        if($request->phone){
+            $user = User::findorFail($request->phone);
+        }
+        if($request->provider_id){
+
+            $user = SocialAccount::findorFail($request->provider_id);
+        }
+
+        if(!$user){
+            
+            $user = new User([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+               
+            ]);
+            $user->save();
+            $userData = new studentData([
+                'user_id' => $user->id,
+                'country_id' => $request->country_id,
+                'edu_system_id' => $request->eduSystemId,
+                'edu_stage_id' => $request->eduStatgeId,
+                
+            ]);
+            $userData->save();
+
+            $socialAccount = new SocialAccount([
+                'user_id' => $user->id,
+                'provider' => $request->provider,
+                'provider_id' => $request->provider_id,
+                'avater' => $request->avater,
+                
+            ]);
+            $socialAccount->save();
+
+
+
+
+        }
+
+
+        $userData  = studentData::where('user_id',$user->id)->first();
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+        
+        $token->save();
+        return response()->json([
+            'user' => $user,
+            'userData' =>$userData,
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+        ]);
+     
+        
+        
+
+    }
     public function signup(Request $request)
     {
         $validation = $request->validate([
@@ -256,6 +321,8 @@ class ApiController extends Controller
             )->toDateTimeString()
         ]);
     }
+
+    
 
     /**
      * Logout user (Revoke the token)
@@ -449,7 +516,36 @@ class ApiController extends Controller
         $profile = $teacher->teacherProfile->first();
         return response()->json(['status' => 'success', 'result' => ['teacher' => $teacher, 'courses' => $courses, 'bundles' => $bundles, 'profile' => $profile]]);
     }
-
+    public function StatgeCourses($statge_id){
+          
+        $semesters = EduStageSemester::where('edu_stage_id',$statge_id)->get();
+    
+          
+           $statgeSemIds = EduStageSemester::where('edu_stage_id',$statge_id)->get();
+           
+         
+            
+            $newCourses = [];
+            foreach($statgeSemIds as $key=> $course){
+                foreach($statgeSemIds[$key]->courses as $index=> $element){
+                    
+                    if($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3) )
+                    {
+                       $newCourses[]=$statgeSemIds[$key]->courses[$index];
+                    }
+                }
+            }
+            $semesterNames = [];
+            foreach ($semesters as $i=>$sem)
+            {
+             $semesterNames [] = Semester::where('id',$semesters[$i]->semester_id)->first();
+                     
+            }
+           return response()->json(['status' => 'success', 'semesters' => $statgeSemIds , 'newCourses' => $newCourses , 'semesterNames' => $semesterNames]);
+    
+    
+    
+        }
     public function getSingleUser(Request $request)
     {
         $user = User::find($request->user_id);
@@ -567,7 +663,6 @@ class ApiController extends Controller
     {
        
    
-       
         $continue_course = NULL;
         $course_timeline = NULL;
         $course = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
@@ -577,16 +672,22 @@ class ApiController extends Controller
         $course->learned = json_decode($course->learned) ;
         $course->learned_ar = json_decode($course->learned_ar) ;
 
-        $singleCourse = Course::withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
+        $singleCourse = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
         $Coursesss = $singleCourse->students()->get();
+       
         $MyCourses = [];
+       
         foreach($Coursesss as $i => $courseee){
-        
+        if($Coursesss[$i]->pivot->user_id == auth('api')->user()->id){
+           
             $MyCourses [] = $Coursesss[$i]->pivot->course_id;
+        }
         // if(in_array(auth('api')->user()->id , $myCourses[$i]->pivot->user_id))
         
         }
         // $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+        
+      
         $purchased_course = in_array($request->course_id ,$MyCourses );
         $chapters = $course->chapters()->where('course_id', $course->id)->get();
         $chapter_lessons = Lesson::where('course_id', $course->id)->where('published', '=', 1);
@@ -595,7 +696,7 @@ class ApiController extends Controller
         $total_ratings = 0;
         $completed_lessons = NULL;
         $is_reviewed = false;
-        if (auth()->check() && $course->reviews()->where('user_id', '=', auth()->user()->id)->first()) {
+        if (auth('api')->check() && $course->reviews()->where('user_id', '=', auth('api')->user()->id)->first()) {
             $is_reviewed = true;
         }
         if ($course->reviews->count() > 0) {
@@ -1365,15 +1466,22 @@ class ApiController extends Controller
             $type = 'bundle';
         }
 
-        $cart = new StudentCart();
-        $cart->user_id = $request->user_id;
-        $cart->item_id = $request->item_id;
-        $cart->item_type = $request->type;
+        $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->type)->where('user_id',$request->user_id)->first();
+        if(!$cart){
 
-        $cart->save();
+            $cart = new StudentCart();
+            $cart->user_id = $request->user_id;
+            $cart->item_id = $request->item_id;
+            $cart->item_type = $request->type;
+    
+            $cart->save();
+            return response()->json(['status' => 'success']);
 
-        return response()->json(['status' => 'success']);
+        }else{
+            return response()->json(['status' => 'Already Added To Your Cart !']);
+        }
 
+       
         }
         public function removeFromCart(Request $request)
         {

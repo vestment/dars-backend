@@ -18,8 +18,7 @@ use Illuminate\Http\Request;
 Route::group([],function (){
     Route::post('sociallogin/{provider}', 'Frontend\Auth\SocialAccountController@SocialSignup');
     Route::get('auth/{provider}/callback', 'Frontend\Auth\SocialAccountController@index')->where('provider', '.*');
-    Route::get('/redirect/{provider}', 'Frontend\Auth\SocialAccountController@socialLogin');
-    Route::post('/{provider}/callback', 'Frontend\Auth\SocialAccountController@handleProviderCallback');
+   
 });
 
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
@@ -32,6 +31,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('teacher-bundles','ApiController@getTeacherBundles');
     Route::post('single-teacher','ApiController@getSingleTeacher');
     Route::post('all-courses','ApiController@coursesOfStatge');
+    Route::get('allcourses/{statge_id}','ApiController@StatgeCourses');
     // Route::post('my-purchases','ApiController@getMyPurchases');
     // Route::post('teachers','ApiController@getTeachers');
     Route::post('CategoryCourse','ApiController@getCategoryCourses');
@@ -39,10 +39,13 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
 
     Route::get('get-user','ApiController@getMyAccount');
     Route::post('login','ApiController@login');
+    Route::post('social-login','ApiController@SocialLogin');
+
     Route::post('sign-up','ApiController@signup');
     Route::get('login/en', 'ApiController@index')->name('login.index');
     Route::get('signup', 'ApiController@registerIndex')->name('register.index');
     Route::get('login/ar', 'ApiController@indexrtl')->name('loginrtl.indexrtl');
+    
     Route::group([
         'prefix' => 'auth'
     ], function () {
