@@ -680,14 +680,14 @@ class ApiController extends Controller
    
         $continue_course = NULL;
         $course_timeline = NULL;
-        $course = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
+        $course = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters','year')->with('publishedLessons')->first();
         if ($course == null) {
             return response()->json(['status' => 'failure', 'result' => NULL]);
         }
         $course->learned = json_decode($course->learned) ;
         $course->learned_ar = json_decode($course->learned_ar) ;
 
-        $singleCourse = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons')->first();
+        $singleCourse = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters')->with('publishedLessons','tests')->first();
         $Coursesss = $singleCourse->students()->get();
        
         $MyCourses = [];
