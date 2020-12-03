@@ -149,10 +149,13 @@ class ApiController extends Controller
         $code =  $request->code ;
         $user = User::findOrFail($user_id) ; 
         $status = "wrong code" ; 
+        if($user->phone_confirmed){
+            return response()->json(['status' => 'already confirmed']);
+        }
         if($user->phone_confirmation_code == $code){
             $user->phone_confirmed = true ; 
             $user->save() ; 
-            $status = 'user phone confirmed' ; 
+            $status = 'user phone ' . $user->phone . ' has been confirmed' ; 
         }
         return response()->json(['status' => $status]);
     }
@@ -171,16 +174,42 @@ class ApiController extends Controller
          
         // dd($value) ; 
         
-        $request->session()->put('last_send_time', Carbon::now());
         $user = User::findOrFail($user_id) ; 
         $code =  $user->phone_confirmation_code ;
-
+        
         $status = "" ; 
         if($user->phone_confirmed){
             $status = 'user phone ' . $user->phone  . ' already confirmed' ; 
         }
         else{
-            $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+
+            if ($request->session()->has('send_attempts')) {
+                $attempts = $request->session()->get('send_attempts') ; 
+                if($attempts>=3){
+                    $value = $request->session()->get('last_send_time');
+                    if(Carbon::parse() > ($value->addHour(1)) ){
+                        $request->session()->put('send_attempts', 1 );
+                        $request->session()->put('last_send_time', Carbon::now());
+                        $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+                        return response()->json(['status' => $status]);
+                    }
+                    else{
+                        return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
+
+                    }
+                }
+                $request->session()->put('send_attempts', $attempts+1 );
+                $request->session()->put('last_send_time', Carbon::now());
+                $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+
+            }
+            else{
+                $request->session()->put('send_attempts', 1 );
+                $request->session()->put('last_send_time', Carbon::now());
+                $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+            }
+
+
         }
         return response()->json(['status' => $status]);
     }
