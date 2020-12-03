@@ -52,6 +52,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         'prefix' => 'auth'
     ], function () {
 
+
         // Route::get('signup', 'ApiController@registerIndex')->name('register.index');
 
         Route::post('signup-save', 'ApiController@signup');
@@ -64,9 +65,13 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         });
     });
 
+    Route::post('send-code-to-user-phone/{user_id}','ApiController@sendCodeToUserPhone');
+
     Route::group(['middleware' => 'auth:api'],function (){
 
         // Route::post('continue-login' , '')
+
+        Route::post('check-phone-confirmation-code','ApiController@checkPhoneConfirmationCode');
 
         Route::get('get-user','ApiController@getMyAccount');
 

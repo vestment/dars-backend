@@ -145,6 +145,47 @@ class ApiController extends Controller
 //        }
         return response()->json(['status' => 'success', 'fields' => $fields]);
     }
+    public function checkPhoneConfirmationCode(Request $request){
+        $code =  $request->code ;
+        $user =  auth()->user() ; 
+        $user = User::findOrFail($user->id) ; 
+        $status = "wrong code" ; 
+        if($user->phone_confirmation_code == $code){
+            $user->phone_confirmed = true ; 
+            $user->save() ; 
+            $status = 'user phone confirmed' ; 
+        }
+        return response()->json(['status' => $status]);
+    }
+
+    public function sendCodeToUserPhone(Request $request , $user_id){
+        $value = $request->session()->get('last_send_time', 'default');
+
+        // dd(Carbon::parse() ) ; 
+        dd(($value->addHour(6))) ; 
+        // dd(Carbon::now()->diffInHours($value->addHour(2))) ; 
+        if(Carbon::parse() > ($value->addHour(5)) ){
+            return response()->json(['status' => "good"]);
+        }else{
+            return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
+
+        }
+         
+        dd($value) ; 
+        
+        $request->session()->put('last_send_time', Carbon::now());
+        $user = User::findOrFail($user_id) ; 
+        $code =  $user->phone_confirmation_code ;
+
+        $status = "" ; 
+        if($user->phone_confirmed){
+            $status = 'user phone ' . $user->phone  . ' already confirmed' ; 
+        }
+        else{
+            // $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+        }
+        return response()->json(['status' => $status]);
+    }
 
     public function getCategoryCourses(Request $request)
     {
@@ -222,25 +263,18 @@ class ApiController extends Controller
             'userData' =>$userData,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
-
         ]);
-     
-        
-        
-
+    
     }
     public function vectorylink(){
-
-        
-        $f =  SMS::send("welcome To Dars","01025130834"," I Friends","9u89oJ9a0u","I Friends");
-       
-        return response()->json(['status' => 'success']);
-        // return redirect()->back()->with('success', $msg);
-
-
-        
-
+        // dd('here') ; 
+        // $quota = SMS::checkCredit('I Friends' , '9u89oJ9a0u') ; 
+        $status =  SMS::send("welcome To Dars","01025130834dd","I Friends","9u89oJ9a0u","Dars");
+        return response()->json(['status' => $status]);
      }
+
+     
+
     public function signup(Request $request)
     {
         $validation = $request->validate([
@@ -261,8 +295,15 @@ class ApiController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-
-      
+        
+        if(isset($request->phone)){
+            $code = "" ; 
+            for($i=0;$i<6;$i++){
+                $code = $code . rand(0,9) ; 
+            }
+            $user->phone_confirmation_code = $code ; 
+            // dd($user->phone_confirmation_code) ; 
+        }
 
         $user->dob = isset($request->dob) ? $request->dob : NULL;
         $user->phone = isset($request->phone) ? $request->phone : NULL;
