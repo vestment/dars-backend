@@ -66,12 +66,12 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     });
 
     Route::post('send-code-to-user-phone/{user_id}','ApiController@sendCodeToUserPhone');
+    Route::post('check-phone-confirmation-code/{user_id}','ApiController@checkPhoneConfirmationCode');
 
     Route::group(['middleware' => 'auth:api'],function (){
 
         // Route::post('continue-login' , '')
 
-        Route::post('check-phone-confirmation-code','ApiController@checkPhoneConfirmationCode');
 
         Route::get('get-user','ApiController@getMyAccount');
 

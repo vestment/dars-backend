@@ -145,10 +145,9 @@ class ApiController extends Controller
 //        }
         return response()->json(['status' => 'success', 'fields' => $fields]);
     }
-    public function checkPhoneConfirmationCode(Request $request){
+    public function checkPhoneConfirmationCode(Request $request , $user_id){
         $code =  $request->code ;
-        $user =  auth()->user() ; 
-        $user = User::findOrFail($user->id) ; 
+        $user = User::findOrFail($user_id) ; 
         $status = "wrong code" ; 
         if($user->phone_confirmation_code == $code){
             $user->phone_confirmed = true ; 
@@ -159,19 +158,18 @@ class ApiController extends Controller
     }
 
     public function sendCodeToUserPhone(Request $request , $user_id){
-        $value = $request->session()->get('last_send_time', 'default');
+        // $value = $request->session()->get('last_send_time', 'default');
 
-        // dd(Carbon::parse() ) ; 
-        dd(($value->addHour(6))) ; 
-        // dd(Carbon::now()->diffInHours($value->addHour(2))) ; 
-        if(Carbon::parse() > ($value->addHour(5)) ){
-            return response()->json(['status' => "good"]);
-        }else{
-            return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
-
-        }
+        // // dd(Carbon::parse() ) ; 
+        // dd(($value->addHour(6))) ; 
+        // // dd(Carbon::now()->diffInHours($value->addHour(2))) ; 
+        // if(Carbon::parse() > ($value->addHour(5)) ){
+        //     return response()->json(['status' => "good"]);
+        // }else{
+        //     return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
+        // }
          
-        dd($value) ; 
+        // dd($value) ; 
         
         $request->session()->put('last_send_time', Carbon::now());
         $user = User::findOrFail($user_id) ; 
@@ -182,7 +180,7 @@ class ApiController extends Controller
             $status = 'user phone ' . $user->phone  . ' already confirmed' ; 
         }
         else{
-            // $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+            $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
         }
         return response()->json(['status' => $status]);
     }
