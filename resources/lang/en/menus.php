@@ -12,6 +12,10 @@ return array(
                     array (
                       'title' => 'Education System',
                     ),
+                    'packages' => 
+                    array (
+                      'title' => 'Packages',
+                    ),
                     'courses' =>
                         array(
                             'management' => 'Courses Management',

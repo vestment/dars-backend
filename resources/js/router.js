@@ -4,6 +4,8 @@ import addCategory from './components/Categories/add.vue'
 import semesters from './components/Categories/Semesters.vue'
 import years from './components/Categories/years.vue'
 import addCourse from './components/Courses/add.vue'
+import packages from './components/packages/add.vue'
+
 
 
 
@@ -31,6 +33,11 @@ const routes = [
     path: '/user/addCourse',
     name: 'addCourse',
     component: addCourse,
+  },
+  {
+    path: '/user/packages',
+    name: 'packages',
+    component: packages,
   },
 
 

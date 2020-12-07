@@ -52,6 +52,8 @@ use App\Models\Year;
 use App\Models\StudentCart;
 use  App\Models\Auth\SocialAccount;
 use App\Models\SMS;
+use App\Models\Package;
+
 
 
 use App\Note;
@@ -288,10 +290,20 @@ class ApiController extends Controller
         $userForRole->save();
         $userForRole->assignRole('student');
         $user->save();
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+        if ($request->remember_me)
+        $token->expires_at = Carbon::now()->addWeeks(1);
+    $token->save();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully created user!',
             'user' => $user,
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString(),
             'userData' => $userData
         ], 201);
     }
@@ -1649,6 +1661,93 @@ class ApiController extends Controller
         }
 
     }
+
+
+    public function offlinePayment(Request $request)
+    {
+        
+        //Making Order
+        $order = $this->makeOrder($request->data);
+        $order->payment_type = 3;
+        $order->status = 0;
+        $order->save();
+        $content = [];
+        $items = [];
+        $courses = [];
+        $bundles = [];
+        $counter = 0;
+        $price = 0;
+        // foreach (Cart::session(auth()->user()->id)->getContent() as $key => $cartItem) {
+        //     $counter++;
+        //     array_push($items, ['number' => $counter, 'name' => $cartItem->name, 'price' => $cartItem->price]);
+        // }
+
+        $cartItems = StudentCart::where('user_id',auth()->user()->id)->get();
+        foreach($cartItems as $key=>$item){
+        if($cartItems[$key]->item_type == "course"){
+            $courses = Course::where('id',$cartItems[$key]->item_id)->get();
+        }else{
+            $bundles = Bundle::where('id',$cartItems[$key]->item_id)->get();
+   
+    }
+
+        foreach($courses as $i=>$course){
+            $counter++;
+            array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
+            
+
+        }
+
+
+        // foreach($bundles as $i=>$course){
+        //     $counter++;
+        //     array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
+
+        // }
+
+
+        $content['items'] = $items;
+        // $content['total'] = Cart::session(auth()->user()->id)->getTotal();
+        $content[$total] = $courses->sum('price');
+        $content['reference_no'] = $order->reference_no;
+
+        try {
+            \Mail::to(auth()->user()->email)->send(new OfflineOrderMail($content));
+        } catch (\Exception $e) {
+            \Log::info($e->getMessage() . ' for order ' . $order->id);
+        }
+        
+        if ($request->coupon) {
+            $coupon_code = $request->coupon;
+             $coupon = Coupon::where('code', '=', $coupon_code)
+            ->where('status', '=', 1)
+            ->first();
+            $coupon->status = 2;
+            $coupon->save();
+            $order->status = 1;
+        $order->save();
+        foreach ($order->items as $orderItem) {
+                //Bundle Entries
+                if ($orderItem->item_type == Bundle::class) {
+                    foreach ($orderItem->item->courses as $course) {
+                        $course->students()->attach($order->user_id);
+                    }
+                }
+                $orderItem->item->students()->attach($order->user_id);
+            }
+        }
+
+            //Generating Invoice
+            generateInvoice($order);
+
+
+            $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
+
+            return response()->json(['status' => 'success']);
+      
+    
+    }
+}
 
 
     /**
@@ -3399,6 +3498,66 @@ else{
             return response()->json(['success' => true, 'data' => $year]);
         }
         return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function getPackages()
+    {
+        $packages = Package::get();
+        return response()->json(['success' => true, 'data' => $packages]);
+
+    }
+
+    public function getPackage($id)
+    {
+        $Package = Package::where('id',$id)->first();
+        return response()->json(['success' => true, 'data' => $Package]);
+
+    }
+    public function savePackage(Request $request){
+
+        
+       
+            $package = new Package();
+            $package = $package->fill($request->all());
+            $package->save();
+            return response()->json(['success' => true, 'data' => $package]);
+       
+        
+
+    }
+
+    public function deletePackage($id)
+    {
+        $package = Package::findorfail($id);
+        $package->delete();
+        return response()->json(['success' => true, 'data' => $package]);
+    }
+    public function updatePackage(Request $request, $id)
+    {
+       
+
+            $package = Package::where('id',$id)->first();
+            $package->update($request->all());
+            return response()->json(['success' => true, 'data' => $package]);
+       
+       
     }
 
 }
