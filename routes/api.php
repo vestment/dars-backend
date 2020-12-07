@@ -52,6 +52,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         'prefix' => 'auth'
     ], function () {
 
+
         // Route::get('signup', 'ApiController@registerIndex')->name('register.index');
 
         Route::post('signup-save', 'ApiController@signup');
@@ -64,10 +65,14 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         });
     });
 
+    Route::post('send-code-to-user-phone/{user_id}','ApiController@sendCodeToUserPhone');
+    Route::post('check-phone-confirmation-code/{user_id}','ApiController@checkPhoneConfirmationCode');
+
     Route::group(['middleware' => 'auth:api'],function (){
 
         // Route::post('continue-login' , '')
         Route::get('pay-offline','ApiController@offlinePayment');
+
 
         Route::get('get-user','ApiController@getMyAccount');
 
@@ -120,6 +125,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::post('testimonials','ApiController@getTestimonials');
        
         Route::post('get-faqs','ApiController@getFaqs');
+        Route::post('fawry-payment' , 'ApiController@fawryPayment') ; 
         Route::post('why-us','ApiController@getWhyUs');
         Route::post('contact-us','ApiController@saveContactUs');
         Route::post('submit-review','ApiController@submitReview');

@@ -147,6 +147,74 @@ class ApiController extends Controller
 //        }
         return response()->json(['status' => 'success', 'fields' => $fields]);
     }
+    public function checkPhoneConfirmationCode(Request $request , $user_id){
+        $code =  $request->code ;
+        $user = User::findOrFail($user_id) ; 
+        $status = "wrong code" ; 
+        if($user->phone_confirmed){
+            return response()->json(['status' => 'already confirmed']);
+        }
+        if($user->phone_confirmation_code == $code){
+            $user->phone_confirmed = true ; 
+            $user->save() ; 
+            $status = 'user phone ' . $user->phone . ' has been confirmed' ; 
+        }
+        return response()->json(['status' => $status]);
+    }
+
+    public function sendCodeToUserPhone(Request $request , $user_id){
+        // $value = $request->session()->get('last_send_time', 'default');
+
+        // // dd(Carbon::parse() ) ; 
+        // dd(($value->addHour(6))) ; 
+        // // dd(Carbon::now()->diffInHours($value->addHour(2))) ; 
+        // if(Carbon::parse() > ($value->addHour(5)) ){
+        //     return response()->json(['status' => "good"]);
+        // }else{
+        //     return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
+        // }
+         
+        // dd($value) ; 
+        
+        $user = User::findOrFail($user_id) ; 
+        $code =  $user->phone_confirmation_code ;
+        
+        $status = "" ; 
+        if($user->phone_confirmed){
+            $status = 'user phone ' . $user->phone  . ' already confirmed' ; 
+        }
+        else{
+
+            if ($request->session()->has('send_attempts')) {
+                $attempts = $request->session()->get('send_attempts') ; 
+                if($attempts>=3){
+                    $value = $request->session()->get('last_send_time');
+                    if(Carbon::parse() > ($value->addHour(1)) ){
+                        $request->session()->put('send_attempts', 1 );
+                        $request->session()->put('last_send_time', Carbon::now());
+                        $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+                        return response()->json(['status' => $status]);
+                    }
+                    else{
+                        return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
+
+                    }
+                }
+                $request->session()->put('send_attempts', $attempts+1 );
+                $request->session()->put('last_send_time', Carbon::now());
+                $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+
+            }
+            else{
+                $request->session()->put('send_attempts', 1 );
+                $request->session()->put('last_send_time', Carbon::now());
+                $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+            }
+
+
+        }
+        return response()->json(['status' => $status]);
+    }
 
     public function getCategoryCourses(Request $request)
     {
@@ -224,25 +292,18 @@ class ApiController extends Controller
             'userData' =>$userData,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
-
         ]);
-     
-        
-        
-
+    
     }
     public function vectorylink(){
-
-        
-        $f =  SMS::send("welcome To Dars","01025130834"," I Friends","9u89oJ9a0u","I Friends");
-       
-        return response()->json(['status' => 'success']);
-        // return redirect()->back()->with('success', $msg);
-
-
-        
-
+        // dd('here') ; 
+        // $quota = SMS::checkCredit('I Friends' , '9u89oJ9a0u') ; 
+        $status =  SMS::send("welcome To Dars","01025130834dd","I Friends","9u89oJ9a0u","Dars");
+        return response()->json(['status' => $status]);
      }
+
+     
+
     public function signup(Request $request)
     {
         $validation = $request->validate([
@@ -263,8 +324,15 @@ class ApiController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-
-      
+        
+        if(isset($request->phone)){
+            $code = "" ; 
+            for($i=0;$i<6;$i++){
+                $code = $code . rand(0,9) ; 
+            }
+            $user->phone_confirmation_code = $code ; 
+            // dd($user->phone_confirmation_code) ; 
+        }
 
         $user->dob = isset($request->dob) ? $request->dob : NULL;
         $user->phone = isset($request->phone) ? $request->phone : NULL;
@@ -1509,20 +1577,20 @@ class ApiController extends Controller
         }
 
        
-        }
-        public function removeFromCart(Request $request)
-        {
-            $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->item_type)->where('user_id',$request->user_id);
-        //    return $cart;
-            $cart->delete();
-    
-            // foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
-            //     if (($cartItem->attributes->type == $request->type) && ($cartItem->attributes->product_id == $request->item_id)) {
-            //         Cart::session(auth()->user()->id)->remove($request->item_id);
-            //     }
-            // }
-            return response()->json(['status' => 'success']);
-        }
+    }
+    public function removeFromCart(Request $request)
+    {
+        $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->item_type)->where('user_id',$request->user_id);
+    //    return $cart;
+        $cart->delete();
+
+        // foreach (Cart::session(auth()->user()->id)->getContent() as $cartItem) {
+        //     if (($cartItem->attributes->type == $request->type) && ($cartItem->attributes->product_id == $request->item_id)) {
+        //         Cart::session(auth()->user()->id)->remove($request->item_id);
+        //     }
+        // }
+        return response()->json(['status' => 'success']);
+    }
     
         // return session('cart');
         
@@ -3498,6 +3566,143 @@ else{
             return response()->json(['success' => true, 'data' => $year]);
         }
         return response(['success' => false, 'errors' => $validator->errors()]);
+    }
+    private function totalPriceOfUserCart($userId){
+        $user = User::findOrFail($userId);
+        $cart = StudentCart::where('user_id' , $user->id)->get();
+        $totalPrice = 0 ; 
+        foreach ($cart as $rec => $record) {
+
+            if($record['item_type']=='course'){
+                $item=Course::findOrFail($record['item_id']);
+            }
+            elseif($record['item_type']=='bundle'){
+                $item=Bundle::findOrFail($record['item_id']);
+            }
+            $totalPrice+= $item->price ; 
+        }
+        return $totalPrice ; 
+    }
+    private function test(){
+        $merchantCode    = '1tSa6uxz2nRlhbmxHHde5A==';
+        $merchantRefNum  = '99900642041';
+        $merchant_cust_prof_id  = '458626698';
+        $payment_method = 'PAYATFAWRY';
+        $amount = '580.55';
+        $merchant_sec_key =  '259af31fc2f74453b3a55739b21ae9ef'; // For the sake of demonstration
+        $signature = hash('sha256' , $merchantCode . $merchantRefNum . $merchant_cust_prof_id . $payment_method . $amount . $merchant_sec_key);
+        $httpClient = new \GuzzleHttp\Client(); // guzzle 6.3
+        $response = $httpClient->request('POST', 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge', [
+            'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Accept'       => 'application/json'
+                    ],
+            'body' => json_encode(   [
+                'merchantCode' => $merchantCode,
+                'merchantRefNum' => $merchantRefNum,
+                'customerName' => 'Ahmed Ali',
+                'customerMobile' => '01234567891',
+                'customerEmail' => 'example@gmail.com',
+                'customerProfileId'=> '777777',
+                'amount' => '580.55',
+                'paymentExpiry' => 1631138400000,
+                'currencyCode' => 'EGP',
+                'language' => 'en-gb',
+                'chargeItems' => [
+                                    'itemId' => '897fa8e81be26df25db592e81c31c',
+                                    'description' => 'Item Description',
+                                    'price' => '580.55',
+                                    'quantity' => '1'
+                                ],
+                'signature' => $signature,
+                'payment_method' => $payment_method,
+                'description' => 'example description'
+            ] , true)
+        ]);
+        $response = json_decode($response->getBody()->getContents(), true);
+        $paymentStatus = $response['type']; // get response values
+        dd($response) ;   
+    }
+    public function fawryPayment(){
+        $this->test() ; 
+        $userId =auth()->user()->id;
+        $user = User::findOrFail($userId);
+        $amount = $this->totalPriceOfUserCart($userId) ; 
+        if (strpos($amount, '.') !== false) {
+            $amount = round($amount, 2);
+        } else {
+            $amount = $amount . '.00';
+        }
+        // dd($amount) ; 
+        $fawryUrl = 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge';
+        $merchantCode = config('fawry.merchant_code');
+        // dd($merchantCode) ; 
+        $customerProfileId = auth()->user()->id;
+        $paymentMethod = 'PAYATFAWRY';
+        $secureKey = config('fawry.security_key');
+        // dd($secureKey) ; 
+        $merchantRefNum = str_random(8);
+
+        $buffer = $merchantCode . $merchantRefNum . $customerProfileId . $paymentMethod . $amount . $secureKey;
+        $signature = hash('sha256', $buffer);
+
+        // $fawryData = [
+        //     'merchantCode' => $merchantCode,
+        //     'merchantRefNum' => $merchantRefNum,
+        //     'paymentMethod' => $paymentMethod,
+        //     'customerMobile' => '01149786203',
+        //     'customerEmail'=>'mohamedalmograby@gmail.com',
+        //     'amount' => $amount,
+        //     'paymentExpiry'=>'2021-09-08T10:00:00.100Z',
+        //     'description'=> 'description' , 
+        //     'language' =>"en-gb" , 
+        //     'customerProfileId' => $customerProfileId,
+        //     'customerName'=>'mohamed almograby',
+        //     'chargeItems' => [  
+        //             'itemId'  =>  "897fa8e81be26df25db592e81c31c",
+        //             'description'  =>  'description',
+        //             'price'  =>  $amount,
+        //             'quantity'  =>  1
+        //     ], 
+        //     // 'chargeItems'=> $invoiceDataArray,
+        //     'signature' => $signature,
+        // ];
+
+        $fawryData = [
+            'merchantCode' => '1tSa6uxz2nTwlaAmt38enA==',
+            'merchantRefNum' => "2312465464",
+            'paymentMethod' => 'PAYATFAWRY',
+            'customerMobile' => '01149786203',
+            'customerEmail'=>'mohamedalmograby@gmail.com',
+            'amount' => '580.55',
+            'paymentExpiry'=>'2021-09-08T10:00:00.100Z',
+            'description'=> 'description' , 
+            'language' =>"en-gb" , 
+            'customerProfileId' => "1",
+            'customerName'=>'mohamed almograby',
+            'chargeItems' => [  
+                    'itemId'  =>  "897fa8e81be26df25db592e81c31c",
+                    'description'  =>  'description',
+                    'price'  =>  "580.55",
+                    'quantity'  =>  "1" ,
+            ], 
+            // 'chargeItems'=> $invoiceDataArray,
+            'signature' => '2ca4c078ab0d4c50ba90e31b3b0339d4d4ae5b32f97092dd9e9c07888c7eef36',
+            "description"=> "Example Description"
+        ];
+        $data_string = json_encode($fawryData);
+        $ch = curl_init($fawryUrl);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string))
+        );
+        $result = curl_exec($ch);
+        $result = json_decode($result, true);
+        dd($result) ; 
     }
 
 

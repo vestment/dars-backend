@@ -29,6 +29,10 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('active')->default(1)->unsigned();
             $table->string('confirmation_code')->nullable();
             $table->boolean('confirmed')->default(config('access.users.confirm_email') ? false : true);
+            
+            $table->string('phone_confirmation_code')->nullable();
+            $table->boolean('phone_confirmed')->default(config('access.users.confirm_phone') ? false : true);
+
             $table->string('timezone')->nullable();
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();

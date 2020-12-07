@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Exceptions\GeneralException;
-use App\Http\Controllers\Traits\FileUploadTrait;
+use App\Http\Traits\FileUploadTrait;
 use App\Http\Requests\Admin\StoreTeachersRequest;
 use App\Http\Requests\Admin\UpdateTeachersRequest;
 use App\Models\Auth\User;
@@ -200,6 +200,7 @@ class TeachersController extends Controller
      */
     public function store(StoreTeachersRequest $request)
     {
+        // dd('here32') ; 
         $validator = Validator::make(Input::all(), [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
