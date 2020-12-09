@@ -313,7 +313,7 @@ class User extends Authenticatable implements MessageableInterface
 
     public function studentData()
     {
-        return $this->hasOne(studentData::class)->with('country','EduStage');
+        return $this->hasOne(studentData::class)->with('country','EduStage','EduSys');
     }
 
 
