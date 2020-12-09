@@ -40,7 +40,7 @@ class SocialUserResolver implements SocialUserResolverInterface
         // Return the user that corresponds to provided credentials.
         // If the credentials are invalid, then return NULL.
         $providerUser = null;
-
+      
         try {
             if ($provider == 'twitter') {
                 $providerUser = Socialite::driver($provider)->userFromTokenAndSecret($accessToken, $secret);

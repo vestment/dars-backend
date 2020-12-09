@@ -71,6 +71,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::group(['middleware' => 'auth:api'],function (){
 
         // Route::post('continue-login' , '')
+        Route::get('pay-offline','ApiController@offlinePayment');
 
 
         Route::get('get-user','ApiController@getMyAccount');
@@ -112,6 +113,11 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::get('year/{id}', 'ApiController@getYear');
         Route::post('year/edit/{id}', 'ApiController@updateYear');
         Route::delete('year/remove/{id}', 'ApiController@deleteYear');
+        Route::get('get-packages', 'ApiController@getPackages');
+        Route::post('create/package', 'ApiController@savePackage');
+        Route::get('package/{id}', 'ApiController@getPackage');
+        Route::post('package/edit/{id}', 'ApiController@updatePackage');
+        Route::delete('package/remove/{id}', 'ApiController@deletePackage');
         Route::post('courses','ApiController@getCourses');
         Route::post('bundles','ApiController@getBundles');
         Route::post('search','ApiController@search');
