@@ -42,12 +42,10 @@ class SocialUserResolver implements SocialUserResolverInterface
         $providerUser = null;
 
         try {
-            if($provider == 'twitter'){
-                $providerUser = Socialite::driver($provider)->userFromTokenAndSecret($accessToken,$secret);
-
-            }else{
+            if ($provider == 'twitter') {
+                $providerUser = Socialite::driver($provider)->userFromTokenAndSecret($accessToken, $secret);
+            } else {
                 $providerUser = Socialite::driver($provider)->userFromToken($accessToken);
-
             }
         } catch (Exception $exception) {
         }
@@ -55,10 +53,8 @@ class SocialUserResolver implements SocialUserResolverInterface
         if ($providerUser) {
 
             return $this->userRepository->findOrCreateProvider($providerUser, $provider);
-
         }
 
         return null;
-
     }
 }
