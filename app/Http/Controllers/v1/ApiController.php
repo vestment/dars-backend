@@ -2609,11 +2609,14 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                 $fieldsList[] = '' . $field->name;
             }
         }
+        if($request->coucntry_id && $request->edu_system_id && $request->edu_stage_id)
+        {
         $output = $this->userRepository->update(
             $request->user()->id,
-            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type','country_id', 'edu_system_id', 'edu_stage_id'),
+            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type','coucntry_id', 'edu_system_id', 'edu_stage_id'),
             $request->has('avatar_location') ? $request->file('avatar_location') : false
         );
+    
 
         $studentData = studentData::where('user_id', $request->user()->id)->firstOrFail();
            
@@ -2622,6 +2625,18 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $studentData->edu_stage_id = $request->edu_stage_id;
 
         $studentData->update($request->all());
+    }else{
+        $output = $this->userRepository->update(
+            $request->user()->id,
+            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type'),
+            $request->has('avatar_location') ? $request->file('avatar_location') : false
+        );
+    
+
+       
+
+       
+    }
 
 
         // E-mail address was updated, user has to reconfirm
@@ -2630,6 +2645,21 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         //     return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.email_changed_notice')]);
         // }
+
+        return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated')]);
+
+    }
+    public function updateStudentdata(Request $request)
+    {
+        // return 1;
+        
+        $studentData = studentData::where('user_id', $request->user()->id)->firstOrFail();
+           
+        $studentData->country_id = $request->country_id;
+        $studentData->edu_system_id = $request->edu_system_id;
+        $studentData->edu_stage_id = $request->edu_stage_id;
+
+        $studentData->update($request->all());
 
         return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated')]);
 

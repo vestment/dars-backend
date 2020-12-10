@@ -92,7 +92,7 @@ Route::get('allCartItems/remove','ApiController@deleteAllCartItems');
     Route::get('get-myWishlist','ApiController@getMyWishlist');
     Route::post('remove-from-Wishlist','ApiController@removeFromWishlist');
     Route::post('update-account','ApiController@updateMyAccount');
-
+    Route::post('update-edu-info','ApiController@updateStudentdata');
         Route::post('create-country', 'ApiController@saveCountry');
         Route::get('country/{id}', 'ApiController@getCountry');
         Route::post('edit/country/{id}', 'ApiController@updateCountry');
