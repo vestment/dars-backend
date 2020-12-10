@@ -24,7 +24,9 @@ Route::group([],function (){
 });
 
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
-    Route::get('get-packages', 'ApiController@getPackages');
+      Route::get('get-packages', 'ApiController@getPackages');
+            Route::post('search-courses', 'ApiController@searchCourses');
+
     Route::get('sponsors','ApiController@getSponsors');
     Route::post('send-msg','ApiController@vectorylink');
     Route::get('get-countries', 'ApiController@getCountries');
@@ -34,8 +36,9 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('teacher-courses','ApiController@getTeacherCourses');
     Route::post('teacher-bundles','ApiController@getTeacherBundles');
     Route::post('single-teacher','ApiController@getSingleTeacher');
+      Route::get('allcourses/{statge_id}','ApiController@StatgeCourses');
     Route::post('all-courses','ApiController@coursesOfStatge');
-    Route::get('allcourses/{statge_id}','ApiController@StatgeCourses');
+  
     // Route::post('my-purchases','ApiController@getMyPurchases');
     // Route::post('teachers','ApiController@getTeachers');
     Route::post('CategoryCourse','ApiController@getCategoryCourses');
@@ -76,7 +79,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
 
 
         Route::get('get-user','ApiController@getMyAccount');
-
+Route::get('allCartItems/remove','ApiController@deleteAllCartItems');
         Route::post('update-password','ApiController@updatePassword');
         Route::post('invoices','ApiController@getInvoices');
         Route::post('show-invoice','ApiController@showInvoice');
@@ -114,7 +117,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::get('year/{id}', 'ApiController@getYear');
         Route::post('year/edit/{id}', 'ApiController@updateYear');
         Route::delete('year/remove/{id}', 'ApiController@deleteYear');
-  
+      
         Route::post('create/package', 'ApiController@savePackage');
         Route::get('package/{id}', 'ApiController@getPackage');
         Route::post('package/edit/{id}', 'ApiController@updatePackage');
