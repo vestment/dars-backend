@@ -20,11 +20,11 @@ class studentData extends Model
     }
     public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class)->with('eduSystems');
     }
     public function EduSys()
     {
-        return $this->belongsTo(EduSystem::class);
+        return $this->belongsTo(EduSystem::class , 'edu_system_id');
     }
     public function EduStage()
     {

@@ -2505,6 +2505,7 @@ class ApiController extends Controller
      */
     public function updateMyAccount(Request $request)
     {
+        
         $fieldsList = [];
         if (config('registration_fields') != NULL) {
             $fields = json_decode(config('registration_fields'));
@@ -2515,16 +2516,25 @@ class ApiController extends Controller
         }
         $output = $this->userRepository->update(
             $request->user()->id,
-            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type'),
+            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type','country_id', 'edu_system_id', 'edu_stage_id'),
             $request->has('avatar_location') ? $request->file('avatar_location') : false
         );
 
-        // E-mail address was updated, user has to reconfirm
-        if (is_array($output) && $output['email_changed']) {
-            auth()->logout();
+        $studentData = studentData::where('user_id', $request->user()->id)->firstOrFail();
+           
+        $studentData->country_id = $request->country_id;
+        $studentData->edu_system_id = $request->edu_system_id;
+        $studentData->edu_stage_id = $request->edu_stage_id;
 
-            return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.email_changed_notice')]);
-        }
+        $studentData->update($request->all());
+
+
+        // E-mail address was updated, user has to reconfirm
+        // if (is_array($output) && $output['email_changed']) {
+        //     auth()->logout();
+
+        //     return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.email_changed_notice')]);
+        // }
 
         return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated')]);
 

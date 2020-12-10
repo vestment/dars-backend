@@ -139,6 +139,7 @@ class UserRepository extends BaseRepository
      */
     public function update($id, array $input, $image = false)
     {
+        // return $input;
         $user = $this->getById($id);
         $user->ar_first_name = $input['ar_first_name'];
         $user->ar_last_name = $input['ar_last_name'];
@@ -152,7 +153,7 @@ class UserRepository extends BaseRepository
         // $user->city =  isset($input['city']) ? $input['city'] : NULL;
         // $user->pincode = isset($input['pincode']) ? $input['pincode'] : NULL;
         // $user->state = isset($input['state']) ? $input['state'] : NULL;
-        // $user->country = isset($input['country']) ? $input['country'] : NULL;
+        // $user->country = $input['country'];
         $user->save();
         // Upload profile image if necessary
         if ($image) {
