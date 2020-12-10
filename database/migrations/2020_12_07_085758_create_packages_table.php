@@ -19,6 +19,7 @@ class CreatePackagesTable extends Migration
             $table->text('value');
             $table->text('description');
             $table->text('name');
+            $table->longText('features');
             $table->integer('enabled');
             $table->timestamps();
         });

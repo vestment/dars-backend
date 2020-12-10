@@ -53,9 +53,7 @@ use App\Models\StudentCart;
 use  App\Models\Auth\SocialAccount;
 use App\Models\SMS;
 use App\Models\Package;
-
-
-
+use App\Models\UserPackage;
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
@@ -89,8 +87,7 @@ use Newsletter;
 
 class ApiController extends Controller
 {
-    use FileUploadTrait;
-    use SendsPasswordResetEmails;
+   
 
 
     public function __construct(UserRepository $userRepository )
@@ -352,12 +349,22 @@ class ApiController extends Controller
             
         ]);
         $userData->save();
-
         $userForRole = User::find($user->id);
         $userForRole->confirmed = 1;
         $userForRole->save();
         $userForRole->assignRole('student');
         $user->save();
+
+//assign user to free package
+
+        $userPack = new UserPAckage();
+        $userPack->user_id = $user->id;
+        $userPack->package_id = 7;
+        $userPack->status = 'active';
+        $userPack->expire_at =  '2020-2-1 16:45:24' ;
+        $userPack->save();
+
+
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
@@ -490,31 +497,43 @@ class ApiController extends Controller
 
     public function coursesOfStatge(Request $request){
 
-    $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
-      
-       $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
-       
-        $newCourses = [];
-        foreach($statgeSemIds as $key=> $course){
-            foreach($statgeSemIds[$key]->courses as $index=> $element){
-                
-                if($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3) )
-                {
-                   $newCourses[]=$statgeSemIds[$key]->courses[$index];
+        $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
+        $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
+        $lessonsIds=[];
+           foreach($statgeSemIds as $stage){
+               foreach($stage->courses as $course){
+                $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+                $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+                $multiplied = $duration->map(function ($item, $key) {
+                    $d = explode(':', $item->duration);
+                return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+                })->sum();
+                $course->videoDuration=$multiplied;
+               }
+           }
+           
+    
+            $newCourses = [];
+            foreach($statgeSemIds as $key=> $course){
+                foreach($statgeSemIds[$key]->courses as $index=> $element){
+                    
+                    if($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3) )
+                    {
+                       $newCourses[]=$statgeSemIds[$key]->courses[$index];
+                    }
                 }
             }
+            $semesterNames = [];
+            foreach ($semesters as $i=>$sem)
+            {
+             $semesterNames [] = Semester::where('id',$semesters[$i]->semester_id)->first();
+                     
+            }
+           return response()->json(['status' => 'success', 'semesters' => $statgeSemIds , 'newCourses' => $newCourses , 'semesterNames' => $semesterNames]);
+    
+    
+    
         }
-        $semesterNames = [];
-        foreach ($semesters as $i=>$sem)
-        {
-         $semesterNames [] = Semester::where('id',$semesters[$i]->semester_id)->first();
-                 
-        }
-       return response()->json(['status' => 'success', 'semesters' => $statgeSemIds , 'newCourses' => $newCourses , 'semesterNames' => $semesterNames]);
-
-
-
-    }
 
     /**
      * Search Basic
@@ -614,12 +633,21 @@ class ApiController extends Controller
     public function StatgeCourses($statge_id){
           
         $semesters = EduStageSemester::where('edu_stage_id',$statge_id)->get();
-    
-          
-           $statgeSemIds = EduStageSemester::where('edu_stage_id',$statge_id)->get();
+        $statgeSemIds = EduStageSemester::where('edu_stage_id',$statge_id)->with('courses')->get();
+        // $lessonsIds=[];
+        //    foreach($statgeSemIds as $stage){
+        //        foreach($stage->courses as $course){
+        //         $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+        //         $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+        //         $multiplied = $duration->map(function ($item, $key) {
+        //             $d = explode(':', $item->duration);
+        //         return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+        //         })->sum();
+        //         $course->videoDuration=$multiplied;
+        //        }
+        //    }
            
-         
-            
+    
             $newCourses = [];
             foreach($statgeSemIds as $key=> $course){
                 foreach($statgeSemIds[$key]->courses as $index=> $element){
@@ -843,6 +871,20 @@ class ApiController extends Controller
             $url = $match[1];
             $mediaVideo['file_name'] = $url;
         }
+
+        if(auth('api')->user()->id){
+            $userid = auth('api')->user()->id ;
+            $userAssigned = UserPackage::where('user_id', $userid)->first();
+            // $packegeAssigned = Package::where('id',$userAssigned->package_id)->first();
+            if($userAssigned->status == 'active'){
+                $purchased_course == true;
+            }
+
+
+        }
+
+
+
         $result = [
             'course' => $course,
             'course_video' => $mediaVideo,
@@ -2505,10 +2547,10 @@ class ApiController extends Controller
             $user->update(['password' => $request->password]);
              return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.password_updated')]);
         }
-else{
-    return response()->json(['status' => 'failed', 'message' => __('Incorrect Password')]);
+            else{
+                return response()->json(['status' => 'failed', 'message' => __('Incorrect Password')]);
 
-}
+            }
         }
 
     
@@ -2542,11 +2584,11 @@ else{
 
 
         if (auth()->check()) {
-            $hashid = new Hashids('',5);
-            $order_id = $hashid->decode($request->code);
-            $order_id = array_first($order_id);
+            // $hashid = new Hashids('',5);
+            // $order_id = $hashid->decode($request->code);
+            // $order_id = array_first($order_id);
 
-            $order = Order::findOrFail($order_id);
+            $order = Order::findOrFail($request->order_id);
             if (auth()->user()->isAdmin() || ($order->user_id == auth()->user()->id)) {
                 if (Storage::exists('invoices/' . $order->invoice->url)) {
                     return response()->file(Storage::path('invoices/' . $order->invoice->url));
@@ -3702,29 +3744,15 @@ else{
         );
         $result = curl_exec($ch);
         $result = json_decode($result, true);
-        dd($result) ; 
+       
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function getPackages()
     {
         $packages = Package::get();
+        foreach($packages as $i=>$pack){
+            $packages[$i]->features =  json_decode($packages[$i]->features);
+        }
         return response()->json(['success' => true, 'data' => $packages]);
 
     }
@@ -3732,15 +3760,18 @@ else{
     public function getPackage($id)
     {
         $Package = Package::where('id',$id)->first();
+        $Package->features = json_decode( $Package->features);
+      
         return response()->json(['success' => true, 'data' => $Package]);
 
     }
     public function savePackage(Request $request){
 
         
-       
+      
             $package = new Package();
             $package = $package->fill($request->all());
+            $package->features = json_encode($request['allFeatures']) ;
             $package->save();
             return response()->json(['success' => true, 'data' => $package]);
        
@@ -3750,9 +3781,18 @@ else{
 
     public function deletePackage($id)
     {
+        $userAssigned = UserPAckage::where('package_id',$id)->where('status','active')->first();
+       
+        if($userAssigned){
+
+
+            return response()->json(['msg' => 'There are student assigned to this package you can not delete it !']);
+
+        }else{
         $package = Package::findorfail($id);
         $package->delete();
         return response()->json(['success' => true, 'data' => $package]);
+        }
     }
     public function updatePackage(Request $request, $id)
     {
@@ -3760,9 +3800,28 @@ else{
 
             $package = Package::where('id',$id)->first();
             $package->update($request->all());
+            $package->features = json_encode($request['allFeatures']) ;
+            $package->save();
             return response()->json(['success' => true, 'data' => $package]);
        
        
+    }
+
+    public function assignPackage(Request $request){
+
+        $userId =auth()->user()->id;
+        $package = Package::findorfail($request->package_id)->first();
+        $userPack = new UserPAckage();
+        $userPack->user_id = $userId;
+        $userPack->package_id = $request->package_id;
+        $userPack->status = 'active';
+        $dt = Carbon::now()->addMonths($package->time);
+        $userPack->expire_at =  $dt ;
+        $userPack->save();
+
+        return response()->json(['success' => true]);
+
+
     }
 
 }

@@ -24,6 +24,7 @@ Route::group([],function (){
 });
 
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
+    Route::get('get-packages', 'ApiController@getPackages');
     Route::get('sponsors','ApiController@getSponsors');
     Route::post('send-msg','ApiController@vectorylink');
     Route::get('get-countries', 'ApiController@getCountries');
@@ -113,11 +114,13 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::get('year/{id}', 'ApiController@getYear');
         Route::post('year/edit/{id}', 'ApiController@updateYear');
         Route::delete('year/remove/{id}', 'ApiController@deleteYear');
-        Route::get('get-packages', 'ApiController@getPackages');
+  
         Route::post('create/package', 'ApiController@savePackage');
         Route::get('package/{id}', 'ApiController@getPackage');
         Route::post('package/edit/{id}', 'ApiController@updatePackage');
         Route::delete('package/remove/{id}', 'ApiController@deletePackage');
+        Route::post('package/assign', 'ApiController@assignPackage');
+
         Route::post('courses','ApiController@getCourses');
         Route::post('bundles','ApiController@getBundles');
         Route::post('search','ApiController@search');

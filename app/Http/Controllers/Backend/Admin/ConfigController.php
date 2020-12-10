@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 
 class ConfigController extends Controller
 {
-    use FileUploadTrait;
+   
 
     public function getGeneralSettings()
     {

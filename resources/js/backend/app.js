@@ -14,7 +14,8 @@ Vue.use(Buefy)
 import Multiselect from 'vue-multiselect'
 Vue.component('multiselect', Multiselect)
 
-
+import InputTag from 'vue-input-tag'
+Vue.component('input-tag', InputTag)
 import 'vueditor/dist/style/vueditor.min.css'
 Vue.config.productionTip = false
 
