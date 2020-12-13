@@ -45,6 +45,7 @@ class SocialUserResolver implements SocialUserResolverInterface
             if ($provider == 'twitter') {
                 $providerUser = Socialite::driver($provider)->userFromTokenAndSecret($accessToken, $secret);
             } else {
+                // dd(Socialite::driver($provider)->stateless());
                 $providerUser = Socialite::driver($provider)->stateless()->userFromToken($accessToken);
             }
         } catch (Exception $exception) {

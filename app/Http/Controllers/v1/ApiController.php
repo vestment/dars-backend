@@ -198,13 +198,11 @@ class ApiController extends Controller
                     }
                 }
                 $request->session()->put('send_attempts', $attempts + 1);
-                $request->session()->put('last_send_time', Carbon::now());
-                $status =  SMS::send("confirmation code : " . $code, $user->phone, "I Friends", "9u89oJ9a0u", "Dars");
             } else {
                 $request->session()->put('send_attempts', 1);
-                $request->session()->put('last_send_time', Carbon::now());
-                $status =  SMS::send("confirmation code : " . $code, $user->phone, "I Friends", "9u89oJ9a0u", "Dars");
             }
+            $request->session()->put('last_send_time', Carbon::now());
+            $status =  SMS::send("confirmation code : " . $code, $user->phone, "I Friends", "9u89oJ9a0u", "Dars");
         }
         return response()->json(['status' => $status]);
     }
