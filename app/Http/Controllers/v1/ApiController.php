@@ -525,16 +525,38 @@ class ApiController extends Controller
 
         $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
         $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
+        if( auth('api')->user()){
+        $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+        $cart = StudentCart::where('user_id',auth('api')->user()->id)->where('item_type','course')->pluck('item_id')->toArray();
+       
+        }else{
+            $wishlist = [];
+            $cart = [];
+        }
         $lessonsIds=[];
            foreach($statgeSemIds as $stage){
                foreach($stage->courses as $course){
                 $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+                 $numberOfuizes = Test::where('course_id',$course->id)->count();
                 $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+                
                 $multiplied = $duration->map(function ($item, $key) {
                     $d = explode(':', $item->duration);
                 return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
                 })->sum();
                 $course->videoDuration=$multiplied;
+                if(in_array($course->id,$wishlist)){
+                    $course['wishlist'] = true;
+                }else{
+                     $course['wishlist'] = false;
+                }
+                 if(in_array($course->id,$cart)){
+                    $course['cart'] = true;
+                }else{
+                     $course['cart'] = false;
+                }
+               
+                  $course['numberOfQuizes']=$numberOfuizes;
                }
            }
            
