@@ -720,6 +720,12 @@ class ApiController extends Controller
         $newCourses = [];
         foreach($statgeSemIds as $key=> $course){
             foreach($statgeSemIds[$key]->courses as $index=> $element){
+                foreach($statgeSemIds[$key]->courses[$index]->teachers as $singleteacher){
+                
+                //  $teacher = User::find(courses[$index]->teacher_id);
+                 $noOfCourses = $singleteacher->courses()->count();
+                $singleteacher['noOfCourses'] = $noOfCourses;
+                }
                 
                 if($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3) )
                 {

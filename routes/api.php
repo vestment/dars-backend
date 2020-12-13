@@ -168,7 +168,7 @@ Route::get('allCartItems/remove','ApiController@deleteAllCartItems');
         Route::post('my-certificates','ApiController@getMyCertificates');
         Route::post('my-purchases','ApiController@getMyPurchases');
         Route::post('my-account','ApiController@getMyAccount');
-        Route::post('update-account','ApiController@updateMyAccount');
+       
         Route::post('subscribe-newsletter','ApiController@subscribeNewsletter');
         Route::post('offers','ApiController@getOffers');
         Route::post('apply-coupon','ApiController@applyCoupon');
