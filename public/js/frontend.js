@@ -1559,6 +1559,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1566,9 +1575,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+
       packages: [],
-      ShowEnSemName: '',
-      ShowArSemName: '',
+      features: [],
+      showFeatures: [],
       packageID: '',
       name: '',
       value: '',
@@ -1580,7 +1590,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       ShowTime: '',
       ShowDescription: '',
       ShowActive: '',
-      errors: []
+      errors: [],
+      ShowEnSemName: '',
+      ShowArSemName: ''
 
     };
   },
@@ -1604,51 +1616,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this2.ShowTime = res.data.data.time;
         _this2.ShowDescription = res.data.data.description;
         _this2.ShowActive = res.data.data.enabled;
+        _this2.showFeatures = res.data.data.features;
       });
     },
-    UpdateSemester: function UpdateSemester() {
+    UpdatePackage: function UpdatePackage() {
       var _this3 = this;
 
-      if (!this.ShowArSemName) {
-        this.errors.push("Arabic Name is Required in Edit Semester.");
+      if (!this.ShowName) {
+        this.errors.push("Arabic Name is Required in Edit Package.");
       }
-      if (!this.ShowEnSemName) {
-        this.errors.push("English Name is Required in Edit Semester.");
-      }
+
       //   if(!this.image){
       //     this.errors.push("image  is Required in Add Country.");
       //   }
       else {
-          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/semester/edit/' + this.packageID, {
-            en_name: this.ShowEnSemName,
-            ar_name: this.ShowArSemName
+          __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].post('/api/v1/package/edit/' + this.packageID, {
+            name: this.ShowName,
+            value: this.ShowValue,
+            time: this.ShowTime,
+            description: this.ShowDescription,
+            enabled: this.ShowActive,
+            allFeatures: this.showFeatures
 
           }).then(function (res) {
             _this3.$toast.open({
               type: 'success',
               position: 'top-right',
               message: 'Updated Succesfully',
-              duration: 9000,
+              duration: 3000,
               dismissible: true
             });
-            _this3.reload();
+            _this3.getPackages();
           });
         }
     },
-    DeleteSemester: function DeleteSemester(id) {
+    DeletePackage: function DeletePackage(id) {
       var _this4 = this;
 
       this.$confirm("Are you sure?").then(function () {
 
-        __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/semester/remove/' + id).then(function (res) {
+        __WEBPACK_IMPORTED_MODULE_0__axios__["a" /* default */].delete('/api/v1/package/remove/' + id).then(function (res) {
+          if (res.data.msg) {
 
-          _this4.$toast.open({
-            type: 'success',
-            position: 'top-right',
-            message: 'Deleted Succesfully',
-            duration: 9000,
-            dismissible: true
-          });
+            _this4.$toast.open({
+              type: 'warning',
+              position: 'top-right',
+              message: res.data.msg,
+              duration: 5000,
+              dismissible: true
+            });
+          } else {
+
+            _this4.$toast.open({
+              type: 'success',
+              position: 'top-right',
+              message: 'Deleted Succesfully',
+              duration: 3000,
+              dismissible: true
+            });
+          }
+          _this4.getPackages();
         });
       });
     },
@@ -1663,7 +1690,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           value: this.value,
           description: this.description,
           time: this.time,
-          enabled: this.active
+          enabled: this.active,
+          allFeatures: this.features
 
         }).then(function (res) {
 
@@ -1671,15 +1699,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: 'success',
             position: 'top-right',
             message: 'Added Succesfully',
-            duration: 9000,
+            duration: 3000,
             dismissible: true
           });
           _this5.getPackages();
         });
       }
-    },
-    reload: function reload() {
-      window.location.reload();
     }
   },
 
@@ -19904,7 +19929,7 @@ var render = function() {
                   attrs: { href: "#" },
                   on: {
                     click: function($event) {
-                      return _vm.DeletePackage(_vm.semester.id)
+                      return _vm.DeletePackage(packagee.id)
                     }
                   }
                 },
@@ -19939,122 +19964,139 @@ var render = function() {
             _c("div", { staticClass: "modal-content" }, [
               _c("form", [
                 _c("div", { staticClass: "modal-body" }, [
-                  _c("div", { staticClass: "input_wrap" }, [
-                    _c("label", [_vm._v("Name")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.showName,
-                          expression: "showName"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.showName },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                  _c(
+                    "div",
+                    { staticClass: "input_wrap" },
+                    [
+                      _c("label", [_vm._v("Name")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.ShowName,
+                            expression: "ShowName"
                           }
-                          _vm.showName = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("value")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.showValue,
-                          expression: "showValue"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.showValue },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.ShowName },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.ShowName = $event.target.value
                           }
-                          _vm.showValue = $event.target.value
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("Description")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.showDescription,
-                          expression: "showDescription"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.showDescription },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("value")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.ShowValue,
+                            expression: "ShowValue"
                           }
-                          _vm.showDescription = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("Time In months")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.showTime,
-                          expression: "showTime"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.showTime },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.ShowValue },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.ShowValue = $event.target.value
                           }
-                          _vm.showTime = $event.target.value
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("Active")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.showActive,
-                          expression: "showActive"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.showActive },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Description")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.ShowDescription,
+                            expression: "ShowDescription"
                           }
-                          _vm.showActive = $event.target.value
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.ShowDescription },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.ShowDescription = $event.target.value
+                          }
                         }
-                      }
-                    })
-                  ])
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Time In months")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.ShowTime,
+                            expression: "ShowTime"
+                          }
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.ShowTime },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.ShowTime = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Features")]),
+                      _vm._v(" "),
+                      _c("input-tag", {
+                        model: {
+                          value: _vm.showFeatures,
+                          callback: function($$v) {
+                            _vm.showFeatures = $$v
+                          },
+                          expression: "showFeatures"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Active")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.ShowActive,
+                            expression: "ShowActive"
+                          }
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.ShowActive },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.ShowActive = $event.target.value
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-footer modal_btn" }, [
@@ -20080,7 +20122,7 @@ var render = function() {
                         "aria-label": "Close",
                         type: "submit"
                       },
-                      on: { click: _vm.UpdateSemester }
+                      on: { click: _vm.UpdatePackage }
                     },
                     [_vm._v("Update")]
                   )
@@ -20114,122 +20156,139 @@ var render = function() {
             _c("div", { staticClass: "modal-content" }, [
               _c("form", [
                 _c("div", { staticClass: "modal-body" }, [
-                  _c("div", { staticClass: "input_wrap" }, [
-                    _c("label", [_vm._v("Name")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.name,
-                          expression: "name"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.name },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                  _c(
+                    "div",
+                    { staticClass: "input_wrap" },
+                    [
+                      _c("label", [_vm._v("Name")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.name,
+                            expression: "name"
                           }
-                          _vm.name = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("value")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.value,
-                          expression: "value"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.value },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.name = $event.target.value
                           }
-                          _vm.value = $event.target.value
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("Description")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.description,
-                          expression: "description"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.description },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("value")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.value,
+                            expression: "value"
                           }
-                          _vm.description = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("Time In months")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.time,
-                          expression: "time"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.time },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.value },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.value = $event.target.value
                           }
-                          _vm.time = $event.target.value
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("label", [_vm._v("Active")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.active,
-                          expression: "active"
-                        }
-                      ],
-                      staticClass: "input_form form-control",
-                      domProps: { value: _vm.active },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Description")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.description,
+                            expression: "description"
                           }
-                          _vm.active = $event.target.value
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.description },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.description = $event.target.value
+                          }
                         }
-                      }
-                    })
-                  ])
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Time In months")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.time,
+                            expression: "time"
+                          }
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.time },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.time = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Active")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.active,
+                            expression: "active"
+                          }
+                        ],
+                        staticClass: "input_form form-control",
+                        domProps: { value: _vm.active },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.active = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Features")]),
+                      _vm._v(" "),
+                      _c("input-tag", {
+                        model: {
+                          value: _vm.features,
+                          callback: function($$v) {
+                            _vm.features = $$v
+                          },
+                          expression: "features"
+                        }
+                      })
+                    ],
+                    1
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-footer modal_btn" }, [

@@ -21,6 +21,7 @@
       <th scope="col">Time</th>
       <th scope="col">Value</th>
       <th scope="col">Discription</th>
+     
       <th scope="col">Active</th>
       <th scope="col">Actions</th>
 
@@ -33,12 +34,15 @@
       <td>{{packagee.time}} Months</td>
       <td>{{packagee.value}} EGP</td>
       <td>{{packagee.description}}</td>
+      <!-- <td >
+       <p v-for="feature in packagee.features"> <i class="fas fa-check"></i> &nbsp;{{feature}} </p>
+      </td> -->
       <td>{{packagee.enabled}}</td>
 
 
       <td>
              <a  href="#" data-toggle="modal" data-target="#edit_package" v-on:click="ShowPackage(packagee.id)" class="white_btn">Edit</a>
-             <a  href="#" v-on:click="DeletePackage(semester.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
+             <a  href="#" v-on:click="DeletePackage(packagee.id)" class="red_btn"><i class="far fa-trash-alt"></i></a> 
 
       </td>
       
@@ -54,15 +58,17 @@
                                                 <div  class="input_wrap">
                                                  
                                                    <label>Name</label> 
-                                                    <input  v-model="showName" class="input_form form-control">
+                                                    <input  v-model="ShowName" class="input_form form-control">
                                                     <label>value</label> 
-                                                    <input  v-model="showValue" class="input_form form-control">
+                                                    <input  v-model="ShowValue" class="input_form form-control">
                                                     <label>Description</label> 
-                                                    <input  v-model="showDescription" class="input_form form-control">
+                                                    <input  v-model="ShowDescription" class="input_form form-control">
                                                      <label>Time In months</label> 
-                                                    <input  v-model="showTime" class="input_form form-control"> 
+                                                    <input  v-model="ShowTime" class="input_form form-control"> 
+                                                    <label>Features</label> 
+                                                    <input-tag v-model="showFeatures"></input-tag>
                                                     <label>Active</label> 
-                                                    <input  v-model="showActive" class="input_form form-control">
+                                                    <input  v-model="ShowActive" class="input_form form-control">
 
                                                 </div> 
                                                      
@@ -71,7 +77,7 @@
                                          
                                             <div  class="modal-footer modal_btn">
                                                <button  type="button" data-dismiss="modal" aria-label="Close" class="close white_btn2">Cancel</button>
-                                               <button  v-on:click="UpdateSemester" data-dismiss="modal" aria-label="Close"  type="submit" class="btn_1 m-0">Update</button>
+                                               <button  v-on:click="UpdatePackage" data-dismiss="modal" aria-label="Close"  type="submit" class="btn_1 m-0">Update</button>
                                             </div>
                                   </form>
                               </div>
@@ -94,6 +100,9 @@
                                                     <input  v-model="time" class="input_form form-control"> 
                                                     <label>Active</label> 
                                                     <input  v-model="active" class="input_form form-control">
+                                                    <label>Features</label> 
+                                                    <input-tag v-model="features"></input-tag>
+
 
                                                 </div> 
                                                      
@@ -119,9 +128,10 @@ import '../lesson.css'
     export default {
         data() {
             return {
+
                 packages: [],
-                ShowEnSemName:'',
-                ShowArSemName:'',
+                features:[],
+                showFeatures:[],
                 packageID:'',
                 name:'',
                 value:'',
@@ -133,7 +143,9 @@ import '../lesson.css'
                 ShowTime:'',
                 ShowDescription:'',
                 ShowActive:'',
-                errors:[]
+                errors:[],
+                 ShowEnSemName:'',
+                ShowArSemName:'',
                
             }
         },
@@ -152,52 +164,68 @@ import '../lesson.css'
                 this.ShowTime= res.data.data.time
                 this.ShowDescription= res.data.data.description
                 this.ShowActive= res.data.data.enabled
+                this.showFeatures = res.data.data.features
 
                 
 
               })
             },
-            UpdateSemester(){
-                if(!this.ShowArSemName){
-        this.errors.push("Arabic Name is Required in Edit Semester.");
+            UpdatePackage(){
+                if(!this.ShowName){
+        this.errors.push("Arabic Name is Required in Edit Package.");
       }
-      if(!this.ShowEnSemName){
-        this.errors.push("English Name is Required in Edit Semester.");
-      }
+      
     //   if(!this.image){
     //     this.errors.push("image  is Required in Add Country.");
     //   }
       else{
-              axios.post('/api/v1/semester/edit/'+this.packageID ,{
-                en_name : this.ShowEnSemName,
-                ar_name : this.ShowArSemName
+              axios.post('/api/v1/package/edit/'+this.packageID ,{
+                name : this.ShowName,
+                value : this.ShowValue,
+                time : this.ShowTime,
+                description : this.ShowDescription,
+                enabled : this.ShowActive,
+                 allFeatures:this.showFeatures
+
+
 
               }).then(res=>{
                  this.$toast.open({
             type: 'success',
             position: 'top-right',
             message: 'Updated Succesfully',
-            duration: 9000,
+            duration: 3000,
             dismissible: true
           });
-           this.reload()
+           this.getPackages()
               })
 
       }
             },
-            DeleteSemester(id){
+            DeletePackage(id){
               this.$confirm("Are you sure?").then(() => {
 
-              axios.delete('/api/v1/semester/remove/'+id).then(res=>{
+              axios.delete('/api/v1/package/remove/'+id).then(res=>{
+               if(res.data.msg){
+
+                    this.$toast.open({
+            type: 'warning',
+            position: 'top-right',
+            message: res.data.msg,
+            duration: 5000,
+            dismissible: true
+          });
+               }else{
 
                     this.$toast.open({
             type: 'success',
             position: 'top-right',
             message: 'Deleted Succesfully',
-            duration: 9000,
+            duration: 3000,
             dismissible: true
           });
-
+               }
+        this.getPackages()
               })
             }
 
@@ -215,6 +243,7 @@ import '../lesson.css'
                   description:this.description,
                   time:this.time,
                   enabled:this.active,
+                  allFeatures:this.features
                  
 
                  
@@ -224,7 +253,7 @@ import '../lesson.css'
             type: 'success',
             position: 'top-right',
             message: 'Added Succesfully',
-            duration: 9000,
+            duration: 3000,
             dismissible: true
           });
              this.getPackages()
@@ -232,9 +261,7 @@ import '../lesson.css'
       }
               },
 
-   reload(){
-       window.location.reload()
-   }
+ 
       
             
         },

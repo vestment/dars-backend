@@ -53,9 +53,7 @@ use App\Models\StudentCart;
 use  App\Models\Auth\SocialAccount;
 use App\Models\SMS;
 use App\Models\Package;
-
-
-
+use App\Models\UserPackage;
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
@@ -89,8 +87,7 @@ use Newsletter;
 
 class ApiController extends Controller
 {
-    use FileUploadTrait;
-    use SendsPasswordResetEmails;
+
 
 
     public function __construct(UserRepository $userRepository)
@@ -145,8 +142,16 @@ class ApiController extends Controller
         //        }
         return response()->json(['status' => 'success', 'fields' => $fields]);
     }
-    public function checkPhoneConfirmationCode(Request $request, $user_id)
+    public function checkPhoneConfirmationCode(Request $request)
     {
+
+        if (!auth()->user()) {
+            return response()->json(['status' => "you have to provide a valid access token"]);
+        }
+        $user_id  = auth()->user()->id;
+
+
+
         $code =  $request->code;
         $user = User::findOrFail($user_id);
         $status = "wrong code";
@@ -161,51 +166,59 @@ class ApiController extends Controller
         return response()->json(['status' => $status]);
     }
 
-    public function sendCodeToUserPhone(Request $request, $user_id)
+    public function sendCodeToUserPhone(Request $request)
     {
-        // $value = $request->session()->get('last_send_time', 'default');
 
-        // // dd(Carbon::parse() ) ; 
-        // dd(($value->addHour(6))) ; 
-        // // dd(Carbon::now()->diffInHours($value->addHour(2))) ; 
-        // if(Carbon::parse() > ($value->addHour(5)) ){
-        //     return response()->json(['status' => "good"]);
-        // }else{
-        //     return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
-        // }
-
-        // dd($value) ; 
+        if (!auth()->user()) {
+            return response()->json(['status' => "you have to provide a valid access token"]);
+        }
+        $user_id  = auth()->user()->id;
 
         $user = User::findOrFail($user_id);
-        $code =  $user->phone_confirmation_code;
-
         $status = "";
         if ($user->phone_confirmed) {
-            $status = 'user phone ' . $user->phone  . ' already confirmed';
-        } else {
-
-            if ($request->session()->has('send_attempts')) {
-                $attempts = $request->session()->get('send_attempts');
-                if ($attempts >= 3) {
-                    $value = $request->session()->get('last_send_time');
-                    if (Carbon::parse() > ($value->addHour(1))) {
-                        $request->session()->put('send_attempts', 1);
-                        $request->session()->put('last_send_time', Carbon::now());
-                        $status =  SMS::send("confirmation code : " . $code, $user->phone, "I Friends", "9u89oJ9a0u", "Dars");
-                        return response()->json(['status' => $status]);
-                    } else {
-                        return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
-                    }
-                }
-                $request->session()->put('send_attempts', $attempts + 1);
-            } else {
-                $request->session()->put('send_attempts', 1);
-            }
-            $request->session()->put('last_send_time', Carbon::now());
-            $status =  SMS::send("confirmation code : " . $code, $user->phone, "I Friends", "9u89oJ9a0u", "Dars");
+            $status = 'user phone has phone number ' . $user->phone  . ' and its already confirmed';
+            return response()->json(['status' => $status]);
         }
+        $phone = $request->phone;
+        if (!$phone) {
+            return response()->json(['status' => "you have to provide a phone "]);
+        }
+        $user->phone = $phone;
+        $code = "";
+        for ($i = 0; $i < 6; $i++) {
+            $code = $code . rand(0, 9);
+        }
+        $user->phone_confirmation_code = $code;
+        $user->save();
+
+        if (!$request->session()->has('send_attempts')) {
+            $request->session()->put('send_attempts', 1);
+            $request->session()->put('last_send_time', Carbon::now());
+            $status =  SMS::send("confirmation code : " . $code, $phone, "I Friends", "9u89oJ9a0u", "Dars");
+            return response()->json(['status' => $status]);
+        }
+
+
+        $attempts = $request->session()->get('send_attempts');
+        if ($attempts >= 40) {
+            $value = $request->session()->get('last_send_time');
+            if (Carbon::parse() > ($value->addHour(1))) {
+                $request->session()->put('send_attempts', 1);
+                $request->session()->put('last_send_time', Carbon::now());
+                $status =  SMS::send("confirmation code : " . $code, $phone, "I Friends", "9u89oJ9a0u", "Dars");
+                return response()->json(['status' => $status]);
+            } else {
+                return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
+            }
+        }
+        $request->session()->put('send_attempts', $attempts + 1);
+        $request->session()->put('last_send_time', Carbon::now());
+        $status =  SMS::send("confirmation code : " . $code, $phone, "I Friends", "9u89oJ9a0u", "Dars");
+
         return response()->json(['status' => $status]);
     }
+
 
     public function getCategoryCourses(Request $request)
     {
@@ -214,9 +227,37 @@ class ApiController extends Controller
 
         $coursesIds = CourseEduStatgeSem::where('edu_statge_sem_id', $statgeSemIds)->get()->pluck('course_id');
         $courses = [];
+        if (auth('api')->user()) {
+            $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+            $cart = StudentCart::where('user_id', auth('api')->user()->id)->where('item_type', 'course')->pluck('item_id')->toArray();
+        } else {
+            $wishlist = [];
+            $cart = [];
+        }
+
         foreach ($coursesIds as $id) {
             $course =  Course::where(['id' => $id, 'category_id' => $request->category_id])->with('category', 'teachers', 'year')->first();
+            $numberOfuizes = Test::where('course_id', $id)->count();
+            $lessonsIds = Lesson::where('course_id', $id)->pluck('id');
+            $duration = Media::where('model_type', 'App\Models\Lesson')->whereIn('model_id', $lessonsIds)->get();
+            $multiplied = $duration->map(function ($item, $key) {
+                $d = explode(':', $item->duration);
+                return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
+            })->sum();
+
             if ($course) {
+                if (in_array($id, $wishlist)) {
+                    $course['wishlist'] = true;
+                } else {
+                    $course['wishlist'] = false;
+                }
+                if (in_array($id, $cart)) {
+                    $course['cart'] = true;
+                } else {
+                    $course['cart'] = false;
+                }
+                $course['videoDuration'] = $multiplied;
+                $course['numberOfQuizes'] = $numberOfuizes;
                 array_push($courses, $course);
             }
         }
@@ -283,7 +324,7 @@ class ApiController extends Controller
     public function vectorylink()
     {
         // dd('here') ; 
-        // $quota = SMS::checkCredit('I Friends' , '9u89oJ9a0u') ; 
+        // $status = SMS::checkCredit('I Friends' , '9u89oJ9a0u') ; 
         $status =  SMS::send("welcome To Dars", "01025130834dd", "I Friends", "9u89oJ9a0u", "Dars");
         return response()->json(['status' => $status]);
     }
@@ -344,6 +385,17 @@ class ApiController extends Controller
         $userForRole->save();
         $userForRole->assignRole('student');
         $user->save();
+
+
+        //assign user to free package
+
+        $userPack = new UserPAckage();
+        $userPack->user_id = $user->id;
+        $userPack->package_id = 4;
+        $userPack->status = 'active';
+        $userPack->expire_at =  '2020-2-1 16:45:24';
+        $userPack->save();
+
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
@@ -477,8 +529,41 @@ class ApiController extends Controller
     {
 
         $semesters = EduStageSemester::where('edu_stage_id', $request->statge_id)->get();
-
         $statgeSemIds = EduStageSemester::where('edu_stage_id', $request->statge_id)->with('courses')->get();
+        if (auth('api')->user()) {
+            $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+            $cart = StudentCart::where('user_id', auth('api')->user()->id)->where('item_type', 'course')->pluck('item_id')->toArray();
+        } else {
+            $wishlist = [];
+            $cart = [];
+        }
+        $lessonsIds = [];
+        foreach ($statgeSemIds as $stage) {
+            foreach ($stage->courses as $course) {
+                $lessonsIds = Lesson::where('course_id', $course->id)->pluck('id');
+                $numberOfuizes = Test::where('course_id', $course->id)->count();
+                $duration = Media::where('model_type', 'App\Models\Lesson')->whereIn('model_id', $lessonsIds)->get();
+
+                $multiplied = $duration->map(function ($item, $key) {
+                    $d = explode(':', $item->duration);
+                    return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
+                })->sum();
+                $course->videoDuration = $multiplied;
+                if (in_array($course->id, $wishlist)) {
+                    $course['wishlist'] = true;
+                } else {
+                    $course['wishlist'] = false;
+                }
+                if (in_array($course->id, $cart)) {
+                    $course['cart'] = true;
+                } else {
+                    $course['cart'] = false;
+                }
+
+                $course['numberOfQuizes'] = $numberOfuizes;
+            }
+        }
+
 
         $newCourses = [];
         foreach ($statgeSemIds as $key => $course) {
@@ -582,11 +667,40 @@ class ApiController extends Controller
         if ($teacher == null) {
             return response()->json(['status' => 'failure', 'result' => null]);
         }
+        if (auth('api')->user()) {
+            $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+            $cart = StudentCart::where('user_id', auth('api')->user()->id)->where('item_type', 'course')->pluck('item_id')->toArray();
+        } else {
+            $wishlist = [];
+            $cart = [];
+        }
         $courses = $teacher->courses->take(5);
+        foreach ($courses as $course) {
+            $numberOfuizes = Test::where('course_id', $course)->count();
+            $lessonsIds = Lesson::where('course_id', $course->id)->pluck('id');
+            $duration = Media::where('model_type', 'App\Models\Lesson')->whereIn('model_id', $lessonsIds)->get();
+            $multiplied = $duration->map(function ($item, $key) {
+                $d = explode(':', $item->duration);
+                return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
+            })->sum();
+            $course['videoDuration'] = $multiplied;
+            $course['numberOfQuizes'] = $numberOfuizes;
+            if (in_array($course->id, $wishlist)) {
+                $course['wishlist'] = true;
+            } else {
+                $course['wishlist'] = false;
+            }
+            if (in_array($course->id, $cart)) {
+                $course['cart'] = true;
+            } else {
+                $course['cart'] = false;
+            }
+        }
         $bundles = $teacher->bundles->take(5);
         $profile = $teacher->teacherProfile->first();
         return response()->json(['status' => 'success', 'result' => ['teacher' => $teacher, 'courses' => $courses, 'bundles' => $bundles, 'profile' => $profile]]);
     }
+
     public function StatgeCourses($statge_id)
     {
 
@@ -600,6 +714,12 @@ class ApiController extends Controller
         $newCourses = [];
         foreach ($statgeSemIds as $key => $course) {
             foreach ($statgeSemIds[$key]->courses as $index => $element) {
+                foreach ($statgeSemIds[$key]->courses[$index]->teachers as $singleteacher) {
+
+                    //  $teacher = User::find(courses[$index]->teacher_id);
+                    $noOfCourses = $singleteacher->courses()->count();
+                    $singleteacher['noOfCourses'] = $noOfCourses;
+                }
 
                 if ($statgeSemIds[$key]->courses[$index]['created_at'] >= Carbon::today()->subDays(3)) {
                     $newCourses[] = $statgeSemIds[$key]->courses[$index];
@@ -612,6 +732,8 @@ class ApiController extends Controller
         }
         return response()->json(['status' => 'success', 'semesters' => $statgeSemIds, 'newCourses' => $newCourses, 'semesterNames' => $semesterNames]);
     }
+
+
     public function getSingleUser(Request $request)
     {
         $user = User::find($request->user_id);
@@ -633,6 +755,34 @@ class ApiController extends Controller
             return response()->json(['status' => 'failure', 'result' => null]);
         }
         $courses = $teacher->courses()->get();
+        if (auth('api')->user()) {
+            $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+            $cart = StudentCart::where('user_id', auth('api')->user()->id)->where('item_type', 'course')->pluck('item_id')->toArray();
+        } else {
+            $wishlist = [];
+            $cart = [];
+        }
+        foreach ($courses as $course) {
+            $numberOfuizes = Test::where('course_id', $course)->count();
+            if (in_array($course->id, $wishlist)) {
+                $course['wishlist'] = true;
+            } else {
+                $course['wishlist'] = false;
+            }
+            if (in_array($course->id, $cart)) {
+                $course['cart'] = true;
+            } else {
+                $course['cart'] = false;
+            }
+            $lessonsIds = Lesson::where('course_id', $course->id)->pluck('id');
+            $duration = Media::where('model_type', 'App\Models\Lesson')->whereIn('model_id', $lessonsIds)->get();
+            $multiplied = $duration->map(function ($item, $key) {
+                $d = explode(':', $item->duration);
+                return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
+            })->sum();
+            $course['videoDuration'] = $multiplied;
+            $course['numberOfQuizes'] = $numberOfuizes;
+        }
         return response()->json(['status' => 'success', 'result' => ['teacher' => $teacher, 'courses' => $courses]]);
     }
 
@@ -737,16 +887,19 @@ class ApiController extends Controller
 
         $singleCourse = Course::where('id', $request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category', 'chapters')->with('publishedLessons', 'tests')->first();
         $Coursesss = $singleCourse->students()->get();
-
+        $numberOfuizes = Test::where('course_id', $request->course_id)->count();
         $MyCourses = [];
+        if (auth('api')->user()) {
+            foreach ($Coursesss as $i => $courseee) {
+                if ($Coursesss[$i]->pivot->user_id == auth('api')->user()->id) {
 
-        foreach ($Coursesss as $i => $courseee) {
-            if ($Coursesss[$i]->pivot->user_id == auth('api')->user()->id) {
+                    $MyCourses[] = $Coursesss[$i]->pivot->course_id;
+                }
+                // if(in_array(auth('api')->user()->id , $myCourses[$i]->pivot->user_id))
 
-                $MyCourses[] = $Coursesss[$i]->pivot->course_id;
             }
-            // if(in_array(auth('api')->user()->id , $myCourses[$i]->pivot->user_id))
-
+        } else {
+            $MyCourses = [];
         }
         // $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
 
@@ -769,7 +922,12 @@ class ApiController extends Controller
         $lessons = $course->courseTimeline()->orderby('sequence', 'asc')->get();
 
 
-
+        $lessonsIds = Lesson::where('course_id', $course->id)->pluck('id');
+        $duration = Media::where('model_type', 'App\Models\Lesson')->whereIn('model_id', $lessonsIds)->get();
+        $multiplied = $duration->map(function ($item, $key) {
+            $d = explode(':', $item->duration);
+            return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
+        })->sum();
         if (\Auth::check()) {
             $completed_lessons = \Auth::user()->chapters()->where('course_id', $course->id)->get()->pluck('model_id')->toArray();
             $continue_course = $course->courseTimeline()->orderby('sequence', 'asc')->whereNotIn('model_id', $completed_lessons)->first();
@@ -811,6 +969,25 @@ class ApiController extends Controller
             $url = $match[1];
             $mediaVideo['file_name'] = $url;
         }
+        $course['videoDuration'] = $multiplied;
+        $course['numberOfQuizes'] = $numberOfuizes;
+
+        if (auth('api')->user()) {
+
+            $userid = auth('api')->user()->id;
+            $userAssigned = UserPackage::where('user_id', $userid)->first();
+            if ($userAssigned) {
+                // $packegeAssigned = Package::where('id',$userAssigned->package_id)->first();
+                if ($userAssigned->status == "active") {
+
+                    $purchased_course = true;
+                }
+            }
+        }
+
+
+
+        // }
         $result = [
             'course' => $course,
             'course_video' => $mediaVideo,
@@ -900,13 +1077,13 @@ class ApiController extends Controller
             $courseSequence = [];
             foreach ($courseTimeLine as $key => $item) {
                 if ($item->model_type == Chapter::class) {
-                    $courseChapter[$item->id]['data'] = $item->model;
-                    $courseChapter[$item->id]['lessons'] = $lesson->course->courseTimeline()
+                    $courseChapter[$item->id]['chapter'] = $item->model;
+                    $courseChapter[$item->id]['chapter']['lessons'] = $lesson->course->courseTimeline()
                         ->with(['model', 'model.downloadableMedia', 'model.notes', 'model.mediaPDF', 'model.mediaAudio', 'model.mediaVideo'])
                         ->where('chapter_id', $item->model_id)
                         ->where('model_type', Lesson::class)
                         ->orderBy('sequence', 'asc')->get();
-                    $courseChapter[$item->id]['test'] = $lesson->course->courseTimeline()
+                    $courseChapter[$item->id]['chapter']['test'] = $lesson->course->courseTimeline()
                         ->with(['model', 'model.testResult', 'model.questions'])
                         ->where('chapter_id', $item->model_id)
                         ->where('model_type', Test::class)
@@ -919,10 +1096,10 @@ class ApiController extends Controller
                     if ($prev_Chapter) {
                         $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
                     }
-                    foreach ($courseChapter[$item->id]['lessons'] as $index => $chapterLesson) {
+                    foreach ($courseChapter[$item->id]['chapter']['lessons'] as $index => $chapterLesson) {
                         $chapterLesson['canView'] = true;
                         if ($index != 0) {
-                            $prevLesson = $courseChapter[$item->id]['lessons'][$index - 1];
+                            $prevLesson = $courseChapter[$item->id]['chapter']['lessons'][$index - 1];
                             $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
                             if (!$LessonCompleted) {
                                 $chapterLesson['key'] = $index;
@@ -943,6 +1120,7 @@ class ApiController extends Controller
                             }
                         }
                     }
+
                     array_push($courseSequence, $courseChapter[$item->id]);
                 }
             }
@@ -977,6 +1155,7 @@ class ApiController extends Controller
             foreach ($chapters as $key => $chapter) {
                 $chapters[$key]->lessons = $chapters[$key]->lessons()->with(['mediaVideo', 'notes', 'mediaAudio', 'mediaPDF', 'downloadableMedia'])->get();
             }
+
             $results = [
                 'lesson' => $lesson,
                 'previous_lesson' => $previous_lesson,
@@ -984,7 +1163,7 @@ class ApiController extends Controller
                 'is_certified' => $is_certified,
                 'course_progress' => $course_progress,
                 'course' => $course,
-                'chapters' => $chapters,
+                // 'chapters' => $chapters,
                 'course_page' => $course_page,
                 'course_timeline' => $courseSequence,
             ];
@@ -2399,21 +2578,54 @@ class ApiController extends Controller
                 $fieldsList[] = '' . $field->name;
             }
         }
-        $output = $this->userRepository->update(
-            $request->user()->id,
-            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location', 'avatar_type'),
-            $request->has('avatar_location') ? $request->file('avatar_location') : false
-        );
+        if ($request->coucntry_id && $request->edu_system_id && $request->edu_stage_id) {
+            $output = $this->userRepository->update(
+                $request->user()->id,
+                $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location', 'avatar_type', 'coucntry_id', 'edu_system_id', 'edu_stage_id'),
+                $request->has('avatar_location') ? $request->file('avatar_location') : false
+            );
+
+
+            $studentData = studentData::where('user_id', $request->user()->id)->firstOrFail();
+
+            $studentData->country_id = $request->country_id;
+            $studentData->edu_system_id = $request->edu_system_id;
+            $studentData->edu_stage_id = $request->edu_stage_id;
+
+            $studentData->update($request->all());
+        } else {
+            $output = $this->userRepository->update(
+                $request->user()->id,
+                $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location', 'avatar_type'),
+                $request->has('avatar_location') ? $request->file('avatar_location') : false
+            );
+        }
+
 
         // E-mail address was updated, user has to reconfirm
-        if (is_array($output) && $output['email_changed']) {
-            auth()->logout();
+        // if (is_array($output) && $output['email_changed']) {
+        //     auth()->logout();
 
-            return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.email_changed_notice')]);
-        }
+        //     return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.email_changed_notice')]);
+        // }
 
         return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated')]);
     }
+    public function updateStudentdata(Request $request)
+    {
+        // return 1;
+
+        $studentData = studentData::where('user_id', $request->user()->id)->firstOrFail();
+
+        $studentData->country_id = $request->country_id;
+        $studentData->edu_system_id = $request->edu_system_id;
+        $studentData->edu_stage_id = $request->edu_stage_id;
+
+        $studentData->update($request->all());
+
+        return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated')]);
+    }
+
 
     /**
      * Update Password
@@ -3599,35 +3811,22 @@ class ApiController extends Controller
         ));
         $result = curl_exec($ch);
         $result = json_decode($result, true);
-        dd($result);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function getPackages()
     {
         $packages = Package::get();
+        foreach ($packages as $i => $pack) {
+            $packages[$i]->features =  json_decode($packages[$i]->features);
+        }
         return response()->json(['success' => true, 'data' => $packages]);
     }
 
     public function getPackage($id)
     {
         $Package = Package::where('id', $id)->first();
+        $Package->features = json_decode($Package->features);
+
         return response()->json(['success' => true, 'data' => $Package]);
     }
     public function savePackage(Request $request)
@@ -3637,15 +3836,22 @@ class ApiController extends Controller
 
         $package = new Package();
         $package = $package->fill($request->all());
+        $package->features = json_encode($request['allFeatures']);
         $package->save();
         return response()->json(['success' => true, 'data' => $package]);
     }
 
     public function deletePackage($id)
     {
-        $package = Package::findorfail($id);
-        $package->delete();
-        return response()->json(['success' => true, 'data' => $package]);
+        $userAssigned = UserPAckage::where('package_id', $id)->where('expire_at', '<=', Carbon::now())->first();
+        if ($userAssigned) {
+
+            return response()->json(['msg' => 'There are student assigned to this package you can not delete it !']);
+        } else {
+            $package = Package::findorfail($id);
+            $package->delete();
+            return response()->json(['success' => true, 'data' => $package]);
+        }
     }
     public function updatePackage(Request $request, $id)
     {
@@ -3653,6 +3859,38 @@ class ApiController extends Controller
 
         $package = Package::where('id', $id)->first();
         $package->update($request->all());
+        $package->features = json_encode($request['allFeatures']);
+        $package->save();
         return response()->json(['success' => true, 'data' => $package]);
+    }
+
+    public function assignPackage(Request $request)
+    {
+
+        $userId = auth()->user()->id;
+        $package = Package::findorfail($request->package_id)->first();
+        $userPack = new UserPAckage();
+        $userPack->user_id = $userId;
+        $userPack->package_id = $request->package_id;
+        $userPack->status = 'active';
+        $dt = Carbon::now()->addMonths($package->time);
+        $userPack->expire_at =  $dt;
+        $userPack->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteAllCartItems()
+    {
+        $userId = auth()->user()->id;
+        $cartItems = StudentCart::where('user_id', $userId)->delete();
+        return response()->json(['status' => 'Cart Items Deleted Successfully']);
+    }
+
+    public function searchCourses(Request $request)
+    {
+        $courses = Course::where('title', 'like', '%' . $request->searchTerm . '%')
+            ->orWhere('title_ar', 'like', '%' . $request->searchTerm . '%')->get();
+        return response()->json(['courses' => $courses]);
     }
 }

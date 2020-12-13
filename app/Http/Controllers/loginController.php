@@ -66,8 +66,7 @@ use Newsletter;
 
 class loginController extends Controller
 {
-    use FileUploadTrait;
-    use SendsPasswordResetEmails;
+    
 
 
     public function __construct(UserRepository $userRepository)

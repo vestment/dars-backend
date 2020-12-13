@@ -31,6 +31,8 @@ return array(
                              'eduStatge' => 'Education Statge',
                              'semester' => 'Semester',
                              'year' => 'Year',
+                             'type' => 'Type',
+
                             'knowledge' => 'What You will learn',
                             'published' => 'Published',
                             'unpublished' => 'Not Published',

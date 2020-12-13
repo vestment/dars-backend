@@ -95,6 +95,22 @@
                         <div class="card-body">
 
                             @if (Auth::user()->isAdmin() || auth()->user()->hasRole('academy'))
+                            <div class="row">
+                                <div class="col-10 form-group ">
+                                    {!! Form::label('type',trans('labels.backend.courses.fields.type'), ['class' => 'control-label']) !!}
+                                    <select name="type"  class="form-control select2"  required = true >
+                                    @if($course->type == 'dars')
+                                    <option selected value="dars">Dars</option> 
+                                    <option value="dars_plus">Dars Plus</option>
+                                    @else
+                                    <option  value="dars">Dars</option> 
+                                    <option selected value="dars_plus">Dars Plus</option>
+@endif
+                                    </select>
+
+                                </div>
+                               
+                            </div>
 
 
                             <div class="row">

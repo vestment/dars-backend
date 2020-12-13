@@ -17,7 +17,7 @@ class CategoriesController extends Controller
 {
     
 
-    use FileUploadTrait;
+    
 
     /**
      * Display a listing of Category.
