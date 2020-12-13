@@ -144,9 +144,9 @@ class ApiController extends Controller
 //        }
         return response()->json(['status' => 'success', 'fields' => $fields]);
     }
-    public function checkPhoneConfirmationCode(Request $request , $user_id){
+    public function checkPhoneConfirmationCode(Request $request ){
         $code =  $request->code ;
-        $user = User::findOrFail($user_id) ; 
+        $user = User::findOrFail($request->user_id) ; 
         $status = "wrong code" ; 
         if($user->phone_confirmed){
             return response()->json(['status' => 'already confirmed']);
@@ -159,21 +159,11 @@ class ApiController extends Controller
         return response()->json(['status' => $status]);
     }
 
-    public function sendCodeToUserPhone(Request $request , $user_id){
-        // $value = $request->session()->get('last_send_time', 'default');
+    public function sendCodeToUserPhone(Request $request){
 
-        // // dd(Carbon::parse() ) ; 
-        // dd(($value->addHour(6))) ; 
-        // // dd(Carbon::now()->diffInHours($value->addHour(2))) ; 
-        // if(Carbon::parse() > ($value->addHour(5)) ){
-        //     return response()->json(['status' => "good"]);
-        // }else{
-        //     return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
-        // }
-         
-        // dd($value) ; 
         
-        $user = User::findOrFail($user_id) ; 
+        $user = User::findOrFail($request->user_id) ; 
+        // dd($user);
         $code =  $user->phone_confirmation_code ;
         
         $status = "" ; 
