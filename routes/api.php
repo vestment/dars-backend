@@ -69,20 +69,21 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         });
     });
 
-    Route::post('send-code-to-user-phone/{user_id}','ApiController@sendCodeToUserPhone');
-    Route::post('check-phone-confirmation-code/{user_id}','ApiController@checkPhoneConfirmationCode');
-
+    
+   
+    
     Route::group(['middleware' => 'auth:api'],function (){
-
+        
         // Route::post('continue-login' , '')
-        Route::get('pay-offline','ApiController@offlinePayment');
+    Route::post('send-code-to-user-phone','ApiController@sendCodeToUserPhone');
+    Route::post('check-phone-confirmation-code','ApiController@checkPhoneConfirmationCode');
+    Route::get('pay-offline','ApiController@offlinePayment');
 
-
-        Route::get('get-user','ApiController@getMyAccount');
-Route::get('allCartItems/remove','ApiController@deleteAllCartItems');
-        Route::post('update-password','ApiController@updatePassword');
-        Route::post('invoices','ApiController@getInvoices');
-        Route::post('show-invoice','ApiController@showInvoice');
+    Route::get('get-user','ApiController@getMyAccount');
+    Route::get('allCartItems/remove','ApiController@deleteAllCartItems');
+    Route::post('update-password','ApiController@updatePassword');
+    Route::post('invoices','ApiController@getInvoices');
+    Route::post('show-invoice','ApiController@showInvoice');
 
     Route::post('single-lesson','ApiController@getLesson');
     Route::post('single-test','ApiController@getTest');

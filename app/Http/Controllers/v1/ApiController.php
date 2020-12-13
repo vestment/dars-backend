@@ -144,7 +144,16 @@ class ApiController extends Controller
 //        }
         return response()->json(['status' => 'success', 'fields' => $fields]);
     }
-    public function checkPhoneConfirmationCode(Request $request , $user_id){
+    public function checkPhoneConfirmationCode(Request $request){
+        
+        if(!auth()->user()){
+            return response()->json(['status' => "you have to provide a valid access token"]);
+
+        }
+        $user_id  = auth()->user()->id;
+
+
+
         $code =  $request->code ;
         $user = User::findOrFail($user_id) ; 
         $status = "wrong code" ; 
@@ -159,57 +168,59 @@ class ApiController extends Controller
         return response()->json(['status' => $status]);
     }
 
-    public function sendCodeToUserPhone(Request $request , $user_id){
-        // $value = $request->session()->get('last_send_time', 'default');
+    public function sendCodeToUserPhone(Request $request ){
 
-        // // dd(Carbon::parse() ) ; 
-        // dd(($value->addHour(6))) ; 
-        // // dd(Carbon::now()->diffInHours($value->addHour(2))) ; 
-        // if(Carbon::parse() > ($value->addHour(5)) ){
-        //     return response()->json(['status' => "good"]);
-        // }else{
-        //     return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
-        // }
-         
-        // dd($value) ; 
-        
+        if(!auth()->user()){
+            return response()->json(['status' => "you have to provide a valid access token"]);
+
+        }
+        $user_id  = auth()->user()->id;
+
         $user = User::findOrFail($user_id) ; 
-        $code =  $user->phone_confirmation_code ;
-        
         $status = "" ; 
         if($user->phone_confirmed){
-            $status = 'user phone ' . $user->phone  . ' already confirmed' ; 
+            $status = 'user phone has phone number ' . $user->phone  . ' and its already confirmed' ; 
+            return response()->json(['status' => $status]);
+
         }
-        else{
+        $phone = $request->phone ; 
+        if(!$phone){
+            return response()->json(['status' => "you have to provide a phone "]);
+        }
+        $user->phone = $phone ; 
+        $code = "" ; 
+        for($i=0;$i<6;$i++){
+            $code = $code . rand(0,9) ; 
+        }
+        $user->phone_confirmation_code = $code ; 
+        $user->save() ; 
 
-            if ($request->session()->has('send_attempts')) {
-                $attempts = $request->session()->get('send_attempts') ; 
-                if($attempts>=3){
-                    $value = $request->session()->get('last_send_time');
-                    if(Carbon::parse() > ($value->addHour(1)) ){
-                        $request->session()->put('send_attempts', 1 );
-                        $request->session()->put('last_send_time', Carbon::now());
-                        $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
-                        return response()->json(['status' => $status]);
-                    }
-                    else{
-                        return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
+        if (!$request->session()->has('send_attempts')) {
+            $request->session()->put('send_attempts', 1 );
+            $request->session()->put('last_send_time', Carbon::now());
+            $status =  SMS::send("confirmation code : " . $code  ,$phone,"I Friends","9u89oJ9a0u","Dars");
+            return response()->json(['status' => $status]);
+        }
 
-                    }
-                }
-                $request->session()->put('send_attempts', $attempts+1 );
-                $request->session()->put('last_send_time', Carbon::now());
-                $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
-
-            }
-            else{
+        
+        $attempts = $request->session()->get('send_attempts') ; 
+        if($attempts>=3){
+            $value = $request->session()->get('last_send_time');
+            if(Carbon::parse() > ($value->addHour(1)) ){
                 $request->session()->put('send_attempts', 1 );
                 $request->session()->put('last_send_time', Carbon::now());
-                $status =  SMS::send("confirmation code : " . $code  ,$user->phone,"I Friends","9u89oJ9a0u","Dars");
+                $status =  SMS::send("confirmation code : " . $code  ,$phone,"I Friends","9u89oJ9a0u","Dars");
+                return response()->json(['status' => $status]);
             }
+            else{
+                return response()->json(['status' => "you will have three attempts after one hour of the last attempt"]);
 
-
+            }
         }
+        $request->session()->put('send_attempts', $attempts+1 );
+        $request->session()->put('last_send_time', Carbon::now());
+        $status =  SMS::send("confirmation code : " . $code  ,$phone,"I Friends","9u89oJ9a0u","Dars");
+
         return response()->json(['status' => $status]);
     }
 
@@ -347,14 +358,7 @@ class ApiController extends Controller
             'password' => bcrypt($request->password)
         ]);
         
-        if(isset($request->phone)){
-            $code = "" ; 
-            for($i=0;$i<6;$i++){
-                $code = $code . rand(0,9) ; 
-            }
-            $user->phone_confirmation_code = $code ; 
-            // dd($user->phone_confirmation_code) ; 
-        }
+        
 
         $user->dob = isset($request->dob) ? $request->dob : NULL;
         $user->phone = isset($request->phone) ? $request->phone : NULL;
