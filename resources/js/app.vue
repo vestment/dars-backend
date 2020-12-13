@@ -9,6 +9,8 @@
 <script>
 import addCategory from './components/Categories/add.vue'
 import semesters from './components/Categories/Semesters.vue'
+import packages from './components/packages/add.vue'
+
 
 
 import axios from "./axios";
@@ -22,7 +24,8 @@ export default {
   },
   components: {
     addCategory,
-    semesters
+    semesters,
+    packages
    
   },
 

@@ -71,6 +71,14 @@
                         <span class="title">@lang('menus.backend.sidebar.add-eduSysy.title')</span>
                     </a>
                 </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link {{ $request->segment(2) == 'packages' ? 'active' : '' }}"
+                       href="{{ route('admin.packages') }}">
+                        <i class="nav-icon icon-folder-alt"></i>
+                        <span class="title">@lang('menus.backend.sidebar.packages.title')</span>
+                    </a>
+                </li>
                
             @endcan
             @if((!auth()->user()->hasRole('student')) && (auth()->user()->hasRole('teacher') || auth()->user()->isAdmin() || auth()->user()->hasAnyPermission(['course_access','lesson_access','test_access','question_access','bundle_access'])))

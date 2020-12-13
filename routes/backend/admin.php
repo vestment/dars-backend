@@ -57,10 +57,14 @@ Route::post('academies/status', ['uses' => 'Admin\AcademyController@updateStatus
     //===== FORUMS Routes =====//
     Route::resource('forums-category', 'Admin\ForumController');
     Route::get('forums-category/status/{id}', 'Admin\ForumController@status')->name('forums-category.status');
+
+    // vue-routes
     Route::get('addcategory', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addcategory']);
     Route::get('semesters', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'semesters']);
     Route::get('years', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'subjects']);
     Route::get('addCourse', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'addCourse']);
+    Route::get('packages', ['uses' => 'Admin\CategoriesController@addCategory', 'as' => 'packages']);
+
     Route::get('edusys', 'Admin\CoursesController@getCountryedusys')->name('country.eduSys');
     Route::get('ES-edustatges', 'Admin\CoursesController@getEduStatgesOfES')->name('eduSys.eduStatges');
     Route::get('ES-semesters', 'Admin\CoursesController@getSemestersOfES')->name('eduStatges.semesters');

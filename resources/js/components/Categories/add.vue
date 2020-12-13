@@ -28,7 +28,7 @@
                     <div  class="container-fluid plr_30" v-if="errors.length">
                         <div  class="row justify-content-center">
                              <div  class="col-lg-12">
-                                 <div class="alert alert-danger" role="alert" v-for="error in errors">
+                                 <div class="alert alert-danger" role="alert" v-for="error in errors" :key="error.id">
                                     {{error}}
                                 </div>
                              </div>    
@@ -257,7 +257,7 @@
                                             <h5 >Add Education Stage</h5>
                                         </div> 
                                         <div  class="modal-body">
-                                            <div class="alert alert-danger" role="alert" v-for="error in err">
+                                            <div class="alert alert-danger" role="alert" v-for="error in err" :key="error.id">
                                                         {{error}}
                                             </div>
                                             <div  class="form-row">

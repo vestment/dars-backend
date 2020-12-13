@@ -41,8 +41,9 @@ class Media extends Model
     }
     public function getDurationAttribute(){
         $time = strtotime($this->attributes['duration']);
-        return sprintf("%s Hours %s Minutes", date("H", $time), date("i", $time));
-    }
+        // return sprintf("%s Hours %s Minutes", date("H", $time), date("i", $time));
+        return $this->attributes['duration'];
+    } 
     public function uploader() {
         return $this->belongsTo(User::class,'user_id');
     }

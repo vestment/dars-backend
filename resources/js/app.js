@@ -14,6 +14,8 @@ import router from './router'
 /* Vue. Main component */
 import App from './App.vue'
 import addCategory from './components/Categories/add.vue'
+
+
 // Axios & Echo global
 
 

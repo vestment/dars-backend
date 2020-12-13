@@ -160,7 +160,7 @@ class User extends Authenticatable implements MessageableInterface
     }
      public function wishList()
      {
-         return $this->belongsToMany(Course::class, 'wishlist')->with('category')->withTimestamps()->withPivot(['wishlist'])->wherePivot('wishlist', 1);
+         return $this->belongsToMany(Course::class, 'wishlist')->with('category','teachers')->withTimestamps()->withPivot(['wishlist'])->wherePivot('wishlist', 1);
      }
 
     public function bundles()
@@ -313,7 +313,7 @@ class User extends Authenticatable implements MessageableInterface
 
     public function studentData()
     {
-        return $this->hasOne(studentData::class)->with('country','EduStage');
+        return $this->hasOne(studentData::class)->with('country','EduStage','EduSys');
     }
 
 

@@ -24,6 +24,9 @@ Route::group([],function (){
 });
 
 Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
+      Route::get('get-packages', 'ApiController@getPackages');
+            Route::post('search-courses', 'ApiController@searchCourses');
+
     Route::get('sponsors','ApiController@getSponsors');
     Route::post('send-msg','ApiController@vectorylink');
     Route::get('get-countries', 'ApiController@getCountries');
@@ -33,8 +36,9 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::post('teacher-courses','ApiController@getTeacherCourses');
     Route::post('teacher-bundles','ApiController@getTeacherBundles');
     Route::post('single-teacher','ApiController@getSingleTeacher');
+      Route::get('allcourses/{statge_id}','ApiController@StatgeCourses');
     Route::post('all-courses','ApiController@coursesOfStatge');
-    Route::get('allcourses/{statge_id}','ApiController@StatgeCourses');
+  
     // Route::post('my-purchases','ApiController@getMyPurchases');
     // Route::post('teachers','ApiController@getTeachers');
     Route::post('CategoryCourse','ApiController@getCategoryCourses');
@@ -71,14 +75,15 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::group(['middleware' => 'auth:api'],function (){
         
         // Route::post('continue-login' , '')
-        Route::post('send-code-to-user-phone','ApiController@sendCodeToUserPhone');
-        Route::post('check-phone-confirmation-code','ApiController@checkPhoneConfirmationCode');
+    Route::post('send-code-to-user-phone','ApiController@sendCodeToUserPhone');
+    Route::post('check-phone-confirmation-code','ApiController@checkPhoneConfirmationCode');
+    Route::get('pay-offline','ApiController@offlinePayment');
 
-        Route::get('get-user','ApiController@getMyAccount');
-
-        Route::post('update-password','ApiController@updatePassword');
-        Route::post('invoices','ApiController@getInvoices');
-        Route::post('show-invoice','ApiController@showInvoice');
+    Route::get('get-user','ApiController@getMyAccount');
+    Route::get('allCartItems/remove','ApiController@deleteAllCartItems');
+    Route::post('update-password','ApiController@updatePassword');
+    Route::post('invoices','ApiController@getInvoices');
+    Route::post('show-invoice','ApiController@showInvoice');
 
     Route::post('single-lesson','ApiController@getLesson');
     Route::post('single-test','ApiController@getTest');
@@ -88,7 +93,7 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
     Route::get('get-myWishlist','ApiController@getMyWishlist');
     Route::post('remove-from-Wishlist','ApiController@removeFromWishlist');
     Route::post('update-account','ApiController@updateMyAccount');
-
+    Route::post('update-edu-info','ApiController@updateStudentdata');
         Route::post('create-country', 'ApiController@saveCountry');
         Route::get('country/{id}', 'ApiController@getCountry');
         Route::post('edit/country/{id}', 'ApiController@updateCountry');
@@ -113,6 +118,13 @@ Route::group(['prefix' => 'v1','namespace'=>'v1'],function (){
         Route::get('year/{id}', 'ApiController@getYear');
         Route::post('year/edit/{id}', 'ApiController@updateYear');
         Route::delete('year/remove/{id}', 'ApiController@deleteYear');
+      
+        Route::post('create/package', 'ApiController@savePackage');
+        Route::get('package/{id}', 'ApiController@getPackage');
+        Route::post('package/edit/{id}', 'ApiController@updatePackage');
+        Route::delete('package/remove/{id}', 'ApiController@deletePackage');
+        Route::post('package/assign', 'ApiController@assignPackage');
+
         Route::post('courses','ApiController@getCourses');
         Route::post('bundles','ApiController@getBundles');
         Route::post('search','ApiController@search');
