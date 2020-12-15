@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -73,9 +74,7 @@ class DashboardController extends Controller
                         }
                     }
                     $threads = Collection::make(array_merge($unreadThreads, $threads))->take(10);
-
                 }
-
             } elseif (auth()->user()->hasRole('academy')) {
                 //IF logged in user is Academy
                 $teachers = TeacherProfile::where('academy_id', '=', auth()->user()->id)->pluck('user_id');
@@ -113,9 +112,7 @@ class DashboardController extends Controller
                         }
                     }
                     $threads = Collection::make(array_merge($unreadThreads, $threads))->take(10);
-
                 }
-
             } elseif (auth()->user()->hasRole('administrator')) {
                 $students_count = User::role('student')->count();
                 $teachers_count = User::role('teacher')->count();
@@ -124,13 +121,11 @@ class DashboardController extends Controller
                 $recent_contacts = Contact::orderBy('created_at', 'desc')->take(10)->get();
             } elseif (auth()->user()->hasRole('student')) {
                 $parent = auth()->user()->parents;
-                
             } elseif (auth()->user()->hasRole('parent')) {
                 $parent = auth()->user();
                 $studentsIds = $parent->students->pluck('id');
                 $purchased_courses = Course::whereHas('students', function ($query) use ($studentsIds) {
                     $query->whereIn('user_id', $studentsIds);
-
                 });
                 $recent_reviews = Review::where('reviewable_type', '=', 'App\Models\Course')
                     ->whereIn('reviewable_id', $purchased_courses->pluck('id'))
@@ -144,13 +139,14 @@ class DashboardController extends Controller
         return view('backend.dashboard', compact('parent', 'purchased_courses', 'students_count', 'recent_reviews', 'threads', 'purchased_bundles', 'teachers_count', 'courses_count', 'bundles_count', 'recent_orders', 'recent_contacts', 'pending_orders'));
     }
 
-    public function cancleRequest(Request $request){
+    public function cancleRequest(Request $request)
+    {
 
         $order = Order::findOrfail($request->order_id);
         $order->delete();
 
 
-        return ("deleted");       
+        return ("deleted");
 
 
         // dd($request->all());
