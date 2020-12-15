@@ -139,13 +139,13 @@ class UserRepository extends BaseRepository
      */
     public function update($id, array $input, $image = false)
     {
-        // return $input;
+       
         $user = $this->getById($id);
-        $user->ar_first_name = $input['ar_first_name'];
-        $user->ar_last_name = $input['ar_last_name'];
-        // $user->first_name = $input['first_name'];
-        // $user->last_name = $input['last_name'];
-        // $user->avatar_type = $input['avatar_type'];
+        // $user->ar_first_name = $input['ar_first_name'];
+        // $user->ar_last_name = $input['ar_last_name'];
+         $user->first_name = $input['first_name'];
+         $user->last_name = $input['last_name'];
+        $user->avatar_type = $input['avatar_type'];
         // $user->dob = isset($input['dob']) ? $input['dob'] : NULL ;
         $user->phone = isset($input['phone']) ? $input['phone'] : NULL ;
         // $user->gender = isset($input['gender']) ? $input['gender'] : NULL;
@@ -153,7 +153,7 @@ class UserRepository extends BaseRepository
         // $user->city =  isset($input['city']) ? $input['city'] : NULL;
         // $user->pincode = isset($input['pincode']) ? $input['pincode'] : NULL;
         // $user->state = isset($input['state']) ? $input['state'] : NULL;
-        // $user->country = $input['country'];
+        // $user->country = isset($input['country']) ? $input['country'] : NULL;
         $user->save();
         // Upload profile image if necessary
         if ($image) {
@@ -208,7 +208,6 @@ class UserRepository extends BaseRepository
 
         return $user->save();
     }
-
     /**
      * @param      $input
      * @param bool $expired
