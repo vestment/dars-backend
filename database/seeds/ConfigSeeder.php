@@ -90,6 +90,7 @@ class ConfigSeeder extends Seeder
             'app__locale' => 'en',
             'app__display_type' => 'ltr',
             'app__currency' => 'US',
+            'phone_confirmation' => 1,
             'lesson_timer' => 0,
             'show_offers' => 1,
             'access.captcha.registration' => 0,

@@ -93,7 +93,7 @@ class ConfigController extends Controller
             $requests['retest'] = 0;
         }
         if ($request->get('phone_confirmation') == null) {
-            $requests['phone_confim'] = 0;
+            $requests['phone_confirmation'] = 0;
         }
         if ($request->get('lesson_timer') == null) {
             $requests['lesson_timer'] = 0;
@@ -110,7 +110,6 @@ class ConfigController extends Controller
                 $config = Config::firstOrCreate(['key' => $key]);
                 $config->value = $value;
                 $config->save();
-                if($key=="phone_confirmation")dd($config) ; 
 
                 if($key === 'app.locale'){
                     Locale::where('short_name','!=',$value)->update(['is_default' => 0]);
