@@ -132,8 +132,10 @@ class loginController extends Controller
         return $socialite_links;
     }
 
-public function index(){
-    
+public function index(Request $request){
+    if($request->user()){
+        return redirect('/user/dashboard');
+    }
     return view('frontend.layouts.modals.login');
 }
 

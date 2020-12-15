@@ -329,6 +329,21 @@
                             </div><!--form-group-->
 
                             <div class="form-group row">
+                                {{ html()->label(__('validation.attributes.backend.settings.general_settings.phone_confirmation'))->class('col-md-2 form-control-label')->for('less') }}
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        {{ html()->label(
+                                                html()->checkbox('phone_confirmation', config('phone_confirmation') ? true : false,1)->id('retest')
+                                                      ->class('switch-input')->value(1)
+                                                . '<span class="switch-label"></span><span class="switch-handle"></span>')
+                                            ->class('switch switch-sm switch-3d switch-primary')
+                                        }}
+                                    </div>
+                                    <small><i> {{__('labels.backend.general_settings.lesson_note')}}</i></small>
+                                </div><!--col-->
+                            </div><!--form-group-->
+
+                            <div class="form-group row">
                                 {{ html()->label(__('validation.attributes.backend.settings.general_settings.lesson_timer'))->class('col-md-2 form-control-label')->for('lesson_timer') }}
                                 <div class="col-md-10">
                                     <div class="checkbox">
