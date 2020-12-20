@@ -372,6 +372,10 @@ class ApiController extends Controller
             $user->phone_confirmation_code = $code ; 
             // dd($user->phone_confirmation_code) ; 
         }
+        $config = Config::where(['key' => 'phone_confirmation'])->first();
+        if($config){
+            $user->phone_confirmed = ($config->value==0) ? 1 :  0   ; 
+        }
 
         $user->dob = isset($request->dob) ? $request->dob : NULL;
         $user->phone = isset($request->phone) ? $request->phone : NULL;
@@ -4259,6 +4263,8 @@ else{
             }
             return response()->json(['status' => 'success', 'courses' => $courses, 'semesterNames' => $semesterNames ]);
         }
+        
+        
 
         public function addToWallet(Requets $request){
 

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'jobs',
             'sessions',
         ]);
+        $this->call(PackageSeeder::class);
         $this->call(CountrySeeder::class);
         $this->call(EduSystemSeeder::class);
         $this->call(EduStageSeeder::class);

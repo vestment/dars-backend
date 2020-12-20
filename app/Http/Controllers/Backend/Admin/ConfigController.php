@@ -52,7 +52,7 @@ class ConfigController extends Controller
             }
 
         }
-        $requests = $this->saveLogos($request);
+        $requests = $request;
         if ($request->get('access_registration') == null) {
             $requests['access_registration'] = 0;
         }
@@ -91,6 +91,9 @@ class ConfigController extends Controller
         }
         if ($request->get('retest') == null) {
             $requests['retest'] = 0;
+        }
+        if ($request->get('phone_confirmation') == null) {
+            $requests['phone_confirmation'] = 0;
         }
         if ($request->get('lesson_timer') == null) {
             $requests['lesson_timer'] = 0;
