@@ -1111,7 +1111,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                         ->with(['model', 'model.testResult', 'model.questions'])
                         ->where('chapter_id', $item->model_id)
                         ->where('model_type', Test::class)
-                        ->orderBy('sequence', 'asc')->first();
+                        ->orderBy('sequence', 'asc')->get();
                     $prev_Chapter = $lesson->course->courseTimeline()->where('sequence', '<', $item->sequence)
                         ->where('model_type', Chapter::class)
                         ->where('course_id', $item->course_id)
@@ -1261,7 +1261,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                 ->with(['model', 'model.testResult', 'model.questions'])
                 ->where('chapter_id', $item->model_id)
                 ->where('model_type', Test::class)
-                ->orderBy('sequence', 'asc')->first();
+                ->orderBy('sequence', 'asc')->get();
             $prev_Chapter = $test->course->courseTimeline()->where('sequence', '<', $item->sequence)
                 ->where('model_type', Chapter::class)
                 ->where('course_id', $item->course_id)
