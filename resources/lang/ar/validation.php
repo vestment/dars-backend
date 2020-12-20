@@ -85,6 +85,7 @@ return array (
           'retest_status' => 'إعادة الاختبار',
           'theme_layout' => 'تخطيط الموضوع',
           'lesson_timer' => 'الدرس الموقت',
+          'phone_confirmation' => 'تأكيد الهاتف',
           'one_signal_push_notification' => 'إعداد OneSignal',
           'onesignal_code' => 'الصق شفرة البرنامج النصي OneSignal هنا',
           'show_offers' => 'عرض صفحة العروض',

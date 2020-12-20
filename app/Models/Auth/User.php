@@ -316,5 +316,11 @@ class User extends Authenticatable implements MessageableInterface
         return $this->hasOne(studentData::class)->with('country','EduStage','EduSys');
     }
 
+    public function wallet()
+    {
+//        return $this->belongsTo(User::class);
+        return $this->hasone(Wallet::class, 'user_id');
+    }
+
 
 }

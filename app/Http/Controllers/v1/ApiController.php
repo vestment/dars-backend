@@ -54,6 +54,8 @@ use  App\Models\Auth\SocialAccount;
 use App\Models\SMS;
 use App\Models\Package;
 use App\Models\UserPackage;
+use App\Models\Wallet;
+
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
@@ -83,6 +85,7 @@ use App\Repositories\SemesterRepositoryInterface;
 use Purifier;
 use Messenger;
 use Newsletter;
+use Omnipay\Omnipay;
 
 
 class ApiController extends Controller
@@ -169,7 +172,9 @@ class ApiController extends Controller
     }
 
     public function sendCodeToUserPhone(Request $request ){
-
+        
+        // return $request->header('Authorization') ; 
+        // return response()->json(['status' => $request->header('Authorization')]);
         if(!auth()->user()){
             return response()->json(['status' => "you have to provide a valid access token"]);
 
@@ -204,7 +209,7 @@ class ApiController extends Controller
 
         
         $attempts = $request->session()->get('send_attempts') ; 
-        if($attempts>=3){
+        if($attempts>=40){
             $value = $request->session()->get('last_send_time');
             if(Carbon::parse() > ($value->addHour(1)) ){
                 $request->session()->put('send_attempts', 1 );
@@ -223,6 +228,7 @@ class ApiController extends Controller
 
         return response()->json(['status' => $status]);
     }
+
 
     public function getCategoryCourses(Request $request)
     {
@@ -330,7 +336,7 @@ class ApiController extends Controller
     }
     public function vectorylink(){
         // dd('here') ; 
-        // $quota = SMS::checkCredit('I Friends' , '9u89oJ9a0u') ; 
+        // $status = SMS::checkCredit('I Friends' , '9u89oJ9a0u') ; 
         $status =  SMS::send("welcome To Dars","01025130834dd","I Friends","9u89oJ9a0u","Dars");
         return response()->json(['status' => $status]);
      }
@@ -358,7 +364,18 @@ class ApiController extends Controller
             'password' => bcrypt($request->password)
         ]);
         
-        
+        if(isset($request->phone)){
+            $code = "" ; 
+            for($i=0;$i<6;$i++){
+                $code = $code . rand(0,9) ; 
+            }
+            $user->phone_confirmation_code = $code ; 
+            // dd($user->phone_confirmation_code) ; 
+        }
+        $config = Config::where(['key' => 'phone_confirmation'])->first();
+        if($config){
+            $user->phone_confirmed = ($config->value==0) ? 1 :  0   ; 
+        }
 
         $user->dob = isset($request->dob) ? $request->dob : NULL;
         $user->phone = isset($request->phone) ? $request->phone : NULL;
@@ -395,22 +412,40 @@ class ApiController extends Controller
         $userPack->expire_at =  '2020-2-1 16:45:24' ;
         $userPack->save();
         
+        $credentials = ['email'=>$user->email , 'password'=>$request->password] ; 
+        if (!Auth::attempt($credentials))
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        $user = $request->user();
+        
+        
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
         $token->expires_at = Carbon::now()->addWeeks(1);
     $token->save();
+       
         return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully created user!',
             'user' => $user,
+            'userData' =>$userData,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
-            )->toDateTimeString(),
-            'userData' => $userData
-        ], 201);
+            )->toDateTimeString()
+        ]);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Successfully created user!',
+        //     'user' => $user,
+        //     'access_token' => $tokenResult->accessToken,
+        //     'token_type' => 'Bearer',
+        //     'expires_at' => Carbon::parse(
+        //         $tokenResult->token->expires_at
+        //     )->toDateTimeString(),
+        //     'userData' => $userData
+        // ], 201);
     }
 
     /**
@@ -525,30 +560,27 @@ class ApiController extends Controller
 
     }
 
-    public function coursesOfStatge(Request $request){
+  public function coursesOfStatge(Request $request){
 
         $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
         $statgeSemIds = EduStageSemester::where('edu_stage_id',$request->statge_id)->with('courses')->get();
         if( auth('api')->user()){
         $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
         $cart = StudentCart::where('user_id',auth('api')->user()->id)->where('item_type','course')->pluck('item_id')->toArray();
-       
         }else{
             $wishlist = [];
             $cart = [];
         }
+        $coursesIds=[];
         $lessonsIds=[];
            foreach($statgeSemIds as $stage){
                foreach($stage->courses as $course){
-                $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+                   
+            //   $coursesIds= Course::where('id',$course->id)->first();
+               
                  $numberOfuizes = Test::where('course_id',$course->id)->count();
-                $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
-                
-                $multiplied = $duration->map(function ($item, $key) {
-                    $d = explode(':', $item->duration);
-                return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
-                })->sum();
-                $course->videoDuration=$multiplied;
+               
+            
                 if(in_array($course->id,$wishlist)){
                     $course['wishlist'] = true;
                 }else{
@@ -559,12 +591,22 @@ class ApiController extends Controller
                 }else{
                      $course['cart'] = false;
                 }
-               
+        
                   $course['numberOfQuizes']=$numberOfuizes;
+                   
+           
+           
+                $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+                $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+                $multiplied = $duration->map(function ($item, $key) {
+                    $d = explode(':', $item->duration);
+                return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+                })->sum();
+                $course->videoDuration=$multiplied;
                }
            }
            
-    
+    // return $lessonsIds;
             $newCourses = [];
             foreach($statgeSemIds as $key=> $course){
                 foreach($statgeSemIds[$key]->courses as $index=> $element){
@@ -1187,7 +1229,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                 'next_lesson' => $next_lesson,
                 'is_certified' => $is_certified,
                 'course_progress' => $course_progress,
-                // 'course' => $course,
+                'course' => $course,
                 // 'chapters' => $chapters,
                 'course_page' => $course_page,
                 'course_timeline' => $courseSequence,
@@ -1345,6 +1387,8 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $result_data = ['result_id' => $test_result['id'], 'score' => $test_result, 'answers' => $result, 'attempts' => 0];
     }
     $test['totalScore'] = $questionsToAnswer->sum('score');
+    $test['teachers'] = $test->course->teachers;
+
     $questionsToAnswer = $questionsToAnswer->get();
     $chapters = $test->course()->with('chapters')->first()->chapters;
     foreach ($chapters as $key => $chapter) {
@@ -1703,11 +1747,30 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
             {
                
                 $courses [] = Course::where('id',$cartData[$i]->item_id)->with('teachers')->first();
+              
+
+
             }
             elseif($cartData[$i]->item_type == 'bundle')
             {
                 $bundles = Bundles::where('id',$cartData[$i]->item_id)->first();
             }
+            foreach($courses as $course){
+                $numberOfuizes = Test::where('course_id',$course->id)->count();
+
+                $course['numberOfQuizes']=$numberOfuizes;
+                
+        
+        
+             $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+             $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+             $multiplied = $duration->map(function ($item, $key) {
+                 $d = explode(':', $item->duration);
+             return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+             })->sum();
+             $course->videoDuration=$multiplied;
+            }
+            
         }
 
         return response()->json(['courses' => $courses , 'bundles' => $bundles]);
@@ -1840,7 +1903,6 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
 
-
         //Apply Tax
         $taxData = $this->applyTax('total');
 
@@ -1936,7 +1998,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         }
 
-
+        
         // foreach($bundles as $i=>$course){
         //     $counter++;
         //     array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
@@ -2024,7 +2086,101 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         return $order;
     }
+    public function stripePayment(Request $request)
+    {
+       
+        $order = $this->makeOrder($request->data);
+        $gateway = Omnipay::create('Stripe');
+        $gateway->setApiKey('sk_test_51Hyc2DBOF2m2fyEmcHukp0tRftspkurmrM4h1gbWf2i71F2jwrtR7YkV5cO8YXaJKRpxLgmyUrJ1wmekNQisQG6B007oynC62h');
+        $token = $request->token;
 
+        $amount = 500;
+        $currency = 'EGP';
+        // return config('services.stripe.secret');
+        $response = $gateway->purchase([
+            'amount' => $amount,
+            'currency' => $currency,
+            'token' => $token,
+            'confirm' => true,
+            'description' => auth()->user()->name
+        ])->send();
+
+        if ($response->isSuccessful()) {
+            $order->status = 1;
+            $order->payment_type = 1;
+            $order->save();
+            $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
+            return response()->json(['status' => true]);
+            
+            // (new EarningHelper)->insert($order);
+            // foreach ($order->items as $orderItem) {
+            //  $course = $orderItem->item->course;
+            //     if ($course->offline) {
+            //         $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+            //         if ($date) {
+            //             if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+            //                 $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+            //                 foreach ($selectDate as $key => $value) {
+            //                     if ($key != 'date') {
+            //                         if ($value == $orderItem->selectedTime) {
+            //                             $incrementKey = explode('-', $key);
+            //                             $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+            //                             $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+            //                             $course->date = json_encode(json_encode($date));
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     //Bundle Entries
+            //     if ($orderItem->item_type == Bundle::class) {
+            //         foreach ($orderItem->item->courses as $course) {
+            //             $course->students()->attach($order->user_id);
+            //             if ($course->offline) {
+            //                 $date = $course->date ? json_decode(json_decode($course->date), true) : null;
+            //                 if ($date) {
+            //                     if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
+            //                         $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
+            //                         foreach ($selectDate as $key => $value) {
+            //                             if ($key != 'date') {
+            //                                 if ($value == $orderItem->selectedTime) {
+            //                                     $incrementKey = explode('-', $key);
+            //                                     $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
+            //                                     $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
+            //                                     $course->date = json_encode(json_encode($date));
+            //                                 }
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            //     if (!$orderItem->item->offline) {
+            //         $orderItem->item->students()->attach($order->user_id);
+            //     }
+            // }
+
+            // //Generating Invoice
+            // generateInvoice($order);
+
+            // Cart::session(auth()->user()->id)->clear();
+            // Session::flash('success', trans('labels.frontend.cart.payment_done'));
+            // return redirect()->route('status');
+
+        } else {
+            
+            $order->status = 2;
+            $order->save();
+
+            // \Log::info($response->getMessage() . ' for id = ' . auth()->user()->id);
+            // Session::flash('failure', trans('labels.frontend.cart.try_again'));
+            // return redirect()->route('cart.index');
+            
+        }
+    }
     private function makeOrder($data)
     {
         $coupon = $data['coupon_data'];
@@ -2593,6 +2749,20 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         
         $purchased_courses = auth()->user()->purchasedCourses();
         $courses = Course::wherein('id', $purchased_courses)->get();
+         
+         
+        foreach($courses as $course){
+            $numberOfuizes = Test::where('course_id',$course->id)->count();
+             $course['numberOfQuizes']=$numberOfuizes;
+        $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+        $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+        $multiplied = $duration->map(function ($item, $key) {
+            $d = explode(':', $item->duration);
+        return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+        })->sum();
+        $course->videoDuration=$multiplied;
+    }
+
         $unCompletedCourses = [] ;
         foreach( $courses as $i=>$course){
             if($courses[$i]->progress() < 100){
@@ -2631,8 +2801,9 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
      *
      * @return [json] Update account
      */
-    public function updateMyAccount(Request $request)
+        public function updateMyAccount(Request $request)
     {
+        // dd($request);
            $fieldsList = [];
         if (config('registration_fields') != NULL) {
             $fields = json_decode(config('registration_fields'));
@@ -2641,16 +2812,17 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                 $fieldsList[] = '' . $field->name;
             }
         }
-        if($request->coucntry_id && $request->edu_system_id && $request->edu_stage_id)
+        if($request->country_id && $request->edu_system_id && $request->edu_stage_id)
         {
         $output = $this->userRepository->update(
             $request->user()->id,
-            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type','coucntry_id', 'edu_system_id', 'edu_stage_id'),
+            $request->only('ar_first_name', 'ar_last_name', 'first_name','last_name','phone','avatar_location','avatar_type','country_id', 'edu_system_id', 'edu_stage_id'),
             $request->has('avatar_location') ? $request->file('avatar_location') : false
         );
     
 
         $studentData = studentData::where('user_id', $request->user()->id)->firstOrFail();
+     
            
         $studentData->country_id = $request->country_id;
         $studentData->edu_system_id = $request->edu_system_id;
@@ -2658,9 +2830,10 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         $studentData->update($request->all());
     }else{
+        
         $output = $this->userRepository->update(
             $request->user()->id,
-            $request->only('ar_first_name', 'ar_last_name', 'phone', 'avatar_location','avatar_type'),
+            $request->only('first_name','last_name','phone', 'avatar_location','avatar_type'),
             $request->has('avatar_location') ? $request->file('avatar_location') : false
         );
     
@@ -2669,7 +2842,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
        
     }
-
+   $user = User::where('id',$request->user()->id)->first();
 
         // E-mail address was updated, user has to reconfirm
         // if (is_array($output) && $output['email_changed']) {
@@ -2678,7 +2851,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         //     return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.email_changed_notice')]);
         // }
 
-        return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated')]);
+        return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated'),'data'=>$user]);
 
     }
     public function updateStudentdata(Request $request)
@@ -2696,6 +2869,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         return response()->json(['status' => 'success', 'message' => __('strings.frontend.user.profile_updated')]);
 
     }
+
 
     /**
      * Update Password
@@ -3718,7 +3892,34 @@ else{
     public function getMyWishlist(){
 
         $courses = auth()->user()->wishList;
-
+        if( auth('api')->user()){
+            $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+            $cart = StudentCart::where('user_id',auth('api')->user()->id)->where('item_type','course')->pluck('item_id')->toArray();
+            }else{
+                $wishlist = [];
+                $cart = [];
+            }
+        foreach($courses as $course){
+            if(in_array($course->id,$wishlist)){
+                $course['wishlist'] = true;
+            }else{
+                 $course['wishlist'] = false;
+            }
+             if(in_array($course->id,$cart)){
+                $course['cart'] = true;
+            }else{
+                 $course['cart'] = false;
+            }
+        $numberOfuizes = Test::where('course_id',$course->id)->count();
+        $course['numberOfQuizes']=$numberOfuizes;
+        $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+        $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+        $multiplied = $duration->map(function ($item, $key) {
+            $d = explode(':', $item->duration);
+        return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+        })->sum();
+        $course->videoDuration=$multiplied;
+       }
         return response()->json(["courses" => $courses]);
     }
 
@@ -3793,12 +3994,12 @@ else{
         return $totalPrice ; 
     }
     private function test(){
-        $merchantCode    = '1tSa6uxz2nRlhbmxHHde5A==';
+        $merchantCode    = '2rc+h32bFqF+ai//zw5jFw==';
         $merchantRefNum  = '99900642041';
         $merchant_cust_prof_id  = '458626698';
         $payment_method = 'PAYATFAWRY';
         $amount = '580.55';
-        $merchant_sec_key =  '259af31fc2f74453b3a55739b21ae9ef'; // For the sake of demonstration
+        $merchant_sec_key =  '4c0af89374034c06a1f5bda1e608f7d7'; // For the sake of demonstration
         $signature = hash('sha256' , $merchantCode . $merchantRefNum . $merchant_cust_prof_id . $payment_method . $amount . $merchant_sec_key);
         $httpClient = new \GuzzleHttp\Client(); // guzzle 6.3
         $response = $httpClient->request('POST', 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge', [
@@ -3995,10 +4196,125 @@ else{
         return response()->json(['status' => 'Cart Items Deleted Successfully']);
     }
     
-    public function searchCourses(Request $request){
-        $courses = Course::where('title', 'like', '%' .$request->searchTerm. '%')
-                     ->orWhere('title_ar', 'like', '%' .$request->searchTerm. '%')->get();
-        return response()->json(['courses' => $courses]);
-    }
+   public function searchCourses(Request $request){
+        //   dd($request->statge_id);
+        $search=$request->searchTerm;
+        if($request->semester_id){
+            $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->get();
+            $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->with(['courses'=>function($query)use($search){
+                  return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
+                }])->get();
+            }else if($request->semester_id == 0 || !$request->semester_id) {
+    
+                $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
+            
+                  $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with(['courses'=>function($query)use($search){
+                  return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
+                }])->get();
+            }
+
+
+            if( auth('api')->user()){
+                $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+                $cart = StudentCart::where('user_id',auth('api')->user()->id)->where('item_type','course')->pluck('item_id')->toArray();
+                }else{
+                    $wishlist = [];
+                    $cart = [];
+                }
+          
+
+            foreach($courses as $stage){
+                foreach($stage->courses as $course){
+                    
+             //   $coursesIds= Course::where('id',$course->id)->first();
+                
+                  $numberOfuizes = Test::where('course_id',$course->id)->count();
+                
+             
+                 if(in_array($course->id,$wishlist)){
+                     $course['wishlist'] = true;
+                 }else{
+                      $course['wishlist'] = false;
+                 }
+                  if(in_array($course->id,$cart)){
+                     $course['cart'] = true;
+                 }else{
+                      $course['cart'] = false;
+                 }
+         
+                   $course['numberOfQuizes']=$numberOfuizes;
+                    
+            
+            
+                 $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
+                 $duration = Media::where('model_type','App\Models\Lesson')->whereIn('model_id',$lessonsIds)->get();
+                 $multiplied = $duration->map(function ($item, $key) {
+                     $d = explode(':', $item->duration);
+                 return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+                 })->sum();
+                 $course->videoDuration=$multiplied;
+                }
+            }
+             $semesterNames = [];
+            foreach ($semesters as $i=>$sem)
+            {
+             $semesterNames [] = Semester::where('id',$semesters[$i]->semester_id)->first();
+                     
+            }
+            return response()->json(['status' => 'success', 'courses' => $courses, 'semesterNames' => $semesterNames ]);
+        }
+        
+        
+
+        public function addToWallet(Requets $request){
+
+            $user_id = auth()->user()->id;
+            $userWallet = Wallet::where('user_id',$user_id )->first();
+            if($userWallet){
+                $userWallet->amount += $request->amount;
+                $userWallet->save();
+            }else{
+           
+            $wallet = new Wallet();
+            $wallet->user_id = auth()->user()->id;
+            $wallet->amount = $request->amount;
+            $wallet->save();
+           
+            }
+
+            
+
+        }
+
+        public function getMyWallet(){
+
+            $user_id = auth()->user()->id;
+            $userWallet = Wallet::where('user_id',$user_id )->first();
+
+            return response()->json(['data' => $userWallet]);
+
+
+
+        }
+
+        public function WalletPayment(Request $request){
+
+            $user_id = auth()->user()->id;
+            $userWallet = Wallet::where('user_id',$user_id )->first();
+            if( $userWallet->amount < $request->amount){
+                return response()->json(['status'=>'failed' , 'msg'=>'Your Wallet is not enough. Recharge Your Wallet ' ]);
+            }else{
+                $userWallet->amount -=$request->amount;
+                $userWallet->save();
+                $order = $this->makeOrder($request->data);
+                $order->payment_type = 5;
+                $order->status = 1;
+
+                $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
+                return response()->json(['status'=>'success' , 'msg'=>'Done Successfully' ]);
+
+
+            }
+        }
 
 }
