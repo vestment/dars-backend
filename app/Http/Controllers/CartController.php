@@ -175,15 +175,15 @@ class CartController extends Controller
         if ($this->checkDuplicate()) {
             return $this->checkDuplicate();
         }
-        //Making Order
+        //Making Order change
         $order = $this->makeOrder();
 
         $gateway = Omnipay::create('Stripe');
         $gateway->setApiKey(config('services.stripe.secret'));
-        $token = $request->reservation['stripe_token'];
+        $token = $request->token->id;
 
-        $amount = Cart::session(auth()->user()->id)->getTotal();
-        $currency = $this->currency['short_code'];
+        $amount = $request->data->final_total;
+        $currency = 'EGP';
         $response = $gateway->purchase([
             'amount' => $amount,
             'currency' => $currency,

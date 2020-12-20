@@ -171,6 +171,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
         Route::post('remove-coupon', 'ApiController@removeCoupon');
         Route::post('order-confirmation', 'ApiController@orderConfirmation');
         Route::post('single-user', 'ApiController@getSingleUser');
+        Route::post('stipe-token','ApiController@stripePayment');
+        Route::post('add-to-wallet','ApiController@addToWallet');
+        Route::post('pay-wallet','ApiController@WalletPayment');
+        Route::get('my-wallet','ApiController@getMyWallet');
+
+
+
     });
     Route::post('send-reset-link', 'ApiController');
     Route::post('configs', 'ApiController@getConfig');
