@@ -55,6 +55,8 @@ use App\Models\SMS;
 use App\Models\Package;
 use App\Models\UserPackage;
 use App\Models\Wallet;
+use App\Models\OrderItem;
+
 
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
@@ -1040,7 +1042,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
             $userAssigned = UserPackage::where('user_id', $userid)->first();
             if($userAssigned){
             // $packegeAssigned = Package::where('id',$userAssigned->package_id)->first();
-            if($userAssigned->status == "active"){
+            if($userAssigned->status == "active" && $course->type == "dars" ){
                
                 $purchased_course = true;
                
@@ -1153,7 +1155,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                         ->with(['model', 'model.testResult', 'model.questions'])
                         ->where('chapter_id', $item->model_id)
                         ->where('model_type', Test::class)
-                        ->orderBy('sequence', 'asc')->first();
+                        ->orderBy('sequence', 'asc')->get();
                     $prev_Chapter = $lesson->course->courseTimeline()->where('sequence', '<', $item->sequence)
                         ->where('model_type', Chapter::class)
                         ->where('course_id', $item->course_id)
@@ -1164,6 +1166,17 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                     }
                     foreach ($courseChapter[$item->id]['chapter']['lessons'] as $index => $chapterLesson) {
                         $chapterLesson['canView'] = true;
+                    //     $mediaVideo =  $chapterLesson['media'];
+                    //   return $mediaVideo->media_video ;
+                        
+                      
+                //         $multiplied = $duration->map(function ($item, $key) {
+                //     $d = explode(':', $item->duration);
+                // return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+                // })->sum();
+             
+                
+                //  $chapterLesson['lessonDuration'] = $multiplied;
                         if ($index != 0) {
                             $prevLesson = $courseChapter[$item->id]['chapter']['lessons'][$index - 1];
                             $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
@@ -1281,7 +1294,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
      * @return [json] Success message
      */
 
-    public function getTest(Request $request)
+   public function getTest(Request $request)
     {
         $test = Test::where('published', '=', 1)
         ->where('slug', '=', $request->test)->with('questions')
@@ -1303,7 +1316,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                 ->with(['model', 'model.testResult', 'model.questions'])
                 ->where('chapter_id', $item->model_id)
                 ->where('model_type', Test::class)
-                ->orderBy('sequence', 'asc')->first();
+                ->orderBy('sequence', 'asc')->get();
             $prev_Chapter = $test->course->courseTimeline()->where('sequence', '<', $item->sequence)
                 ->where('model_type', Chapter::class)
                 ->where('course_id', $item->course_id)
@@ -1408,7 +1421,6 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
     $data['test_result'] = $result_data;
     return response()->json(['status' => 'success', 'response' => $data]);
     }
-
 
     /**
      * Save Test
@@ -1736,7 +1748,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
      *
      * @return [json] Get Cart data
      */
-    public function getCartData(Request $request)
+   public function getCartData(Request $request)
     {
         $cartData = StudentCart::where('user_id',$request->user_id)->get();
      
@@ -1751,11 +1763,13 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
 
             }
+         
             elseif($cartData[$i]->item_type == 'bundle')
             {
                 $bundles = Bundles::where('id',$cartData[$i]->item_id)->first();
             }
-            foreach($courses as $course){
+        }
+           foreach($courses as $course){
                 $numberOfuizes = Test::where('course_id',$course->id)->count();
 
                 $course['numberOfQuizes']=$numberOfuizes;
@@ -1770,8 +1784,6 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
              })->sum();
              $course->videoDuration=$multiplied;
             }
-            
-        }
 
         return response()->json(['courses' => $courses , 'bundles' => $bundles]);
 
@@ -1903,6 +1915,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
 
+
         //Apply Tax
         $taxData = $this->applyTax('total');
 
@@ -1998,7 +2011,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         }
 
-        
+
         // foreach($bundles as $i=>$course){
         //     $counter++;
         //     array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
@@ -2008,7 +2021,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         $content['items'] = $items;
         // $content['total'] = Cart::session(auth()->user()->id)->getTotal();
-        $content[$total] = $courses->sum('price');
+        $content['total'] = $courses->sum('price');
         $content['reference_no'] = $order->reference_no;
 
         try {
@@ -2086,101 +2099,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         return $order;
     }
-    public function stripePayment(Request $request)
-    {
-       
-        $order = $this->makeOrder($request->data);
-        $gateway = Omnipay::create('Stripe');
-        $gateway->setApiKey('sk_test_51Hyc2DBOF2m2fyEmcHukp0tRftspkurmrM4h1gbWf2i71F2jwrtR7YkV5cO8YXaJKRpxLgmyUrJ1wmekNQisQG6B007oynC62h');
-        $token = $request->token;
 
-        $amount = 500;
-        $currency = 'EGP';
-        // return config('services.stripe.secret');
-        $response = $gateway->purchase([
-            'amount' => $amount,
-            'currency' => $currency,
-            'token' => $token,
-            'confirm' => true,
-            'description' => auth()->user()->name
-        ])->send();
-
-        if ($response->isSuccessful()) {
-            $order->status = 1;
-            $order->payment_type = 1;
-            $order->save();
-            $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
-            return response()->json(['status' => true]);
-            
-            // (new EarningHelper)->insert($order);
-            // foreach ($order->items as $orderItem) {
-            //  $course = $orderItem->item->course;
-            //     if ($course->offline) {
-            //         $date = $course->date ? json_decode(json_decode($course->date), true) : null;
-            //         if ($date) {
-            //             if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
-            //                 $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
-            //                 foreach ($selectDate as $key => $value) {
-            //                     if ($key != 'date') {
-            //                         if ($value == $orderItem->selectedTime) {
-            //                             $incrementKey = explode('-', $key);
-            //                             $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
-            //                             $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
-            //                             $course->date = json_encode(json_encode($date));
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     //Bundle Entries
-            //     if ($orderItem->item_type == Bundle::class) {
-            //         foreach ($orderItem->item->courses as $course) {
-            //             $course->students()->attach($order->user_id);
-            //             if ($course->offline) {
-            //                 $date = $course->date ? json_decode(json_decode($course->date), true) : null;
-            //                 if ($date) {
-            //                     if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
-            //                         $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
-            //                         foreach ($selectDate as $key => $value) {
-            //                             if ($key != 'date') {
-            //                                 if ($value == $orderItem->selectedTime) {
-            //                                     $incrementKey = explode('-', $key);
-            //                                     $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
-            //                                     $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
-            //                                     $course->date = json_encode(json_encode($date));
-            //                                 }
-            //                             }
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     if (!$orderItem->item->offline) {
-            //         $orderItem->item->students()->attach($order->user_id);
-            //     }
-            // }
-
-            // //Generating Invoice
-            // generateInvoice($order);
-
-            // Cart::session(auth()->user()->id)->clear();
-            // Session::flash('success', trans('labels.frontend.cart.payment_done'));
-            // return redirect()->route('status');
-
-        } else {
-            
-            $order->status = 2;
-            $order->save();
-
-            // \Log::info($response->getMessage() . ' for id = ' . auth()->user()->id);
-            // Session::flash('failure', trans('labels.frontend.cart.try_again'));
-            // return redirect()->route('cart.index');
-            
-        }
-    }
     private function makeOrder($data)
     {
         $coupon = $data['coupon_data'];
@@ -2751,7 +2670,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $courses = Course::wherein('id', $purchased_courses)->get();
          
          
-        foreach($courses as $course){
+        foreach($purchased_courses as $course){
             $numberOfuizes = Test::where('course_id',$course->id)->count();
              $course['numberOfQuizes']=$numberOfuizes;
         $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
@@ -2790,6 +2709,12 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $id = auth()->user()->id;
         $user = User::with('roles', 'permissions', 'providers','studentData')
         ->where('id', $id)->first();
+        $userPackage=UserPackage::where('user_id', $id)->where('status','active')->first();
+        if($userPackage){
+            $user['userPackage'] = true;
+        }else{
+            $user['userPackage'] = false;
+        }
         return response()->json(['status' => 'success', 'result' => $user]);
     }
 
@@ -3889,7 +3814,7 @@ else{
         return response()->json(['msg' => $msg]);
     }
 
-    public function getMyWishlist(){
+   public function getMyWishlist(){
 
         $courses = auth()->user()->wishList;
         if( auth('api')->user()){
@@ -3993,45 +3918,20 @@ else{
         }
         return $totalPrice ; 
     }
-    private function test(){
-        $merchantCode    = '2rc+h32bFqF+ai//zw5jFw==';
+    public function test(){
+       $merchantCode    = '1tSa6uxz2nRlhbmxHHde5A==';
         $merchantRefNum  = '99900642041';
         $merchant_cust_prof_id  = '458626698';
         $payment_method = 'PAYATFAWRY';
         $amount = '580.55';
-        $merchant_sec_key =  '4c0af89374034c06a1f5bda1e608f7d7'; // For the sake of demonstration
-        $signature = hash('sha256' , $merchantCode . $merchantRefNum . $merchant_cust_prof_id . $payment_method . $amount . $merchant_sec_key);
+        $merchant_sec_key =  '259af31fc2f74453b3a55739b21ae9ef'; // For the sake of demonstration
+        $signature = hash('sha256', $merchantCode . $merchantRefNum . $merchant_cust_prof_id . $payment_method . $amount . $merchant_sec_key);
         $httpClient = new \GuzzleHttp\Client(); // guzzle 6.3
-        $response = $httpClient->request('POST', 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge', [
-            'headers' => [
-                        'Content-Type' => 'application/json',
-                        'Accept'       => 'application/json'
-                    ],
-            'body' => json_encode(   [
-                'merchantCode' => $merchantCode,
-                'merchantRefNum' => $merchantRefNum,
-                'customerName' => 'Ahmed Ali',
-                'customerMobile' => '01234567891',
-                'customerEmail' => 'example@gmail.com',
-                'customerProfileId'=> '777777',
-                'amount' => '580.55',
-                'paymentExpiry' => 1631138400000,
-                'currencyCode' => 'EGP',
-                'language' => 'en-gb',
-                'chargeItems' => [
-                                    'itemId' => '897fa8e81be26df25db592e81c31c',
-                                    'description' => 'Item Description',
-                                    'price' => '580.55',
-                                    'quantity' => '1'
-                                ],
-                'signature' => $signature,
-                'payment_method' => $payment_method,
-                'description' => 'example description'
-            ] , true)
-        ]);
+        $response = $httpClient->request('GET', 'https://developer.fawrystaging.com/api/testCreatePaymentAtFawry?merchantCode=1tSa6uxz2nTwlaAmt38enA%3D%3D&customerMobile=01000000000&customerEmail=test%40email.com&customerProfileId=777777&merchantRefNum=2312465464&amount=350.75&paymentExpiry=1631138400000&currencyCode=EGP&description=Example%20Description&language=en-gb&chargeItems%5B0%5D%5BitemId%5D=897fa8e81be26df25db592e81c31c&chargeItems%5B0%5D%5Bdescription%5D=Item%20Descriptoin&chargeItems%5B0%5D%5Bprice%5D=350.75&chargeItems%5B0%5D%5Bquantity%5D=1&signature=2ca4c078ab0d4c50ba90e31b3b0339d4d4ae5b32f97092dd9e9c07888c7eef36&paymentMethod=PAYATFAWRY'
+        );
         $response = json_decode($response->getBody()->getContents(), true);
-        $paymentStatus = $response['type']; // get response values
-        dd($response) ;   
+        return $response;
+        $paymentStatus = $response['type']; // get response values     
     }
     public function fawryPayment(){
         $this->test() ; 
@@ -4198,22 +4098,20 @@ else{
     
    public function searchCourses(Request $request){
         //   dd($request->statge_id);
-        $search=$request->searchTerm;
+         $search=$request->searchTerm;
         if($request->semester_id){
-            $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->get();
-            $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->with(['courses'=>function($query)use($search){
-                  return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
-                }])->get();
-            }else if($request->semester_id == 0 || !$request->semester_id) {
-    
-                $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
-            
-                  $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with(['courses'=>function($query)use($search){
-                  return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
-                }])->get();
-            }
+        $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->get();
+        $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->with(['courses'=>function($query)use($search){
+              return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
+            }])->get();
+        }else if($request->semester_id == 0 || !$request->semester_id) {
 
-
+            $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
+        
+              $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with(['courses'=>function($query)use($search){
+              return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
+            }])->get();
+        }
             if( auth('api')->user()){
                 $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
                 $cart = StudentCart::where('user_id',auth('api')->user()->id)->where('item_type','course')->pluck('item_id')->toArray();
@@ -4261,12 +4159,46 @@ else{
              $semesterNames [] = Semester::where('id',$semesters[$i]->semester_id)->first();
                      
             }
-            return response()->json(['status' => 'success', 'courses' => $courses, 'semesterNames' => $semesterNames ]);
+            return response()->json(['status' => 'success', 'semesters' => $courses, 'semesterNames' => $semesterNames ]);
         }
-        
-        
+        public function stripePayment(Request $request)
+        {
+        if($request->data){
+        $order = $this->makeOrder($request->data);
+       }
+        $gateway = Omnipay::create('Stripe');
+        $gateway->setApiKey('sk_test_51Hyc2DBOF2m2fyEmcHukp0tRftspkurmrM4h1gbWf2i71F2jwrtR7YkV5cO8YXaJKRpxLgmyUrJ1wmekNQisQG6B007oynC62h');
+        $token = $request->token;
+ if($request->data){
+        $amount = $request->data['final_total'];
+ }else{
+       $amount = $request->amount;
+ }
+        $currency = 'EGP';
+        // return config('services.stripe.secret');
+        $response = $gateway->purchase([
+            'amount' => $amount,
+            'currency' => $currency,
+            'token' => $token,
+            'confirm' => true,
+            'description' => auth()->user()->name
+        ])->send();
 
-        public function addToWallet(Requets $request){
+        if ($response->isSuccessful()) {
+            //   $order->status = 1;
+            $order->payment_type = 1;
+            $order->save();
+              $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
+            return response()->json(['status' => true]);
+           
+   
+        } else {
+             $order->status = 2;
+            $order->save();
+            return response()->json(['status' => false]);
+        }
+    }
+     public function addToWallet(Request $request){
 
             $user_id = auth()->user()->id;
             $userWallet = Wallet::where('user_id',$user_id )->first();
@@ -4282,16 +4214,23 @@ else{
            
             }
 
-            
-
+            return response()->json(['status'=>'success' , 'msg'=>'Done Successfully' ]);
         }
 
         public function getMyWallet(){
 
             $user_id = auth()->user()->id;
             $userWallet = Wallet::where('user_id',$user_id )->first();
+            $orders = Order::where('user_id',$user_id)->where('payment_type',5)->pluck('id');
+            // return    $orders ;
+            foreach($orders as $order)
+            {
+            $items[] = OrderItem::with('item')->where('order_id',$order)->first();
+            }
+            
+            
 
-            return response()->json(['data' => $userWallet]);
+            return response()->json(['data' => $userWallet ,'items'=> $items]);
 
 
 
@@ -4307,14 +4246,15 @@ else{
                 $userWallet->amount -=$request->amount;
                 $userWallet->save();
                 $order = $this->makeOrder($request->data);
-                $order->payment_type = 5;
+                 $order->payment_type = 5;
                 $order->status = 1;
-
                 $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
                 return response()->json(['status'=>'success' , 'msg'=>'Done Successfully' ]);
 
 
             }
         }
+        
+        
 
 }
