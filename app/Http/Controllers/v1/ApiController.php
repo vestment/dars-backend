@@ -280,19 +280,18 @@ class ApiController extends Controller
        
     }
     public function SocialLogin(Request $request){
+        // if ($request->email) {
+        //     $user = User::where('email', $request->email)->first();
+        // }
+        // if ($request->phone) {
+        //     $user = User::where('phone', $request->phone)->first();
+        // }
+        // if ($request->provider_id) {
 
-        if ($request->email) {
-            $user = User::where('email', $request->email)->first();
-        }
-        if ($request->phone) {
-            $user = User::where('phone', $request->phone)->first();
-        }
-        if ($request->provider_id) {
-
-            $user = SocialAccount::where('provider_id', $request->provider_id)->first();
-        }
-
-        if (!$user) {
+        //     $user = SocialAccount::where('provider_id', $request->provider_id)->first();
+        // }
+        
+        
             $user = User::where('email', $request->created_email)->first();
             $user->phone = $request->phone;
             // $user = new User([
@@ -321,10 +320,17 @@ class ApiController extends Controller
 
             // ]);
             // $socialAccount->save();
-        }
+        
 
 
         $userData  = studentData::where('user_id', $user->id)->first();
+         $userPack = new UserPAckage();
+        $userPack->user_id = $user->id;
+        $userPack->package_id = 4;
+        $userPack->status = 'active';
+        $userPack->expire_at =  '2021-9-1 16:45:24' ;
+        $userPack->save();
+        
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
 
@@ -428,6 +434,13 @@ class ApiController extends Controller
         if ($request->remember_me)
         $token->expires_at = Carbon::now()->addWeeks(1);
     $token->save();
+    
+    $userPackage=UserPackage::where('user_id', $user->id)->where('status','active')->first();
+        if($userPackage){
+            $user['userPackage'] = true;
+        }else{
+            $user['userPackage'] = false;
+        }
        
         return response()->json([
             'user' => $user,
@@ -481,6 +494,12 @@ class ApiController extends Controller
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
+        $userPackage=UserPackage::where('user_id', $user->id)->where('status','active')->first();
+        if($userPackage){
+            $user['userPackage'] = true;
+        }else{
+            $user['userPackage'] = false;
+        }
         return response()->json([
             'user' => $user,
             'userData' =>$userData,
@@ -1176,7 +1195,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
      *
      * @return [json] Success message
      */
-    public function getLesson(Request $request)
+   public function getLesson(Request $request)
     {
         // dd(auth()->user());
 
@@ -1186,9 +1205,12 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
             ->first();
 
         if ($lesson != null) {
+            $userPackage=UserPackage::where('user_id', auth()->user()->id)->where('status','active')->first();
+            if(!$userPackage){
             if ($lesson->course && !in_array(auth()->user()->id, $lesson->course->students()->pluck('user_id')->toArray())) {
                 return response()->json(['status' => 'failure', 'message' => 'You need to buy this course first']);
             }
+        }
             $course = Course::withoutGlobalScope('filter')->with('teachers')->findOrFail($lesson->course_id);
             $courseTimeLine = $lesson->course->courseTimeline()->with(['model'])->orderBy('sequence', 'asc')->get();
             $courseSequence = [];
@@ -1220,6 +1242,8 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                          $courseChapter[$item->id]['chapter']['test'][$index]['model']['sequence']=$courseChapter[$item->id]['chapter']['test'][$index]->sequence;
                      }
                     foreach ($courseChapter[$item->id]['chapter']['lessons'] as $index => $chapterLesson) {
+                       
+
                         $chapterLesson['canView'] = true;
                     //     $mediaVideo =  $chapterLesson['media'];
                     //   return $mediaVideo->media_video ;
@@ -1237,7 +1261,15 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                             $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
                             if (!$LessonCompleted) {
                                 $chapterLesson['key'] = $index;
-                                $chapterLesson['canView'] = false;
+
+                                if($chapterLesson['model']->locked == 0){
+                                    $chapterLesson['canView'] = true;
+                                }
+                                else{
+                                    $chapterLesson['canView'] = false;
+
+                                }
+
                             }
                         }
                         if ($prevChapter) {
@@ -1245,11 +1277,24 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                             $chapterTest = $prevChapter->test;
                             if ($chapterTest && count($chapterTest->testResult) > 0) {
                                 if ($chapterTest->testResult[count($chapterTest->testResult) - 1]->test_result < $chapterTest->min_grade) {
-                                    $chapterLesson['canView'] = false;
+                                    
+                                    if($chapterLesson['model']->locked == 0){
+                                        $chapterLesson['canView'] = true;
+                                    }
+                                    else{
+                                        $chapterLesson['canView'] = false;
+    
+                                    }
                                     $chapterLesson['key'] = $index . '- Failed';
                                 }
                             } elseif ($chapterTest && count($chapterTest->testResult) == 0) {
-                                $chapterLesson['canView'] = false;
+                                if($chapterLesson['model']->locked == 0){
+                                    $chapterLesson['canView'] = true;
+                                }
+                                else{
+                                    $chapterLesson['canView'] = false;
+
+                                }
                                 $chapterLesson['key'] = $index . '- No result';
                             }
                         }
@@ -1283,7 +1328,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                 $lesson->mediaVideo['duration'] = $lesson->mediaVideo->durations;
             } elseif ($mediaVideo && $mediaVideo['type'] == 'upload') {
                 // Stream Video if uploaded
-                $lesson->mediaVideo['url'] = '' . route('videos.stream', ['encryptedId' => Crypt::encryptString($mediaVideo['id'])]) . '';
+                $lesson->mediaVideo['url'] = '' . route('videos.stream',  Crypt::encryptString($mediaVideo['id'])) . '';
                 $lesson->mediaVideo['duration'] = $lesson->mediaVideo->durations;
             }
             $course_page = route('courses.show', ['slug' => $lesson->course->slug]);
@@ -2061,91 +2106,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
     }
 
 
-    public function offlinePayment(Request $request)
-    {
-        
-        //Making Order
-        $order = $this->makeOrder($request->data);
-        $order->payment_type = 3;
-        $order->status = 0;
-        $order->save();
-        $content = [];
-        $items = [];
-        $courses = [];
-        $bundles = [];
-        $counter = 0;
-        $price = 0;
-        // foreach (Cart::session(auth()->user()->id)->getContent() as $key => $cartItem) {
-        //     $counter++;
-        //     array_push($items, ['number' => $counter, 'name' => $cartItem->name, 'price' => $cartItem->price]);
-        // }
-
-        $cartItems = StudentCart::where('user_id',auth()->user()->id)->get();
-        foreach($cartItems as $key=>$item){
-        if($cartItems[$key]->item_type == "course"){
-            $courses = Course::where('id',$cartItems[$key]->item_id)->get();
-        }else{
-            $bundles = Bundle::where('id',$cartItems[$key]->item_id)->get();
    
-    }
-
-        foreach($courses as $i=>$course){
-            $counter++;
-            array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
-            
-
-        }
-
-
-        // foreach($bundles as $i=>$course){
-        //     $counter++;
-        //     array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
-
-        // }
-
-
-        $content['items'] = $items;
-        // $content['total'] = Cart::session(auth()->user()->id)->getTotal();
-        $content['total'] = $courses->sum('price');
-        $content['reference_no'] = $order->reference_no;
-
-        try {
-            \Mail::to(auth()->user()->email)->send(new OfflineOrderMail($content));
-        } catch (\Exception $e) {
-            \Log::info($e->getMessage() . ' for order ' . $order->id);
-        }
-        
-        if ($request->coupon) {
-            $coupon_code = $request->coupon;
-             $coupon = Coupon::where('code', '=', $coupon_code)
-            ->where('status', '=', 1)
-            ->first();
-            $coupon->status = 2;
-            $coupon->save();
-            $order->status = 1;
-        $order->save();
-        foreach ($order->items as $orderItem) {
-                //Bundle Entries
-                if ($orderItem->item_type == Bundle::class) {
-                    foreach ($orderItem->item->courses as $course) {
-                        $course->students()->attach($order->user_id);
-                    }
-                }
-                $orderItem->item->students()->attach($order->user_id);
-            }
-        }
-
-            //Generating Invoice
-            generateInvoice($order);
-
-
-            $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
-
-            return response()->json(['status' => 'success']);
-      
-    
-    }
-}
 
 
     /**
@@ -2185,7 +2146,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         return $order;
     }
 
-    private function makeOrder($data)
+    private function makeOrder($data,$pack=null)
     {
         $coupon = $data['coupon_data'];
         if ($coupon != false) {
@@ -2212,6 +2173,13 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                 'item_id' => $item['id'],
                 'item_type' => $type,
                 'price' => $item['price']
+            ]);
+        }
+         if($pack != null){
+            $order->items()->create([
+                'item_id' => $pack['id'],
+                'item_type' => Package::class,
+                'price' => $pack['value']
             ]);
         }
 
@@ -4252,21 +4220,27 @@ else{
         }
 
         public function WalletPayment(Request $request){
-
             $user_id = auth()->user()->id;
             $userWallet = Wallet::where('user_id',$user_id )->first();
+            if($userWallet){
             if( $userWallet->amount < $request->amount){
                 return response()->json(['status'=>'failed' , 'msg'=>'Your Wallet is not enough. Recharge Your Wallet ' ]);
             }else{
                 $userWallet->amount -=$request->amount;
                 $userWallet->save();
-                $order = $this->makeOrder($request->data);
+                 $packOrder = $request->package ;
+                $order = $this->makeOrder($request->data ,$packOrder );
                  $order->payment_type = 5;
                 $order->status = 1;
                 $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
                 return response()->json(['status'=>'success' , 'msg'=>'Done Successfully' ]);
 
 
+            }
+            }else{
+                
+                 return response()->json(['status'=>'failed' , 'msg'=>' Charge Your Wallet First' ]);
+                
             }
         }
         
@@ -4352,6 +4326,18 @@ else{
                     'price' => $item->amount_cents / 100
                 ]);
             }
+             if( $request->package )
+        {
+            $packOrder = $request->package ;
+            $order->items()->create([
+                'item_id' => $packOrder['id'],
+                // 'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                // 'selectedTime' => $cartItem->attributes->selectedTime ?? null,
+                'item_type' => Package::class,
+                'price' => $packOrder['value']
+            ]);
+            
+        }
             return response()->json(['paymentKey' => $paymentKey->token, 'url' => 'https://accept.paymob.com/api/acceptance/iframes/128195' . '?payment_token=' . $paymentKey->token], 200);
         } else {
             $vodafonePayment = $payMob->vodafoneCashPayment(
@@ -4365,7 +4351,9 @@ else{
         }
     }
         
-        
+      public function userLogout(){
+          return 'logout ';
+      }
      public function fawryPayment(Request $request)
     {
         $user = User::find(auth()->user()->id);
@@ -4378,12 +4366,13 @@ else{
         $merchantRefNum = "2312465464";
         // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
         if (strpos($amount, '.') !== false) {
-           $amount = round($amount, 2);
+           $amount = $amount;
         } else {
            $amount = $amount . '.00';
         }
         $fawryUrl = 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge';
         $items=[];
+        
         foreach($request->items as $requestItem){
         $item =new item();
         $item->itemId=$requestItem['id'];
@@ -4454,6 +4443,7 @@ else{
             $order->fawry_expirationTime = $result['expirationTime'];
         }
         $order->save();
+         
         foreach ($request->items as $cartItem){
             if ($cartItem['type'] == 'bundle') {
                 $type = Bundle::class;
@@ -4464,6 +4454,8 @@ else{
                 $type = Wallet::class;
                 
             }
+            
+            
             $order->items()->create([
                 'item_id' => $cartItem['id'],
                 // 'selectedDate' => $cartItem->attributes->selectedDate ?? null,
@@ -4472,12 +4464,194 @@ else{
                 'price' => $cartItem['price']
             ]);
         };
+        
+        if( $request->package )
+        {
+            $packOrder = $request->package ;
+            $order->items()->create([
+                'item_id' => $packOrder['id'],
+                // 'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                // 'selectedTime' => $cartItem->attributes->selectedTime ?? null,
+                'item_type' => Package::class,
+                'price' => $packOrder['value']
+            ]);
+            
+        }
 
         return response()->json(['data'=>$result]);
     }
+    
+     public function offlinePayment(Request $request)
+    {
+        
+        //Making Order
+         $packOrder = $request->data['package'] ;
+        $order = $this->makeOrder($request->data,$packOrder);
+        $order->payment_type = 3;
+        $order->status = 0;
+        $order->save();
+        $content = [];
+        $items = [];
+        $courses = [];
+        $bundles = [];
+        $packages = [];
+        $counter = 0;
+        $price = 0;
+        // foreach (Cart::session(auth()->user()->id)->getContent() as $key => $cartItem) {
+        //     $counter++;
+        //     array_push($items, ['number' => $counter, 'name' => $cartItem->name, 'price' => $cartItem->price]);
+        // }
+
+        $cartItems = StudentCart::where('user_id',auth()->user()->id)->get();
+       
+        foreach($cartItems as $key=>$item){
+        if($cartItems[$key]->item_type == "course"){
+            $courses = Course::where('id',$cartItems[$key]->item_id)->get();
+          
+        }else if ($cartItems[$key]->item_type == "bundle"){
+            $bundles = Bundle::where('id',$cartItems[$key]->item_id)->get();
+   
+    }
+    else if ($cartItems[$key]->item_type == "package"){
+            $packages = Package::where('id',$cartItems[$key]->item_id)->get();
+   
+    }
+        }
+
+        foreach($courses as $i=>$course){
+            $counter++;
+            array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
+            
+
+        }
+        if($packages){
+          foreach($packages as $i=>$package){
+            $counter++;
+            array_push($items, ['number' => $counter, 'name' => $package->name, 'price' => $package->value]);
+            
+
+        }
+        }
+
+
+        // foreach($bundles as $i=>$course){
+        //     $counter++;
+        //     array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
+
+        // }
+
+
+        $content['items'] = $items;
+        // $content['total'] = Cart::session(auth()->user()->id)->getTotal();
+       
+        $content['total'] = $courses->sum('price') + $package->sum('value');
+        $content['reference_no'] = $order->reference_no;
+
+        try {
+            \Mail::to(auth()->user()->email)->send(new OfflineOrderMail($content));
+        } catch (\Exception $e) {
+            \Log::info($e->getMessage() . ' for order ' . $order->id);
+        }
+        
+        if ($request->coupon) {
+            $coupon_code = $request->coupon;
+             $coupon = Coupon::where('code', '=', $coupon_code)
+            ->where('status', '=', 1)
+            ->first();
+            $coupon->status = 2;
+            $coupon->save();
+            $order->status = 1;
+        $order->save();
+        foreach ($order->items as $orderItem) {
+                //Bundle Entries
+                if ($orderItem->item_type == Bundle::class) {
+                    foreach ($orderItem->item->courses as $course) {
+                        $course->students()->attach($order->user_id);
+                    }
+                }
+                $orderItem->item->students()->attach($order->user_id);
+            }
+        }
+
+            //Generating Invoice
+            generateInvoice($order);
+
+
+            $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
+
+            return response()->json(['status' => 'success']);
+      
+    
+    
+}
+    
+      public function testGrades(){
+          
+
+           $user_id = auth()->user()->id;
+           $testResult = TestsResult::where('user_id', $user_id)->distinct()->get();
+        //   $testResult=$testResult->groupBy('test_id')->values()->all();
+           $testResult=$testResult->pluck('test_id');
+           return  array_unique($testResult->toArray());
+           $response=[];
+           $categories=Category::all();
+           $tests = Test::select('id','title','title_ar','course_id')->with('questions','course.category')->get();
+           $result=[];
+           foreach($categories as $category)
+           {
+               $categoryTest=[];
+               foreach($tests as $test)
+               {
+                   if($test->course->category->id == $category->id){
+                      
+                      array_push($categoryTest,$test);
+                   }
+               }
+               if($categoryTest)
+               array_push($result,$categoryTest);
+           }
+           return $result;
+           //old
+           foreach($testResult as $result){
+             $test = Test::where('id',$result[0]->test_id)->with('questions','course.category')->first();
+            //  return $test;
+             $totalScore = 0;
+            //  $numberOfAttemps=0;
+            //  $myscore=0;
+            
+             foreach($test['questions'] as $question){
+                 $totalScore +=$question->score;
+             }
+            //  foreach($result as $testAttempt){
+            //      $numberOfAttemps++;
+            //      $myscore += $testAttempt['test_result'];
+            //  }
+             
+             $myTest =new MyTest();
+             $myTest->testId=$result[0]->test_id;
+             $myTest->name=$test->title;
+             $myTest->myScore=$result->sum('test_result');
+             $myTest->totalScore=$totalScore;
+             $myTest->numberOfAttemps=$result->max('attempts');
+             array_push($response,$myTest);
+           }
+           
+           return $response;
+        
+
+
+       }  
+    
         
          
 
+}
+class MyTest{
+    public $testId;
+    public $name;
+    public $myScore;
+    public $totalScore;
+    public $numberOfAttemps;
 }
 class item{
     public $itemId;
