@@ -475,7 +475,7 @@ class CartController extends Controller
             }
             return response()->json(['paymentKey' => $paymentKey->token, 'url' => 'https://accept.paymob.com/api/acceptance/iframes/' . config('paymob.iframe_id') . '?payment_token=' . $paymentKey->token], 200);
         } else {
-            $vodafonePayment = $payMob->vodafoneCashPayment(
+               $vodafonePayment = $payMob->vodafoneCashPayment(
                 $request->mobileNumber,
                 auth()->user()->first_name, // optional
                 auth()->user()->last_name, // optional

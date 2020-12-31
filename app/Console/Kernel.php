@@ -8,6 +8,8 @@ use App\Console\Commands\GenerateSitemap;
 use App\Console\Commands\LessonTestChaterStudentsFix;
 use App\Console\Commands\TeacherProfileFix;
 use App\Models\TeacherProfile;
+use App\Models\UserPackage;
+
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -60,7 +62,21 @@ class Kernel extends ConsoleKernel
             $schedule->command(GenerateSitemap::class)->monthly();
 
         }
+
+
+        $now = new DateTime();
+        $schedule->call(function () {
+            $expirePackages = UserPackage::where('expire_at','<=',$now)->get();
+            foreach($expirePackages as $expirePackage){
+                $expirePackage->status = 'expire';
+            }
+            $expirePackages->save();
+            
+        })->everyMinute();
     }
+
+
+  
 
     /**
      * Register the commands for the application.

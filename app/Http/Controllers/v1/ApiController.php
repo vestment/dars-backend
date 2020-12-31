@@ -55,7 +55,8 @@ use App\Models\SMS;
 use App\Models\Package;
 use App\Models\UserPackage;
 use App\Models\Wallet;
-
+use App\Models\OrderItem;
+use App\Helpers\PayMob;
 use App\Note;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
@@ -103,7 +104,9 @@ class ApiController extends Controller
  
 
     public function __invoke(Request $request)
-    {
+    {  
+    
+        
         $this->validateEmail($request);
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
@@ -409,7 +412,7 @@ class ApiController extends Controller
         $userPack->user_id = $user->id;
         $userPack->package_id = 4;
         $userPack->status = 'active';
-        $userPack->expire_at =  '2020-2-1 16:45:24' ;
+        $userPack->expire_at =  '2021-9-1 16:45:24' ;
         $userPack->save();
         
         $credentials = ['email'=>$user->email , 'password'=>$request->password] ; 
@@ -937,7 +940,15 @@ class ApiController extends Controller
     public function getSingleCourse(Request $request)
     {
        
-   
+   if( auth('api')->user()){
+        $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
+        $cart = StudentCart::where('user_id',auth('api')->user()->id)->where('item_type','course')->pluck('item_id')->toArray();
+        }else{
+            $wishlist = [];
+            $cart = [];
+        }
+        
+       
         $continue_course = NULL;
         $course_timeline = NULL;
         $course = Course::where('id',$request->course_id)->withoutGlobalScope('filter')->with('teachers', 'category','chapters','year')->with('publishedLessons')->first();
@@ -1050,6 +1061,45 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
          }
          }
             
+ $courseTimeLine = $course->courseTimeline()->with(['model'])->orderBy('sequence', 'asc')->get();
+ $courseSequence = [];
+            foreach ($courseTimeLine as $key => $item) {
+                if ($item->model_type == Chapter::class) {
+                    $courseChapter[$item->id]['chapter'] = $item->model;
+                    $courseChapter[$item->id]['chapter']['lessons'] = $course->courseTimeline()
+                        ->with(['model'])
+                        ->where('chapter_id', $item->model_id)
+                        ->where('model_type', Lesson::class)
+                        ->orderBy('sequence', 'asc')->get();
+                    $courseChapter[$item->id]['chapter']['test'] = $course->courseTimeline()
+                        ->with(['model'])
+                        ->where('chapter_id', $item->model_id)
+                        ->where('model_type', Test::class)
+                        ->orderBy('sequence', 'asc')->get();
+                    $prev_Chapter = $course->courseTimeline()->where('sequence', '<', $item->sequence)
+                        ->where('model_type', Chapter::class)
+                        ->where('course_id', $item->course_id)
+                        ->orderBy('sequence', 'desc')->first();
+
+                    
+                    
+                     
+                    
+                    array_push($courseSequence, $courseChapter[$item->id]);
+                }
+
+            }
+
+       if(in_array($request->course_id,$wishlist)){
+                    $course['wishlist'] = true;
+                }else{
+                     $course['wishlist'] = false;
+                }
+                 if(in_array($request->course_id,$cart)){
+                    $course['cart'] = true;
+                }else{
+                     $course['cart'] = false;
+                }
 
 
         // }
@@ -1060,6 +1110,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
             'course_rating' => $course_rating,
             'total_ratings' => $total_ratings,
             'is_reviewed' => $is_reviewed,
+            'course_timeline' => $courseSequence,
             // 'lessons' => $lessons,
             // 'course_timeline' => $course_timeline,
             'completed_lessons' => $completed_lessons,
@@ -1162,8 +1213,25 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
                     if ($prev_Chapter) {
                         $prevChapter = Chapter::where('id', $prev_Chapter->model_id)->with(['test', 'test.testResult'])->first();
                     }
+                    
+                     foreach ($courseChapter[$item->id]['chapter']['test'] as $index => $chapterTest) {
+                        //  return $courseChapter[$item->id]['chapter']['test'] ;
+                         
+                         $courseChapter[$item->id]['chapter']['test'][$index]['model']['sequence']=$courseChapter[$item->id]['chapter']['test'][$index]->sequence;
+                     }
                     foreach ($courseChapter[$item->id]['chapter']['lessons'] as $index => $chapterLesson) {
                         $chapterLesson['canView'] = true;
+                    //     $mediaVideo =  $chapterLesson['media'];
+                    //   return $mediaVideo->media_video ;
+                        
+                      
+                //         $multiplied = $duration->map(function ($item, $key) {
+                //     $d = explode(':', $item->duration);
+                // return ($d[0] * 3600) + ($d[1] * 60) + $d[2]; 
+                // })->sum();
+             
+                
+                //  $chapterLesson['lessonDuration'] = $multiplied;
                         if ($index != 0) {
                             $prevLesson = $courseChapter[$item->id]['chapter']['lessons'][$index - 1];
                             $LessonCompleted = auth()->user()->chapters()->where('model_id', $prevLesson->model_id)->first();
@@ -1281,7 +1349,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
      * @return [json] Success message
      */
 
-    public function getTest(Request $request)
+   public function getTest(Request $request)
     {
         $test = Test::where('published', '=', 1)
         ->where('slug', '=', $request->test)->with('questions')
@@ -1409,7 +1477,6 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
     return response()->json(['status' => 'success', 'response' => $data]);
     }
 
-
     /**
      * Save Test
      *
@@ -1433,6 +1500,9 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $test_score = 0;
         foreach ($request->question_data as $item) {
             $question_id = $item['question_id'];
+            if($item['ans_id'] == 0){
+                $item['ans_id'] = null;
+            }
             $answer_id = $item['ans_id'];
             $question = Question::find($question_id);
             $correct = QuestionsOption::where('question_id', $question_id)
@@ -1736,12 +1806,13 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
      *
      * @return [json] Get Cart data
      */
-    public function getCartData(Request $request)
+   public function getCartData(Request $request)
     {
         $cartData = StudentCart::where('user_id',$request->user_id)->get();
      
         $courses = [];
         $bundles = [];
+         $package = [];
         foreach($cartData as $i=>$cart){
             if($cartData[$i]->item_type == 'course')
             {
@@ -1751,11 +1822,22 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
 
             }
+         
             elseif($cartData[$i]->item_type == 'bundle')
             {
                 $bundles = Bundles::where('id',$cartData[$i]->item_id)->first();
             }
-            foreach($courses as $course){
+            
+            
+            elseif($cartData[$i]->item_type == 'package')
+            {
+                $package = Package::where('id',$cartData[$i]->item_id)->first();
+                if($package){
+                $package->features = json_decode($package->features);
+                }
+            }
+        }
+           foreach($courses as $course){
                 $numberOfuizes = Test::where('course_id',$course->id)->count();
 
                 $course['numberOfQuizes']=$numberOfuizes;
@@ -1770,10 +1852,8 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
              })->sum();
              $course->videoDuration=$multiplied;
             }
-            
-        }
 
-        return response()->json(['courses' => $courses , 'bundles' => $bundles]);
+        return response()->json(['courses' => $courses , 'bundles' => $bundles , 'package'=>$package]);
 
 
     }
@@ -1783,22 +1863,37 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $product = "";
         $teachers = "";
         $type = "";
+        $user_id = auth()->user()->id;
         if ($request->type == 'course') {
             $product = Course::withoutGlobalScope('filter')->findOrFail($request->get('item_id'));
             $teachers = $product->teachers->pluck('id', 'name');
             $type = 'course';
+              $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->type)->where('user_id',$user_id)->first();
 
         } elseif ($request->type == 'bundle') {
             $product = Bundle::findOrFail($request->get('item_id'));
             $teachers = $product->user->name;
             $type = 'bundle';
+              $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->type)->where('user_id',$user_id)->first();
+        }
+        elseif ($request->type == 'package') {
+             $userPackage=UserPackage::where('user_id', $user_id )->where('status','active')->first();
+           if($userPackage)
+           {
+               return response()->json(['status' => 'package']);
+           }
+            $product = Package::findOrFail($request->get('item_id'));
+            // $teachers = $product->user->name;
+            $type = 'package';
+            $cart = StudentCart::where('user_id',$user_id)->where('item_type',$request->type)->first();
+            
         }
 
-        $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->type)->where('user_id',$request->user_id)->first();
+      
         if(!$cart){
 
             $cart = new StudentCart();
-            $cart->user_id = $request->user_id;
+            $cart->user_id = $user_id;
             $cart->item_id = $request->item_id;
             $cart->item_type = $request->type;
     
@@ -1811,6 +1906,8 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
        
     }
+    
+    
     public function removeFromCart(Request $request)
     {
         $cart = StudentCart::where('item_id',$request->item_id)->where('item_type',$request->item_type)->where('user_id',$request->user_id);
@@ -1902,6 +1999,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $courses = $bundles->merge($courses);
 
         $total = Cart::session(auth()->user()->id)->getContent()->sum('price');
+
 
         //Apply Tax
         $taxData = $this->applyTax('total');
@@ -1998,7 +2096,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         }
 
-        
+
         // foreach($bundles as $i=>$course){
         //     $counter++;
         //     array_push($items, ['number' => $counter, 'name' => $course->title, 'price' => $course->price]);
@@ -2008,7 +2106,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         $content['items'] = $items;
         // $content['total'] = Cart::session(auth()->user()->id)->getTotal();
-        $content[$total] = $courses->sum('price');
+        $content['total'] = $courses->sum('price');
         $content['reference_no'] = $order->reference_no;
 
         try {
@@ -2086,101 +2184,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
 
         return $order;
     }
-    public function stripePayment(Request $request)
-    {
-       
-        $order = $this->makeOrder($request->data);
-        $gateway = Omnipay::create('Stripe');
-        $gateway->setApiKey('sk_test_51Hyc2DBOF2m2fyEmcHukp0tRftspkurmrM4h1gbWf2i71F2jwrtR7YkV5cO8YXaJKRpxLgmyUrJ1wmekNQisQG6B007oynC62h');
-        $token = $request->token;
 
-        $amount = 500;
-        $currency = 'EGP';
-        // return config('services.stripe.secret');
-        $response = $gateway->purchase([
-            'amount' => $amount,
-            'currency' => $currency,
-            'token' => $token,
-            'confirm' => true,
-            'description' => auth()->user()->name
-        ])->send();
-
-        if ($response->isSuccessful()) {
-            $order->status = 1;
-            $order->payment_type = 1;
-            $order->save();
-            $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
-            return response()->json(['status' => true]);
-            
-            // (new EarningHelper)->insert($order);
-            // foreach ($order->items as $orderItem) {
-            //  $course = $orderItem->item->course;
-            //     if ($course->offline) {
-            //         $date = $course->date ? json_decode(json_decode($course->date), true) : null;
-            //         if ($date) {
-            //             if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
-            //                 $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
-            //                 foreach ($selectDate as $key => $value) {
-            //                     if ($key != 'date') {
-            //                         if ($value == $orderItem->selectedTime) {
-            //                             $incrementKey = explode('-', $key);
-            //                             $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
-            //                             $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
-            //                             $course->date = json_encode(json_encode($date));
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     //Bundle Entries
-            //     if ($orderItem->item_type == Bundle::class) {
-            //         foreach ($orderItem->item->courses as $course) {
-            //             $course->students()->attach($order->user_id);
-            //             if ($course->offline) {
-            //                 $date = $course->date ? json_decode(json_decode($course->date), true) : null;
-            //                 if ($date) {
-            //                     if (in_array($orderItem->selectedDate, array_column($date, 'date'))) {
-            //                         $selectDate = $date[array_search($orderItem->selectedDate, array_column($date, 'date'))];
-            //                         foreach ($selectDate as $key => $value) {
-            //                             if ($key != 'date') {
-            //                                 if ($value == $orderItem->selectedTime) {
-            //                                     $incrementKey = explode('-', $key);
-            //                                     $seats = intval($selectDate['seats-' . $incrementKey[1]]) - 1;
-            //                                     $date[array_search($orderItem->selectedDate, array_column($date, 'date'))]['seats-' . $incrementKey[1]] = $seats;
-            //                                     $course->date = json_encode(json_encode($date));
-            //                                 }
-            //                             }
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     if (!$orderItem->item->offline) {
-            //         $orderItem->item->students()->attach($order->user_id);
-            //     }
-            // }
-
-            // //Generating Invoice
-            // generateInvoice($order);
-
-            // Cart::session(auth()->user()->id)->clear();
-            // Session::flash('success', trans('labels.frontend.cart.payment_done'));
-            // return redirect()->route('status');
-
-        } else {
-            
-            $order->status = 2;
-            $order->save();
-
-            // \Log::info($response->getMessage() . ' for id = ' . auth()->user()->id);
-            // Session::flash('failure', trans('labels.frontend.cart.try_again'));
-            // return redirect()->route('cart.index');
-            
-        }
-    }
     private function makeOrder($data)
     {
         $coupon = $data['coupon_data'];
@@ -2751,7 +2755,7 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
         $courses = Course::wherein('id', $purchased_courses)->get();
          
          
-        foreach($courses as $course){
+        foreach($purchased_courses as $course){
             $numberOfuizes = Test::where('course_id',$course->id)->count();
              $course['numberOfQuizes']=$numberOfuizes;
         $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
@@ -2785,11 +2789,17 @@ $lessonsIds=Lesson::where('course_id',$course->id)->pluck('id');
      *
      * @return [json] Loggedin user object
      */
-    public function getMyAccount()
+      public function getMyAccount()
     {
         $id = auth()->user()->id;
         $user = User::with('roles', 'permissions', 'providers','studentData')
         ->where('id', $id)->first();
+        $userPackage=UserPackage::where('user_id', $id)->where('status','active')->first();
+        if($userPackage){
+            $user['userPackage'] = true;
+        }else{
+            $user['userPackage'] = false;
+        }
         return response()->json(['status' => 'success', 'result' => $user]);
     }
 
@@ -3889,7 +3899,7 @@ else{
         return response()->json(['msg' => $msg]);
     }
 
-    public function getMyWishlist(){
+   public function getMyWishlist(){
 
         $courses = auth()->user()->wishList;
         if( auth('api')->user()){
@@ -3993,127 +4003,22 @@ else{
         }
         return $totalPrice ; 
     }
-    private function test(){
-        $merchantCode    = '2rc+h32bFqF+ai//zw5jFw==';
+    public function test(){
+       $merchantCode    = '1tSa6uxz2nRlhbmxHHde5A==';
         $merchantRefNum  = '99900642041';
         $merchant_cust_prof_id  = '458626698';
         $payment_method = 'PAYATFAWRY';
         $amount = '580.55';
-        $merchant_sec_key =  '4c0af89374034c06a1f5bda1e608f7d7'; // For the sake of demonstration
-        $signature = hash('sha256' , $merchantCode . $merchantRefNum . $merchant_cust_prof_id . $payment_method . $amount . $merchant_sec_key);
+        $merchant_sec_key =  '259af31fc2f74453b3a55739b21ae9ef'; // For the sake of demonstration
+        $signature = hash('sha256', $merchantCode . $merchantRefNum . $merchant_cust_prof_id . $payment_method . $amount . $merchant_sec_key);
         $httpClient = new \GuzzleHttp\Client(); // guzzle 6.3
-        $response = $httpClient->request('POST', 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge', [
-            'headers' => [
-                        'Content-Type' => 'application/json',
-                        'Accept'       => 'application/json'
-                    ],
-            'body' => json_encode(   [
-                'merchantCode' => $merchantCode,
-                'merchantRefNum' => $merchantRefNum,
-                'customerName' => 'Ahmed Ali',
-                'customerMobile' => '01234567891',
-                'customerEmail' => 'example@gmail.com',
-                'customerProfileId'=> '777777',
-                'amount' => '580.55',
-                'paymentExpiry' => 1631138400000,
-                'currencyCode' => 'EGP',
-                'language' => 'en-gb',
-                'chargeItems' => [
-                                    'itemId' => '897fa8e81be26df25db592e81c31c',
-                                    'description' => 'Item Description',
-                                    'price' => '580.55',
-                                    'quantity' => '1'
-                                ],
-                'signature' => $signature,
-                'payment_method' => $payment_method,
-                'description' => 'example description'
-            ] , true)
-        ]);
-        $response = json_decode($response->getBody()->getContents(), true);
-        $paymentStatus = $response['type']; // get response values
-        dd($response) ;   
-    }
-    public function fawryPayment(){
-        $this->test() ; 
-        $userId =auth()->user()->id;
-        $user = User::findOrFail($userId);
-        $amount = $this->totalPriceOfUserCart($userId) ; 
-        if (strpos($amount, '.') !== false) {
-            $amount = round($amount, 2);
-        } else {
-            $amount = $amount . '.00';
-        }
-        // dd($amount) ; 
-        $fawryUrl = 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge';
-        $merchantCode = config('fawry.merchant_code');
-        // dd($merchantCode) ; 
-        $customerProfileId = auth()->user()->id;
-        $paymentMethod = 'PAYATFAWRY';
-        $secureKey = config('fawry.security_key');
-        // dd($secureKey) ; 
-        $merchantRefNum = str_random(8);
-
-        $buffer = $merchantCode . $merchantRefNum . $customerProfileId . $paymentMethod . $amount . $secureKey;
-        $signature = hash('sha256', $buffer);
-
-        // $fawryData = [
-        //     'merchantCode' => $merchantCode,
-        //     'merchantRefNum' => $merchantRefNum,
-        //     'paymentMethod' => $paymentMethod,
-        //     'customerMobile' => '01149786203',
-        //     'customerEmail'=>'mohamedalmograby@gmail.com',
-        //     'amount' => $amount,
-        //     'paymentExpiry'=>'2021-09-08T10:00:00.100Z',
-        //     'description'=> 'description' , 
-        //     'language' =>"en-gb" , 
-        //     'customerProfileId' => $customerProfileId,
-        //     'customerName'=>'mohamed almograby',
-        //     'chargeItems' => [  
-        //             'itemId'  =>  "897fa8e81be26df25db592e81c31c",
-        //             'description'  =>  'description',
-        //             'price'  =>  $amount,
-        //             'quantity'  =>  1
-        //     ], 
-        //     // 'chargeItems'=> $invoiceDataArray,
-        //     'signature' => $signature,
-        // ];
-
-        $fawryData = [
-            'merchantCode' => '1tSa6uxz2nTwlaAmt38enA==',
-            'merchantRefNum' => "2312465464",
-            'paymentMethod' => 'PAYATFAWRY',
-            'customerMobile' => '01149786203',
-            'customerEmail'=>'mohamedalmograby@gmail.com',
-            'amount' => '580.55',
-            'paymentExpiry'=>'2021-09-08T10:00:00.100Z',
-            'description'=> 'description' , 
-            'language' =>"en-gb" , 
-            'customerProfileId' => "1",
-            'customerName'=>'mohamed almograby',
-            'chargeItems' => [  
-                    'itemId'  =>  "897fa8e81be26df25db592e81c31c",
-                    'description'  =>  'description',
-                    'price'  =>  "580.55",
-                    'quantity'  =>  "1" ,
-            ], 
-            // 'chargeItems'=> $invoiceDataArray,
-            'signature' => '2ca4c078ab0d4c50ba90e31b3b0339d4d4ae5b32f97092dd9e9c07888c7eef36',
-            "description"=> "Example Description"
-        ];
-        $data_string = json_encode($fawryData);
-        $ch = curl_init($fawryUrl);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string))
+        $response = $httpClient->request('GET', 'https://developer.fawrystaging.com/api/testCreatePaymentAtFawry?merchantCode=1tSa6uxz2nTwlaAmt38enA%3D%3D&customerMobile=01000000000&customerEmail=test%40email.com&customerProfileId=777777&merchantRefNum=2312465464&amount=350.75&paymentExpiry=1631138400000&currencyCode=EGP&description=Example%20Description&language=en-gb&chargeItems%5B0%5D%5BitemId%5D=897fa8e81be26df25db592e81c31c&chargeItems%5B0%5D%5Bdescription%5D=Item%20Descriptoin&chargeItems%5B0%5D%5Bprice%5D=350.75&chargeItems%5B0%5D%5Bquantity%5D=1&signature=2ca4c078ab0d4c50ba90e31b3b0339d4d4ae5b32f97092dd9e9c07888c7eef36&paymentMethod=PAYATFAWRY'
         );
-        $result = curl_exec($ch);
-        $result = json_decode($result, true);
-       
+        $response = json_decode($response->getBody()->getContents(), true);
+        return $response;
+        $paymentStatus = $response['type']; // get response values     
     }
+  
 
     public function getPackages()
     {
@@ -4198,22 +4103,20 @@ else{
     
    public function searchCourses(Request $request){
         //   dd($request->statge_id);
-        $search=$request->searchTerm;
+         $search=$request->searchTerm;
         if($request->semester_id){
-            $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->get();
-            $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->with(['courses'=>function($query)use($search){
-                  return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
-                }])->get();
-            }else if($request->semester_id == 0 || !$request->semester_id) {
-    
-                $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
-            
-                  $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with(['courses'=>function($query)use($search){
-                  return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
-                }])->get();
-            }
+        $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->get();
+        $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->where('semester_id',$request->semester_id)->with(['courses'=>function($query)use($search){
+              return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
+            }])->get();
+        }else if($request->semester_id == 0 || !$request->semester_id) {
 
-
+            $semesters = EduStageSemester::where('edu_stage_id',$request->statge_id)->get();
+        
+              $courses = EduStageSemester::where('edu_stage_id',$request->statge_id)->with(['courses'=>function($query)use($search){
+              return  $query->where('title', 'like', '%' .$search. '%')->orwhere('title_ar', 'like', '%' .$search. '%');
+            }])->get();
+        }
             if( auth('api')->user()){
                 $wishlist =  auth('api')->user()->wishList->pluck('id')->toArray();
                 $cart = StudentCart::where('user_id',auth('api')->user()->id)->where('item_type','course')->pluck('item_id')->toArray();
@@ -4261,12 +4164,43 @@ else{
              $semesterNames [] = Semester::where('id',$semesters[$i]->semester_id)->first();
                      
             }
-            return response()->json(['status' => 'success', 'courses' => $courses, 'semesterNames' => $semesterNames ]);
+            return response()->json(['status' => 'success', 'semesters' => $courses, 'semesterNames' => $semesterNames ]);
         }
-        
-        
+        public function stripePayment(Request $request)
+        {
+        if($request->data){
+        $order = $this->makeOrder($request->data);
+       }
+        $gateway = Omnipay::create('Stripe');
+        $gateway->setApiKey('sk_test_51Hyc2DBOF2m2fyEmcHukp0tRftspkurmrM4h1gbWf2i71F2jwrtR7YkV5cO8YXaJKRpxLgmyUrJ1wmekNQisQG6B007oynC62h');
+        $token = $request->token;
 
-        public function addToWallet(Requets $request){
+        $amount = $request->data['final_total'];
+        $currency = 'EGP';
+        // return config('services.stripe.secret');
+        $response = $gateway->purchase([
+            'amount' => $amount,
+            'currency' => $currency,
+            'token' => $token,
+            'confirm' => true,
+            'description' => auth()->user()->name
+        ])->send();
+
+        if ($response->isSuccessful()) {
+            //   $order->status = 1;
+            $order->payment_type = 1;
+            $order->save();
+              $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
+            return response()->json(['status' => true]);
+           
+   
+        } else {
+             $order->status = 2;
+            $order->save();
+            return response()->json(['status' => false]);
+        }
+    }
+     public function addToWallet(Request $request){
 
             $user_id = auth()->user()->id;
             $userWallet = Wallet::where('user_id',$user_id )->first();
@@ -4290,8 +4224,28 @@ else{
 
             $user_id = auth()->user()->id;
             $userWallet = Wallet::where('user_id',$user_id )->first();
+            $orders = Order::where('user_id',$user_id)->where('payment_type',5)->pluck('id');
+            // return    $orders ;
+            $items= [];
+            foreach($orders as $order)
+            {
+            $items [] = OrderItem::with('item')->where('order_id',$order)->first();
+            }
+            
+            foreach($items as $singleItem){
+                if( $singleItem['item']){
+                $singleItem->item->learned = json_decode($singleItem->item->learned);
+                $singleItem->item->learned_ar = json_decode($singleItem->item->learned_ar);
+                }
+            
+            }
+            // return $items;
+       
+             
+            
+            
 
-            return response()->json(['data' => $userWallet]);
+            return response()->json(['data' => $userWallet ,'items'=> $items]);
 
 
 
@@ -4307,14 +4261,227 @@ else{
                 $userWallet->amount -=$request->amount;
                 $userWallet->save();
                 $order = $this->makeOrder($request->data);
-                $order->payment_type = 5;
+                 $order->payment_type = 5;
                 $order->status = 1;
-
                 $cartItems = StudentCart::where('user_id',auth()->user()->id)->delete();
                 return response()->json(['status'=>'success' , 'msg'=>'Done Successfully' ]);
 
 
             }
         }
+        
+        public function aa(Request $request)
+    {
+       
+        $payMob = new PayMob();
+        $amount = $request->amount;
+        $coupon = $request->coupon;
 
+        if ($coupon != null) {
+            $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+        }
+        $coupon = ($coupon == null) ? 0 : $coupon->id;
+        $items = [];
+        $counter = 0;
+        foreach ($request->items as  $cartItem) {
+            $counter++;
+         
+            if ($cartItem['type'] == 'bundle') {
+                $type = Bundle::class;
+            } else {
+                $type = Course::class;
+
+            }
+            $item = (object)[
+                'item_id' => $cartItem['id'],
+                'type' => $type,
+                'number' => $counter,
+                'name' => $cartItem['title'],
+                'amount_cents' => $cartItem['price'] * 100,
+                // 'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                // 'selectedTime' => $cartItem->attributes->selectedTime ?? null,
+                'quantity' => 1];
+            array_push($items, $item);
+        }
+        if (strpos($amount, '.') !== false) {
+            $amount = round($amount, 2);
+        } else {
+            $amount = $amount . '.00';
+        }
+        $refNumber = str_random(8);
+        // Step 1
+        $payMob->authPaymob();
+        // Step 2
+        $paymobOrder = $payMob->makeOrderPaymob(
+            $payMob->auth->profile->id, // merchant id.
+            $amount * 100, // total amount by cents/piasters.
+            $refNumber, // your (merchant) order id.
+            $items
+        );
+        if (!$request->mobileNumber) {
+            // Step 3
+            $paymentKey = $payMob->getPaymentKeyPaymob(
+                $amount * 100, // total amount by cents/piasters.
+                $paymobOrder->shipping_data->order_id, // paymob order id from step 2.
+                // For billing data
+                auth()->user()->email, // optional
+                auth()->user()->first_name, // optional
+                auth()->user()->last_name, // optional
+                auth()->user()->phone ? auth()->user()->phone : 'no-phone-found', // optional
+                auth()->user()->city ? auth()->user()->city : 'NA' // optional
+            );
+            // if ($this->checkDuplicate()) {
+            //     return response()->json(['message' => 'You already have this course']);
+            // }
+            //Making Order
+            $order = new Order();
+            $order->user_id = auth()->user()->id;
+            $order->reference_no = $refNumber;
+            $order->amount = $amount;
+            $order->payment_type = 5;
+            $order->status = 0;
+            $order->coupon_id = $coupon;
+            $order->paymob_orderId = $paymobOrder->shipping_data->order_id;
+            $order->save();
+            foreach ($items as $item) {
+                $order->items()->create([
+                    'item_id' => $item->item_id,
+                    'selectedDate' => $item->selectedDate ?? null,
+                    'selectedTime' => $item->selectedTime ?? null,
+                    'item_type' => $item->type,
+                    'price' => $item->amount_cents / 100
+                ]);
+            }
+            return response()->json(['paymentKey' => $paymentKey->token, 'url' => 'https://accept.paymob.com/api/acceptance/iframes/128195' . '?payment_token=' . $paymentKey->token], 200);
+        } else {
+            $vodafonePayment = $payMob->vodafoneCashPayment(
+                $request->mobileNumber,
+                auth()->user()->first_name, // optional
+                auth()->user()->last_name, // optional
+                auth()->user()->email, // optional
+                auth()->user()->phone ? auth()->user()->phone : 'no-phone-found' // optional
+            );
+            return response()->json(['payment' => $vodafonePayment]);
+        }
+    }
+        
+        
+     public function fawryPayment(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $userInfo = User::where('id',auth()->user()->id)->first();
+        $number = str_random(8);
+        $amount = $request->amount;
+
+        // $merchantRefNum = '2312465463';
+        
+        $merchantRefNum = "2312465464";
+        // $description = 'Payment for Package subscription Request: '.$paymentAttempt->number;
+        if (strpos($amount, '.') !== false) {
+           $amount = round($amount, 2);
+        } else {
+           $amount = $amount . '.00';
+        }
+        $fawryUrl = 'https://atfawry.fawrystaging.com/ECommerceWeb/Fawry/payments/charge';
+        $items=[];
+        foreach($request->items as $requestItem){
+        $item =new item();
+        $item->itemId=$requestItem['id'];
+        $item->description=$requestItem['description'];
+        $item->price=$requestItem['price'];
+        $item->quantity='1';
+        array_push($items,$item);
+        }
+        
+        // Generate Fawry Signature
+        $merchantCode = '1tSa6uxz2nR/XkPxVfOViA=='; 
+        $customerProfileId = auth()->user()->id;
+        $paymentMethod = 'PAYATFAWRY';
+        $secureKey = 'c778f05ed99f4885bb714c727d9de07c';
+        $buffer = $merchantCode . $merchantRefNum . $customerProfileId . $paymentMethod . $amount . $secureKey;
+        $signature = hash('sha256', $buffer);
+        // $signature ='d1656f099183a7ccd1e2cfb2d146c1792182015963dba42618203b9ecc1e4828';
+    //   return $signature;
+        $fawryData = [
+                "merchantCode"=>$merchantCode,
+                "customerMobile"=> $userInfo->phone,
+                "customerProfileId"=> $customerProfileId,
+                "customerEmail"=>$userInfo->email,
+                "language"=>"en-gb",
+                "merchantRefNum"=> $merchantRefNum,
+                "amount"=> $amount,
+                "currencyCode"=> "EGP",
+                "chargeItems"=> $items,
+                "signature"=>$signature,
+                "paymentMethod"=> "PAYATFAWRY",
+                "description"=> "Example Description"
+        ];
+        
+        
+        // return $fawryData;
+    
+        $data_string = json_encode($fawryData);
+        
+
+        $ch = curl_init($fawryUrl);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string)
+        ));
+
+        $coupon = $request->coupon;
+        if ($coupon != null) {
+            $coupon = Coupon::where('code', '=', $coupon->getName())->first();
+        }
+        $result = curl_exec($ch);
+    //   return $result ;
+        $result = json_decode($result, true);
+        $description = $result['statusDescription'];
+        $order = new Order();
+        $order->user_id = $customerProfileId;
+        $order->reference_no = $merchantRefNum;
+        $order->amount = $amount;
+        $order->payment_type = 4;
+        $order->status = 0;
+        $order->coupon_id = ($coupon == null) ? 0 : $coupon->id;
+        $order->fawry_status = $result['statusDescription'];
+        if ($result['statusCode'] == 200) {
+            $order->fawry_ref_no = $result['referenceNumber'];
+            $order->fawry_expirationTime = $result['expirationTime'];
+        }
+        $order->save();
+        foreach ($request->items as $cartItem){
+            if ($cartItem['type'] == 'bundle') {
+                $type = Bundle::class;
+            } else if($cartItem['type'] == 'course'){
+                $type = Course::class;
+            }
+            else if($cartItem['type'] == 'wallet'){
+                $type = Wallet::class;
+                
+            }
+            $order->items()->create([
+                'item_id' => $cartItem['id'],
+                // 'selectedDate' => $cartItem->attributes->selectedDate ?? null,
+                // 'selectedTime' => $cartItem->attributes->selectedTime ?? null,
+                'item_type' => $type,
+                'price' => $cartItem['price']
+            ]);
+        };
+
+        return response()->json(['data'=>$result]);
+    }
+        
+         
+
+}
+class item{
+    public $itemId;
+    public $description;
+    public $price;
+    public $quantity;
 }
